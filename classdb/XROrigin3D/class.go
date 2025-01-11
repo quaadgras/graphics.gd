@@ -78,8 +78,8 @@ func (self Instance) SetCurrent(value bool) {
 func (self class) SetWorldScale(world_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, world_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XROrigin3D.Bind_set_world_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XROrigin3D.Bind_set_world_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -87,7 +87,7 @@ func (self class) SetWorldScale(world_scale gd.Float) {
 func (self class) GetWorldScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XROrigin3D.Bind_get_world_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XROrigin3D.Bind_get_world_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -97,8 +97,8 @@ func (self class) GetWorldScale() gd.Float {
 func (self class) SetCurrent(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XROrigin3D.Bind_set_current, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XROrigin3D.Bind_set_current, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -106,7 +106,7 @@ func (self class) SetCurrent(enabled bool) {
 func (self class) IsCurrent() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XROrigin3D.Bind_is_current, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XROrigin3D.Bind_is_current, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

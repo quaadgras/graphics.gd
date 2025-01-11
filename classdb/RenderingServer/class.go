@@ -4075,7 +4075,7 @@ func (self class) Texture2dCreate(image [1]gdclass.Image) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4092,7 +4092,7 @@ func (self class) Texture2dLayeredCreate(layers gd.Array, layered_type gdclass.R
 	callframe.Arg(frame, pointers.Get(layers))
 	callframe.Arg(frame, layered_type)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4111,7 +4111,7 @@ func (self class) Texture3dCreate(format gdclass.ImageFormat, width gd.Int, heig
 	callframe.Arg(frame, mipmaps)
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4125,7 +4125,7 @@ func (self class) TextureProxyCreate(base gd.RID) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_proxy_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_proxy_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4141,8 +4141,8 @@ func (self class) Texture2dUpdate(texture gd.RID, image [1]gdclass.Image, layer 
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4155,8 +4155,8 @@ func (self class) Texture3dUpdate(texture gd.RID, data gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4168,8 +4168,8 @@ func (self class) TextureProxyUpdate(texture gd.RID, proxy_to gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, proxy_to)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_proxy_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_proxy_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4182,7 +4182,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) Texture2dPlaceholderCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_placeholder_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_placeholder_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4197,7 +4197,7 @@ func (self class) Texture2dLayeredPlaceholderCreate(layered_type gdclass.Renderi
 	var frame = callframe.New()
 	callframe.Arg(frame, layered_type)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_placeholder_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_placeholder_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4212,7 +4212,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) Texture3dPlaceholderCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_placeholder_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_placeholder_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4232,7 +4232,7 @@ func (self class) Texture2dGet(texture gd.RID) [1]gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -4247,7 +4247,7 @@ func (self class) Texture2dLayerGet(texture gd.RID, layer gd.Int) [1]gdclass.Ima
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_layer_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_layer_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -4261,7 +4261,7 @@ func (self class) Texture3dGet(texture gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4275,8 +4275,8 @@ func (self class) TextureReplace(texture gd.RID, by_texture gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, by_texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_replace, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_replace, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4286,8 +4286,8 @@ func (self class) TextureSetSizeOverride(texture gd.RID, width gd.Int, height gd
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_set_size_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_set_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4296,8 +4296,8 @@ func (self class) TextureSetPath(texture gd.RID, path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_set_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_set_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4306,7 +4306,7 @@ func (self class) TextureGetPath(texture gd.RID) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4320,7 +4320,7 @@ func (self class) TextureGetFormat(texture gd.RID) gdclass.ImageFormat {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4331,8 +4331,8 @@ func (self class) TextureSetForceRedrawIfVisible(texture gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_set_force_redraw_if_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_set_force_redraw_if_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4345,7 +4345,7 @@ func (self class) TextureRdCreate(rd_texture gd.RID, layer_type gdclass.Renderin
 	callframe.Arg(frame, rd_texture)
 	callframe.Arg(frame, layer_type)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_rd_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_rd_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4360,7 +4360,7 @@ func (self class) TextureGetRdTexture(texture gd.RID, srgb bool) gd.RID {
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, srgb)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_rd_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_rd_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4376,7 +4376,7 @@ func (self class) TextureGetNativeHandle(texture gd.RID, srgb bool) gd.Int {
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, srgb)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_native_handle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_native_handle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4391,7 +4391,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) ShaderCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4405,8 +4405,8 @@ func (self class) ShaderSetCode(shader gd.RID, code gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	callframe.Arg(frame, pointers.Get(code))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_set_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_set_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4418,8 +4418,8 @@ func (self class) ShaderSetPathHint(shader gd.RID, path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_set_path_hint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_set_path_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4431,7 +4431,7 @@ func (self class) ShaderGetCode(shader gd.RID) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4445,7 +4445,7 @@ func (self class) GetShaderParameterList(shader gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4460,7 +4460,7 @@ func (self class) ShaderGetParameterDefault(shader gd.RID, name gd.StringName) g
 	callframe.Arg(frame, shader)
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_parameter_default, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_parameter_default, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4477,8 +4477,8 @@ func (self class) ShaderSetDefaultTextureParameter(shader gd.RID, name gd.String
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_set_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_set_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4493,7 +4493,7 @@ func (self class) ShaderGetDefaultTextureParameter(shader gd.RID, name gd.String
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4508,7 +4508,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) MaterialCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4522,8 +4522,8 @@ func (self class) MaterialSetShader(shader_material gd.RID, shader gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader_material)
 	callframe.Arg(frame, shader)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_set_shader, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_set_shader, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4536,8 +4536,8 @@ func (self class) MaterialSetParam(material gd.RID, parameter gd.StringName, val
 	callframe.Arg(frame, material)
 	callframe.Arg(frame, pointers.Get(parameter))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4550,7 +4550,7 @@ func (self class) MaterialGetParam(material gd.RID, parameter gd.StringName) gd.
 	callframe.Arg(frame, material)
 	callframe.Arg(frame, pointers.Get(parameter))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_get_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4564,8 +4564,8 @@ func (self class) MaterialSetRenderPriority(material gd.RID, priority gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, material)
 	callframe.Arg(frame, priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_set_render_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_set_render_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4577,8 +4577,8 @@ func (self class) MaterialSetNextPass(material gd.RID, next_material gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, material)
 	callframe.Arg(frame, next_material)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_set_next_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_set_next_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4588,7 +4588,7 @@ func (self class) MeshCreateFromSurfaces(surfaces gd.Array, blend_shape_count gd
 	callframe.Arg(frame, pointers.Get(surfaces))
 	callframe.Arg(frame, blend_shape_count)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_create_from_surfaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_create_from_surfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4604,7 +4604,7 @@ To place in a scene, attach this mesh to an instance using [method instance_set_
 func (self class) MeshCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4620,7 +4620,7 @@ func (self class) MeshSurfaceGetFormatOffset(format gdclass.RenderingServerArray
 	callframe.Arg(frame, vertex_count)
 	callframe.Arg(frame, array_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4635,7 +4635,7 @@ func (self class) MeshSurfaceGetFormatVertexStride(format gdclass.RenderingServe
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, vertex_count)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_vertex_stride, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_vertex_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4650,7 +4650,7 @@ func (self class) MeshSurfaceGetFormatNormalTangentStride(format gdclass.Renderi
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, vertex_count)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_normal_tangent_stride, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_normal_tangent_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4665,7 +4665,7 @@ func (self class) MeshSurfaceGetFormatAttributeStride(format gdclass.RenderingSe
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, vertex_count)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_attribute_stride, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_attribute_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4680,7 +4680,7 @@ func (self class) MeshSurfaceGetFormatSkinStride(format gdclass.RenderingServerA
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, vertex_count)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_skin_stride, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_skin_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4691,8 +4691,8 @@ func (self class) MeshAddSurface(mesh gd.RID, surface gd.Dictionary) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, pointers.Get(surface))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4705,8 +4705,8 @@ func (self class) MeshAddSurfaceFromArrays(mesh gd.RID, primitive gdclass.Render
 	callframe.Arg(frame, pointers.Get(blend_shapes))
 	callframe.Arg(frame, pointers.Get(lods))
 	callframe.Arg(frame, compress_format)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface_from_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface_from_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4718,7 +4718,7 @@ func (self class) MeshGetBlendShapeCount(mesh gd.RID) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_blend_shape_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_blend_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4732,8 +4732,8 @@ func (self class) MeshSetBlendShapeMode(mesh gd.RID, mode gdclass.RenderingServe
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_set_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_set_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4745,7 +4745,7 @@ func (self class) MeshGetBlendShapeMode(mesh gd.RID) gdclass.RenderingServerBlen
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	var r_ret = callframe.Ret[gdclass.RenderingServerBlendShapeMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4760,8 +4760,8 @@ func (self class) MeshSurfaceSetMaterial(mesh gd.RID, surface gd.Int, material g
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, material)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4774,7 +4774,7 @@ func (self class) MeshSurfaceGetMaterial(mesh gd.RID, surface gd.Int) gd.RID {
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4786,7 +4786,7 @@ func (self class) MeshGetSurface(mesh gd.RID, surface gd.Int) gd.Dictionary {
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4801,7 +4801,7 @@ func (self class) MeshSurfaceGetArrays(mesh gd.RID, surface gd.Int) gd.Array {
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4816,7 +4816,7 @@ func (self class) MeshSurfaceGetBlendShapeArrays(mesh gd.RID, surface gd.Int) gd
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_blend_shape_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_blend_shape_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4830,7 +4830,7 @@ func (self class) MeshGetSurfaceCount(mesh gd.RID) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4844,8 +4844,8 @@ func (self class) MeshSetCustomAabb(mesh gd.RID, aabb gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, aabb)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4857,7 +4857,7 @@ func (self class) MeshGetCustomAabb(mesh gd.RID) gd.AABB {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	var r_ret = callframe.Ret[gd.AABB](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4870,8 +4870,8 @@ Removes all surfaces from a mesh.
 func (self class) MeshClear(mesh gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4882,8 +4882,8 @@ func (self class) MeshSurfaceUpdateVertexRegion(mesh gd.RID, surface gd.Int, off
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_vertex_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_vertex_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4894,8 +4894,8 @@ func (self class) MeshSurfaceUpdateAttributeRegion(mesh gd.RID, surface gd.Int, 
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_attribute_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_attribute_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4906,8 +4906,8 @@ func (self class) MeshSurfaceUpdateSkinRegion(mesh gd.RID, surface gd.Int, offse
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_skin_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_skin_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4916,8 +4916,8 @@ func (self class) MeshSetShadowMesh(mesh gd.RID, shadow_mesh gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, shadow_mesh)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_set_shadow_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_set_shadow_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4931,7 +4931,7 @@ To place in a scene, attach this multimesh to an instance using [method instance
 func (self class) MultimeshCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4945,8 +4945,8 @@ func (self class) MultimeshAllocateData(multimesh gd.RID, instances gd.Int, tran
 	callframe.Arg(frame, transform_format)
 	callframe.Arg(frame, color_format)
 	callframe.Arg(frame, custom_data_format)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_allocate_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_allocate_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4958,7 +4958,7 @@ func (self class) MultimeshGetInstanceCount(multimesh gd.RID) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_instance_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_instance_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4972,8 +4972,8 @@ func (self class) MultimeshSetMesh(multimesh gd.RID, mesh gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, mesh)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4986,8 +4986,8 @@ func (self class) MultimeshInstanceSetTransform(multimesh gd.RID, index gd.Int, 
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5000,8 +5000,8 @@ func (self class) MultimeshInstanceSetTransform2d(multimesh gd.RID, index gd.Int
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_transform_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_transform_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5014,8 +5014,8 @@ func (self class) MultimeshInstanceSetColor(multimesh gd.RID, index gd.Int, colo
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5028,8 +5028,8 @@ func (self class) MultimeshInstanceSetCustomData(multimesh gd.RID, index gd.Int,
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, custom_data)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_custom_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_custom_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5041,7 +5041,7 @@ func (self class) MultimeshGetMesh(multimesh gd.RID) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5055,7 +5055,7 @@ func (self class) MultimeshGetAabb(multimesh gd.RID) gd.AABB {
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	var r_ret = callframe.Ret[gd.AABB](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5069,8 +5069,8 @@ func (self class) MultimeshSetCustomAabb(multimesh gd.RID, aabb gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, aabb)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5082,7 +5082,7 @@ func (self class) MultimeshGetCustomAabb(multimesh gd.RID) gd.AABB {
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	var r_ret = callframe.Ret[gd.AABB](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5097,7 +5097,7 @@ func (self class) MultimeshInstanceGetTransform(multimesh gd.RID, index gd.Int) 
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5112,7 +5112,7 @@ func (self class) MultimeshInstanceGetTransform2d(multimesh gd.RID, index gd.Int
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_transform_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_transform_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5127,7 +5127,7 @@ func (self class) MultimeshInstanceGetColor(multimesh gd.RID, index gd.Int) gd.C
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5142,7 +5142,7 @@ func (self class) MultimeshInstanceGetCustomData(multimesh gd.RID, index gd.Int)
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_custom_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_custom_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5156,8 +5156,8 @@ func (self class) MultimeshSetVisibleInstances(multimesh gd.RID, visible gd.Int)
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, visible)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_visible_instances, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_visible_instances, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5169,7 +5169,7 @@ func (self class) MultimeshGetVisibleInstances(multimesh gd.RID) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_visible_instances, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_visible_instances, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5196,8 +5196,8 @@ func (self class) MultimeshSetBuffer(multimesh gd.RID, buffer gd.PackedFloat32Ar
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, pointers.Get(buffer))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5210,7 +5210,7 @@ func (self class) MultimeshGetBuffer(multimesh gd.RID) gd.PackedFloat32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5224,7 +5224,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) SkeletonCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5236,8 +5236,8 @@ func (self class) SkeletonAllocateData(skeleton gd.RID, bones gd.Int, is_2d_skel
 	callframe.Arg(frame, skeleton)
 	callframe.Arg(frame, bones)
 	callframe.Arg(frame, is_2d_skeleton)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_allocate_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_allocate_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5249,7 +5249,7 @@ func (self class) SkeletonGetBoneCount(skeleton gd.RID) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, skeleton)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_get_bone_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_get_bone_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5264,8 +5264,8 @@ func (self class) SkeletonBoneSetTransform(skeleton gd.RID, bone gd.Int, transfo
 	callframe.Arg(frame, skeleton)
 	callframe.Arg(frame, bone)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5278,7 +5278,7 @@ func (self class) SkeletonBoneGetTransform(skeleton gd.RID, bone gd.Int) gd.Tran
 	callframe.Arg(frame, skeleton)
 	callframe.Arg(frame, bone)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5293,8 +5293,8 @@ func (self class) SkeletonBoneSetTransform2d(skeleton gd.RID, bone gd.Int, trans
 	callframe.Arg(frame, skeleton)
 	callframe.Arg(frame, bone)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_set_transform_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_set_transform_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5307,7 +5307,7 @@ func (self class) SkeletonBoneGetTransform2d(skeleton gd.RID, bone gd.Int) gd.Tr
 	callframe.Arg(frame, skeleton)
 	callframe.Arg(frame, bone)
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_get_transform_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_get_transform_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5318,8 +5318,8 @@ func (self class) SkeletonSetBaseTransform2d(skeleton gd.RID, base_transform gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, skeleton)
 	callframe.Arg(frame, base_transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_set_base_transform_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_set_base_transform_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5333,7 +5333,7 @@ To place in a scene, attach this directional light to an instance using [method 
 func (self class) DirectionalLightCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_directional_light_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_directional_light_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5349,7 +5349,7 @@ To place in a scene, attach this omni light to an instance using [method instanc
 func (self class) OmniLightCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_omni_light_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_omni_light_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5364,7 +5364,7 @@ To place in a scene, attach this spot light to an instance using [method instanc
 func (self class) SpotLightCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_spot_light_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_spot_light_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5378,8 +5378,8 @@ func (self class) LightSetColor(light gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5392,8 +5392,8 @@ func (self class) LightSetParam(light gd.RID, param gdclass.RenderingServerLight
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_param, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5405,8 +5405,8 @@ func (self class) LightSetShadow(light gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_shadow, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_shadow, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5418,8 +5418,8 @@ func (self class) LightSetProjector(light gd.RID, texture gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_projector, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_projector, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5431,8 +5431,8 @@ func (self class) LightSetNegative(light gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_negative, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_negative, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5444,8 +5444,8 @@ func (self class) LightSetCullMask(light gd.RID, mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5460,8 +5460,8 @@ func (self class) LightSetDistanceFade(decal gd.RID, enabled bool, begin gd.Floa
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, shadow)
 	callframe.Arg(frame, length)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_distance_fade, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_distance_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5473,8 +5473,8 @@ func (self class) LightSetReverseCullFaceMode(light gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_reverse_cull_face_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_reverse_cull_face_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5486,8 +5486,8 @@ func (self class) LightSetBakeMode(light gd.RID, bake_mode gdclass.RenderingServ
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, bake_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_bake_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_bake_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5499,8 +5499,8 @@ func (self class) LightSetMaxSdfgiCascade(light gd.RID, cascade gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, cascade)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_max_sdfgi_cascade, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_set_max_sdfgi_cascade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5512,8 +5512,8 @@ func (self class) LightOmniSetShadowMode(light gd.RID, mode gdclass.RenderingSer
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_omni_set_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_omni_set_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5525,8 +5525,8 @@ func (self class) LightDirectionalSetShadowMode(light gd.RID, mode gdclass.Rende
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_directional_set_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_directional_set_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5538,8 +5538,8 @@ func (self class) LightDirectionalSetBlendSplits(light gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_directional_set_blend_splits, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_directional_set_blend_splits, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5551,8 +5551,8 @@ func (self class) LightDirectionalSetSkyMode(light gd.RID, mode gdclass.Renderin
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_directional_set_sky_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_directional_set_sky_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5563,8 +5563,8 @@ Sets the texture filter mode to use when rendering light projectors. This parame
 func (self class) LightProjectorsSetFilter(filter gdclass.RenderingServerLightProjectorFilter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_projectors_set_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_light_projectors_set_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5575,8 +5575,8 @@ Sets the filter quality for omni and spot light shadows in 3D. See also [member 
 func (self class) PositionalSoftShadowFilterSetQuality(quality gdclass.RenderingServerShadowQuality) {
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_positional_soft_shadow_filter_set_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_positional_soft_shadow_filter_set_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5587,8 +5587,8 @@ Sets the filter [param quality] for directional light shadows in 3D. See also [m
 func (self class) DirectionalSoftShadowFilterSetQuality(quality gdclass.RenderingServerShadowQuality) {
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_directional_soft_shadow_filter_set_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_directional_soft_shadow_filter_set_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5600,8 +5600,8 @@ func (self class) DirectionalShadowAtlasSetSize(size gd.Int, is_16bits bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, is_16bits)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_directional_shadow_atlas_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_directional_shadow_atlas_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5615,7 +5615,7 @@ To place in a scene, attach this reflection probe to an instance using [method i
 func (self class) ReflectionProbeCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5629,8 +5629,8 @@ func (self class) ReflectionProbeSetUpdateMode(probe gd.RID, mode gdclass.Render
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5642,8 +5642,8 @@ func (self class) ReflectionProbeSetIntensity(probe gd.RID, intensity gd.Float) 
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, intensity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_intensity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5655,8 +5655,8 @@ func (self class) ReflectionProbeSetAmbientMode(probe gd.RID, mode gdclass.Rende
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5668,8 +5668,8 @@ func (self class) ReflectionProbeSetAmbientColor(probe gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5681,8 +5681,8 @@ func (self class) ReflectionProbeSetAmbientEnergy(probe gd.RID, energy gd.Float)
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, energy)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5694,8 +5694,8 @@ func (self class) ReflectionProbeSetMaxDistance(probe gd.RID, distance gd.Float)
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_max_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5707,8 +5707,8 @@ func (self class) ReflectionProbeSetSize(probe gd.RID, size gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5720,8 +5720,8 @@ func (self class) ReflectionProbeSetOriginOffset(probe gd.RID, offset gd.Vector3
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_origin_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_origin_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5733,8 +5733,8 @@ func (self class) ReflectionProbeSetAsInterior(probe gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_as_interior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_as_interior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5746,8 +5746,8 @@ func (self class) ReflectionProbeSetEnableBoxProjection(probe gd.RID, enable boo
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_enable_box_projection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_enable_box_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5759,8 +5759,8 @@ func (self class) ReflectionProbeSetEnableShadows(probe gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_enable_shadows, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_enable_shadows, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5772,8 +5772,8 @@ func (self class) ReflectionProbeSetCullMask(probe gd.RID, layers gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5785,8 +5785,8 @@ func (self class) ReflectionProbeSetReflectionMask(probe gd.RID, layers gd.Int) 
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_reflection_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_reflection_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5798,8 +5798,8 @@ func (self class) ReflectionProbeSetResolution(probe gd.RID, resolution gd.Int) 
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, resolution)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5811,8 +5811,8 @@ func (self class) ReflectionProbeSetMeshLodThreshold(probe gd.RID, pixels gd.Flo
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, pixels)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5826,7 +5826,7 @@ To place in a scene, attach this decal to an instance using [method instance_set
 func (self class) DecalCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5840,8 +5840,8 @@ func (self class) DecalSetSize(decal gd.RID, size gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, decal)
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5854,8 +5854,8 @@ func (self class) DecalSetTexture(decal gd.RID, atype gdclass.RenderingServerDec
 	callframe.Arg(frame, decal)
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5867,8 +5867,8 @@ func (self class) DecalSetEmissionEnergy(decal gd.RID, energy gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, decal)
 	callframe.Arg(frame, energy)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_emission_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_emission_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5880,8 +5880,8 @@ func (self class) DecalSetAlbedoMix(decal gd.RID, albedo_mix gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, decal)
 	callframe.Arg(frame, albedo_mix)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_albedo_mix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_albedo_mix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5893,8 +5893,8 @@ func (self class) DecalSetModulate(decal gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, decal)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5906,8 +5906,8 @@ func (self class) DecalSetCullMask(decal gd.RID, mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, decal)
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5921,8 +5921,8 @@ func (self class) DecalSetDistanceFade(decal gd.RID, enabled bool, begin gd.Floa
 	callframe.Arg(frame, enabled)
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, length)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_distance_fade, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_distance_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5935,8 +5935,8 @@ func (self class) DecalSetFade(decal gd.RID, above gd.Float, below gd.Float) {
 	callframe.Arg(frame, decal)
 	callframe.Arg(frame, above)
 	callframe.Arg(frame, below)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_fade, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5948,8 +5948,8 @@ func (self class) DecalSetNormalFade(decal gd.RID, fade gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, decal)
 	callframe.Arg(frame, fade)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_normal_fade, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decal_set_normal_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5960,8 +5960,8 @@ Sets the texture [param filter] mode to use when rendering decals. This paramete
 func (self class) DecalsSetFilter(filter gdclass.RenderingServerDecalFilter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decals_set_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_decals_set_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5972,8 +5972,8 @@ If [param half_resolution] is [code]true[/code], renders [VoxelGI] and SDFGI ([m
 func (self class) GiSetUseHalfResolution(half_resolution bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, half_resolution)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_gi_set_use_half_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_gi_set_use_half_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -5986,7 +5986,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) VoxelGiCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6003,8 +6003,8 @@ func (self class) VoxelGiAllocateData(voxel_gi gd.RID, to_cell_xform gd.Transfor
 	callframe.Arg(frame, pointers.Get(data_cells))
 	callframe.Arg(frame, pointers.Get(distance_field))
 	callframe.Arg(frame, pointers.Get(level_counts))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_allocate_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_allocate_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6013,7 +6013,7 @@ func (self class) VoxelGiGetOctreeSize(voxel_gi gd.RID) gd.Vector3i {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	var r_ret = callframe.Ret[gd.Vector3i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_octree_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_octree_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6024,7 +6024,7 @@ func (self class) VoxelGiGetOctreeCells(voxel_gi gd.RID) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_octree_cells, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_octree_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6035,7 +6035,7 @@ func (self class) VoxelGiGetDataCells(voxel_gi gd.RID) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_data_cells, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_data_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6046,7 +6046,7 @@ func (self class) VoxelGiGetDistanceField(voxel_gi gd.RID) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_distance_field, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_distance_field, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6057,7 +6057,7 @@ func (self class) VoxelGiGetLevelCounts(voxel_gi gd.RID) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_level_counts, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_level_counts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6068,7 +6068,7 @@ func (self class) VoxelGiGetToCellXform(voxel_gi gd.RID) gd.Transform3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_to_cell_xform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_to_cell_xform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6082,8 +6082,8 @@ func (self class) VoxelGiSetDynamicRange(voxel_gi gd.RID, arange gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	callframe.Arg(frame, arange)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_dynamic_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_dynamic_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6095,8 +6095,8 @@ func (self class) VoxelGiSetPropagation(voxel_gi gd.RID, amount gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	callframe.Arg(frame, amount)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_propagation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_propagation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6108,8 +6108,8 @@ func (self class) VoxelGiSetEnergy(voxel_gi gd.RID, energy gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	callframe.Arg(frame, energy)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6121,8 +6121,8 @@ func (self class) VoxelGiSetBakedExposureNormalization(voxel_gi gd.RID, baked_ex
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	callframe.Arg(frame, baked_exposure)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_baked_exposure_normalization, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_baked_exposure_normalization, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6134,8 +6134,8 @@ func (self class) VoxelGiSetBias(voxel_gi gd.RID, bias gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	callframe.Arg(frame, bias)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6147,8 +6147,8 @@ func (self class) VoxelGiSetNormalBias(voxel_gi gd.RID, bias gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	callframe.Arg(frame, bias)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_normal_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_normal_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6160,8 +6160,8 @@ func (self class) VoxelGiSetInterior(voxel_gi gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_interior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_interior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6173,8 +6173,8 @@ func (self class) VoxelGiSetUseTwoBounces(voxel_gi gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_use_two_bounces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_use_two_bounces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6185,8 +6185,8 @@ Sets the [member ProjectSettings.rendering/global_illumination/voxel_gi/quality]
 func (self class) VoxelGiSetQuality(quality gdclass.RenderingServerVoxelGIQuality) {
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6199,7 +6199,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) LightmapCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6214,8 +6214,8 @@ func (self class) LightmapSetTextures(lightmap gd.RID, light gd.RID, uses_sh boo
 	callframe.Arg(frame, lightmap)
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, uses_sh)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_textures, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6224,8 +6224,8 @@ func (self class) LightmapSetProbeBounds(lightmap gd.RID, bounds gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
 	callframe.Arg(frame, bounds)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_bounds, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6234,8 +6234,8 @@ func (self class) LightmapSetProbeInterior(lightmap gd.RID, interior bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
 	callframe.Arg(frame, interior)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_interior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_interior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6247,8 +6247,8 @@ func (self class) LightmapSetProbeCaptureData(lightmap gd.RID, points gd.PackedV
 	callframe.Arg(frame, pointers.Get(point_sh))
 	callframe.Arg(frame, pointers.Get(tetrahedra))
 	callframe.Arg(frame, pointers.Get(bsp_tree))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6257,7 +6257,7 @@ func (self class) LightmapGetProbeCapturePoints(lightmap gd.RID) gd.PackedVector
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6268,7 +6268,7 @@ func (self class) LightmapGetProbeCaptureSh(lightmap gd.RID) gd.PackedColorArray
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_sh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_sh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedColorArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6279,7 +6279,7 @@ func (self class) LightmapGetProbeCaptureTetrahedra(lightmap gd.RID) gd.PackedIn
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_tetrahedra, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_tetrahedra, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6290,7 +6290,7 @@ func (self class) LightmapGetProbeCaptureBspTree(lightmap gd.RID) gd.PackedInt32
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_bsp_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_bsp_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6304,8 +6304,8 @@ func (self class) LightmapSetBakedExposureNormalization(lightmap gd.RID, baked_e
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
 	callframe.Arg(frame, baked_exposure)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_baked_exposure_normalization, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_baked_exposure_normalization, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6313,8 +6313,8 @@ func (self class) LightmapSetBakedExposureNormalization(lightmap gd.RID, baked_e
 func (self class) LightmapSetProbeCaptureUpdateSpeed(speed gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, speed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_update_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_update_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6329,7 +6329,7 @@ To place in a scene, attach these particles to an instance using [method instanc
 func (self class) ParticlesCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6343,8 +6343,8 @@ func (self class) ParticlesSetMode(particles gd.RID, mode gdclass.RenderingServe
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6356,8 +6356,8 @@ func (self class) ParticlesSetEmitting(particles gd.RID, emitting bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, emitting)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_emitting, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_emitting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6369,7 +6369,7 @@ func (self class) ParticlesGetEmitting(particles gd.RID) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_get_emitting, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_get_emitting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6383,8 +6383,8 @@ func (self class) ParticlesSetAmount(particles gd.RID, amount gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, amount)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_amount, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_amount, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6396,8 +6396,8 @@ func (self class) ParticlesSetAmountRatio(particles gd.RID, ratio gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_amount_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_amount_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6409,8 +6409,8 @@ func (self class) ParticlesSetLifetime(particles gd.RID, lifetime gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, lifetime)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_lifetime, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_lifetime, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6422,8 +6422,8 @@ func (self class) ParticlesSetOneShot(particles gd.RID, one_shot bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, one_shot)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_one_shot, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_one_shot, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6435,8 +6435,8 @@ func (self class) ParticlesSetPreProcessTime(particles gd.RID, time gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, time)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_pre_process_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_pre_process_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6448,8 +6448,8 @@ func (self class) ParticlesSetExplosivenessRatio(particles gd.RID, ratio gd.Floa
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_explosiveness_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_explosiveness_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6461,8 +6461,8 @@ func (self class) ParticlesSetRandomnessRatio(particles gd.RID, ratio gd.Float) 
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_randomness_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_randomness_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6474,8 +6474,8 @@ func (self class) ParticlesSetInterpToEnd(particles gd.RID, factor gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, factor)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_interp_to_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_interp_to_end, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6487,8 +6487,8 @@ func (self class) ParticlesSetEmitterVelocity(particles gd.RID, velocity gd.Vect
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_emitter_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_emitter_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6500,8 +6500,8 @@ func (self class) ParticlesSetCustomAabb(particles gd.RID, aabb gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, aabb)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6513,8 +6513,8 @@ func (self class) ParticlesSetSpeedScale(particles gd.RID, scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_speed_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6526,8 +6526,8 @@ func (self class) ParticlesSetUseLocalCoordinates(particles gd.RID, enable bool)
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_use_local_coordinates, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_use_local_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6540,8 +6540,8 @@ func (self class) ParticlesSetProcessMaterial(particles gd.RID, material gd.RID)
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, material)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_process_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_process_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6553,8 +6553,8 @@ func (self class) ParticlesSetFixedFps(particles gd.RID, fps gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, fps)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_fixed_fps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_fixed_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6563,8 +6563,8 @@ func (self class) ParticlesSetInterpolate(particles gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_interpolate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_interpolate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6576,8 +6576,8 @@ func (self class) ParticlesSetFractionalDelta(particles gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_fractional_delta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_fractional_delta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6586,8 +6586,8 @@ func (self class) ParticlesSetCollisionBaseSize(particles gd.RID, size gd.Float)
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_collision_base_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_collision_base_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6596,8 +6596,8 @@ func (self class) ParticlesSetTransformAlign(particles gd.RID, align gdclass.Ren
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, align)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_transform_align, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_transform_align, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6610,8 +6610,8 @@ func (self class) ParticlesSetTrails(particles gd.RID, enable bool, length_sec g
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, enable)
 	callframe.Arg(frame, length_sec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_trails, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_trails, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6620,8 +6620,8 @@ func (self class) ParticlesSetTrailBindPoses(particles gd.RID, bind_poses gd.Arr
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, pointers.Get(bind_poses))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_trail_bind_poses, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_trail_bind_poses, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6633,7 +6633,7 @@ func (self class) ParticlesIsInactive(particles gd.RID) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_is_inactive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_is_inactive, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6646,8 +6646,8 @@ Add particle system to list of particle systems that need to be updated. Update 
 func (self class) ParticlesRequestProcess(particles gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_request_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_request_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6658,8 +6658,8 @@ Reset the particles on the next update. Equivalent to [method GPUParticles3D.res
 func (self class) ParticlesRestart(particles gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_restart, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6668,8 +6668,8 @@ func (self class) ParticlesSetSubemitter(particles gd.RID, subemitter_particles 
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, subemitter_particles)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_subemitter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_subemitter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6685,8 +6685,8 @@ func (self class) ParticlesEmit(particles gd.RID, transform gd.Transform3D, velo
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, custom)
 	callframe.Arg(frame, emit_flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_emit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_emit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6698,8 +6698,8 @@ func (self class) ParticlesSetDrawOrder(particles gd.RID, order gdclass.Renderin
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, order)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6711,8 +6711,8 @@ func (self class) ParticlesSetDrawPasses(particles gd.RID, count gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_passes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_passes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6725,8 +6725,8 @@ func (self class) ParticlesSetDrawPassMesh(particles gd.RID, pass gd.Int, mesh g
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, pass)
 	callframe.Arg(frame, mesh)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_pass_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_pass_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6738,7 +6738,7 @@ func (self class) ParticlesGetCurrentAabb(particles gd.RID) gd.AABB {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	var r_ret = callframe.Ret[gd.AABB](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_get_current_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_get_current_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6752,8 +6752,8 @@ func (self class) ParticlesSetEmissionTransform(particles gd.RID, transform gd.T
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_emission_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_emission_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6765,7 +6765,7 @@ Creates a new 3D GPU particle collision or attractor and adds it to the Renderin
 func (self class) ParticlesCollisionCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6779,8 +6779,8 @@ func (self class) ParticlesCollisionSetCollisionType(particles_collision gd.RID,
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, atype)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_collision_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_collision_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6792,8 +6792,8 @@ func (self class) ParticlesCollisionSetCullMask(particles_collision gd.RID, mask
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6805,8 +6805,8 @@ func (self class) ParticlesCollisionSetSphereRadius(particles_collision gd.RID, 
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, radius)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_sphere_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_sphere_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6818,8 +6818,8 @@ func (self class) ParticlesCollisionSetBoxExtents(particles_collision gd.RID, ex
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, extents)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_box_extents, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_box_extents, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6831,8 +6831,8 @@ func (self class) ParticlesCollisionSetAttractorStrength(particles_collision gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, strength)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6844,8 +6844,8 @@ func (self class) ParticlesCollisionSetAttractorDirectionality(particles_collisi
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, amount)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_directionality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_directionality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6857,8 +6857,8 @@ func (self class) ParticlesCollisionSetAttractorAttenuation(particles_collision 
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, curve)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_attenuation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_attenuation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6870,8 +6870,8 @@ func (self class) ParticlesCollisionSetFieldTexture(particles_collision gd.RID, 
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_field_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_field_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6882,8 +6882,8 @@ Requests an update for the 3D GPU particle collision heightfield. This may be au
 func (self class) ParticlesCollisionHeightFieldUpdate(particles_collision gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_height_field_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_height_field_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6895,8 +6895,8 @@ func (self class) ParticlesCollisionSetHeightFieldResolution(particles_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, resolution)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_height_field_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_height_field_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6909,7 +6909,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) FogVolumeCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_fog_volume_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_fog_volume_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6923,8 +6923,8 @@ func (self class) FogVolumeSetShape(fog_volume gd.RID, shape gdclass.RenderingSe
 	var frame = callframe.New()
 	callframe.Arg(frame, fog_volume)
 	callframe.Arg(frame, shape)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6936,8 +6936,8 @@ func (self class) FogVolumeSetSize(fog_volume gd.RID, size gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, fog_volume)
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6949,8 +6949,8 @@ func (self class) FogVolumeSetMaterial(fog_volume gd.RID, material gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, fog_volume)
 	callframe.Arg(frame, material)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6964,7 +6964,7 @@ To place in a scene, attach this mesh to an instance using [method instance_set_
 func (self class) VisibilityNotifierCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6975,8 +6975,8 @@ func (self class) VisibilityNotifierSetAabb(notifier gd.RID, aabb gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, notifier)
 	callframe.Arg(frame, aabb)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_set_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_set_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -6986,8 +6986,8 @@ func (self class) VisibilityNotifierSetCallbacks(notifier gd.RID, enter_callable
 	callframe.Arg(frame, notifier)
 	callframe.Arg(frame, pointers.Get(enter_callable))
 	callframe.Arg(frame, pointers.Get(exit_callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_set_callbacks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_set_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7000,7 +7000,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) OccluderCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_occluder_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_occluder_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7015,8 +7015,8 @@ func (self class) OccluderSetMesh(occluder gd.RID, vertices gd.PackedVector3Arra
 	callframe.Arg(frame, occluder)
 	callframe.Arg(frame, pointers.Get(vertices))
 	callframe.Arg(frame, pointers.Get(indices))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_occluder_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_occluder_set_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7029,7 +7029,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) CameraCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7045,8 +7045,8 @@ func (self class) CameraSetPerspective(camera gd.RID, fovy_degrees gd.Float, z_n
 	callframe.Arg(frame, fovy_degrees)
 	callframe.Arg(frame, z_near)
 	callframe.Arg(frame, z_far)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_perspective, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_perspective, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7060,8 +7060,8 @@ func (self class) CameraSetOrthogonal(camera gd.RID, size gd.Float, z_near gd.Fl
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, z_near)
 	callframe.Arg(frame, z_far)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_orthogonal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_orthogonal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7076,8 +7076,8 @@ func (self class) CameraSetFrustum(camera gd.RID, size gd.Float, offset gd.Vecto
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, z_near)
 	callframe.Arg(frame, z_far)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_frustum, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_frustum, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7089,8 +7089,8 @@ func (self class) CameraSetTransform(camera gd.RID, transform gd.Transform3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, camera)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7102,8 +7102,8 @@ func (self class) CameraSetCullMask(camera gd.RID, layers gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, camera)
 	callframe.Arg(frame, layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7115,8 +7115,8 @@ func (self class) CameraSetEnvironment(camera gd.RID, env gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, camera)
 	callframe.Arg(frame, env)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7128,8 +7128,8 @@ func (self class) CameraSetCameraAttributes(camera gd.RID, effects gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, camera)
 	callframe.Arg(frame, effects)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7141,8 +7141,8 @@ func (self class) CameraSetCompositor(camera gd.RID, compositor gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, camera)
 	callframe.Arg(frame, compositor)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_compositor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7154,8 +7154,8 @@ func (self class) CameraSetUseVerticalAspect(camera gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, camera)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_use_vertical_aspect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_use_vertical_aspect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7168,7 +7168,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) ViewportCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7182,8 +7182,8 @@ func (self class) ViewportSetUseXr(viewport gd.RID, use_xr bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, use_xr)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_xr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_xr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7196,8 +7196,8 @@ func (self class) ViewportSetSize(viewport gd.RID, width gd.Int, height gd.Int) 
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7209,8 +7209,8 @@ func (self class) ViewportSetActive(viewport gd.RID, active bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, active)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7222,8 +7222,8 @@ func (self class) ViewportSetParentViewport(viewport gd.RID, parent_viewport gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, parent_viewport)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_parent_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_parent_viewport, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7246,8 +7246,8 @@ func (self class) ViewportAttachToScreen(viewport gd.RID, rect gd.Rect2, screen 
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, rect)
 	callframe.Arg(frame, screen)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_attach_to_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_attach_to_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7259,8 +7259,8 @@ func (self class) ViewportSetRenderDirectToScreen(viewport gd.RID, enabled bool)
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_render_direct_to_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_render_direct_to_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7272,8 +7272,8 @@ func (self class) ViewportSetCanvasCullMask(viewport gd.RID, canvas_cull_mask gd
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, canvas_cull_mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7285,8 +7285,8 @@ func (self class) ViewportSetScaling3dMode(viewport gd.RID, scaling_3d_mode gdcl
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, scaling_3d_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7299,8 +7299,8 @@ func (self class) ViewportSetScaling3dScale(viewport gd.RID, scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7312,8 +7312,8 @@ func (self class) ViewportSetFsrSharpness(viewport gd.RID, sharpness gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, sharpness)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7326,8 +7326,8 @@ func (self class) ViewportSetTextureMipmapBias(viewport gd.RID, mipmap_bias gd.F
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, mipmap_bias)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7339,8 +7339,8 @@ func (self class) ViewportSetUpdateMode(viewport gd.RID, update_mode gdclass.Ren
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, update_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7353,7 +7353,7 @@ func (self class) ViewportGetUpdateMode(viewport gd.RID) gdclass.RenderingServer
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	var r_ret = callframe.Ret[gdclass.RenderingServerViewportUpdateMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7367,8 +7367,8 @@ func (self class) ViewportSetClearMode(viewport gd.RID, clear_mode gdclass.Rende
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, clear_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_clear_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_clear_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7380,7 +7380,7 @@ func (self class) ViewportGetRenderTarget(viewport gd.RID) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_render_target, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_render_target, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7394,7 +7394,7 @@ func (self class) ViewportGetTexture(viewport gd.RID) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7408,8 +7408,8 @@ func (self class) ViewportSetDisable3d(viewport gd.RID, disable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, disable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_disable_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_disable_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7421,8 +7421,8 @@ func (self class) ViewportSetDisable2d(viewport gd.RID, disable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, disable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_disable_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_disable_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7434,8 +7434,8 @@ func (self class) ViewportSetEnvironmentMode(viewport gd.RID, mode gdclass.Rende
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_environment_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_environment_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7447,8 +7447,8 @@ func (self class) ViewportAttachCamera(viewport gd.RID, camera gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, camera)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_attach_camera, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_attach_camera, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7460,8 +7460,8 @@ func (self class) ViewportSetScenario(viewport gd.RID, scenario gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, scenario)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_scenario, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_scenario, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7473,8 +7473,8 @@ func (self class) ViewportAttachCanvas(viewport gd.RID, canvas gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, canvas)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_attach_canvas, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_attach_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7486,8 +7486,8 @@ func (self class) ViewportRemoveCanvas(viewport gd.RID, canvas gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, canvas)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_remove_canvas, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_remove_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7499,8 +7499,8 @@ func (self class) ViewportSetSnap2dTransformsToPixel(viewport gd.RID, enabled bo
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_snap_2d_transforms_to_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_snap_2d_transforms_to_pixel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7512,8 +7512,8 @@ func (self class) ViewportSetSnap2dVerticesToPixel(viewport gd.RID, enabled bool
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_snap_2d_vertices_to_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_snap_2d_vertices_to_pixel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7525,8 +7525,8 @@ func (self class) ViewportSetDefaultCanvasItemTextureFilter(viewport gd.RID, fil
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, filter)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7538,8 +7538,8 @@ func (self class) ViewportSetDefaultCanvasItemTextureRepeat(viewport gd.RID, rep
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, repeat)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7552,8 +7552,8 @@ func (self class) ViewportSetCanvasTransform(viewport gd.RID, canvas gd.RID, off
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7568,8 +7568,8 @@ func (self class) ViewportSetCanvasStacking(viewport gd.RID, canvas gd.RID, laye
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, sublayer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_stacking, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_stacking, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7581,8 +7581,8 @@ func (self class) ViewportSetTransparentBackground(viewport gd.RID, enabled bool
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_transparent_background, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_transparent_background, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7594,8 +7594,8 @@ func (self class) ViewportSetGlobalCanvasTransform(viewport gd.RID, transform gd
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7608,8 +7608,8 @@ func (self class) ViewportSetSdfOversizeAndScale(viewport gd.RID, oversize gdcla
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, oversize)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_sdf_oversize_and_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_sdf_oversize_and_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7623,8 +7623,8 @@ func (self class) ViewportSetPositionalShadowAtlasSize(viewport gd.RID, size gd.
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, use_16_bits)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7637,8 +7637,8 @@ func (self class) ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport g
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, quadrant)
 	callframe.Arg(frame, subdivision)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_quadrant_subdivision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_quadrant_subdivision, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7650,8 +7650,8 @@ func (self class) ViewportSetMsaa3d(viewport gd.RID, msaa gdclass.RenderingServe
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, msaa)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7663,8 +7663,8 @@ func (self class) ViewportSetMsaa2d(viewport gd.RID, msaa gdclass.RenderingServe
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, msaa)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_msaa_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_msaa_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7677,8 +7677,8 @@ func (self class) ViewportSetUseHdr2d(viewport gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_hdr_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_hdr_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7690,8 +7690,8 @@ func (self class) ViewportSetScreenSpaceAa(viewport gd.RID, mode gdclass.Renderi
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7703,8 +7703,8 @@ func (self class) ViewportSetUseTaa(viewport gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_taa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_taa, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7716,8 +7716,8 @@ func (self class) ViewportSetUseDebanding(viewport gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_debanding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_debanding, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7729,8 +7729,8 @@ func (self class) ViewportSetUseOcclusionCulling(viewport gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_occlusion_culling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_occlusion_culling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7741,8 +7741,8 @@ Sets the [member ProjectSettings.rendering/occlusion_culling/occlusion_rays_per_
 func (self class) ViewportSetOcclusionRaysPerThread(rays_per_thread gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rays_per_thread)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_occlusion_rays_per_thread, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_occlusion_rays_per_thread, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7753,8 +7753,8 @@ Sets the [member ProjectSettings.rendering/occlusion_culling/bvh_build_quality] 
 func (self class) ViewportSetOcclusionCullingBuildQuality(quality gdclass.RenderingServerViewportOcclusionCullingBuildQuality) {
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_occlusion_culling_build_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_occlusion_culling_build_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7781,7 +7781,7 @@ func (self class) ViewportGetRenderInfo(viewport gd.RID, atype gdclass.Rendering
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, info)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_render_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_render_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7795,8 +7795,8 @@ func (self class) ViewportSetDebugDraw(viewport gd.RID, draw gdclass.RenderingSe
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, draw)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_debug_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_debug_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7808,8 +7808,8 @@ func (self class) ViewportSetMeasureRenderTime(viewport gd.RID, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_measure_render_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_measure_render_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7822,7 +7822,7 @@ func (self class) ViewportGetMeasuredRenderTimeCpu(viewport gd.RID) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_measured_render_time_cpu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_measured_render_time_cpu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7838,7 +7838,7 @@ func (self class) ViewportGetMeasuredRenderTimeGpu(viewport gd.RID) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_measured_render_time_gpu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_measured_render_time_gpu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7852,8 +7852,8 @@ func (self class) ViewportSetVrsMode(viewport gd.RID, mode gdclass.RenderingServ
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7866,8 +7866,8 @@ func (self class) ViewportSetVrsUpdateMode(viewport gd.RID, mode gdclass.Renderi
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7879,8 +7879,8 @@ func (self class) ViewportSetVrsTexture(viewport gd.RID, texture gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7892,7 +7892,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) SkyCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7906,8 +7906,8 @@ func (self class) SkySetRadianceSize(sky gd.RID, radiance_size gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sky)
 	callframe.Arg(frame, radiance_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_set_radiance_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_set_radiance_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7919,8 +7919,8 @@ func (self class) SkySetMode(sky gd.RID, mode gdclass.RenderingServerSkyMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sky)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7932,8 +7932,8 @@ func (self class) SkySetMaterial(sky gd.RID, material gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sky)
 	callframe.Arg(frame, material)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7950,7 +7950,7 @@ func (self class) SkyBakePanorama(sky gd.RID, energy gd.Float, bake_irradiance b
 	callframe.Arg(frame, bake_irradiance)
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_bake_panorama, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_bake_panorama, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -7964,7 +7964,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) CompositorEffectCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_effect_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_effect_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -7978,8 +7978,8 @@ func (self class) CompositorEffectSetEnabled(effect gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, effect)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -7992,8 +7992,8 @@ func (self class) CompositorEffectSetCallback(effect gd.RID, callback_type gdcla
 	callframe.Arg(frame, effect)
 	callframe.Arg(frame, callback_type)
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8006,8 +8006,8 @@ func (self class) CompositorEffectSetFlag(effect gd.RID, flag gdclass.RenderingS
 	callframe.Arg(frame, effect)
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, set)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8019,7 +8019,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) CompositorCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8033,8 +8033,8 @@ func (self class) CompositorSetCompositorEffects(compositor gd.RID, effects gd.A
 	var frame = callframe.New()
 	callframe.Arg(frame, compositor)
 	callframe.Arg(frame, pointers.Get(effects))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_set_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_set_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8047,7 +8047,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) EnvironmentCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8061,8 +8061,8 @@ func (self class) EnvironmentSetBackground(env gd.RID, bg gdclass.RenderingServe
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, bg)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_background, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_background, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8074,8 +8074,8 @@ func (self class) EnvironmentSetSky(env gd.RID, sky gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, sky)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sky, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sky, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8087,8 +8087,8 @@ func (self class) EnvironmentSetSkyCustomFov(env gd.RID, scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sky_custom_fov, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sky_custom_fov, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8100,8 +8100,8 @@ func (self class) EnvironmentSetSkyOrientation(env gd.RID, orientation gd.Basis)
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sky_orientation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sky_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8113,8 +8113,8 @@ func (self class) EnvironmentSetBgColor(env gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_bg_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_bg_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8127,8 +8127,8 @@ func (self class) EnvironmentSetBgEnergy(env gd.RID, multiplier gd.Float, exposu
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, multiplier)
 	callframe.Arg(frame, exposure_value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_bg_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_bg_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8140,8 +8140,8 @@ func (self class) EnvironmentSetCanvasMaxLayer(env gd.RID, max_layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, max_layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_canvas_max_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_canvas_max_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8157,8 +8157,8 @@ func (self class) EnvironmentSetAmbientLight(env gd.RID, color gd.Color, ambient
 	callframe.Arg(frame, energy)
 	callframe.Arg(frame, sky_contibution)
 	callframe.Arg(frame, reflection_source)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ambient_light, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ambient_light, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8181,8 +8181,8 @@ func (self class) EnvironmentSetGlow(env gd.RID, enable bool, levels gd.PackedFl
 	callframe.Arg(frame, hdr_luminance_cap)
 	callframe.Arg(frame, glow_map_strength)
 	callframe.Arg(frame, glow_map)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_glow, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_glow, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8196,8 +8196,8 @@ func (self class) EnvironmentSetTonemap(env gd.RID, tone_mapper gdclass.Renderin
 	callframe.Arg(frame, tone_mapper)
 	callframe.Arg(frame, exposure)
 	callframe.Arg(frame, white)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_tonemap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_tonemap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8214,8 +8214,8 @@ func (self class) EnvironmentSetAdjustment(env gd.RID, enable bool, brightness g
 	callframe.Arg(frame, saturation)
 	callframe.Arg(frame, use_1d_color_correction)
 	callframe.Arg(frame, color_correction)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_adjustment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_adjustment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8231,8 +8231,8 @@ func (self class) EnvironmentSetSsr(env gd.RID, enable bool, max_steps gd.Int, f
 	callframe.Arg(frame, fade_in)
 	callframe.Arg(frame, fade_out)
 	callframe.Arg(frame, depth_tolerance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8252,8 +8252,8 @@ func (self class) EnvironmentSetSsao(env gd.RID, enable bool, radius gd.Float, i
 	callframe.Arg(frame, sharpness)
 	callframe.Arg(frame, light_affect)
 	callframe.Arg(frame, ao_channel_affect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssao, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssao, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8274,8 +8274,8 @@ func (self class) EnvironmentSetFog(env gd.RID, enable bool, light_color gd.Colo
 	callframe.Arg(frame, aerial_perspective)
 	callframe.Arg(frame, sky_affect)
 	callframe.Arg(frame, fog_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_fog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_fog, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8296,8 +8296,8 @@ func (self class) EnvironmentSetSdfgi(env gd.RID, enable bool, cascades gd.Int, 
 	callframe.Arg(frame, energy)
 	callframe.Arg(frame, normal_bias)
 	callframe.Arg(frame, probe_bias)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8321,8 +8321,8 @@ func (self class) EnvironmentSetVolumetricFog(env gd.RID, enable bool, density g
 	callframe.Arg(frame, temporal_reprojection_amount)
 	callframe.Arg(frame, ambient_inject)
 	callframe.Arg(frame, sky_affect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8333,8 +8333,8 @@ If [param enable] is [code]true[/code], enables bicubic upscaling for glow which
 func (self class) EnvironmentGlowSetUseBicubicUpscale(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_glow_set_use_bicubic_upscale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_glow_set_use_bicubic_upscale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8342,8 +8342,8 @@ func (self class) EnvironmentGlowSetUseBicubicUpscale(enable bool) {
 func (self class) EnvironmentSetSsrRoughnessQuality(quality gdclass.RenderingServerEnvironmentSSRRoughnessQuality) {
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssr_roughness_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssr_roughness_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8359,8 +8359,8 @@ func (self class) EnvironmentSetSsaoQuality(quality gdclass.RenderingServerEnvir
 	callframe.Arg(frame, blur_passes)
 	callframe.Arg(frame, fadeout_from)
 	callframe.Arg(frame, fadeout_to)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssao_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssao_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8376,8 +8376,8 @@ func (self class) EnvironmentSetSsilQuality(quality gdclass.RenderingServerEnvir
 	callframe.Arg(frame, blur_passes)
 	callframe.Arg(frame, fadeout_from)
 	callframe.Arg(frame, fadeout_to)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssil_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_ssil_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8388,8 +8388,8 @@ Sets the number of rays to throw per frame when computing signed distance field 
 func (self class) EnvironmentSetSdfgiRayCount(ray_count gdclass.RenderingServerEnvironmentSDFGIRayCount) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ray_count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_ray_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_ray_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8400,8 +8400,8 @@ Sets the number of frames to use for converging signed distance field global ill
 func (self class) EnvironmentSetSdfgiFramesToConverge(frames gdclass.RenderingServerEnvironmentSDFGIFramesToConverge) {
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_converge, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_converge, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8412,8 +8412,8 @@ Sets the update speed for dynamic lights' indirect lighting when computing signe
 func (self class) EnvironmentSetSdfgiFramesToUpdateLight(frames gdclass.RenderingServerEnvironmentSDFGIFramesToUpdateLight) {
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_update_light, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_update_light, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8425,8 +8425,8 @@ func (self class) EnvironmentSetVolumetricFogVolumeSize(size gd.Int, depth gd.In
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, depth)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog_volume_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog_volume_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8437,8 +8437,8 @@ Enables filtering of the volumetric fog scattering buffer. This results in much 
 func (self class) EnvironmentSetVolumetricFogFilterActive(active bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog_filter_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog_filter_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8454,7 +8454,7 @@ func (self class) EnvironmentBakePanorama(environment gd.RID, bake_irradiance bo
 	callframe.Arg(frame, bake_irradiance)
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_bake_panorama, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_bake_panorama, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -8469,8 +8469,8 @@ func (self class) ScreenSpaceRoughnessLimiterSetActive(enable bool, amount gd.Fl
 	callframe.Arg(frame, enable)
 	callframe.Arg(frame, amount)
 	callframe.Arg(frame, limit)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_screen_space_roughness_limiter_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_screen_space_roughness_limiter_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8481,8 +8481,8 @@ Sets [member ProjectSettings.rendering/environment/subsurface_scattering/subsurf
 func (self class) SubSurfaceScatteringSetQuality(quality gdclass.RenderingServerSubSurfaceScatteringQuality) {
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sub_surface_scattering_set_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sub_surface_scattering_set_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8494,8 +8494,8 @@ func (self class) SubSurfaceScatteringSetScale(scale gd.Float, depth_scale gd.Fl
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	callframe.Arg(frame, depth_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sub_surface_scattering_set_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sub_surface_scattering_set_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8508,7 +8508,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) CameraAttributesCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8522,8 +8522,8 @@ func (self class) CameraAttributesSetDofBlurQuality(quality gdclass.RenderingSer
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	callframe.Arg(frame, use_jitter)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_quality, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8534,8 +8534,8 @@ Sets the shape of the DOF bokeh pattern. Different shapes may be used to achieve
 func (self class) CameraAttributesSetDofBlurBokehShape(shape gdclass.RenderingServerDOFBokehShape) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_bokeh_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_bokeh_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8553,8 +8553,8 @@ func (self class) CameraAttributesSetDofBlur(camera_attributes gd.RID, far_enabl
 	callframe.Arg(frame, near_distance)
 	callframe.Arg(frame, near_transition)
 	callframe.Arg(frame, amount)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8577,8 +8577,8 @@ func (self class) CameraAttributesSetExposure(camera_attributes gd.RID, multipli
 	callframe.Arg(frame, camera_attributes)
 	callframe.Arg(frame, multiplier)
 	callframe.Arg(frame, normalization)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_exposure, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_exposure, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8594,8 +8594,8 @@ func (self class) CameraAttributesSetAutoExposure(camera_attributes gd.RID, enab
 	callframe.Arg(frame, max_sensitivity)
 	callframe.Arg(frame, speed)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_auto_exposure, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_auto_exposure, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8608,7 +8608,7 @@ The scenario is the 3D world that all the visual instances exist in.
 func (self class) ScenarioCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8622,8 +8622,8 @@ func (self class) ScenarioSetEnvironment(scenario gd.RID, environment gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scenario)
 	callframe.Arg(frame, environment)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_set_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8635,8 +8635,8 @@ func (self class) ScenarioSetFallbackEnvironment(scenario gd.RID, environment gd
 	var frame = callframe.New()
 	callframe.Arg(frame, scenario)
 	callframe.Arg(frame, environment)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_set_fallback_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_set_fallback_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8648,8 +8648,8 @@ func (self class) ScenarioSetCameraAttributes(scenario gd.RID, effects gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scenario)
 	callframe.Arg(frame, effects)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8661,8 +8661,8 @@ func (self class) ScenarioSetCompositor(scenario gd.RID, compositor gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scenario)
 	callframe.Arg(frame, compositor)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_set_compositor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_scenario_set_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8676,7 +8676,7 @@ func (self class) InstanceCreate2(base gd.RID, scenario gd.RID) gd.RID {
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, scenario)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_create2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_create2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8692,7 +8692,7 @@ An instance is a way of placing a 3D object in the scenario. Objects like partic
 func (self class) InstanceCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -8706,8 +8706,8 @@ func (self class) InstanceSetBase(instance gd.RID, base gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, base)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_base, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_base, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8719,8 +8719,8 @@ func (self class) InstanceSetScenario(instance gd.RID, scenario gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, scenario)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_scenario, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_scenario, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8732,8 +8732,8 @@ func (self class) InstanceSetLayerMask(instance gd.RID, mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_layer_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_layer_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8746,8 +8746,8 @@ func (self class) InstanceSetPivotData(instance gd.RID, sorting_offset gd.Float,
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, sorting_offset)
 	callframe.Arg(frame, use_aabb_center)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_pivot_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_pivot_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8759,8 +8759,8 @@ func (self class) InstanceSetTransform(instance gd.RID, transform gd.Transform3D
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8772,8 +8772,8 @@ func (self class) InstanceAttachObjectInstanceId(instance gd.RID, id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_attach_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_attach_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8786,8 +8786,8 @@ func (self class) InstanceSetBlendShapeWeight(instance gd.RID, shape gd.Int, wei
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, shape)
 	callframe.Arg(frame, weight)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_blend_shape_weight, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_blend_shape_weight, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8800,8 +8800,8 @@ func (self class) InstanceSetSurfaceOverrideMaterial(instance gd.RID, surface gd
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, material)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_surface_override_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_surface_override_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8813,8 +8813,8 @@ func (self class) InstanceSetVisible(instance gd.RID, visible bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, visible)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8829,8 +8829,8 @@ func (self class) InstanceGeometrySetTransparency(instance gd.RID, transparency 
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, transparency)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_transparency, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_transparency, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8842,8 +8842,8 @@ func (self class) InstanceSetCustomAabb(instance gd.RID, aabb gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, aabb)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8855,8 +8855,8 @@ func (self class) InstanceAttachSkeleton(instance gd.RID, skeleton gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, skeleton)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_attach_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_attach_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8868,8 +8868,8 @@ func (self class) InstanceSetExtraVisibilityMargin(instance gd.RID, margin gd.Fl
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, margin)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_extra_visibility_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_extra_visibility_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8881,8 +8881,8 @@ func (self class) InstanceSetVisibilityParent(instance gd.RID, parent gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, parent)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8894,8 +8894,8 @@ func (self class) InstanceSetIgnoreCulling(instance gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_ignore_culling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_ignore_culling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8908,8 +8908,8 @@ func (self class) InstanceGeometrySetFlag(instance gd.RID, flag gdclass.Renderin
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8921,8 +8921,8 @@ func (self class) InstanceGeometrySetCastShadowsSetting(instance gd.RID, shadow_
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, shadow_casting_setting)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_cast_shadows_setting, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_cast_shadows_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8934,8 +8934,8 @@ func (self class) InstanceGeometrySetMaterialOverride(instance gd.RID, material 
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, material)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_material_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_material_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8947,8 +8947,8 @@ func (self class) InstanceGeometrySetMaterialOverlay(instance gd.RID, material g
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, material)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_material_overlay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_material_overlay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8964,8 +8964,8 @@ func (self class) InstanceGeometrySetVisibilityRange(instance gd.RID, min gd.Flo
 	callframe.Arg(frame, min_margin)
 	callframe.Arg(frame, max_margin)
 	callframe.Arg(frame, fade_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_visibility_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_visibility_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8979,8 +8979,8 @@ func (self class) InstanceGeometrySetLightmap(instance gd.RID, lightmap gd.RID, 
 	callframe.Arg(frame, lightmap)
 	callframe.Arg(frame, lightmap_uv_scale)
 	callframe.Arg(frame, lightmap_slice)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_lightmap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_lightmap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -8992,8 +8992,8 @@ func (self class) InstanceGeometrySetLodBias(instance gd.RID, lod_bias gd.Float)
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, lod_bias)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_lod_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_lod_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9006,8 +9006,8 @@ func (self class) InstanceGeometrySetShaderParameter(instance gd.RID, parameter 
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, pointers.Get(parameter))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9021,7 +9021,7 @@ func (self class) InstanceGeometryGetShaderParameter(instance gd.RID, parameter 
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, pointers.Get(parameter))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9036,7 +9036,7 @@ func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance gd.RID
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, pointers.Get(parameter))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9050,7 +9050,7 @@ func (self class) InstanceGeometryGetShaderParameterList(instance gd.RID) gd.Arr
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9066,7 +9066,7 @@ func (self class) InstancesCullAabb(aabb gd.AABB, scenario gd.RID) gd.PackedInt6
 	callframe.Arg(frame, aabb)
 	callframe.Arg(frame, scenario)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9083,7 +9083,7 @@ func (self class) InstancesCullRay(from gd.Vector3, to gd.Vector3, scenario gd.R
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, scenario)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_ray, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_ray, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9099,7 +9099,7 @@ func (self class) InstancesCullConvex(convex gd.Array, scenario gd.RID) gd.Packe
 	callframe.Arg(frame, pointers.Get(convex))
 	callframe.Arg(frame, scenario)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_convex, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_convex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9115,7 +9115,7 @@ func (self class) BakeRenderUv2(base gd.RID, material_overrides gd.Array, image_
 	callframe.Arg(frame, pointers.Get(material_overrides))
 	callframe.Arg(frame, image_size)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_bake_render_uv2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_bake_render_uv2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -9130,7 +9130,7 @@ Canvas has no [Resource] or [Node] equivalent.
 func (self class) CanvasCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9145,8 +9145,8 @@ func (self class) CanvasSetItemMirroring(canvas gd.RID, item gd.RID, mirroring g
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, mirroring)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_item_mirroring, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_item_mirroring, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9159,8 +9159,8 @@ func (self class) CanvasSetItemRepeat(item gd.RID, repeat_size gd.Vector2, repea
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, repeat_size)
 	callframe.Arg(frame, repeat_times)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_item_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_item_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9172,8 +9172,8 @@ func (self class) CanvasSetModulate(canvas gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9181,8 +9181,8 @@ func (self class) CanvasSetModulate(canvas gd.RID, color gd.Color) {
 func (self class) CanvasSetDisableScale(disable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, disable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_disable_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_disable_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9195,7 +9195,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) CanvasTextureCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9210,8 +9210,8 @@ func (self class) CanvasTextureSetChannel(canvas_texture gd.RID, channel gdclass
 	callframe.Arg(frame, canvas_texture)
 	callframe.Arg(frame, channel)
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9224,8 +9224,8 @@ func (self class) CanvasTextureSetShadingParameters(canvas_texture gd.RID, base_
 	callframe.Arg(frame, canvas_texture)
 	callframe.Arg(frame, base_color)
 	callframe.Arg(frame, shininess)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_shading_parameters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_shading_parameters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9237,8 +9237,8 @@ func (self class) CanvasTextureSetTextureFilter(canvas_texture gd.RID, filter gd
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_texture)
 	callframe.Arg(frame, filter)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9250,8 +9250,8 @@ func (self class) CanvasTextureSetTextureRepeat(canvas_texture gd.RID, repeat gd
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_texture)
 	callframe.Arg(frame, repeat)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9264,7 +9264,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) CanvasItemCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9278,8 +9278,8 @@ func (self class) CanvasItemSetParent(item gd.RID, parent gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, parent)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9291,8 +9291,8 @@ func (self class) CanvasItemSetDefaultTextureFilter(item gd.RID, filter gdclass.
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, filter)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_default_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_default_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9304,8 +9304,8 @@ func (self class) CanvasItemSetDefaultTextureRepeat(item gd.RID, repeat gdclass.
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, repeat)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_default_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_default_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9317,8 +9317,8 @@ func (self class) CanvasItemSetVisible(item gd.RID, visible bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, visible)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9330,8 +9330,8 @@ func (self class) CanvasItemSetLightMask(item gd.RID, mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_light_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9343,8 +9343,8 @@ func (self class) CanvasItemSetVisibilityLayer(item gd.RID, visibility_layer gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, visibility_layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visibility_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visibility_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9356,8 +9356,8 @@ func (self class) CanvasItemSetTransform(item gd.RID, transform gd.Transform2D) 
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9370,8 +9370,8 @@ func (self class) CanvasItemSetClip(item gd.RID, clip bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, clip)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_clip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_clip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9383,8 +9383,8 @@ func (self class) CanvasItemSetDistanceFieldMode(item gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_distance_field_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_distance_field_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9397,8 +9397,8 @@ func (self class) CanvasItemSetCustomRect(item gd.RID, use_custom_rect bool, rec
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, use_custom_rect)
 	callframe.Arg(frame, rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_custom_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_custom_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9410,8 +9410,8 @@ func (self class) CanvasItemSetModulate(item gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9423,8 +9423,8 @@ func (self class) CanvasItemSetSelfModulate(item gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_self_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_self_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9436,8 +9436,8 @@ func (self class) CanvasItemSetDrawBehindParent(item gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_draw_behind_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_draw_behind_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9449,8 +9449,8 @@ func (self class) CanvasItemSetInterpolated(item gd.RID, interpolated bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, interpolated)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_interpolated, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9462,8 +9462,8 @@ This is useful when moving a canvas item to a new location, to give an instantan
 func (self class) CanvasItemResetPhysicsInterpolation(item gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9476,8 +9476,8 @@ func (self class) CanvasItemTransformPhysicsInterpolation(item gd.RID, transform
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_transform_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_transform_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9493,8 +9493,8 @@ func (self class) CanvasItemAddLine(item gd.RID, from gd.Vector2, to gd.Vector2,
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9509,8 +9509,8 @@ func (self class) CanvasItemAddPolyline(item gd.RID, points gd.PackedVector2Arra
 	callframe.Arg(frame, pointers.Get(colors))
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polyline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polyline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9525,8 +9525,8 @@ func (self class) CanvasItemAddMultiline(item gd.RID, points gd.PackedVector2Arr
 	callframe.Arg(frame, pointers.Get(colors))
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_multiline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_multiline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9540,8 +9540,8 @@ func (self class) CanvasItemAddRect(item gd.RID, rect gd.Rect2, color gd.Color, 
 	callframe.Arg(frame, rect)
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9556,8 +9556,8 @@ func (self class) CanvasItemAddCircle(item gd.RID, pos gd.Vector2, radius gd.Flo
 	callframe.Arg(frame, radius)
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_circle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_circle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9573,8 +9573,8 @@ func (self class) CanvasItemAddTextureRect(item gd.RID, rect gd.Rect2, texture g
 	callframe.Arg(frame, tile)
 	callframe.Arg(frame, modulate)
 	callframe.Arg(frame, transpose)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_texture_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_texture_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9592,8 +9592,8 @@ func (self class) CanvasItemAddMsdfTextureRectRegion(item gd.RID, rect gd.Rect2,
 	callframe.Arg(frame, outline_size)
 	callframe.Arg(frame, px_range)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_msdf_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_msdf_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9608,8 +9608,8 @@ func (self class) CanvasItemAddLcdTextureRectRegion(item gd.RID, rect gd.Rect2, 
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, src_rect)
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_lcd_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_lcd_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9626,8 +9626,8 @@ func (self class) CanvasItemAddTextureRectRegion(item gd.RID, rect gd.Rect2, tex
 	callframe.Arg(frame, modulate)
 	callframe.Arg(frame, transpose)
 	callframe.Arg(frame, clip_uv)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9647,8 +9647,8 @@ func (self class) CanvasItemAddNinePatch(item gd.RID, rect gd.Rect2, source gd.R
 	callframe.Arg(frame, y_axis_mode)
 	callframe.Arg(frame, draw_center)
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_nine_patch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_nine_patch, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9663,8 +9663,8 @@ func (self class) CanvasItemAddPrimitive(item gd.RID, points gd.PackedVector2Arr
 	callframe.Arg(frame, pointers.Get(colors))
 	callframe.Arg(frame, pointers.Get(uvs))
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_primitive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_primitive, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9679,8 +9679,8 @@ func (self class) CanvasItemAddPolygon(item gd.RID, points gd.PackedVector2Array
 	callframe.Arg(frame, pointers.Get(colors))
 	callframe.Arg(frame, pointers.Get(uvs))
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polygon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9700,8 +9700,8 @@ func (self class) CanvasItemAddTriangleArray(item gd.RID, indices gd.PackedInt32
 	callframe.Arg(frame, pointers.Get(weights))
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_triangle_array, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_triangle_array, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9716,8 +9716,8 @@ func (self class) CanvasItemAddMesh(item gd.RID, mesh gd.RID, transform gd.Trans
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, modulate)
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9730,8 +9730,8 @@ func (self class) CanvasItemAddMultimesh(item gd.RID, mesh gd.RID, texture gd.RI
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_multimesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_multimesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9744,8 +9744,8 @@ func (self class) CanvasItemAddParticles(item gd.RID, particles gd.RID, texture 
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_particles, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_particles, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9757,8 +9757,8 @@ func (self class) CanvasItemAddSetTransform(item gd.RID, transform gd.Transform2
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9770,8 +9770,8 @@ func (self class) CanvasItemAddClipIgnore(item gd.RID, ignore bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, ignore)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_clip_ignore, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_clip_ignore, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9786,8 +9786,8 @@ func (self class) CanvasItemAddAnimationSlice(item gd.RID, animation_length gd.F
 	callframe.Arg(frame, slice_begin)
 	callframe.Arg(frame, slice_end)
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_animation_slice, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_animation_slice, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9799,8 +9799,8 @@ func (self class) CanvasItemSetSortChildrenByY(item gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_sort_children_by_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_sort_children_by_y, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9812,8 +9812,8 @@ func (self class) CanvasItemSetZIndex(item gd.RID, z_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, z_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_z_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9825,8 +9825,8 @@ func (self class) CanvasItemSetZAsRelativeToParent(item gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_z_as_relative_to_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_z_as_relative_to_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9839,8 +9839,8 @@ func (self class) CanvasItemSetCopyToBackbuffer(item gd.RID, enabled bool, rect 
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, enabled)
 	callframe.Arg(frame, rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_copy_to_backbuffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_copy_to_backbuffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9851,8 +9851,8 @@ Clears the [CanvasItem] and removes all commands in it.
 func (self class) CanvasItemClear(item gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9864,8 +9864,8 @@ func (self class) CanvasItemSetDrawIndex(item gd.RID, index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_draw_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_draw_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9877,8 +9877,8 @@ func (self class) CanvasItemSetMaterial(item gd.RID, material gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, material)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9890,8 +9890,8 @@ func (self class) CanvasItemSetUseParentMaterial(item gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9907,8 +9907,8 @@ func (self class) CanvasItemSetVisibilityNotifier(item gd.RID, enable bool, area
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, pointers.Get(enter_callable))
 	callframe.Arg(frame, pointers.Get(exit_callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visibility_notifier, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visibility_notifier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9925,8 +9925,8 @@ func (self class) CanvasItemSetCanvasGroupMode(item gd.RID, mode gdclass.Renderi
 	callframe.Arg(frame, fit_empty)
 	callframe.Arg(frame, fit_margin)
 	callframe.Arg(frame, blur_mipmaps)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_canvas_group_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_canvas_group_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9939,7 +9939,7 @@ func (self class) DebugCanvasItemGetRect(item gd.RID) gd.Rect2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_debug_canvas_item_get_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_debug_canvas_item_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9954,7 +9954,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) CanvasLightCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -9968,8 +9968,8 @@ func (self class) CanvasLightAttachToCanvas(light gd.RID, canvas gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, canvas)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_attach_to_canvas, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_attach_to_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9981,8 +9981,8 @@ func (self class) CanvasLightSetEnabled(light gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -9994,8 +9994,8 @@ func (self class) CanvasLightSetTextureScale(light gd.RID, scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10007,8 +10007,8 @@ func (self class) CanvasLightSetTransform(light gd.RID, transform gd.Transform2D
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10020,8 +10020,8 @@ func (self class) CanvasLightSetTexture(light gd.RID, texture gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, texture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10033,8 +10033,8 @@ func (self class) CanvasLightSetTextureOffset(light gd.RID, offset gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10046,8 +10046,8 @@ func (self class) CanvasLightSetColor(light gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10059,8 +10059,8 @@ func (self class) CanvasLightSetHeight(light gd.RID, height gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, height)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10072,8 +10072,8 @@ func (self class) CanvasLightSetEnergy(light gd.RID, energy gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, energy)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10086,8 +10086,8 @@ func (self class) CanvasLightSetZRange(light gd.RID, min_z gd.Int, max_z gd.Int)
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, min_z)
 	callframe.Arg(frame, max_z)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_z_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_z_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10100,8 +10100,8 @@ func (self class) CanvasLightSetLayerRange(light gd.RID, min_layer gd.Int, max_l
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, min_layer)
 	callframe.Arg(frame, max_layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_layer_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_layer_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10113,8 +10113,8 @@ func (self class) CanvasLightSetItemCullMask(light gd.RID, mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_item_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_item_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10126,8 +10126,8 @@ func (self class) CanvasLightSetItemShadowCullMask(light gd.RID, mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_item_shadow_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_item_shadow_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10139,8 +10139,8 @@ func (self class) CanvasLightSetMode(light gd.RID, mode gdclass.RenderingServerC
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10152,8 +10152,8 @@ func (self class) CanvasLightSetShadowEnabled(light gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10165,8 +10165,8 @@ func (self class) CanvasLightSetShadowFilter(light gd.RID, filter gdclass.Render
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, filter)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10178,8 +10178,8 @@ func (self class) CanvasLightSetShadowColor(light gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10191,8 +10191,8 @@ func (self class) CanvasLightSetShadowSmooth(light gd.RID, smooth gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, smooth)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_smooth, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_smooth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10204,8 +10204,8 @@ func (self class) CanvasLightSetBlendMode(light gd.RID, mode gdclass.RenderingSe
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_blend_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10217,8 +10217,8 @@ func (self class) CanvasLightSetInterpolated(light gd.RID, interpolated bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, interpolated)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_interpolated, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10230,8 +10230,8 @@ This is useful when moving a canvas item to a new location, to give an instantan
 func (self class) CanvasLightResetPhysicsInterpolation(light gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10244,8 +10244,8 @@ func (self class) CanvasLightTransformPhysicsInterpolation(light gd.RID, transfo
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_transform_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_transform_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10258,7 +10258,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) CanvasLightOccluderCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10272,8 +10272,8 @@ func (self class) CanvasLightOccluderAttachToCanvas(occluder gd.RID, canvas gd.R
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
 	callframe.Arg(frame, canvas)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_attach_to_canvas, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_attach_to_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10285,8 +10285,8 @@ func (self class) CanvasLightOccluderSetEnabled(occluder gd.RID, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10298,8 +10298,8 @@ func (self class) CanvasLightOccluderSetPolygon(occluder gd.RID, polygon gd.RID)
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
 	callframe.Arg(frame, polygon)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_polygon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10308,8 +10308,8 @@ func (self class) CanvasLightOccluderSetAsSdfCollision(occluder gd.RID, enable b
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_as_sdf_collision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_as_sdf_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10321,8 +10321,8 @@ func (self class) CanvasLightOccluderSetTransform(occluder gd.RID, transform gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10334,8 +10334,8 @@ func (self class) CanvasLightOccluderSetLightMask(occluder gd.RID, mask gd.Int) 
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_light_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10347,8 +10347,8 @@ func (self class) CanvasLightOccluderSetInterpolated(occluder gd.RID, interpolat
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
 	callframe.Arg(frame, interpolated)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_interpolated, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10360,8 +10360,8 @@ This is useful when moving an occluder to a new location, to give an instantaneo
 func (self class) CanvasLightOccluderResetPhysicsInterpolation(occluder gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10374,8 +10374,8 @@ func (self class) CanvasLightOccluderTransformPhysicsInterpolation(occluder gd.R
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_transform_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_transform_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10388,7 +10388,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func (self class) CanvasOccluderPolygonCreate() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10403,8 +10403,8 @@ func (self class) CanvasOccluderPolygonSetShape(occluder_polygon gd.RID, shape g
 	callframe.Arg(frame, occluder_polygon)
 	callframe.Arg(frame, pointers.Get(shape))
 	callframe.Arg(frame, closed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10416,8 +10416,8 @@ func (self class) CanvasOccluderPolygonSetCullMode(occluder_polygon gd.RID, mode
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder_polygon)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_cull_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_cull_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10428,8 +10428,8 @@ Sets the [member ProjectSettings.rendering/2d/shadow_atlas/size] to use for [Lig
 func (self class) CanvasSetShadowTextureSize(size gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_shadow_texture_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_set_shadow_texture_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10443,8 +10443,8 @@ func (self class) GlobalShaderParameterAdd(name gd.StringName, atype gdclass.Ren
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, pointers.Get(default_value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_add, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_add, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10455,8 +10455,8 @@ Removes the global shader uniform specified by [param name].
 func (self class) GlobalShaderParameterRemove(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_remove, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_remove, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10468,7 +10468,7 @@ Returns the list of global shader uniform names.
 func (self class) GlobalShaderParameterGetList() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10482,8 +10482,8 @@ func (self class) GlobalShaderParameterSet(name gd.StringName, value gd.Variant)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10495,8 +10495,8 @@ func (self class) GlobalShaderParameterSetOverride(name gd.StringName, value gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10509,7 +10509,7 @@ func (self class) GlobalShaderParameterGet(name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10524,7 +10524,7 @@ func (self class) GlobalShaderParameterGetType(name gd.StringName) gdclass.Rende
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gdclass.RenderingServerGlobalShaderParameterType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10537,8 +10537,8 @@ Tries to free an object in the RenderingServer. To avoid memory leaks, this shou
 func (self class) FreeRid(rid gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_free_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_free_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10549,8 +10549,8 @@ Schedules a callback to the given callable after a frame has been drawn.
 func (self class) RequestFrameDrawnCallback(callable gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_request_frame_drawn_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_request_frame_drawn_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10561,7 +10561,7 @@ Returns [code]true[/code] if changes have been made to the RenderingServer's dat
 func (self class) HasChanged() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_has_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_has_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10584,7 +10584,7 @@ func (self class) GetRenderingInfo(info gdclass.RenderingServerRenderingInfo) gd
 	var frame = callframe.New()
 	callframe.Arg(frame, info)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_rendering_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_rendering_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10599,7 +10599,7 @@ Returns the name of the video adapter (e.g. "GeForce GTX 1080/PCIe/SSE2").
 func (self class) GetVideoAdapterName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10613,7 +10613,7 @@ Returns the vendor of the video adapter (e.g. "NVIDIA Corporation").
 func (self class) GetVideoAdapterVendor() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_vendor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_vendor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10627,7 +10627,7 @@ Returns the type of the video adapter. Since dedicated graphics cards from a giv
 func (self class) GetVideoAdapterType() gdclass.RenderingDeviceDeviceType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceDeviceType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10641,7 +10641,7 @@ Returns the version of the graphics video adapter [i]currently in use[/i] (e.g. 
 func (self class) GetVideoAdapterApiVersion() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_api_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_api_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -10657,7 +10657,7 @@ func (self class) MakeSphereMesh(latitudes gd.Int, longitudes gd.Int, radius gd.
 	callframe.Arg(frame, longitudes)
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_make_sphere_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_make_sphere_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10670,7 +10670,7 @@ Returns the RID of the test cube. This mesh will be created and returned on the 
 func (self class) GetTestCube() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_test_cube, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_test_cube, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10689,7 +10689,7 @@ $Sprite2D.texture = texture
 func (self class) GetTestTexture() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_test_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_test_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10708,7 +10708,7 @@ $Sprite2D.texture = texture
 func (self class) GetWhiteTexture() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_white_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_white_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10724,8 +10724,8 @@ func (self class) SetBootImage(image [1]gdclass.Image, color gd.Color, scale boo
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, scale)
 	callframe.Arg(frame, use_filter)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_set_boot_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_set_boot_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10736,7 +10736,7 @@ Returns the default clear color which is used when a specific clear color has no
 func (self class) GetDefaultClearColor() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_default_clear_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_default_clear_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10749,8 +10749,8 @@ Sets the default clear color which is used when a specific clear color has not b
 func (self class) SetDefaultClearColor(color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_set_default_clear_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_set_default_clear_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10762,7 +10762,7 @@ func (self class) HasOsFeature(feature gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(feature))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_has_os_feature, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_has_os_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10775,8 +10775,8 @@ This method is currently unimplemented and does nothing if called with [param ge
 func (self class) SetDebugGenerateWireframes(generate bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, generate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_set_debug_generate_wireframes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_set_debug_generate_wireframes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10784,7 +10784,7 @@ func (self class) SetDebugGenerateWireframes(generate bool) {
 func (self class) IsRenderLoopEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_is_render_loop_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_is_render_loop_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10794,8 +10794,8 @@ func (self class) IsRenderLoopEnabled() bool {
 func (self class) SetRenderLoopEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_set_render_loop_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_set_render_loop_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10806,7 +10806,7 @@ Returns the time taken to setup rendering on the CPU in milliseconds. This value
 func (self class) GetFrameSetupTimeCpu() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_frame_setup_time_cpu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_frame_setup_time_cpu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10818,8 +10818,8 @@ Forces a synchronization between the CPU and GPU, which may be required in certa
 //go:nosplit
 func (self class) ForceSync() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_force_sync, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_force_sync, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10831,8 +10831,8 @@ func (self class) ForceDraw(swap_buffers bool, frame_step gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, swap_buffers)
 	callframe.Arg(frame, frame_step)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_force_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_force_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10844,7 +10844,7 @@ Returns the global RenderingDevice.
 func (self class) GetRenderingDevice() [1]gdclass.RenderingDevice {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_rendering_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_rendering_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.RenderingDevice{gd.PointerBorrowedTemporarily[gdclass.RenderingDevice](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -10858,7 +10858,7 @@ Creates a RenderingDevice that can be used to do draw and compute operations on 
 func (self class) CreateLocalRenderingDevice() [1]gdclass.RenderingDevice {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_create_local_rendering_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_create_local_rendering_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderingDevice](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -10871,7 +10871,7 @@ Returns [code]true[/code] if our code is currently executing on the rendering th
 func (self class) IsOnRenderThread() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_is_on_render_thread, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_is_on_render_thread, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -10884,8 +10884,8 @@ As the RenderingServer actual logic may run on an separate thread, accessing its
 func (self class) CallOnRenderThread(callable gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_call_on_render_thread, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_call_on_render_thread, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -10897,7 +10897,7 @@ func (self class) HasFeature(feature gdclass.RenderingServerFeatures) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

@@ -61,7 +61,7 @@ func (c Callable) Free() {
 		return
 	}
 	var frame = callframe.New()
-	Global.typeset.destruct.Callable(callframe.Arg(frame, ptr).Uintptr())
+	Global.typeset.destruct.Callable(callframe.Arg(frame, ptr).Addr())
 	frame.Free()
 }
 

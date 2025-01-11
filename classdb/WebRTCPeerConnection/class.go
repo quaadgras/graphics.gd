@@ -191,8 +191,8 @@ Sets the [param extension_class] as the default [WebRTCPeerConnectionExtension] 
 func (self class) SetDefaultExtension(extension_class gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_class))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_default_extension, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_default_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -219,7 +219,7 @@ func (self class) Initialize(configuration gd.Dictionary) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(configuration))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_initialize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_initialize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -250,7 +250,7 @@ func (self class) CreateDataChannel(label gd.String, options gd.Dictionary) [1]g
 	callframe.Arg(frame, pointers.Get(label))
 	callframe.Arg(frame, pointers.Get(options))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_create_data_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_create_data_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.WebRTCDataChannel{gd.PointerWithOwnershipTransferredToGo[gdclass.WebRTCDataChannel](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -264,7 +264,7 @@ If this functions returns [constant OK], [signal session_description_created] wi
 func (self class) CreateOffer() error {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_create_offer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_create_offer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -280,7 +280,7 @@ func (self class) SetLocalDescription(atype gd.String, sdp gd.String) error {
 	callframe.Arg(frame, pointers.Get(atype))
 	callframe.Arg(frame, pointers.Get(sdp))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_local_description, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_local_description, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -297,7 +297,7 @@ func (self class) SetRemoteDescription(atype gd.String, sdp gd.String) error {
 	callframe.Arg(frame, pointers.Get(atype))
 	callframe.Arg(frame, pointers.Get(sdp))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_remote_description, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_remote_description, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -313,7 +313,7 @@ func (self class) AddIceCandidate(media gd.String, index gd.Int, name gd.String)
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_add_ice_candidate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_add_ice_candidate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -326,7 +326,7 @@ Call this method frequently (e.g. in [method Node._process] or [method Node._phy
 func (self class) Poll() error {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -339,8 +339,8 @@ Close the peer connection and all data channels associated with it.
 //go:nosplit
 func (self class) Close() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_close, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -351,7 +351,7 @@ Returns the connection state. See [enum ConnectionState].
 func (self class) GetConnectionState() gdclass.WebRTCPeerConnectionConnectionState {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WebRTCPeerConnectionConnectionState](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_connection_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_connection_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -364,7 +364,7 @@ Returns the ICE [enum GatheringState] of the connection. This lets you detect, f
 func (self class) GetGatheringState() gdclass.WebRTCPeerConnectionGatheringState {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WebRTCPeerConnectionGatheringState](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_gathering_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_gathering_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -377,7 +377,7 @@ Returns the signaling state on the local end of the connection while connecting 
 func (self class) GetSignalingState() gdclass.WebRTCPeerConnectionSignalingState {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WebRTCPeerConnectionSignalingState](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_signaling_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_signaling_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

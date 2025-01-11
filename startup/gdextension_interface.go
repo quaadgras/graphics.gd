@@ -1126,52 +1126,52 @@ func linkCGO(API *gd.API) {
 		return ret != 0
 	}
 	get_variant_from_type_constructor := dlsymGD("get_variant_from_type_constructor")
-	API.Variants.FromTypeConstructor = func(vt gd.VariantType) func(ret callframe.Ptr[[3]uintptr], arg uintptr) {
+	API.Variants.FromTypeConstructor = func(vt gd.VariantType) func(ret callframe.Ptr[[3]uintptr], arg callframe.Addr) {
 		fn := C.get_variant_from_type_constructor(
 			C.uintptr_t(uintptr(get_variant_from_type_constructor)),
 			C.GDExtensionVariantType(vt),
 		)
-		return func(ret callframe.Ptr[[3]uintptr], arg uintptr) {
+		return func(ret callframe.Ptr[[3]uintptr], arg callframe.Addr) {
 			C.call_variant_from_type_constructor(
 				C.uintptr_t(uintptr(fn)),
 				C.uintptr_t(ret.Uintptr()),
-				C.uintptr_t(arg),
+				C.uintptr_t(arg.Uintptr()),
 			)
 		}
 	}
 	get_variant_to_type_constructor := dlsymGD("get_variant_to_type_constructor")
-	API.Variants.ToTypeConstructor = func(vt gd.VariantType) func(ret uintptr, arg callframe.Ptr[[3]uintptr]) {
+	API.Variants.ToTypeConstructor = func(vt gd.VariantType) func(ret callframe.Addr, arg callframe.Ptr[[3]uintptr]) {
 		fn := C.get_variant_to_type_constructor(
 			C.uintptr_t(uintptr(get_variant_to_type_constructor)),
 			C.GDExtensionVariantType(vt),
 		)
-		return func(ret uintptr, arg callframe.Ptr[[3]uintptr]) {
+		return func(ret callframe.Addr, arg callframe.Ptr[[3]uintptr]) {
 			C.call_variant_to_type_constructor(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(ret),
+				C.uintptr_t(ret.Uintptr()),
 				C.uintptr_t(arg.Uintptr()),
 			)
 		}
 	}
 	variant_get_ptr_operator_evaluator := dlsymGD("variant_get_ptr_operator_evaluator")
-	API.Variants.PointerOperatorEvaluator = func(op gd.Operator, a, b gd.VariantType) func(a, b, ret uintptr) {
+	API.Variants.PointerOperatorEvaluator = func(op gd.Operator, a, b gd.VariantType) func(a, b, ret callframe.Addr) {
 		fn := C.variant_get_ptr_operator_evaluator(
 			C.uintptr_t(uintptr(variant_get_ptr_operator_evaluator)),
 			C.GDExtensionVariantOperator(op),
 			C.GDExtensionVariantType(a),
 			C.GDExtensionVariantType(b),
 		)
-		return func(a, b, ret uintptr) {
+		return func(a, b, ret callframe.Addr) {
 			C.call_variant_ptr_operator_evaluator(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(a),
-				C.uintptr_t(b),
-				C.uintptr_t(ret),
+				C.uintptr_t(a.Uintptr()),
+				C.uintptr_t(b.Uintptr()),
+				C.uintptr_t(ret.Uintptr()),
 			)
 		}
 	}
 	variant_get_ptr_builtin_method := dlsymGD("variant_get_ptr_builtin_method")
-	API.Variants.GetPointerBuiltinMethod = func(vt gd.VariantType, sn gd.StringName, i gd.Int) func(base uintptr, args callframe.Args, ret uintptr, c int32) {
+	API.Variants.GetPointerBuiltinMethod = func(vt gd.VariantType, sn gd.StringName, i gd.Int) func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) {
 		var frame = callframe.New()
 		p_method := callframe.Arg(frame, pointers.Get(sn))
 		fn := C.variant_get_ptr_builtin_method(
@@ -1181,41 +1181,41 @@ func linkCGO(API *gd.API) {
 			C.GDExtensionInt(i),
 		)
 		frame.Free()
-		return func(base uintptr, args callframe.Args, ret uintptr, c int32) {
+		return func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) {
 			C.call_variant_ptr_builtin_method(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(base),
+				C.uintptr_t(base.Uintptr()),
 				C.uintptr_t(args.Uintptr()),
-				C.uintptr_t(ret),
+				C.uintptr_t(ret.Uintptr()),
 				C.int32_t(c),
 			)
 		}
 	}
 	variant_get_ptr_constructor := dlsymGD("variant_get_ptr_constructor")
-	API.Variants.GetPointerConstructor = func(vt gd.VariantType, index int32) func(ret uintptr, args callframe.Args) {
+	API.Variants.GetPointerConstructor = func(vt gd.VariantType, index int32) func(ret callframe.Addr, args callframe.Args) {
 		fn := C.variant_get_ptr_constructor(
 			C.uintptr_t(uintptr(variant_get_ptr_constructor)),
 			C.GDExtensionVariantType(vt),
 			C.int32_t(index),
 		)
-		return func(ret uintptr, args callframe.Args) {
+		return func(ret callframe.Addr, args callframe.Args) {
 			C.call_variant_ptr_constructor(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(ret),
+				C.uintptr_t(ret.Uintptr()),
 				C.uintptr_t(args.Uintptr()),
 			)
 		}
 	}
 	variant_get_ptr_destructor := dlsymGD("variant_get_ptr_destructor")
-	API.Variants.GetPointerDestructor = func(vt gd.VariantType) func(ret uintptr) {
+	API.Variants.GetPointerDestructor = func(vt gd.VariantType) func(ret callframe.Addr) {
 		fn := C.variant_get_ptr_destructor(
 			C.uintptr_t(uintptr(variant_get_ptr_destructor)),
 			C.GDExtensionVariantType(vt),
 		)
-		return func(ret uintptr) {
+		return func(ret callframe.Addr) {
 			C.call_variant_ptr_destructor(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(ret),
+				C.uintptr_t(ret.Uintptr()),
 			)
 		}
 	}
@@ -1248,7 +1248,7 @@ func linkCGO(API *gd.API) {
 		return ret, nil
 	}
 	variant_get_ptr_setter := dlsymGD("variant_get_ptr_setter")
-	API.Variants.GetPointerSetter = func(vt gd.VariantType, sn gd.StringName) func(base, arg uintptr) {
+	API.Variants.GetPointerSetter = func(vt gd.VariantType, sn gd.StringName) func(base, arg callframe.Addr) {
 		var frame = callframe.New()
 		p_method := callframe.Arg(frame, pointers.Get(sn))
 		fn := C.variant_get_ptr_setter(
@@ -1257,16 +1257,16 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_method.Uintptr()),
 		)
 		frame.Free()
-		return func(base, arg uintptr) {
+		return func(base, arg callframe.Addr) {
 			C.call_variant_ptr_setter(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(base),
-				C.uintptr_t(arg),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(arg.Uintptr()),
 			)
 		}
 	}
 	variant_get_ptr_getter := dlsymGD("variant_get_ptr_getter")
-	API.Variants.GetPointerGetter = func(vt gd.VariantType, sn gd.StringName) func(base uintptr, ret uintptr) {
+	API.Variants.GetPointerGetter = func(vt gd.VariantType, sn gd.StringName) func(base, ret callframe.Addr) {
 		var frame = callframe.New()
 		p_method := callframe.Arg(frame, pointers.Get(sn))
 		fn := C.variant_get_ptr_getter(
@@ -1275,85 +1275,85 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_method.Uintptr()),
 		)
 		frame.Free()
-		return func(base uintptr, ret uintptr) {
+		return func(base, ret callframe.Addr) {
 			C.call_variant_ptr_getter(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(base),
-				C.uintptr_t(ret),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(ret.Uintptr()),
 			)
 		}
 	}
 	variant_get_ptr_indexed_setter := dlsymGD("variant_get_ptr_indexed_setter")
-	API.Variants.GetPointerIndexedSetter = func(vt gd.VariantType) func(base uintptr, index gd.Int, arg uintptr) {
+	API.Variants.GetPointerIndexedSetter = func(vt gd.VariantType) func(base callframe.Addr, index gd.Int, arg callframe.Addr) {
 		fn := C.variant_get_ptr_indexed_setter(
 			C.uintptr_t(uintptr(variant_get_ptr_indexed_setter)),
 			C.GDExtensionVariantType(vt),
 		)
-		return func(base uintptr, index gd.Int, arg uintptr) {
+		return func(base callframe.Addr, index gd.Int, arg callframe.Addr) {
 			C.call_variant_ptr_indexed_setter(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(base),
+				C.uintptr_t(base.Uintptr()),
 				C.GDExtensionInt(index),
-				C.uintptr_t(arg),
+				C.uintptr_t(arg.Uintptr()),
 			)
 		}
 	}
 	variant_get_ptr_indexed_getter := dlsymGD("variant_get_ptr_indexed_getter")
-	API.Variants.GetPointerIndexedGetter = func(vt gd.VariantType) func(base uintptr, index gd.Int, ret uintptr) {
+	API.Variants.GetPointerIndexedGetter = func(vt gd.VariantType) func(base callframe.Addr, index gd.Int, ret callframe.Addr) {
 		fn := C.variant_get_ptr_indexed_getter(
 			C.uintptr_t(uintptr(variant_get_ptr_indexed_getter)),
 			C.GDExtensionVariantType(vt),
 		)
-		return func(base uintptr, index gd.Int, ret uintptr) {
+		return func(base callframe.Addr, index gd.Int, ret callframe.Addr) {
 			C.call_variant_ptr_indexed_getter(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(base),
+				C.uintptr_t(base.Uintptr()),
 				C.GDExtensionInt(index),
-				C.uintptr_t(ret),
+				C.uintptr_t(ret.Uintptr()),
 			)
 		}
 	}
 	variant_get_ptr_keyed_setter := dlsymGD("variant_get_ptr_keyed_setter")
-	API.Variants.GetPointerKeyedSetter = func(vt gd.VariantType) func(base uintptr, key uintptr, arg uintptr) {
+	API.Variants.GetPointerKeyedSetter = func(vt gd.VariantType) func(base, key, arg callframe.Addr) {
 		fn := C.variant_get_ptr_keyed_setter(
 			C.uintptr_t(uintptr(variant_get_ptr_keyed_setter)),
 			C.GDExtensionVariantType(vt),
 		)
-		return func(base uintptr, key uintptr, arg uintptr) {
+		return func(base, key, arg callframe.Addr) {
 			C.call_variant_ptr_keyed_setter(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(base),
-				C.uintptr_t(key),
-				C.uintptr_t(arg),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(key.Uintptr()),
+				C.uintptr_t(arg.Uintptr()),
 			)
 		}
 	}
 	variant_get_ptr_keyed_getter := dlsymGD("variant_get_ptr_keyed_getter")
-	API.Variants.GetPointerKeyedGetter = func(vt gd.VariantType) func(base uintptr, key uintptr, ret uintptr) {
+	API.Variants.GetPointerKeyedGetter = func(vt gd.VariantType) func(base, key, ret callframe.Addr) {
 		fn := C.variant_get_ptr_keyed_getter(
 			C.uintptr_t(uintptr(variant_get_ptr_keyed_getter)),
 			C.GDExtensionVariantType(vt),
 		)
-		return func(base uintptr, key uintptr, ret uintptr) {
+		return func(base, key, ret callframe.Addr) {
 			C.call_variant_ptr_keyed_getter(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(base),
-				C.uintptr_t(key),
-				C.uintptr_t(ret),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(key.Uintptr()),
+				C.uintptr_t(ret.Uintptr()),
 			)
 		}
 	}
 	variant_get_ptr_keyed_checker := dlsymGD("variant_get_ptr_keyed_checker")
-	API.Variants.GetPointerKeyedChecker = func(vt gd.VariantType) func(base uintptr, key uintptr) uint32 {
+	API.Variants.GetPointerKeyedChecker = func(vt gd.VariantType) func(base, key callframe.Addr) uint32 {
 		fn := C.variant_get_ptr_keyed_checker(
 			C.uintptr_t(uintptr(variant_get_ptr_keyed_checker)),
 			C.GDExtensionVariantType(vt),
 		)
-		return func(base uintptr, key uintptr) uint32 {
+		return func(base callframe.Addr, key callframe.Addr) uint32 {
 			return uint32(C.call_variant_ptr_keyed_checker(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(base),
-				C.uintptr_t(key),
+				C.uintptr_t(base.Uintptr()),
+				C.uintptr_t(key.Uintptr()),
 			))
 		}
 	}
@@ -1373,7 +1373,7 @@ func linkCGO(API *gd.API) {
 		return ret
 	}
 	variant_get_ptr_utility_function := dlsymGD("variant_get_ptr_utility_function")
-	API.Variants.GetPointerUtilityFunction = func(sn gd.StringName, hash gd.Int) func(ret uintptr, args callframe.Args, c int32) {
+	API.Variants.GetPointerUtilityFunction = func(sn gd.StringName, hash gd.Int) func(ret callframe.Addr, args callframe.Args, c int32) {
 		var frame = callframe.New()
 		p_method := callframe.Arg(frame, pointers.Get(sn))
 		fn := C.variant_get_ptr_utility_function(
@@ -1382,10 +1382,10 @@ func linkCGO(API *gd.API) {
 			C.GDExtensionInt(hash),
 		)
 		frame.Free()
-		return func(ret uintptr, args callframe.Args, c int32) {
+		return func(ret callframe.Addr, args callframe.Args, c int32) {
 			C.call_variant_ptr_utility_function(
 				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(ret),
+				C.uintptr_t(ret.Uintptr()),
 				C.uintptr_t(args.Uintptr()),
 				C.int32_t(c),
 			)
@@ -1741,14 +1741,14 @@ func linkCGO(API *gd.API) {
 		return ret, nil
 	}
 	object_method_bind_ptrcall := dlsymGD("object_method_bind_ptrcall")
-	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret uintptr) {
+	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret callframe.Addr) {
 		if obj == ([1]gd.Object{}) {
 			C.object_method_bind_ptrcall(
 				C.uintptr_t(uintptr(object_method_bind_ptrcall)),
 				C.uintptr_t(method),
 				C.uintptr_t(0),
 				C.uintptr_t(arg.Uintptr()),
-				C.uintptr_t(ret),
+				C.uintptr_t(ret.Uintptr()),
 			)
 			return
 		}
@@ -1770,7 +1770,7 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(method),
 			C.uintptr_t(self[0]),
 			C.uintptr_t(arg.Uintptr()),
-			C.uintptr_t(ret),
+			C.uintptr_t(ret.Uintptr()),
 		)
 	}
 	object_destroy := dlsymGD("object_destroy")

@@ -80,7 +80,7 @@ Returns the [RID] owned by this SkinReference, as returned by [method RenderingS
 func (self class) GetSkeleton() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkinReference.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkinReference.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -94,7 +94,7 @@ Note that a single [Skin] may have more than one [SkinReference] in the case tha
 func (self class) GetSkin() [1]gdclass.Skin {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkinReference.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkinReference.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret.Get())}
 	frame.Free()
 	return ret

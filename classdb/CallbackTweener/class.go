@@ -82,7 +82,7 @@ func (self class) SetDelay(delay gd.Float) [1]gdclass.CallbackTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CallbackTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CallbackTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CallbackTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.CallbackTweener](r_ret.Get())}
 	frame.Free()
 	return ret

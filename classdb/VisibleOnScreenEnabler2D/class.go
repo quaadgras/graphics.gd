@@ -79,8 +79,8 @@ func (self Instance) SetEnableNodePath(value NodePath.String) {
 func (self class) SetEnableMode(mode gdclass.VisibleOnScreenEnabler2DEnableMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler2D.Bind_set_enable_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler2D.Bind_set_enable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -88,7 +88,7 @@ func (self class) SetEnableMode(mode gdclass.VisibleOnScreenEnabler2DEnableMode)
 func (self class) GetEnableMode() gdclass.VisibleOnScreenEnabler2DEnableMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisibleOnScreenEnabler2DEnableMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler2D.Bind_get_enable_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler2D.Bind_get_enable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -98,8 +98,8 @@ func (self class) GetEnableMode() gdclass.VisibleOnScreenEnabler2DEnableMode {
 func (self class) SetEnableNodePath(path gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler2D.Bind_set_enable_node_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler2D.Bind_set_enable_node_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -107,7 +107,7 @@ func (self class) SetEnableNodePath(path gd.NodePath) {
 func (self class) GetEnableNodePath() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler2D.Bind_get_enable_node_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler2D.Bind_get_enable_node_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret

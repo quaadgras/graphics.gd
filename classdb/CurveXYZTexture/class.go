@@ -89,8 +89,8 @@ func (self Instance) SetCurveZ(value [1]gdclass.Curve) {
 func (self class) SetWidth(width gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_set_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_set_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -98,8 +98,8 @@ func (self class) SetWidth(width gd.Int) {
 func (self class) SetCurveX(curve [1]gdclass.Curve) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_set_curve_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_set_curve_x, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -107,7 +107,7 @@ func (self class) SetCurveX(curve [1]gdclass.Curve) {
 func (self class) GetCurveX() [1]gdclass.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_x, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -117,8 +117,8 @@ func (self class) GetCurveX() [1]gdclass.Curve {
 func (self class) SetCurveY(curve [1]gdclass.Curve) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_set_curve_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_set_curve_y, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -126,7 +126,7 @@ func (self class) SetCurveY(curve [1]gdclass.Curve) {
 func (self class) GetCurveY() [1]gdclass.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_y, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -136,8 +136,8 @@ func (self class) GetCurveY() [1]gdclass.Curve {
 func (self class) SetCurveZ(curve [1]gdclass.Curve) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_set_curve_z, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_set_curve_z, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -145,7 +145,7 @@ func (self class) SetCurveZ(curve [1]gdclass.Curve) {
 func (self class) GetCurveZ() [1]gdclass.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_z, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_z, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
 	frame.Free()
 	return ret

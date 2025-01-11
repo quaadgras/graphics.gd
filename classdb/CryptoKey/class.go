@@ -102,7 +102,7 @@ func (self class) Save(path gd.String, public_only bool) error {
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, public_only)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_save, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -118,7 +118,7 @@ func (self class) Load(path gd.String, public_only bool) error {
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, public_only)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -131,7 +131,7 @@ Returns [code]true[/code] if this CryptoKey only has the public part, and not th
 func (self class) IsPublicOnly() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_is_public_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_is_public_only, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -145,7 +145,7 @@ func (self class) SaveToString(public_only bool) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, public_only)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_save_to_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_save_to_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -160,7 +160,7 @@ func (self class) LoadFromString(string_key gd.String, public_only bool) error {
 	callframe.Arg(frame, pointers.Get(string_key))
 	callframe.Arg(frame, public_only)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load_from_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

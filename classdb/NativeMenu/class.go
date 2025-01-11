@@ -729,7 +729,7 @@ func (self class) HasFeature(feature gdclass.NativeMenuFeature) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -744,7 +744,7 @@ func (self class) HasSystemMenu(menu_id gdclass.NativeMenuSystemMenus) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, menu_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_has_system_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_has_system_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -759,7 +759,7 @@ func (self class) GetSystemMenu(menu_id gdclass.NativeMenuSystemMenus) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, menu_id)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_system_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_system_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -774,7 +774,7 @@ func (self class) GetSystemMenuName(menu_id gdclass.NativeMenuSystemMenus) gd.St
 	var frame = callframe.New()
 	callframe.Arg(frame, menu_id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_system_menu_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_system_menu_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -788,7 +788,7 @@ Creates a new global menu object.
 func (self class) CreateMenu() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_create_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_create_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -803,7 +803,7 @@ func (self class) HasMenu(rid gd.RID) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_has_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_has_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -817,8 +817,8 @@ Frees a global menu object created by this [NativeMenu].
 func (self class) FreeMenu(rid gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_free_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_free_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -831,7 +831,7 @@ func (self class) GetSize(rid gd.RID) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -846,8 +846,8 @@ func (self class) Popup(rid gd.RID, position gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -860,8 +860,8 @@ func (self class) SetInterfaceDirection(rid gd.RID, is_rtl bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, is_rtl)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_interface_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_interface_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -874,8 +874,8 @@ func (self class) SetPopupOpenCallback(rid gd.RID, callback gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_popup_open_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_popup_open_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -888,7 +888,7 @@ func (self class) GetPopupOpenCallback(rid gd.RID) gd.Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[callablePointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_popup_open_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_popup_open_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -904,8 +904,8 @@ func (self class) SetPopupCloseCallback(rid gd.RID, callback gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_popup_close_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_popup_close_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -918,7 +918,7 @@ func (self class) GetPopupCloseCallback(rid gd.RID) gd.Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[callablePointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_popup_close_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_popup_close_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -933,8 +933,8 @@ func (self class) SetMinimumWidth(rid gd.RID, width gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, width)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_minimum_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_minimum_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -947,7 +947,7 @@ func (self class) GetMinimumWidth(rid gd.RID) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_minimum_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_minimum_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -962,7 +962,7 @@ func (self class) IsOpened(rid gd.RID) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_opened, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_opened, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -982,7 +982,7 @@ func (self class) AddSubmenuItem(rid gd.RID, label gd.String, submenu_rid gd.RID
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_submenu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_submenu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1007,7 +1007,7 @@ func (self class) AddItem(rid gd.RID, label gd.String, callback gd.Callable, key
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1032,7 +1032,7 @@ func (self class) AddCheckItem(rid gd.RID, label gd.String, callback gd.Callable
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_check_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_check_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1058,7 +1058,7 @@ func (self class) AddIconItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.St
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_icon_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_icon_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1084,7 +1084,7 @@ func (self class) AddIconCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, label 
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_icon_check_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_icon_check_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1110,7 +1110,7 @@ func (self class) AddRadioCheckItem(rid gd.RID, label gd.String, callback gd.Cal
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_radio_check_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_radio_check_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1137,7 +1137,7 @@ func (self class) AddIconRadioCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, l
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_icon_radio_check_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_icon_radio_check_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1166,7 +1166,7 @@ func (self class) AddMultistateItem(rid gd.RID, label gd.String, max_states gd.I
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_multistate_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_multistate_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1183,7 +1183,7 @@ func (self class) AddSeparator(rid gd.RID, index gd.Int) gd.Int {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_separator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_add_separator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1199,7 +1199,7 @@ func (self class) FindItemIndexWithText(rid gd.RID, text gd.String) gd.Int {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1215,7 +1215,7 @@ func (self class) FindItemIndexWithTag(rid gd.RID, tag gd.Variant) gd.Int {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(tag))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1231,7 +1231,7 @@ func (self class) FindItemIndexWithSubmenu(rid gd.RID, submenu_rid gd.RID) gd.In
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, submenu_rid)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_submenu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_submenu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1247,7 +1247,7 @@ func (self class) IsItemChecked(rid gd.RID, idx gd.Int) bool {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_checked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_checked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1263,7 +1263,7 @@ func (self class) IsItemCheckable(rid gd.RID, idx gd.Int) bool {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_checkable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1280,7 +1280,7 @@ func (self class) IsItemRadioCheckable(rid gd.RID, idx gd.Int) bool {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1296,7 +1296,7 @@ func (self class) GetItemCallback(rid gd.RID, idx gd.Int) gd.Callable {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[callablePointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1312,7 +1312,7 @@ func (self class) GetItemKeyCallback(rid gd.RID, idx gd.Int) gd.Callable {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[callablePointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1328,7 +1328,7 @@ func (self class) GetItemTag(rid gd.RID, idx gd.Int) gd.Variant {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1344,7 +1344,7 @@ func (self class) GetItemText(rid gd.RID, idx gd.Int) gd.String {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1360,7 +1360,7 @@ func (self class) GetItemSubmenu(rid gd.RID, idx gd.Int) gd.RID {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_submenu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_submenu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1376,7 +1376,7 @@ func (self class) GetItemAccelerator(rid gd.RID, idx gd.Int) Key {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1393,7 +1393,7 @@ func (self class) IsItemDisabled(rid gd.RID, idx gd.Int) bool {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1410,7 +1410,7 @@ func (self class) IsItemHidden(rid gd.RID, idx gd.Int) bool {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_hidden, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_item_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1426,7 +1426,7 @@ func (self class) GetItemTooltip(rid gd.RID, idx gd.Int) gd.String {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1442,7 +1442,7 @@ func (self class) GetItemState(rid gd.RID, idx gd.Int) gd.Int {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1458,7 +1458,7 @@ func (self class) GetItemMaxStates(rid gd.RID, idx gd.Int) gd.Int {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_max_states, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_max_states, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1474,7 +1474,7 @@ func (self class) GetItemIcon(rid gd.RID, idx gd.Int) [1]gdclass.Texture2D {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1490,7 +1490,7 @@ func (self class) GetItemIndentationLevel(rid gd.RID, idx gd.Int) gd.Int {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_indentation_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_indentation_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1506,8 +1506,8 @@ func (self class) SetItemChecked(rid gd.RID, idx gd.Int, checked bool) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, checked)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_checked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_checked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1521,8 +1521,8 @@ func (self class) SetItemCheckable(rid gd.RID, idx gd.Int, checkable bool) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, checkable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_checkable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1537,8 +1537,8 @@ func (self class) SetItemRadioCheckable(rid gd.RID, idx gd.Int, checkable bool) 
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, checkable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1553,8 +1553,8 @@ func (self class) SetItemCallback(rid gd.RID, idx gd.Int, callback gd.Callable) 
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1569,8 +1569,8 @@ func (self class) SetItemHoverCallbacks(rid gd.RID, idx gd.Int, callback gd.Call
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_hover_callbacks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_hover_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1585,8 +1585,8 @@ func (self class) SetItemKeyCallback(rid gd.RID, idx gd.Int, key_callback gd.Cal
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(key_callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1600,8 +1600,8 @@ func (self class) SetItemTag(rid gd.RID, idx gd.Int, tag gd.Variant) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(tag))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1615,8 +1615,8 @@ func (self class) SetItemText(rid gd.RID, idx gd.Int, text gd.String) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1630,8 +1630,8 @@ func (self class) SetItemSubmenu(rid gd.RID, idx gd.Int, submenu_rid gd.RID) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, submenu_rid)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_submenu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_submenu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1645,8 +1645,8 @@ func (self class) SetItemAccelerator(rid gd.RID, idx gd.Int, keycode Key) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, keycode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1660,8 +1660,8 @@ func (self class) SetItemDisabled(rid gd.RID, idx gd.Int, disabled bool) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, disabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1675,8 +1675,8 @@ func (self class) SetItemHidden(rid gd.RID, idx gd.Int, hidden bool) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, hidden)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_hidden, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1690,8 +1690,8 @@ func (self class) SetItemTooltip(rid gd.RID, idx gd.Int, tooltip gd.String) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(tooltip))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1705,8 +1705,8 @@ func (self class) SetItemState(rid gd.RID, idx gd.Int, state gd.Int) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, state)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1720,8 +1720,8 @@ func (self class) SetItemMaxStates(rid gd.RID, idx gd.Int, max_states gd.Int) {
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, max_states)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_max_states, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_max_states, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1736,8 +1736,8 @@ func (self class) SetItemIcon(rid gd.RID, idx gd.Int, icon [1]gdclass.Texture2D)
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1751,8 +1751,8 @@ func (self class) SetItemIndentationLevel(rid gd.RID, idx gd.Int, level gd.Int) 
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, level)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_indentation_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_indentation_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1765,7 +1765,7 @@ func (self class) GetItemCount(rid gd.RID) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1780,7 +1780,7 @@ func (self class) IsSystemMenu(rid gd.RID) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_system_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_is_system_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1796,8 +1796,8 @@ func (self class) RemoveItem(rid gd.RID, idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_remove_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_remove_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1809,8 +1809,8 @@ Removes all items from the global menu [param rid].
 func (self class) Clear(rid gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) Virtual(name string) reflect.Value {

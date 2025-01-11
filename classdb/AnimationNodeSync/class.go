@@ -67,8 +67,8 @@ func (self Instance) SetSync(value bool) {
 func (self class) SetUseSync(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeSync.Bind_set_use_sync, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeSync.Bind_set_use_sync, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -76,7 +76,7 @@ func (self class) SetUseSync(enable bool) {
 func (self class) IsUsingSync() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeSync.Bind_is_using_sync, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeSync.Bind_is_using_sync, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

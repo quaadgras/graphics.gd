@@ -215,7 +215,7 @@ The [code]idx[/code] argument used to query node data in other [code]get_node_*[
 func (self class) GetNodeCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -229,7 +229,7 @@ func (self class) GetNodeType(idx gd.Int) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -243,7 +243,7 @@ func (self class) GetNodeName(idx gd.Int) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -259,7 +259,7 @@ func (self class) GetNodePath(idx gd.Int, for_parent bool) gd.NodePath {
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, for_parent)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -273,7 +273,7 @@ func (self class) GetNodeOwnerPath(idx gd.Int) gd.NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_owner_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_owner_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -287,7 +287,7 @@ func (self class) IsNodeInstancePlaceholder(idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_is_node_instance_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_is_node_instance_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -301,7 +301,7 @@ func (self class) GetNodeInstancePlaceholder(idx gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_instance_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_instance_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -315,7 +315,7 @@ func (self class) GetNodeInstance(idx gd.Int) [1]gdclass.PackedScene {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PackedScene{gd.PointerWithOwnershipTransferredToGo[gdclass.PackedScene](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -329,7 +329,7 @@ func (self class) GetNodeGroups(idx gd.Int) gd.PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_groups, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_groups, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -343,7 +343,7 @@ func (self class) GetNodeIndex(idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -358,7 +358,7 @@ func (self class) GetNodePropertyCount(idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_property_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_property_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -373,7 +373,7 @@ func (self class) GetNodePropertyName(idx gd.Int, prop_idx gd.Int) gd.StringName
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, prop_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_property_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_property_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -388,7 +388,7 @@ func (self class) GetNodePropertyValue(idx gd.Int, prop_idx gd.Int) gd.Variant {
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, prop_idx)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_property_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_node_property_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -402,7 +402,7 @@ The [code]idx[/code] argument used to query connection metadata in other [code]g
 func (self class) GetConnectionCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -416,7 +416,7 @@ func (self class) GetConnectionSource(idx gd.Int) gd.NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -430,7 +430,7 @@ func (self class) GetConnectionSignal(idx gd.Int) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -444,7 +444,7 @@ func (self class) GetConnectionTarget(idx gd.Int) gd.NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_target, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_target, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -458,7 +458,7 @@ func (self class) GetConnectionMethod(idx gd.Int) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_method, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -472,7 +472,7 @@ func (self class) GetConnectionFlags(idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -486,7 +486,7 @@ func (self class) GetConnectionBinds(idx gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_binds, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -500,7 +500,7 @@ func (self class) GetConnectionUnbinds(idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_unbinds, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_unbinds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

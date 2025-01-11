@@ -333,8 +333,8 @@ func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id gd.Vector2i, to
 func (self class) SetRegion(region gd.Rect2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -342,7 +342,7 @@ func (self class) SetRegion(region gd.Rect2i) {
 func (self class) GetRegion() gd.Rect2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -352,8 +352,8 @@ func (self class) GetRegion() gd.Rect2i {
 func (self class) SetSize(size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -361,7 +361,7 @@ func (self class) SetSize(size gd.Vector2i) {
 func (self class) GetSize() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -371,8 +371,8 @@ func (self class) GetSize() gd.Vector2i {
 func (self class) SetOffset(offset gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -380,7 +380,7 @@ func (self class) SetOffset(offset gd.Vector2) {
 func (self class) GetOffset() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -390,8 +390,8 @@ func (self class) GetOffset() gd.Vector2 {
 func (self class) SetCellSize(cell_size gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, cell_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_cell_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_cell_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -399,7 +399,7 @@ func (self class) SetCellSize(cell_size gd.Vector2) {
 func (self class) GetCellSize() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_cell_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_cell_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -409,8 +409,8 @@ func (self class) GetCellSize() gd.Vector2 {
 func (self class) SetCellShape(cell_shape gdclass.AStarGrid2DCellShape) {
 	var frame = callframe.New()
 	callframe.Arg(frame, cell_shape)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_cell_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_cell_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -418,7 +418,7 @@ func (self class) SetCellShape(cell_shape gdclass.AStarGrid2DCellShape) {
 func (self class) GetCellShape() gdclass.AStarGrid2DCellShape {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AStarGrid2DCellShape](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_cell_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_cell_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -433,7 +433,7 @@ func (self class) IsInBounds(x gd.Int, y gd.Int) bool {
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_in_bounds, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_in_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -447,7 +447,7 @@ func (self class) IsInBoundsv(id gd.Vector2i) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_in_boundsv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_in_boundsv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -460,7 +460,7 @@ Indicates that the grid parameters were changed and [method update] needs to be 
 func (self class) IsDirty() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_dirty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_dirty, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -473,8 +473,8 @@ Updates the internal state of the grid according to the parameters to prepare it
 //go:nosplit
 func (self class) Update() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -482,8 +482,8 @@ func (self class) Update() {
 func (self class) SetJumpingEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_jumping_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_jumping_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -491,7 +491,7 @@ func (self class) SetJumpingEnabled(enabled bool) {
 func (self class) IsJumpingEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_jumping_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_jumping_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -501,8 +501,8 @@ func (self class) IsJumpingEnabled() bool {
 func (self class) SetDiagonalMode(mode gdclass.AStarGrid2DDiagonalMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_diagonal_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_diagonal_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -510,7 +510,7 @@ func (self class) SetDiagonalMode(mode gdclass.AStarGrid2DDiagonalMode) {
 func (self class) GetDiagonalMode() gdclass.AStarGrid2DDiagonalMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AStarGrid2DDiagonalMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_diagonal_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_diagonal_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -520,8 +520,8 @@ func (self class) GetDiagonalMode() gdclass.AStarGrid2DDiagonalMode {
 func (self class) SetDefaultComputeHeuristic(heuristic gdclass.AStarGrid2DHeuristic) {
 	var frame = callframe.New()
 	callframe.Arg(frame, heuristic)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_default_compute_heuristic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_default_compute_heuristic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -529,7 +529,7 @@ func (self class) SetDefaultComputeHeuristic(heuristic gdclass.AStarGrid2DHeuris
 func (self class) GetDefaultComputeHeuristic() gdclass.AStarGrid2DHeuristic {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AStarGrid2DHeuristic](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_default_compute_heuristic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_default_compute_heuristic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -539,8 +539,8 @@ func (self class) GetDefaultComputeHeuristic() gdclass.AStarGrid2DHeuristic {
 func (self class) SetDefaultEstimateHeuristic(heuristic gdclass.AStarGrid2DHeuristic) {
 	var frame = callframe.New()
 	callframe.Arg(frame, heuristic)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_default_estimate_heuristic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_default_estimate_heuristic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -548,7 +548,7 @@ func (self class) SetDefaultEstimateHeuristic(heuristic gdclass.AStarGrid2DHeuri
 func (self class) GetDefaultEstimateHeuristic() gdclass.AStarGrid2DHeuristic {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AStarGrid2DHeuristic](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_default_estimate_heuristic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_default_estimate_heuristic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -563,8 +563,8 @@ func (self class) SetPointSolid(id gd.Vector2i, solid bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, solid)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_point_solid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_point_solid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -576,7 +576,7 @@ func (self class) IsPointSolid(id gd.Vector2i) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_point_solid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_point_solid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -591,8 +591,8 @@ func (self class) SetPointWeightScale(id gd.Vector2i, weight_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, weight_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_point_weight_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_set_point_weight_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -604,7 +604,7 @@ func (self class) GetPointWeightScale(id gd.Vector2i) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_point_weight_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_point_weight_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -619,8 +619,8 @@ func (self class) FillSolidRegion(region gd.Rect2i, solid bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
 	callframe.Arg(frame, solid)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_fill_solid_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_fill_solid_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -633,8 +633,8 @@ func (self class) FillWeightScaleRegion(region gd.Rect2i, weight_scale gd.Float)
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
 	callframe.Arg(frame, weight_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_fill_weight_scale_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_fill_weight_scale_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -644,8 +644,8 @@ Clears the grid and sets the [member region] to [code]Rect2i(0, 0, 0, 0)[/code].
 //go:nosplit
 func (self class) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -657,7 +657,7 @@ func (self class) GetPointPosition(id gd.Vector2i) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -675,7 +675,7 @@ func (self class) GetPointPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_par
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, allow_partial_path)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_point_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_point_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -692,7 +692,7 @@ func (self class) GetIdPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_partia
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, allow_partial_path)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_id_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_id_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret

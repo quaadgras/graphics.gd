@@ -67,8 +67,8 @@ func (self Instance) SetDegreesMode(value bool) {
 func (self class) SetDegreesMode(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleMultiplyByAxisAngle.Bind_set_degrees_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleMultiplyByAxisAngle.Bind_set_degrees_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -76,7 +76,7 @@ func (self class) SetDegreesMode(enabled bool) {
 func (self class) IsDegreesMode() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleMultiplyByAxisAngle.Bind_is_degrees_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleMultiplyByAxisAngle.Bind_is_degrees_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

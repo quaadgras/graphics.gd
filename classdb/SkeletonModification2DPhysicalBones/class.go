@@ -106,8 +106,8 @@ func (self Instance) SetPhysicalBoneChainLength(value int) {
 func (self class) SetPhysicalBoneChainLength(length gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_chain_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -115,7 +115,7 @@ func (self class) SetPhysicalBoneChainLength(length gd.Int) {
 func (self class) GetPhysicalBoneChainLength() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_chain_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -130,8 +130,8 @@ func (self class) SetPhysicalBoneNode(joint_idx gd.Int, physicalbone2d_node gd.N
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, pointers.Get(physicalbone2d_node))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -143,7 +143,7 @@ func (self class) GetPhysicalBoneNode(joint_idx gd.Int) gd.NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -155,8 +155,8 @@ Empties the list of [PhysicalBone2D] nodes and populates it with all [PhysicalBo
 //go:nosplit
 func (self class) FetchPhysicalBones() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_fetch_physical_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_fetch_physical_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -168,8 +168,8 @@ Optionally, an array of bone names can be passed to this function, and that will
 func (self class) StartSimulation(bones gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bones))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_start_simulation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_start_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -181,8 +181,8 @@ Optionally, an array of bone names can be passed to this function, and that will
 func (self class) StopSimulation(bones gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bones))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_stop_simulation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_stop_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsSkeletonModification2DPhysicalBones() Advanced {

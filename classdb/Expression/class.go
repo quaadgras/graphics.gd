@@ -142,7 +142,7 @@ func (self class) Parse(expression gd.String, input_names gd.PackedStringArray) 
 	callframe.Arg(frame, pointers.Get(expression))
 	callframe.Arg(frame, pointers.Get(input_names))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -160,7 +160,7 @@ func (self class) Execute(inputs gd.Array, base_instance [1]gd.Object, show_erro
 	callframe.Arg(frame, show_error)
 	callframe.Arg(frame, const_calls_only)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_execute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_execute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -173,7 +173,7 @@ Returns [code]true[/code] if [method execute] has failed.
 func (self class) HasExecuteFailed() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_has_execute_failed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_has_execute_failed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -186,7 +186,7 @@ Returns the error text if [method parse] or [method execute] has failed.
 func (self class) GetErrorText() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_get_error_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_get_error_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret

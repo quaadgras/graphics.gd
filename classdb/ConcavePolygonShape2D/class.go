@@ -72,8 +72,8 @@ func (self Instance) SetSegments(value []Vector2.XY) {
 func (self class) SetSegments(segments gd.PackedVector2Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(segments))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape2D.Bind_set_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape2D.Bind_set_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -81,7 +81,7 @@ func (self class) SetSegments(segments gd.PackedVector2Array) {
 func (self class) GetSegments() gd.PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape2D.Bind_get_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape2D.Bind_get_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret

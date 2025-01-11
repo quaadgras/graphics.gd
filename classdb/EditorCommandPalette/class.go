@@ -106,8 +106,8 @@ func (self class) AddCommand(command_name gd.String, key_name gd.String, binded_
 	callframe.Arg(frame, pointers.Get(key_name))
 	callframe.Arg(frame, pointers.Get(binded_callable))
 	callframe.Arg(frame, pointers.Get(shortcut_text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_add_command, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_add_command, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -119,8 +119,8 @@ Removes the custom command from EditorCommandPalette.
 func (self class) RemoveCommand(key_name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_remove_command, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_remove_command, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsEditorCommandPalette() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

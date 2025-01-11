@@ -70,8 +70,8 @@ func (self Instance) SetMaxDistance(value Float.X) {
 func (self class) SetMaxDistance(pixels gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight2D.Bind_set_max_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight2D.Bind_set_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -79,7 +79,7 @@ func (self class) SetMaxDistance(pixels gd.Float) {
 func (self class) GetMaxDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight2D.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight2D.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

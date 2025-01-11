@@ -89,8 +89,8 @@ func (self Instance) SetConstantAngularVelocity(value Float.X) {
 func (self class) SetConstantLinearVelocity(vel gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, vel)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_set_constant_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_set_constant_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -98,8 +98,8 @@ func (self class) SetConstantLinearVelocity(vel gd.Vector2) {
 func (self class) SetConstantAngularVelocity(vel gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, vel)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_set_constant_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_set_constant_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -107,7 +107,7 @@ func (self class) SetConstantAngularVelocity(vel gd.Float) {
 func (self class) GetConstantLinearVelocity() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_get_constant_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_get_constant_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -117,7 +117,7 @@ func (self class) GetConstantLinearVelocity() gd.Vector2 {
 func (self class) GetConstantAngularVelocity() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_get_constant_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_get_constant_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -127,8 +127,8 @@ func (self class) GetConstantAngularVelocity() gd.Float {
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(physics_material_override[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_set_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_set_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -136,7 +136,7 @@ func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclas
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_get_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody2D.Bind_get_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret.Get())}
 	frame.Free()
 	return ret

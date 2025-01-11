@@ -134,7 +134,7 @@ func (self class) GetNoise1d(x gd.Float) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_1d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_1d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -149,7 +149,7 @@ func (self class) GetNoise2d(x gd.Float, y gd.Float) gd.Float {
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -163,7 +163,7 @@ func (self class) GetNoise2dv(v gd.Vector2) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, v)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_2dv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_2dv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -179,7 +179,7 @@ func (self class) GetNoise3d(x gd.Float, y gd.Float, z gd.Float) gd.Float {
 	callframe.Arg(frame, y)
 	callframe.Arg(frame, z)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -193,7 +193,7 @@ func (self class) GetNoise3dv(v gd.Vector3) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, v)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_3dv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_noise_3dv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -212,7 +212,7 @@ func (self class) GetImage(width gd.Int, height gd.Int, invert bool, in_3d_space
 	callframe.Arg(frame, in_3d_space)
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -232,7 +232,7 @@ func (self class) GetSeamlessImage(width gd.Int, height gd.Int, invert bool, in_
 	callframe.Arg(frame, skirt)
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_seamless_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_seamless_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -251,7 +251,7 @@ func (self class) GetImage3d(width gd.Int, height gd.Int, depth gd.Int, invert b
 	callframe.Arg(frame, invert)
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_image_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_image_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -271,7 +271,7 @@ func (self class) GetSeamlessImage3d(width gd.Int, height gd.Int, depth gd.Int, 
 	callframe.Arg(frame, skirt)
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_seamless_image_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_seamless_image_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret

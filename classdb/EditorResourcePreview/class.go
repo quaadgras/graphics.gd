@@ -102,8 +102,8 @@ func (self class) QueueResourcePreview(path gd.String, receiver [1]gd.Object, re
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(receiver_func))
 	callframe.Arg(frame, pointers.Get(userdata))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_queue_resource_preview, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_queue_resource_preview, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -118,8 +118,8 @@ func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, recei
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(receiver_func))
 	callframe.Arg(frame, pointers.Get(userdata))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_queue_edited_resource_preview, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_queue_edited_resource_preview, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -130,8 +130,8 @@ Create an own, custom preview generator.
 func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(generator[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_add_preview_generator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_add_preview_generator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -142,8 +142,8 @@ Removes a custom preview generator.
 func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(generator[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_remove_preview_generator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_remove_preview_generator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -154,8 +154,8 @@ Check if the resource changed, if so, it will be invalidated and the correspondi
 func (self class) CheckForInvalidation(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_check_for_invalidation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePreview.Bind_check_for_invalidation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnPreviewInvalidated(cb func(path string)) {

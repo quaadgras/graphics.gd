@@ -93,8 +93,8 @@ func (self Instance) SetRingSegments(value int) {
 func (self class) SetInnerRadius(radius gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_inner_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_inner_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -102,7 +102,7 @@ func (self class) SetInnerRadius(radius gd.Float) {
 func (self class) GetInnerRadius() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_inner_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_inner_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -112,8 +112,8 @@ func (self class) GetInnerRadius() gd.Float {
 func (self class) SetOuterRadius(radius gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_outer_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_outer_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -121,7 +121,7 @@ func (self class) SetOuterRadius(radius gd.Float) {
 func (self class) GetOuterRadius() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_outer_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_outer_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -131,8 +131,8 @@ func (self class) GetOuterRadius() gd.Float {
 func (self class) SetRings(rings gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rings)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_rings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -140,7 +140,7 @@ func (self class) SetRings(rings gd.Int) {
 func (self class) GetRings() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_rings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_rings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -150,8 +150,8 @@ func (self class) GetRings() gd.Int {
 func (self class) SetRingSegments(rings gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rings)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_ring_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_set_ring_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -159,7 +159,7 @@ func (self class) SetRingSegments(rings gd.Int) {
 func (self class) GetRingSegments() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_ring_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TorusMesh.Bind_get_ring_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

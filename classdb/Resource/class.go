@@ -222,8 +222,8 @@ func (class) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.Extensi
 func (self class) SetPath(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -234,8 +234,8 @@ Sets the [member resource_path] to [param path], potentially overriding an exist
 func (self class) TakeOverPath(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_take_over_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_take_over_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -243,7 +243,7 @@ func (self class) TakeOverPath(path gd.String) {
 func (self class) GetPath() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -253,8 +253,8 @@ func (self class) GetPath() gd.String {
 func (self class) SetName(name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -262,7 +262,7 @@ func (self class) SetName(name gd.String) {
 func (self class) GetName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -275,7 +275,7 @@ Returns the [RID] of this resource (or an empty RID). Many resources (such as [T
 func (self class) GetRid() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -285,8 +285,8 @@ func (self class) GetRid() gd.RID {
 func (self class) SetLocalToScene(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_local_to_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_local_to_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -294,7 +294,7 @@ func (self class) SetLocalToScene(enable bool) {
 func (self class) IsLocalToScene() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_is_local_to_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_is_local_to_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -307,7 +307,7 @@ If [member resource_local_to_scene] is set to [code]true[/code] and the resource
 func (self class) GetLocalScene() [1]gdclass.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_local_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_local_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -319,8 +319,8 @@ Calls [method _setup_local_to_scene]. If [member resource_local_to_scene] is set
 //go:nosplit
 func (self class) SetupLocalToScene() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_setup_local_to_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_setup_local_to_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -331,7 +331,7 @@ Generates a unique identifier for a resource to be contained inside a [PackedSce
 func (self class) GenerateSceneUniqueId() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_generate_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_generate_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -341,8 +341,8 @@ func (self class) GenerateSceneUniqueId() gd.String {
 func (self class) SetSceneUniqueId(id gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(id))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_set_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -350,7 +350,7 @@ func (self class) SetSceneUniqueId(id gd.String) {
 func (self class) GetSceneUniqueId() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -370,8 +370,8 @@ var damage:
 //go:nosplit
 func (self class) EmitChanged() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_emit_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_emit_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -389,7 +389,7 @@ func (self class) Duplicate(subresources bool) [1]gdclass.Resource {
 	var frame = callframe.New()
 	callframe.Arg(frame, subresources)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()
 	return ret

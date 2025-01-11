@@ -93,8 +93,8 @@ func (self Instance) SetAlignmentVertical(value gdclass.AspectRatioContainerAlig
 func (self class) SetRatio(ratio gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -102,7 +102,7 @@ func (self class) SetRatio(ratio gd.Float) {
 func (self class) GetRatio() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -112,8 +112,8 @@ func (self class) GetRatio() gd.Float {
 func (self class) SetStretchMode(stretch_mode gdclass.AspectRatioContainerStretchMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -121,7 +121,7 @@ func (self class) SetStretchMode(stretch_mode gdclass.AspectRatioContainerStretc
 func (self class) GetStretchMode() gdclass.AspectRatioContainerStretchMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AspectRatioContainerStretchMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -131,8 +131,8 @@ func (self class) GetStretchMode() gdclass.AspectRatioContainerStretchMode {
 func (self class) SetAlignmentHorizontal(alignment_horizontal gdclass.AspectRatioContainerAlignmentMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment_horizontal)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_alignment_horizontal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_alignment_horizontal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -140,7 +140,7 @@ func (self class) SetAlignmentHorizontal(alignment_horizontal gdclass.AspectRati
 func (self class) GetAlignmentHorizontal() gdclass.AspectRatioContainerAlignmentMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AspectRatioContainerAlignmentMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_horizontal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_horizontal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -150,8 +150,8 @@ func (self class) GetAlignmentHorizontal() gdclass.AspectRatioContainerAlignment
 func (self class) SetAlignmentVertical(alignment_vertical gdclass.AspectRatioContainerAlignmentMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment_vertical)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_alignment_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_set_alignment_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -159,7 +159,7 @@ func (self class) SetAlignmentVertical(alignment_vertical gdclass.AspectRatioCon
 func (self class) GetAlignmentVertical() gdclass.AspectRatioContainerAlignmentMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AspectRatioContainerAlignmentMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

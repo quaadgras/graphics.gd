@@ -134,8 +134,8 @@ func (self Instance) SetAutoExposureMaxExposureValue(value Float.X) {
 func (self class) SetAperture(aperture gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, aperture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_aperture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_aperture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -143,7 +143,7 @@ func (self class) SetAperture(aperture gd.Float) {
 func (self class) GetAperture() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_aperture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_aperture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -153,8 +153,8 @@ func (self class) GetAperture() gd.Float {
 func (self class) SetShutterSpeed(shutter_speed gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shutter_speed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_shutter_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_shutter_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -162,7 +162,7 @@ func (self class) SetShutterSpeed(shutter_speed gd.Float) {
 func (self class) GetShutterSpeed() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_shutter_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_shutter_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -172,8 +172,8 @@ func (self class) GetShutterSpeed() gd.Float {
 func (self class) SetFocalLength(focal_length gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, focal_length)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_focal_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_focal_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -181,7 +181,7 @@ func (self class) SetFocalLength(focal_length gd.Float) {
 func (self class) GetFocalLength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_focal_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_focal_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -191,8 +191,8 @@ func (self class) GetFocalLength() gd.Float {
 func (self class) SetFocusDistance(focus_distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, focus_distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_focus_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_focus_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -200,7 +200,7 @@ func (self class) SetFocusDistance(focus_distance gd.Float) {
 func (self class) GetFocusDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_focus_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_focus_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -210,8 +210,8 @@ func (self class) GetFocusDistance() gd.Float {
 func (self class) SetNear(near gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, near)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_near, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_near, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -219,7 +219,7 @@ func (self class) SetNear(near gd.Float) {
 func (self class) GetNear() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_near, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_near, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -229,8 +229,8 @@ func (self class) GetNear() gd.Float {
 func (self class) SetFar(far gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, far)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_far, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_far, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -238,7 +238,7 @@ func (self class) SetFar(far gd.Float) {
 func (self class) GetFar() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_far, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_far, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -251,7 +251,7 @@ Returns the vertical field of view that corresponds to the [member frustum_focal
 func (self class) GetFov() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_fov, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_fov, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -261,8 +261,8 @@ func (self class) GetFov() gd.Float {
 func (self class) SetAutoExposureMaxExposureValue(exposure_value_max gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, exposure_value_max)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_auto_exposure_max_exposure_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_auto_exposure_max_exposure_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -270,7 +270,7 @@ func (self class) SetAutoExposureMaxExposureValue(exposure_value_max gd.Float) {
 func (self class) GetAutoExposureMaxExposureValue() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_auto_exposure_max_exposure_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_auto_exposure_max_exposure_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -280,8 +280,8 @@ func (self class) GetAutoExposureMaxExposureValue() gd.Float {
 func (self class) SetAutoExposureMinExposureValue(exposure_value_min gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, exposure_value_min)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_auto_exposure_min_exposure_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_auto_exposure_min_exposure_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -289,7 +289,7 @@ func (self class) SetAutoExposureMinExposureValue(exposure_value_min gd.Float) {
 func (self class) GetAutoExposureMinExposureValue() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_auto_exposure_min_exposure_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_auto_exposure_min_exposure_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

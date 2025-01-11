@@ -110,8 +110,8 @@ func (self Instance) SetDensityTexture(value [1]gdclass.Texture3D) {
 func (self class) SetDensity(density gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, density)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_density, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_density, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -119,7 +119,7 @@ func (self class) SetDensity(density gd.Float) {
 func (self class) GetDensity() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_density, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_density, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -129,8 +129,8 @@ func (self class) GetDensity() gd.Float {
 func (self class) SetAlbedo(albedo gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, albedo)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_albedo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -138,7 +138,7 @@ func (self class) SetAlbedo(albedo gd.Color) {
 func (self class) GetAlbedo() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_albedo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -148,8 +148,8 @@ func (self class) GetAlbedo() gd.Color {
 func (self class) SetEmission(emission gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, emission)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_emission, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -157,7 +157,7 @@ func (self class) SetEmission(emission gd.Color) {
 func (self class) GetEmission() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_emission, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -167,8 +167,8 @@ func (self class) GetEmission() gd.Color {
 func (self class) SetHeightFalloff(height_falloff gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, height_falloff)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_height_falloff, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_height_falloff, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -176,7 +176,7 @@ func (self class) SetHeightFalloff(height_falloff gd.Float) {
 func (self class) GetHeightFalloff() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_height_falloff, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_height_falloff, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -186,8 +186,8 @@ func (self class) GetHeightFalloff() gd.Float {
 func (self class) SetEdgeFade(edge_fade gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, edge_fade)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_edge_fade, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_edge_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -195,7 +195,7 @@ func (self class) SetEdgeFade(edge_fade gd.Float) {
 func (self class) GetEdgeFade() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_edge_fade, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_edge_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -205,8 +205,8 @@ func (self class) GetEdgeFade() gd.Float {
 func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(density_texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_density_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_density_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -214,7 +214,7 @@ func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) {
 func (self class) GetDensityTexture() [1]gdclass.Texture3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_density_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_density_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture3D](r_ret.Get())}
 	frame.Free()
 	return ret

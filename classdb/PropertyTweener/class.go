@@ -147,7 +147,7 @@ func (self class) From(value gd.Variant) [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -164,7 +164,7 @@ tween.tween_property(self, "position", Vector2(200, 100), 1).from_current()
 func (self class) FromCurrent() [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_from_current, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_from_current, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -182,7 +182,7 @@ tween.tween_property(self, "position", Vector2.RIGHT * 100, 1).as_relative() #th
 func (self class) AsRelative() [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_as_relative, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_as_relative, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -196,7 +196,7 @@ func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Propert
 	var frame = callframe.New()
 	callframe.Arg(frame, trans)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_trans, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_trans, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -210,7 +210,7 @@ func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.PropertyTweener
 	var frame = callframe.New()
 	callframe.Arg(frame, ease)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_ease, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_ease, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -236,7 +236,7 @@ func (self class) SetCustomInterpolator(interpolator_method gd.Callable) [1]gdcl
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(interpolator_method))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_custom_interpolator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_custom_interpolator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -250,7 +250,7 @@ func (self class) SetDelay(delay gd.Float) [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
 	return ret

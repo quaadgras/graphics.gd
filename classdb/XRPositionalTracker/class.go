@@ -122,7 +122,7 @@ func (self Instance) SetHand(value gdclass.XRPositionalTrackerTrackerHand) {
 func (self class) GetTrackerProfile() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -132,8 +132,8 @@ func (self class) GetTrackerProfile() gd.String {
 func (self class) SetTrackerProfile(profile gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profile))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -141,7 +141,7 @@ func (self class) SetTrackerProfile(profile gd.String) {
 func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRPositionalTrackerTrackerHand](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -151,8 +151,8 @@ func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand {
 func (self class) SetTrackerHand(hand gdclass.XRPositionalTrackerTrackerHand) {
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -164,7 +164,7 @@ func (self class) HasPose(name gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_has_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_has_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -178,7 +178,7 @@ func (self class) GetPose(name gd.StringName) [1]gdclass.XRPose {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -191,8 +191,8 @@ Marks this pose as invalid, we don't clear the last reported state but it allows
 func (self class) InvalidatePose(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_invalidate_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_invalidate_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -207,8 +207,8 @@ func (self class) SetPose(name gd.StringName, transform gd.Transform3D, linear_v
 	callframe.Arg(frame, linear_velocity)
 	callframe.Arg(frame, angular_velocity)
 	callframe.Arg(frame, tracking_confidence)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -220,7 +220,7 @@ func (self class) GetInput(name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -234,8 +234,8 @@ func (self class) SetInput(name gd.StringName, value gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnPoseChanged(cb func(pose [1]gdclass.XRPose)) {

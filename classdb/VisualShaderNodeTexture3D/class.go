@@ -68,8 +68,8 @@ func (self Instance) SetTexture(value [1]gdclass.Texture3D) {
 func (self class) SetTexture(value [1]gdclass.Texture3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture3D.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture3D.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -77,7 +77,7 @@ func (self class) SetTexture(value [1]gdclass.Texture3D) {
 func (self class) GetTexture() [1]gdclass.Texture3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture3D](r_ret.Get())}
 	frame.Free()
 	return ret

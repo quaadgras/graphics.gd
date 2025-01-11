@@ -110,8 +110,8 @@ func (self class) SetStageSource(stage gdclass.RenderingDeviceShaderStage, sourc
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	callframe.Arg(frame, pointers.Get(source))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_set_stage_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_set_stage_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -123,7 +123,7 @@ func (self class) GetStageSource(stage gdclass.RenderingDeviceShaderStage) gd.St
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_get_stage_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_get_stage_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -133,8 +133,8 @@ func (self class) GetStageSource(stage gdclass.RenderingDeviceShaderStage) gd.St
 func (self class) SetLanguage(language gdclass.RenderingDeviceShaderLanguage) {
 	var frame = callframe.New()
 	callframe.Arg(frame, language)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -142,7 +142,7 @@ func (self class) SetLanguage(language gdclass.RenderingDeviceShaderLanguage) {
 func (self class) GetLanguage() gdclass.RenderingDeviceShaderLanguage {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceShaderLanguage](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

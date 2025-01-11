@@ -277,8 +277,8 @@ func (self class) SetValue(section gd.String, key gd.String, value gd.Variant) {
 	callframe.Arg(frame, pointers.Get(section))
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_set_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_set_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -292,7 +292,7 @@ func (self class) GetValue(section gd.String, key gd.String, def gd.Variant) gd.
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(def))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -306,7 +306,7 @@ func (self class) HasSection(section gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(section))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_has_section, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_has_section, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -321,7 +321,7 @@ func (self class) HasSectionKey(section gd.String, key gd.String) bool {
 	callframe.Arg(frame, pointers.Get(section))
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_has_section_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_has_section_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -334,7 +334,7 @@ Returns an array of all defined section identifiers.
 func (self class) GetSections() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_sections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_sections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -348,7 +348,7 @@ func (self class) GetSectionKeys(section gd.String) gd.PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(section))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_section_keys, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_section_keys, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -361,8 +361,8 @@ Deletes the specified section along with all the key-value pairs inside. Raises 
 func (self class) EraseSection(section gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(section))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_erase_section, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_erase_section, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -374,8 +374,8 @@ func (self class) EraseSectionKey(section gd.String, key gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(section))
 	callframe.Arg(frame, pointers.Get(key))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_erase_section_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_erase_section_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -388,7 +388,7 @@ func (self class) Load(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -403,7 +403,7 @@ func (self class) Parse(data gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -418,7 +418,7 @@ func (self class) Save(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -431,7 +431,7 @@ Obtain the text version of this config file (the same text that would be written
 func (self class) EncodeToText() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_encode_to_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_encode_to_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -447,7 +447,7 @@ func (self class) LoadEncrypted(path gd.String, key gd.PackedByteArray) error {
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -463,7 +463,7 @@ func (self class) LoadEncryptedPass(path gd.String, password gd.String) error {
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(password))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -479,7 +479,7 @@ func (self class) SaveEncrypted(path gd.String, key gd.PackedByteArray) error {
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -495,7 +495,7 @@ func (self class) SaveEncryptedPass(path gd.String, password gd.String) error {
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(password))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -507,8 +507,8 @@ Removes the entire contents of the config.
 //go:nosplit
 func (self class) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsConfigFile() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

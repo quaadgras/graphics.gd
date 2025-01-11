@@ -80,8 +80,8 @@ func (self Instance) SetTexture(value [1]gdclass.Texture3D) {
 func (self class) SetSize(size gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -89,7 +89,7 @@ func (self class) SetSize(size gd.Vector3) {
 func (self class) GetSize() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -99,8 +99,8 @@ func (self class) GetSize() gd.Vector3 {
 func (self class) SetTexture(texture [1]gdclass.Texture3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -108,7 +108,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture3D) {
 func (self class) GetTexture() [1]gdclass.Texture3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture3D](r_ret.Get())}
 	frame.Free()
 	return ret

@@ -154,8 +154,8 @@ func (self Instance) SetBaselineOffset(value Float.X) {
 func (self class) SetBaseFont(font [1]gdclass.Font) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_base_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_base_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -163,7 +163,7 @@ func (self class) SetBaseFont(font [1]gdclass.Font) {
 func (self class) GetBaseFont() [1]gdclass.Font {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_base_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_base_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -173,8 +173,8 @@ func (self class) GetBaseFont() [1]gdclass.Font {
 func (self class) SetVariationOpentype(coords gd.Dictionary) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(coords))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -182,7 +182,7 @@ func (self class) SetVariationOpentype(coords gd.Dictionary) {
 func (self class) GetVariationOpentype() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -192,8 +192,8 @@ func (self class) GetVariationOpentype() gd.Dictionary {
 func (self class) SetVariationEmbolden(strength gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_embolden, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_embolden, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -201,7 +201,7 @@ func (self class) SetVariationEmbolden(strength gd.Float) {
 func (self class) GetVariationEmbolden() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_embolden, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_embolden, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -211,8 +211,8 @@ func (self class) GetVariationEmbolden() gd.Float {
 func (self class) SetVariationFaceIndex(face_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, face_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_face_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_face_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -220,7 +220,7 @@ func (self class) SetVariationFaceIndex(face_index gd.Int) {
 func (self class) GetVariationFaceIndex() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_face_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_face_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -230,8 +230,8 @@ func (self class) GetVariationFaceIndex() gd.Int {
 func (self class) SetVariationTransform(transform gd.Transform2D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -239,7 +239,7 @@ func (self class) SetVariationTransform(transform gd.Transform2D) {
 func (self class) GetVariationTransform() gd.Transform2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -249,8 +249,8 @@ func (self class) GetVariationTransform() gd.Transform2D {
 func (self class) SetOpentypeFeatures(features gd.Dictionary) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(features))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_opentype_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_opentype_features, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -262,8 +262,8 @@ func (self class) SetSpacing(spacing gdclass.TextServerSpacingType, value gd.Int
 	var frame = callframe.New()
 	callframe.Arg(frame, spacing)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_spacing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -271,8 +271,8 @@ func (self class) SetSpacing(spacing gdclass.TextServerSpacingType, value gd.Int
 func (self class) SetBaselineOffset(baseline_offset gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, baseline_offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_baseline_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_baseline_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -280,7 +280,7 @@ func (self class) SetBaselineOffset(baseline_offset gd.Float) {
 func (self class) GetBaselineOffset() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_baseline_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_baseline_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

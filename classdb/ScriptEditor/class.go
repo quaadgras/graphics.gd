@@ -152,7 +152,7 @@ Returns the [ScriptEditorBase] object that the user is currently editing.
 func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_current_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_current_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ScriptEditorBase{gd.PointerMustAssertInstanceID[gdclass.ScriptEditorBase](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -165,7 +165,7 @@ Returns an array with all [ScriptEditorBase] objects which are currently open in
 func (self class) GetOpenScriptEditors() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_open_script_editors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_open_script_editors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -179,8 +179,8 @@ Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighligh
 func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(syntax_highlighter[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_register_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_register_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -192,8 +192,8 @@ Unregisters the [EditorSyntaxHighlighter] from the editor.
 func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(syntax_highlighter[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_unregister_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_unregister_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -204,8 +204,8 @@ Goes to the specified line in the current script.
 func (self class) GotoLine(line_number gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line_number)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_goto_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_goto_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -216,7 +216,7 @@ Returns a [Script] that is currently active in editor.
 func (self class) GetCurrentScript() [1]gdclass.Script {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_current_script, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_current_script, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Script{gd.PointerWithOwnershipTransferredToGo[gdclass.Script](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -229,7 +229,7 @@ Returns an array with all [Script] objects which are currently open in editor.
 func (self class) GetOpenScripts() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_open_scripts, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_open_scripts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -243,8 +243,8 @@ func (self class) OpenScriptCreateDialog(base_name gd.String, base_path gd.Strin
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base_name))
 	callframe.Arg(frame, pointers.Get(base_path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_open_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_open_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -277,8 +277,8 @@ class_theme_item:GraphNode:panel_selected
 func (self class) GotoHelp(topic gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(topic))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_goto_help, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_goto_help, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnEditorScriptChanged(cb func(script [1]gdclass.Script)) {

@@ -143,8 +143,8 @@ Makes [param node] root of the currently opened scene. Only works if the scene i
 func (self class) AddRootNode(node [1]gdclass.Node) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_add_root_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_add_root_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -155,7 +155,7 @@ Returns the edited (current) scene's root [Node]. Equivalent of [method EditorIn
 func (self class) GetScene() [1]gdclass.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -168,7 +168,7 @@ Returns the [EditorInterface] singleton instance.
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.EditorInterface{gd.PointerLifetimeBoundTo[gdclass.EditorInterface](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret

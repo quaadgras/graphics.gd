@@ -245,7 +245,7 @@ func (self class) Listen(port gd.Int, bind_address gd.String) error {
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(bind_address))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -258,7 +258,7 @@ Call this method at regular intervals (e.g. inside [method Node._process]) to pr
 func (self class) Poll() error {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -271,7 +271,7 @@ Returns [code]true[/code] if a packet with a new address/port combination was re
 func (self class) IsConnectionAvailable() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_is_connection_available, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_is_connection_available, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -284,7 +284,7 @@ Returns the local port this server is listening to.
 func (self class) GetLocalPort() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -297,7 +297,7 @@ Returns [code]true[/code] if the socket is open and listening on a port.
 func (self class) IsListening() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_is_listening, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_is_listening, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -310,7 +310,7 @@ Returns the first pending connection (connected to the appropriate address/port)
 func (self class) TakeConnection() [1]gdclass.PacketPeerUDP {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PacketPeerUDP{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerUDP](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -322,8 +322,8 @@ Stops the server, closing the UDP socket if open. Will close all connected [Pack
 //go:nosplit
 func (self class) Stop() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -331,8 +331,8 @@ func (self class) Stop() {
 func (self class) SetMaxPendingConnections(max_pending_connections gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_pending_connections)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_set_max_pending_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_set_max_pending_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -340,7 +340,7 @@ func (self class) SetMaxPendingConnections(max_pending_connections gd.Int) {
 func (self class) GetMaxPendingConnections() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_get_max_pending_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_get_max_pending_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

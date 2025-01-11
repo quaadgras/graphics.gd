@@ -66,8 +66,8 @@ func (self Instance) SetAabb(value AABB.PositionSize) {
 func (self class) SetAabb(aabb gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaceholderMesh.Bind_set_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaceholderMesh.Bind_set_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsPlaceholderMesh() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -122,8 +122,8 @@ func (self Instance) SetCustomSolverBias(value Float.X) {
 func (self class) SetCustomSolverBias(bias gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_set_custom_solver_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_set_custom_solver_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -131,7 +131,7 @@ func (self class) SetCustomSolverBias(bias gd.Float) {
 func (self class) GetCustomSolverBias() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_get_custom_solver_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_get_custom_solver_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -148,7 +148,7 @@ func (self class) Collide(local_xform gd.Transform2D, with_shape [1]gdclass.Shap
 	callframe.Arg(frame, pointers.Get(with_shape[0])[0])
 	callframe.Arg(frame, shape_xform)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -167,7 +167,7 @@ func (self class) CollideWithMotion(local_xform gd.Transform2D, local_motion gd.
 	callframe.Arg(frame, shape_xform)
 	callframe.Arg(frame, shape_motion)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_with_motion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_with_motion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -186,7 +186,7 @@ func (self class) CollideAndGetContacts(local_xform gd.Transform2D, with_shape [
 	callframe.Arg(frame, pointers.Get(with_shape[0])[0])
 	callframe.Arg(frame, shape_xform)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_and_get_contacts, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_and_get_contacts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -207,7 +207,7 @@ func (self class) CollideWithMotionAndGetContacts(local_xform gd.Transform2D, lo
 	callframe.Arg(frame, shape_xform)
 	callframe.Arg(frame, shape_motion)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_with_motion_and_get_contacts, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_with_motion_and_get_contacts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -221,8 +221,8 @@ func (self class) Draw(canvas_item gd.RID, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -233,7 +233,7 @@ Returns a [Rect2] representing the shapes boundary.
 func (self class) GetRect() gd.Rect2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

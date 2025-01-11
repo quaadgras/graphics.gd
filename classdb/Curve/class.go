@@ -219,7 +219,7 @@ func (self Instance) SetPointCount(value int) {
 func (self class) GetPointCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -229,8 +229,8 @@ func (self class) GetPointCount() gd.Int {
 func (self class) SetPointCount(count gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -246,7 +246,7 @@ func (self class) AddPoint(position gd.Vector2, left_tangent gd.Float, right_tan
 	callframe.Arg(frame, left_mode)
 	callframe.Arg(frame, right_mode)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_add_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_add_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -259,8 +259,8 @@ Removes the point at [param index] from the curve.
 func (self class) RemovePoint(index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_remove_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_remove_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -270,8 +270,8 @@ Removes all points from the curve.
 //go:nosplit
 func (self class) ClearPoints() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_clear_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_clear_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -283,7 +283,7 @@ func (self class) GetPointPosition(index gd.Int) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -297,8 +297,8 @@ func (self class) SetPointValue(index gd.Int, y gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, y)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -311,7 +311,7 @@ func (self class) SetPointOffset(index gd.Int, offset gd.Float) gd.Int {
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -325,7 +325,7 @@ func (self class) Sample(offset gd.Float) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -339,7 +339,7 @@ func (self class) SampleBaked(offset gd.Float) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_sample_baked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_sample_baked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -353,7 +353,7 @@ func (self class) GetPointLeftTangent(index gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_left_tangent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_left_tangent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -367,7 +367,7 @@ func (self class) GetPointRightTangent(index gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_right_tangent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_right_tangent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -381,7 +381,7 @@ func (self class) GetPointLeftMode(index gd.Int) gdclass.CurveTangentMode {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gdclass.CurveTangentMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_left_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_left_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -395,7 +395,7 @@ func (self class) GetPointRightMode(index gd.Int) gdclass.CurveTangentMode {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gdclass.CurveTangentMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_right_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_right_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -409,8 +409,8 @@ func (self class) SetPointLeftTangent(index gd.Int, tangent gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, tangent)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_left_tangent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_left_tangent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -422,8 +422,8 @@ func (self class) SetPointRightTangent(index gd.Int, tangent gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, tangent)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_right_tangent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_right_tangent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -435,8 +435,8 @@ func (self class) SetPointLeftMode(index gd.Int, mode gdclass.CurveTangentMode) 
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_left_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_left_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -448,8 +448,8 @@ func (self class) SetPointRightMode(index gd.Int, mode gdclass.CurveTangentMode)
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_right_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_point_right_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -457,7 +457,7 @@ func (self class) SetPointRightMode(index gd.Int, mode gdclass.CurveTangentMode)
 func (self class) GetMinValue() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_min_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_min_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -467,8 +467,8 @@ func (self class) GetMinValue() gd.Float {
 func (self class) SetMinValue(min gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, min)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_min_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_min_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -476,7 +476,7 @@ func (self class) SetMinValue(min gd.Float) {
 func (self class) GetMaxValue() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_max_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_max_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -486,8 +486,8 @@ func (self class) GetMaxValue() gd.Float {
 func (self class) SetMaxValue(max gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_max_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_max_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -497,8 +497,8 @@ Removes duplicate points, i.e. points that are less than 0.00001 units (engine e
 //go:nosplit
 func (self class) CleanDupes() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_clean_dupes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_clean_dupes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -508,8 +508,8 @@ Recomputes the baked cache of points for the curve.
 //go:nosplit
 func (self class) Bake() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -517,7 +517,7 @@ func (self class) Bake() {
 func (self class) GetBakeResolution() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_bake_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_bake_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -527,8 +527,8 @@ func (self class) GetBakeResolution() gd.Int {
 func (self class) SetBakeResolution(resolution gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, resolution)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_bake_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_set_bake_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnRangeChanged(cb func()) {

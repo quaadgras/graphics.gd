@@ -79,8 +79,8 @@ func (self Instance) SetMaterial(value [1]gdclass.Material) {
 func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -88,7 +88,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 func (self class) GetMesh() [1]gdclass.Mesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -98,8 +98,8 @@ func (self class) GetMesh() [1]gdclass.Mesh {
 func (self class) SetMaterial(material [1]gdclass.Material) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -107,7 +107,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 func (self class) GetMaterial() [1]gdclass.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGMesh3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
 	return ret

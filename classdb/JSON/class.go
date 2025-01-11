@@ -234,7 +234,7 @@ func (self class) Stringify(data gd.Variant, indent gd.String, sort_keys bool, f
 	callframe.Arg(frame, sort_keys)
 	callframe.Arg(frame, full_precision)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_stringify, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_stringify, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -248,7 +248,7 @@ func (self class) ParseString(json_string gd.String) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(json_string))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -266,7 +266,7 @@ func (self class) Parse(json_text gd.String, keep_text bool) error {
 	callframe.Arg(frame, pointers.Get(json_text))
 	callframe.Arg(frame, keep_text)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -276,7 +276,7 @@ func (self class) Parse(json_text gd.String, keep_text bool) error {
 func (self class) GetData() gd.Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -286,8 +286,8 @@ func (self class) GetData() gd.Variant {
 func (self class) SetData(data gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -298,7 +298,7 @@ Return the text parsed by [method parse] (requires passing [code]keep_text[/code
 func (self class) GetParsedText() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_parsed_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_parsed_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -311,7 +311,7 @@ Returns [code]0[/code] if the last call to [method parse] was successful, or the
 func (self class) GetErrorLine() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_error_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_error_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -324,7 +324,7 @@ Returns an empty string if the last call to [method parse] was successful, or th
 func (self class) GetErrorMessage() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_error_message, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_error_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret

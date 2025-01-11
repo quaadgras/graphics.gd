@@ -261,8 +261,8 @@ Adds name for a blend shape that will be added with [method add_surface_from_arr
 func (self class) AddBlendShape(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_add_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_add_blend_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -273,7 +273,7 @@ Returns the number of blend shapes that the [ArrayMesh] holds.
 func (self class) GetBlendShapeCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -287,7 +287,7 @@ func (self class) GetBlendShapeName(index gd.Int) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -301,8 +301,8 @@ func (self class) SetBlendShapeName(index gd.Int, name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_set_blend_shape_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_set_blend_shape_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -312,8 +312,8 @@ Removes all blend shapes from this [ArrayMesh].
 //go:nosplit
 func (self class) ClearBlendShapes() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_clear_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_clear_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -321,8 +321,8 @@ func (self class) ClearBlendShapes() {
 func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_set_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_set_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -330,7 +330,7 @@ func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) {
 func (self class) GetBlendShapeMode() gdclass.MeshBlendShapeMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.MeshBlendShapeMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -353,8 +353,8 @@ func (self class) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arra
 	callframe.Arg(frame, pointers.Get(blend_shapes))
 	callframe.Arg(frame, pointers.Get(lods))
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_add_surface_from_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_add_surface_from_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -364,8 +364,8 @@ Removes all surfaces from this [ArrayMesh].
 //go:nosplit
 func (self class) ClearSurfaces() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_clear_surfaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_clear_surfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -375,8 +375,8 @@ func (self class) SurfaceUpdateVertexRegion(surf_idx gd.Int, offset gd.Int, data
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_update_vertex_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_update_vertex_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -386,8 +386,8 @@ func (self class) SurfaceUpdateAttributeRegion(surf_idx gd.Int, offset gd.Int, d
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_update_attribute_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_update_attribute_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -397,8 +397,8 @@ func (self class) SurfaceUpdateSkinRegion(surf_idx gd.Int, offset gd.Int, data g
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_update_skin_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_update_skin_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -410,7 +410,7 @@ func (self class) SurfaceGetArrayLen(surf_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_array_len, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_array_len, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -424,7 +424,7 @@ func (self class) SurfaceGetArrayIndexLen(surf_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_array_index_len, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_array_index_len, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -438,7 +438,7 @@ func (self class) SurfaceGetFormat(surf_idx gd.Int) gdclass.MeshArrayFormat {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gdclass.MeshArrayFormat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -452,7 +452,7 @@ func (self class) SurfaceGetPrimitiveType(surf_idx gd.Int) gdclass.MeshPrimitive
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gdclass.MeshPrimitiveType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -466,7 +466,7 @@ func (self class) SurfaceFindByName(name gd.String) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_find_by_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_find_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -480,8 +480,8 @@ func (self class) SurfaceSetName(surf_idx gd.Int, name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_set_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -493,7 +493,7 @@ func (self class) SurfaceGetName(surf_idx gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -505,8 +505,8 @@ Regenerates tangents for each of the [ArrayMesh]'s surfaces.
 //go:nosplit
 func (self class) RegenNormalMaps() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_regen_normal_maps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_regen_normal_maps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -519,7 +519,7 @@ func (self class) LightmapUnwrap(transform gd.Transform3D, texel_size gd.Float) 
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, texel_size)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_lightmap_unwrap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_lightmap_unwrap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -529,8 +529,8 @@ func (self class) LightmapUnwrap(transform gd.Transform3D, texel_size gd.Float) 
 func (self class) SetCustomAabb(aabb gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_set_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -538,7 +538,7 @@ func (self class) SetCustomAabb(aabb gd.AABB) {
 func (self class) GetCustomAabb() gd.AABB {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -548,8 +548,8 @@ func (self class) GetCustomAabb() gd.AABB {
 func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_set_shadow_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_set_shadow_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -557,7 +557,7 @@ func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) {
 func (self class) GetShadowMesh() [1]gdclass.ArrayMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_shadow_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_shadow_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret.Get())}
 	frame.Free()
 	return ret

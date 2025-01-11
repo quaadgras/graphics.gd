@@ -174,8 +174,8 @@ Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNEC
 func (self class) PeerDisconnect(data gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -186,8 +186,8 @@ Request a disconnection from a peer, but only after all queued outgoing packets 
 func (self class) PeerDisconnectLater(data gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_later, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_later, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -198,8 +198,8 @@ Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_
 func (self class) PeerDisconnectNow(data gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_now, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_now, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -209,8 +209,8 @@ Sends a ping request to a peer. ENet automatically pings all connected peers at 
 //go:nosplit
 func (self class) Ping() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_ping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_ping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -221,8 +221,8 @@ Sets the [param ping_interval] in milliseconds at which pings will be sent to a 
 func (self class) PingInterval(ping_interval gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ping_interval)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_ping_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_ping_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -232,8 +232,8 @@ Forcefully disconnects a peer. The foreign host represented by the peer is not n
 //go:nosplit
 func (self class) Reset() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -247,7 +247,7 @@ func (self class) Send(channel gd.Int, packet gd.PackedByteArray, flags gd.Int) 
 	callframe.Arg(frame, pointers.Get(packet))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -266,8 +266,8 @@ func (self class) ThrottleConfigure(interval gd.Int, acceleration gd.Int, decele
 	callframe.Arg(frame, interval)
 	callframe.Arg(frame, acceleration)
 	callframe.Arg(frame, deceleration)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_throttle_configure, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_throttle_configure, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -281,8 +281,8 @@ func (self class) SetTimeout(timeout gd.Int, timeout_min gd.Int, timeout_max gd.
 	callframe.Arg(frame, timeout)
 	callframe.Arg(frame, timeout_min)
 	callframe.Arg(frame, timeout_max)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_set_timeout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_set_timeout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -293,7 +293,7 @@ Returns the IP address of this peer.
 func (self class) GetRemoteAddress() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_address, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_address, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -306,7 +306,7 @@ Returns the remote port of this peer.
 func (self class) GetRemotePort() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -320,7 +320,7 @@ func (self class) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) gd
 	var frame = callframe.New()
 	callframe.Arg(frame, statistic)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_statistic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_statistic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -333,7 +333,7 @@ Returns the current peer state. See [enum PeerState].
 func (self class) GetState() gdclass.ENetPacketPeerPeerState {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ENetPacketPeerPeerState](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -346,7 +346,7 @@ Returns the number of channels allocated for communication with peer.
 func (self class) GetChannels() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_channels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -359,7 +359,7 @@ Returns [code]true[/code] if the peer is currently active (i.e. the associated [
 func (self class) IsActive() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

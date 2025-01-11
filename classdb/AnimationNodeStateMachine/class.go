@@ -234,8 +234,8 @@ func (self class) AddNode(name gd.StringName, node [1]gdclass.AnimationNode, pos
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_add_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_add_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -247,8 +247,8 @@ func (self class) ReplaceNode(name gd.StringName, node [1]gdclass.AnimationNode)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(node[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_replace_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_replace_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -260,7 +260,7 @@ func (self class) GetNode(name gd.StringName) [1]gdclass.AnimationNode {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AnimationNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationNode](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -273,8 +273,8 @@ Deletes the given animation node from the graph.
 func (self class) RemoveNode(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -286,8 +286,8 @@ func (self class) RenameNode(name gd.StringName, new_name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(new_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_rename_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_rename_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -299,7 +299,7 @@ func (self class) HasNode(name gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_has_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_has_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -313,7 +313,7 @@ func (self class) GetNodeName(node [1]gdclass.AnimationNode) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -327,8 +327,8 @@ func (self class) SetNodePosition(name gd.StringName, position gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_node_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_node_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -340,7 +340,7 @@ func (self class) GetNodePosition(name gd.StringName) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -355,7 +355,7 @@ func (self class) HasTransition(from gd.StringName, to gd.StringName) bool {
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_has_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_has_transition, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -370,8 +370,8 @@ func (self class) AddTransition(from gd.StringName, to gd.StringName, transition
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, pointers.Get(transition[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_add_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_add_transition, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -383,7 +383,7 @@ func (self class) GetTransition(idx gd.Int) [1]gdclass.AnimationNodeStateMachine
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AnimationNodeStateMachineTransition{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationNodeStateMachineTransition](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -397,7 +397,7 @@ func (self class) GetTransitionFrom(idx gd.Int) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -411,7 +411,7 @@ func (self class) GetTransitionTo(idx gd.Int) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_to, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_to, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -424,7 +424,7 @@ Returns the number of connections in the graph.
 func (self class) GetTransitionCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -437,8 +437,8 @@ Deletes the given transition by index.
 func (self class) RemoveTransitionByIndex(idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_transition_by_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_transition_by_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -450,8 +450,8 @@ func (self class) RemoveTransition(from gd.StringName, to gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_transition, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -462,8 +462,8 @@ Sets the draw offset of the graph. Used for display in the editor.
 func (self class) SetGraphOffset(offset gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_graph_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_graph_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -474,7 +474,7 @@ Returns the draw offset of the graph. Used for display in the editor.
 func (self class) GetGraphOffset() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_graph_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_graph_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -484,8 +484,8 @@ func (self class) GetGraphOffset() gd.Vector2 {
 func (self class) SetStateMachineType(state_machine_type gdclass.AnimationNodeStateMachineStateMachineType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, state_machine_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_state_machine_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_state_machine_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -493,7 +493,7 @@ func (self class) SetStateMachineType(state_machine_type gdclass.AnimationNodeSt
 func (self class) GetStateMachineType() gdclass.AnimationNodeStateMachineStateMachineType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationNodeStateMachineStateMachineType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_state_machine_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_state_machine_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -503,8 +503,8 @@ func (self class) GetStateMachineType() gdclass.AnimationNodeStateMachineStateMa
 func (self class) SetAllowTransitionToSelf(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_allow_transition_to_self, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_allow_transition_to_self, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -512,7 +512,7 @@ func (self class) SetAllowTransitionToSelf(enable bool) {
 func (self class) IsAllowTransitionToSelf() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_is_allow_transition_to_self, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_is_allow_transition_to_self, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -522,8 +522,8 @@ func (self class) IsAllowTransitionToSelf() bool {
 func (self class) SetResetEnds(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_reset_ends, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_reset_ends, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -531,7 +531,7 @@ func (self class) SetResetEnds(enable bool) {
 func (self class) AreEndsReset() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_are_ends_reset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_are_ends_reset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

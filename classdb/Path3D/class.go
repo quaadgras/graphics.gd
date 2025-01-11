@@ -67,8 +67,8 @@ func (self Instance) SetCurve(value [1]gdclass.Curve3D) {
 func (self class) SetCurve(curve [1]gdclass.Curve3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Path3D.Bind_set_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Path3D.Bind_set_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -76,7 +76,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve3D) {
 func (self class) GetCurve() [1]gdclass.Curve3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Path3D.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Path3D.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Curve3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve3D](r_ret.Get())}
 	frame.Free()
 	return ret

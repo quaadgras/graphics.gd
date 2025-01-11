@@ -938,7 +938,7 @@ func (self class) GetEntropy(size gd.Int) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_entropy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_entropy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -951,7 +951,7 @@ Returns the list of certification authorities trusted by the operating system as
 func (self class) GetSystemCaCertificates() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_ca_certificates, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_ca_certificates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -965,7 +965,7 @@ Returns an array of connected MIDI device names, if they exist. Returns an empty
 func (self class) GetConnectedMidiInputs() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_connected_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_connected_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -978,8 +978,8 @@ Initializes the singleton for the system MIDI driver, allowing Godot to receive 
 //go:nosplit
 func (self class) OpenMidiInputs() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_open_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_open_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -990,8 +990,8 @@ Shuts down the system MIDI driver. Godot will no longer receive [InputEventMIDI]
 //go:nosplit
 func (self class) CloseMidiInputs() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_close_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_close_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1003,8 +1003,8 @@ func (self class) Alert(text gd.String, title gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, pointers.Get(title))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_alert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_alert, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1016,8 +1016,8 @@ Crashes the engine (or the editor if called within a [code]@tool[/code] script).
 func (self class) Crash(message gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_crash, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_crash, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1025,8 +1025,8 @@ func (self class) Crash(message gd.String) {
 func (self class) SetLowProcessorUsageMode(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_low_processor_usage_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_low_processor_usage_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1034,7 +1034,7 @@ func (self class) SetLowProcessorUsageMode(enable bool) {
 func (self class) IsInLowProcessorUsageMode() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_in_low_processor_usage_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_in_low_processor_usage_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1044,8 +1044,8 @@ func (self class) IsInLowProcessorUsageMode() bool {
 func (self class) SetLowProcessorUsageModeSleepUsec(usec gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, usec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_low_processor_usage_mode_sleep_usec, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_low_processor_usage_mode_sleep_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1053,7 +1053,7 @@ func (self class) SetLowProcessorUsageModeSleepUsec(usec gd.Int) {
 func (self class) GetLowProcessorUsageModeSleepUsec() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_low_processor_usage_mode_sleep_usec, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_low_processor_usage_mode_sleep_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1063,8 +1063,8 @@ func (self class) GetLowProcessorUsageModeSleepUsec() gd.Int {
 func (self class) SetDeltaSmoothing(delta_smoothing_enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, delta_smoothing_enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_delta_smoothing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_delta_smoothing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1072,7 +1072,7 @@ func (self class) SetDeltaSmoothing(delta_smoothing_enabled bool) {
 func (self class) IsDeltaSmoothingEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_delta_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_delta_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1085,7 +1085,7 @@ Returns the number of [i]logical[/i] CPU cores available on the host machine. On
 func (self class) GetProcessorCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1099,7 +1099,7 @@ Returns the full name of the CPU model on the host machine (e.g. [code]"Intel(R)
 func (self class) GetProcessorName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1113,7 +1113,7 @@ Returns the list of font family names available.
 func (self class) GetSystemFonts() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_fonts, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_fonts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1133,7 +1133,7 @@ func (self class) GetSystemFontPath(font_name gd.String, weight gd.Int, stretch 
 	callframe.Arg(frame, stretch)
 	callframe.Arg(frame, italic)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_font_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_font_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1157,7 +1157,7 @@ func (self class) GetSystemFontPathForText(font_name gd.String, text gd.String, 
 	callframe.Arg(frame, stretch)
 	callframe.Arg(frame, italic)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_font_path_for_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_font_path_for_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1171,7 +1171,7 @@ Returns the file path to the current engine executable.
 func (self class) GetExecutablePath() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_executable_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_executable_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1186,7 +1186,7 @@ Reads a user input string from the standard input (usually the terminal). This o
 func (self class) ReadStringFromStdin() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_string_from_stdin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_string_from_stdin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1236,7 +1236,7 @@ func (self class) Execute(path gd.String, arguments gd.PackedStringArray, output
 	callframe.Arg(frame, read_stderr)
 	callframe.Arg(frame, open_console)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1260,7 +1260,7 @@ func (self class) ExecuteWithPipe(path gd.String, arguments gd.PackedStringArray
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(arguments))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute_with_pipe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute_with_pipe, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1290,7 +1290,7 @@ func (self class) CreateProcess(path gd.String, arguments gd.PackedStringArray, 
 	callframe.Arg(frame, pointers.Get(arguments))
 	callframe.Arg(frame, open_console)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1307,7 +1307,7 @@ func (self class) CreateInstance(arguments gd.PackedStringArray) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(arguments))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1323,7 +1323,7 @@ func (self class) Kill(pid gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_kill, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_kill, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1343,7 +1343,7 @@ func (self class) ShellOpen(uri gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(uri))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_open, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_open, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1361,7 +1361,7 @@ func (self class) ShellShowInFileManager(file_or_dir_path gd.String, open_folder
 	callframe.Arg(frame, pointers.Get(file_or_dir_path))
 	callframe.Arg(frame, open_folder)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_show_in_file_manager, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_show_in_file_manager, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1376,7 +1376,7 @@ func (self class) IsProcessRunning(pid gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_process_running, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_process_running, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1393,7 +1393,7 @@ func (self class) GetProcessExitCode(pid gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_process_exit_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_process_exit_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1407,7 +1407,7 @@ Returns the number used by the host machine to uniquely identify this applicatio
 func (self class) GetProcessId() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_process_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_process_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1422,7 +1422,7 @@ func (self class) HasEnvironment(variable gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_has_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_has_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1438,7 +1438,7 @@ func (self class) GetEnvironment(variable gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1453,8 +1453,8 @@ func (self class) SetEnvironment(variable gd.String, value gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1466,8 +1466,8 @@ Removes the given environment variable from the current environment, if it exist
 func (self class) UnsetEnvironment(variable gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_unset_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_unset_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1531,7 +1531,7 @@ switch (OS.GetName())
 func (self class) GetName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1547,7 +1547,7 @@ Returns the same value as [method get_name] for other platforms.
 func (self class) GetDistributionName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_distribution_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_distribution_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1565,7 +1565,7 @@ Returns the exact production and build version of the operating system. This is 
 func (self class) GetVersion() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1613,7 +1613,7 @@ foreach (var argument in OS.GetCmdlineArgs())
 func (self class) GetCmdlineArgs() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_args, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_args, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1634,7 +1634,7 @@ To get all passed arguments, use [method get_cmdline_args].
 func (self class) GetCmdlineUserArgs() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_user_args, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_user_args, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1650,7 +1650,7 @@ The second element holds the driver version. For example, on the [code]nvidia[/c
 func (self class) GetVideoAdapterDriverInfo() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_video_adapter_driver_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_video_adapter_driver_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1667,8 +1667,8 @@ func (self class) SetRestartOnExit(restart bool, arguments gd.PackedStringArray)
 	var frame = callframe.New()
 	callframe.Arg(frame, restart)
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_restart_on_exit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_restart_on_exit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1679,7 +1679,7 @@ Returns [code]true[/code] if the project will automatically restart when it exit
 func (self class) IsRestartOnExitSet() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_restart_on_exit_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_restart_on_exit_set, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1692,7 +1692,7 @@ Returns the list of command line arguments that will be used when the project au
 func (self class) GetRestartOnExitArguments() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_restart_on_exit_arguments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_restart_on_exit_arguments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1707,8 +1707,8 @@ Delays execution of the current thread by [param usec] microseconds. [param usec
 func (self class) DelayUsec(usec gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, usec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_delay_usec, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_delay_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1721,8 +1721,8 @@ Delays execution of the current thread by [param msec] milliseconds. [param msec
 func (self class) DelayMsec(msec gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, msec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_delay_msec, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_delay_msec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1739,7 +1739,7 @@ If you want only the language code and not the fully specified locale from the O
 func (self class) GetLocale() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1753,7 +1753,7 @@ This can be used to narrow down fully specified locale strings to only the "comm
 func (self class) GetLocaleLanguage() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1767,7 +1767,7 @@ Returns the model name of the current device.
 func (self class) GetModelName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_model_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_model_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1780,7 +1780,7 @@ Returns [code]true[/code] if the [code]user://[/code] file system is persistent,
 func (self class) IsUserfsPersistent() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_userfs_persistent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_userfs_persistent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1793,7 +1793,7 @@ Returns [code]true[/code] if the engine was executed with the [code]--verbose[/c
 func (self class) IsStdoutVerbose() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_stdout_verbose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_stdout_verbose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1808,7 +1808,7 @@ Returns [code]false[/code] if the Godot binary used to run the project is a [i]r
 func (self class) IsDebugBuild() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_debug_build, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_debug_build, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1821,7 +1821,7 @@ Returns the amount of static memory being used by the program in bytes. Only wor
 func (self class) GetStaticMemoryUsage() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_usage, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_usage, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1834,7 +1834,7 @@ Returns the maximum amount of static memory used. Only works in debug builds.
 func (self class) GetStaticMemoryPeakUsage() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_peak_usage, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_peak_usage, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1852,7 +1852,7 @@ Returns a [Dictionary] containing information about the current memory with the 
 func (self class) GetMemoryInfo() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_memory_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_memory_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1880,7 +1880,7 @@ func (self class) MoveToTrash(path gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_move_to_trash, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_move_to_trash, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1900,7 +1900,7 @@ Not to be confused with [method get_data_dir], which returns the [i]global[/i] (
 func (self class) GetUserDataDir() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_user_data_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_user_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1917,7 +1917,7 @@ func (self class) GetSystemDir(dir gdclass.OSSystemDir, shared_storage bool) gd.
 	callframe.Arg(frame, dir)
 	callframe.Arg(frame, shared_storage)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1932,7 +1932,7 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 func (self class) GetConfigDir() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_config_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_config_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1947,7 +1947,7 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 func (self class) GetDataDir() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_data_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1962,7 +1962,7 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 func (self class) GetCacheDir() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cache_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cache_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1977,7 +1977,7 @@ Returns a string that is unique to the device.
 func (self class) GetUniqueId() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2004,7 +2004,7 @@ func (self class) GetKeycodeString(code Key) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_keycode_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_keycode_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2032,7 +2032,7 @@ func (self class) IsKeycodeUnicode(code gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_keycode_unicode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_keycode_unicode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2061,7 +2061,7 @@ func (self class) FindKeycodeFromString(s gd.String) Key {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_find_keycode_from_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_find_keycode_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2075,8 +2075,8 @@ This can useful when files may be opened by other applications, such as antiviru
 func (self class) SetUseFileAccessSaveAndSwap(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_use_file_access_save_and_swap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_use_file_access_save_and_swap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2088,7 +2088,7 @@ func (self class) SetThreadName(name gd.String) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_thread_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_thread_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2102,7 +2102,7 @@ Returns the ID of the current thread. This can be used in logs to ease debugging
 func (self class) GetThreadCallerId() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_thread_caller_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_thread_caller_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2116,7 +2116,7 @@ Returns the ID of the main thread. See [method get_thread_caller_id].
 func (self class) GetMainThreadId() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_main_thread_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_main_thread_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2132,7 +2132,7 @@ func (self class) HasFeature(tag_name gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tag_name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2146,7 +2146,7 @@ Returns [code]true[/code] if the application is running in the sandbox.
 func (self class) IsSandboxed() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_sandboxed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_sandboxed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2161,7 +2161,7 @@ func (self class) RequestPermission(name gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_request_permission, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_request_permission, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2175,7 +2175,7 @@ Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if 
 func (self class) RequestPermissions() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_request_permissions, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_request_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2189,7 +2189,7 @@ On macOS: Returns the list of user selected folders accessible to the applicatio
 func (self class) GetGrantedPermissions() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_granted_permissions, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_granted_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2201,8 +2201,8 @@ On macOS (sandboxed applications only), this function clears list of user select
 //go:nosplit
 func (self class) RevokeGrantedPermissions() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_revoke_granted_permissions, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_revoke_granted_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) Virtual(name string) reflect.Value {

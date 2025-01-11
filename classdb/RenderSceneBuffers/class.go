@@ -68,8 +68,8 @@ This method is called by the rendering server when the associated viewports conf
 func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(config[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffers.Bind_configure, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffers.Bind_configure, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsRenderSceneBuffers() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

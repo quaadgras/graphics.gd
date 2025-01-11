@@ -68,22 +68,22 @@ type API struct {
 		GetTypeName               func(self VariantType) String
 		CanConvert                func(self Variant, to VariantType) bool
 		CanConvertStrict          func(self Variant, to VariantType) bool
-		FromTypeConstructor       func(VariantType) func(ret callframe.Ptr[VariantPointers], arg uintptr)
-		ToTypeConstructor         func(VariantType) func(ret uintptr, arg callframe.Ptr[VariantPointers])
-		PointerOperatorEvaluator  func(op Operator, a, b VariantType) func(a, b, ret uintptr)
-		GetPointerBuiltinMethod   func(VariantType, StringName, Int) func(base uintptr, args callframe.Args, ret uintptr, c int32)
-		GetPointerConstructor     func(vtype VariantType, index int32) func(base uintptr, args callframe.Args)
-		GetPointerDestructor      func(VariantType) func(base uintptr)
+		FromTypeConstructor       func(VariantType) func(ret callframe.Ptr[VariantPointers], arg callframe.Addr)
+		ToTypeConstructor         func(VariantType) func(ret callframe.Addr, arg callframe.Ptr[VariantPointers])
+		PointerOperatorEvaluator  func(op Operator, a, b VariantType) func(a, b, ret callframe.Addr)
+		GetPointerBuiltinMethod   func(VariantType, StringName, Int) func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32)
+		GetPointerConstructor     func(vtype VariantType, index int32) func(base callframe.Addr, args callframe.Args)
+		GetPointerDestructor      func(VariantType) func(base callframe.Addr)
 		Construct                 func(t VariantType, args ...Variant) (Variant, error)
-		GetPointerSetter          func(VariantType, StringName) func(base, arg uintptr)
-		GetPointerGetter          func(VariantType, StringName) func(base, ret uintptr)
-		GetPointerIndexedSetter   func(VariantType) func(base uintptr, index Int, arg uintptr)
-		GetPointerIndexedGetter   func(VariantType) func(base uintptr, index Int, ret uintptr)
-		GetPointerKeyedSetter     func(VariantType) func(base uintptr, key uintptr, arg uintptr)
-		GetPointerKeyedGetter     func(VariantType) func(base uintptr, key uintptr, ret uintptr)
-		GetPointerKeyedChecker    func(VariantType) func(base uintptr, key uintptr) uint32
+		GetPointerSetter          func(VariantType, StringName) func(base, arg callframe.Addr)
+		GetPointerGetter          func(VariantType, StringName) func(base, ret callframe.Addr)
+		GetPointerIndexedSetter   func(VariantType) func(base callframe.Addr, index Int, arg callframe.Addr)
+		GetPointerIndexedGetter   func(VariantType) func(base callframe.Addr, index Int, ret callframe.Addr)
+		GetPointerKeyedSetter     func(VariantType) func(base, key, arg callframe.Addr)
+		GetPointerKeyedGetter     func(VariantType) func(base, key, ret callframe.Addr)
+		GetPointerKeyedChecker    func(VariantType) func(base, key callframe.Addr) uint32
 		GetConstantValue          func(t VariantType, name StringName) Variant
-		GetPointerUtilityFunction func(name StringName, hash Int) func(ret uintptr, args callframe.Args, c int32)
+		GetPointerUtilityFunction func(name StringName, hash Int) func(ret callframe.Addr, args callframe.Args, c int32)
 	}
 	Strings struct {
 		New        func(string) String
@@ -132,7 +132,7 @@ type API struct {
 	}
 	Object struct {
 		MethodBindCall        func(method MethodBind, obj [1]Object, arg ...Variant) (Variant, error)
-		MethodBindPointerCall func(method MethodBind, obj [1]Object, arg callframe.Args, ret uintptr)
+		MethodBindPointerCall func(method MethodBind, obj [1]Object, arg callframe.Args, ret callframe.Addr)
 		Destroy               func([1]Object)
 		GetSingleton          func(name StringName) [1]Object
 		GetInstanceBinding    func([1]Object, ExtensionToken, InstanceBindingType) any

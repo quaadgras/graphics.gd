@@ -93,7 +93,7 @@ func (self class) GetFeed(index gd.Int) [1]gdclass.CameraFeed {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_get_feed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_get_feed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CameraFeed{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraFeed](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -106,7 +106,7 @@ Returns the number of [CameraFeed]s registered.
 func (self class) GetFeedCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_get_feed_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_get_feed_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -119,7 +119,7 @@ Returns an array of [CameraFeed]s.
 func (self class) Feeds() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_feeds, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_feeds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -132,8 +132,8 @@ Adds the camera [param feed] to the camera server.
 func (self class) AddFeed(feed [1]gdclass.CameraFeed) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(feed[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_add_feed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_add_feed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -144,8 +144,8 @@ Removes the specified camera [param feed].
 func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(feed[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_remove_feed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_remove_feed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func OnCameraFeedAdded(cb func(id int)) {

@@ -66,8 +66,8 @@ func (self Instance) SetCompositorEffects(value gd.Array) {
 func (self class) SetCompositorEffects(compositor_effects gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(compositor_effects))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Compositor.Bind_set_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Compositor.Bind_set_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -75,7 +75,7 @@ func (self class) SetCompositorEffects(compositor_effects gd.Array) {
 func (self class) GetCompositorEffects() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Compositor.Bind_get_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Compositor.Bind_get_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret

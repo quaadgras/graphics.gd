@@ -12,7 +12,7 @@ func Sin(angle_rad Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_rad)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.sin(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.sin(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -22,7 +22,7 @@ func Cos(angle_rad Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_rad)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.cos(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.cos(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -32,7 +32,7 @@ func Tan(angle_rad Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_rad)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.tan(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.tan(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -42,7 +42,7 @@ func Sinh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.sinh(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.sinh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -52,7 +52,7 @@ func Cosh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.cosh(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.cosh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -62,7 +62,7 @@ func Tanh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.tanh(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.tanh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -72,7 +72,7 @@ func Asin(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.asin(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.asin(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -82,7 +82,7 @@ func Acos(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.acos(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.acos(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -92,7 +92,7 @@ func Atan(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.atan(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.atan(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -103,7 +103,7 @@ func Atan2(y Float, x Float) Float {
 	callframe.Arg(frame, y)
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.atan2(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.atan2(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -113,7 +113,7 @@ func Asinh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.asinh(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.asinh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -123,7 +123,7 @@ func Acosh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.acosh(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.acosh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -133,7 +133,7 @@ func Atanh(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.atanh(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.atanh(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -143,7 +143,7 @@ func Sqrt(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.sqrt(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.sqrt(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -154,7 +154,7 @@ func Fmod(x Float, y Float) Float {
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.fmod(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.fmod(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -165,7 +165,7 @@ func Fposmod(x Float, y Float) Float {
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.fposmod(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.fposmod(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -176,7 +176,7 @@ func Posmod(x Int, y Int) Int {
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.posmod(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.posmod(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -186,7 +186,7 @@ func Floor(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.floor(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.floor(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -196,7 +196,7 @@ func Floorf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.floorf(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.floorf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -206,7 +206,7 @@ func Floori(x Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.floori(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.floori(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -216,7 +216,7 @@ func Ceil(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.ceil(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.ceil(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -226,7 +226,7 @@ func Ceilf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.ceilf(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.ceilf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -236,7 +236,7 @@ func Ceili(x Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.ceili(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.ceili(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -246,7 +246,7 @@ func Round(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.round(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.round(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -256,7 +256,7 @@ func Roundf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.roundf(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.roundf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -266,7 +266,7 @@ func Roundi(x Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.roundi(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.roundi(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -276,7 +276,7 @@ func Abs(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.abs(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.abs(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -286,7 +286,7 @@ func Absf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.absf(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.absf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -296,7 +296,7 @@ func Absi(x Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.absi(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.absi(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -306,7 +306,7 @@ func Sign(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.sign(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.sign(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -316,7 +316,7 @@ func Signf(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.signf(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.signf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -326,7 +326,7 @@ func Signi(x Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.signi(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.signi(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -337,7 +337,7 @@ func Snapped(x Variant, step Variant) Variant {
 	callframe.Arg(frame, pointers.Get(x))
 	callframe.Arg(frame, pointers.Get(step))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.snapped(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.snapped(r_ret.Addr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -348,7 +348,7 @@ func Snappedf(x Float, step Float) Float {
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, step)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.snappedf(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.snappedf(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -359,7 +359,7 @@ func Snappedi(x Float, step Int) Int {
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, step)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.snappedi(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.snappedi(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -370,7 +370,7 @@ func Pow(base Float, exp Float) Float {
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, exp)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.pow(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.pow(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -380,7 +380,7 @@ func Log(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.log(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.log(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -390,7 +390,7 @@ func Exp(x Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.exp(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.exp(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -400,7 +400,7 @@ func IsNan(x Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.utility.is_nan(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.is_nan(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -410,7 +410,7 @@ func IsInf(x Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.utility.is_inf(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.is_inf(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -421,7 +421,7 @@ func IsEqualApprox(a Float, b Float) Bool {
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.utility.is_equal_approx(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.is_equal_approx(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -431,7 +431,7 @@ func IsZeroApprox(x Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.utility.is_zero_approx(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.is_zero_approx(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -441,7 +441,7 @@ func IsFinite(x Float) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.utility.is_finite(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.is_finite(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -452,7 +452,7 @@ func Ease(x Float, curve Float) Float {
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, curve)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.ease(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.ease(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -462,7 +462,7 @@ func StepDecimals(x Float) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.step_decimals(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.step_decimals(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -474,7 +474,7 @@ func Lerp(from Variant, to Variant, weight Variant) Variant {
 	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, pointers.Get(weight))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.lerp(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.lerp(r_ret.Addr(), frame.Array(0), 3)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -486,7 +486,7 @@ func Lerpf(from Float, to Float, weight Float) Float {
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, weight)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.lerpf(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.lerpf(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -500,7 +500,7 @@ func CubicInterpolate(from Float, to Float, pre Float, post Float, weight Float)
 	callframe.Arg(frame, post)
 	callframe.Arg(frame, weight)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.cubic_interpolate(r_ret.Uintptr(), frame.Array(0), 5)
+	Global.utility.cubic_interpolate(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -514,7 +514,7 @@ func CubicInterpolateAngle(from Float, to Float, pre Float, post Float, weight F
 	callframe.Arg(frame, post)
 	callframe.Arg(frame, weight)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.cubic_interpolate_angle(r_ret.Uintptr(), frame.Array(0), 5)
+	Global.utility.cubic_interpolate_angle(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -531,7 +531,7 @@ func CubicInterpolateInTime(from Float, to Float, pre Float, post Float, weight 
 	callframe.Arg(frame, pre_t)
 	callframe.Arg(frame, post_t)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.cubic_interpolate_in_time(r_ret.Uintptr(), frame.Array(0), 8)
+	Global.utility.cubic_interpolate_in_time(r_ret.Addr(), frame.Array(0), 8)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -548,7 +548,7 @@ func CubicInterpolateAngleInTime(from Float, to Float, pre Float, post Float, we
 	callframe.Arg(frame, pre_t)
 	callframe.Arg(frame, post_t)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.cubic_interpolate_angle_in_time(r_ret.Uintptr(), frame.Array(0), 8)
+	Global.utility.cubic_interpolate_angle_in_time(r_ret.Addr(), frame.Array(0), 8)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -562,7 +562,7 @@ func BezierInterpolate(start Float, control_1 Float, control_2 Float, end Float,
 	callframe.Arg(frame, end)
 	callframe.Arg(frame, t)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.bezier_interpolate(r_ret.Uintptr(), frame.Array(0), 5)
+	Global.utility.bezier_interpolate(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -576,7 +576,7 @@ func BezierDerivative(start Float, control_1 Float, control_2 Float, end Float, 
 	callframe.Arg(frame, end)
 	callframe.Arg(frame, t)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.bezier_derivative(r_ret.Uintptr(), frame.Array(0), 5)
+	Global.utility.bezier_derivative(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -587,7 +587,7 @@ func AngleDifference(from Float, to Float) Float {
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.angle_difference(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.angle_difference(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -599,7 +599,7 @@ func LerpAngle(from Float, to Float, weight Float) Float {
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, weight)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.lerp_angle(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.lerp_angle(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -611,7 +611,7 @@ func InverseLerp(from Float, to Float, weight Float) Float {
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, weight)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.inverse_lerp(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.inverse_lerp(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -625,7 +625,7 @@ func Remap(value Float, istart Float, istop Float, ostart Float, ostop Float) Fl
 	callframe.Arg(frame, ostart)
 	callframe.Arg(frame, ostop)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.remap(r_ret.Uintptr(), frame.Array(0), 5)
+	Global.utility.remap(r_ret.Addr(), frame.Array(0), 5)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -637,7 +637,7 @@ func Smoothstep(from Float, to Float, x Float) Float {
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.smoothstep(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.smoothstep(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -649,7 +649,7 @@ func MoveToward(from Float, to Float, delta Float) Float {
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, delta)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.move_toward(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.move_toward(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -661,7 +661,7 @@ func RotateToward(from Float, to Float, delta Float) Float {
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, delta)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.rotate_toward(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.rotate_toward(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -671,7 +671,7 @@ func DegToRad(deg Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, deg)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.deg_to_rad(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.deg_to_rad(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -681,7 +681,7 @@ func RadToDeg(rad Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, rad)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.rad_to_deg(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.rad_to_deg(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -691,7 +691,7 @@ func LinearToDb(lin Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, lin)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.linear_to_db(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.linear_to_db(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -701,7 +701,7 @@ func DbToLinear(db Float) Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, db)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.db_to_linear(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.db_to_linear(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -713,7 +713,7 @@ func Wrap(value Variant, min Variant, max Variant) Variant {
 	callframe.Arg(frame, pointers.Get(min))
 	callframe.Arg(frame, pointers.Get(max))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.wrap(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.wrap(r_ret.Addr(), frame.Array(0), 3)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -725,7 +725,7 @@ func Wrapi(value Int, min Int, max Int) Int {
 	callframe.Arg(frame, min)
 	callframe.Arg(frame, max)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.wrapi(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.wrapi(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -737,7 +737,7 @@ func Wrapf(value Float, min Float, max Float) Float {
 	callframe.Arg(frame, min)
 	callframe.Arg(frame, max)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.wrapf(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.wrapf(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -751,7 +751,7 @@ func Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.max(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.max(r_ret.Addr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -762,7 +762,7 @@ func Maxi(a Int, b Int) Int {
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.maxi(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.maxi(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -773,7 +773,7 @@ func Maxf(a Float, b Float) Float {
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.maxf(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.maxf(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -787,7 +787,7 @@ func Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.min(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.min(r_ret.Addr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -798,7 +798,7 @@ func Mini(a Int, b Int) Int {
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.mini(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.mini(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -809,7 +809,7 @@ func Minf(a Float, b Float) Float {
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.minf(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.minf(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -821,7 +821,7 @@ func Clamp(value Variant, min Variant, max Variant) Variant {
 	callframe.Arg(frame, pointers.Get(min))
 	callframe.Arg(frame, pointers.Get(max))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.clamp(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.clamp(r_ret.Addr(), frame.Array(0), 3)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -833,7 +833,7 @@ func Clampi(value Int, min Int, max Int) Int {
 	callframe.Arg(frame, min)
 	callframe.Arg(frame, max)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.clampi(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.clampi(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -845,7 +845,7 @@ func Clampf(value Float, min Float, max Float) Float {
 	callframe.Arg(frame, min)
 	callframe.Arg(frame, max)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.clampf(r_ret.Uintptr(), frame.Array(0), 3)
+	Global.utility.clampf(r_ret.Addr(), frame.Array(0), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -855,7 +855,7 @@ func NearestPo2(value Int) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.nearest_po2(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.nearest_po2(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -866,7 +866,7 @@ func Pingpong(value Float, length Float) Float {
 	callframe.Arg(frame, value)
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.pingpong(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.pingpong(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -874,15 +874,15 @@ func Pingpong(value Float, length Float) Float {
 
 func Randomize() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	Global.utility.randomize(r_ret.Uintptr(), frame.Array(0), 0)
+	var r_ret = callframe.Nil
+	Global.utility.randomize(r_ret.Addr(), frame.Array(0), 0)
 	frame.Free()
 }
 
 func Randi() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.randi(r_ret.Uintptr(), frame.Array(0), 0)
+	Global.utility.randi(r_ret.Addr(), frame.Array(0), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -891,7 +891,7 @@ func Randi() Int {
 func Randf() Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.randf(r_ret.Uintptr(), frame.Array(0), 0)
+	Global.utility.randf(r_ret.Addr(), frame.Array(0), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -902,7 +902,7 @@ func RandiRange(from Int, to Int) Int {
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.randi_range(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.randi_range(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -913,7 +913,7 @@ func RandfRange(from Float, to Float) Float {
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.randf_range(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.randf_range(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -924,7 +924,7 @@ func Randfn(mean Float, deviation Float) Float {
 	callframe.Arg(frame, mean)
 	callframe.Arg(frame, deviation)
 	var r_ret = callframe.Ret[Float](frame)
-	Global.utility.randfn(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.randfn(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -933,8 +933,8 @@ func Randfn(mean Float, deviation Float) Float {
 func Seed(base Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
-	var r_ret callframe.Nil
-	Global.utility.seed(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.seed(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -942,7 +942,7 @@ func RandFromSeed(seed Int) PackedInt64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, seed)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	Global.utility.rand_from_seed(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.rand_from_seed(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -952,7 +952,7 @@ func Weakref(obj Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.weakref(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.weakref(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -962,7 +962,7 @@ func Typeof(variable Variant) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.typeof(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.typeof(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -973,7 +973,7 @@ func TypeConvert(variant Variant, atype Int) Variant {
 	callframe.Arg(frame, pointers.Get(variant))
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.type_convert(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.type_convert(r_ret.Addr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -986,7 +986,7 @@ func Str(arg1 Variant, args ...Variant) String {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.utility.str(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.str(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -996,7 +996,7 @@ func ErrorString(error Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, error)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.utility.error_string(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.error_string(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1006,7 +1006,7 @@ func TypeToString(atype Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.utility.type_string(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.type_string(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1018,8 +1018,8 @@ func Print(arg1 Variant, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
-	Global.utility.print(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.print(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -1029,8 +1029,8 @@ func PrintRich(arg1 Variant, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
-	Global.utility.print_rich(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.print_rich(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -1040,8 +1040,8 @@ func Printerr(arg1 Variant, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
-	Global.utility.printerr(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.printerr(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -1051,8 +1051,8 @@ func Printt(arg1 Variant, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
-	Global.utility.printt(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.printt(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -1062,8 +1062,8 @@ func Prints(arg1 Variant, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
-	Global.utility.prints(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.prints(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -1073,8 +1073,8 @@ func Printraw(arg1 Variant, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
-	Global.utility.printraw(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.printraw(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -1084,8 +1084,8 @@ func PrintVerbose(arg1 Variant, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
-	Global.utility.print_verbose(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.print_verbose(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -1095,8 +1095,8 @@ func PushError(arg1 Variant, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
-	Global.utility.push_error(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.push_error(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -1106,8 +1106,8 @@ func PushWarning(arg1 Variant, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
-	Global.utility.push_warning(r_ret.Uintptr(), frame.Array(0), 1)
+	var r_ret = callframe.Nil
+	Global.utility.push_warning(r_ret.Addr(), frame.Array(0), 1)
 	frame.Free()
 }
 
@@ -1115,7 +1115,7 @@ func VarToStr(variable Variant) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.utility.var_to_str(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.var_to_str(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1125,7 +1125,7 @@ func StrToVar(s String) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.str_to_var(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.str_to_var(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1135,7 +1135,7 @@ func VarToBytes(variable Variant) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	Global.utility.var_to_bytes(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.var_to_bytes(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1145,7 +1145,7 @@ func BytesToVar(bytes PackedByteArray) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytes))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.bytes_to_var(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.bytes_to_var(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1155,7 +1155,7 @@ func VarToBytesWithObjects(variable Variant) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	Global.utility.var_to_bytes_with_objects(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.var_to_bytes_with_objects(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1165,7 +1165,7 @@ func BytesToVarWithObjects(bytes PackedByteArray) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytes))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.utility.bytes_to_var_with_objects(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.bytes_to_var_with_objects(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1175,7 +1175,7 @@ func Hash(variable Variant) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.hash(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.hash(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1185,7 +1185,7 @@ func InstanceFromId(instance_id Int) Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance_id)
 	var r_ret = callframe.Ret[uintptr](frame)
-	Global.utility.instance_from_id(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.instance_from_id(r_ret.Addr(), frame.Array(0), 1)
 	var ret Object = PointerMustAssertInstanceID[Object](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1195,7 +1195,7 @@ func IsInstanceIdValid(id Int) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.utility.is_instance_id_valid(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.is_instance_id_valid(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1205,7 +1205,7 @@ func IsInstanceValid(instance Variant) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(instance))
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.utility.is_instance_valid(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.is_instance_valid(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1214,7 +1214,7 @@ func IsInstanceValid(instance Variant) Bool {
 func RidAllocateId() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
-	Global.utility.rid_allocate_id(r_ret.Uintptr(), frame.Array(0), 0)
+	Global.utility.rid_allocate_id(r_ret.Addr(), frame.Array(0), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1224,7 +1224,7 @@ func RidFromInt64(base Int) RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
 	var r_ret = callframe.Ret[RID](frame)
-	Global.utility.rid_from_int64(r_ret.Uintptr(), frame.Array(0), 1)
+	Global.utility.rid_from_int64(r_ret.Addr(), frame.Array(0), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1235,7 +1235,7 @@ func IsSame(a Variant, b Variant) Bool {
 	callframe.Arg(frame, pointers.Get(a))
 	callframe.Arg(frame, pointers.Get(b))
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.utility.is_same(r_ret.Uintptr(), frame.Array(0), 2)
+	Global.utility.is_same(r_ret.Addr(), frame.Array(0), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1252,7 +1252,7 @@ func (self String) CasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.casecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.casecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1269,7 +1269,7 @@ func (self String) NocasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.nocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.nocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1287,7 +1287,7 @@ func (self String) NaturalcasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.naturalcasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.naturalcasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1305,7 +1305,7 @@ func (self String) NaturalnocasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.naturalnocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1321,7 +1321,7 @@ func (self String) FilecasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.filecasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.filecasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1337,7 +1337,7 @@ func (self String) FilenocasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.filenocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.filenocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1351,7 +1351,7 @@ func (self String) Length() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.length(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.length(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1367,7 +1367,7 @@ func (self String) Substr(from Int, len Int) String {
 	callframe.Arg(frame, len)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.substr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.substr(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1388,7 +1388,7 @@ func (self String) GetSlice(delimiter String, slice Int) String {
 	callframe.Arg(frame, slice)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.get_slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.get_slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1405,7 +1405,7 @@ func (self String) GetSlicec(delimiter Int, slice Int) String {
 	callframe.Arg(frame, slice)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.get_slicec(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.get_slicec(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1420,7 +1420,7 @@ func (self String) GetSliceCount(delimiter String) Int {
 	callframe.Arg(frame, pointers.Get(delimiter))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.get_slice_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.get_slice_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1453,7 +1453,7 @@ func (self String) Find(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1469,7 +1469,7 @@ func (self String) Findn(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.findn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1486,7 +1486,7 @@ func (self String) Count(what String, from Int, to Int) Int {
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.String.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1503,7 +1503,7 @@ func (self String) Countn(what String, from Int, to Int) Int {
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.String.countn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1519,7 +1519,7 @@ func (self String) Rfind(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1535,7 +1535,7 @@ func (self String) Rfindn(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.rfindn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.rfindn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1550,7 +1550,7 @@ func (self String) Match(expr String) Bool {
 	callframe.Arg(frame, pointers.Get(expr))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.match(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1565,7 +1565,7 @@ func (self String) Matchn(expr String) Bool {
 	callframe.Arg(frame, pointers.Get(expr))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.matchn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1580,7 +1580,7 @@ func (self String) BeginsWith(text String) Bool {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.begins_with(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1595,7 +1595,7 @@ func (self String) EndsWith(text String) Bool {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.ends_with(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1618,7 +1618,7 @@ func (self String) IsSubsequenceOf(text String) Bool {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.is_subsequence_of(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1633,7 +1633,7 @@ func (self String) IsSubsequenceOfn(text String) Bool {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.is_subsequence_ofn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1650,7 +1650,7 @@ func (self String) Bigrams() PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.bigrams(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.bigrams(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1671,7 +1671,7 @@ func (self String) Similarity(text String) Float {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.similarity(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.similarity(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1711,7 +1711,7 @@ func (self String) Format(values Variant, placeholder String) String {
 	callframe.Arg(frame, pointers.Get(placeholder))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.format(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.format(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1727,7 +1727,7 @@ func (self String) Replace(what String, forwhat String) String {
 	callframe.Arg(frame, pointers.Get(forwhat))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.replace(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.replace(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1743,7 +1743,7 @@ func (self String) Replacen(what String, forwhat String) String {
 	callframe.Arg(frame, pointers.Get(forwhat))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.replacen(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.replacen(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1758,7 +1758,7 @@ func (self String) Repeat(count Int) String {
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.repeat(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.repeat(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1772,7 +1772,7 @@ func (self String) Reverse() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1788,7 +1788,7 @@ func (self String) Insert(position Int, what String) String {
 	callframe.Arg(frame, pointers.Get(what))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1804,7 +1804,7 @@ func (self String) Erase(position Int, chars Int) String {
 	callframe.Arg(frame, chars)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.erase(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1830,7 +1830,7 @@ func (self String) Capitalize() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.capitalize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.capitalize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1844,7 +1844,7 @@ func (self String) ToCamelCase() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_camel_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_camel_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1858,7 +1858,7 @@ func (self String) ToPascalCase() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_pascal_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_pascal_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1885,7 +1885,7 @@ func (self String) ToSnakeCase() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_snake_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_snake_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1924,7 +1924,7 @@ func (self String) Split(delimiter String, allow_empty Bool, maxsplit Int) Packe
 	callframe.Arg(frame, maxsplit)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.split(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.String.split(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1957,7 +1957,7 @@ func (self String) Rsplit(delimiter String, allow_empty Bool, maxsplit Int) Pack
 	callframe.Arg(frame, maxsplit)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.rsplit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.String.rsplit(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1979,7 +1979,7 @@ func (self String) SplitFloats(delimiter String, allow_empty Bool) PackedFloat64
 	callframe.Arg(frame, allow_empty)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.split_floats(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.split_floats(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2010,7 +2010,7 @@ func (self String) Join(parts PackedStringArray) String {
 	callframe.Arg(frame, pointers.Get(parts))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.join(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2024,7 +2024,7 @@ func (self String) ToUpper() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_upper(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_upper(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2038,7 +2038,7 @@ func (self String) ToLower() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_lower(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_lower(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2057,7 +2057,7 @@ func (self String) Left(length Int) String {
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.left(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.left(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2076,7 +2076,7 @@ func (self String) Right(length Int) String {
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.right(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.right(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2093,7 +2093,7 @@ func (self String) StripEdges(left Bool, right Bool) String {
 	callframe.Arg(frame, right)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.strip_edges(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.strip_edges(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2107,7 +2107,7 @@ func (self String) StripEscapes() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.strip_escapes(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.strip_escapes(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2123,7 +2123,7 @@ func (self String) Lstrip(chars String) String {
 	callframe.Arg(frame, pointers.Get(chars))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.lstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.lstrip(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2139,7 +2139,7 @@ func (self String) Rstrip(chars String) String {
 	callframe.Arg(frame, pointers.Get(chars))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.rstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.rstrip(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2164,7 +2164,7 @@ func (self String) GetExtension() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.get_extension(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.get_extension(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2181,7 +2181,7 @@ func (self String) GetBasename() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.get_basename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.get_basename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2197,7 +2197,7 @@ func (self String) PathJoin(file String) String {
 	callframe.Arg(frame, pointers.Get(file))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.path_join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.path_join(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2212,7 +2212,7 @@ func (self String) UnicodeAt(at Int) Int {
 	callframe.Arg(frame, at)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.unicode_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.unicode_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2228,7 +2228,7 @@ func (self String) Indent(prefix String) String {
 	callframe.Arg(frame, pointers.Get(prefix))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.indent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.indent(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2242,7 +2242,7 @@ func (self String) Dedent() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.dedent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.dedent(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2257,7 +2257,7 @@ func (self String) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2271,7 +2271,7 @@ func (self String) Md5Text() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.md5_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.md5_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2285,7 +2285,7 @@ func (self String) Sha1Text() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.sha1_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.sha1_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2299,7 +2299,7 @@ func (self String) Sha256Text() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.sha256_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.sha256_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2313,7 +2313,7 @@ func (self String) Md5Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.md5_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.md5_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2327,7 +2327,7 @@ func (self String) Sha1Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.sha1_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.sha1_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2341,7 +2341,7 @@ func (self String) Sha256Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.sha256_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.sha256_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2355,7 +2355,7 @@ func (self String) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2382,7 +2382,7 @@ func (self String) Contains(what String) Bool {
 	callframe.Arg(frame, pointers.Get(what))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.contains(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2398,7 +2398,7 @@ func (self String) Containsn(what String) Bool {
 	callframe.Arg(frame, pointers.Get(what))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.containsn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.containsn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2413,7 +2413,7 @@ func (self String) IsAbsolutePath() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.is_absolute_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2427,7 +2427,7 @@ func (self String) IsRelativePath() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.is_relative_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2445,7 +2445,7 @@ func (self String) SimplifyPath() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.simplify_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.simplify_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2462,7 +2462,7 @@ func (self String) GetBaseDir() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.get_base_dir(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.get_base_dir(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2479,7 +2479,7 @@ func (self String) GetFile() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.get_file(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.get_file(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2494,7 +2494,7 @@ func (self String) XmlEscape(escape_quotes Bool) String {
 	callframe.Arg(frame, escape_quotes)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.xml_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.xml_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2508,7 +2508,7 @@ func (self String) XmlUnescape() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.xml_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.xml_unescape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2536,7 +2536,7 @@ func (self String) UriEncode() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.uri_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.uri_encode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2560,7 +2560,7 @@ func (self String) UriDecode() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.uri_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.uri_decode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2574,7 +2574,7 @@ func (self String) CEscape() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.c_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.c_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2589,7 +2589,7 @@ func (self String) CUnescape() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.c_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.c_unescape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2603,7 +2603,7 @@ func (self String) JsonEscape() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.json_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.json_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2617,7 +2617,7 @@ func (self String) ValidateNodeName() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.validate_node_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.validate_node_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2631,7 +2631,7 @@ func (self String) ValidateFilename() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.validate_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.validate_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2651,7 +2651,7 @@ func (self String) IsValidIdentifier() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.is_valid_identifier(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2672,7 +2672,7 @@ func (self String) IsValidInt() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.is_valid_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2692,7 +2692,7 @@ func (self String) IsValidFloat() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.is_valid_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2715,7 +2715,7 @@ func (self String) IsValidHexNumber(with_prefix Bool) Bool {
 	callframe.Arg(frame, with_prefix)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.is_valid_hex_number(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2729,7 +2729,7 @@ func (self String) IsValidHtmlColor() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.is_valid_html_color(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2743,7 +2743,7 @@ func (self String) IsValidIpAddress() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.is_valid_ip_address(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2757,7 +2757,7 @@ func (self String) IsValidFilename() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.is_valid_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2777,7 +2777,7 @@ func (self String) ToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2798,7 +2798,7 @@ func (self String) ToFloat() Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2822,7 +2822,7 @@ func (self String) HexToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.hex_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.hex_to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2848,7 +2848,7 @@ func (self String) BinToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.bin_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.bin_to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2864,7 +2864,7 @@ func (self String) Lpad(min_length Int, character String) String {
 	callframe.Arg(frame, pointers.Get(character))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.lpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.lpad(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2880,7 +2880,7 @@ func (self String) Rpad(min_length Int, character String) String {
 	callframe.Arg(frame, pointers.Get(character))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.rpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.rpad(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2895,7 +2895,7 @@ func (self String) PadDecimals(digits Int) String {
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.pad_decimals(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.pad_decimals(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2910,7 +2910,7 @@ func (self String) PadZeros(digits Int) String {
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.pad_zeros(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.pad_zeros(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2925,7 +2925,7 @@ func (self String) TrimPrefix(prefix String) String {
 	callframe.Arg(frame, pointers.Get(prefix))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.trim_prefix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.trim_prefix(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2940,7 +2940,7 @@ func (self String) TrimSuffix(suffix String) String {
 	callframe.Arg(frame, pointers.Get(suffix))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.trim_suffix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.trim_suffix(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2954,7 +2954,7 @@ func (self String) ToAsciiBuffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_ascii_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_ascii_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2968,7 +2968,7 @@ func (self String) ToUtf8Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_utf8_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_utf8_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2982,7 +2982,7 @@ func (self String) ToUtf16Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_utf16_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_utf16_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2996,7 +2996,7 @@ func (self String) ToUtf32Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_utf32_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_utf32_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3022,7 +3022,7 @@ func (self String) HexDecode() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.hex_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.hex_decode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3036,7 +3036,7 @@ func (self String) ToWcharBuffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.String.to_wchar_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.String.to_wchar_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3065,7 +3065,7 @@ func (self String) NumScientific(number Float) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.builtin.String.num_scientific(pointers.Get(self)[0], frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.num_scientific(callframe.Nil, frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3096,7 +3096,7 @@ func (self String) Num(number Float, decimals Int) String {
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, decimals)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.builtin.String.num(pointers.Get(self)[0], frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.String.num(callframe.Nil, frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3114,7 +3114,7 @@ func (self String) NumInt64(number Int, base Int, capitalize_hex Bool) String {
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, capitalize_hex)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.builtin.String.num_int64(pointers.Get(self)[0], frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.String.num_int64(callframe.Nil, frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3132,7 +3132,7 @@ func (self String) NumUint64(number Int, base Int, capitalize_hex Bool) String {
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, capitalize_hex)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.builtin.String.num_uint64(pointers.Get(self)[0], frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.String.num_uint64(callframe.Nil, frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3150,7 +3150,7 @@ func (self String) Chr(char Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, char)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.builtin.String.chr(pointers.Get(self)[0], frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.chr(callframe.Nil, frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3165,7 +3165,7 @@ func (self String) HumanizeSize(size Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.builtin.String.humanize_size(pointers.Get(self)[0], frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.String.humanize_size(callframe.Nil, frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3182,7 +3182,7 @@ func (self StringName) CasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.casecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.casecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3199,7 +3199,7 @@ func (self StringName) NocasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.nocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.nocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3217,7 +3217,7 @@ func (self StringName) NaturalcasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.naturalcasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.naturalcasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3235,7 +3235,7 @@ func (self StringName) NaturalnocasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.naturalnocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.naturalnocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3251,7 +3251,7 @@ func (self StringName) FilecasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.filecasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.filecasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3267,7 +3267,7 @@ func (self StringName) FilenocasecmpTo(to String) Int {
 	callframe.Arg(frame, pointers.Get(to))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.filenocasecmp_to(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.filenocasecmp_to(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3281,7 +3281,7 @@ func (self StringName) Length() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.length(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.length(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3297,7 +3297,7 @@ func (self StringName) Substr(from Int, len Int) String {
 	callframe.Arg(frame, len)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.substr(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.substr(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3318,7 +3318,7 @@ func (self StringName) GetSlice(delimiter String, slice Int) String {
 	callframe.Arg(frame, slice)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.get_slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.get_slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3335,7 +3335,7 @@ func (self StringName) GetSlicec(delimiter Int, slice Int) String {
 	callframe.Arg(frame, slice)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.get_slicec(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.get_slicec(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3350,7 +3350,7 @@ func (self StringName) GetSliceCount(delimiter String) Int {
 	callframe.Arg(frame, pointers.Get(delimiter))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.get_slice_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.get_slice_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3383,7 +3383,7 @@ func (self StringName) Find(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3399,7 +3399,7 @@ func (self StringName) Findn(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.findn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.findn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3416,7 +3416,7 @@ func (self StringName) Count(what String, from Int, to Int) Int {
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.StringName.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3433,7 +3433,7 @@ func (self StringName) Countn(what String, from Int, to Int) Int {
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.countn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.StringName.countn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3449,7 +3449,7 @@ func (self StringName) Rfind(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3465,7 +3465,7 @@ func (self StringName) Rfindn(what String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.rfindn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.rfindn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3480,7 +3480,7 @@ func (self StringName) Match(expr String) Bool {
 	callframe.Arg(frame, pointers.Get(expr))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.match(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.match(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3495,7 +3495,7 @@ func (self StringName) Matchn(expr String) Bool {
 	callframe.Arg(frame, pointers.Get(expr))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.matchn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.matchn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3510,7 +3510,7 @@ func (self StringName) BeginsWith(text String) Bool {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.begins_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.begins_with(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3525,7 +3525,7 @@ func (self StringName) EndsWith(text String) Bool {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.ends_with(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.ends_with(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3548,7 +3548,7 @@ func (self StringName) IsSubsequenceOf(text String) Bool {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_subsequence_of(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.is_subsequence_of(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3563,7 +3563,7 @@ func (self StringName) IsSubsequenceOfn(text String) Bool {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_subsequence_ofn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.is_subsequence_ofn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3580,7 +3580,7 @@ func (self StringName) Bigrams() PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.bigrams(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.bigrams(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3601,7 +3601,7 @@ func (self StringName) Similarity(text String) Float {
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.similarity(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.similarity(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3634,7 +3634,7 @@ func (self StringName) Format(values Variant, placeholder String) String {
 	callframe.Arg(frame, pointers.Get(placeholder))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.format(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.format(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3650,7 +3650,7 @@ func (self StringName) Replace(what String, forwhat String) String {
 	callframe.Arg(frame, pointers.Get(forwhat))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.replace(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.replace(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3666,7 +3666,7 @@ func (self StringName) Replacen(what String, forwhat String) String {
 	callframe.Arg(frame, pointers.Get(forwhat))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.replacen(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.replacen(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3681,7 +3681,7 @@ func (self StringName) Repeat(count Int) String {
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.repeat(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.repeat(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3695,7 +3695,7 @@ func (self StringName) Reverse() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3711,7 +3711,7 @@ func (self StringName) Insert(position Int, what String) String {
 	callframe.Arg(frame, pointers.Get(what))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3727,7 +3727,7 @@ func (self StringName) Erase(position Int, chars Int) String {
 	callframe.Arg(frame, chars)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.erase(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3753,7 +3753,7 @@ func (self StringName) Capitalize() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.capitalize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.capitalize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3767,7 +3767,7 @@ func (self StringName) ToCamelCase() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_camel_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_camel_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3781,7 +3781,7 @@ func (self StringName) ToPascalCase() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_pascal_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_pascal_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3808,7 +3808,7 @@ func (self StringName) ToSnakeCase() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_snake_case(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_snake_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3847,7 +3847,7 @@ func (self StringName) Split(delimiter String, allow_empty Bool, maxsplit Int) P
 	callframe.Arg(frame, maxsplit)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.split(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.StringName.split(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3880,7 +3880,7 @@ func (self StringName) Rsplit(delimiter String, allow_empty Bool, maxsplit Int) 
 	callframe.Arg(frame, maxsplit)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.rsplit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.StringName.rsplit(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3902,7 +3902,7 @@ func (self StringName) SplitFloats(delimiter String, allow_empty Bool) PackedFlo
 	callframe.Arg(frame, allow_empty)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.split_floats(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.split_floats(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3933,7 +3933,7 @@ func (self StringName) Join(parts PackedStringArray) String {
 	callframe.Arg(frame, pointers.Get(parts))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.join(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3947,7 +3947,7 @@ func (self StringName) ToUpper() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_upper(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_upper(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3961,7 +3961,7 @@ func (self StringName) ToLower() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_lower(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_lower(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3980,7 +3980,7 @@ func (self StringName) Left(length Int) String {
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.left(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.left(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3999,7 +3999,7 @@ func (self StringName) Right(length Int) String {
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.right(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.right(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4016,7 +4016,7 @@ func (self StringName) StripEdges(left Bool, right Bool) String {
 	callframe.Arg(frame, right)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.strip_edges(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.strip_edges(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4030,7 +4030,7 @@ func (self StringName) StripEscapes() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.strip_escapes(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.strip_escapes(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4046,7 +4046,7 @@ func (self StringName) Lstrip(chars String) String {
 	callframe.Arg(frame, pointers.Get(chars))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.lstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.lstrip(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4062,7 +4062,7 @@ func (self StringName) Rstrip(chars String) String {
 	callframe.Arg(frame, pointers.Get(chars))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.rstrip(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.rstrip(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4087,7 +4087,7 @@ func (self StringName) GetExtension() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.get_extension(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.get_extension(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4104,7 +4104,7 @@ func (self StringName) GetBasename() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.get_basename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.get_basename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4120,7 +4120,7 @@ func (self StringName) PathJoin(file String) String {
 	callframe.Arg(frame, pointers.Get(file))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.path_join(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.path_join(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4135,7 +4135,7 @@ func (self StringName) UnicodeAt(at Int) Int {
 	callframe.Arg(frame, at)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.unicode_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.unicode_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4151,7 +4151,7 @@ func (self StringName) Indent(prefix String) String {
 	callframe.Arg(frame, pointers.Get(prefix))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.indent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.indent(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4165,7 +4165,7 @@ func (self StringName) Dedent() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.dedent(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.dedent(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4179,7 +4179,7 @@ func (self StringName) Md5Text() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.md5_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.md5_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4193,7 +4193,7 @@ func (self StringName) Sha1Text() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.sha1_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.sha1_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4207,7 +4207,7 @@ func (self StringName) Sha256Text() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.sha256_text(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.sha256_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4221,7 +4221,7 @@ func (self StringName) Md5Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.md5_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.md5_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4235,7 +4235,7 @@ func (self StringName) Sha1Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.sha1_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.sha1_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4249,7 +4249,7 @@ func (self StringName) Sha256Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.sha256_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.sha256_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4263,7 +4263,7 @@ func (self StringName) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4290,7 +4290,7 @@ func (self StringName) Contains(what String) Bool {
 	callframe.Arg(frame, pointers.Get(what))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.contains(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.contains(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4306,7 +4306,7 @@ func (self StringName) Containsn(what String) Bool {
 	callframe.Arg(frame, pointers.Get(what))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.containsn(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.containsn(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4321,7 +4321,7 @@ func (self StringName) IsAbsolutePath() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_absolute_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.is_absolute_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4335,7 +4335,7 @@ func (self StringName) IsRelativePath() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_relative_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.is_relative_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4353,7 +4353,7 @@ func (self StringName) SimplifyPath() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.simplify_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.simplify_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4370,7 +4370,7 @@ func (self StringName) GetBaseDir() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.get_base_dir(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.get_base_dir(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4387,7 +4387,7 @@ func (self StringName) GetFile() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.get_file(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.get_file(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4402,7 +4402,7 @@ func (self StringName) XmlEscape(escape_quotes Bool) String {
 	callframe.Arg(frame, escape_quotes)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.xml_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.xml_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4416,7 +4416,7 @@ func (self StringName) XmlUnescape() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.xml_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.xml_unescape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4444,7 +4444,7 @@ func (self StringName) UriEncode() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.uri_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.uri_encode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4468,7 +4468,7 @@ func (self StringName) UriDecode() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.uri_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.uri_decode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4482,7 +4482,7 @@ func (self StringName) CEscape() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.c_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.c_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4497,7 +4497,7 @@ func (self StringName) CUnescape() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.c_unescape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.c_unescape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4511,7 +4511,7 @@ func (self StringName) JsonEscape() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.json_escape(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.json_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4525,7 +4525,7 @@ func (self StringName) ValidateNodeName() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.validate_node_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.validate_node_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4539,7 +4539,7 @@ func (self StringName) ValidateFilename() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.validate_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.validate_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4559,7 +4559,7 @@ func (self StringName) IsValidIdentifier() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_valid_identifier(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.is_valid_identifier(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4580,7 +4580,7 @@ func (self StringName) IsValidInt() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_valid_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.is_valid_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4600,7 +4600,7 @@ func (self StringName) IsValidFloat() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_valid_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.is_valid_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4623,7 +4623,7 @@ func (self StringName) IsValidHexNumber(with_prefix Bool) Bool {
 	callframe.Arg(frame, with_prefix)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_valid_hex_number(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.is_valid_hex_number(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4637,7 +4637,7 @@ func (self StringName) IsValidHtmlColor() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_valid_html_color(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.is_valid_html_color(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4651,7 +4651,7 @@ func (self StringName) IsValidIpAddress() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_valid_ip_address(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.is_valid_ip_address(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4665,7 +4665,7 @@ func (self StringName) IsValidFilename() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.is_valid_filename(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.is_valid_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4685,7 +4685,7 @@ func (self StringName) ToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4706,7 +4706,7 @@ func (self StringName) ToFloat() Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4730,7 +4730,7 @@ func (self StringName) HexToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.hex_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.hex_to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4756,7 +4756,7 @@ func (self StringName) BinToInt() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.bin_to_int(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.bin_to_int(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4772,7 +4772,7 @@ func (self StringName) Lpad(min_length Int, character String) String {
 	callframe.Arg(frame, pointers.Get(character))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.lpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.lpad(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4788,7 +4788,7 @@ func (self StringName) Rpad(min_length Int, character String) String {
 	callframe.Arg(frame, pointers.Get(character))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.rpad(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.StringName.rpad(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4803,7 +4803,7 @@ func (self StringName) PadDecimals(digits Int) String {
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.pad_decimals(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.pad_decimals(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4818,7 +4818,7 @@ func (self StringName) PadZeros(digits Int) String {
 	callframe.Arg(frame, digits)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.pad_zeros(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.pad_zeros(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4833,7 +4833,7 @@ func (self StringName) TrimPrefix(prefix String) String {
 	callframe.Arg(frame, pointers.Get(prefix))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.trim_prefix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.trim_prefix(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4848,7 +4848,7 @@ func (self StringName) TrimSuffix(suffix String) String {
 	callframe.Arg(frame, pointers.Get(suffix))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.trim_suffix(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.StringName.trim_suffix(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4862,7 +4862,7 @@ func (self StringName) ToAsciiBuffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_ascii_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_ascii_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4876,7 +4876,7 @@ func (self StringName) ToUtf8Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_utf8_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_utf8_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4890,7 +4890,7 @@ func (self StringName) ToUtf16Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_utf16_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_utf16_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4904,7 +4904,7 @@ func (self StringName) ToUtf32Buffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_utf32_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_utf32_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4930,7 +4930,7 @@ func (self StringName) HexDecode() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.hex_decode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.hex_decode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4944,7 +4944,7 @@ func (self StringName) ToWcharBuffer() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.to_wchar_buffer(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.to_wchar_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4959,7 +4959,7 @@ func (self StringName) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.StringName.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.StringName.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4973,7 +4973,7 @@ func (self NodePath) IsAbsolute() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.is_absolute(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.NodePath.is_absolute(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4988,7 +4988,7 @@ func (self NodePath) GetNameCount() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.get_name_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.NodePath.get_name_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5017,7 +5017,7 @@ func (self NodePath) GetName(idx Int) StringName {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.get_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.NodePath.get_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5032,7 +5032,7 @@ func (self NodePath) GetSubnameCount() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.get_subname_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.NodePath.get_subname_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5047,7 +5047,7 @@ func (self NodePath) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.NodePath.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5074,7 +5074,7 @@ func (self NodePath) GetSubname(idx Int) StringName {
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.get_subname(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.NodePath.get_subname(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5088,7 +5088,7 @@ func (self NodePath) GetConcatenatedNames() StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.get_concatenated_names(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.NodePath.get_concatenated_names(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5112,7 +5112,7 @@ func (self NodePath) GetConcatenatedSubnames() StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.get_concatenated_subnames(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.NodePath.get_concatenated_subnames(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5130,7 +5130,7 @@ func (self NodePath) Slice(begin Int, end Int) NodePath {
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.NodePath.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5162,7 +5162,7 @@ func (self NodePath) GetAsPropertyPath() NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.get_as_property_path(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.NodePath.get_as_property_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5176,7 +5176,7 @@ func (self NodePath) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.NodePath.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.NodePath.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5192,7 +5192,7 @@ func (self Callable) Create(variant Variant, method StringName) Callable {
 	callframe.Arg(frame, pointers.Get(variant))
 	callframe.Arg(frame, pointers.Get(method))
 	var r_ret = callframe.Ret[callablePointers](frame)
-	Global.builtin.Callable.create(pointers.Get(self)[0], frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Callable.create(callframe.Nil, frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5207,7 +5207,7 @@ func (self Callable) Callv(arguments Array) Variant {
 	callframe.Arg(frame, pointers.Get(arguments))
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.callv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Callable.callv(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5221,7 +5221,7 @@ func (self Callable) IsNull() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.is_null(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5239,7 +5239,7 @@ func (self Callable) IsCustom() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.is_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.is_custom(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5253,7 +5253,7 @@ func (self Callable) IsStandard() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.is_standard(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.is_standard(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5267,7 +5267,7 @@ func (self Callable) IsValid() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.is_valid(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.is_valid(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5281,7 +5281,7 @@ func (self Callable) GetObject() Object {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.get_object(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret Object = PointerWithOwnershipTransferredToGo[Object](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5295,7 +5295,7 @@ func (self Callable) GetObjectId() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.get_object_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.get_object_id(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5309,7 +5309,7 @@ func (self Callable) GetMethod() StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.get_method(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.get_method(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5323,7 +5323,7 @@ func (self Callable) GetArgumentCount() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.get_argument_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.get_argument_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5337,7 +5337,7 @@ func (self Callable) GetBoundArgumentsCount() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.get_bound_arguments_count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.get_bound_arguments_count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5351,7 +5351,7 @@ func (self Callable) GetBoundArguments() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.get_bound_arguments(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.get_bound_arguments(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5366,7 +5366,7 @@ func (self Callable) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Callable.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5382,7 +5382,7 @@ func (self Callable) Bindv(arguments Array) Callable {
 	callframe.Arg(frame, pointers.Get(arguments))
 	var r_ret = callframe.Ret[callablePointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.bindv(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Callable.bindv(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5403,7 +5403,7 @@ func (self Callable) Unbind(argcount Int) Callable {
 	callframe.Arg(frame, argcount)
 	var r_ret = callframe.Ret[callablePointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.unbind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Callable.unbind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5420,7 +5420,7 @@ func (self Callable) Call(args ...Variant) Variant {
 	}
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.call(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	Global.builtin.Callable.call(p_self.Addr(), frame.Array(0), r_ret.Addr(), int32(len(args))+0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5449,9 +5449,9 @@ func (self Callable) CallDeferred(args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.call_deferred(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	Global.builtin.Callable.call_deferred(p_self.Addr(), frame.Array(0), r_ret.Addr(), int32(len(args))+0)
 	frame.Free()
 }
 
@@ -5464,9 +5464,9 @@ func (self Callable) Rpc(args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.rpc(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	Global.builtin.Callable.rpc(p_self.Addr(), frame.Array(0), r_ret.Addr(), int32(len(args))+0)
 	frame.Free()
 }
 
@@ -5480,9 +5480,9 @@ func (self Callable) RpcId(peer_id Int, args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.rpc_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+1)
+	Global.builtin.Callable.rpc_id(p_self.Addr(), frame.Array(0), r_ret.Addr(), int32(len(args))+1)
 	frame.Free()
 }
 
@@ -5498,7 +5498,7 @@ func (self Callable) Bind(args ...Variant) Callable {
 	}
 	var r_ret = callframe.Ret[callablePointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Callable.bind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	Global.builtin.Callable.bind(p_self.Addr(), frame.Array(0), r_ret.Addr(), int32(len(args))+0)
 	var ret = pointers.New[Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5512,7 +5512,7 @@ func (self Signal) IsNull() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Signal.is_null(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Signal.is_null(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5526,7 +5526,7 @@ func (self Signal) GetObject() Object {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Signal.get_object(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Signal.get_object(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret Object = PointerWithOwnershipTransferredToGo[Object](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5540,7 +5540,7 @@ func (self Signal) GetObjectId() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Signal.get_object_id(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Signal.get_object_id(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5554,7 +5554,7 @@ func (self Signal) GetName() StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Signal.get_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Signal.get_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5578,7 +5578,7 @@ func (self Signal) Connect(callable Callable, flags Int) Int {
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Signal.connect(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Signal.connect(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5591,9 +5591,9 @@ Disconnects this signal from the specified [Callable]. If the connection does no
 func (self Signal) Disconnect(callable Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Signal.disconnect(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Signal.disconnect(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -5606,7 +5606,7 @@ func (self Signal) IsConnected(callable Callable) Bool {
 	callframe.Arg(frame, pointers.Get(callable))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Signal.is_connected(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Signal.is_connected(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5623,7 +5623,7 @@ func (self Signal) GetConnections() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Signal.get_connections(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Signal.get_connections(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5638,9 +5638,9 @@ func (self Signal) Emit(args ...Variant) {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Signal.emit(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), int32(len(args))+0)
+	Global.builtin.Signal.emit(p_self.Addr(), frame.Array(0), r_ret.Addr(), int32(len(args))+0)
 	frame.Free()
 }
 
@@ -5652,7 +5652,7 @@ func (self Dictionary) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Dictionary.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5666,7 +5666,7 @@ func (self Dictionary) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Dictionary.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5678,9 +5678,9 @@ Clears the dictionary, removing all entries from it.
 //go:nosplit
 func (self Dictionary) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Dictionary.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	frame.Free()
 }
 
@@ -5728,9 +5728,9 @@ func (self Dictionary) Merge(dictionary Dictionary, overwrite Bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	callframe.Arg(frame, overwrite)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.merge(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Dictionary.merge(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	frame.Free()
 }
 
@@ -5753,7 +5753,7 @@ func (self Dictionary) Merged(dictionary Dictionary, overwrite Bool) Dictionary 
 	callframe.Arg(frame, overwrite)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.merged(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Dictionary.merged(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5797,7 +5797,7 @@ func (self Dictionary) Has(key Variant) Bool {
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Dictionary.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5816,7 +5816,7 @@ func (self Dictionary) HasAll(keys Array) Bool {
 	callframe.Arg(frame, pointers.Get(keys))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.has_all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Dictionary.has_all(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5832,7 +5832,7 @@ func (self Dictionary) FindKey(value Variant) Variant {
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.find_key(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Dictionary.find_key(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5848,7 +5848,7 @@ func (self Dictionary) Erase(key Variant) Bool {
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Dictionary.erase(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5879,7 +5879,7 @@ func (self Dictionary) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Dictionary.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5893,7 +5893,7 @@ func (self Dictionary) Keys() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.keys(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Dictionary.keys(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5907,7 +5907,7 @@ func (self Dictionary) Values() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.values(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Dictionary.values(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5922,7 +5922,7 @@ func (self Dictionary) Duplicate(deep Bool) Dictionary {
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Dictionary.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5938,7 +5938,7 @@ func (self Dictionary) Get(key Variant, def Variant) Variant {
 	callframe.Arg(frame, pointers.Get(def))
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.get(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Dictionary.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5954,7 +5954,7 @@ func (self Dictionary) GetOrAdd(key Variant, def Variant) Variant {
 	callframe.Arg(frame, pointers.Get(def))
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.get_or_add(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Dictionary.get_or_add(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -5966,9 +5966,9 @@ Makes the dictionary read-only, i.e. disables modification of the dictionary's c
 //go:nosplit
 func (self Dictionary) MakeReadOnly() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Dictionary.make_read_only(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	frame.Free()
 }
 
@@ -5980,7 +5980,7 @@ func (self Dictionary) IsReadOnly() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Dictionary.is_read_only(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -5996,7 +5996,7 @@ func (self Dictionary) RecursiveEqual(dictionary Dictionary, recursion_count Int
 	callframe.Arg(frame, recursion_count)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.recursive_equal(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Dictionary.recursive_equal(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6010,7 +6010,7 @@ func (self Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6024,7 +6024,7 @@ func (self Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6036,9 +6036,9 @@ Removes all elements from the array. This is equivalent to using [method resize]
 //go:nosplit
 func (self Array) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	frame.Free()
 }
 
@@ -6051,7 +6051,7 @@ func (self Array) Hash() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.hash(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.hash(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6064,9 +6064,9 @@ Assigns elements of another [param array] into the array. Resizes the array to m
 func (self Array) Assign(array Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.assign(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.assign(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -6077,9 +6077,9 @@ Appends an element at the end of the array. See also [method push_front].
 func (self Array) PushBack(value Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -6091,9 +6091,9 @@ Adds an element at the beginning of the array. See also [method push_back].
 func (self Array) PushFront(value Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.push_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.push_front(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -6104,9 +6104,9 @@ Appends [param value] at the end of the array (alias of [method push_back]).
 func (self Array) Append(value Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -6123,9 +6123,9 @@ print(nums) # Prints [1, 2, 3, 4, 5, 6]
 func (self Array) AppendArray(array Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -6140,7 +6140,7 @@ func (self Array) Resize(size Int) Int {
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6158,7 +6158,7 @@ func (self Array) Insert(position Int, value Variant) Int {
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6174,9 +6174,9 @@ If you need to return the removed element, use [method pop_at]. To remove an ele
 func (self Array) RemoveAt(position Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -6203,9 +6203,9 @@ GD.Print(array); // Prints [2, 2, 2, 2, 2]
 func (self Array) Fill(value Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -6218,9 +6218,9 @@ Finds and removes the first occurrence of [param value] from the array. If [para
 func (self Array) Erase(value Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.erase(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.erase(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -6233,7 +6233,7 @@ func (self Array) Front() Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.front(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6248,7 +6248,7 @@ func (self Array) Back() Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6273,7 +6273,7 @@ func (self Array) PickRandom() Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.pick_random(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.pick_random(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6291,7 +6291,7 @@ func (self Array) Find(what Variant, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6307,7 +6307,7 @@ func (self Array) Rfind(what Variant, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6322,7 +6322,7 @@ func (self Array) Count(value Variant) Int {
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6359,7 +6359,7 @@ func (self Array) Has(value Variant) Bool {
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6373,7 +6373,7 @@ func (self Array) PopBack() Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.pop_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.pop_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6388,7 +6388,7 @@ func (self Array) PopFront() Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.pop_front(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.pop_front(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6404,7 +6404,7 @@ func (self Array) PopAt(position Int) Variant {
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.pop_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.pop_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6429,9 +6429,9 @@ GD.Print(numbers); // Prints [2.5, 5, 8, 10]
 //go:nosplit
 func (self Array) Sort() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	frame.Free()
 }
 
@@ -6467,9 +6467,9 @@ print(files) # Prints ["newfile1", "newfile2", "newfile10", "newfile11"]
 func (self Array) SortCustom(fn Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(fn))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.sort_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.sort_custom(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	frame.Free()
 }
 
@@ -6480,9 +6480,9 @@ Shuffles all elements of the array in a random order.
 //go:nosplit
 func (self Array) Shuffle() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.shuffle(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.shuffle(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	frame.Free()
 }
 
@@ -6509,7 +6509,7 @@ func (self Array) Bsearch(value Variant, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6549,7 +6549,7 @@ func (self Array) BsearchCustom(value Variant, fn Callable, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.bsearch_custom(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.Array.bsearch_custom(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6561,9 +6561,9 @@ Reverses the order of all elements in the array.
 //go:nosplit
 func (self Array) Reverse() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	frame.Free()
 }
 
@@ -6577,7 +6577,7 @@ func (self Array) Duplicate(deep Bool) Array {
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6608,7 +6608,7 @@ func (self Array) Slice(begin Int, end Int, step Int, deep Bool) Array {
 	callframe.Arg(frame, deep)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 4)
+	Global.builtin.Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 4)
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6635,7 +6635,7 @@ func (self Array) Filter(method Callable) Array {
 	callframe.Arg(frame, pointers.Get(method))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.filter(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.filter(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6662,7 +6662,7 @@ func (self Array) Map(method Callable) Array {
 	callframe.Arg(frame, pointers.Get(method))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.map_(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.map_(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6702,7 +6702,7 @@ func (self Array) Reduce(method Callable, accum Variant) Variant {
 	callframe.Arg(frame, pointers.Get(accum))
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.reduce(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.Array.reduce(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6734,7 +6734,7 @@ func (self Array) Any(method Callable) Bool {
 	callframe.Arg(frame, pointers.Get(method))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.any(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.any(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6789,7 +6789,7 @@ func (self Array) All(method Callable) Bool {
 	callframe.Arg(frame, pointers.Get(method))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.all(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.all(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6804,7 +6804,7 @@ func (self Array) Max() Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.max(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.max(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6818,7 +6818,7 @@ func (self Array) Min() Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.min(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.min(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6837,7 +6837,7 @@ func (self Array) IsTyped() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.is_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.is_typed(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6852,7 +6852,7 @@ func (self Array) IsSameTyped(array Array) Bool {
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.is_same_typed(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.Array.is_same_typed(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6866,7 +6866,7 @@ func (self Array) GetTypedBuiltin() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.get_typed_builtin(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.get_typed_builtin(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6880,7 +6880,7 @@ func (self Array) GetTypedClassName() StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.get_typed_class_name(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.get_typed_class_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6894,7 +6894,7 @@ func (self Array) GetTypedScript() Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.get_typed_script(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.get_typed_script(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -6907,9 +6907,9 @@ In GDScript, arrays are automatically read-only if declared with the [code]const
 //go:nosplit
 func (self Array) MakeReadOnly() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.make_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.make_read_only(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	frame.Free()
 }
 
@@ -6922,7 +6922,7 @@ func (self Array) IsReadOnly() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Array.is_read_only(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.Array.is_read_only(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -6937,7 +6937,7 @@ func (selfPtr *PackedByteArray) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6953,7 +6953,7 @@ func (selfPtr *PackedByteArray) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -6969,9 +6969,9 @@ func (selfPtr *PackedByteArray) Set(index Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -6986,7 +6986,7 @@ func (selfPtr *PackedByteArray) PushBack(value Int) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7003,7 +7003,7 @@ func (selfPtr *PackedByteArray) Append(value Int) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7018,9 +7018,9 @@ func (selfPtr *PackedByteArray) AppendArray(array PackedByteArray) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7033,9 +7033,9 @@ func (selfPtr *PackedByteArray) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7051,7 +7051,7 @@ func (selfPtr *PackedByteArray) Insert(at_index Int, value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7066,9 +7066,9 @@ func (selfPtr *PackedByteArray) Fill(value Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7083,7 +7083,7 @@ func (selfPtr *PackedByteArray) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7097,9 +7097,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedByteArray) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7114,7 +7114,7 @@ func (selfPtr *PackedByteArray) Has(value Int) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7128,9 +7128,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedByteArray) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7148,7 +7148,7 @@ func (selfPtr *PackedByteArray) Slice(begin Int, end Int) PackedByteArray {
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -7162,9 +7162,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedByteArray) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7181,7 +7181,7 @@ func (selfPtr *PackedByteArray) Bsearch(value Int, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7197,7 +7197,7 @@ func (selfPtr *PackedByteArray) Duplicate() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -7215,7 +7215,7 @@ func (selfPtr *PackedByteArray) Find(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7233,7 +7233,7 @@ func (selfPtr *PackedByteArray) Rfind(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7250,7 +7250,7 @@ func (selfPtr *PackedByteArray) Count(value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7266,7 +7266,7 @@ func (selfPtr *PackedByteArray) GetStringFromAscii() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.get_string_from_ascii(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.get_string_from_ascii(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -7282,7 +7282,7 @@ func (selfPtr *PackedByteArray) GetStringFromUtf8() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.get_string_from_utf8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.get_string_from_utf8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -7298,7 +7298,7 @@ func (selfPtr *PackedByteArray) GetStringFromUtf16() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.get_string_from_utf16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.get_string_from_utf16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -7314,7 +7314,7 @@ func (selfPtr *PackedByteArray) GetStringFromUtf32() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.get_string_from_utf32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.get_string_from_utf32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -7330,7 +7330,7 @@ func (selfPtr *PackedByteArray) GetStringFromWchar() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.get_string_from_wchar(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.get_string_from_wchar(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -7356,7 +7356,7 @@ func (selfPtr *PackedByteArray) HexEncode() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.hex_encode(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.hex_encode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -7373,7 +7373,7 @@ func (selfPtr *PackedByteArray) Compress(compression_mode Int) PackedByteArray {
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.compress(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.compress(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -7392,7 +7392,7 @@ func (selfPtr *PackedByteArray) Decompress(buffer_size Int, compression_mode Int
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decompress(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.decompress(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -7413,7 +7413,7 @@ func (selfPtr *PackedByteArray) DecompressDynamic(max_output_size Int, compressi
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decompress_dynamic(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.decompress_dynamic(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -7430,7 +7430,7 @@ func (selfPtr *PackedByteArray) DecodeU8(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_u8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_u8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7447,7 +7447,7 @@ func (selfPtr *PackedByteArray) DecodeS8(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_s8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_s8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7464,7 +7464,7 @@ func (selfPtr *PackedByteArray) DecodeU16(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_u16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_u16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7481,7 +7481,7 @@ func (selfPtr *PackedByteArray) DecodeS16(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_s16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_s16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7498,7 +7498,7 @@ func (selfPtr *PackedByteArray) DecodeU32(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_u32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_u32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7515,7 +7515,7 @@ func (selfPtr *PackedByteArray) DecodeS32(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_s32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_s32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7532,7 +7532,7 @@ func (selfPtr *PackedByteArray) DecodeU64(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_u64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_u64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7549,7 +7549,7 @@ func (selfPtr *PackedByteArray) DecodeS64(byte_offset Int) Int {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_s64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_s64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7566,7 +7566,7 @@ func (selfPtr *PackedByteArray) DecodeHalf(byte_offset Int) Float {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_half(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_half(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7583,7 +7583,7 @@ func (selfPtr *PackedByteArray) DecodeFloat(byte_offset Int) Float {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7600,7 +7600,7 @@ func (selfPtr *PackedByteArray) DecodeDouble(byte_offset Int) Float {
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Ret[Float](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_double(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedByteArray.decode_double(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7618,7 +7618,7 @@ func (selfPtr *PackedByteArray) HasEncodedVar(byte_offset Int, allow_objects Boo
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.has_encoded_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.has_encoded_var(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7636,7 +7636,7 @@ func (selfPtr *PackedByteArray) DecodeVar(byte_offset Int, allow_objects Bool) V
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[variantPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.decode_var(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -7654,7 +7654,7 @@ func (selfPtr *PackedByteArray) DecodeVarSize(byte_offset Int, allow_objects Boo
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.decode_var_size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.decode_var_size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7672,7 +7672,7 @@ func (selfPtr *PackedByteArray) ToInt32Array() PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.to_int32_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.to_int32_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -7690,7 +7690,7 @@ func (selfPtr *PackedByteArray) ToInt64Array() PackedInt64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.to_int64_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.to_int64_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedInt64Array](r_ret.Get())
 	frame.Free()
@@ -7708,7 +7708,7 @@ func (selfPtr *PackedByteArray) ToFloat32Array() PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.to_float32_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.to_float32_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedFloat32Array](r_ret.Get())
 	frame.Free()
@@ -7726,7 +7726,7 @@ func (selfPtr *PackedByteArray) ToFloat64Array() PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.to_float64_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedByteArray.to_float64_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
 	frame.Free()
@@ -7742,9 +7742,9 @@ func (selfPtr *PackedByteArray) EncodeU8(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_u8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_u8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7758,9 +7758,9 @@ func (selfPtr *PackedByteArray) EncodeS8(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_s8(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_s8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7774,9 +7774,9 @@ func (selfPtr *PackedByteArray) EncodeU16(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_u16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_u16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7790,9 +7790,9 @@ func (selfPtr *PackedByteArray) EncodeS16(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_s16(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_s16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7806,9 +7806,9 @@ func (selfPtr *PackedByteArray) EncodeU32(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_u32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_u32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7822,9 +7822,9 @@ func (selfPtr *PackedByteArray) EncodeS32(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_s32(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_s32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7838,9 +7838,9 @@ func (selfPtr *PackedByteArray) EncodeU64(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_u64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_u64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7854,9 +7854,9 @@ func (selfPtr *PackedByteArray) EncodeS64(byte_offset Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_s64(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_s64(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7870,9 +7870,9 @@ func (selfPtr *PackedByteArray) EncodeHalf(byte_offset Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_half(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_half(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7886,9 +7886,9 @@ func (selfPtr *PackedByteArray) EncodeFloat(byte_offset Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_float(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_float(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7902,9 +7902,9 @@ func (selfPtr *PackedByteArray) EncodeDouble(byte_offset Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_double(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedByteArray.encode_double(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7921,7 +7921,7 @@ func (selfPtr *PackedByteArray) EncodeVar(byte_offset Int, value Variant, allow_
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedByteArray.encode_var(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 3)
+	Global.builtin.PackedByteArray.encode_var(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7937,7 +7937,7 @@ func (selfPtr *PackedInt32Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt32Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7953,7 +7953,7 @@ func (selfPtr *PackedInt32Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt32Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -7969,9 +7969,9 @@ func (selfPtr *PackedInt32Array) Set(index Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt32Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -7986,7 +7986,7 @@ func (selfPtr *PackedInt32Array) PushBack(value Int) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt32Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8003,7 +8003,7 @@ func (selfPtr *PackedInt32Array) Append(value Int) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt32Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8018,9 +8018,9 @@ func (selfPtr *PackedInt32Array) AppendArray(array PackedInt32Array) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt32Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8033,9 +8033,9 @@ func (selfPtr *PackedInt32Array) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt32Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8051,7 +8051,7 @@ func (selfPtr *PackedInt32Array) Insert(at_index Int, value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt32Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8066,9 +8066,9 @@ func (selfPtr *PackedInt32Array) Fill(value Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt32Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8083,7 +8083,7 @@ func (selfPtr *PackedInt32Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt32Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8097,9 +8097,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedInt32Array) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt32Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8114,7 +8114,7 @@ func (selfPtr *PackedInt32Array) Has(value Int) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt32Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8128,9 +8128,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedInt32Array) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt32Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8148,7 +8148,7 @@ func (selfPtr *PackedInt32Array) Slice(begin Int, end Int) PackedInt32Array {
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt32Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -8165,7 +8165,7 @@ func (selfPtr *PackedInt32Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt32Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -8179,9 +8179,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedInt32Array) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt32Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8198,7 +8198,7 @@ func (selfPtr *PackedInt32Array) Bsearch(value Int, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt32Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8214,7 +8214,7 @@ func (selfPtr *PackedInt32Array) Duplicate() PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt32Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -8232,7 +8232,7 @@ func (selfPtr *PackedInt32Array) Find(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt32Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8250,7 +8250,7 @@ func (selfPtr *PackedInt32Array) Rfind(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt32Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8267,7 +8267,7 @@ func (selfPtr *PackedInt32Array) Count(value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt32Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt32Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8283,7 +8283,7 @@ func (selfPtr *PackedInt64Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt64Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8299,7 +8299,7 @@ func (selfPtr *PackedInt64Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt64Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8315,9 +8315,9 @@ func (selfPtr *PackedInt64Array) Set(index Int, value Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt64Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8332,7 +8332,7 @@ func (selfPtr *PackedInt64Array) PushBack(value Int) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt64Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8349,7 +8349,7 @@ func (selfPtr *PackedInt64Array) Append(value Int) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt64Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8364,9 +8364,9 @@ func (selfPtr *PackedInt64Array) AppendArray(array PackedInt64Array) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt64Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8379,9 +8379,9 @@ func (selfPtr *PackedInt64Array) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt64Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8397,7 +8397,7 @@ func (selfPtr *PackedInt64Array) Insert(at_index Int, value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt64Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8412,9 +8412,9 @@ func (selfPtr *PackedInt64Array) Fill(value Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt64Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8429,7 +8429,7 @@ func (selfPtr *PackedInt64Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt64Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8443,9 +8443,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedInt64Array) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt64Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8460,7 +8460,7 @@ func (selfPtr *PackedInt64Array) Has(value Int) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt64Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8474,9 +8474,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedInt64Array) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt64Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8494,7 +8494,7 @@ func (selfPtr *PackedInt64Array) Slice(begin Int, end Int) PackedInt64Array {
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt64Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedInt64Array](r_ret.Get())
 	frame.Free()
@@ -8511,7 +8511,7 @@ func (selfPtr *PackedInt64Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt64Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -8525,9 +8525,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedInt64Array) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt64Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8544,7 +8544,7 @@ func (selfPtr *PackedInt64Array) Bsearch(value Int, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt64Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8560,7 +8560,7 @@ func (selfPtr *PackedInt64Array) Duplicate() PackedInt64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedInt64Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedInt64Array](r_ret.Get())
 	frame.Free()
@@ -8578,7 +8578,7 @@ func (selfPtr *PackedInt64Array) Find(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt64Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8596,7 +8596,7 @@ func (selfPtr *PackedInt64Array) Rfind(value Int, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedInt64Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8613,7 +8613,7 @@ func (selfPtr *PackedInt64Array) Count(value Int) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedInt64Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedInt64Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8629,7 +8629,7 @@ func (selfPtr *PackedFloat32Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat32Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8645,7 +8645,7 @@ func (selfPtr *PackedFloat32Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat32Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8661,9 +8661,9 @@ func (selfPtr *PackedFloat32Array) Set(index Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat32Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8678,7 +8678,7 @@ func (selfPtr *PackedFloat32Array) PushBack(value Float) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat32Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8695,7 +8695,7 @@ func (selfPtr *PackedFloat32Array) Append(value Float) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat32Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8710,9 +8710,9 @@ func (selfPtr *PackedFloat32Array) AppendArray(array PackedFloat32Array) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat32Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8725,9 +8725,9 @@ func (selfPtr *PackedFloat32Array) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat32Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8743,7 +8743,7 @@ func (selfPtr *PackedFloat32Array) Insert(at_index Int, value Float) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat32Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8758,9 +8758,9 @@ func (selfPtr *PackedFloat32Array) Fill(value Float) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat32Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8775,7 +8775,7 @@ func (selfPtr *PackedFloat32Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat32Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8789,9 +8789,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedFloat32Array) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat32Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8807,7 +8807,7 @@ func (selfPtr *PackedFloat32Array) Has(value Float) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat32Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8821,9 +8821,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedFloat32Array) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat32Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8841,7 +8841,7 @@ func (selfPtr *PackedFloat32Array) Slice(begin Int, end Int) PackedFloat32Array 
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat32Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedFloat32Array](r_ret.Get())
 	frame.Free()
@@ -8858,7 +8858,7 @@ func (selfPtr *PackedFloat32Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat32Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -8873,9 +8873,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedFloat32Array) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat32Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -8893,7 +8893,7 @@ func (selfPtr *PackedFloat32Array) Bsearch(value Float, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat32Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8909,7 +8909,7 @@ func (selfPtr *PackedFloat32Array) Duplicate() PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat32Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedFloat32Array](r_ret.Get())
 	frame.Free()
@@ -8928,7 +8928,7 @@ func (selfPtr *PackedFloat32Array) Find(value Float, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat32Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8947,7 +8947,7 @@ func (selfPtr *PackedFloat32Array) Rfind(value Float, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat32Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8965,7 +8965,7 @@ func (selfPtr *PackedFloat32Array) Count(value Float) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat32Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat32Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8981,7 +8981,7 @@ func (selfPtr *PackedFloat64Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat64Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8997,7 +8997,7 @@ func (selfPtr *PackedFloat64Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat64Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9013,9 +9013,9 @@ func (selfPtr *PackedFloat64Array) Set(index Int, value Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat64Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9030,7 +9030,7 @@ func (selfPtr *PackedFloat64Array) PushBack(value Float) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat64Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9047,7 +9047,7 @@ func (selfPtr *PackedFloat64Array) Append(value Float) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat64Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9062,9 +9062,9 @@ func (selfPtr *PackedFloat64Array) AppendArray(array PackedFloat64Array) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat64Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9077,9 +9077,9 @@ func (selfPtr *PackedFloat64Array) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat64Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9095,7 +9095,7 @@ func (selfPtr *PackedFloat64Array) Insert(at_index Int, value Float) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat64Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9110,9 +9110,9 @@ func (selfPtr *PackedFloat64Array) Fill(value Float) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat64Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9127,7 +9127,7 @@ func (selfPtr *PackedFloat64Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat64Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9141,9 +9141,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedFloat64Array) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat64Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9159,7 +9159,7 @@ func (selfPtr *PackedFloat64Array) Has(value Float) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat64Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9173,9 +9173,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedFloat64Array) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat64Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9193,7 +9193,7 @@ func (selfPtr *PackedFloat64Array) Slice(begin Int, end Int) PackedFloat64Array 
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat64Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
 	frame.Free()
@@ -9210,7 +9210,7 @@ func (selfPtr *PackedFloat64Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat64Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -9225,9 +9225,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedFloat64Array) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat64Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9245,7 +9245,7 @@ func (selfPtr *PackedFloat64Array) Bsearch(value Float, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat64Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9261,7 +9261,7 @@ func (selfPtr *PackedFloat64Array) Duplicate() PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedFloat64Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
 	frame.Free()
@@ -9280,7 +9280,7 @@ func (selfPtr *PackedFloat64Array) Find(value Float, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat64Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9299,7 +9299,7 @@ func (selfPtr *PackedFloat64Array) Rfind(value Float, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedFloat64Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9317,7 +9317,7 @@ func (selfPtr *PackedFloat64Array) Count(value Float) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedFloat64Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedFloat64Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9333,7 +9333,7 @@ func (selfPtr *PackedStringArray) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedStringArray.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9349,7 +9349,7 @@ func (selfPtr *PackedStringArray) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedStringArray.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9365,9 +9365,9 @@ func (selfPtr *PackedStringArray) Set(index Int, value String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedStringArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9382,7 +9382,7 @@ func (selfPtr *PackedStringArray) PushBack(value String) Bool {
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedStringArray.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9399,7 +9399,7 @@ func (selfPtr *PackedStringArray) Append(value String) Bool {
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedStringArray.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9414,9 +9414,9 @@ func (selfPtr *PackedStringArray) AppendArray(array PackedStringArray) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedStringArray.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9429,9 +9429,9 @@ func (selfPtr *PackedStringArray) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedStringArray.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9447,7 +9447,7 @@ func (selfPtr *PackedStringArray) Insert(at_index Int, value String) Int {
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedStringArray.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9462,9 +9462,9 @@ func (selfPtr *PackedStringArray) Fill(value String) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedStringArray.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9479,7 +9479,7 @@ func (selfPtr *PackedStringArray) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedStringArray.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9493,9 +9493,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedStringArray) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedStringArray.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9510,7 +9510,7 @@ func (selfPtr *PackedStringArray) Has(value String) Bool {
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedStringArray.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9524,9 +9524,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedStringArray) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedStringArray.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9544,7 +9544,7 @@ func (selfPtr *PackedStringArray) Slice(begin Int, end Int) PackedStringArray {
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedStringArray.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -9560,7 +9560,7 @@ func (selfPtr *PackedStringArray) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedStringArray.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -9574,9 +9574,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedStringArray) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedStringArray.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9593,7 +9593,7 @@ func (selfPtr *PackedStringArray) Bsearch(value String, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedStringArray.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9609,7 +9609,7 @@ func (selfPtr *PackedStringArray) Duplicate() PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedStringArray.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -9627,7 +9627,7 @@ func (selfPtr *PackedStringArray) Find(value String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedStringArray.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9645,7 +9645,7 @@ func (selfPtr *PackedStringArray) Rfind(value String, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedStringArray.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9662,7 +9662,7 @@ func (selfPtr *PackedStringArray) Count(value String) Int {
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedStringArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedStringArray.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9678,7 +9678,7 @@ func (selfPtr *PackedVector2Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector2Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9694,7 +9694,7 @@ func (selfPtr *PackedVector2Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector2Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9710,9 +9710,9 @@ func (selfPtr *PackedVector2Array) Set(index Int, value Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector2Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9727,7 +9727,7 @@ func (selfPtr *PackedVector2Array) PushBack(value Vector2) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector2Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9744,7 +9744,7 @@ func (selfPtr *PackedVector2Array) Append(value Vector2) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector2Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9759,9 +9759,9 @@ func (selfPtr *PackedVector2Array) AppendArray(array PackedVector2Array) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector2Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9774,9 +9774,9 @@ func (selfPtr *PackedVector2Array) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector2Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9792,7 +9792,7 @@ func (selfPtr *PackedVector2Array) Insert(at_index Int, value Vector2) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector2Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9807,9 +9807,9 @@ func (selfPtr *PackedVector2Array) Fill(value Vector2) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector2Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9824,7 +9824,7 @@ func (selfPtr *PackedVector2Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector2Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9838,9 +9838,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedVector2Array) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector2Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9856,7 +9856,7 @@ func (selfPtr *PackedVector2Array) Has(value Vector2) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector2Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9870,9 +9870,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedVector2Array) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector2Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9890,7 +9890,7 @@ func (selfPtr *PackedVector2Array) Slice(begin Int, end Int) PackedVector2Array 
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector2Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedVector2Array](r_ret.Get())
 	frame.Free()
@@ -9906,7 +9906,7 @@ func (selfPtr *PackedVector2Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector2Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -9921,9 +9921,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedVector2Array) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector2Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -9941,7 +9941,7 @@ func (selfPtr *PackedVector2Array) Bsearch(value Vector2, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector2Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9957,7 +9957,7 @@ func (selfPtr *PackedVector2Array) Duplicate() PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector2Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedVector2Array](r_ret.Get())
 	frame.Free()
@@ -9976,7 +9976,7 @@ func (selfPtr *PackedVector2Array) Find(value Vector2, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector2Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -9995,7 +9995,7 @@ func (selfPtr *PackedVector2Array) Rfind(value Vector2, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector2Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10013,7 +10013,7 @@ func (selfPtr *PackedVector2Array) Count(value Vector2) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector2Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector2Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10029,7 +10029,7 @@ func (selfPtr *PackedVector3Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector3Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10045,7 +10045,7 @@ func (selfPtr *PackedVector3Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector3Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10061,9 +10061,9 @@ func (selfPtr *PackedVector3Array) Set(index Int, value Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector3Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10078,7 +10078,7 @@ func (selfPtr *PackedVector3Array) PushBack(value Vector3) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector3Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10095,7 +10095,7 @@ func (selfPtr *PackedVector3Array) Append(value Vector3) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector3Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10110,9 +10110,9 @@ func (selfPtr *PackedVector3Array) AppendArray(array PackedVector3Array) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector3Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10125,9 +10125,9 @@ func (selfPtr *PackedVector3Array) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector3Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10143,7 +10143,7 @@ func (selfPtr *PackedVector3Array) Insert(at_index Int, value Vector3) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector3Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10158,9 +10158,9 @@ func (selfPtr *PackedVector3Array) Fill(value Vector3) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector3Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10175,7 +10175,7 @@ func (selfPtr *PackedVector3Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector3Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10189,9 +10189,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedVector3Array) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector3Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10207,7 +10207,7 @@ func (selfPtr *PackedVector3Array) Has(value Vector3) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector3Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10221,9 +10221,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedVector3Array) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector3Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10241,7 +10241,7 @@ func (selfPtr *PackedVector3Array) Slice(begin Int, end Int) PackedVector3Array 
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector3Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -10257,7 +10257,7 @@ func (selfPtr *PackedVector3Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector3Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -10272,9 +10272,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedVector3Array) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector3Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10292,7 +10292,7 @@ func (selfPtr *PackedVector3Array) Bsearch(value Vector3, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector3Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10308,7 +10308,7 @@ func (selfPtr *PackedVector3Array) Duplicate() PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector3Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -10327,7 +10327,7 @@ func (selfPtr *PackedVector3Array) Find(value Vector3, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector3Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10346,7 +10346,7 @@ func (selfPtr *PackedVector3Array) Rfind(value Vector3, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector3Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10364,7 +10364,7 @@ func (selfPtr *PackedVector3Array) Count(value Vector3) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector3Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector3Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10380,7 +10380,7 @@ func (selfPtr *PackedColorArray) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedColorArray.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10396,7 +10396,7 @@ func (selfPtr *PackedColorArray) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedColorArray.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10412,9 +10412,9 @@ func (selfPtr *PackedColorArray) Set(index Int, value Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedColorArray.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10429,7 +10429,7 @@ func (selfPtr *PackedColorArray) PushBack(value Color) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedColorArray.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10446,7 +10446,7 @@ func (selfPtr *PackedColorArray) Append(value Color) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedColorArray.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10461,9 +10461,9 @@ func (selfPtr *PackedColorArray) AppendArray(array PackedColorArray) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedColorArray.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10476,9 +10476,9 @@ func (selfPtr *PackedColorArray) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedColorArray.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10494,7 +10494,7 @@ func (selfPtr *PackedColorArray) Insert(at_index Int, value Color) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedColorArray.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10509,9 +10509,9 @@ func (selfPtr *PackedColorArray) Fill(value Color) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedColorArray.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10526,7 +10526,7 @@ func (selfPtr *PackedColorArray) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedColorArray.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10540,9 +10540,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedColorArray) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedColorArray.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10557,7 +10557,7 @@ func (selfPtr *PackedColorArray) Has(value Color) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedColorArray.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10571,9 +10571,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedColorArray) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedColorArray.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10591,7 +10591,7 @@ func (selfPtr *PackedColorArray) Slice(begin Int, end Int) PackedColorArray {
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedColorArray.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedColorArray](r_ret.Get())
 	frame.Free()
@@ -10607,7 +10607,7 @@ func (selfPtr *PackedColorArray) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedColorArray.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -10621,9 +10621,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedColorArray) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedColorArray.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10640,7 +10640,7 @@ func (selfPtr *PackedColorArray) Bsearch(value Color, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedColorArray.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10656,7 +10656,7 @@ func (selfPtr *PackedColorArray) Duplicate() PackedColorArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedColorArray.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedColorArray](r_ret.Get())
 	frame.Free()
@@ -10674,7 +10674,7 @@ func (selfPtr *PackedColorArray) Find(value Color, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedColorArray.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10692,7 +10692,7 @@ func (selfPtr *PackedColorArray) Rfind(value Color, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedColorArray.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10709,7 +10709,7 @@ func (selfPtr *PackedColorArray) Count(value Color) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedColorArray.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedColorArray.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10725,7 +10725,7 @@ func (selfPtr *PackedVector4Array) Size() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.size(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector4Array.size(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10741,7 +10741,7 @@ func (selfPtr *PackedVector4Array) IsEmpty() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.is_empty(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector4Array.is_empty(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10757,9 +10757,9 @@ func (selfPtr *PackedVector4Array) Set(index Int, value Vector4) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.set(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector4Array.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10774,7 +10774,7 @@ func (selfPtr *PackedVector4Array) PushBack(value Vector4) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.push_back(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector4Array.push_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10791,7 +10791,7 @@ func (selfPtr *PackedVector4Array) Append(value Vector4) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.append(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector4Array.append(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10806,9 +10806,9 @@ func (selfPtr *PackedVector4Array) AppendArray(array PackedVector4Array) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.append_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector4Array.append_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10821,9 +10821,9 @@ func (selfPtr *PackedVector4Array) RemoveAt(index Int) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.remove_at(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector4Array.remove_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10839,7 +10839,7 @@ func (selfPtr *PackedVector4Array) Insert(at_index Int, value Vector4) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.insert(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector4Array.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10854,9 +10854,9 @@ func (selfPtr *PackedVector4Array) Fill(value Vector4) {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.fill(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector4Array.fill(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10871,7 +10871,7 @@ func (selfPtr *PackedVector4Array) Resize(new_size Int) Int {
 	callframe.Arg(frame, new_size)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.resize(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector4Array.resize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10885,9 +10885,9 @@ Clears the array. This is equivalent to using [method resize] with a size of [co
 func (selfPtr *PackedVector4Array) Clear() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.clear(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector4Array.clear(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10903,7 +10903,7 @@ func (selfPtr *PackedVector4Array) Has(value Vector4) Bool {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Bool](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.has(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector4Array.has(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -10917,9 +10917,9 @@ Reverses the order of the elements in the array.
 func (selfPtr *PackedVector4Array) Reverse() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.reverse(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector4Array.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10937,7 +10937,7 @@ func (selfPtr *PackedVector4Array) Slice(begin Int, end Int) PackedVector4Array 
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.slice(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector4Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedVector4Array](r_ret.Get())
 	frame.Free()
@@ -10953,7 +10953,7 @@ func (selfPtr *PackedVector4Array) ToByteArray() PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.to_byte_array(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector4Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -10968,9 +10968,9 @@ Sorts the elements of the array in ascending order.
 func (selfPtr *PackedVector4Array) Sort() {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret callframe.Nil
+	var r_ret = callframe.Nil
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.sort(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector4Array.sort(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	frame.Free()
 }
@@ -10988,7 +10988,7 @@ func (selfPtr *PackedVector4Array) Bsearch(value Vector4, before Bool) Int {
 	callframe.Arg(frame, before)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.bsearch(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector4Array.bsearch(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11004,7 +11004,7 @@ func (selfPtr *PackedVector4Array) Duplicate() PackedVector4Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.duplicate(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 0)
+	Global.builtin.PackedVector4Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = pointers.New[PackedVector4Array](r_ret.Get())
 	frame.Free()
@@ -11023,7 +11023,7 @@ func (selfPtr *PackedVector4Array) Find(value Vector4, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.find(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector4Array.find(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11042,7 +11042,7 @@ func (selfPtr *PackedVector4Array) Rfind(value Vector4, from Int) Int {
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.rfind(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 2)
+	Global.builtin.PackedVector4Array.rfind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11060,7 +11060,7 @@ func (selfPtr *PackedVector4Array) Count(value Vector4) Int {
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Ret[Int](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.PackedVector4Array.count(p_self.Uintptr(), frame.Array(0), r_ret.Uintptr(), 1)
+	Global.builtin.PackedVector4Array.count(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11077,7 +11077,7 @@ Returns the object's built-in class name, as a [String]. See also [method is_cla
 func (self Object) GetClass() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_class, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_class, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11106,7 +11106,7 @@ func (self Object) IsClass(class String) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class))
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_class, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_class, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11133,8 +11133,8 @@ func (self Object) Set(property StringName, value Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11159,7 +11159,7 @@ func (self Object) Get(property StringName) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11188,8 +11188,8 @@ func (self Object) SetIndexed(property_path NodePath, value Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property_path))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_indexed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_indexed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11218,7 +11218,7 @@ func (self Object) GetIndexed(property_path NodePath) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property_path))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_indexed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_indexed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11238,7 +11238,7 @@ Returns the object's property list as an [Array] of dictionaries. Each [Dictiona
 func (self Object) GetPropertyList() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_property_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_property_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11258,7 +11258,7 @@ Returns this object's methods and their signatures as an [Array] of dictionaries
 func (self Object) GetMethodList() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_method_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_method_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11273,7 +11273,7 @@ func (self Object) PropertyCanRevert(property StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_property_can_revert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_property_can_revert, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11288,7 +11288,7 @@ func (self Object) PropertyGetRevert(property StringName) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_property_get_revert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_property_get_revert, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11325,8 +11325,8 @@ func (self Object) Notification(what Int, reversed Bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	callframe.Arg(frame, reversed)
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_notification, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11337,7 +11337,7 @@ Returns a [String] representing the object. Defaults to [code]"<ClassName#RID>"[
 func (self Object) ToString() String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_to_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_to_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11351,7 +11351,7 @@ Returns the object's unique instance ID. This ID can be saved in [EncodedObjectA
 func (self Object) GetInstanceId() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11365,8 +11365,8 @@ If a script already exists, its instance is detached, and its property values an
 func (self Object) SetScript(script Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(script))
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_script, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_script, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11377,7 +11377,7 @@ Returns the object's [Script] instance, or [code]null[/code] if no script is att
 func (self Object) GetScript() Variant {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_script, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_script, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11394,8 +11394,8 @@ func (self Object) SetMeta(name StringName, value Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11408,8 +11408,8 @@ Removes the given entry [param name] from the object's metadata. See also [metho
 func (self Object) RemoveMeta(name StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_remove_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_remove_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11424,7 +11424,7 @@ func (self Object) GetMeta(name StringName, def Variant) Variant {
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(def))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11440,7 +11440,7 @@ func (self Object) HasMeta(name StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_meta, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11453,7 +11453,7 @@ Returns the object's metadata entry names as a [PackedStringArray].
 func (self Object) GetMetaList() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_meta_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_meta_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11490,8 +11490,8 @@ func (self Object) AddUserSignal(signal String, arguments Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_add_user_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_add_user_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11503,7 +11503,7 @@ func (self Object) HasUserSignal(signal StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_user_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_user_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11516,8 +11516,8 @@ Removes the given user signal [param signal] from the object. See also [method a
 func (self Object) RemoveUserSignal(signal StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_remove_user_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_remove_user_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11552,8 +11552,8 @@ func (self Object) SetDeferred(property StringName, value Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_deferred, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_deferred, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11577,7 +11577,7 @@ func (self Object) Callv(method StringName, arg_array Array) Variant {
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(arg_array))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_callv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_callv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11592,7 +11592,7 @@ func (self Object) HasMethod(method StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_method, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11607,7 +11607,7 @@ func (self Object) GetMethodArgumentCount(method StringName) Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	var r_ret = callframe.Ret[Int](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_method_argument_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_method_argument_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11622,7 +11622,7 @@ func (self Object) HasSignal(signal StringName) Bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_signal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_has_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11636,7 +11636,7 @@ Returns the list of existing signals as an [Array] of dictionaries.
 func (self Object) GetSignalList() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_signal_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_signal_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11653,7 +11653,7 @@ func (self Object) GetSignalConnectionList(signal StringName) Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_signal_connection_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_signal_connection_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11669,7 +11669,7 @@ Returns an [Array] of signal connections received by this object. Each connectio
 func (self Object) GetIncomingConnections() Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_incoming_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_incoming_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11810,7 +11810,7 @@ func (self Object) Connect(signal StringName, callable Callable, flags Int) int6
 	callframe.Arg(frame, pointers.Get(callable))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[int64](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_connect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_connect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11824,8 +11824,8 @@ func (self Object) Disconnect(signal StringName, callable Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_disconnect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_disconnect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11839,7 +11839,7 @@ func (self Object) IsConnected(signal StringName, callable Callable) Bool {
 	callframe.Arg(frame, pointers.Get(signal))
 	callframe.Arg(frame, pointers.Get(callable))
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_connected, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_connected, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11852,8 +11852,8 @@ If set to [code]true[/code], the object becomes unable to emit signals. As such,
 func (self Object) SetBlockSignals(enable Bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_block_signals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_block_signals, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11864,7 +11864,7 @@ Returns [code]true[/code] if the object is blocking its signals from being emitt
 func (self Object) IsBlockingSignals() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_blocking_signals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_blocking_signals, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11876,8 +11876,8 @@ Emits the [signal property_list_changed] signal. This is mainly used to refresh 
 //go:nosplit
 func (self Object) NotifyPropertyListChanged() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_notify_property_list_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_notify_property_list_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11888,8 +11888,8 @@ If set to [code]true[/code], allows the object to translate messages with [metho
 func (self Object) SetMessageTranslation(enable Bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_message_translation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_set_message_translation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -11900,7 +11900,7 @@ Returns [code]true[/code] if the object is allowed to translate messages with [m
 func (self Object) CanTranslateMessages() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_can_translate_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_can_translate_messages, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11918,7 +11918,7 @@ func (self Object) Tr(message StringName, context StringName) String {
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(context))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_tr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_tr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11940,7 +11940,7 @@ func (self Object) TrN(message StringName, plural_message StringName, n Int, con
 	callframe.Arg(frame, n)
 	callframe.Arg(frame, pointers.Get(context))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_tr_n, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_tr_n, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -11953,7 +11953,7 @@ Returns [code]true[/code] if the [method Node.queue_free] method was called for 
 func (self Object) IsQueuedForDeletion() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_queued_for_deletion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_is_queued_for_deletion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11965,8 +11965,8 @@ If this method is called during [constant NOTIFICATION_PREDELETE], this object w
 //go:nosplit
 func (self Object) CancelFree() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_cancel_free, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_cancel_free, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Object) Virtual(name string) reflect.Value { return reflect.Value{} }
@@ -11982,7 +11982,7 @@ Returns whether the initialization was successful.
 func (self RefCounted) InitRef() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_init_ref, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_init_ref, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -11996,7 +11996,7 @@ Returns [code]true[/code] if the increment was successful, [code]false[/code] ot
 func (self RefCounted) Reference() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -12010,7 +12010,7 @@ Returns [code]true[/code] if the object should be freed after the decrement, [co
 func (self RefCounted) Unreference() Bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Bool](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_unreference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_unreference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -12023,7 +12023,7 @@ Returns the current reference count.
 func (self RefCounted) GetReferenceCount() Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Int](frame)
-	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_get_reference_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	Global.Object.MethodBindPointerCall(Global.Methods.RefCounted.Bind_get_reference_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

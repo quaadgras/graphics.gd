@@ -349,8 +349,8 @@ func (class) _mouse_exit(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCal
 func (self class) SetCollisionLayer(layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -358,7 +358,7 @@ func (self class) SetCollisionLayer(layer gd.Int) {
 func (self class) GetCollisionLayer() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -368,8 +368,8 @@ func (self class) GetCollisionLayer() gd.Int {
 func (self class) SetCollisionMask(mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -377,7 +377,7 @@ func (self class) SetCollisionMask(mask gd.Int) {
 func (self class) GetCollisionMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -391,8 +391,8 @@ func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -404,7 +404,7 @@ func (self class) GetCollisionLayerValue(layer_number gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -418,8 +418,8 @@ func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -431,7 +431,7 @@ func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -441,8 +441,8 @@ func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
 func (self class) SetCollisionPriority(priority gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -450,7 +450,7 @@ func (self class) SetCollisionPriority(priority gd.Float) {
 func (self class) GetCollisionPriority() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -460,8 +460,8 @@ func (self class) GetCollisionPriority() gd.Float {
 func (self class) SetDisableMode(mode gdclass.CollisionObject3DDisableMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_disable_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -469,7 +469,7 @@ func (self class) SetDisableMode(mode gdclass.CollisionObject3DDisableMode) {
 func (self class) GetDisableMode() gdclass.CollisionObject3DDisableMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CollisionObject3DDisableMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_disable_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -479,8 +479,8 @@ func (self class) GetDisableMode() gdclass.CollisionObject3DDisableMode {
 func (self class) SetRayPickable(ray_pickable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ray_pickable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -488,7 +488,7 @@ func (self class) SetRayPickable(ray_pickable bool) {
 func (self class) IsRayPickable() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_is_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_is_ray_pickable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -498,8 +498,8 @@ func (self class) IsRayPickable() bool {
 func (self class) SetCaptureInputOnDrag(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_capture_input_on_drag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_set_capture_input_on_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -507,7 +507,7 @@ func (self class) SetCaptureInputOnDrag(enable bool) {
 func (self class) GetCaptureInputOnDrag() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_capture_input_on_drag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_capture_input_on_drag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -520,7 +520,7 @@ Returns the object's [RID].
 func (self class) GetRid() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -534,7 +534,7 @@ func (self class) CreateShapeOwner(owner [1]gd.Object) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(owner[0])[0])
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_create_shape_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_create_shape_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -547,8 +547,8 @@ Removes the given shape owner.
 func (self class) RemoveShapeOwner(owner_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_remove_shape_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_remove_shape_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -559,7 +559,7 @@ Returns an [Array] of [code]owner_id[/code] identifiers. You can use these ids i
 func (self class) GetShapeOwners() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_shape_owners, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_shape_owners, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -573,8 +573,8 @@ func (self class) ShapeOwnerSetTransform(owner_id gd.Int, transform gd.Transform
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -586,7 +586,7 @@ func (self class) ShapeOwnerGetTransform(owner_id gd.Int) gd.Transform3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -600,7 +600,7 @@ func (self class) ShapeOwnerGetOwner(owner_id gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
@@ -614,8 +614,8 @@ func (self class) ShapeOwnerSetDisabled(owner_id gd.Int, disabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, disabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_set_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_set_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -627,7 +627,7 @@ func (self class) IsShapeOwnerDisabled(owner_id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_is_shape_owner_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_is_shape_owner_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -641,8 +641,8 @@ func (self class) ShapeOwnerAddShape(owner_id gd.Int, shape [1]gdclass.Shape3D) 
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, pointers.Get(shape[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_add_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_add_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -654,7 +654,7 @@ func (self class) ShapeOwnerGetShapeCount(owner_id gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -669,7 +669,7 @@ func (self class) ShapeOwnerGetShape(owner_id gd.Int, shape_id gd.Int) [1]gdclas
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, shape_id)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Shape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape3D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -684,7 +684,7 @@ func (self class) ShapeOwnerGetShapeIndex(owner_id gd.Int, shape_id gd.Int) gd.I
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, shape_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_shape_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_shape_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -698,8 +698,8 @@ func (self class) ShapeOwnerRemoveShape(owner_id gd.Int, shape_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, shape_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_remove_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_remove_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -710,8 +710,8 @@ Removes all shapes from the shape owner.
 func (self class) ShapeOwnerClearShapes(owner_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_clear_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_clear_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -723,7 +723,7 @@ func (self class) ShapeFindOwner(shape_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, shape_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_find_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_find_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

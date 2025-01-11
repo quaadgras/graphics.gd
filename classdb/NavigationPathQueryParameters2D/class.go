@@ -132,8 +132,8 @@ func (self Instance) SetSimplifyEpsilon(value Float.X) {
 func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pathfinding_algorithm)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -141,7 +141,7 @@ func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.Navigati
 func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -151,8 +151,8 @@ func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameter
 func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPathQueryParameters2DPathPostProcessing) {
 	var frame = callframe.New()
 	callframe.Arg(frame, path_postprocessing)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -160,7 +160,7 @@ func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPa
 func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters2DPathPostProcessing {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters2DPathPostProcessing](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -170,8 +170,8 @@ func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters2
 func (self class) SetMap(mapping gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -179,7 +179,7 @@ func (self class) SetMap(mapping gd.RID) {
 func (self class) GetMap() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -189,8 +189,8 @@ func (self class) GetMap() gd.RID {
 func (self class) SetStartPosition(start_position gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, start_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_start_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_start_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -198,7 +198,7 @@ func (self class) SetStartPosition(start_position gd.Vector2) {
 func (self class) GetStartPosition() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_start_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_start_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -208,8 +208,8 @@ func (self class) GetStartPosition() gd.Vector2 {
 func (self class) SetTargetPosition(target_position gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, target_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_target_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -217,7 +217,7 @@ func (self class) SetTargetPosition(target_position gd.Vector2) {
 func (self class) GetTargetPosition() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -227,8 +227,8 @@ func (self class) GetTargetPosition() gd.Vector2 {
 func (self class) SetNavigationLayers(navigation_layers gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -236,7 +236,7 @@ func (self class) SetNavigationLayers(navigation_layers gd.Int) {
 func (self class) GetNavigationLayers() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -246,8 +246,8 @@ func (self class) GetNavigationLayers() gd.Int {
 func (self class) SetMetadataFlags(flags gdclass.NavigationPathQueryParameters2DPathMetadataFlags) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -255,7 +255,7 @@ func (self class) SetMetadataFlags(flags gdclass.NavigationPathQueryParameters2D
 func (self class) GetMetadataFlags() gdclass.NavigationPathQueryParameters2DPathMetadataFlags {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters2DPathMetadataFlags](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -265,8 +265,8 @@ func (self class) GetMetadataFlags() gdclass.NavigationPathQueryParameters2DPath
 func (self class) SetSimplifyPath(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -274,7 +274,7 @@ func (self class) SetSimplifyPath(enabled bool) {
 func (self class) GetSimplifyPath() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -284,8 +284,8 @@ func (self class) GetSimplifyPath() bool {
 func (self class) SetSimplifyEpsilon(epsilon gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, epsilon)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -293,7 +293,7 @@ func (self class) SetSimplifyEpsilon(epsilon gd.Float) {
 func (self class) GetSimplifyEpsilon() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

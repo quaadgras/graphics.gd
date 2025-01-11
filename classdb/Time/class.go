@@ -250,7 +250,7 @@ func (self class) GetDatetimeDictFromUnixTime(unix_time_val gd.Int) gd.Dictionar
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -264,7 +264,7 @@ func (self class) GetDateDictFromUnixTime(unix_time_val gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_dict_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_dict_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -278,7 +278,7 @@ func (self class) GetTimeDictFromUnixTime(unix_time_val gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_dict_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_dict_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -294,7 +294,7 @@ func (self class) GetDatetimeStringFromUnixTime(unix_time_val gd.Int, use_space 
 	callframe.Arg(frame, unix_time_val)
 	callframe.Arg(frame, use_space)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -308,7 +308,7 @@ func (self class) GetDateStringFromUnixTime(unix_time_val gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_string_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_string_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -322,7 +322,7 @@ func (self class) GetTimeStringFromUnixTime(unix_time_val gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_string_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_string_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -339,7 +339,7 @@ func (self class) GetDatetimeDictFromDatetimeString(datetime gd.String, weekday 
 	callframe.Arg(frame, pointers.Get(datetime))
 	callframe.Arg(frame, weekday)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_datetime_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_datetime_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -357,7 +357,7 @@ func (self class) GetDatetimeStringFromDatetimeDict(datetime gd.Dictionary, use_
 	callframe.Arg(frame, pointers.Get(datetime))
 	callframe.Arg(frame, use_space)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_datetime_dict, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_datetime_dict, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -375,7 +375,7 @@ func (self class) GetUnixTimeFromDatetimeDict(datetime gd.Dictionary) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(datetime))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_datetime_dict, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_datetime_dict, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -391,7 +391,7 @@ func (self class) GetUnixTimeFromDatetimeString(datetime gd.String) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(datetime))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_datetime_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_datetime_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -405,7 +405,7 @@ func (self class) GetOffsetStringFromOffsetMinutes(offset_minutes gd.Int) gd.Str
 	var frame = callframe.New()
 	callframe.Arg(frame, offset_minutes)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_offset_string_from_offset_minutes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_offset_string_from_offset_minutes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -419,7 +419,7 @@ func (self class) GetDatetimeDictFromSystem(utc bool) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_system, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -434,7 +434,7 @@ func (self class) GetDateDictFromSystem(utc bool) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_dict_from_system, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_dict_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -449,7 +449,7 @@ func (self class) GetTimeDictFromSystem(utc bool) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_dict_from_system, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_dict_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -466,7 +466,7 @@ func (self class) GetDatetimeStringFromSystem(utc bool, use_space bool) gd.Strin
 	callframe.Arg(frame, utc)
 	callframe.Arg(frame, use_space)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_system, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -481,7 +481,7 @@ func (self class) GetDateStringFromSystem(utc bool) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_string_from_system, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_string_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -496,7 +496,7 @@ func (self class) GetTimeStringFromSystem(utc bool) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_string_from_system, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_string_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -511,7 +511,7 @@ Returns the current time zone as a dictionary of keys: [code]bias[/code] and [co
 func (self class) GetTimeZoneFromSystem() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_zone_from_system, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_zone_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -525,7 +525,7 @@ Returns the current Unix timestamp in seconds based on the system time in UTC. T
 func (self class) GetUnixTimeFromSystem() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_system, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -539,7 +539,7 @@ Will always be positive or 0 and uses a 64-bit value (it will wrap after roughly
 func (self class) GetTicksMsec() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_ticks_msec, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_ticks_msec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -553,7 +553,7 @@ Will always be positive or 0 and uses a 64-bit value (it will wrap after roughly
 func (self class) GetTicksUsec() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_ticks_usec, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_ticks_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

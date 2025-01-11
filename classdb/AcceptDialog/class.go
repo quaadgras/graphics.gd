@@ -150,7 +150,7 @@ Returns the OK [Button] instance.
 func (self class) GetOkButton() [1]gdclass.Button {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_ok_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_ok_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Button{gd.PointerLifetimeBoundTo[gdclass.Button](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -164,7 +164,7 @@ Returns the label used for built-in text.
 func (self class) GetLabel() [1]gdclass.Label {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Label{gd.PointerLifetimeBoundTo[gdclass.Label](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -174,8 +174,8 @@ func (self class) GetLabel() [1]gdclass.Label {
 func (self class) SetHideOnOk(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_hide_on_ok, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_hide_on_ok, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -183,7 +183,7 @@ func (self class) SetHideOnOk(enabled bool) {
 func (self class) GetHideOnOk() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_hide_on_ok, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_hide_on_ok, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -193,8 +193,8 @@ func (self class) GetHideOnOk() bool {
 func (self class) SetCloseOnEscape(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_close_on_escape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_close_on_escape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -202,7 +202,7 @@ func (self class) SetCloseOnEscape(enabled bool) {
 func (self class) GetCloseOnEscape() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_close_on_escape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_close_on_escape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -220,7 +220,7 @@ func (self class) AddButton(text gd.String, right bool, action gd.String) [1]gdc
 	callframe.Arg(frame, right)
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_add_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_add_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Button{gd.PointerLifetimeBoundTo[gdclass.Button](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -235,7 +235,7 @@ func (self class) AddCancelButton(name gd.String) [1]gdclass.Button {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_add_cancel_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_add_cancel_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Button{gd.PointerLifetimeBoundTo[gdclass.Button](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -248,8 +248,8 @@ Removes the [param button] from the dialog. Does NOT free the [param button]. Th
 func (self class) RemoveButton(button [1]gdclass.Button) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(button[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_remove_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_remove_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -260,8 +260,8 @@ Registers a [LineEdit] in the dialog. When the enter key is pressed, the dialog 
 func (self class) RegisterTextEnter(line_edit [1]gdclass.LineEdit) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(line_edit[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_register_text_enter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_register_text_enter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -269,8 +269,8 @@ func (self class) RegisterTextEnter(line_edit [1]gdclass.LineEdit) {
 func (self class) SetText(text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -278,7 +278,7 @@ func (self class) SetText(text gd.String) {
 func (self class) GetText() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -288,8 +288,8 @@ func (self class) GetText() gd.String {
 func (self class) SetAutowrap(autowrap bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, autowrap)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_autowrap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_autowrap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -297,7 +297,7 @@ func (self class) SetAutowrap(autowrap bool) {
 func (self class) HasAutowrap() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_has_autowrap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_has_autowrap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -307,8 +307,8 @@ func (self class) HasAutowrap() bool {
 func (self class) SetOkButtonText(text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_ok_button_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_set_ok_button_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -316,7 +316,7 @@ func (self class) SetOkButtonText(text gd.String) {
 func (self class) GetOkButtonText() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_ok_button_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AcceptDialog.Bind_get_ok_button_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret

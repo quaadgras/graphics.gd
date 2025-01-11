@@ -1885,8 +1885,8 @@ func (self class) AddControlToContainer(container gdclass.EditorPluginCustomCont
 	var frame = callframe.New()
 	callframe.Arg(frame, container)
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_container, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_container, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1901,7 +1901,7 @@ func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title gd.S
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Button{gd.PointerMustAssertInstanceID[gdclass.Button](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1919,8 +1919,8 @@ func (self class) AddControlToDock(slot gdclass.EditorPluginDockSlot, control [1
 	callframe.Arg(frame, slot)
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_dock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_dock, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1931,8 +1931,8 @@ Removes the control from the dock. You have to manually [method Node.queue_free]
 func (self class) RemoveControlFromDocks(control [1]gdclass.Control) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(control[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_docks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_docks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1943,8 +1943,8 @@ Removes the control from the bottom panel. You have to manually [method Node.que
 func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(control[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1956,8 +1956,8 @@ func (self class) RemoveControlFromContainer(container gdclass.EditorPluginCusto
 	var frame = callframe.New()
 	callframe.Arg(frame, container)
 	callframe.Arg(frame, pointers.Get(control[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_container, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_container, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1969,8 +1969,8 @@ func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Tex
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(control[0])[0])
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_dock_tab_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_dock_tab_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1982,8 +1982,8 @@ func (self class) AddToolMenuItem(name gd.String, callable gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1995,8 +1995,8 @@ func (self class) AddToolSubmenuItem(name gd.String, submenu [1]gdclass.PopupMen
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_submenu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_submenu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2007,8 +2007,8 @@ Removes a menu [param name] from [b]Project > Tools[/b].
 func (self class) RemoveToolMenuItem(name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2019,7 +2019,7 @@ Returns the [PopupMenu] under [b]Scene > Export As...[/b].
 func (self class) GetExportAsMenu() [1]gdclass.PopupMenu {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_export_as_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_export_as_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2040,8 +2040,8 @@ func (self class) AddCustomType(atype gd.String, base gd.String, script [1]gdcla
 	callframe.Arg(frame, pointers.Get(base))
 	callframe.Arg(frame, pointers.Get(script[0])[0])
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_custom_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_custom_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2052,8 +2052,8 @@ Removes a custom type added by [method add_custom_type].
 func (self class) RemoveCustomType(atype gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(atype))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_custom_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_custom_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2065,8 +2065,8 @@ func (self class) AddAutoloadSingleton(name gd.String, path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2077,8 +2077,8 @@ Removes an Autoload [param name] from the list.
 func (self class) RemoveAutoloadSingleton(name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_autoload_singleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2089,7 +2089,7 @@ Updates the overlays of the 2D and 3D editor viewport. Causes methods [method _f
 func (self class) UpdateOverlays() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_update_overlays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_update_overlays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2102,8 +2102,8 @@ Makes a specific item in the bottom panel visible.
 func (self class) MakeBottomPanelItemVisible(item [1]gdclass.Control) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(item[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_make_bottom_panel_item_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_make_bottom_panel_item_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2113,8 +2113,8 @@ Minimizes the bottom panel.
 //go:nosplit
 func (self class) HideBottomPanel() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_hide_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_hide_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2125,7 +2125,7 @@ Gets the undo/redo object. Most actions in the editor can be undoable, so use th
 func (self class) GetUndoRedo() [1]gdclass.EditorUndoRedoManager {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_undo_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_undo_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2139,8 +2139,8 @@ The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] 
 func (self class) AddUndoRedoInspectorHookCallback(callable gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2151,8 +2151,8 @@ Removes a callback previously added by [method add_undo_redo_inspector_hook_call
 func (self class) RemoveUndoRedoInspectorHookCallback(callable gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2162,8 +2162,8 @@ Queue save the project's editor layout.
 //go:nosplit
 func (self class) QueueSaveLayout() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_queue_save_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_queue_save_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2174,8 +2174,8 @@ Registers a custom translation parser plugin for extracting translatable strings
 func (self class) AddTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parser[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_translation_parser_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_translation_parser_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2186,8 +2186,8 @@ Removes a custom translation parser plugin registered by [method add_translation
 func (self class) RemoveTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parser[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_translation_parser_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_translation_parser_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2202,8 +2202,8 @@ func (self class) AddImportPlugin(importer [1]gdclass.EditorImportPlugin, first_
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(importer[0])[0])
 	callframe.Arg(frame, first_priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_import_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2214,8 +2214,8 @@ Removes an import plugin registered by [method add_import_plugin].
 func (self class) RemoveImportPlugin(importer [1]gdclass.EditorImportPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(importer[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_import_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2228,8 +2228,8 @@ func (self class) AddSceneFormatImporterPlugin(scene_format_importer [1]gdclass.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scene_format_importer[0])[0])
 	callframe.Arg(frame, first_priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_scene_format_importer_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_scene_format_importer_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2240,8 +2240,8 @@ Removes a scene format importer registered by [method add_scene_format_importer_
 func (self class) RemoveSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scene_format_importer[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_scene_format_importer_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_scene_format_importer_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2254,8 +2254,8 @@ func (self class) AddScenePostImportPlugin(scene_import_plugin [1]gdclass.Editor
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scene_import_plugin[0])[0])
 	callframe.Arg(frame, first_priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_scene_post_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_scene_post_import_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2266,8 +2266,8 @@ Remove the [EditorScenePostImportPlugin], added with [method add_scene_post_impo
 func (self class) RemoveScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scene_import_plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_scene_post_import_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_scene_post_import_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2279,8 +2279,8 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 func (self class) AddExportPlugin(plugin [1]gdclass.EditorExportPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_export_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_export_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2291,8 +2291,8 @@ Removes an export plugin registered by [method add_export_plugin].
 func (self class) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_export_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_export_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2304,8 +2304,8 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 func (self class) AddNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_node_3d_gizmo_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_node_3d_gizmo_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2316,8 +2316,8 @@ Removes a gizmo plugin registered by [method add_node_3d_gizmo_plugin].
 func (self class) RemoveNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_node_3d_gizmo_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_node_3d_gizmo_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2341,8 +2341,8 @@ func _exit_tree():
 func (self class) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_inspector_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_inspector_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2353,8 +2353,8 @@ Removes an inspector plugin registered by [method add_import_plugin]
 func (self class) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_inspector_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_inspector_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2366,8 +2366,8 @@ See [EditorResourceConversionPlugin] for an example of how to create a resource 
 func (self class) AddResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_resource_conversion_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_resource_conversion_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2378,8 +2378,8 @@ Removes a resource conversion plugin registered by [method add_resource_conversi
 func (self class) RemoveResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_resource_conversion_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_resource_conversion_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2389,8 +2389,8 @@ Use this method if you always want to receive inputs from 3D view screen inside 
 //go:nosplit
 func (self class) SetInputEventForwardingAlwaysEnabled() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_input_event_forwarding_always_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_input_event_forwarding_always_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2400,8 +2400,8 @@ Enables calling of [method _forward_canvas_force_draw_over_viewport] for the 2D 
 //go:nosplit
 func (self class) SetForceDrawOverForwardingEnabled() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_force_draw_over_forwarding_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_set_force_draw_over_forwarding_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2412,7 +2412,7 @@ Returns the [EditorInterface] singleton instance.
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.EditorInterface{gd.PointerLifetimeBoundTo[gdclass.EditorInterface](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2427,7 +2427,7 @@ Gets the Editor's dialog used for making scripts.
 func (self class) GetScriptCreateDialog() [1]gdclass.ScriptCreateDialog {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ScriptCreateDialog{gd.PointerLifetimeBoundTo[gdclass.ScriptCreateDialog](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2440,8 +2440,8 @@ Adds a [Script] as debugger plugin to the Debugger. The script must extend [Edit
 func (self class) AddDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(script[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_debugger_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_debugger_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2452,8 +2452,8 @@ Removes the debugger plugin with given script from the Debugger.
 func (self class) RemoveDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(script[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_debugger_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_debugger_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2464,7 +2464,7 @@ Provide the version of the plugin declared in the [code]plugin.cfg[/code] config
 func (self class) GetPluginVersion() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_plugin_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_plugin_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret

@@ -819,7 +819,7 @@ func (self class) CreateDiffLine(new_line_no gd.Int, old_line_no gd.Int, content
 	callframe.Arg(frame, pointers.Get(content))
 	callframe.Arg(frame, pointers.Get(status))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -836,7 +836,7 @@ func (self class) CreateDiffHunk(old_start gd.Int, new_start gd.Int, old_lines g
 	callframe.Arg(frame, old_lines)
 	callframe.Arg(frame, new_lines)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_hunk, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_hunk, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -851,7 +851,7 @@ func (self class) CreateDiffFile(new_file gd.String, old_file gd.String) gd.Dict
 	callframe.Arg(frame, pointers.Get(new_file))
 	callframe.Arg(frame, pointers.Get(old_file))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -869,7 +869,7 @@ func (self class) CreateCommit(msg gd.String, author gd.String, id gd.String, un
 	callframe.Arg(frame, unix_timestamp)
 	callframe.Arg(frame, offset_minutes)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_commit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_commit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -885,7 +885,7 @@ func (self class) CreateStatusFile(file_path gd.String, change_type gdclass.Edit
 	callframe.Arg(frame, change_type)
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_status_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_status_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -900,7 +900,7 @@ func (self class) AddDiffHunksIntoDiffFile(diff_file gd.Dictionary, diff_hunks g
 	callframe.Arg(frame, pointers.Get(diff_file))
 	callframe.Arg(frame, pointers.Get(diff_hunks))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_diff_hunks_into_diff_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_diff_hunks_into_diff_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -915,7 +915,7 @@ func (self class) AddLineDiffsIntoDiffHunk(diff_hunk gd.Dictionary, line_diffs g
 	callframe.Arg(frame, pointers.Get(diff_hunk))
 	callframe.Arg(frame, pointers.Get(line_diffs))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_line_diffs_into_diff_hunk, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_line_diffs_into_diff_hunk, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -928,8 +928,8 @@ Pops up an error message in the editor which is shown as coming from the underly
 func (self class) PopupError(msg gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(msg))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_popup_error, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_popup_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsEditorVCSInterface() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

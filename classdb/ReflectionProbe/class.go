@@ -178,8 +178,8 @@ func (self Instance) SetAmbientColorEnergy(value Float.X) {
 func (self class) SetIntensity(intensity gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, intensity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_intensity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -187,7 +187,7 @@ func (self class) SetIntensity(intensity gd.Float) {
 func (self class) GetIntensity() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_intensity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -197,8 +197,8 @@ func (self class) GetIntensity() gd.Float {
 func (self class) SetAmbientMode(ambient gdclass.ReflectionProbeAmbientMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ambient)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_ambient_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_ambient_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -206,7 +206,7 @@ func (self class) SetAmbientMode(ambient gdclass.ReflectionProbeAmbientMode) {
 func (self class) GetAmbientMode() gdclass.ReflectionProbeAmbientMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ReflectionProbeAmbientMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -216,8 +216,8 @@ func (self class) GetAmbientMode() gdclass.ReflectionProbeAmbientMode {
 func (self class) SetAmbientColor(ambient gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ambient)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_ambient_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_ambient_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -225,7 +225,7 @@ func (self class) SetAmbientColor(ambient gd.Color) {
 func (self class) GetAmbientColor() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -235,8 +235,8 @@ func (self class) GetAmbientColor() gd.Color {
 func (self class) SetAmbientColorEnergy(ambient_energy gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ambient_energy)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_ambient_color_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_ambient_color_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -244,7 +244,7 @@ func (self class) SetAmbientColorEnergy(ambient_energy gd.Float) {
 func (self class) GetAmbientColorEnergy() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_color_energy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_color_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -254,8 +254,8 @@ func (self class) GetAmbientColorEnergy() gd.Float {
 func (self class) SetMaxDistance(max_distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_max_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -263,7 +263,7 @@ func (self class) SetMaxDistance(max_distance gd.Float) {
 func (self class) GetMaxDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -273,8 +273,8 @@ func (self class) GetMaxDistance() gd.Float {
 func (self class) SetMeshLodThreshold(ratio gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -282,7 +282,7 @@ func (self class) SetMeshLodThreshold(ratio gd.Float) {
 func (self class) GetMeshLodThreshold() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -292,8 +292,8 @@ func (self class) GetMeshLodThreshold() gd.Float {
 func (self class) SetSize(size gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -301,7 +301,7 @@ func (self class) SetSize(size gd.Vector3) {
 func (self class) GetSize() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -311,8 +311,8 @@ func (self class) GetSize() gd.Vector3 {
 func (self class) SetOriginOffset(origin_offset gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, origin_offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_origin_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_origin_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -320,7 +320,7 @@ func (self class) SetOriginOffset(origin_offset gd.Vector3) {
 func (self class) GetOriginOffset() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_origin_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_origin_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -330,8 +330,8 @@ func (self class) GetOriginOffset() gd.Vector3 {
 func (self class) SetAsInterior(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_as_interior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_as_interior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -339,7 +339,7 @@ func (self class) SetAsInterior(enable bool) {
 func (self class) IsSetAsInterior() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_is_set_as_interior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_is_set_as_interior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -349,8 +349,8 @@ func (self class) IsSetAsInterior() bool {
 func (self class) SetEnableBoxProjection(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_enable_box_projection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_enable_box_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -358,7 +358,7 @@ func (self class) SetEnableBoxProjection(enable bool) {
 func (self class) IsBoxProjectionEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_is_box_projection_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_is_box_projection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -368,8 +368,8 @@ func (self class) IsBoxProjectionEnabled() bool {
 func (self class) SetEnableShadows(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_enable_shadows, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_enable_shadows, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -377,7 +377,7 @@ func (self class) SetEnableShadows(enable bool) {
 func (self class) AreShadowsEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_are_shadows_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_are_shadows_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -387,8 +387,8 @@ func (self class) AreShadowsEnabled() bool {
 func (self class) SetCullMask(layers gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -396,7 +396,7 @@ func (self class) SetCullMask(layers gd.Int) {
 func (self class) GetCullMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -406,8 +406,8 @@ func (self class) GetCullMask() gd.Int {
 func (self class) SetReflectionMask(layers gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_reflection_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_reflection_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -415,7 +415,7 @@ func (self class) SetReflectionMask(layers gd.Int) {
 func (self class) GetReflectionMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_reflection_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_reflection_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -425,8 +425,8 @@ func (self class) GetReflectionMask() gd.Int {
 func (self class) SetUpdateMode(mode gdclass.ReflectionProbeUpdateMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -434,7 +434,7 @@ func (self class) SetUpdateMode(mode gdclass.ReflectionProbeUpdateMode) {
 func (self class) GetUpdateMode() gdclass.ReflectionProbeUpdateMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ReflectionProbeUpdateMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

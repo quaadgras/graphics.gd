@@ -355,8 +355,8 @@ Associates [AudioSamplePlayback] to this [AudioStreamPlayback] for playing back 
 func (self class) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(playback_sample[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_set_sample_playback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_set_sample_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -367,7 +367,7 @@ Returns the [AudioSamplePlayback] associated with this [AudioStreamPlayback] for
 func (self class) GetSamplePlayback() [1]gdclass.AudioSamplePlayback {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_get_sample_playback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_get_sample_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioSamplePlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSamplePlayback](r_ret.Get())}
 	frame.Free()
 	return ret

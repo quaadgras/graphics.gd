@@ -70,8 +70,8 @@ func (self Instance) SetOmniShadowMode(value gdclass.OmniLight3DShadowMode) {
 func (self class) SetShadowMode(mode gdclass.OmniLight3DShadowMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OmniLight3D.Bind_set_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OmniLight3D.Bind_set_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -79,7 +79,7 @@ func (self class) SetShadowMode(mode gdclass.OmniLight3DShadowMode) {
 func (self class) GetShadowMode() gdclass.OmniLight3DShadowMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.OmniLight3DShadowMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OmniLight3D.Bind_get_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OmniLight3D.Bind_get_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

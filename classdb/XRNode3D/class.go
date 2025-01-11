@@ -116,8 +116,8 @@ func (self Instance) SetShowWhenTracked(value bool) {
 func (self class) SetTracker(tracker_name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tracker_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -125,7 +125,7 @@ func (self class) SetTracker(tracker_name gd.StringName) {
 func (self class) GetTracker() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -135,8 +135,8 @@ func (self class) GetTracker() gd.StringName {
 func (self class) SetPoseName(pose gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pose))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_pose_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_pose_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -144,7 +144,7 @@ func (self class) SetPoseName(pose gd.StringName) {
 func (self class) GetPoseName() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -154,8 +154,8 @@ func (self class) GetPoseName() gd.StringName {
 func (self class) SetShowWhenTracked(show bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, show)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_show_when_tracked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_show_when_tracked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -163,7 +163,7 @@ func (self class) SetShowWhenTracked(show bool) {
 func (self class) GetShowWhenTracked() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_show_when_tracked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_show_when_tracked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -176,7 +176,7 @@ Returns [code]true[/code] if the [member tracker] has been registered and the [m
 func (self class) GetIsActive() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_is_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -189,7 +189,7 @@ Returns [code]true[/code] if the [member tracker] has current tracking data for 
 func (self class) GetHasTrackingData() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -202,7 +202,7 @@ Returns the [XRPose] containing the current state of the pose being tracked. Thi
 func (self class) GetPose() [1]gdclass.XRPose {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -224,8 +224,8 @@ func (self class) TriggerHapticPulse(action_name gd.String, frequency gd.Float, 
 	callframe.Arg(frame, amplitude)
 	callframe.Arg(frame, duration_sec)
 	callframe.Arg(frame, delay_sec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_trigger_haptic_pulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_trigger_haptic_pulse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnTrackingChanged(cb func(tracking bool)) {

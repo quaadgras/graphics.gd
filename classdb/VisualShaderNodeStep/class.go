@@ -68,8 +68,8 @@ func (self Instance) SetOpType(value gdclass.VisualShaderNodeStepOpType) {
 func (self class) SetOpType(op_type gdclass.VisualShaderNodeStepOpType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, op_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeStep.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeStep.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -77,7 +77,7 @@ func (self class) SetOpType(op_type gdclass.VisualShaderNodeStepOpType) {
 func (self class) GetOpType() gdclass.VisualShaderNodeStepOpType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeStepOpType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeStep.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeStep.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

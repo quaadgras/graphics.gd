@@ -333,8 +333,8 @@ func (self Instance) SetFallbacks(value gd.Array) {
 func (self class) SetFallbacks(fallbacks gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(fallbacks))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_set_fallbacks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_set_fallbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -342,7 +342,7 @@ func (self class) SetFallbacks(fallbacks gd.Array) {
 func (self class) GetFallbacks() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_fallbacks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_fallbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -364,7 +364,7 @@ func (self class) FindVariation(variation_coordinates gd.Dictionary, face_index 
 	callframe.Arg(frame, spacing_glyph)
 	callframe.Arg(frame, baseline_offset)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_find_variation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_find_variation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -377,7 +377,7 @@ Returns [Array] of valid [Font] [RID]s, which can be passed to the [TextServer] 
 func (self class) GetRids() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_rids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_rids, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -392,7 +392,7 @@ func (self class) GetHeight(font_size gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -407,7 +407,7 @@ func (self class) GetAscent(font_size gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_ascent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_ascent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -422,7 +422,7 @@ func (self class) GetDescent(font_size gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_descent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_descent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -437,7 +437,7 @@ func (self class) GetUnderlinePosition(font_size gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_underline_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_underline_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -452,7 +452,7 @@ func (self class) GetUnderlineThickness(font_size gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_underline_thickness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_underline_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -465,7 +465,7 @@ Returns font family name.
 func (self class) GetFontName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -478,7 +478,7 @@ Returns font style name.
 func (self class) GetFontStyleName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_style_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_style_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -491,7 +491,7 @@ Returns [Dictionary] with OpenType font name strings (localized font names, vers
 func (self class) GetOtNameStrings() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_ot_name_strings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_ot_name_strings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -504,7 +504,7 @@ Returns font style flags, see [enum TextServer.FontStyle].
 func (self class) GetFontStyle() gdclass.TextServerFontStyle {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerFontStyle](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_style, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_style, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -517,7 +517,7 @@ Returns weight (boldness) of the font. A value in the [code]100...999[/code] ran
 func (self class) GetFontWeight() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_weight, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_weight, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -530,7 +530,7 @@ Returns font stretch amount, compared to a normal width. A percentage value betw
 func (self class) GetFontStretch() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_stretch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_stretch, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -544,7 +544,7 @@ func (self class) GetSpacing(spacing gdclass.TextServerSpacingType) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, spacing)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_spacing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -557,7 +557,7 @@ Returns a set of OpenType feature tags. More info: [url=https://docs.microsoft.c
 func (self class) GetOpentypeFeatures() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_opentype_features, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_opentype_features, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -571,8 +571,8 @@ func (self class) SetCacheCapacity(single_line gd.Int, multi_line gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, single_line)
 	callframe.Arg(frame, multi_line)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_set_cache_capacity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_set_cache_capacity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -602,7 +602,7 @@ func (self class) GetStringSize(text gd.String, alignment HorizontalAlignment, w
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_string_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_string_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -625,7 +625,7 @@ func (self class) GetMultilineStringSize(text gd.String, alignment HorizontalAli
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_multiline_string_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_multiline_string_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -648,8 +648,8 @@ func (self class) DrawString(canvas_item gd.RID, pos gd.Vector2, text gd.String,
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -672,8 +672,8 @@ func (self class) DrawMultilineString(canvas_item gd.RID, pos gd.Vector2, text g
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_multiline_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_multiline_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -695,8 +695,8 @@ func (self class) DrawStringOutline(canvas_item gd.RID, pos gd.Vector2, text gd.
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_string_outline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_string_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -720,8 +720,8 @@ func (self class) DrawMultilineStringOutline(canvas_item gd.RID, pos gd.Vector2,
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_multiline_string_outline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_multiline_string_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -735,7 +735,7 @@ func (self class) GetCharSize(char gd.Int, font_size gd.Int) gd.Vector2 {
 	callframe.Arg(frame, char)
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_char_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_char_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -754,7 +754,7 @@ func (self class) DrawChar(canvas_item gd.RID, pos gd.Vector2, char gd.Int, font
 	callframe.Arg(frame, font_size)
 	callframe.Arg(frame, modulate)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_char, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_char, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -774,7 +774,7 @@ func (self class) DrawCharOutline(canvas_item gd.RID, pos gd.Vector2, char gd.In
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, modulate)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_char_outline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_draw_char_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -788,7 +788,7 @@ func (self class) HasChar(char gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, char)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_has_char, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_has_char, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -802,7 +802,7 @@ If a given character is included in more than one font data source, it appears o
 func (self class) GetSupportedChars() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_supported_chars, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_supported_chars, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -816,7 +816,7 @@ func (self class) IsLanguageSupported(language gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_is_language_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_is_language_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -830,7 +830,7 @@ func (self class) IsScriptSupported(script gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(script))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_is_script_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_is_script_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -843,7 +843,7 @@ Returns list of OpenType features supported by font.
 func (self class) GetSupportedFeatureList() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_supported_feature_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_supported_feature_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -868,7 +868,7 @@ for tag in variation_list:
 func (self class) GetSupportedVariationList() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_supported_variation_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_supported_variation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -881,7 +881,7 @@ Returns number of faces in the TrueType / OpenType collection.
 func (self class) GetFaceCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_face_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_face_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

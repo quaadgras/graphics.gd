@@ -67,8 +67,8 @@ func (self Instance) SetOpType(value gdclass.VisualShaderNodeMultiplyAddOpType) 
 func (self class) SetOpType(atype gdclass.VisualShaderNodeMultiplyAddOpType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeMultiplyAdd.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeMultiplyAdd.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -76,7 +76,7 @@ func (self class) SetOpType(atype gdclass.VisualShaderNodeMultiplyAddOpType) {
 func (self class) GetOpType() gdclass.VisualShaderNodeMultiplyAddOpType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeMultiplyAddOpType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeMultiplyAdd.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeMultiplyAdd.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

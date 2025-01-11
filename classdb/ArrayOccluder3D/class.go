@@ -80,8 +80,8 @@ func (self class) SetArrays(vertices gd.PackedVector3Array, indices gd.PackedInt
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(vertices))
 	callframe.Arg(frame, pointers.Get(indices))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayOccluder3D.Bind_set_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayOccluder3D.Bind_set_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -89,8 +89,8 @@ func (self class) SetArrays(vertices gd.PackedVector3Array, indices gd.PackedInt
 func (self class) SetVertices(vertices gd.PackedVector3Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(vertices))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayOccluder3D.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayOccluder3D.Bind_set_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -98,8 +98,8 @@ func (self class) SetVertices(vertices gd.PackedVector3Array) {
 func (self class) SetIndices(indices gd.PackedInt32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(indices))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayOccluder3D.Bind_set_indices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayOccluder3D.Bind_set_indices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsArrayOccluder3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -69,8 +69,8 @@ func (self Instance) SetConstant(value Float.X) {
 func (self class) SetConstant(constant gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, constant)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatConstant.Bind_set_constant, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatConstant.Bind_set_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -78,7 +78,7 @@ func (self class) SetConstant(constant gd.Float) {
 func (self class) GetConstant() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatConstant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatConstant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

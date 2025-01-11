@@ -147,7 +147,7 @@ func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_o
 	callframe.Arg(frame, pointers.Get(trusted_chain[0])[0])
 	callframe.Arg(frame, pointers.Get(common_name_override))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_client, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_client, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TLSOptions{gd.PointerWithOwnershipTransferredToGo[gdclass.TLSOptions](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -162,7 +162,7 @@ func (self class) ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdcl
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(trusted_chain[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_client_unsafe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_client_unsafe, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TLSOptions{gd.PointerWithOwnershipTransferredToGo[gdclass.TLSOptions](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -178,7 +178,7 @@ func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Ce
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	callframe.Arg(frame, pointers.Get(certificate[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_server, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TLSOptions{gd.PointerWithOwnershipTransferredToGo[gdclass.TLSOptions](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -191,7 +191,7 @@ Returns [code]true[/code] if created with [method TLSOptions.server], [code]fals
 func (self class) IsServer() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_is_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_is_server, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -204,7 +204,7 @@ Returns [code]true[/code] if created with [method TLSOptions.client_unsafe], [co
 func (self class) IsUnsafeClient() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_is_unsafe_client, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_is_unsafe_client, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -217,7 +217,7 @@ Returns the common name (domain name) override specified when creating with [met
 func (self class) GetCommonNameOverride() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_common_name_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_common_name_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -230,7 +230,7 @@ Returns the CA [X509Certificate] chain specified when creating with [method TLSO
 func (self class) GetTrustedCaChain() [1]gdclass.X509Certificate {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_trusted_ca_chain, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_trusted_ca_chain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -243,7 +243,7 @@ Returns the [CryptoKey] specified when creating with [method TLSOptions.server].
 func (self class) GetPrivateKey() [1]gdclass.CryptoKey {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_private_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_private_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -256,7 +256,7 @@ Returns the [X509Certificate] specified when creating with [method TLSOptions.se
 func (self class) GetOwnCertificate() [1]gdclass.X509Certificate {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_own_certificate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_own_certificate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret.Get())}
 	frame.Free()
 	return ret

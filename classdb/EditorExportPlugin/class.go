@@ -1106,8 +1106,8 @@ func (self class) AddSharedObject(path gd.String, tags gd.PackedStringArray, tar
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(tags))
 	callframe.Arg(frame, pointers.Get(target))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_shared_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_shared_object, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1118,8 +1118,8 @@ Adds a static lib from the given [param path] to the iOS project.
 func (self class) AddIosProjectStaticLib(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_project_static_lib, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_project_static_lib, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1134,8 +1134,8 @@ func (self class) AddFile(path gd.String, file gd.PackedByteArray, remap bool) {
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(file))
 	callframe.Arg(frame, remap)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1146,8 +1146,8 @@ Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking
 func (self class) AddIosFramework(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_framework, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_framework, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1160,8 +1160,8 @@ Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode pr
 func (self class) AddIosEmbeddedFramework(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_embedded_framework, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_embedded_framework, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1172,8 +1172,8 @@ Adds content for iOS Property List files.
 func (self class) AddIosPlistContent(plist_content gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plist_content))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_plist_content, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_plist_content, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1184,8 +1184,8 @@ Adds linker flags for the iOS export.
 func (self class) AddIosLinkerFlags(flags gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(flags))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_linker_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_linker_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1196,8 +1196,8 @@ Adds an iOS bundle file from the given [param path] to the exported project.
 func (self class) AddIosBundleFile(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_bundle_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_bundle_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1208,8 +1208,8 @@ Adds a C++ code to the iOS export. The final code is created from the code appen
 func (self class) AddIosCppCode(code gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(code))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_cpp_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_cpp_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1221,8 +1221,8 @@ Adds file or directory matching [param path] to [code]PlugIns[/code] directory o
 func (self class) AddMacosPluginFile(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_macos_plugin_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_macos_plugin_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1232,8 +1232,8 @@ To be called inside [method _export_file]. Skips the current file, so it's not i
 //go:nosplit
 func (self class) Skip() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_skip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_skip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1245,7 +1245,7 @@ func (self class) GetOption(name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_option, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret

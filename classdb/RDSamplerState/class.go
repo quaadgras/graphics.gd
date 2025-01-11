@@ -178,8 +178,8 @@ func (self Instance) SetUnnormalizedUvw(value bool) {
 func (self class) SetMagFilter(p_member gdclass.RenderingDeviceSamplerFilter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_mag_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_mag_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -187,7 +187,7 @@ func (self class) SetMagFilter(p_member gdclass.RenderingDeviceSamplerFilter) {
 func (self class) GetMagFilter() gdclass.RenderingDeviceSamplerFilter {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerFilter](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_mag_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_mag_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -197,8 +197,8 @@ func (self class) GetMagFilter() gdclass.RenderingDeviceSamplerFilter {
 func (self class) SetMinFilter(p_member gdclass.RenderingDeviceSamplerFilter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_min_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_min_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -206,7 +206,7 @@ func (self class) SetMinFilter(p_member gdclass.RenderingDeviceSamplerFilter) {
 func (self class) GetMinFilter() gdclass.RenderingDeviceSamplerFilter {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerFilter](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_min_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_min_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -216,8 +216,8 @@ func (self class) GetMinFilter() gdclass.RenderingDeviceSamplerFilter {
 func (self class) SetMipFilter(p_member gdclass.RenderingDeviceSamplerFilter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_mip_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_mip_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -225,7 +225,7 @@ func (self class) SetMipFilter(p_member gdclass.RenderingDeviceSamplerFilter) {
 func (self class) GetMipFilter() gdclass.RenderingDeviceSamplerFilter {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerFilter](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_mip_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_mip_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -235,8 +235,8 @@ func (self class) GetMipFilter() gdclass.RenderingDeviceSamplerFilter {
 func (self class) SetRepeatU(p_member gdclass.RenderingDeviceSamplerRepeatMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_repeat_u, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_repeat_u, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -244,7 +244,7 @@ func (self class) SetRepeatU(p_member gdclass.RenderingDeviceSamplerRepeatMode) 
 func (self class) GetRepeatU() gdclass.RenderingDeviceSamplerRepeatMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerRepeatMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_repeat_u, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_repeat_u, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -254,8 +254,8 @@ func (self class) GetRepeatU() gdclass.RenderingDeviceSamplerRepeatMode {
 func (self class) SetRepeatV(p_member gdclass.RenderingDeviceSamplerRepeatMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_repeat_v, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_repeat_v, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -263,7 +263,7 @@ func (self class) SetRepeatV(p_member gdclass.RenderingDeviceSamplerRepeatMode) 
 func (self class) GetRepeatV() gdclass.RenderingDeviceSamplerRepeatMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerRepeatMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_repeat_v, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_repeat_v, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -273,8 +273,8 @@ func (self class) GetRepeatV() gdclass.RenderingDeviceSamplerRepeatMode {
 func (self class) SetRepeatW(p_member gdclass.RenderingDeviceSamplerRepeatMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_repeat_w, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_repeat_w, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -282,7 +282,7 @@ func (self class) SetRepeatW(p_member gdclass.RenderingDeviceSamplerRepeatMode) 
 func (self class) GetRepeatW() gdclass.RenderingDeviceSamplerRepeatMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerRepeatMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_repeat_w, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_repeat_w, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -292,8 +292,8 @@ func (self class) GetRepeatW() gdclass.RenderingDeviceSamplerRepeatMode {
 func (self class) SetLodBias(p_member gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_lod_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_lod_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -301,7 +301,7 @@ func (self class) SetLodBias(p_member gd.Float) {
 func (self class) GetLodBias() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_lod_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_lod_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -311,8 +311,8 @@ func (self class) GetLodBias() gd.Float {
 func (self class) SetUseAnisotropy(p_member bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_use_anisotropy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_use_anisotropy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -320,7 +320,7 @@ func (self class) SetUseAnisotropy(p_member bool) {
 func (self class) GetUseAnisotropy() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_use_anisotropy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_use_anisotropy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -330,8 +330,8 @@ func (self class) GetUseAnisotropy() bool {
 func (self class) SetAnisotropyMax(p_member gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_anisotropy_max, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_anisotropy_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -339,7 +339,7 @@ func (self class) SetAnisotropyMax(p_member gd.Float) {
 func (self class) GetAnisotropyMax() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_anisotropy_max, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_anisotropy_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -349,8 +349,8 @@ func (self class) GetAnisotropyMax() gd.Float {
 func (self class) SetEnableCompare(p_member bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_enable_compare, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_enable_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -358,7 +358,7 @@ func (self class) SetEnableCompare(p_member bool) {
 func (self class) GetEnableCompare() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_enable_compare, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_enable_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -368,8 +368,8 @@ func (self class) GetEnableCompare() bool {
 func (self class) SetCompareOp(p_member gdclass.RenderingDeviceCompareOperator) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_compare_op, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_compare_op, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -377,7 +377,7 @@ func (self class) SetCompareOp(p_member gdclass.RenderingDeviceCompareOperator) 
 func (self class) GetCompareOp() gdclass.RenderingDeviceCompareOperator {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceCompareOperator](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_compare_op, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_compare_op, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -387,8 +387,8 @@ func (self class) GetCompareOp() gdclass.RenderingDeviceCompareOperator {
 func (self class) SetMinLod(p_member gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_min_lod, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_min_lod, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -396,7 +396,7 @@ func (self class) SetMinLod(p_member gd.Float) {
 func (self class) GetMinLod() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_min_lod, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_min_lod, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -406,8 +406,8 @@ func (self class) GetMinLod() gd.Float {
 func (self class) SetMaxLod(p_member gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_max_lod, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_max_lod, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -415,7 +415,7 @@ func (self class) SetMaxLod(p_member gd.Float) {
 func (self class) GetMaxLod() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_max_lod, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_max_lod, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -425,8 +425,8 @@ func (self class) GetMaxLod() gd.Float {
 func (self class) SetBorderColor(p_member gdclass.RenderingDeviceSamplerBorderColor) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_border_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_border_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -434,7 +434,7 @@ func (self class) SetBorderColor(p_member gdclass.RenderingDeviceSamplerBorderCo
 func (self class) GetBorderColor() gdclass.RenderingDeviceSamplerBorderColor {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerBorderColor](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_border_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_border_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -444,8 +444,8 @@ func (self class) GetBorderColor() gdclass.RenderingDeviceSamplerBorderColor {
 func (self class) SetUnnormalizedUvw(p_member bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_unnormalized_uvw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_set_unnormalized_uvw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -453,7 +453,7 @@ func (self class) SetUnnormalizedUvw(p_member bool) {
 func (self class) GetUnnormalizedUvw() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_unnormalized_uvw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_unnormalized_uvw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

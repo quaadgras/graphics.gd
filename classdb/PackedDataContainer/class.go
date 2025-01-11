@@ -97,7 +97,7 @@ func (self class) Pack(value gd.Variant) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedDataContainer.Bind_pack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedDataContainer.Bind_pack, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -110,7 +110,7 @@ Returns the size of the packed container (see [method Array.size] and [method Di
 func (self class) Size() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedDataContainer.Bind_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedDataContainer.Bind_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

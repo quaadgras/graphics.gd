@@ -67,8 +67,8 @@ func (self Instance) SetOperator(value gdclass.VisualShaderNodeTransformOpOperat
 func (self class) SetOperator(op gdclass.VisualShaderNodeTransformOpOperator) {
 	var frame = callframe.New()
 	callframe.Arg(frame, op)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformOp.Bind_set_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformOp.Bind_set_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -76,7 +76,7 @@ func (self class) SetOperator(op gdclass.VisualShaderNodeTransformOpOperator) {
 func (self class) GetOperator() gdclass.VisualShaderNodeTransformOpOperator {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTransformOpOperator](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformOp.Bind_get_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformOp.Bind_get_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

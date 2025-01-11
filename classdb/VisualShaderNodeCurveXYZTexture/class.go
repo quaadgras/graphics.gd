@@ -68,8 +68,8 @@ func (self Instance) SetTexture(value [1]gdclass.CurveXYZTexture) {
 func (self class) SetTexture(texture [1]gdclass.CurveXYZTexture) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -77,7 +77,7 @@ func (self class) SetTexture(texture [1]gdclass.CurveXYZTexture) {
 func (self class) GetTexture() [1]gdclass.CurveXYZTexture {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CurveXYZTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.CurveXYZTexture](r_ret.Get())}
 	frame.Free()
 	return ret

@@ -182,7 +182,7 @@ func (self Instance) SetLight(value int) {
 func (self class) GetOriginalName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_original_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_original_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -192,8 +192,8 @@ func (self class) GetOriginalName() gd.String {
 func (self class) SetOriginalName(original_name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(original_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_original_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_original_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -201,7 +201,7 @@ func (self class) SetOriginalName(original_name gd.String) {
 func (self class) GetParent() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -211,8 +211,8 @@ func (self class) GetParent() gd.Int {
 func (self class) SetParent(parent gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, parent)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -220,7 +220,7 @@ func (self class) SetParent(parent gd.Int) {
 func (self class) GetHeight() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -230,8 +230,8 @@ func (self class) GetHeight() gd.Int {
 func (self class) SetHeight(height gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -239,7 +239,7 @@ func (self class) SetHeight(height gd.Int) {
 func (self class) GetXform() gd.Transform3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_xform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_xform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -249,8 +249,8 @@ func (self class) GetXform() gd.Transform3D {
 func (self class) SetXform(xform gd.Transform3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_xform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_xform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -258,7 +258,7 @@ func (self class) SetXform(xform gd.Transform3D) {
 func (self class) GetMesh() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -268,8 +268,8 @@ func (self class) GetMesh() gd.Int {
 func (self class) SetMesh(mesh gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -277,7 +277,7 @@ func (self class) SetMesh(mesh gd.Int) {
 func (self class) GetCamera() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_camera, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_camera, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -287,8 +287,8 @@ func (self class) GetCamera() gd.Int {
 func (self class) SetCamera(camera gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, camera)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_camera, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_camera, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -296,7 +296,7 @@ func (self class) SetCamera(camera gd.Int) {
 func (self class) GetSkin() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -306,8 +306,8 @@ func (self class) GetSkin() gd.Int {
 func (self class) SetSkin(skin gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, skin)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_skin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -315,7 +315,7 @@ func (self class) SetSkin(skin gd.Int) {
 func (self class) GetSkeleton() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -325,8 +325,8 @@ func (self class) GetSkeleton() gd.Int {
 func (self class) SetSkeleton(skeleton gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, skeleton)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -334,7 +334,7 @@ func (self class) SetSkeleton(skeleton gd.Int) {
 func (self class) GetPosition() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -344,8 +344,8 @@ func (self class) GetPosition() gd.Vector3 {
 func (self class) SetPosition(position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -353,7 +353,7 @@ func (self class) SetPosition(position gd.Vector3) {
 func (self class) GetRotation() gd.Quaternion {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Quaternion](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -363,8 +363,8 @@ func (self class) GetRotation() gd.Quaternion {
 func (self class) SetRotation(rotation gd.Quaternion) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rotation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -372,7 +372,7 @@ func (self class) SetRotation(rotation gd.Quaternion) {
 func (self class) GetScale() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -382,8 +382,8 @@ func (self class) GetScale() gd.Vector3 {
 func (self class) SetScale(scale gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -391,7 +391,7 @@ func (self class) SetScale(scale gd.Vector3) {
 func (self class) GetChildren() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -401,8 +401,8 @@ func (self class) GetChildren() gd.PackedInt32Array {
 func (self class) SetChildren(children gd.PackedInt32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(children))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -410,7 +410,7 @@ func (self class) SetChildren(children gd.PackedInt32Array) {
 func (self class) GetLight() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_light, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_light, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -420,8 +420,8 @@ func (self class) GetLight() gd.Int {
 func (self class) SetLight(light gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_light, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_light, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -434,7 +434,7 @@ func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -449,8 +449,8 @@ func (self class) SetAdditionalData(extension_name gd.StringName, additional_dat
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	callframe.Arg(frame, pointers.Get(additional_data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsGLTFNode() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

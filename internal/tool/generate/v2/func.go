@@ -354,13 +354,13 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if result != "" {
 			fmt.Fprintf(w, "\tvar r_ret = callframe.Ret[%v](frame)\n", result)
 		} else {
-			fmt.Fprintf(w, "\tvar r_ret callframe.Nil\n")
+			fmt.Fprintf(w, "\tvar r_ret = callframe.Nil\n")
 		}
 	}
 	if method.IsVararg {
 		fmt.Fprintf(w, "\tif len(args) > 0 { panic(`varargs not supported for class methods yet`); }\n")
 	}
-	fmt.Fprintf(w, "\tgd.Global.Object.MethodBindPointerCall(gd.Global.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Uintptr())\n", class.Name, method.Name)
+	fmt.Fprintf(w, "\tgd.Global.Object.MethodBindPointerCall(gd.Global.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Addr())\n", class.Name, method.Name)
 
 	if isPtr {
 		_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]

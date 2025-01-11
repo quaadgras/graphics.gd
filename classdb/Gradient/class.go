@@ -161,8 +161,8 @@ func (self class) AddPoint(offset gd.Float, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_add_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_add_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -173,8 +173,8 @@ Removes the color at index [param point].
 func (self class) RemovePoint(point gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_remove_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_remove_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -186,8 +186,8 @@ func (self class) SetOffset(point gd.Int, offset gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -199,7 +199,7 @@ func (self class) GetOffset(point gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -212,8 +212,8 @@ Reverses/mirrors the gradient.
 //go:nosplit
 func (self class) Reverse() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_reverse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_reverse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -225,8 +225,8 @@ func (self class) SetColor(point gd.Int, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -238,7 +238,7 @@ func (self class) GetColor(point gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -252,7 +252,7 @@ func (self class) Sample(offset gd.Float) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -265,7 +265,7 @@ Returns the number of colors in the gradient.
 func (self class) GetPointCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -275,8 +275,8 @@ func (self class) GetPointCount() gd.Int {
 func (self class) SetOffsets(offsets gd.PackedFloat32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(offsets))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_offsets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -284,7 +284,7 @@ func (self class) SetOffsets(offsets gd.PackedFloat32Array) {
 func (self class) GetOffsets() gd.PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_offsets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -294,8 +294,8 @@ func (self class) GetOffsets() gd.PackedFloat32Array {
 func (self class) SetColors(colors gd.PackedColorArray) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(colors))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_colors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -303,7 +303,7 @@ func (self class) SetColors(colors gd.PackedColorArray) {
 func (self class) GetColors() gd.PackedColorArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_colors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedColorArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -313,8 +313,8 @@ func (self class) GetColors() gd.PackedColorArray {
 func (self class) SetInterpolationMode(interpolation_mode gdclass.GradientInterpolationMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, interpolation_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -322,7 +322,7 @@ func (self class) SetInterpolationMode(interpolation_mode gdclass.GradientInterp
 func (self class) GetInterpolationMode() gdclass.GradientInterpolationMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GradientInterpolationMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -332,8 +332,8 @@ func (self class) GetInterpolationMode() gdclass.GradientInterpolationMode {
 func (self class) SetInterpolationColorSpace(interpolation_color_space gdclass.GradientColorSpace) {
 	var frame = callframe.New()
 	callframe.Arg(frame, interpolation_color_space)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_interpolation_color_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_set_interpolation_color_space, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -341,7 +341,7 @@ func (self class) SetInterpolationColorSpace(interpolation_color_space gdclass.G
 func (self class) GetInterpolationColorSpace() gdclass.GradientColorSpace {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GradientColorSpace](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_interpolation_color_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_interpolation_color_space, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

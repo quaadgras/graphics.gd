@@ -68,8 +68,8 @@ func (self Instance) SetOpType(value gdclass.VisualShaderNodeSmoothStepOpType) {
 func (self class) SetOpType(op_type gdclass.VisualShaderNodeSmoothStepOpType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, op_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeSmoothStep.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeSmoothStep.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -77,7 +77,7 @@ func (self class) SetOpType(op_type gdclass.VisualShaderNodeSmoothStepOpType) {
 func (self class) GetOpType() gdclass.VisualShaderNodeSmoothStepOpType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeSmoothStepOpType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeSmoothStep.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeSmoothStep.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

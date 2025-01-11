@@ -77,8 +77,8 @@ func (self Instance) SetRect(value Rect2.PositionSize) {
 func (self class) SetRect(rect gd.Rect2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_set_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_set_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -86,7 +86,7 @@ func (self class) SetRect(rect gd.Rect2) {
 func (self class) GetRect() gd.Rect2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -96,8 +96,8 @@ func (self class) GetRect() gd.Rect2 {
 func (self class) SetCopyMode(copy_mode gdclass.BackBufferCopyCopyMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, copy_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_set_copy_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_set_copy_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -105,7 +105,7 @@ func (self class) SetCopyMode(copy_mode gdclass.BackBufferCopyCopyMode) {
 func (self class) GetCopyMode() gdclass.BackBufferCopyCopyMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BackBufferCopyCopyMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_get_copy_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_get_copy_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

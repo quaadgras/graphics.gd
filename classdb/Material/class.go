@@ -199,8 +199,8 @@ func (class) _can_use_render_priority(impl func(ptr unsafe.Pointer) bool) (cb gd
 func (self class) SetNextPass(next_pass [1]gdclass.Material) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(next_pass[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_set_next_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_set_next_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -208,7 +208,7 @@ func (self class) SetNextPass(next_pass [1]gdclass.Material) {
 func (self class) GetNextPass() [1]gdclass.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_get_next_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_get_next_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -218,8 +218,8 @@ func (self class) GetNextPass() [1]gdclass.Material {
 func (self class) SetRenderPriority(priority gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_set_render_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_set_render_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -227,7 +227,7 @@ func (self class) SetRenderPriority(priority gd.Int) {
 func (self class) GetRenderPriority() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_get_render_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_get_render_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -239,8 +239,8 @@ Only available when running in the editor. Opens a popup that visualizes the gen
 //go:nosplit
 func (self class) InspectNativeShaderCode() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_inspect_native_shader_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_inspect_native_shader_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -251,7 +251,7 @@ Creates a placeholder version of this resource ([PlaceholderMaterial]).
 func (self class) CreatePlaceholder() [1]gdclass.Resource {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()
 	return ret

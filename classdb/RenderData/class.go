@@ -89,7 +89,7 @@ Returns the [RenderSceneBuffers] object managing the scene buffers for rendering
 func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_buffers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.RenderSceneBuffers{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderSceneBuffers](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -102,7 +102,7 @@ Returns the [RenderSceneData] object managing this frames scene data.
 func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.RenderSceneData{gd.PointerBorrowedTemporarily[gdclass.RenderSceneData](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -115,7 +115,7 @@ Returns the [RID] of the environments object in the [RenderingServer] being used
 func (self class) GetEnvironment() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -128,7 +128,7 @@ Returns the [RID] of the camera attributes object in the [RenderingServer] being
 func (self class) GetCameraAttributes() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

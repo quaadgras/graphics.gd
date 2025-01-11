@@ -68,8 +68,8 @@ func (self Instance) SetColor(value Color.RGBA) {
 func (self class) SetColor(color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorRect.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorRect.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -77,7 +77,7 @@ func (self class) SetColor(color gd.Color) {
 func (self class) GetColor() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorRect.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorRect.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

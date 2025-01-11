@@ -115,8 +115,8 @@ Registers a [TextServer] interface.
 func (self class) AddInterface(intf [1]gdclass.TextServer) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(intf[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_add_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_add_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -127,7 +127,7 @@ Returns the number of interfaces currently registered.
 func (self class) GetInterfaceCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interface_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -140,8 +140,8 @@ Removes an interface. All fonts and shaped text caches should be freed before re
 func (self class) RemoveInterface(intf [1]gdclass.TextServer) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(intf[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_remove_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_remove_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -153,7 +153,7 @@ func (self class) GetInterface(idx gd.Int) [1]gdclass.TextServer {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -166,7 +166,7 @@ Returns a list of available interfaces, with the index and name of each interfac
 func (self class) GetInterfaces() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interfaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -180,7 +180,7 @@ func (self class) FindInterface(name gd.String) [1]gdclass.TextServer {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -193,8 +193,8 @@ Sets the primary [TextServer] interface.
 func (self class) SetPrimaryInterface(index [1]gdclass.TextServer) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(index[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_set_primary_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_set_primary_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -205,7 +205,7 @@ Returns the primary [TextServer] interface currently in use.
 func (self class) GetPrimaryInterface() [1]gdclass.TextServer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}
 	frame.Free()
 	return ret

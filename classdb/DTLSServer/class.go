@@ -226,7 +226,7 @@ func (self class) Setup(server_options [1]gdclass.TLSOptions) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(server_options[0])[0])
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DTLSServer.Bind_setup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DTLSServer.Bind_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -241,7 +241,7 @@ func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.P
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(udp_peer[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DTLSServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DTLSServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerDTLS](r_ret.Get())}
 	frame.Free()
 	return ret

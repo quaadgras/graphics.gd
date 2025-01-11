@@ -1732,7 +1732,7 @@ Returns [code]true[/code] if the user has text in the [url=https://en.wikipedia.
 func (self class) HasImeText() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_ime_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_ime_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1744,8 +1744,8 @@ Closes the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/
 //go:nosplit
 func (self class) CancelIme() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_cancel_ime, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_cancel_ime, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1755,8 +1755,8 @@ Applies text from the [url=https://en.wikipedia.org/wiki/Input_method]Input Meth
 //go:nosplit
 func (self class) ApplyIme() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_apply_ime, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_apply_ime, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1764,8 +1764,8 @@ func (self class) ApplyIme() {
 func (self class) SetEditable(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_editable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1773,7 +1773,7 @@ func (self class) SetEditable(enabled bool) {
 func (self class) IsEditable() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1783,8 +1783,8 @@ func (self class) IsEditable() bool {
 func (self class) SetTextDirection(direction gdclass.ControlTextDirection) {
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1792,7 +1792,7 @@ func (self class) SetTextDirection(direction gdclass.ControlTextDirection) {
 func (self class) GetTextDirection() gdclass.ControlTextDirection {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1802,8 +1802,8 @@ func (self class) GetTextDirection() gdclass.ControlTextDirection {
 func (self class) SetLanguage(language gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1811,7 +1811,7 @@ func (self class) SetLanguage(language gd.String) {
 func (self class) GetLanguage() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1821,8 +1821,8 @@ func (self class) GetLanguage() gd.String {
 func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) {
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1830,7 +1830,7 @@ func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructu
 func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1840,8 +1840,8 @@ func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTe
 func (self class) SetStructuredTextBidiOverrideOptions(args gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(args))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1849,7 +1849,7 @@ func (self class) SetStructuredTextBidiOverrideOptions(args gd.Array) {
 func (self class) GetStructuredTextBidiOverrideOptions() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1862,8 +1862,8 @@ Sets the tab size for the [TextEdit] to use.
 func (self class) SetTabSize(size gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_tab_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_tab_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1874,7 +1874,7 @@ Returns the [TextEdit]'s' tab size.
 func (self class) GetTabSize() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_tab_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_tab_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1884,8 +1884,8 @@ func (self class) GetTabSize() gd.Int {
 func (self class) SetIndentWrappedLines(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_indent_wrapped_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_indent_wrapped_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1893,7 +1893,7 @@ func (self class) SetIndentWrappedLines(enabled bool) {
 func (self class) IsIndentWrappedLines() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_indent_wrapped_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_indent_wrapped_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1906,8 +1906,8 @@ If [code]true[/code], sets the user into overtype mode. When the user types in t
 func (self class) SetOvertypeModeEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_overtype_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_overtype_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1918,7 +1918,7 @@ Returns whether the user is in overtype mode.
 func (self class) IsOvertypeModeEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_overtype_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_overtype_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1928,8 +1928,8 @@ func (self class) IsOvertypeModeEnabled() bool {
 func (self class) SetContextMenuEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1937,7 +1937,7 @@ func (self class) SetContextMenuEnabled(enabled bool) {
 func (self class) IsContextMenuEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1947,8 +1947,8 @@ func (self class) IsContextMenuEnabled() bool {
 func (self class) SetShortcutKeysEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1956,7 +1956,7 @@ func (self class) SetShortcutKeysEnabled(enabled bool) {
 func (self class) IsShortcutKeysEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1966,8 +1966,8 @@ func (self class) IsShortcutKeysEnabled() bool {
 func (self class) SetVirtualKeyboardEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1975,7 +1975,7 @@ func (self class) SetVirtualKeyboardEnabled(enabled bool) {
 func (self class) IsVirtualKeyboardEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1985,8 +1985,8 @@ func (self class) IsVirtualKeyboardEnabled() bool {
 func (self class) SetMiddleMousePasteEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1994,7 +1994,7 @@ func (self class) SetMiddleMousePasteEnabled(enabled bool) {
 func (self class) IsMiddleMousePasteEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2006,8 +2006,8 @@ Performs a full reset of [TextEdit], including undo history.
 //go:nosplit
 func (self class) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2015,8 +2015,8 @@ func (self class) Clear() {
 func (self class) SetText(text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2024,7 +2024,7 @@ func (self class) SetText(text gd.String) {
 func (self class) GetText() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2037,7 +2037,7 @@ Returns the number of lines in the text.
 func (self class) GetLineCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2047,8 +2047,8 @@ func (self class) GetLineCount() gd.Int {
 func (self class) SetPlaceholder(text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2056,7 +2056,7 @@ func (self class) SetPlaceholder(text gd.String) {
 func (self class) GetPlaceholder() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2071,8 +2071,8 @@ func (self class) SetLine(line gd.Int, new_text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(new_text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2084,7 +2084,7 @@ func (self class) GetLine(line gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2099,7 +2099,7 @@ func (self class) GetLineWidth(line gd.Int, wrap_index gd.Int) gd.Int {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2113,7 +2113,7 @@ Returns the maximum value of the line height among all lines.
 func (self class) GetLineHeight() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2127,7 +2127,7 @@ func (self class) GetIndentLevel(line gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_indent_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_indent_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2141,7 +2141,7 @@ func (self class) GetFirstNonWhitespaceColumn(line gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_first_non_whitespace_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_first_non_whitespace_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2155,8 +2155,8 @@ func (self class) SwapLines(from_line gd.Int, to_line gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, to_line)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_swap_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_swap_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2168,8 +2168,8 @@ func (self class) InsertLineAt(line gd.Int, text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_line_at, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_line_at, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2182,8 +2182,8 @@ func (self class) RemoveLineAt(line gd.Int, move_carets_down bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, move_carets_down)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_line_at, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_line_at, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2195,8 +2195,8 @@ func (self class) InsertTextAtCaret(text gd.String, caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_text_at_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_text_at_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2213,8 +2213,8 @@ func (self class) InsertText(text gd.String, line gd.Int, column gd.Int, before_
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, before_selection_begin)
 	callframe.Arg(frame, before_selection_end)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2228,8 +2228,8 @@ func (self class) RemoveText(from_line gd.Int, from_column gd.Int, to_line gd.In
 	callframe.Arg(frame, from_column)
 	callframe.Arg(frame, to_line)
 	callframe.Arg(frame, to_column)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2240,7 +2240,7 @@ Returns the last unhidden line in the entire [TextEdit].
 func (self class) GetLastUnhiddenLine() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_unhidden_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_unhidden_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2255,7 +2255,7 @@ func (self class) GetNextVisibleLineOffsetFrom(line gd.Int, visible_amount gd.In
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, visible_amount)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_next_visible_line_offset_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_next_visible_line_offset_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2271,7 +2271,7 @@ func (self class) GetNextVisibleLineIndexOffsetFrom(line gd.Int, wrap_index gd.I
 	callframe.Arg(frame, wrap_index)
 	callframe.Arg(frame, visible_amount)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_next_visible_line_index_offset_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_next_visible_line_index_offset_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2284,8 +2284,8 @@ Called when the user presses the backspace key. Can be overridden with [method _
 func (self class) Backspace(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_backspace, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_backspace, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2296,8 +2296,8 @@ Cut's the current selection. Can be overridden with [method _cut].
 func (self class) Cut(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_cut, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_cut, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2308,8 +2308,8 @@ Copies the current text selection. Can be overridden with [method _copy].
 func (self class) Copy(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_copy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_copy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2320,8 +2320,8 @@ Paste at the current location. Can be overridden with [method _paste].
 func (self class) Paste(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_paste, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_paste, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2332,8 +2332,8 @@ Pastes the primary clipboard.
 func (self class) PastePrimaryClipboard(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_paste_primary_clipboard, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_paste_primary_clipboard, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2345,8 +2345,8 @@ An action will also end after a call to [method end_action], after [member Proje
 func (self class) StartAction(action gdclass.TextEditEditAction) {
 	var frame = callframe.New()
 	callframe.Arg(frame, action)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_start_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_start_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2356,8 +2356,8 @@ Marks the end of steps in the current action started with [method start_action].
 //go:nosplit
 func (self class) EndAction() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_end_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_end_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2367,8 +2367,8 @@ Starts a multipart edit. All edits will be treated as one action until [method e
 //go:nosplit
 func (self class) BeginComplexOperation() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_begin_complex_operation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_begin_complex_operation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2378,8 +2378,8 @@ Ends a multipart edit, started with [method begin_complex_operation]. If called 
 //go:nosplit
 func (self class) EndComplexOperation() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_end_complex_operation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_end_complex_operation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2390,7 +2390,7 @@ Returns [code]true[/code] if an "undo" action is available.
 func (self class) HasUndo() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_undo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_undo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2403,7 +2403,7 @@ Returns [code]true[/code] if a "redo" action is available.
 func (self class) HasRedo() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2415,8 +2415,8 @@ Perform undo operation.
 //go:nosplit
 func (self class) Undo() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_undo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_undo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2426,8 +2426,8 @@ Perform redo operation.
 //go:nosplit
 func (self class) Redo() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2437,8 +2437,8 @@ Clears the undo history.
 //go:nosplit
 func (self class) ClearUndoHistory() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_clear_undo_history, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_clear_undo_history, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2448,8 +2448,8 @@ Tag the current version as saved.
 //go:nosplit
 func (self class) TagSavedVersion() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_tag_saved_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_tag_saved_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2460,7 +2460,7 @@ Returns the current version of the [TextEdit]. The version is a count of recorde
 func (self class) GetVersion() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2473,7 +2473,7 @@ Returns the last tagged saved version from [method tag_saved_version].
 func (self class) GetSavedVersion() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_saved_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_saved_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2486,8 +2486,8 @@ Sets the search text. See [method set_search_flags].
 func (self class) SetSearchText(search_text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(search_text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_search_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_search_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2498,8 +2498,8 @@ Sets the search [param flags]. This is used with [method set_search_text] to hig
 func (self class) SetSearchFlags(flags gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_search_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_search_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2533,7 +2533,7 @@ func (self class) Search(text gd.String, flags gd.Int, from_line gd.Int, from_co
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, from_column)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_search, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_search, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2546,8 +2546,8 @@ Provide custom tooltip text. The callback method must take the following args: [
 func (self class) SetTooltipRequestFunc(callback gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_tooltip_request_func, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_tooltip_request_func, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2558,7 +2558,7 @@ Returns the local mouse position adjusted for the text direction.
 func (self class) GetLocalMousePos() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_local_mouse_pos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_local_mouse_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2572,7 +2572,7 @@ func (self class) GetWordAtPos(position gd.Vector2) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_word_at_pos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_word_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2587,7 +2587,7 @@ func (self class) GetLineColumnAtPos(position gd.Vector2i, allow_out_of_bounds b
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, allow_out_of_bounds)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_column_at_pos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_column_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2603,7 +2603,7 @@ func (self class) GetPosAtLineColumn(line gd.Int, column gd.Int) gd.Vector2i {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_pos_at_line_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_pos_at_line_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2619,7 +2619,7 @@ func (self class) GetRectAtLineColumn(line gd.Int, column gd.Int) gd.Rect2i {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_rect_at_line_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_rect_at_line_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2633,7 +2633,7 @@ func (self class) GetMinimapLineAtPos(position gd.Vector2i) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_line_at_pos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_line_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2646,7 +2646,7 @@ Returns [code]true[/code] if the user is dragging their mouse for scrolling, sel
 func (self class) IsDraggingCursor() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_dragging_cursor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_dragging_cursor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2661,7 +2661,7 @@ func (self class) IsMouseOverSelection(edges bool, caret_index gd.Int) bool {
 	callframe.Arg(frame, edges)
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_mouse_over_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_mouse_over_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2671,8 +2671,8 @@ func (self class) IsMouseOverSelection(edges bool, caret_index gd.Int) bool {
 func (self class) SetCaretType(atype gdclass.TextEditCaretType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2680,7 +2680,7 @@ func (self class) SetCaretType(atype gdclass.TextEditCaretType) {
 func (self class) GetCaretType() gdclass.TextEditCaretType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextEditCaretType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2690,8 +2690,8 @@ func (self class) GetCaretType() gdclass.TextEditCaretType {
 func (self class) SetCaretBlinkEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2699,7 +2699,7 @@ func (self class) SetCaretBlinkEnabled(enable bool) {
 func (self class) IsCaretBlinkEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2709,8 +2709,8 @@ func (self class) IsCaretBlinkEnabled() bool {
 func (self class) SetCaretBlinkInterval(interval gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, interval)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2718,7 +2718,7 @@ func (self class) SetCaretBlinkInterval(interval gd.Float) {
 func (self class) GetCaretBlinkInterval() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2728,8 +2728,8 @@ func (self class) GetCaretBlinkInterval() gd.Float {
 func (self class) SetDrawCaretWhenEditableDisabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_caret_when_editable_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_caret_when_editable_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2737,7 +2737,7 @@ func (self class) SetDrawCaretWhenEditableDisabled(enable bool) {
 func (self class) IsDrawingCaretWhenEditableDisabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_caret_when_editable_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_caret_when_editable_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2747,8 +2747,8 @@ func (self class) IsDrawingCaretWhenEditableDisabled() bool {
 func (self class) SetMoveCaretOnRightClickEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_move_caret_on_right_click_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_move_caret_on_right_click_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2756,7 +2756,7 @@ func (self class) SetMoveCaretOnRightClickEnabled(enable bool) {
 func (self class) IsMoveCaretOnRightClickEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_move_caret_on_right_click_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_move_caret_on_right_click_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2766,8 +2766,8 @@ func (self class) IsMoveCaretOnRightClickEnabled() bool {
 func (self class) SetCaretMidGraphemeEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2775,7 +2775,7 @@ func (self class) SetCaretMidGraphemeEnabled(enabled bool) {
 func (self class) IsCaretMidGraphemeEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2785,8 +2785,8 @@ func (self class) IsCaretMidGraphemeEnabled() bool {
 func (self class) SetMultipleCaretsEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_multiple_carets_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_multiple_carets_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2794,7 +2794,7 @@ func (self class) SetMultipleCaretsEnabled(enabled bool) {
 func (self class) IsMultipleCaretsEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_multiple_carets_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_multiple_carets_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2809,7 +2809,7 @@ func (self class) AddCaret(line gd.Int, column gd.Int) gd.Int {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2823,8 +2823,8 @@ Removes the given caret index.
 func (self class) RemoveCaret(caret gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2834,8 +2834,8 @@ Removes all additional carets.
 //go:nosplit
 func (self class) RemoveSecondaryCarets() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_secondary_carets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_secondary_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2846,7 +2846,7 @@ Returns the number of carets in this [TextEdit].
 func (self class) GetCaretCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2859,8 +2859,8 @@ Adds an additional caret above or below every caret. If [param below] is [code]t
 func (self class) AddCaretAtCarets(below bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, below)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_caret_at_carets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_caret_at_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2873,7 +2873,7 @@ func (self class) GetSortedCarets(include_ignored_carets bool) gd.PackedInt32Arr
 	var frame = callframe.New()
 	callframe.Arg(frame, include_ignored_carets)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_sorted_carets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_sorted_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2893,8 +2893,8 @@ func (self class) CollapseCarets(from_line gd.Int, from_column gd.Int, to_line g
 	callframe.Arg(frame, to_line)
 	callframe.Arg(frame, to_column)
 	callframe.Arg(frame, inclusive)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_collapse_carets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_collapse_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2906,8 +2906,8 @@ If [method is_in_mulitcaret_edit] is [code]true[/code], the merge will be queued
 //go:nosplit
 func (self class) MergeOverlappingCarets() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_merge_overlapping_carets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_merge_overlapping_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2928,8 +2928,8 @@ end_complex_operation()
 //go:nosplit
 func (self class) BeginMulticaretEdit() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_begin_multicaret_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_begin_multicaret_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2939,8 +2939,8 @@ Ends an edit for multiple carets, that was started with [method begin_multicaret
 //go:nosplit
 func (self class) EndMulticaretEdit() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_end_multicaret_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_end_multicaret_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2951,7 +2951,7 @@ Returns [code]true[/code] if a [method begin_multicaret_edit] has been called an
 func (self class) IsInMulitcaretEdit() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_in_mulitcaret_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_in_mulitcaret_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2966,7 +2966,7 @@ func (self class) MulticaretEditIgnoreCaret(caret_index gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_multicaret_edit_ignore_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_multicaret_edit_ignore_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2980,7 +2980,7 @@ func (self class) IsCaretVisible(caret_index gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2994,7 +2994,7 @@ func (self class) GetCaretDrawPos(caret_index gd.Int) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_draw_pos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_draw_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3015,8 +3015,8 @@ func (self class) SetCaretLine(line gd.Int, adjust_viewport bool, can_be_hidden 
 	callframe.Arg(frame, can_be_hidden)
 	callframe.Arg(frame, wrap_index)
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3028,7 +3028,7 @@ func (self class) GetCaretLine(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3045,8 +3045,8 @@ func (self class) SetCaretColumn(column gd.Int, adjust_viewport bool, caret_inde
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, adjust_viewport)
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3058,7 +3058,7 @@ func (self class) GetCaretColumn(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3072,7 +3072,7 @@ func (self class) GetCaretWrapIndex(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_wrap_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_wrap_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3086,7 +3086,7 @@ func (self class) GetWordUnderCaret(caret_index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_word_under_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_word_under_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3096,8 +3096,8 @@ func (self class) GetWordUnderCaret(caret_index gd.Int) gd.String {
 func (self class) SetUseDefaultWordSeparators(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_use_default_word_separators, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_use_default_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3105,7 +3105,7 @@ func (self class) SetUseDefaultWordSeparators(enabled bool) {
 func (self class) IsDefaultWordSeparatorsEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_default_word_separators_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_default_word_separators_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3115,8 +3115,8 @@ func (self class) IsDefaultWordSeparatorsEnabled() bool {
 func (self class) SetUseCustomWordSeparators(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_use_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_use_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3124,7 +3124,7 @@ func (self class) SetUseCustomWordSeparators(enabled bool) {
 func (self class) IsCustomWordSeparatorsEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_custom_word_separators_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_custom_word_separators_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3134,8 +3134,8 @@ func (self class) IsCustomWordSeparatorsEnabled() bool {
 func (self class) SetCustomWordSeparators(custom_word_separators gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(custom_word_separators))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3143,7 +3143,7 @@ func (self class) SetCustomWordSeparators(custom_word_separators gd.String) {
 func (self class) GetCustomWordSeparators() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3153,8 +3153,8 @@ func (self class) GetCustomWordSeparators() gd.String {
 func (self class) SetSelectingEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3162,7 +3162,7 @@ func (self class) SetSelectingEnabled(enable bool) {
 func (self class) IsSelectingEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3172,8 +3172,8 @@ func (self class) IsSelectingEnabled() bool {
 func (self class) SetDeselectOnFocusLossEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3181,7 +3181,7 @@ func (self class) SetDeselectOnFocusLossEnabled(enable bool) {
 func (self class) IsDeselectOnFocusLossEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3191,8 +3191,8 @@ func (self class) IsDeselectOnFocusLossEnabled() bool {
 func (self class) SetDragAndDropSelectionEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3200,7 +3200,7 @@ func (self class) SetDragAndDropSelectionEnabled(enable bool) {
 func (self class) IsDragAndDropSelectionEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3213,8 +3213,8 @@ Sets the current selection mode.
 func (self class) SetSelectionMode(mode gdclass.TextEditSelectionMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selection_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selection_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3225,7 +3225,7 @@ Returns the current selection mode.
 func (self class) GetSelectionMode() gdclass.TextEditSelectionMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextEditSelectionMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3238,8 +3238,8 @@ If [member selecting_enabled] is [code]false[/code], no selection will occur.
 //go:nosplit
 func (self class) SelectAll() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_select_all, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_select_all, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3250,8 +3250,8 @@ Selects the word under the caret.
 func (self class) SelectWordUnderCaret(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_select_word_under_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_select_word_under_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3261,8 +3261,8 @@ Adds a selection and a caret for the next occurrence of the current selection. I
 //go:nosplit
 func (self class) AddSelectionForNextOccurrence() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_selection_for_next_occurrence, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_selection_for_next_occurrence, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3272,8 +3272,8 @@ Moves a selection and a caret for the next occurrence of the current selection. 
 //go:nosplit
 func (self class) SkipSelectionForNextOccurrence() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_skip_selection_for_next_occurrence, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_skip_selection_for_next_occurrence, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3290,8 +3290,8 @@ func (self class) Select(origin_line gd.Int, origin_column gd.Int, caret_line gd
 	callframe.Arg(frame, caret_line)
 	callframe.Arg(frame, caret_column)
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_select_, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_select_, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3303,7 +3303,7 @@ func (self class) HasSelection(caret_index gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3317,7 +3317,7 @@ func (self class) GetSelectedText(caret_index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selected_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selected_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3335,7 +3335,7 @@ func (self class) GetSelectionAtLineColumn(line gd.Int, column gd.Int, include_e
 	callframe.Arg(frame, include_edges)
 	callframe.Arg(frame, only_selections)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_at_line_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_at_line_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3351,7 +3351,7 @@ func (self class) GetLineRangesFromCarets(only_selections bool, merge_adjacent b
 	callframe.Arg(frame, only_selections)
 	callframe.Arg(frame, merge_adjacent)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_ranges_from_carets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_ranges_from_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3365,7 +3365,7 @@ func (self class) GetSelectionOriginLine(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_origin_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_origin_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3379,7 +3379,7 @@ func (self class) GetSelectionOriginColumn(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_origin_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_origin_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3397,8 +3397,8 @@ func (self class) SetSelectionOriginLine(line gd.Int, can_be_hidden bool, wrap_i
 	callframe.Arg(frame, can_be_hidden)
 	callframe.Arg(frame, wrap_index)
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selection_origin_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selection_origin_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3410,8 +3410,8 @@ func (self class) SetSelectionOriginColumn(column gd.Int, caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selection_origin_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selection_origin_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3423,7 +3423,7 @@ func (self class) GetSelectionFromLine(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_from_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_from_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3437,7 +3437,7 @@ func (self class) GetSelectionFromColumn(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_from_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_from_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3451,7 +3451,7 @@ func (self class) GetSelectionToLine(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_to_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_to_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3465,7 +3465,7 @@ func (self class) GetSelectionToColumn(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_to_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_to_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3479,7 +3479,7 @@ func (self class) IsCaretAfterSelectionOrigin(caret_index gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_after_selection_origin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_after_selection_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3492,8 +3492,8 @@ Deselects the current selection.
 func (self class) Deselect(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3504,8 +3504,8 @@ Deletes the selected text.
 func (self class) DeleteSelection(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_delete_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_delete_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3513,8 +3513,8 @@ func (self class) DeleteSelection(caret_index gd.Int) {
 func (self class) SetLineWrappingMode(mode gdclass.TextEditLineWrappingMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_wrapping_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_wrapping_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3522,7 +3522,7 @@ func (self class) SetLineWrappingMode(mode gdclass.TextEditLineWrappingMode) {
 func (self class) GetLineWrappingMode() gdclass.TextEditLineWrappingMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextEditLineWrappingMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrapping_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrapping_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3532,8 +3532,8 @@ func (self class) GetLineWrappingMode() gdclass.TextEditLineWrappingMode {
 func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, autowrap_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3541,7 +3541,7 @@ func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) 
 func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3555,7 +3555,7 @@ func (self class) IsLineWrapped(line gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_line_wrapped, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_line_wrapped, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3569,7 +3569,7 @@ func (self class) GetLineWrapCount(line gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrap_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrap_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3584,7 +3584,7 @@ func (self class) GetLineWrapIndexAtColumn(line gd.Int, column gd.Int) gd.Int {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrap_index_at_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrap_index_at_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3598,7 +3598,7 @@ func (self class) GetLineWrappedText(line gd.Int) gd.PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrapped_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrapped_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3608,8 +3608,8 @@ func (self class) GetLineWrappedText(line gd.Int) gd.PackedStringArray {
 func (self class) SetSmoothScrollEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_smooth_scroll_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_smooth_scroll_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3617,7 +3617,7 @@ func (self class) SetSmoothScrollEnabled(enable bool) {
 func (self class) IsSmoothScrollEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_smooth_scroll_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_smooth_scroll_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3630,7 +3630,7 @@ Returns the [VScrollBar] of the [TextEdit].
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -3643,7 +3643,7 @@ Returns the [HScrollBar] used by [TextEdit].
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_h_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_h_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -3653,8 +3653,8 @@ func (self class) GetHScrollBar() [1]gdclass.HScrollBar {
 func (self class) SetVScroll(value gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_v_scroll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_v_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3662,7 +3662,7 @@ func (self class) SetVScroll(value gd.Float) {
 func (self class) GetVScroll() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3672,8 +3672,8 @@ func (self class) GetVScroll() gd.Float {
 func (self class) SetHScroll(value gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_h_scroll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_h_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3681,7 +3681,7 @@ func (self class) SetHScroll(value gd.Int) {
 func (self class) GetHScroll() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_h_scroll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_h_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3691,8 +3691,8 @@ func (self class) GetHScroll() gd.Int {
 func (self class) SetScrollPastEndOfFileEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_scroll_past_end_of_file_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_scroll_past_end_of_file_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3700,7 +3700,7 @@ func (self class) SetScrollPastEndOfFileEnabled(enable bool) {
 func (self class) IsScrollPastEndOfFileEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_scroll_past_end_of_file_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_scroll_past_end_of_file_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3710,8 +3710,8 @@ func (self class) IsScrollPastEndOfFileEnabled() bool {
 func (self class) SetVScrollSpeed(speed gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, speed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_v_scroll_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_v_scroll_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3719,7 +3719,7 @@ func (self class) SetVScrollSpeed(speed gd.Float) {
 func (self class) GetVScrollSpeed() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3729,8 +3729,8 @@ func (self class) GetVScrollSpeed() gd.Float {
 func (self class) SetFitContentHeightEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_fit_content_height_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_fit_content_height_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3738,7 +3738,7 @@ func (self class) SetFitContentHeightEnabled(enabled bool) {
 func (self class) IsFitContentHeightEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_fit_content_height_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_fit_content_height_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3753,7 +3753,7 @@ func (self class) GetScrollPosForLine(line gd.Int, wrap_index gd.Int) gd.Float {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_scroll_pos_for_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_scroll_pos_for_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3767,8 +3767,8 @@ func (self class) SetLineAsFirstVisible(line gd.Int, wrap_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_as_first_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_as_first_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3779,7 +3779,7 @@ Returns the first visible line.
 func (self class) GetFirstVisibleLine() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_first_visible_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_first_visible_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3793,8 +3793,8 @@ func (self class) SetLineAsCenterVisible(line gd.Int, wrap_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_as_center_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_as_center_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3806,8 +3806,8 @@ func (self class) SetLineAsLastVisible(line gd.Int, wrap_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, wrap_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_as_last_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_as_last_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3818,7 +3818,7 @@ Returns the last visible line. Use [method get_last_full_visible_line_wrap_index
 func (self class) GetLastFullVisibleLine() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3831,7 +3831,7 @@ Returns the last visible wrap index of the last visible line.
 func (self class) GetLastFullVisibleLineWrapIndex() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line_wrap_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line_wrap_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3844,7 +3844,7 @@ Returns the number of visible lines, including wrapped text.
 func (self class) GetVisibleLineCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3859,7 +3859,7 @@ func (self class) GetVisibleLineCountInRange(from_line gd.Int, to_line gd.Int) g
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, to_line)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_visible_line_count_in_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_visible_line_count_in_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3872,7 +3872,7 @@ Returns the number of lines that may be drawn.
 func (self class) GetTotalVisibleLineCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_total_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_total_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3885,8 +3885,8 @@ Adjust the viewport so the caret is visible.
 func (self class) AdjustViewportToCaret(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_adjust_viewport_to_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_adjust_viewport_to_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3897,8 +3897,8 @@ Centers the viewport on the line the editing caret is at. This also resets the [
 func (self class) CenterViewportToCaret(caret_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_center_viewport_to_caret, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_center_viewport_to_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3906,8 +3906,8 @@ func (self class) CenterViewportToCaret(caret_index gd.Int) {
 func (self class) SetDrawMinimap(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_minimap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_minimap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3915,7 +3915,7 @@ func (self class) SetDrawMinimap(enabled bool) {
 func (self class) IsDrawingMinimap() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_minimap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_minimap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3925,8 +3925,8 @@ func (self class) IsDrawingMinimap() bool {
 func (self class) SetMinimapWidth(width gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_minimap_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_minimap_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3934,7 +3934,7 @@ func (self class) SetMinimapWidth(width gd.Int) {
 func (self class) GetMinimapWidth() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3947,7 +3947,7 @@ Returns the number of lines that may be drawn on the minimap.
 func (self class) GetMinimapVisibleLines() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_visible_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_visible_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3960,8 +3960,8 @@ Register a new gutter to this [TextEdit]. Use [param at] to have a specific gutt
 func (self class) AddGutter(at gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, at)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3972,8 +3972,8 @@ Removes the gutter from this [TextEdit].
 func (self class) RemoveGutter(gutter gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3984,7 +3984,7 @@ Returns the number of gutters registered.
 func (self class) GetGutterCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3998,8 +3998,8 @@ func (self class) SetGutterName(gutter gd.Int, name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4011,7 +4011,7 @@ func (self class) GetGutterName(gutter gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4025,8 +4025,8 @@ func (self class) SetGutterType(gutter gd.Int, atype gdclass.TextEditGutterType)
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, atype)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4038,7 +4038,7 @@ func (self class) GetGutterType(gutter gd.Int) gdclass.TextEditGutterType {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[gdclass.TextEditGutterType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4052,8 +4052,8 @@ func (self class) SetGutterWidth(gutter gd.Int, width gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, width)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4065,7 +4065,7 @@ func (self class) GetGutterWidth(gutter gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4079,8 +4079,8 @@ func (self class) SetGutterDraw(gutter gd.Int, draw bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, draw)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4092,7 +4092,7 @@ func (self class) IsGutterDrawn(gutter gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_gutter_drawn, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_gutter_drawn, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4106,8 +4106,8 @@ func (self class) SetGutterClickable(gutter gd.Int, clickable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, clickable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4119,7 +4119,7 @@ func (self class) IsGutterClickable(gutter gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4133,8 +4133,8 @@ func (self class) SetGutterOverwritable(gutter gd.Int, overwritable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, overwritable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_overwritable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_overwritable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4146,7 +4146,7 @@ func (self class) IsGutterOverwritable(gutter gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_gutter_overwritable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_gutter_overwritable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4160,8 +4160,8 @@ func (self class) MergeGutters(from_line gd.Int, to_line gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, to_line)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_merge_gutters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_merge_gutters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4173,8 +4173,8 @@ func (self class) SetGutterCustomDraw(column gd.Int, draw_callback gd.Callable) 
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(draw_callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_custom_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_custom_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4185,7 +4185,7 @@ Returns the total width of all gutters and internal padding.
 func (self class) GetTotalGutterWidth() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_total_gutter_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_total_gutter_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4200,8 +4200,8 @@ func (self class) SetLineGutterMetadata(line gd.Int, gutter gd.Int, metadata gd.
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, pointers.Get(metadata))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_metadata, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4214,7 +4214,7 @@ func (self class) GetLineGutterMetadata(line gd.Int, gutter gd.Int) gd.Variant {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_metadata, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4229,8 +4229,8 @@ func (self class) SetLineGutterText(line gd.Int, gutter gd.Int, text gd.String) 
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4243,7 +4243,7 @@ func (self class) GetLineGutterText(line gd.Int, gutter gd.Int) gd.String {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4258,8 +4258,8 @@ func (self class) SetLineGutterIcon(line gd.Int, gutter gd.Int, icon [1]gdclass.
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4272,7 +4272,7 @@ func (self class) GetLineGutterIcon(line gd.Int, gutter gd.Int) [1]gdclass.Textu
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -4287,8 +4287,8 @@ func (self class) SetLineGutterItemColor(line gd.Int, gutter gd.Int, color gd.Co
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_item_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_item_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4301,7 +4301,7 @@ func (self class) GetLineGutterItemColor(line gd.Int, gutter gd.Int) gd.Color {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_item_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_item_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4316,8 +4316,8 @@ func (self class) SetLineGutterClickable(line gd.Int, gutter gd.Int, clickable b
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, clickable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4330,7 +4330,7 @@ func (self class) IsLineGutterClickable(line gd.Int, gutter gd.Int) bool {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, gutter)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_line_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_line_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4344,8 +4344,8 @@ func (self class) SetLineBackgroundColor(line gd.Int, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_background_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_background_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4357,7 +4357,7 @@ func (self class) GetLineBackgroundColor(line gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_background_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_background_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4367,8 +4367,8 @@ func (self class) GetLineBackgroundColor(line gd.Int) gd.Color {
 func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighlighter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(syntax_highlighter[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4376,7 +4376,7 @@ func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighl
 func (self class) GetSyntaxHighlighter() [1]gdclass.SyntaxHighlighter {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SyntaxHighlighter{gd.PointerWithOwnershipTransferredToGo[gdclass.SyntaxHighlighter](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -4386,8 +4386,8 @@ func (self class) GetSyntaxHighlighter() [1]gdclass.SyntaxHighlighter {
 func (self class) SetHighlightCurrentLine(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_highlight_current_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_highlight_current_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4395,7 +4395,7 @@ func (self class) SetHighlightCurrentLine(enabled bool) {
 func (self class) IsHighlightCurrentLineEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_highlight_current_line_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_highlight_current_line_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4405,8 +4405,8 @@ func (self class) IsHighlightCurrentLineEnabled() bool {
 func (self class) SetHighlightAllOccurrences(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_highlight_all_occurrences, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_highlight_all_occurrences, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4414,7 +4414,7 @@ func (self class) SetHighlightAllOccurrences(enabled bool) {
 func (self class) IsHighlightAllOccurrencesEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_highlight_all_occurrences_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_highlight_all_occurrences_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4424,7 +4424,7 @@ func (self class) IsHighlightAllOccurrencesEnabled() bool {
 func (self class) GetDrawControlChars() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4434,8 +4434,8 @@ func (self class) GetDrawControlChars() bool {
 func (self class) SetDrawControlChars(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4443,8 +4443,8 @@ func (self class) SetDrawControlChars(enabled bool) {
 func (self class) SetDrawTabs(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_tabs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_tabs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4452,7 +4452,7 @@ func (self class) SetDrawTabs(enabled bool) {
 func (self class) IsDrawingTabs() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_tabs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_tabs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4462,8 +4462,8 @@ func (self class) IsDrawingTabs() bool {
 func (self class) SetDrawSpaces(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_spaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_spaces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4471,7 +4471,7 @@ func (self class) SetDrawSpaces(enabled bool) {
 func (self class) IsDrawingSpaces() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_spaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_spaces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4524,7 +4524,7 @@ public void OnItemPressed(int id)
 func (self class) GetMenu() [1]gdclass.PopupMenu {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -4537,7 +4537,7 @@ Returns whether the menu is visible. Use this instead of [code]get_menu().visibl
 func (self class) IsMenuVisible() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_menu_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_menu_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4550,8 +4550,8 @@ Executes a given action as defined in the [enum MenuItems] enum.
 func (self class) MenuOption(option gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_menu_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_menu_option, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4566,8 +4566,8 @@ func (self class) AdjustCaretsAfterEdit(caret gd.Int, from_line gd.Int, from_col
 	callframe.Arg(frame, from_col)
 	callframe.Arg(frame, to_line)
 	callframe.Arg(frame, to_col)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_adjust_carets_after_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_adjust_carets_after_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4578,7 +4578,7 @@ Returns a list of caret indexes in their edit order, this done from bottom to to
 func (self class) GetCaretIndexEditOrder() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_index_edit_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_index_edit_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4592,7 +4592,7 @@ func (self class) GetSelectionLine(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4606,7 +4606,7 @@ func (self class) GetSelectionColumn(caret_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, caret_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_column, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_column, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

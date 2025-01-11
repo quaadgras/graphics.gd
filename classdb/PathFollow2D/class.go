@@ -117,8 +117,8 @@ func (self Instance) SetLoop(value bool) {
 func (self class) SetProgress(progress gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, progress)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_progress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -126,7 +126,7 @@ func (self class) SetProgress(progress gd.Float) {
 func (self class) GetProgress() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_progress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -136,8 +136,8 @@ func (self class) GetProgress() gd.Float {
 func (self class) SetHOffset(h_offset gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, h_offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_h_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_h_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -145,7 +145,7 @@ func (self class) SetHOffset(h_offset gd.Float) {
 func (self class) GetHOffset() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_h_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_h_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -155,8 +155,8 @@ func (self class) GetHOffset() gd.Float {
 func (self class) SetVOffset(v_offset gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, v_offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_v_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_v_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -164,7 +164,7 @@ func (self class) SetVOffset(v_offset gd.Float) {
 func (self class) GetVOffset() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_v_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_v_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -174,8 +174,8 @@ func (self class) GetVOffset() gd.Float {
 func (self class) SetProgressRatio(ratio gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_progress_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_progress_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -183,7 +183,7 @@ func (self class) SetProgressRatio(ratio gd.Float) {
 func (self class) GetProgressRatio() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_progress_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_progress_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -193,8 +193,8 @@ func (self class) GetProgressRatio() gd.Float {
 func (self class) SetRotates(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_rotates, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_rotates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -202,7 +202,7 @@ func (self class) SetRotates(enabled bool) {
 func (self class) IsRotating() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_is_rotating, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_is_rotating, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -212,8 +212,8 @@ func (self class) IsRotating() bool {
 func (self class) SetCubicInterpolation(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_cubic_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_cubic_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -221,7 +221,7 @@ func (self class) SetCubicInterpolation(enabled bool) {
 func (self class) GetCubicInterpolation() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_cubic_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_get_cubic_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -231,8 +231,8 @@ func (self class) GetCubicInterpolation() bool {
 func (self class) SetLoop(loop bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, loop)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_loop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_set_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -240,7 +240,7 @@ func (self class) SetLoop(loop bool) {
 func (self class) HasLoop() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_has_loop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow2D.Bind_has_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

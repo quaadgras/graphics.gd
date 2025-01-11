@@ -277,7 +277,7 @@ func (self class) ConnectToHost(host gd.String, port gd.Int, tls_options [1]gdcl
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(tls_options[0])[0])
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -287,8 +287,8 @@ func (self class) ConnectToHost(host gd.String, port gd.Int, tls_options [1]gdcl
 func (self class) SetConnection(connection [1]gdclass.StreamPeer) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(connection[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_connection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -296,7 +296,7 @@ func (self class) SetConnection(connection [1]gdclass.StreamPeer) {
 func (self class) GetConnection() [1]gdclass.StreamPeer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_connection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -316,7 +316,7 @@ func (self class) RequestRaw(method gdclass.HTTPClientMethod, url gd.String, hea
 	callframe.Arg(frame, pointers.Get(headers))
 	callframe.Arg(frame, pointers.Get(body))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -351,7 +351,7 @@ func (self class) Request(method gdclass.HTTPClientMethod, url gd.String, header
 	callframe.Arg(frame, pointers.Get(headers))
 	callframe.Arg(frame, pointers.Get(body))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -363,8 +363,8 @@ Closes the current connection, allowing reuse of this [HTTPClient].
 //go:nosplit
 func (self class) Close() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_close, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -375,7 +375,7 @@ If [code]true[/code], this [HTTPClient] has a response available.
 func (self class) HasResponse() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_has_response, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_has_response, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -388,7 +388,7 @@ If [code]true[/code], this [HTTPClient] has a response that is chunked.
 func (self class) IsResponseChunked() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_is_response_chunked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_is_response_chunked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -401,7 +401,7 @@ Returns the response's HTTP status code.
 func (self class) GetResponseCode() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_code, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -414,7 +414,7 @@ Returns the response headers.
 func (self class) GetResponseHeaders() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_headers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_headers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -434,7 +434,7 @@ Returns all response headers as a Dictionary of structure [code]{ "key": "value1
 func (self class) GetResponseHeadersAsDictionary() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_headers_as_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_headers_as_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -449,7 +449,7 @@ Returns the response's body length.
 func (self class) GetResponseBodyLength() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_body_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_body_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -462,7 +462,7 @@ Reads one chunk from the response.
 func (self class) ReadResponseBodyChunk() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_read_response_body_chunk, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_read_response_body_chunk, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -472,8 +472,8 @@ func (self class) ReadResponseBodyChunk() gd.PackedByteArray {
 func (self class) SetReadChunkSize(bytes gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_read_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_read_chunk_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -481,7 +481,7 @@ func (self class) SetReadChunkSize(bytes gd.Int) {
 func (self class) GetReadChunkSize() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_read_chunk_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_read_chunk_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -491,8 +491,8 @@ func (self class) GetReadChunkSize() gd.Int {
 func (self class) SetBlockingMode(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_blocking_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_blocking_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -500,7 +500,7 @@ func (self class) SetBlockingMode(enabled bool) {
 func (self class) IsBlockingModeEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_is_blocking_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_is_blocking_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -513,7 +513,7 @@ Returns a [enum Status] constant. Need to call [method poll] in order to get sta
 func (self class) GetStatus() gdclass.HTTPClientStatus {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.HTTPClientStatus](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -526,7 +526,7 @@ This needs to be called in order to have any request processed. Check results wi
 func (self class) Poll() error {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -541,8 +541,8 @@ func (self class) SetHttpProxy(host gd.String, port gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, port)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_http_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_http_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -555,8 +555,8 @@ func (self class) SetHttpsProxy(host gd.String, port gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, port)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_https_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_set_https_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -598,7 +598,7 @@ func (self class) QueryStringFromDict(fields gd.Dictionary) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(fields))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_query_string_from_dict, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_query_string_from_dict, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret

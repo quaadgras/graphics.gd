@@ -84,7 +84,7 @@ func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture3D.Bind_create, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture3D.Bind_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -97,8 +97,8 @@ Replaces the texture's existing data with the layers specified in [param data]. 
 func (self class) Update(data gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture3D.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture3D.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsImageTexture3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

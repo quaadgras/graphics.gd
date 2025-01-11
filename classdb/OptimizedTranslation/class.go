@@ -69,8 +69,8 @@ Generates and sets an optimized translation from the given [Translation] resourc
 func (self class) Generate(from [1]gdclass.Translation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptimizedTranslation.Bind_generate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptimizedTranslation.Bind_generate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsOptimizedTranslation() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

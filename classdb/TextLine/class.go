@@ -263,8 +263,8 @@ Clears text line (removes text and inline objects).
 //go:nosplit
 func (self class) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -272,8 +272,8 @@ func (self class) Clear() {
 func (self class) SetDirection(direction gdclass.TextServerDirection) {
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -281,7 +281,7 @@ func (self class) SetDirection(direction gdclass.TextServerDirection) {
 func (self class) GetDirection() gdclass.TextServerDirection {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerDirection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -291,8 +291,8 @@ func (self class) GetDirection() gdclass.TextServerDirection {
 func (self class) SetOrientation(orientation gdclass.TextServerOrientation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_orientation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -300,7 +300,7 @@ func (self class) SetOrientation(orientation gdclass.TextServerOrientation) {
 func (self class) GetOrientation() gdclass.TextServerOrientation {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerOrientation](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_orientation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -310,8 +310,8 @@ func (self class) GetOrientation() gdclass.TextServerOrientation {
 func (self class) SetPreserveInvalid(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_preserve_invalid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_preserve_invalid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -319,7 +319,7 @@ func (self class) SetPreserveInvalid(enabled bool) {
 func (self class) GetPreserveInvalid() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_preserve_invalid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_preserve_invalid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -329,8 +329,8 @@ func (self class) GetPreserveInvalid() bool {
 func (self class) SetPreserveControl(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_preserve_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_preserve_control, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -338,7 +338,7 @@ func (self class) SetPreserveControl(enabled bool) {
 func (self class) GetPreserveControl() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_preserve_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_preserve_control, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -352,8 +352,8 @@ Override ranges should cover full source text without overlaps. BiDi algorithm w
 func (self class) SetBidiOverride(override gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(override))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -369,7 +369,7 @@ func (self class) AddString(text gd.String, font [1]gdclass.Font, font_size gd.I
 	callframe.Arg(frame, pointers.Get(language))
 	callframe.Arg(frame, pointers.Get(meta))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_add_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_add_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -387,7 +387,7 @@ func (self class) AddObject(key gd.Variant, size gd.Vector2, inline_align Inline
 	callframe.Arg(frame, length)
 	callframe.Arg(frame, baseline)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_add_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_add_object, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -404,7 +404,7 @@ func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align Inl
 	callframe.Arg(frame, inline_align)
 	callframe.Arg(frame, baseline)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_resize_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_resize_object, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -414,8 +414,8 @@ func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align Inl
 func (self class) SetWidth(width gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -423,7 +423,7 @@ func (self class) SetWidth(width gd.Float) {
 func (self class) GetWidth() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -433,8 +433,8 @@ func (self class) GetWidth() gd.Float {
 func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -442,7 +442,7 @@ func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) {
 func (self class) GetHorizontalAlignment() HorizontalAlignment {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -455,8 +455,8 @@ Aligns text to the given tab-stops.
 func (self class) TabAlign(tab_stops gd.PackedFloat32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tab_stops))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_tab_align, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_tab_align, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -464,8 +464,8 @@ func (self class) TabAlign(tab_stops gd.PackedFloat32Array) {
 func (self class) SetFlags(flags gdclass.TextServerJustificationFlag) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -473,7 +473,7 @@ func (self class) SetFlags(flags gdclass.TextServerJustificationFlag) {
 func (self class) GetFlags() gdclass.TextServerJustificationFlag {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerJustificationFlag](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -483,8 +483,8 @@ func (self class) GetFlags() gdclass.TextServerJustificationFlag {
 func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOverrunBehavior) {
 	var frame = callframe.New()
 	callframe.Arg(frame, overrun_behavior)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -492,7 +492,7 @@ func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOver
 func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -502,8 +502,8 @@ func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior {
 func (self class) SetEllipsisChar(char gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(char))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_ellipsis_char, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_ellipsis_char, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -511,7 +511,7 @@ func (self class) SetEllipsisChar(char gd.String) {
 func (self class) GetEllipsisChar() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_ellipsis_char, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_ellipsis_char, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -524,7 +524,7 @@ Returns array of inline objects.
 func (self class) GetObjects() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_objects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_objects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -538,7 +538,7 @@ func (self class) GetObjectRect(key gd.Variant) gd.Rect2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_object_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_object_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -551,7 +551,7 @@ Returns size of the bounding box of the text.
 func (self class) GetSize() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -564,7 +564,7 @@ Returns TextServer buffer RID.
 func (self class) GetRid() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -577,7 +577,7 @@ Returns the text ascent (number of pixels above the baseline for horizontal layo
 func (self class) GetLineAscent() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_ascent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_ascent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -590,7 +590,7 @@ Returns the text descent (number of pixels below the baseline for horizontal lay
 func (self class) GetLineDescent() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_descent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_descent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -603,7 +603,7 @@ Returns width (for horizontal layout) or height (for vertical) of the text.
 func (self class) GetLineWidth() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -616,7 +616,7 @@ Returns pixel offset of the underline below the baseline.
 func (self class) GetLineUnderlinePosition() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_underline_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_underline_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -629,7 +629,7 @@ Returns thickness of the underline.
 func (self class) GetLineUnderlineThickness() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_underline_thickness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_line_underline_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -644,8 +644,8 @@ func (self class) Draw(canvas gd.RID, pos gd.Vector2, color gd.Color) {
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, pos)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -659,8 +659,8 @@ func (self class) DrawOutline(canvas gd.RID, pos gd.Vector2, outline_size gd.Int
 	callframe.Arg(frame, pos)
 	callframe.Arg(frame, outline_size)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_draw_outline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_draw_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -672,7 +672,7 @@ func (self class) HitTest(coords gd.Float) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_hit_test, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_hit_test, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

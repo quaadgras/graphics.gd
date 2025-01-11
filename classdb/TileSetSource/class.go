@@ -110,7 +110,7 @@ Returns how many tiles this atlas source defines (not including alternative tile
 func (self class) GetTilesCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_tiles_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_tiles_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -124,7 +124,7 @@ func (self class) GetTileId(index gd.Int) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -138,7 +138,7 @@ func (self class) HasTile(atlas_coords gd.Vector2i) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_has_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_has_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -154,7 +154,7 @@ func (self class) GetAlternativeTilesCount(atlas_coords gd.Vector2i) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_alternative_tiles_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_alternative_tiles_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -169,7 +169,7 @@ func (self class) GetAlternativeTileId(atlas_coords gd.Vector2i, index gd.Int) g
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -184,7 +184,7 @@ func (self class) HasAlternativeTile(atlas_coords gd.Vector2i, alternative_tile 
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_has_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_has_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

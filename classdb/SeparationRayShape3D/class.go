@@ -76,8 +76,8 @@ func (self Instance) SetSlideOnSlope(value bool) {
 func (self class) SetLength(length gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape3D.Bind_set_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape3D.Bind_set_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -85,7 +85,7 @@ func (self class) SetLength(length gd.Float) {
 func (self class) GetLength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape3D.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape3D.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -95,8 +95,8 @@ func (self class) GetLength() gd.Float {
 func (self class) SetSlideOnSlope(active bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape3D.Bind_set_slide_on_slope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape3D.Bind_set_slide_on_slope, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -104,7 +104,7 @@ func (self class) SetSlideOnSlope(active bool) {
 func (self class) GetSlideOnSlope() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape3D.Bind_get_slide_on_slope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape3D.Bind_get_slide_on_slope, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

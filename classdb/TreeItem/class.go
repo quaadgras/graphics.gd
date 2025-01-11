@@ -829,8 +829,8 @@ func (self class) SetCellMode(column gd.Int, mode gdclass.TreeItemTreeCellMode) 
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_cell_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_cell_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -842,7 +842,7 @@ func (self class) GetCellMode(column gd.Int) gdclass.TreeItemTreeCellMode {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.TreeItemTreeCellMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_cell_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_cell_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -857,8 +857,8 @@ func (self class) SetEditMultiline(column gd.Int, multiline bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, multiline)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_edit_multiline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_edit_multiline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -870,7 +870,7 @@ func (self class) IsEditMultiline(column gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_edit_multiline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_edit_multiline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -884,8 +884,8 @@ func (self class) SetChecked(column gd.Int, checked bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, checked)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_checked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_checked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -898,8 +898,8 @@ func (self class) SetIndeterminate(column gd.Int, indeterminate bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, indeterminate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_indeterminate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_indeterminate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -911,7 +911,7 @@ func (self class) IsChecked(column gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_checked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_checked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -925,7 +925,7 @@ func (self class) IsIndeterminate(column gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_indeterminate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_indeterminate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -939,8 +939,8 @@ func (self class) PropagateCheck(column gd.Int, emit_signal bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, emit_signal)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_propagate_check, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_propagate_check, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -952,8 +952,8 @@ func (self class) SetText(column gd.Int, text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -965,7 +965,7 @@ func (self class) GetText(column gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -979,8 +979,8 @@ func (self class) SetTextDirection(column gd.Int, direction gdclass.ControlTextD
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, direction)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -992,7 +992,7 @@ func (self class) GetTextDirection(column gd.Int) gdclass.ControlTextDirection {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1006,8 +1006,8 @@ func (self class) SetAutowrapMode(column gd.Int, autowrap_mode gdclass.TextServe
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, autowrap_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1019,7 +1019,7 @@ func (self class) GetAutowrapMode(column gd.Int) gdclass.TextServerAutowrapMode 
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1033,8 +1033,8 @@ func (self class) SetTextOverrunBehavior(column gd.Int, overrun_behavior gdclass
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, overrun_behavior)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1046,7 +1046,7 @@ func (self class) GetTextOverrunBehavior(column gd.Int) gdclass.TextServerOverru
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1060,8 +1060,8 @@ func (self class) SetStructuredTextBidiOverride(column gd.Int, parser gdclass.Te
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, parser)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1073,7 +1073,7 @@ func (self class) GetStructuredTextBidiOverride(column gd.Int) gdclass.TextServe
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1087,8 +1087,8 @@ func (self class) SetStructuredTextBidiOverrideOptions(column gd.Int, args gd.Ar
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(args))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1100,7 +1100,7 @@ func (self class) GetStructuredTextBidiOverrideOptions(column gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1114,8 +1114,8 @@ func (self class) SetLanguage(column gd.Int, language gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1127,7 +1127,7 @@ func (self class) GetLanguage(column gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1141,8 +1141,8 @@ func (self class) SetSuffix(column gd.Int, text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_suffix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1154,7 +1154,7 @@ func (self class) GetSuffix(column gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1168,8 +1168,8 @@ func (self class) SetIcon(column gd.Int, texture [1]gdclass.Texture2D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1181,7 +1181,7 @@ func (self class) GetIcon(column gd.Int) [1]gdclass.Texture2D {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1195,8 +1195,8 @@ func (self class) SetIconRegion(column gd.Int, region gd.Rect2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, region)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_icon_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_icon_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1208,7 +1208,7 @@ func (self class) GetIconRegion(column gd.Int) gd.Rect2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1222,8 +1222,8 @@ func (self class) SetIconMaxWidth(column gd.Int, width gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, width)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_icon_max_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_icon_max_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1235,7 +1235,7 @@ func (self class) GetIconMaxWidth(column gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_max_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_max_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1249,8 +1249,8 @@ func (self class) SetIconModulate(column gd.Int, modulate gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_icon_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_icon_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1262,7 +1262,7 @@ func (self class) GetIconModulate(column gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_icon_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1276,8 +1276,8 @@ func (self class) SetRange(column gd.Int, value gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1289,7 +1289,7 @@ func (self class) GetRange(column gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1307,8 +1307,8 @@ func (self class) SetRangeConfig(column gd.Int, min gd.Float, max gd.Float, step
 	callframe.Arg(frame, max)
 	callframe.Arg(frame, step)
 	callframe.Arg(frame, expr)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_range_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_range_config, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1320,7 +1320,7 @@ func (self class) GetRangeConfig(column gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_range_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_range_config, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1334,8 +1334,8 @@ func (self class) SetMetadata(column gd.Int, meta gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(meta))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_metadata, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1347,7 +1347,7 @@ func (self class) GetMetadata(column gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_metadata, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1363,8 +1363,8 @@ func (self class) SetCustomDraw(column gd.Int, obj [1]gd.Object, callback gd.Str
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1377,8 +1377,8 @@ func (self class) SetCustomDrawCallback(column gd.Int, callback gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_draw_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_draw_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1390,7 +1390,7 @@ func (self class) GetCustomDrawCallback(column gd.Int) gd.Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[callablePointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_draw_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_draw_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1400,8 +1400,8 @@ func (self class) GetCustomDrawCallback(column gd.Int) gd.Callable {
 func (self class) SetCollapsed(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_collapsed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_collapsed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1409,7 +1409,7 @@ func (self class) SetCollapsed(enable bool) {
 func (self class) IsCollapsed() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_collapsed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_collapsed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1422,8 +1422,8 @@ Collapses or uncollapses this [TreeItem] and all the descendants of this item.
 func (self class) SetCollapsedRecursive(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_collapsed_recursive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_collapsed_recursive, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1436,7 +1436,7 @@ func (self class) IsAnyCollapsed(only_visible bool) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, only_visible)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_any_collapsed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_any_collapsed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1446,8 +1446,8 @@ func (self class) IsAnyCollapsed(only_visible bool) bool {
 func (self class) SetVisible(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1455,7 +1455,7 @@ func (self class) SetVisible(enable bool) {
 func (self class) IsVisible() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1468,7 +1468,7 @@ Returns [code]true[/code] if [member visible] is [code]true[/code] and all its a
 func (self class) IsVisibleInTree() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_visible_in_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_visible_in_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1480,8 +1480,8 @@ Uncollapses all [TreeItem]s necessary to reveal this [TreeItem], i.e. all ancest
 //go:nosplit
 func (self class) UncollapseTree() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_uncollapse_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_uncollapse_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1489,8 +1489,8 @@ func (self class) UncollapseTree() {
 func (self class) SetCustomMinimumHeight(height gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_minimum_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_minimum_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1498,7 +1498,7 @@ func (self class) SetCustomMinimumHeight(height gd.Int) {
 func (self class) GetCustomMinimumHeight() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_minimum_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_minimum_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1512,8 +1512,8 @@ func (self class) SetSelectable(column gd.Int, selectable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, selectable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_selectable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_selectable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1525,7 +1525,7 @@ func (self class) IsSelectable(column gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_selectable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_selectable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1539,7 +1539,7 @@ func (self class) IsSelected(column gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_selected, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1552,8 +1552,8 @@ Selects the given [param column].
 func (self class) Select(column gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_select_, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_select_, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1564,8 +1564,8 @@ Deselects the given column.
 func (self class) Deselect(column gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1577,8 +1577,8 @@ func (self class) SetEditable(column gd.Int, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_editable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1590,7 +1590,7 @@ func (self class) IsEditable(column gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1604,8 +1604,8 @@ func (self class) SetCustomColor(column gd.Int, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1617,7 +1617,7 @@ func (self class) GetCustomColor(column gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1630,8 +1630,8 @@ Resets the color for the given column to default.
 func (self class) ClearCustomColor(column gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_clear_custom_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_clear_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1643,8 +1643,8 @@ func (self class) SetCustomFont(column gd.Int, font [1]gdclass.Font) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(font[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1656,7 +1656,7 @@ func (self class) GetCustomFont(column gd.Int) [1]gdclass.Font {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1670,8 +1670,8 @@ func (self class) SetCustomFontSize(column gd.Int, font_size gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, font_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_font_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1683,7 +1683,7 @@ func (self class) GetCustomFontSize(column gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_font_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1698,8 +1698,8 @@ func (self class) SetCustomBgColor(column gd.Int, color gd.Color, just_outline b
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, just_outline)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_bg_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_bg_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1710,8 +1710,8 @@ Resets the background color for the given column to default.
 func (self class) ClearCustomBgColor(column gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_clear_custom_bg_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_clear_custom_bg_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1723,7 +1723,7 @@ func (self class) GetCustomBgColor(column gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_bg_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_bg_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1737,8 +1737,8 @@ func (self class) SetCustomAsButton(column gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_as_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_as_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1750,7 +1750,7 @@ func (self class) IsCustomSetAsButton(column gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_custom_set_as_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_custom_set_as_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1767,8 +1767,8 @@ func (self class) AddButton(column gd.Int, button [1]gdclass.Texture2D, id gd.In
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, disabled)
 	callframe.Arg(frame, pointers.Get(tooltip_text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_add_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_add_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1780,7 +1780,7 @@ func (self class) GetButtonCount(column gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1795,7 +1795,7 @@ func (self class) GetButtonTooltipText(column gd.Int, button_index gd.Int) gd.St
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1810,7 +1810,7 @@ func (self class) GetButtonId(column gd.Int, button_index gd.Int) gd.Int {
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1825,7 +1825,7 @@ func (self class) GetButtonById(column gd.Int, id gd.Int) gd.Int {
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_by_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_by_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1840,7 +1840,7 @@ func (self class) GetButtonColor(column gd.Int, id gd.Int) gd.Color {
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1855,7 +1855,7 @@ func (self class) GetButton(column gd.Int, button_index gd.Int) [1]gdclass.Textu
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1870,8 +1870,8 @@ func (self class) SetButtonTooltipText(column gd.Int, button_index gd.Int, toolt
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
 	callframe.Arg(frame, pointers.Get(tooltip))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_button_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_button_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1884,8 +1884,8 @@ func (self class) SetButton(column gd.Int, button_index gd.Int, button [1]gdclas
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
 	callframe.Arg(frame, pointers.Get(button[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1897,8 +1897,8 @@ func (self class) EraseButton(column gd.Int, button_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_erase_button, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_erase_button, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1911,8 +1911,8 @@ func (self class) SetButtonDisabled(column gd.Int, button_index gd.Int, disabled
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
 	callframe.Arg(frame, disabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_button_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_button_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1925,8 +1925,8 @@ func (self class) SetButtonColor(column gd.Int, button_index gd.Int, color gd.Co
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_button_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_button_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1939,7 +1939,7 @@ func (self class) IsButtonDisabled(column gd.Int, button_index gd.Int) bool {
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_button_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_button_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1953,8 +1953,8 @@ func (self class) SetTooltipText(column gd.Int, tooltip gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(tooltip))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1966,7 +1966,7 @@ func (self class) GetTooltipText(column gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1980,8 +1980,8 @@ func (self class) SetTextAlignment(column gd.Int, text_alignment HorizontalAlign
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, text_alignment)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_text_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_text_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1993,7 +1993,7 @@ func (self class) GetTextAlignment(column gd.Int) HorizontalAlignment {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2007,8 +2007,8 @@ func (self class) SetExpandRight(column gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_expand_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_expand_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2020,7 +2020,7 @@ func (self class) GetExpandRight(column gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_expand_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_expand_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2030,8 +2030,8 @@ func (self class) GetExpandRight(column gd.Int) bool {
 func (self class) SetDisableFolding(disable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, disable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_disable_folding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_disable_folding, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2039,7 +2039,7 @@ func (self class) SetDisableFolding(disable bool) {
 func (self class) IsFoldingDisabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_folding_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_is_folding_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2054,7 +2054,7 @@ func (self class) CreateChild(index gd.Int) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_create_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_create_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2067,8 +2067,8 @@ Adds a previously unparented [TreeItem] as a direct child of this one. The [para
 func (self class) AddChild(child [1]gdclass.TreeItem) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(child[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_add_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_add_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2080,8 +2080,8 @@ Removes the given child [TreeItem] and all its children from the [Tree]. Note th
 func (self class) RemoveChild(child [1]gdclass.TreeItem) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(child[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_remove_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_remove_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2092,7 +2092,7 @@ Returns the [Tree] that owns this TreeItem.
 func (self class) GetTree() [1]gdclass.Tree {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tree{gd.PointerMustAssertInstanceID[gdclass.Tree](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2105,7 +2105,7 @@ Returns the next sibling TreeItem in the tree or a null object if there is none.
 func (self class) GetNext() [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2118,7 +2118,7 @@ Returns the previous sibling TreeItem in the tree or a null object if there is n
 func (self class) GetPrev() [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2131,7 +2131,7 @@ Returns the parent TreeItem or a null object if there is none.
 func (self class) GetParent() [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2144,7 +2144,7 @@ Returns the TreeItem's first child.
 func (self class) GetFirstChild() [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_first_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_first_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2159,7 +2159,7 @@ func (self class) GetNextInTree(wrap bool) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next_in_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next_in_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2174,7 +2174,7 @@ func (self class) GetPrevInTree(wrap bool) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev_in_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev_in_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2189,7 +2189,7 @@ func (self class) GetNextVisible(wrap bool) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_next_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2204,7 +2204,7 @@ func (self class) GetPrevVisible(wrap bool) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, wrap)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_prev_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2219,7 +2219,7 @@ func (self class) GetChild(index gd.Int) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2232,7 +2232,7 @@ Returns the number of child items.
 func (self class) GetChildCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_child_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_child_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2245,7 +2245,7 @@ Returns an array of references to the item's children.
 func (self class) GetChildren() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2258,7 +2258,7 @@ Returns the node's order in the tree. For example, if called on the first child 
 func (self class) GetIndex() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2272,8 +2272,8 @@ Moves this TreeItem right before the given [param item].
 func (self class) MoveBefore(item [1]gdclass.TreeItem) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(item[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_move_before, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_move_before, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2285,8 +2285,8 @@ Moves this TreeItem right after the given [param item].
 func (self class) MoveAfter(item [1]gdclass.TreeItem) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(item[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_move_after, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_move_after, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsTreeItem() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

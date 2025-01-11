@@ -80,7 +80,7 @@ Returns the estimated size of the plane that was detected. Say when the anchor r
 func (self class) GetSize() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRAnchor3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRAnchor3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -93,7 +93,7 @@ Returns a plane aligned with our anchor; handy for intersection testing.
 func (self class) GetPlane() gd.Plane {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Plane](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRAnchor3D.Bind_get_plane, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRAnchor3D.Bind_get_plane, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

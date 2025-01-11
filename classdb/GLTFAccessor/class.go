@@ -179,7 +179,7 @@ func (self Instance) SetSparseValuesByteOffset(value int) {
 func (self class) GetBufferView() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_buffer_view, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_buffer_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -189,8 +189,8 @@ func (self class) GetBufferView() gd.Int {
 func (self class) SetBufferView(buffer_view gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_view)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_buffer_view, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_buffer_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -198,7 +198,7 @@ func (self class) SetBufferView(buffer_view gd.Int) {
 func (self class) GetByteOffset() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_byte_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -208,8 +208,8 @@ func (self class) GetByteOffset() gd.Int {
 func (self class) SetByteOffset(byte_offset gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_byte_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -217,7 +217,7 @@ func (self class) SetByteOffset(byte_offset gd.Int) {
 func (self class) GetComponentType() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_component_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_component_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -227,8 +227,8 @@ func (self class) GetComponentType() gd.Int {
 func (self class) SetComponentType(component_type gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, component_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_component_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_component_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -236,7 +236,7 @@ func (self class) SetComponentType(component_type gd.Int) {
 func (self class) GetNormalized() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_normalized, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_normalized, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -246,8 +246,8 @@ func (self class) GetNormalized() bool {
 func (self class) SetNormalized(normalized bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, normalized)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_normalized, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_normalized, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -255,7 +255,7 @@ func (self class) SetNormalized(normalized bool) {
 func (self class) GetCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -265,8 +265,8 @@ func (self class) GetCount() gd.Int {
 func (self class) SetCount(count gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -274,7 +274,7 @@ func (self class) SetCount(count gd.Int) {
 func (self class) GetAccessorType() gdclass.GLTFAccessorGLTFAccessorType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GLTFAccessorGLTFAccessorType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_accessor_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_accessor_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -284,8 +284,8 @@ func (self class) GetAccessorType() gdclass.GLTFAccessorGLTFAccessorType {
 func (self class) SetAccessorType(accessor_type gdclass.GLTFAccessorGLTFAccessorType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, accessor_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_accessor_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_accessor_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -293,7 +293,7 @@ func (self class) SetAccessorType(accessor_type gdclass.GLTFAccessorGLTFAccessor
 func (self class) GetType() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -303,8 +303,8 @@ func (self class) GetType() gd.Int {
 func (self class) SetType(atype gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -312,7 +312,7 @@ func (self class) SetType(atype gd.Int) {
 func (self class) GetMin() gd.PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedFloat64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -322,8 +322,8 @@ func (self class) GetMin() gd.PackedFloat64Array {
 func (self class) SetMin(min gd.PackedFloat64Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(min))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_min, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -331,7 +331,7 @@ func (self class) SetMin(min gd.PackedFloat64Array) {
 func (self class) GetMax() gd.PackedFloat64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedFloat64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -341,8 +341,8 @@ func (self class) GetMax() gd.PackedFloat64Array {
 func (self class) SetMax(max gd.PackedFloat64Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(max))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_max, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -350,7 +350,7 @@ func (self class) SetMax(max gd.PackedFloat64Array) {
 func (self class) GetSparseCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -360,8 +360,8 @@ func (self class) GetSparseCount() gd.Int {
 func (self class) SetSparseCount(sparse_count gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sparse_count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -369,7 +369,7 @@ func (self class) SetSparseCount(sparse_count gd.Int) {
 func (self class) GetSparseIndicesBufferView() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_indices_buffer_view, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_indices_buffer_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -379,8 +379,8 @@ func (self class) GetSparseIndicesBufferView() gd.Int {
 func (self class) SetSparseIndicesBufferView(sparse_indices_buffer_view gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sparse_indices_buffer_view)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_indices_buffer_view, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_indices_buffer_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -388,7 +388,7 @@ func (self class) SetSparseIndicesBufferView(sparse_indices_buffer_view gd.Int) 
 func (self class) GetSparseIndicesByteOffset() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_indices_byte_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_indices_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -398,8 +398,8 @@ func (self class) GetSparseIndicesByteOffset() gd.Int {
 func (self class) SetSparseIndicesByteOffset(sparse_indices_byte_offset gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sparse_indices_byte_offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_indices_byte_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_indices_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -407,7 +407,7 @@ func (self class) SetSparseIndicesByteOffset(sparse_indices_byte_offset gd.Int) 
 func (self class) GetSparseIndicesComponentType() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_indices_component_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_indices_component_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -417,8 +417,8 @@ func (self class) GetSparseIndicesComponentType() gd.Int {
 func (self class) SetSparseIndicesComponentType(sparse_indices_component_type gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sparse_indices_component_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_indices_component_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_indices_component_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -426,7 +426,7 @@ func (self class) SetSparseIndicesComponentType(sparse_indices_component_type gd
 func (self class) GetSparseValuesBufferView() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_values_buffer_view, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_values_buffer_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -436,8 +436,8 @@ func (self class) GetSparseValuesBufferView() gd.Int {
 func (self class) SetSparseValuesBufferView(sparse_values_buffer_view gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sparse_values_buffer_view)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_values_buffer_view, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_values_buffer_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -445,7 +445,7 @@ func (self class) SetSparseValuesBufferView(sparse_values_buffer_view gd.Int) {
 func (self class) GetSparseValuesByteOffset() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_values_byte_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_sparse_values_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -455,8 +455,8 @@ func (self class) GetSparseValuesByteOffset() gd.Int {
 func (self class) SetSparseValuesByteOffset(sparse_values_byte_offset gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sparse_values_byte_offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_values_byte_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_set_sparse_values_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsGLTFAccessor() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

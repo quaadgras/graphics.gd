@@ -71,8 +71,8 @@ func (self Instance) SetPoints(value []Vector3.XYZ) {
 func (self class) SetPoints(points gd.PackedVector3Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConvexPolygonShape3D.Bind_set_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConvexPolygonShape3D.Bind_set_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -80,7 +80,7 @@ func (self class) SetPoints(points gd.PackedVector3Array) {
 func (self class) GetPoints() gd.PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConvexPolygonShape3D.Bind_get_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConvexPolygonShape3D.Bind_get_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret

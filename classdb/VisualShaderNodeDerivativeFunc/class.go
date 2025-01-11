@@ -83,8 +83,8 @@ func (self Instance) SetPrecision(value gdclass.VisualShaderNodeDerivativeFuncPr
 func (self class) SetOpType(atype gdclass.VisualShaderNodeDerivativeFuncOpType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -92,7 +92,7 @@ func (self class) SetOpType(atype gdclass.VisualShaderNodeDerivativeFuncOpType) 
 func (self class) GetOpType() gdclass.VisualShaderNodeDerivativeFuncOpType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeDerivativeFuncOpType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -102,8 +102,8 @@ func (self class) GetOpType() gdclass.VisualShaderNodeDerivativeFuncOpType {
 func (self class) SetFunction(fn gdclass.VisualShaderNodeDerivativeFuncFunction) {
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_function, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -111,7 +111,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeDerivativeFuncFunction)
 func (self class) GetFunction() gdclass.VisualShaderNodeDerivativeFuncFunction {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeDerivativeFuncFunction](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -121,8 +121,8 @@ func (self class) GetFunction() gdclass.VisualShaderNodeDerivativeFuncFunction {
 func (self class) SetPrecision(precision gdclass.VisualShaderNodeDerivativeFuncPrecision) {
 	var frame = callframe.New()
 	callframe.Arg(frame, precision)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_precision, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -130,7 +130,7 @@ func (self class) SetPrecision(precision gdclass.VisualShaderNodeDerivativeFuncP
 func (self class) GetPrecision() gdclass.VisualShaderNodeDerivativeFuncPrecision {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeDerivativeFuncPrecision](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

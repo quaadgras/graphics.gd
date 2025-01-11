@@ -150,8 +150,8 @@ func (self class) CreateAction(name gd.String, merge_mode gdclass.UndoRedoMergeM
 	callframe.Arg(frame, merge_mode)
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(custom_context[0].AsObject()[0]))
 	callframe.Arg(frame, backward_undo_ops)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_create_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_create_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -162,8 +162,8 @@ Commit the action. If [param execute] is true (default), all "do" methods/proper
 func (self class) CommitAction(execute bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, execute)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_commit_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_commit_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -174,7 +174,7 @@ Returns [code]true[/code] if the [EditorUndoRedoManager] is currently committing
 func (self class) IsCommittingAction() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_is_committing_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_is_committing_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -187,8 +187,8 @@ This method should only be used when absolutely necessary, otherwise it might ca
 //go:nosplit
 func (self class) ForceFixedHistory() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_force_fixed_history, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_force_fixed_history, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -202,8 +202,8 @@ func (self class) AddDoProperty(obj [1]gd.Object, property gd.StringName, value 
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -217,8 +217,8 @@ func (self class) AddUndoProperty(obj [1]gd.Object, property gd.StringName, valu
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -229,8 +229,8 @@ Register a reference for "do" that will be erased if the "do" history is lost. T
 func (self class) AddDoReference(obj [1]gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -241,8 +241,8 @@ Register a reference for "undo" that will be erased if the "undo" history is los
 func (self class) AddUndoReference(obj [1]gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -254,7 +254,7 @@ func (self class) GetObjectHistoryId(obj [1]gd.Object) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_get_object_history_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_get_object_history_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -270,7 +270,7 @@ func (self class) GetHistoryUndoRedo(id gd.Int) [1]gdclass.UndoRedo {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_get_history_undo_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_get_history_undo_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.UndoRedo{gd.PointerLifetimeBoundTo[gdclass.UndoRedo](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret

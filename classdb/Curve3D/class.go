@@ -266,7 +266,7 @@ func (self Instance) SetUpVectorEnabled(value bool) {
 func (self class) GetPointCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -276,8 +276,8 @@ func (self class) GetPointCount() gd.Int {
 func (self class) SetPointCount(count gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -292,8 +292,8 @@ func (self class) AddPoint(position gd.Vector3, in gd.Vector3, out gd.Vector3, i
 	callframe.Arg(frame, in)
 	callframe.Arg(frame, out)
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_add_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_add_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -305,8 +305,8 @@ func (self class) SetPointPosition(idx gd.Int, position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -318,7 +318,7 @@ func (self class) GetPointPosition(idx gd.Int) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -333,8 +333,8 @@ func (self class) SetPointTilt(idx gd.Int, tilt gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, tilt)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_tilt, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_tilt, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -346,7 +346,7 @@ func (self class) GetPointTilt(idx gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_tilt, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_tilt, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -360,8 +360,8 @@ func (self class) SetPointIn(idx gd.Int, position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_in, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_in, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -373,7 +373,7 @@ func (self class) GetPointIn(idx gd.Int) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_in, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_in, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -387,8 +387,8 @@ func (self class) SetPointOut(idx gd.Int, position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_out, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_out, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -400,7 +400,7 @@ func (self class) GetPointOut(idx gd.Int) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_out, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_out, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -413,8 +413,8 @@ Deletes the point [param idx] from the curve. Sends an error to the console if [
 func (self class) RemovePoint(idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_remove_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_remove_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -424,8 +424,8 @@ Removes all points from the curve.
 //go:nosplit
 func (self class) ClearPoints() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_clear_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_clear_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -439,7 +439,7 @@ func (self class) Sample(idx gd.Int, t gd.Float) gd.Vector3 {
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, t)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -453,7 +453,7 @@ func (self class) Samplef(fofs gd.Float) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, fofs)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_samplef, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_samplef, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -463,8 +463,8 @@ func (self class) Samplef(fofs gd.Float) gd.Vector3 {
 func (self class) SetBakeInterval(distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_bake_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_bake_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -472,7 +472,7 @@ func (self class) SetBakeInterval(distance gd.Float) {
 func (self class) GetBakeInterval() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_bake_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_bake_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -482,8 +482,8 @@ func (self class) GetBakeInterval() gd.Float {
 func (self class) SetUpVectorEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_up_vector_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_up_vector_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -491,7 +491,7 @@ func (self class) SetUpVectorEnabled(enable bool) {
 func (self class) IsUpVectorEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_is_up_vector_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_is_up_vector_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -504,7 +504,7 @@ Returns the total length of the curve, based on the cached points. Given enough 
 func (self class) GetBakedLength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -520,7 +520,7 @@ func (self class) SampleBaked(offset gd.Float, cubic bool) gd.Vector3 {
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, cubic)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -536,7 +536,7 @@ func (self class) SampleBakedWithRotation(offset gd.Float, cubic bool, apply_til
 	callframe.Arg(frame, cubic)
 	callframe.Arg(frame, apply_tilt)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked_with_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked_with_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -552,7 +552,7 @@ func (self class) SampleBakedUpVector(offset gd.Float, apply_tilt bool) gd.Vecto
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, apply_tilt)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked_up_vector, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked_up_vector, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -565,7 +565,7 @@ Returns the cache of points as a [PackedVector3Array].
 func (self class) GetBakedPoints() gd.PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -578,7 +578,7 @@ Returns the cache of tilts as a [PackedFloat32Array].
 func (self class) GetBakedTilts() gd.PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_tilts, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_tilts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -592,7 +592,7 @@ If [member up_vector_enabled] is [code]false[/code], the cache will be empty.
 func (self class) GetBakedUpVectors() gd.PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_up_vectors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_up_vectors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -607,7 +607,7 @@ func (self class) GetClosestPoint(to_point gd.Vector3) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, to_point)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -622,7 +622,7 @@ func (self class) GetClosestOffset(to_point gd.Vector3) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, to_point)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_closest_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_closest_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -640,7 +640,7 @@ func (self class) Tessellate(max_stages gd.Int, tolerance_degrees gd.Float) gd.P
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_degrees)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_tessellate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_tessellate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -656,7 +656,7 @@ func (self class) TessellateEvenLength(max_stages gd.Int, tolerance_length gd.Fl
 	callframe.Arg(frame, max_stages)
 	callframe.Arg(frame, tolerance_length)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_tessellate_even_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_tessellate_even_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret

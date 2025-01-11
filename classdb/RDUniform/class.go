@@ -95,8 +95,8 @@ func (self Instance) SetBinding(value int) {
 func (self class) SetUniformType(p_member gdclass.RenderingDeviceUniformType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_set_uniform_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_set_uniform_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -104,7 +104,7 @@ func (self class) SetUniformType(p_member gdclass.RenderingDeviceUniformType) {
 func (self class) GetUniformType() gdclass.RenderingDeviceUniformType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceUniformType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_uniform_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_uniform_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -114,8 +114,8 @@ func (self class) GetUniformType() gdclass.RenderingDeviceUniformType {
 func (self class) SetBinding(p_member gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_set_binding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_set_binding, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -123,7 +123,7 @@ func (self class) SetBinding(p_member gd.Int) {
 func (self class) GetBinding() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_binding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_binding, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -136,8 +136,8 @@ Binds the given id to the uniform. The data associated with the id is then used 
 func (self class) AddId(id gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_add_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_add_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -147,8 +147,8 @@ Unbinds all ids currently bound to the uniform.
 //go:nosplit
 func (self class) ClearIds() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_clear_ids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_clear_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -159,7 +159,7 @@ Returns an array of all ids currently bound to the uniform.
 func (self class) GetIds() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_ids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret

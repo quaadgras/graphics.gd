@@ -111,7 +111,7 @@ func (self class) Listen(port gd.Int, bind_address gd.String) error {
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(bind_address))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -124,7 +124,7 @@ Returns [code]true[/code] if a connection is available for taking.
 func (self class) IsConnectionAvailable() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_is_connection_available, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_is_connection_available, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -137,7 +137,7 @@ Returns [code]true[/code] if the server is currently listening for connections.
 func (self class) IsListening() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_is_listening, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_is_listening, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -150,7 +150,7 @@ Returns the local port this server is listening to.
 func (self class) GetLocalPort() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -163,7 +163,7 @@ If a connection is available, returns a StreamPeerTCP with the connection.
 func (self class) TakeConnection() [1]gdclass.StreamPeerTCP {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.StreamPeerTCP{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeerTCP](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -175,8 +175,8 @@ Stops listening.
 //go:nosplit
 func (self class) Stop() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsTCPServer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

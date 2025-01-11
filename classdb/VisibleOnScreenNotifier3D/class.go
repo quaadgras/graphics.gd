@@ -74,8 +74,8 @@ func (self Instance) SetAabb(value AABB.PositionSize) {
 func (self class) SetAabb(rect gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_set_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_set_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -87,7 +87,7 @@ Returns [code]true[/code] if the bounding box is on the screen.
 func (self class) IsOnScreen() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_is_on_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_is_on_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

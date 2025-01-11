@@ -112,8 +112,8 @@ func (self class) SetScope(scope gd.String, target [1]gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scope))
 	callframe.Arg(frame, pointers.Get(target[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_set_scope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_set_scope, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -128,7 +128,7 @@ func (self class) ProcessAction(action gd.Variant, recurse bool) gd.Variant {
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, recurse)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_process_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_process_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -139,7 +139,7 @@ func (self class) ProcessString(action gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_process_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_process_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -158,7 +158,7 @@ func (self class) MakeRequest(method gd.String, params gd.Variant, id gd.Variant
 	callframe.Arg(frame, pointers.Get(params))
 	callframe.Arg(frame, pointers.Get(id))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_request, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_request, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -175,7 +175,7 @@ func (self class) MakeResponse(result gd.Variant, id gd.Variant) gd.Dictionary {
 	callframe.Arg(frame, pointers.Get(result))
 	callframe.Arg(frame, pointers.Get(id))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -192,7 +192,7 @@ func (self class) MakeNotification(method gd.String, params gd.Variant) gd.Dicti
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(params))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_notification, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -211,7 +211,7 @@ func (self class) MakeResponseError(code gd.Int, message gd.String, id gd.Varian
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(id))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response_error, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret

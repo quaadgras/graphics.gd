@@ -81,8 +81,8 @@ func (self Instance) SetCurve(value [1]gdclass.Curve) {
 func (self class) SetWidth(width gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_set_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_set_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -90,8 +90,8 @@ func (self class) SetWidth(width gd.Int) {
 func (self class) SetCurve(curve [1]gdclass.Curve) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_set_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_set_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -99,7 +99,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve) {
 func (self class) GetCurve() [1]gdclass.Curve {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -109,8 +109,8 @@ func (self class) GetCurve() [1]gdclass.Curve {
 func (self class) SetTextureMode(texture_mode gdclass.CurveTextureTextureMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_set_texture_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_set_texture_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -118,7 +118,7 @@ func (self class) SetTextureMode(texture_mode gdclass.CurveTextureTextureMode) {
 func (self class) GetTextureMode() gdclass.CurveTextureTextureMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CurveTextureTextureMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_get_texture_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_get_texture_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

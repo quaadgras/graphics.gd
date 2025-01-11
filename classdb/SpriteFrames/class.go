@@ -185,8 +185,8 @@ Adds a new [param anim] animation to the library.
 func (self class) AddAnimation(anim gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_add_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_add_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -198,7 +198,7 @@ func (self class) HasAnimation(anim gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_has_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_has_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -211,8 +211,8 @@ Removes the [param anim] animation.
 func (self class) RemoveAnimation(anim gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_remove_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_remove_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -224,8 +224,8 @@ func (self class) RenameAnimation(anim gd.StringName, newname gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
 	callframe.Arg(frame, pointers.Get(newname))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_rename_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_rename_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -236,7 +236,7 @@ Returns an array containing the names associated to each animation. Values are p
 func (self class) GetAnimationNames() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_animation_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_animation_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -250,8 +250,8 @@ func (self class) SetAnimationSpeed(anim gd.StringName, fps gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
 	callframe.Arg(frame, fps)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_set_animation_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_set_animation_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -263,7 +263,7 @@ func (self class) GetAnimationSpeed(anim gd.StringName) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_animation_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_animation_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -277,8 +277,8 @@ func (self class) SetAnimationLoop(anim gd.StringName, loop bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
 	callframe.Arg(frame, loop)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_set_animation_loop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_set_animation_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -290,7 +290,7 @@ func (self class) GetAnimationLoop(anim gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_animation_loop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_animation_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -306,8 +306,8 @@ func (self class) AddFrame(anim gd.StringName, texture [1]gdclass.Texture2D, dur
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, duration)
 	callframe.Arg(frame, at_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_add_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_add_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -321,8 +321,8 @@ func (self class) SetFrame(anim gd.StringName, idx gd.Int, texture [1]gdclass.Te
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, duration)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_set_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_set_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -334,8 +334,8 @@ func (self class) RemoveFrame(anim gd.StringName, idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
 	callframe.Arg(frame, idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_remove_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_remove_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -347,7 +347,7 @@ func (self class) GetFrameCount(anim gd.StringName) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -362,7 +362,7 @@ func (self class) GetFrameTexture(anim gd.StringName, idx gd.Int) [1]gdclass.Tex
 	callframe.Arg(frame, pointers.Get(anim))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -381,7 +381,7 @@ func (self class) GetFrameDuration(anim gd.StringName, idx gd.Int) gd.Float {
 	callframe.Arg(frame, pointers.Get(anim))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_duration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_get_frame_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -394,8 +394,8 @@ Removes all frames from the [param anim] animation.
 func (self class) Clear(anim gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(anim))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -405,8 +405,8 @@ Removes all animations. An empty [code]default[/code] animation will be created.
 //go:nosplit
 func (self class) ClearAll() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_clear_all, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteFrames.Bind_clear_all, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsSpriteFrames() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -83,8 +83,8 @@ func (self Instance) SetTextureType(value gdclass.VisualShaderNodeCubemapTexture
 func (self class) SetSource(value gdclass.VisualShaderNodeCubemapSource) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_set_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_set_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -92,7 +92,7 @@ func (self class) SetSource(value gdclass.VisualShaderNodeCubemapSource) {
 func (self class) GetSource() gdclass.VisualShaderNodeCubemapSource {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeCubemapSource](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -102,8 +102,8 @@ func (self class) GetSource() gdclass.VisualShaderNodeCubemapSource {
 func (self class) SetCubeMap(value [1]gdclass.Cubemap) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_set_cube_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_set_cube_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -111,7 +111,7 @@ func (self class) SetCubeMap(value [1]gdclass.Cubemap) {
 func (self class) GetCubeMap() [1]gdclass.Cubemap {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_cube_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_cube_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Cubemap{gd.PointerWithOwnershipTransferredToGo[gdclass.Cubemap](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -121,8 +121,8 @@ func (self class) GetCubeMap() [1]gdclass.Cubemap {
 func (self class) SetTextureType(value gdclass.VisualShaderNodeCubemapTextureType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_set_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_set_texture_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -130,7 +130,7 @@ func (self class) SetTextureType(value gdclass.VisualShaderNodeCubemapTextureTyp
 func (self class) GetTextureType() gdclass.VisualShaderNodeCubemapTextureType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeCubemapTextureType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

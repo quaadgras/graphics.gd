@@ -149,8 +149,8 @@ func (self Instance) SetHandTrackingSource(value gdclass.XRHandTrackerHandTracki
 func (self class) SetHasTrackingData(has_data bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, has_data)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -158,7 +158,7 @@ func (self class) SetHasTrackingData(has_data bool) {
 func (self class) GetHasTrackingData() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -168,8 +168,8 @@ func (self class) GetHasTrackingData() bool {
 func (self class) SetHandTrackingSource(source gdclass.XRHandTrackerHandTrackingSource) {
 	var frame = callframe.New()
 	callframe.Arg(frame, source)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_tracking_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_tracking_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -177,7 +177,7 @@ func (self class) SetHandTrackingSource(source gdclass.XRHandTrackerHandTracking
 func (self class) GetHandTrackingSource() gdclass.XRHandTrackerHandTrackingSource {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRHandTrackerHandTrackingSource](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_tracking_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_tracking_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -191,8 +191,8 @@ func (self class) SetHandJointFlags(joint gdclass.XRHandTrackerHandJoint, flags 
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -204,7 +204,7 @@ func (self class) GetHandJointFlags(joint gdclass.XRHandTrackerHandJoint) gdclas
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gdclass.XRHandTrackerHandJointFlags](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -218,8 +218,8 @@ func (self class) SetHandJointTransform(joint gdclass.XRHandTrackerHandJoint, tr
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -231,7 +231,7 @@ func (self class) GetHandJointTransform(joint gdclass.XRHandTrackerHandJoint) gd
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -245,8 +245,8 @@ func (self class) SetHandJointRadius(joint gdclass.XRHandTrackerHandJoint, radiu
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, radius)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -258,7 +258,7 @@ func (self class) GetHandJointRadius(joint gdclass.XRHandTrackerHandJoint) gd.Fl
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -272,8 +272,8 @@ func (self class) SetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJoin
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, linear_velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -285,7 +285,7 @@ func (self class) GetHandJointLinearVelocity(joint gdclass.XRHandTrackerHandJoin
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -299,8 +299,8 @@ func (self class) SetHandJointAngularVelocity(joint gdclass.XRHandTrackerHandJoi
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, angular_velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -312,7 +312,7 @@ func (self class) GetHandJointAngularVelocity(joint gdclass.XRHandTrackerHandJoi
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

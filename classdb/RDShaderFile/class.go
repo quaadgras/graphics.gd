@@ -92,8 +92,8 @@ func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version gd.Stri
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytecode[0])[0])
 	callframe.Arg(frame, pointers.Get(version))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_set_bytecode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_set_bytecode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -105,7 +105,7 @@ func (self class) GetSpirv(version gd.StringName) [1]gdclass.RDShaderSPIRV {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(version))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_spirv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_spirv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.RDShaderSPIRV{gd.PointerWithOwnershipTransferredToGo[gdclass.RDShaderSPIRV](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -118,7 +118,7 @@ Returns the list of compiled versions for this shader.
 func (self class) GetVersionList() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_version_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_version_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -128,8 +128,8 @@ func (self class) GetVersionList() gd.Array {
 func (self class) SetBaseError(error gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(error))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_set_base_error, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_set_base_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -137,7 +137,7 @@ func (self class) SetBaseError(error gd.String) {
 func (self class) GetBaseError() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_base_error, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_base_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret

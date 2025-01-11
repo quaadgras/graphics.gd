@@ -91,8 +91,8 @@ func (self class) RegisterProfileRename(old_name gd.String, new_name gd.String) 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(old_name))
 	callframe.Arg(frame, pointers.Get(new_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_profile_rename, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_profile_rename, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -107,8 +107,8 @@ func (self class) RegisterTopLevelPath(display_name gd.String, openxr_path gd.St
 	callframe.Arg(frame, pointers.Get(display_name))
 	callframe.Arg(frame, pointers.Get(openxr_path))
 	callframe.Arg(frame, pointers.Get(openxr_extension_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_top_level_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_top_level_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -122,8 +122,8 @@ func (self class) RegisterInteractionProfile(display_name gd.String, openxr_path
 	callframe.Arg(frame, pointers.Get(display_name))
 	callframe.Arg(frame, pointers.Get(openxr_path))
 	callframe.Arg(frame, pointers.Get(openxr_extension_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -139,8 +139,8 @@ func (self class) RegisterIoPath(interaction_profile gd.String, display_name gd.
 	callframe.Arg(frame, pointers.Get(openxr_path))
 	callframe.Arg(frame, pointers.Get(openxr_extension_name))
 	callframe.Arg(frame, action_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_io_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_io_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsOpenXRInteractionProfileMetadata() Advanced {

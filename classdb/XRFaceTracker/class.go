@@ -86,7 +86,7 @@ func (self class) GetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_get_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_get_blend_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -100,8 +100,8 @@ func (self class) SetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape)
 	callframe.Arg(frame, weight)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -109,7 +109,7 @@ func (self class) SetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry
 func (self class) GetBlendShapes() gd.PackedFloat32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_get_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_get_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -119,8 +119,8 @@ func (self class) GetBlendShapes() gd.PackedFloat32Array {
 func (self class) SetBlendShapes(weights gd.PackedFloat32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(weights))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsXRFaceTracker() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

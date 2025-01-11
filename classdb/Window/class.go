@@ -880,8 +880,8 @@ func (class) _get_contents_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2
 func (self class) SetTitle(title gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_title, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -889,7 +889,7 @@ func (self class) SetTitle(title gd.String) {
 func (self class) GetTitle() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -902,7 +902,7 @@ Returns the ID of the window.
 func (self class) GetWindowId() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_window_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_window_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -912,8 +912,8 @@ func (self class) GetWindowId() gd.Int {
 func (self class) SetInitialPosition(initial_position gdclass.WindowWindowInitialPosition) {
 	var frame = callframe.New()
 	callframe.Arg(frame, initial_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_initial_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_initial_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -921,7 +921,7 @@ func (self class) SetInitialPosition(initial_position gdclass.WindowWindowInitia
 func (self class) GetInitialPosition() gdclass.WindowWindowInitialPosition {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WindowWindowInitialPosition](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_initial_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_initial_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -931,8 +931,8 @@ func (self class) GetInitialPosition() gdclass.WindowWindowInitialPosition {
 func (self class) SetCurrentScreen(index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_current_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_current_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -940,7 +940,7 @@ func (self class) SetCurrentScreen(index gd.Int) {
 func (self class) GetCurrentScreen() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_current_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_current_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -950,8 +950,8 @@ func (self class) GetCurrentScreen() gd.Int {
 func (self class) SetPosition(position gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -959,7 +959,7 @@ func (self class) SetPosition(position gd.Vector2i) {
 func (self class) GetPosition() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -971,8 +971,8 @@ Centers a native window on the current screen and an embedded window on its embe
 //go:nosplit
 func (self class) MoveToCenter() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_move_to_center, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_move_to_center, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -980,8 +980,8 @@ func (self class) MoveToCenter() {
 func (self class) SetSize(size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -989,7 +989,7 @@ func (self class) SetSize(size gd.Vector2i) {
 func (self class) GetSize() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1001,8 +1001,8 @@ Resets the size to the minimum size, which is the max of [member min_size] and (
 //go:nosplit
 func (self class) ResetSize() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_reset_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_reset_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1014,7 +1014,7 @@ Returns the window's position including its border.
 func (self class) GetPositionWithDecorations() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_position_with_decorations, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_position_with_decorations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1028,7 +1028,7 @@ Returns the window's size including its border.
 func (self class) GetSizeWithDecorations() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_size_with_decorations, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_size_with_decorations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1038,8 +1038,8 @@ func (self class) GetSizeWithDecorations() gd.Vector2i {
 func (self class) SetMaxSize(max_size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_max_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1047,7 +1047,7 @@ func (self class) SetMaxSize(max_size gd.Vector2i) {
 func (self class) GetMaxSize() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_max_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1057,8 +1057,8 @@ func (self class) GetMaxSize() gd.Vector2i {
 func (self class) SetMinSize(min_size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_min_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_min_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1066,7 +1066,7 @@ func (self class) SetMinSize(min_size gd.Vector2i) {
 func (self class) GetMinSize() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_min_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_min_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1076,8 +1076,8 @@ func (self class) GetMinSize() gd.Vector2i {
 func (self class) SetMode(mode gdclass.WindowMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1085,7 +1085,7 @@ func (self class) SetMode(mode gdclass.WindowMode) {
 func (self class) GetMode() gdclass.WindowMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WindowMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1099,8 +1099,8 @@ func (self class) SetFlag(flag gdclass.WindowFlags, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1112,7 +1112,7 @@ func (self class) GetFlag(flag gdclass.WindowFlags) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1125,7 +1125,7 @@ Returns [code]true[/code] if the window can be maximized (the maximize button is
 func (self class) IsMaximizeAllowed() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_maximize_allowed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_maximize_allowed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1137,8 +1137,8 @@ Tells the OS that the [Window] needs an attention. This makes the window stand o
 //go:nosplit
 func (self class) RequestAttention() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_request_attention, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_request_attention, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1148,8 +1148,8 @@ Causes the window to grab focus, allowing it to receive user input.
 //go:nosplit
 func (self class) MoveToForeground() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_move_to_foreground, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_move_to_foreground, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1157,8 +1157,8 @@ func (self class) MoveToForeground() {
 func (self class) SetVisible(visible bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1166,7 +1166,7 @@ func (self class) SetVisible(visible bool) {
 func (self class) IsVisible() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1178,8 +1178,8 @@ Hides the window. This is not the same as minimized state. Hidden window can't b
 //go:nosplit
 func (self class) Hide() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_hide, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_hide, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1189,8 +1189,8 @@ Makes the [Window] appear. This enables interactions with the [Window] and doesn
 //go:nosplit
 func (self class) Show() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_show, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1198,8 +1198,8 @@ func (self class) Show() {
 func (self class) SetTransient(transient bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, transient)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_transient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_transient, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1207,7 +1207,7 @@ func (self class) SetTransient(transient bool) {
 func (self class) IsTransient() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_transient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_transient, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1217,8 +1217,8 @@ func (self class) IsTransient() bool {
 func (self class) SetTransientToFocused(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_transient_to_focused, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_transient_to_focused, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1226,7 +1226,7 @@ func (self class) SetTransientToFocused(enable bool) {
 func (self class) IsTransientToFocused() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_transient_to_focused, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_transient_to_focused, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1236,8 +1236,8 @@ func (self class) IsTransientToFocused() bool {
 func (self class) SetExclusive(exclusive bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, exclusive)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_exclusive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_exclusive, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1245,7 +1245,7 @@ func (self class) SetExclusive(exclusive bool) {
 func (self class) IsExclusive() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_exclusive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_exclusive, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1259,8 +1259,8 @@ If [param unparent] is [code]true[/code], the window is automatically unparented
 func (self class) SetUnparentWhenInvisible(unparent bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, unparent)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_unparent_when_invisible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_unparent_when_invisible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1271,7 +1271,7 @@ Returns whether the window is being drawn to the screen.
 func (self class) CanDraw() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_can_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_can_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1284,7 +1284,7 @@ Returns [code]true[/code] if the window is focused.
 func (self class) HasFocus() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_focus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1296,8 +1296,8 @@ Causes the window to grab focus, allowing it to receive user input.
 //go:nosplit
 func (self class) GrabFocus() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_grab_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_grab_focus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1308,8 +1308,8 @@ If [param active] is [code]true[/code], enables system's native IME (Input Metho
 func (self class) SetImeActive(active bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_ime_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_ime_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1320,8 +1320,8 @@ Moves IME to the given position.
 func (self class) SetImePosition(position gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_ime_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_ime_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1332,7 +1332,7 @@ Returns [code]true[/code] if the window is currently embedded in another window.
 func (self class) IsEmbedded() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_embedded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_embedded, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1346,7 +1346,7 @@ The value returned by this method can be overridden with [method _get_contents_m
 func (self class) GetContentsMinimumSize() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_contents_minimum_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_contents_minimum_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1356,8 +1356,8 @@ func (self class) GetContentsMinimumSize() gd.Vector2 {
 func (self class) SetForceNative(force_native bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force_native)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_force_native, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_force_native, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1365,7 +1365,7 @@ func (self class) SetForceNative(force_native bool) {
 func (self class) GetForceNative() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_force_native, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_force_native, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1375,8 +1375,8 @@ func (self class) GetForceNative() bool {
 func (self class) SetContentScaleSize(size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1384,7 +1384,7 @@ func (self class) SetContentScaleSize(size gd.Vector2i) {
 func (self class) GetContentScaleSize() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1394,8 +1394,8 @@ func (self class) GetContentScaleSize() gd.Vector2i {
 func (self class) SetContentScaleMode(mode gdclass.WindowContentScaleMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1403,7 +1403,7 @@ func (self class) SetContentScaleMode(mode gdclass.WindowContentScaleMode) {
 func (self class) GetContentScaleMode() gdclass.WindowContentScaleMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WindowContentScaleMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1413,8 +1413,8 @@ func (self class) GetContentScaleMode() gdclass.WindowContentScaleMode {
 func (self class) SetContentScaleAspect(aspect gdclass.WindowContentScaleAspect) {
 	var frame = callframe.New()
 	callframe.Arg(frame, aspect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_aspect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_aspect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1422,7 +1422,7 @@ func (self class) SetContentScaleAspect(aspect gdclass.WindowContentScaleAspect)
 func (self class) GetContentScaleAspect() gdclass.WindowContentScaleAspect {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WindowContentScaleAspect](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_aspect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_aspect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1432,8 +1432,8 @@ func (self class) GetContentScaleAspect() gdclass.WindowContentScaleAspect {
 func (self class) SetContentScaleStretch(stretch gdclass.WindowContentScaleStretch) {
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_stretch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_stretch, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1441,7 +1441,7 @@ func (self class) SetContentScaleStretch(stretch gdclass.WindowContentScaleStret
 func (self class) GetContentScaleStretch() gdclass.WindowContentScaleStretch {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WindowContentScaleStretch](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_stretch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_stretch, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1451,8 +1451,8 @@ func (self class) GetContentScaleStretch() gdclass.WindowContentScaleStretch {
 func (self class) SetKeepTitleVisible(title_visible bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, title_visible)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_keep_title_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_keep_title_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1460,7 +1460,7 @@ func (self class) SetKeepTitleVisible(title_visible bool) {
 func (self class) GetKeepTitleVisible() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_keep_title_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_keep_title_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1470,8 +1470,8 @@ func (self class) GetKeepTitleVisible() bool {
 func (self class) SetContentScaleFactor(factor gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, factor)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_factor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_content_scale_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1479,7 +1479,7 @@ func (self class) SetContentScaleFactor(factor gd.Float) {
 func (self class) GetContentScaleFactor() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_factor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1492,8 +1492,8 @@ Enables font oversampling. This makes fonts look better when they are scaled up.
 func (self class) SetUseFontOversampling(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_use_font_oversampling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_use_font_oversampling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1504,7 +1504,7 @@ Returns [code]true[/code] if font oversampling is enabled. See [method set_use_f
 func (self class) IsUsingFontOversampling() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_using_font_oversampling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_using_font_oversampling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1514,8 +1514,8 @@ func (self class) IsUsingFontOversampling() bool {
 func (self class) SetMousePassthroughPolygon(polygon gd.PackedVector2Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_mouse_passthrough_polygon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_mouse_passthrough_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1523,7 +1523,7 @@ func (self class) SetMousePassthroughPolygon(polygon gd.PackedVector2Array) {
 func (self class) GetMousePassthroughPolygon() gd.PackedVector2Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_mouse_passthrough_polygon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_mouse_passthrough_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1533,8 +1533,8 @@ func (self class) GetMousePassthroughPolygon() gd.PackedVector2Array {
 func (self class) SetWrapControls(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_wrap_controls, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_wrap_controls, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1542,7 +1542,7 @@ func (self class) SetWrapControls(enable bool) {
 func (self class) IsWrappingControls() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_wrapping_controls, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_wrapping_controls, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1554,8 +1554,8 @@ Requests an update of the [Window] size to fit underlying [Control] nodes.
 //go:nosplit
 func (self class) ChildControlsChanged() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_child_controls_changed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_child_controls_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1563,8 +1563,8 @@ func (self class) ChildControlsChanged() {
 func (self class) SetTheme(theme [1]gdclass.Theme) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_theme, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1572,7 +1572,7 @@ func (self class) SetTheme(theme [1]gdclass.Theme) {
 func (self class) GetTheme() [1]gdclass.Theme {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1582,8 +1582,8 @@ func (self class) GetTheme() [1]gdclass.Theme {
 func (self class) SetThemeTypeVariation(theme_type gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_theme_type_variation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_theme_type_variation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1591,7 +1591,7 @@ func (self class) SetThemeTypeVariation(theme_type gd.StringName) {
 func (self class) GetThemeTypeVariation() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_type_variation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_type_variation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1603,8 +1603,8 @@ Prevents [code]*_theme_*_override[/code] methods from emitting [constant NOTIFIC
 //go:nosplit
 func (self class) BeginBulkThemeOverride() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_begin_bulk_theme_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_begin_bulk_theme_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1614,8 +1614,8 @@ Ends a bulk theme override update. See [method begin_bulk_theme_override].
 //go:nosplit
 func (self class) EndBulkThemeOverride() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_end_bulk_theme_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_end_bulk_theme_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1628,8 +1628,8 @@ func (self class) AddThemeIconOverride(name gd.StringName, texture [1]gdclass.Te
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_icon_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_icon_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1642,8 +1642,8 @@ func (self class) AddThemeStyleboxOverride(name gd.StringName, stylebox [1]gdcla
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(stylebox[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1656,8 +1656,8 @@ func (self class) AddThemeFontOverride(name gd.StringName, font [1]gdclass.Font)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(font[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_font_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_font_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1670,8 +1670,8 @@ func (self class) AddThemeFontSizeOverride(name gd.StringName, font_size gd.Int)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, font_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1684,8 +1684,8 @@ func (self class) AddThemeColorOverride(name gd.StringName, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_color_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_color_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1698,8 +1698,8 @@ func (self class) AddThemeConstantOverride(name gd.StringName, constant gd.Int) 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, constant)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_constant_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_add_theme_constant_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1710,8 +1710,8 @@ Removes a local override for a theme icon with the specified [param name] previo
 func (self class) RemoveThemeIconOverride(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_icon_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_icon_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1722,8 +1722,8 @@ Removes a local override for a theme [StyleBox] with the specified [param name] 
 func (self class) RemoveThemeStyleboxOverride(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1734,8 +1734,8 @@ Removes a local override for a theme [Font] with the specified [param name] prev
 func (self class) RemoveThemeFontOverride(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_font_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_font_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1746,8 +1746,8 @@ Removes a local override for a theme font size with the specified [param name] p
 func (self class) RemoveThemeFontSizeOverride(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1758,8 +1758,8 @@ Removes a local override for a theme [Color] with the specified [param name] pre
 func (self class) RemoveThemeColorOverride(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_color_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_color_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1770,8 +1770,8 @@ Removes a local override for a theme constant with the specified [param name] pr
 func (self class) RemoveThemeConstantOverride(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_constant_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_remove_theme_constant_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1785,7 +1785,7 @@ func (self class) GetThemeIcon(name gd.StringName, theme_type gd.StringName) [1]
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1801,7 +1801,7 @@ func (self class) GetThemeStylebox(name gd.StringName, theme_type gd.StringName)
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1817,7 +1817,7 @@ func (self class) GetThemeFont(name gd.StringName, theme_type gd.StringName) [1]
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1833,7 +1833,7 @@ func (self class) GetThemeFontSize(name gd.StringName, theme_type gd.StringName)
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_font_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1849,7 +1849,7 @@ func (self class) GetThemeColor(name gd.StringName, theme_type gd.StringName) gd
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1865,7 +1865,7 @@ func (self class) GetThemeConstant(name gd.StringName, theme_type gd.StringName)
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_constant, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1880,7 +1880,7 @@ func (self class) HasThemeIconOverride(name gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_icon_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_icon_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1895,7 +1895,7 @@ func (self class) HasThemeStyleboxOverride(name gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_stylebox_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1910,7 +1910,7 @@ func (self class) HasThemeFontOverride(name gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1925,7 +1925,7 @@ func (self class) HasThemeFontSizeOverride(name gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1940,7 +1940,7 @@ func (self class) HasThemeColorOverride(name gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_color_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_color_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1955,7 +1955,7 @@ func (self class) HasThemeConstantOverride(name gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_constant_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_constant_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1971,7 +1971,7 @@ func (self class) HasThemeIcon(name gd.StringName, theme_type gd.StringName) boo
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1987,7 +1987,7 @@ func (self class) HasThemeStylebox(name gd.StringName, theme_type gd.StringName)
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2003,7 +2003,7 @@ func (self class) HasThemeFont(name gd.StringName, theme_type gd.StringName) boo
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2019,7 +2019,7 @@ func (self class) HasThemeFontSize(name gd.StringName, theme_type gd.StringName)
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2035,7 +2035,7 @@ func (self class) HasThemeColor(name gd.StringName, theme_type gd.StringName) bo
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2051,7 +2051,7 @@ func (self class) HasThemeConstant(name gd.StringName, theme_type gd.StringName)
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_constant, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_has_theme_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2065,7 +2065,7 @@ See [method Control.get_theme_color] for details.
 func (self class) GetThemeDefaultBaseScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_base_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_base_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2079,7 +2079,7 @@ See [method Control.get_theme_color] for details.
 func (self class) GetThemeDefaultFont() [1]gdclass.Font {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_font, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2093,7 +2093,7 @@ See [method Control.get_theme_color] for details.
 func (self class) GetThemeDefaultFontSize() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_font_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_theme_default_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2106,8 +2106,8 @@ Sets layout direction and text writing direction. Right-to-left layouts are nece
 func (self class) SetLayoutDirection(direction gdclass.WindowLayoutDirection) {
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_layout_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_layout_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2118,7 +2118,7 @@ Returns layout direction and text writing direction.
 func (self class) GetLayoutDirection() gdclass.WindowLayoutDirection {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WindowLayoutDirection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_layout_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_layout_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2131,7 +2131,7 @@ Returns [code]true[/code] if layout is right-to-left.
 func (self class) IsLayoutRtl() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_layout_rtl, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_layout_rtl, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2141,8 +2141,8 @@ func (self class) IsLayoutRtl() bool {
 func (self class) SetAutoTranslate(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_auto_translate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_set_auto_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2150,7 +2150,7 @@ func (self class) SetAutoTranslate(enable bool) {
 func (self class) IsAutoTranslating() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_auto_translating, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_is_auto_translating, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2166,8 +2166,8 @@ If [member ProjectSettings.display/window/subwindows/embed_subwindows] is [code]
 func (self class) Popup(rect gd.Rect2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2178,8 +2178,8 @@ Popups the [Window] with a position shifted by parent [Window]'s position. If th
 func (self class) PopupOnParent(parent_rect gd.Rect2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, parent_rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_on_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_on_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2191,8 +2191,8 @@ Popups the [Window] at the center of the current screen, with optionally given m
 func (self class) PopupCentered(minsize gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, minsize)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_centered, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_centered, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2204,8 +2204,8 @@ If [Window] is a native window, popups the [Window] centered inside the screen o
 func (self class) PopupCenteredRatio(ratio gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_centered_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_centered_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2218,8 +2218,8 @@ func (self class) PopupCenteredClamped(minsize gd.Vector2i, fallback_ratio gd.Fl
 	var frame = callframe.New()
 	callframe.Arg(frame, minsize)
 	callframe.Arg(frame, fallback_ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_centered_clamped, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_centered_clamped, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2232,8 +2232,8 @@ func (self class) PopupExclusive(from_node [1]gdclass.Node, rect gd.Rect2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2246,8 +2246,8 @@ func (self class) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_rect 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, parent_rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive_on_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive_on_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2260,8 +2260,8 @@ func (self class) PopupExclusiveCentered(from_node [1]gdclass.Node, minsize gd.V
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, minsize)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive_centered, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive_centered, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2274,8 +2274,8 @@ func (self class) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node, ratio g
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive_centered_ratio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive_centered_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2289,8 +2289,8 @@ func (self class) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsi
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, minsize)
 	callframe.Arg(frame, fallback_ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive_centered_clamped, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive_centered_clamped, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnWindowInput(cb func(event [1]gdclass.InputEvent)) {

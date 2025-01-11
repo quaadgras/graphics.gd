@@ -52,7 +52,7 @@ func (Godot *API) linkUtility() {
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API utility function hash for " + field.Name + ": " + err.Error())
 		}
-		*(value.Interface().(*func(ret uintptr, args callframe.Args, c int32))) = Godot.Variants.GetPointerUtilityFunction(name, Int(hash))
+		*(value.Interface().(*func(ret callframe.Addr, args callframe.Args, c int32))) = Godot.Variants.GetPointerUtilityFunction(name, Int(hash))
 	}
 }
 
@@ -73,7 +73,7 @@ func (Godot *API) linkBuiltin() {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
 			vtype, _ := variantTypeFromName(class.Name)
-			*(direct.Interface().(*func(base uintptr, args callframe.Args, ret uintptr, c int32))) = Godot.Variants.GetPointerBuiltinMethod(vtype, methodName, Int(hash))
+			*(direct.Interface().(*func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32))) = Godot.Variants.GetPointerBuiltinMethod(vtype, methodName, Int(hash))
 		}
 	}
 }
@@ -143,7 +143,7 @@ func (Godot *API) linkTypesetCreation() {
 		vtype, _ := variantTypeFromName(field.Name)
 		for i := 0; i < field.Type.Len(); i++ {
 			value := reflect.NewAt(field.Type.Elem(), unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset+uintptr(i)*esize))
-			*(value.Interface().(*func(uintptr, callframe.Args))) = Godot.Variants.GetPointerConstructor(vtype, int32(i))
+			*(value.Interface().(*func(callframe.Addr, callframe.Args))) = Godot.Variants.GetPointerConstructor(vtype, int32(i))
 		}
 	}
 }
@@ -162,7 +162,7 @@ func (Godot *API) linkTypesetOperator() {
 			otype := operatoTypeFromName(op.Name)
 			switch op.Type.Kind() {
 			case reflect.Func:
-				direct := value.Elem().Field(j).Addr().Interface().(*func(a, b, ret uintptr))
+				direct := value.Elem().Field(j).Addr().Interface().(*func(a, b, ret callframe.Addr))
 				*direct = Godot.Variants.PointerOperatorEvaluator(otype, vtype, TypeNil)
 			default:
 				for k := 0; k < op.Type.NumField(); k++ {
@@ -170,7 +170,7 @@ func (Godot *API) linkTypesetOperator() {
 					rhsType, _ := variantTypeFromName(rhs.Name)
 					unsafe := reflect.NewAt(rhs.Type,
 						unsafe.Add(value.Elem().Field(j).Addr().UnsafePointer(), rhs.Offset))
-					direct := unsafe.Interface().(*func(a, b, ret uintptr))
+					direct := unsafe.Interface().(*func(a, b, ret callframe.Addr))
 					*direct = Godot.Variants.PointerOperatorEvaluator(otype, vtype, rhsType)
 				}
 			}
@@ -185,7 +185,7 @@ func (Godot *API) linkTypesetDestruct() {
 		field := rvalue.Type().Field(i)
 		value := reflect.NewAt(field.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset))
 		vtype, _ := variantTypeFromName(field.Name)
-		*(value.Interface().(*func(uintptr))) = Godot.Variants.GetPointerDestructor(vtype)
+		*(value.Interface().(*func(callframe.Addr))) = Godot.Variants.GetPointerDestructor(vtype)
 	}
 }
 

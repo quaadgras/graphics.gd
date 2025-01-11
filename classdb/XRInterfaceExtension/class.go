@@ -951,7 +951,7 @@ func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.
 func (self class) GetColorTexture() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_color_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_color_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -961,7 +961,7 @@ func (self class) GetColorTexture() gd.RID {
 func (self class) GetDepthTexture() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_depth_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_depth_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -971,7 +971,7 @@ func (self class) GetDepthTexture() gd.RID {
 func (self class) GetVelocityTexture() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_velocity_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_velocity_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -994,8 +994,8 @@ func (self class) AddBlit(render_target gd.RID, src_rect gd.Rect2, dst_rect gd.R
 	callframe.Arg(frame, k2)
 	callframe.Arg(frame, upscale)
 	callframe.Arg(frame, aspect_ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_add_blit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_add_blit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1007,7 +1007,7 @@ func (self class) GetRenderTargetTexture(render_target gd.RID) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, render_target)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_render_target_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_render_target_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

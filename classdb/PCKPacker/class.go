@@ -100,7 +100,7 @@ func (self class) PckStart(pck_name gd.String, alignment gd.Int, key gd.String, 
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, encrypt_directory)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_pck_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_pck_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -116,7 +116,7 @@ func (self class) AddFile(pck_path gd.String, source_path gd.String, encrypt boo
 	callframe.Arg(frame, pointers.Get(source_path))
 	callframe.Arg(frame, encrypt)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -130,7 +130,7 @@ func (self class) Flush(verbose bool) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, verbose)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_flush, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_flush, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

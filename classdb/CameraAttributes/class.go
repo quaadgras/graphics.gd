@@ -102,8 +102,8 @@ func (self Instance) SetAutoExposureSpeed(value Float.X) {
 func (self class) SetExposureMultiplier(multiplier gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, multiplier)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_exposure_multiplier, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_exposure_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -111,7 +111,7 @@ func (self class) SetExposureMultiplier(multiplier gd.Float) {
 func (self class) GetExposureMultiplier() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_get_exposure_multiplier, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_get_exposure_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -121,8 +121,8 @@ func (self class) GetExposureMultiplier() gd.Float {
 func (self class) SetExposureSensitivity(sensitivity gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sensitivity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_exposure_sensitivity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_exposure_sensitivity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -130,7 +130,7 @@ func (self class) SetExposureSensitivity(sensitivity gd.Float) {
 func (self class) GetExposureSensitivity() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_get_exposure_sensitivity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_get_exposure_sensitivity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -140,8 +140,8 @@ func (self class) GetExposureSensitivity() gd.Float {
 func (self class) SetAutoExposureEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_auto_exposure_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_auto_exposure_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -149,7 +149,7 @@ func (self class) SetAutoExposureEnabled(enabled bool) {
 func (self class) IsAutoExposureEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_is_auto_exposure_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_is_auto_exposure_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -159,8 +159,8 @@ func (self class) IsAutoExposureEnabled() bool {
 func (self class) SetAutoExposureSpeed(exposure_speed gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, exposure_speed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_auto_exposure_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_auto_exposure_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -168,7 +168,7 @@ func (self class) SetAutoExposureSpeed(exposure_speed gd.Float) {
 func (self class) GetAutoExposureSpeed() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_get_auto_exposure_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_get_auto_exposure_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -178,8 +178,8 @@ func (self class) GetAutoExposureSpeed() gd.Float {
 func (self class) SetAutoExposureScale(exposure_grey gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, exposure_grey)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_auto_exposure_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_set_auto_exposure_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -187,7 +187,7 @@ func (self class) SetAutoExposureScale(exposure_grey gd.Float) {
 func (self class) GetAutoExposureScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_get_auto_exposure_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributes.Bind_get_auto_exposure_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

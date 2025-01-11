@@ -112,8 +112,8 @@ func (self Instance) SetMaterial(value [1]gdclass.Material) {
 func (self class) SetRadius(radius gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -121,7 +121,7 @@ func (self class) SetRadius(radius gd.Float) {
 func (self class) GetRadius() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -131,8 +131,8 @@ func (self class) GetRadius() gd.Float {
 func (self class) SetHeight(height gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -140,7 +140,7 @@ func (self class) SetHeight(height gd.Float) {
 func (self class) GetHeight() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -150,8 +150,8 @@ func (self class) GetHeight() gd.Float {
 func (self class) SetSides(sides gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sides)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_sides, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_sides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -159,7 +159,7 @@ func (self class) SetSides(sides gd.Int) {
 func (self class) GetSides() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_sides, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_sides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -169,8 +169,8 @@ func (self class) GetSides() gd.Int {
 func (self class) SetCone(cone bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, cone)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_cone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_cone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -178,7 +178,7 @@ func (self class) SetCone(cone bool) {
 func (self class) IsCone() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_is_cone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_is_cone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -188,8 +188,8 @@ func (self class) IsCone() bool {
 func (self class) SetMaterial(material [1]gdclass.Material) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -197,7 +197,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 func (self class) GetMaterial() [1]gdclass.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -207,8 +207,8 @@ func (self class) GetMaterial() [1]gdclass.Material {
 func (self class) SetSmoothFaces(smooth_faces bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, smooth_faces)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_smooth_faces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_set_smooth_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -216,7 +216,7 @@ func (self class) SetSmoothFaces(smooth_faces bool) {
 func (self class) GetSmoothFaces() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_smooth_faces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGCylinder3D.Bind_get_smooth_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

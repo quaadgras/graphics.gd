@@ -151,8 +151,8 @@ Sets up the modification stack so it can execute. This function should be called
 //go:nosplit
 func (self class) Setup() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_setup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -165,8 +165,8 @@ func (self class) Execute(delta gd.Float, execution_mode gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, execution_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_execute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_execute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -177,8 +177,8 @@ Enables all [SkeletonModification2D]s in the stack.
 func (self class) EnableAllModifications(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_enable_all_modifications, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_enable_all_modifications, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -190,7 +190,7 @@ func (self class) GetModification(mod_idx gd.Int) [1]gdclass.SkeletonModificatio
 	var frame = callframe.New()
 	callframe.Arg(frame, mod_idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SkeletonModification2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModification2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -203,8 +203,8 @@ Adds the passed-in [SkeletonModification2D] to the stack.
 func (self class) AddModification(modification [1]gdclass.SkeletonModification2D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(modification[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_add_modification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_add_modification, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -215,8 +215,8 @@ Deletes the [SkeletonModification2D] at the index position [param mod_idx], if i
 func (self class) DeleteModification(mod_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mod_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_delete_modification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_delete_modification, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -228,8 +228,8 @@ func (self class) SetModification(mod_idx gd.Int, modification [1]gdclass.Skelet
 	var frame = callframe.New()
 	callframe.Arg(frame, mod_idx)
 	callframe.Arg(frame, pointers.Get(modification[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_modification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_modification, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -237,8 +237,8 @@ func (self class) SetModification(mod_idx gd.Int, modification [1]gdclass.Skelet
 func (self class) SetModificationCount(count gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_modification_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_modification_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -246,7 +246,7 @@ func (self class) SetModificationCount(count gd.Int) {
 func (self class) GetModificationCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -259,7 +259,7 @@ Returns a boolean that indicates whether the modification stack is setup and can
 func (self class) GetIsSetup() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_is_setup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_is_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -269,8 +269,8 @@ func (self class) GetIsSetup() bool {
 func (self class) SetEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -278,7 +278,7 @@ func (self class) SetEnabled(enabled bool) {
 func (self class) GetEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -288,8 +288,8 @@ func (self class) GetEnabled() bool {
 func (self class) SetStrength(strength gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -297,7 +297,7 @@ func (self class) SetStrength(strength gd.Float) {
 func (self class) GetStrength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -310,7 +310,7 @@ Returns the [Skeleton2D] node that the SkeletonModificationStack2D is bound to.
 func (self class) GetSkeleton() [1]gdclass.Skeleton2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Skeleton2D{gd.PointerMustAssertInstanceID[gdclass.Skeleton2D](r_ret.Get())}
 	frame.Free()
 	return ret

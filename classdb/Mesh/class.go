@@ -587,8 +587,8 @@ func (class) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB) (cb gd.ExtensionCl
 func (self class) SetLightmapSizeHint(size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_set_lightmap_size_hint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_set_lightmap_size_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -596,7 +596,7 @@ func (self class) SetLightmapSizeHint(size gd.Vector2i) {
 func (self class) GetLightmapSizeHint() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_lightmap_size_hint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_lightmap_size_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -610,7 +610,7 @@ Returns the smallest [AABB] enclosing this mesh in local space. Not affected by 
 func (self class) GetAabb() gd.AABB {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -623,7 +623,7 @@ Returns all the vertices that make up the faces of the mesh. Each three vertices
 func (self class) GetFaces() gd.PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_faces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -636,7 +636,7 @@ Returns the number of surfaces that the [Mesh] holds. This is equivalent to [met
 func (self class) GetSurfaceCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_surface_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_surface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -650,7 +650,7 @@ func (self class) SurfaceGetArrays(surf_idx gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -664,7 +664,7 @@ func (self class) SurfaceGetBlendShapeArrays(surf_idx gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_blend_shape_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_blend_shape_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -679,8 +679,8 @@ func (self class) SurfaceSetMaterial(surf_idx gd.Int, material [1]gdclass.Materi
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -693,7 +693,7 @@ func (self class) SurfaceGetMaterial(surf_idx gd.Int) [1]gdclass.Material {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -706,7 +706,7 @@ Creates a placeholder version of this resource ([PlaceholderMesh]).
 func (self class) CreatePlaceholder() [1]gdclass.Resource {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -719,7 +719,7 @@ Calculate a [ConcavePolygonShape3D] from the mesh.
 func (self class) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_trimesh_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_trimesh_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ConcavePolygonShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.ConcavePolygonShape3D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -736,7 +736,7 @@ func (self class) CreateConvexShape(clean bool, simplify bool) [1]gdclass.Convex
 	callframe.Arg(frame, clean)
 	callframe.Arg(frame, simplify)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_convex_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_convex_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ConvexPolygonShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.ConvexPolygonShape3D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -751,7 +751,7 @@ func (self class) CreateOutline(margin gd.Float) [1]gdclass.Mesh {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_outline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -764,7 +764,7 @@ Generate a [TriangleMesh] from the mesh. Considers only surfaces using one of th
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.TriangleMesh](r_ret.Get())}
 	frame.Free()
 	return ret

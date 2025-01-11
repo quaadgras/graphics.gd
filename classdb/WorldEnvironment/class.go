@@ -83,8 +83,8 @@ func (self Instance) SetCompositor(value [1]gdclass.Compositor) {
 func (self class) SetEnvironment(env [1]gdclass.Environment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(env[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -92,7 +92,7 @@ func (self class) SetEnvironment(env [1]gdclass.Environment) {
 func (self class) GetEnvironment() [1]gdclass.Environment {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Environment{gd.PointerWithOwnershipTransferredToGo[gdclass.Environment](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -102,8 +102,8 @@ func (self class) GetEnvironment() [1]gdclass.Environment {
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(camera_attributes[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -111,7 +111,7 @@ func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttribu
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraAttributes](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -121,8 +121,8 @@ func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes {
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(compositor[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_set_compositor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_set_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -130,7 +130,7 @@ func (self class) SetCompositor(compositor [1]gdclass.Compositor) {
 func (self class) GetCompositor() [1]gdclass.Compositor {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_compositor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Compositor{gd.PointerWithOwnershipTransferredToGo[gdclass.Compositor](r_ret.Get())}
 	frame.Free()
 	return ret

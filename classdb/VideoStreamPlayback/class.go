@@ -411,7 +411,7 @@ func (self class) MixAudio(num_frames gd.Int, buffer gd.PackedFloat32Array, offs
 	callframe.Arg(frame, pointers.Get(buffer))
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

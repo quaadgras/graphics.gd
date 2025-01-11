@@ -130,7 +130,7 @@ func (self class) Start(hash_type gdclass.HashingContextHashType, key gd.PackedB
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(key))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -144,7 +144,7 @@ func (self class) Update(data gd.PackedByteArray) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -157,7 +157,7 @@ Returns the resulting HMAC. If the HMAC failed, an empty [PackedByteArray] is re
 func (self class) Finish() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret

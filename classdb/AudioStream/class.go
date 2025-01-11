@@ -319,7 +319,7 @@ Returns the length of the audio stream in seconds.
 func (self class) GetLength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -332,7 +332,7 @@ Returns [code]true[/code] if this audio stream only supports one channel ([i]mon
 func (self class) IsMonophonic() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_is_monophonic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_is_monophonic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -345,7 +345,7 @@ Returns a newly created [AudioStreamPlayback] intended to play this audio stream
 func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_instantiate_playback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_instantiate_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -358,7 +358,7 @@ Returns if the current [AudioStream] can be used as a sample. Only static stream
 func (self class) CanBeSampled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_can_be_sampled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_can_be_sampled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -371,7 +371,7 @@ Generates an [AudioSample] based on the current stream.
 func (self class) GenerateSample() [1]gdclass.AudioSample {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_generate_sample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_generate_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioSample{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSample](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -384,7 +384,7 @@ Returns [code]true[/code] if the stream is a collection of other streams, [code]
 func (self class) IsMetaStream() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_is_meta_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_is_meta_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

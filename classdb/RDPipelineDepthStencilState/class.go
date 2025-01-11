@@ -226,8 +226,8 @@ func (self Instance) SetBackOpReference(value int) {
 func (self class) SetEnableDepthTest(p_member bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_enable_depth_test, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_enable_depth_test, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -235,7 +235,7 @@ func (self class) SetEnableDepthTest(p_member bool) {
 func (self class) GetEnableDepthTest() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_enable_depth_test, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_enable_depth_test, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -245,8 +245,8 @@ func (self class) GetEnableDepthTest() bool {
 func (self class) SetEnableDepthWrite(p_member bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_enable_depth_write, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_enable_depth_write, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -254,7 +254,7 @@ func (self class) SetEnableDepthWrite(p_member bool) {
 func (self class) GetEnableDepthWrite() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_enable_depth_write, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_enable_depth_write, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -264,8 +264,8 @@ func (self class) GetEnableDepthWrite() bool {
 func (self class) SetDepthCompareOperator(p_member gdclass.RenderingDeviceCompareOperator) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_depth_compare_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_depth_compare_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -273,7 +273,7 @@ func (self class) SetDepthCompareOperator(p_member gdclass.RenderingDeviceCompar
 func (self class) GetDepthCompareOperator() gdclass.RenderingDeviceCompareOperator {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceCompareOperator](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_depth_compare_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_depth_compare_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -283,8 +283,8 @@ func (self class) GetDepthCompareOperator() gdclass.RenderingDeviceCompareOperat
 func (self class) SetEnableDepthRange(p_member bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_enable_depth_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_enable_depth_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -292,7 +292,7 @@ func (self class) SetEnableDepthRange(p_member bool) {
 func (self class) GetEnableDepthRange() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_enable_depth_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_enable_depth_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -302,8 +302,8 @@ func (self class) GetEnableDepthRange() bool {
 func (self class) SetDepthRangeMin(p_member gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_depth_range_min, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_depth_range_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -311,7 +311,7 @@ func (self class) SetDepthRangeMin(p_member gd.Float) {
 func (self class) GetDepthRangeMin() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_depth_range_min, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_depth_range_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -321,8 +321,8 @@ func (self class) GetDepthRangeMin() gd.Float {
 func (self class) SetDepthRangeMax(p_member gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_depth_range_max, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_depth_range_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -330,7 +330,7 @@ func (self class) SetDepthRangeMax(p_member gd.Float) {
 func (self class) GetDepthRangeMax() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_depth_range_max, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_depth_range_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -340,8 +340,8 @@ func (self class) GetDepthRangeMax() gd.Float {
 func (self class) SetEnableStencil(p_member bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_enable_stencil, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_enable_stencil, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -349,7 +349,7 @@ func (self class) SetEnableStencil(p_member bool) {
 func (self class) GetEnableStencil() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_enable_stencil, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_enable_stencil, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -359,8 +359,8 @@ func (self class) GetEnableStencil() bool {
 func (self class) SetFrontOpFail(p_member gdclass.RenderingDeviceStencilOperation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_fail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -368,7 +368,7 @@ func (self class) SetFrontOpFail(p_member gdclass.RenderingDeviceStencilOperatio
 func (self class) GetFrontOpFail() gdclass.RenderingDeviceStencilOperation {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_fail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -378,8 +378,8 @@ func (self class) GetFrontOpFail() gdclass.RenderingDeviceStencilOperation {
 func (self class) SetFrontOpPass(p_member gdclass.RenderingDeviceStencilOperation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -387,7 +387,7 @@ func (self class) SetFrontOpPass(p_member gdclass.RenderingDeviceStencilOperatio
 func (self class) GetFrontOpPass() gdclass.RenderingDeviceStencilOperation {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -397,8 +397,8 @@ func (self class) GetFrontOpPass() gdclass.RenderingDeviceStencilOperation {
 func (self class) SetFrontOpDepthFail(p_member gdclass.RenderingDeviceStencilOperation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -406,7 +406,7 @@ func (self class) SetFrontOpDepthFail(p_member gdclass.RenderingDeviceStencilOpe
 func (self class) GetFrontOpDepthFail() gdclass.RenderingDeviceStencilOperation {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -416,8 +416,8 @@ func (self class) GetFrontOpDepthFail() gdclass.RenderingDeviceStencilOperation 
 func (self class) SetFrontOpCompare(p_member gdclass.RenderingDeviceCompareOperator) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_compare, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -425,7 +425,7 @@ func (self class) SetFrontOpCompare(p_member gdclass.RenderingDeviceCompareOpera
 func (self class) GetFrontOpCompare() gdclass.RenderingDeviceCompareOperator {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceCompareOperator](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_compare, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -435,8 +435,8 @@ func (self class) GetFrontOpCompare() gdclass.RenderingDeviceCompareOperator {
 func (self class) SetFrontOpCompareMask(p_member gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -444,7 +444,7 @@ func (self class) SetFrontOpCompareMask(p_member gd.Int) {
 func (self class) GetFrontOpCompareMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -454,8 +454,8 @@ func (self class) GetFrontOpCompareMask() gd.Int {
 func (self class) SetFrontOpWriteMask(p_member gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -463,7 +463,7 @@ func (self class) SetFrontOpWriteMask(p_member gd.Int) {
 func (self class) GetFrontOpWriteMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -473,8 +473,8 @@ func (self class) GetFrontOpWriteMask() gd.Int {
 func (self class) SetFrontOpReference(p_member gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_front_op_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -482,7 +482,7 @@ func (self class) SetFrontOpReference(p_member gd.Int) {
 func (self class) GetFrontOpReference() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -492,8 +492,8 @@ func (self class) GetFrontOpReference() gd.Int {
 func (self class) SetBackOpFail(p_member gdclass.RenderingDeviceStencilOperation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_fail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -501,7 +501,7 @@ func (self class) SetBackOpFail(p_member gdclass.RenderingDeviceStencilOperation
 func (self class) GetBackOpFail() gdclass.RenderingDeviceStencilOperation {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_fail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -511,8 +511,8 @@ func (self class) GetBackOpFail() gdclass.RenderingDeviceStencilOperation {
 func (self class) SetBackOpPass(p_member gdclass.RenderingDeviceStencilOperation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -520,7 +520,7 @@ func (self class) SetBackOpPass(p_member gdclass.RenderingDeviceStencilOperation
 func (self class) GetBackOpPass() gdclass.RenderingDeviceStencilOperation {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_pass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -530,8 +530,8 @@ func (self class) GetBackOpPass() gdclass.RenderingDeviceStencilOperation {
 func (self class) SetBackOpDepthFail(p_member gdclass.RenderingDeviceStencilOperation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -539,7 +539,7 @@ func (self class) SetBackOpDepthFail(p_member gdclass.RenderingDeviceStencilOper
 func (self class) GetBackOpDepthFail() gdclass.RenderingDeviceStencilOperation {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -549,8 +549,8 @@ func (self class) GetBackOpDepthFail() gdclass.RenderingDeviceStencilOperation {
 func (self class) SetBackOpCompare(p_member gdclass.RenderingDeviceCompareOperator) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_compare, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -558,7 +558,7 @@ func (self class) SetBackOpCompare(p_member gdclass.RenderingDeviceCompareOperat
 func (self class) GetBackOpCompare() gdclass.RenderingDeviceCompareOperator {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceCompareOperator](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_compare, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -568,8 +568,8 @@ func (self class) GetBackOpCompare() gdclass.RenderingDeviceCompareOperator {
 func (self class) SetBackOpCompareMask(p_member gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -577,7 +577,7 @@ func (self class) SetBackOpCompareMask(p_member gd.Int) {
 func (self class) GetBackOpCompareMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_compare_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -587,8 +587,8 @@ func (self class) GetBackOpCompareMask() gd.Int {
 func (self class) SetBackOpWriteMask(p_member gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -596,7 +596,7 @@ func (self class) SetBackOpWriteMask(p_member gd.Int) {
 func (self class) GetBackOpWriteMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_write_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -606,8 +606,8 @@ func (self class) GetBackOpWriteMask() gd.Int {
 func (self class) SetBackOpReference(p_member gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_set_back_op_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -615,7 +615,7 @@ func (self class) SetBackOpReference(p_member gd.Int) {
 func (self class) GetBackOpReference() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

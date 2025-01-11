@@ -77,8 +77,8 @@ Sets the [SkeletonModificationStack2D] that this modification is holding. This m
 func (self class) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(held_modification_stack[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_set_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_set_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -89,7 +89,7 @@ Returns the [SkeletonModificationStack2D] that this modification is holding.
 func (self class) GetHeldModificationStack() [1]gdclass.SkeletonModificationStack2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_get_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_get_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModificationStack2D](r_ret.Get())}
 	frame.Free()
 	return ret

@@ -91,7 +91,7 @@ func (self Instance) SetProfile(value [1]gdclass.SkeletonProfile) {
 func (self class) GetProfile() [1]gdclass.SkeletonProfile {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_get_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_get_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SkeletonProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonProfile](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -101,8 +101,8 @@ func (self class) GetProfile() [1]gdclass.SkeletonProfile {
 func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profile[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_set_profile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_set_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -115,7 +115,7 @@ func (self class) GetSkeletonBoneName(profile_bone_name gd.StringName) gd.String
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profile_bone_name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_get_skeleton_bone_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_get_skeleton_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -130,8 +130,8 @@ func (self class) SetSkeletonBoneName(profile_bone_name gd.StringName, skeleton_
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profile_bone_name))
 	callframe.Arg(frame, pointers.Get(skeleton_bone_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_set_skeleton_bone_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_set_skeleton_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -144,7 +144,7 @@ func (self class) FindProfileBoneName(skeleton_bone_name gd.StringName) gd.Strin
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(skeleton_bone_name))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_find_profile_bone_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_find_profile_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret

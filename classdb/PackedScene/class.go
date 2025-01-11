@@ -160,7 +160,7 @@ func (self class) Pack(path [1]gdclass.Node) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path[0])[0])
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_pack, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_pack, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -174,7 +174,7 @@ func (self class) Instantiate(edit_state gdclass.PackedSceneGenEditState) [1]gdc
 	var frame = callframe.New()
 	callframe.Arg(frame, edit_state)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_instantiate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_instantiate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -187,7 +187,7 @@ Returns [code]true[/code] if the scene file has nodes.
 func (self class) CanInstantiate() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_can_instantiate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_can_instantiate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -200,7 +200,7 @@ Returns the [SceneState] representing the scene file contents.
 func (self class) GetState() [1]gdclass.SceneState {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SceneState{gd.PointerWithOwnershipTransferredToGo[gdclass.SceneState](r_ret.Get())}
 	frame.Free()
 	return ret

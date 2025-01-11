@@ -539,7 +539,7 @@ func (self class) TweenProperty(obj [1]gd.Object, property gd.NodePath, final_va
 	callframe.Arg(frame, pointers.Get(final_val))
 	callframe.Arg(frame, duration)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -587,7 +587,7 @@ func (self class) TweenInterval(time gd.Float) [1]gdclass.IntervalTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_interval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.IntervalTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.IntervalTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -626,7 +626,7 @@ func (self class) TweenCallback(callback gd.Callable) [1]gdclass.CallbackTweener
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callback))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CallbackTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.CallbackTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -679,7 +679,7 @@ func (self class) TweenMethod(method gd.Callable, from gd.Variant, to gd.Variant
 	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, duration)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_method, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -694,7 +694,7 @@ func (self class) CustomStep(delta gd.Float) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_custom_step, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_custom_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -707,8 +707,8 @@ Stops the tweening and resets the [Tween] to its initial state. This will not re
 //go:nosplit
 func (self class) Stop() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -719,8 +719,8 @@ Pauses the tweening. The animation can be resumed by using [method play].
 //go:nosplit
 func (self class) Pause() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_pause, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_pause, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -730,8 +730,8 @@ Resumes a paused or stopped [Tween].
 //go:nosplit
 func (self class) Play() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_play, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_play, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -741,8 +741,8 @@ Aborts all tweening operations and invalidates the [Tween].
 //go:nosplit
 func (self class) Kill() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_kill, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_kill, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -754,7 +754,7 @@ Returns the total time in seconds the [Tween] has been animating (i.e. the time 
 func (self class) GetTotalElapsedTime() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_get_total_elapsed_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_get_total_elapsed_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -767,7 +767,7 @@ Returns whether the [Tween] is currently running, i.e. it wasn't paused and it's
 func (self class) IsRunning() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_is_running, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_is_running, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -780,7 +780,7 @@ Returns whether the [Tween] is valid. A valid [Tween] is a [Tween] contained by 
 func (self class) IsValid() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_is_valid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_is_valid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -795,7 +795,7 @@ func (self class) BindNode(node [1]gdclass.Node) [1]gdclass.Tween {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_bind_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_bind_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -810,7 +810,7 @@ func (self class) SetProcessMode(mode gdclass.TweenTweenProcessMode) [1]gdclass.
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -825,7 +825,7 @@ func (self class) SetPauseMode(mode gdclass.TweenTweenPauseMode) [1]gdclass.Twee
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_pause_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_pause_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -845,7 +845,7 @@ func (self class) SetParallel(parallel bool) [1]gdclass.Tween {
 	var frame = callframe.New()
 	callframe.Arg(frame, parallel)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_parallel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_parallel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -861,7 +861,7 @@ func (self class) SetLoops(loops gd.Int) [1]gdclass.Tween {
 	var frame = callframe.New()
 	callframe.Arg(frame, loops)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_loops, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_loops, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -874,7 +874,7 @@ Returns the number of remaining loops for this [Tween] (see [method set_loops]).
 func (self class) GetLoopsLeft() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_get_loops_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_get_loops_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -888,7 +888,7 @@ func (self class) SetSpeedScale(speed gd.Float) [1]gdclass.Tween {
 	var frame = callframe.New()
 	callframe.Arg(frame, speed)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_speed_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -903,7 +903,7 @@ func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Tween {
 	var frame = callframe.New()
 	callframe.Arg(frame, trans)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_trans, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_trans, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -918,7 +918,7 @@ func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween {
 	var frame = callframe.New()
 	callframe.Arg(frame, ease)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_ease, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_set_ease, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -948,7 +948,7 @@ You can make the [Tween] parallel by default by using [method set_parallel].
 func (self class) Parallel() [1]gdclass.Tween {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_parallel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_parallel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -975,7 +975,7 @@ tween.Chain().TweenProperty(...); // Will run after two above are finished.
 func (self class) Chain() [1]gdclass.Tween {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_chain, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_chain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -999,7 +999,7 @@ func (self class) InterpolateValue(initial_value gd.Variant, delta_value gd.Vari
 	callframe.Arg(frame, trans_type)
 	callframe.Arg(frame, ease_type)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_interpolate_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_interpolate_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret

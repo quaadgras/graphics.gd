@@ -108,8 +108,8 @@ func (self Instance) SetUpdateScale(value bool) {
 func (self class) SetRemoteNode(path gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_remote_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_remote_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -117,7 +117,7 @@ func (self class) SetRemoteNode(path gd.NodePath) {
 func (self class) GetRemoteNode() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_remote_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_remote_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -129,8 +129,8 @@ func (self class) GetRemoteNode() gd.NodePath {
 //go:nosplit
 func (self class) ForceUpdateCache() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_force_update_cache, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_force_update_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -138,8 +138,8 @@ func (self class) ForceUpdateCache() {
 func (self class) SetUseGlobalCoordinates(use_global_coordinates bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, use_global_coordinates)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_use_global_coordinates, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_use_global_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -147,7 +147,7 @@ func (self class) SetUseGlobalCoordinates(use_global_coordinates bool) {
 func (self class) GetUseGlobalCoordinates() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_use_global_coordinates, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_use_global_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -157,8 +157,8 @@ func (self class) GetUseGlobalCoordinates() bool {
 func (self class) SetUpdatePosition(update_remote_position bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, update_remote_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_update_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_update_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -166,7 +166,7 @@ func (self class) SetUpdatePosition(update_remote_position bool) {
 func (self class) GetUpdatePosition() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_update_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_update_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -176,8 +176,8 @@ func (self class) GetUpdatePosition() bool {
 func (self class) SetUpdateRotation(update_remote_rotation bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, update_remote_rotation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_update_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_update_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -185,7 +185,7 @@ func (self class) SetUpdateRotation(update_remote_rotation bool) {
 func (self class) GetUpdateRotation() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_update_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_update_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -195,8 +195,8 @@ func (self class) GetUpdateRotation() bool {
 func (self class) SetUpdateScale(update_remote_scale bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, update_remote_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_update_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_set_update_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -204,7 +204,7 @@ func (self class) SetUpdateScale(update_remote_scale bool) {
 func (self class) GetUpdateScale() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_update_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform2D.Bind_get_update_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

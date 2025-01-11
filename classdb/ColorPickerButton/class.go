@@ -96,8 +96,8 @@ func (self Instance) SetEditAlpha(value bool) {
 func (self class) SetPickColor(color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_set_pick_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_set_pick_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -105,7 +105,7 @@ func (self class) SetPickColor(color gd.Color) {
 func (self class) GetPickColor() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_pick_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_pick_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -119,7 +119,7 @@ Returns the [ColorPicker] that this node toggles.
 func (self class) GetPicker() [1]gdclass.ColorPicker {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_picker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_picker, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ColorPicker{gd.PointerLifetimeBoundTo[gdclass.ColorPicker](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -133,7 +133,7 @@ Returns the control's [PopupPanel] which allows you to connect to popup signals.
 func (self class) GetPopup() [1]gdclass.PopupPanel {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PopupPanel{gd.PointerLifetimeBoundTo[gdclass.PopupPanel](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -143,8 +143,8 @@ func (self class) GetPopup() [1]gdclass.PopupPanel {
 func (self class) SetEditAlpha(show bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, show)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_set_edit_alpha, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_set_edit_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -152,7 +152,7 @@ func (self class) SetEditAlpha(show bool) {
 func (self class) IsEditingAlpha() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_is_editing_alpha, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_is_editing_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

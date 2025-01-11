@@ -187,7 +187,7 @@ func (self class) GetMonitor(monitor gdclass.PerformanceMonitor) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, monitor)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -251,8 +251,8 @@ func (self class) AddCustomMonitor(id gd.StringName, callable gd.Callable, argum
 	callframe.Arg(frame, pointers.Get(id))
 	callframe.Arg(frame, pointers.Get(callable))
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_add_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_add_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -263,8 +263,8 @@ Removes the custom monitor with given [param id]. Prints an error if the given [
 func (self class) RemoveCustomMonitor(id gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(id))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_remove_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_remove_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -276,7 +276,7 @@ func (self class) HasCustomMonitor(id gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(id))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_has_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_has_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -290,7 +290,7 @@ func (self class) GetCustomMonitor(id gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(id))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -303,7 +303,7 @@ Returns the last tick in which custom monitor was added/removed (in microseconds
 func (self class) GetMonitorModificationTime() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor_modification_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor_modification_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -316,7 +316,7 @@ Returns the names of active custom monitors in an [Array].
 func (self class) GetCustomMonitorNames() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret

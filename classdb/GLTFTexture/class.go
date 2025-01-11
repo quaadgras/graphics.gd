@@ -71,7 +71,7 @@ func (self Instance) SetSampler(value int) {
 func (self class) GetSrcImage() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_get_src_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_get_src_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -81,8 +81,8 @@ func (self class) GetSrcImage() gd.Int {
 func (self class) SetSrcImage(src_image gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, src_image)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_set_src_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_set_src_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -90,7 +90,7 @@ func (self class) SetSrcImage(src_image gd.Int) {
 func (self class) GetSampler() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_get_sampler, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_get_sampler, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -100,8 +100,8 @@ func (self class) GetSampler() gd.Int {
 func (self class) SetSampler(sampler gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sampler)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_set_sampler, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_set_sampler, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsGLTFTexture() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -279,8 +279,8 @@ Adds a writer to be usable by the engine. The supported file extensions can be s
 func (self class) AddWriter(writer [1]gdclass.MovieWriter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(writer[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MovieWriter.Bind_add_writer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MovieWriter.Bind_add_writer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsMovieWriter() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

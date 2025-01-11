@@ -332,8 +332,8 @@ func (self class) CreateAction(name gd.String, merge_mode gdclass.UndoRedoMergeM
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, merge_mode)
 	callframe.Arg(frame, backward_undo_ops)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_create_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_create_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -344,8 +344,8 @@ Commit the action. If [param execute] is [code]true[/code] (which it is by defau
 func (self class) CommitAction(execute bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, execute)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_commit_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_commit_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -356,7 +356,7 @@ Returns [code]true[/code] if the [UndoRedo] is currently committing the action, 
 func (self class) IsCommittingAction() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_is_committing_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_is_committing_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -369,8 +369,8 @@ Register a [Callable] that will be called when the action is committed.
 func (self class) AddDoMethod(callable gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_method, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -381,8 +381,8 @@ Register a [Callable] that will be called when the action is undone.
 func (self class) AddUndoMethod(callable gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_method, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -395,8 +395,8 @@ func (self class) AddDoProperty(obj [1]gd.Object, property gd.StringName, value 
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -409,8 +409,8 @@ func (self class) AddUndoProperty(obj [1]gd.Object, property gd.StringName, valu
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_property, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -430,8 +430,8 @@ undo_redo.commit_action()
 func (self class) AddDoReference(obj [1]gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -451,8 +451,8 @@ undo_redo.commit_action()
 func (self class) AddUndoReference(obj [1]gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_reference, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -462,8 +462,8 @@ Marks the next "do" and "undo" operations to be processed even if the action get
 //go:nosplit
 func (self class) StartForceKeepInMergeEnds() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_start_force_keep_in_merge_ends, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_start_force_keep_in_merge_ends, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -473,8 +473,8 @@ Stops marking operations as to be processed even if the action gets merged with 
 //go:nosplit
 func (self class) EndForceKeepInMergeEnds() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_end_force_keep_in_merge_ends, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_end_force_keep_in_merge_ends, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -485,7 +485,7 @@ Returns how many elements are in the history.
 func (self class) GetHistoryCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_history_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_history_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -498,7 +498,7 @@ Gets the index of the current action.
 func (self class) GetCurrentAction() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_current_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_current_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -512,7 +512,7 @@ func (self class) GetActionName(id gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_action_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_action_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -526,8 +526,8 @@ Passing [code]false[/code] to [param increase_version] will prevent the version 
 func (self class) ClearHistory(increase_version bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, increase_version)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_clear_history, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_clear_history, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -538,7 +538,7 @@ Gets the name of the current action, equivalent to [code]get_action_name(get_cur
 func (self class) GetCurrentActionName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_current_action_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_current_action_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -551,7 +551,7 @@ Returns [code]true[/code] if an "undo" action is available.
 func (self class) HasUndo() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_has_undo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_has_undo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -564,7 +564,7 @@ Returns [code]true[/code] if a "redo" action is available.
 func (self class) HasRedo() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_has_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_has_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -578,7 +578,7 @@ This is useful mostly to check if something changed from a saved version.
 func (self class) GetVersion() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -588,8 +588,8 @@ func (self class) GetVersion() gd.Int {
 func (self class) SetMaxSteps(max_steps gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_steps)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_set_max_steps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_set_max_steps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -597,7 +597,7 @@ func (self class) SetMaxSteps(max_steps gd.Int) {
 func (self class) GetMaxSteps() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_max_steps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_max_steps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -610,7 +610,7 @@ Redo the last action.
 func (self class) Redo() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_redo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -623,7 +623,7 @@ Undo the last action.
 func (self class) Undo() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_undo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_undo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

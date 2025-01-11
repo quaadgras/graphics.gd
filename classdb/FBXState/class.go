@@ -67,7 +67,7 @@ func (self Instance) SetAllowGeometryHelperNodes(value bool) {
 func (self class) GetAllowGeometryHelperNodes() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FBXState.Bind_get_allow_geometry_helper_nodes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FBXState.Bind_get_allow_geometry_helper_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -77,8 +77,8 @@ func (self class) GetAllowGeometryHelperNodes() bool {
 func (self class) SetAllowGeometryHelperNodes(allow bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, allow)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FBXState.Bind_set_allow_geometry_helper_nodes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FBXState.Bind_set_allow_geometry_helper_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsFBXState() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

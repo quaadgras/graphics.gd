@@ -91,9 +91,9 @@ func linkJS(API *gd.API, dlsym func(string) js.Value) {
 	}
 	variant_get_ptr_constructor := dlsym("variant_get_ptr_constructor")
 	call_variant_get_ptr_constructor := dlsym("call_variant_get_ptr_constructor")
-	API.Variants.GetPointerConstructor = func(vtype gd.VariantType, index int32) func(base uintptr, args callframe.Args) {
+	API.Variants.GetPointerConstructor = func(vtype gd.VariantType, index int32) func(base callframe.Addr, args callframe.Args) {
 		fn := variant_get_ptr_constructor.Invoke(uint32(vtype), index)
-		return func(base uintptr, args callframe.Args) {
+		return func(base callframe.Addr, args callframe.Args) {
 			call_variant_get_ptr_constructor.Invoke(fn)
 		}
 	}

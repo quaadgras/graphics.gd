@@ -486,7 +486,7 @@ func generate() error {
 
 	fmt.Fprintf(out, "type utility struct{\n")
 	for _, utility := range spec.UtilityFunctions {
-		fmt.Fprintf(out, "\t%v func(ret uintptr, args callframe.Args, c int32) `hash:\"%v\"`\n", utility.Name, utility.Hash)
+		fmt.Fprintf(out, "\t%v func(ret callframe.Addr, args callframe.Args, c int32) `hash:\"%v\"`\n", utility.Name, utility.Hash)
 
 		fmt.Fprintf(core, "\nfunc %v(", convertName(utility.Name))
 		for i, arg := range utility.Arguments {
@@ -535,10 +535,10 @@ func generate() error {
 			if result != "" {
 				fmt.Fprintf(core, "\tvar r_ret = callframe.Ret[%v](frame)\n", result)
 			} else {
-				fmt.Fprintf(core, "\tvar r_ret callframe.Nil\n")
+				fmt.Fprintf(core, "\tvar r_ret = callframe.Nil\n")
 			}
 		}
-		fmt.Fprintf(core, "\tGlobal.utility.%v(r_ret.Uintptr(), frame.Array(0), %d)\n", utility.Name, len(utility.Arguments))
+		fmt.Fprintf(core, "\tGlobal.utility.%v(r_ret.Addr(), frame.Array(0), %d)\n", utility.Name, len(utility.Arguments))
 		if isPtr {
 			_, ok := classDB[result]
 			if ok || result == "Object" {
@@ -566,7 +566,7 @@ func generate() error {
 			if method.Name == "map" {
 				method.Name = "map_"
 			}
-			fmt.Fprintf(out, "\t\t%v func(base uintptr, args callframe.Args, ret uintptr, c int32) `hash:\"%v\"`\n", method.Name, method.Hash)
+			fmt.Fprintf(out, "\t\t%v func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:\"%v\"`\n", method.Name, method.Hash)
 		}
 		fmt.Fprintf(out, "\t}\n")
 	}
@@ -575,7 +575,7 @@ func generate() error {
 	fmt.Fprintf(out, "type typeset struct{\n")
 	fmt.Fprintf(out, "\tcreation struct{\n")
 	for _, class := range spec.BuiltinClasses {
-		fmt.Fprintf(out, "\t\t%v [%d]func(uintptr, callframe.Args)\n", class.Name, len(class.Constructors))
+		fmt.Fprintf(out, "\t\t%v [%d]func(callframe.Addr, callframe.Args)\n", class.Name, len(class.Constructors))
 	}
 	fmt.Fprintf(out, "\t}\n")
 	fmt.Fprintf(out, "\toperator struct{\n")
@@ -593,7 +593,7 @@ func generate() error {
 				if last != "" {
 					fmt.Fprintf(out, "\t\t\t}\n")
 				}
-				fmt.Fprintf(out, "\t\t\t%v func(a, b, ret uintptr)\n", mapOperator(op.Name))
+				fmt.Fprintf(out, "\t\t\t%v func(a, b, ret callframe.Addr)\n", mapOperator(op.Name))
 				last = ""
 			} else {
 				if op.Name != last {
@@ -602,7 +602,7 @@ func generate() error {
 					}
 					fmt.Fprintf(out, "\t\t\t%v struct {\n", mapOperator(op.Name))
 				}
-				fmt.Fprintf(out, "\t\t\t\t%v func(a, b, ret uintptr)\n", op.RightType)
+				fmt.Fprintf(out, "\t\t\t\t%v func(a, b, ret callframe.Addr)\n", op.RightType)
 				last = op.Name
 			}
 		}
@@ -614,7 +614,7 @@ func generate() error {
 	fmt.Fprintf(out, "\t}\n")
 	fmt.Fprintf(out, "\tdestruct struct{\n")
 	for _, class := range spec.BuiltinClasses {
-		fmt.Fprintf(out, "\t\t%v func(uintptr)\n", class.Name)
+		fmt.Fprintf(out, "\t\t%v func(callframe.Addr)\n", class.Name)
 		for _, method := range class.Methods {
 			classDB.methodCall(core, "internal", class, method, callBuiltin)
 		}
@@ -824,7 +824,6 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		fmt.Fprintf(w, "args ..."+prefix+"Variant")
 	}
 	fmt.Fprintf(w, ") %v {\n", result)
-	var self = "pointers.Get(self)[0]"
 	if !method.IsStatic {
 		if ctype == callBuiltin && strings.HasPrefix(class.Name, "Packed") {
 			fmt.Fprintf(w, "\tvar self = *selfPtr\n")
@@ -864,38 +863,39 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if result != "" {
 			fmt.Fprintf(w, "\tvar r_ret = callframe.Ret[%v](frame)\n", result)
 		} else {
-			fmt.Fprintf(w, "\tvar r_ret callframe.Nil\n")
+			fmt.Fprintf(w, "\tvar r_ret = callframe.Nil\n")
 		}
 	}
 	if ctype == callBuiltin {
 		if strings.HasPrefix(class.Name, "Packed") {
-			var self = "0"
+			var self = "callframe.Nil"
 			if !method.IsStatic {
 				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, pointers.Get(self))\n")
-				self = "p_self.Uintptr()"
+				self = "p_self.Addr()"
 			}
 			if method.IsVararg {
-				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", class.Name, method.Name, self, len(method.Arguments))
+				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), int32(len(args))+%d)\n", class.Name, method.Name, self, len(method.Arguments))
 			} else {
-				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
+				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
 			}
 			fmt.Fprintf(w, "\tpointers.Set(*selfPtr, p_self.Get())\n")
 		} else {
+			var self = "callframe.Nil"
 			if !method.IsStatic {
 				fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, pointers.Get(self))\n")
-				self = "p_self.Uintptr()"
+				self = "p_self.Addr()"
 			}
 			if method.IsVararg {
-				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), int32(len(args))+%d)\n", class.Name, method.Name, self, len(method.Arguments))
+				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), int32(len(args))+%d)\n", class.Name, method.Name, self, len(method.Arguments))
 			} else {
-				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Uintptr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
+				fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
 			}
 		}
 	} else {
 		if method.IsVararg {
 			fmt.Fprintf(w, "\tif len(args) > 0 { panic(`varargs not supported for class methods yet`); }\n")
 		}
-		fmt.Fprintf(w, "\tGlobal.Object.MethodBindPointerCall(Global.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Uintptr())\n", class.Name, method.Name)
+		fmt.Fprintf(w, "\tGlobal.Object.MethodBindPointerCall(Global.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Addr())\n", class.Name, method.Name)
 	}
 
 	if isPtr {

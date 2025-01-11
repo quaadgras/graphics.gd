@@ -173,7 +173,7 @@ Returns the [RID] of this region on the [NavigationServer3D]. Combined with [met
 func (self class) GetRid() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -183,8 +183,8 @@ func (self class) GetRid() gd.RID {
 func (self class) SetNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -192,7 +192,7 @@ func (self class) SetNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) {
 func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.NavigationMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationMesh](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -202,8 +202,8 @@ func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh {
 func (self class) SetEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -211,7 +211,7 @@ func (self class) SetEnabled(enabled bool) {
 func (self class) IsEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -224,8 +224,8 @@ Sets the [RID] of the navigation map this region should use. By default the regi
 func (self class) SetNavigationMap(navigation_map gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_map)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -236,7 +236,7 @@ Returns the current navigation map [RID] used by this region.
 func (self class) GetNavigationMap() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -246,8 +246,8 @@ func (self class) GetNavigationMap() gd.RID {
 func (self class) SetUseEdgeConnections(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_use_edge_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_use_edge_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -255,7 +255,7 @@ func (self class) SetUseEdgeConnections(enabled bool) {
 func (self class) GetUseEdgeConnections() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_use_edge_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_use_edge_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -265,8 +265,8 @@ func (self class) GetUseEdgeConnections() bool {
 func (self class) SetNavigationLayers(navigation_layers gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -274,7 +274,7 @@ func (self class) SetNavigationLayers(navigation_layers gd.Int) {
 func (self class) GetNavigationLayers() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -288,8 +288,8 @@ func (self class) SetNavigationLayerValue(layer_number gd.Int, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -301,7 +301,7 @@ func (self class) GetNavigationLayerValue(layer_number gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -314,7 +314,7 @@ Returns the [RID] of this region on the [NavigationServer3D].
 func (self class) GetRegionRid() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_region_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_region_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -324,8 +324,8 @@ func (self class) GetRegionRid() gd.RID {
 func (self class) SetEnterCost(enter_cost gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enter_cost)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_enter_cost, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_enter_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -333,7 +333,7 @@ func (self class) SetEnterCost(enter_cost gd.Float) {
 func (self class) GetEnterCost() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_enter_cost, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_enter_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -343,8 +343,8 @@ func (self class) GetEnterCost() gd.Float {
 func (self class) SetTravelCost(travel_cost gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, travel_cost)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_travel_cost, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_set_travel_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -352,7 +352,7 @@ func (self class) SetTravelCost(travel_cost gd.Float) {
 func (self class) GetTravelCost() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_travel_cost, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_travel_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -365,8 +365,8 @@ Bakes the [NavigationMesh]. If [param on_thread] is set to [code]true[/code] (de
 func (self class) BakeNavigationMesh(on_thread bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, on_thread)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_bake_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_bake_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -377,7 +377,7 @@ Returns [code]true[/code] when the [NavigationMesh] is being baked on a backgrou
 func (self class) IsBaking() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_is_baking, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_is_baking, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

@@ -90,8 +90,8 @@ Locks this [Mutex], blocks until it is unlocked by the current owner.
 //go:nosplit
 func (self class) Lock() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mutex.Bind_lock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mutex.Bind_lock, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -103,7 +103,7 @@ Tries locking this [Mutex], but does not block. Returns [code]true[/code] on suc
 func (self class) TryLock() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mutex.Bind_try_lock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mutex.Bind_try_lock, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -117,8 +117,8 @@ Unlocks this [Mutex], leaving it to other threads.
 //go:nosplit
 func (self class) Unlock() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mutex.Bind_unlock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mutex.Bind_unlock, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsMutex() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

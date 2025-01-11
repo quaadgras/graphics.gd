@@ -87,8 +87,8 @@ Sets the given [param path] as currently selected, ensuring that the selected fi
 func (self class) NavigateToPath(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileSystemDock.Bind_navigate_to_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileSystemDock.Bind_navigate_to_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -99,8 +99,8 @@ Registers a new [EditorResourceTooltipPlugin].
 func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileSystemDock.Bind_add_resource_tooltip_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileSystemDock.Bind_add_resource_tooltip_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -111,8 +111,8 @@ Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously 
 func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileSystemDock.Bind_remove_resource_tooltip_plugin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileSystemDock.Bind_remove_resource_tooltip_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnInherit(cb func(file string)) {

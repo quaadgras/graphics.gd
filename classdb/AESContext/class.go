@@ -167,7 +167,7 @@ func (self class) Start(mode gdclass.AESContextMode, key gd.PackedByteArray, iv 
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(iv))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -182,7 +182,7 @@ func (self class) Update(src gd.PackedByteArray) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(src))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -196,7 +196,7 @@ Get the current IV state for this context (IV gets updated when calling [method 
 func (self class) GetIvState() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_get_iv_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_get_iv_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -208,8 +208,8 @@ Close this AES context so it can be started again. See [method start].
 //go:nosplit
 func (self class) Finish() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsAESContext() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

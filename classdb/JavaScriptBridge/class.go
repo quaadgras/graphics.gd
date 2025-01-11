@@ -119,7 +119,7 @@ func (self class) Eval(code gd.String, use_global_execution_context bool) gd.Var
 	callframe.Arg(frame, pointers.Get(code))
 	callframe.Arg(frame, use_global_execution_context)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_eval, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_eval, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -133,7 +133,7 @@ func (self class) GetInterface(intf gd.String) [1]gdclass.JavaScriptObject {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(intf))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -147,7 +147,7 @@ func (self class) CreateCallback(callable gd.Callable) [1]gdclass.JavaScriptObje
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_create_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_create_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -165,8 +165,8 @@ func (self class) DownloadBuffer(buffer gd.PackedByteArray, name gd.String, mime
 	callframe.Arg(frame, pointers.Get(buffer))
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(mime))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_download_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_download_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -178,7 +178,7 @@ Returns [code]true[/code] if a new version of the progressive web app is waiting
 func (self class) PwaNeedsUpdate() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_pwa_needs_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_pwa_needs_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -193,7 +193,7 @@ Performs the live update of the progressive web app. Forcing the new version to 
 func (self class) PwaUpdate() error {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_pwa_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_pwa_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -206,8 +206,8 @@ Force synchronization of the persistent file system (when enabled).
 //go:nosplit
 func (self class) ForceFsSync() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_force_fs_sync, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_force_fs_sync, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func OnPwaUpdateAvailable(cb func()) {

@@ -159,7 +159,7 @@ func (self class) HasAction(action gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_has_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_has_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -172,7 +172,7 @@ Returns an array of all actions in the [InputMap].
 func (self class) GetActions() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_get_actions, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_get_actions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -187,8 +187,8 @@ func (self class) AddAction(action gd.StringName, deadzone gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, deadzone)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_add_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_add_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -199,8 +199,8 @@ Removes an action from the [InputMap].
 func (self class) EraseAction(action gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_erase_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_erase_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -212,8 +212,8 @@ func (self class) ActionSetDeadzone(action gd.StringName, deadzone gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, deadzone)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_set_deadzone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_set_deadzone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -225,7 +225,7 @@ func (self class) ActionGetDeadzone(action gd.StringName) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_deadzone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_deadzone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -239,8 +239,8 @@ func (self class) ActionAddEvent(action gd.StringName, event [1]gdclass.InputEve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, pointers.Get(event[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_add_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_add_event, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -253,7 +253,7 @@ func (self class) ActionHasEvent(action gd.StringName, event [1]gdclass.InputEve
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, pointers.Get(event[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_has_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_has_event, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -267,8 +267,8 @@ func (self class) ActionEraseEvent(action gd.StringName, event [1]gdclass.InputE
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, pointers.Get(event[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_erase_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_erase_event, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -279,8 +279,8 @@ Removes all events from an action.
 func (self class) ActionEraseEvents(action gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_erase_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_erase_events, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -293,7 +293,7 @@ func (self class) ActionGetEvents(action gd.StringName) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_events, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -310,7 +310,7 @@ func (self class) EventIsAction(event [1]gdclass.InputEvent, action gd.StringNam
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_event_is_action, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_event_is_action, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -322,8 +322,8 @@ Clears all [InputEventAction] in the [InputMap] and load it anew from [ProjectSe
 //go:nosplit
 func (self class) LoadFromProjectSettings() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_load_from_project_settings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_load_from_project_settings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) Virtual(name string) reflect.Value {

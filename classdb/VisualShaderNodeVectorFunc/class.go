@@ -68,8 +68,8 @@ func (self Instance) SetFunction(value gdclass.VisualShaderNodeVectorFuncFunctio
 func (self class) SetFunction(fn gdclass.VisualShaderNodeVectorFuncFunction) {
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_set_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_set_function, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -77,7 +77,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeVectorFuncFunction) {
 func (self class) GetFunction() gdclass.VisualShaderNodeVectorFuncFunction {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeVectorFuncFunction](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

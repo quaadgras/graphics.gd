@@ -106,7 +106,7 @@ func (self class) PushFrame(frame_ gd.Vector2) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_push_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_push_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -120,7 +120,7 @@ func (self class) CanPushBuffer(amount gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_can_push_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_can_push_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -134,7 +134,7 @@ func (self class) PushBuffer(frames gd.PackedVector2Array) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(frames))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_push_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_push_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -147,7 +147,7 @@ Returns the number of frames that can be pushed to the audio sample data buffer 
 func (self class) GetFramesAvailable() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_get_frames_available, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_get_frames_available, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -160,7 +160,7 @@ Returns the number of times the playback skipped due to a buffer underrun in the
 func (self class) GetSkips() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_get_skips, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_get_skips, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -172,8 +172,8 @@ Clears the audio sample data buffer.
 //go:nosplit
 func (self class) ClearBuffer() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_clear_buffer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_clear_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsAudioStreamGeneratorPlayback() Advanced {

@@ -1421,8 +1421,8 @@ Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 //go:nosplit
 func (self class) PrintOrphanNodes() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_orphan_nodes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_orphan_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1437,8 +1437,8 @@ func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) 
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(sibling[0].AsObject()[0]))
 	callframe.Arg(frame, force_readable_name)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_sibling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_sibling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1446,8 +1446,8 @@ func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) 
 func (self class) SetName(name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1455,7 +1455,7 @@ func (self class) SetName(name gd.String) {
 func (self class) GetName() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1491,8 +1491,8 @@ func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, inter
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	callframe.Arg(frame, force_readable_name)
 	callframe.Arg(frame, internal_)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1504,8 +1504,8 @@ Removes a child [param node]. The [param node], along with its children, are [b]
 func (self class) RemoveChild(node [1]gdclass.Node) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_remove_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_remove_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1518,8 +1518,8 @@ func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform boo
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(new_parent[0])[0])
 	callframe.Arg(frame, keep_global_transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_reparent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_reparent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1532,7 +1532,7 @@ func (self class) GetChildCount(include_internal bool) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1547,7 +1547,7 @@ func (self class) GetChildren(include_internal bool) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1573,7 +1573,7 @@ func (self class) GetChild(idx gd.Int, include_internal bool) [1]gdclass.Node {
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1587,7 +1587,7 @@ func (self class) HasNode(path gd.NodePath) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_has_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_has_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1630,7 +1630,7 @@ func (self class) GetNode(path gd.NodePath) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1644,7 +1644,7 @@ func (self class) GetNodeOrNull(path gd.NodePath) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_or_null, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_or_null, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1657,7 +1657,7 @@ Returns this node's parent node, or [code]null[/code] if the node doesn't have a
 func (self class) GetParent() [1]gdclass.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1677,7 +1677,7 @@ func (self class) FindChild(pattern gd.String, recursive bool, owned bool) [1]gd
 	callframe.Arg(frame, recursive)
 	callframe.Arg(frame, owned)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1699,7 +1699,7 @@ func (self class) FindChildren(pattern gd.String, atype gd.String, recursive boo
 	callframe.Arg(frame, recursive)
 	callframe.Arg(frame, owned)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1714,7 +1714,7 @@ func (self class) FindParent(pattern gd.String) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pattern))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1728,7 +1728,7 @@ func (self class) HasNodeAndResource(path gd.NodePath) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_has_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_has_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1780,7 +1780,7 @@ func (self class) GetNodeAndResource(path gd.NodePath) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1793,7 +1793,7 @@ Returns [code]true[/code] if this node is currently inside a [SceneTree]. See al
 func (self class) IsInsideTree() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_inside_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_inside_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1806,7 +1806,7 @@ Returns [code]true[/code] if the node is part of the scene currently opened in t
 func (self class) IsPartOfEditedScene() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_part_of_edited_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_part_of_edited_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1820,7 +1820,7 @@ func (self class) IsAncestorOf(node [1]gdclass.Node) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_ancestor_of, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_ancestor_of, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1834,7 +1834,7 @@ func (self class) IsGreaterThan(node [1]gdclass.Node) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_greater_than, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_greater_than, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1847,7 +1847,7 @@ Returns the node's absolute path, relative to the [member SceneTree.root]. If th
 func (self class) GetPath() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1864,7 +1864,7 @@ func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) gd.NodeP
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, use_unique_path)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path_to, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path_to, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1881,8 +1881,8 @@ func (self class) AddToGroup(group gd.StringName, persistent bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(group))
 	callframe.Arg(frame, persistent)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_to_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_add_to_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1893,8 +1893,8 @@ Removes the node from the given [param group]. Does nothing if the node is not i
 func (self class) RemoveFromGroup(group gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(group))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_remove_from_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_remove_from_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1906,7 +1906,7 @@ func (self class) IsInGroup(group gd.StringName) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(group))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_in_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_in_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1921,8 +1921,8 @@ func (self class) MoveChild(child_node [1]gdclass.Node, to_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(child_node[0])[0])
 	callframe.Arg(frame, to_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_move_child, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_move_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1953,7 +1953,7 @@ foreach (string group in GetGroups())
 func (self class) GetGroups() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_groups, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_groups, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1963,8 +1963,8 @@ func (self class) GetGroups() gd.Array {
 func (self class) SetOwner(owner [1]gdclass.Node) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(owner[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1972,7 +1972,7 @@ func (self class) SetOwner(owner [1]gdclass.Node) {
 func (self class) GetOwner() [1]gdclass.Node {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1987,7 +1987,7 @@ func (self class) GetIndex(include_internal bool) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2008,8 +2008,8 @@ SplashScreen/Camera2D
 //go:nosplit
 func (self class) PrintTree() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2028,8 +2028,8 @@ May print, for example:
 //go:nosplit
 func (self class) PrintTreePretty() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_tree_pretty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_tree_pretty, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2049,7 +2049,7 @@ TheGame/SplashScreen/Camera2D
 func (self class) GetTreeString() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2071,7 +2071,7 @@ May print, for example:
 func (self class) GetTreeStringPretty() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string_pretty, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string_pretty, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2081,8 +2081,8 @@ func (self class) GetTreeStringPretty() gd.String {
 func (self class) SetSceneFilePath(scene_file_path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scene_file_path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2090,7 +2090,7 @@ func (self class) SetSceneFilePath(scene_file_path gd.String) {
 func (self class) GetSceneFilePath() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2103,8 +2103,8 @@ Calls [method Object.notification] with [param what] on this node and all of its
 func (self class) PropagateNotification(what gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_propagate_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_propagate_notification, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2118,8 +2118,8 @@ func (self class) PropagateCall(method gd.StringName, args gd.Array, parent_firs
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(args))
 	callframe.Arg(frame, parent_first)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_propagate_call, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_propagate_call, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2131,8 +2131,8 @@ If set to [code]true[/code], enables physics (fixed framerate) processing. When 
 func (self class) SetPhysicsProcess(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2143,7 +2143,7 @@ Returns the time elapsed (in seconds) since the last physics callback. This valu
 func (self class) GetPhysicsProcessDeltaTime() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2156,7 +2156,7 @@ Returns [code]true[/code] if physics processing is enabled (see [method set_phys
 func (self class) IsPhysicsProcessing() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_processing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_processing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2169,7 +2169,7 @@ Returns the time elapsed (in seconds) since the last process callback. This valu
 func (self class) GetProcessDeltaTime() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2184,8 +2184,8 @@ If set to [code]true[/code], enables processing. When a node is being processed,
 func (self class) SetProcess(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2193,8 +2193,8 @@ func (self class) SetProcess(enable bool) {
 func (self class) SetProcessPriority(priority gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2202,7 +2202,7 @@ func (self class) SetProcessPriority(priority gd.Int) {
 func (self class) GetProcessPriority() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2212,8 +2212,8 @@ func (self class) GetProcessPriority() gd.Int {
 func (self class) SetPhysicsProcessPriority(priority gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2221,7 +2221,7 @@ func (self class) SetPhysicsProcessPriority(priority gd.Int) {
 func (self class) GetPhysicsProcessPriority() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2234,7 +2234,7 @@ Returns [code]true[/code] if processing is enabled (see [method set_process]).
 func (self class) IsProcessing() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2248,8 +2248,8 @@ If set to [code]true[/code], enables input processing.
 func (self class) SetProcessInput(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2260,7 +2260,7 @@ Returns [code]true[/code] if the node is processing input (see [method set_proce
 func (self class) IsProcessingInput() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2274,8 +2274,8 @@ If set to [code]true[/code], enables shortcut processing for this node.
 func (self class) SetProcessShortcutInput(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_shortcut_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_shortcut_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2286,7 +2286,7 @@ Returns [code]true[/code] if the node is processing shortcuts (see [method set_p
 func (self class) IsProcessingShortcutInput() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_shortcut_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_shortcut_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2300,8 +2300,8 @@ If set to [code]true[/code], enables unhandled input processing. It enables the 
 func (self class) SetProcessUnhandledInput(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2312,7 +2312,7 @@ Returns [code]true[/code] if the node is processing unhandled input (see [method
 func (self class) IsProcessingUnhandledInput() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2326,8 +2326,8 @@ If set to [code]true[/code], enables unhandled key input processing.
 func (self class) SetProcessUnhandledKeyInput(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2338,7 +2338,7 @@ Returns [code]true[/code] if the node is processing unhandled key input (see [me
 func (self class) IsProcessingUnhandledKeyInput() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2348,8 +2348,8 @@ func (self class) IsProcessingUnhandledKeyInput() bool {
 func (self class) SetProcessMode(mode gdclass.NodeProcessMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2357,7 +2357,7 @@ func (self class) SetProcessMode(mode gdclass.NodeProcessMode) {
 func (self class) GetProcessMode() gdclass.NodeProcessMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodeProcessMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2376,7 +2376,7 @@ If the node is not inside the tree, returns [code]false[/code] no matter the val
 func (self class) CanProcess() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_can_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_can_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2386,8 +2386,8 @@ func (self class) CanProcess() bool {
 func (self class) SetProcessThreadGroup(mode gdclass.NodeProcessThreadGroup) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2395,7 +2395,7 @@ func (self class) SetProcessThreadGroup(mode gdclass.NodeProcessThreadGroup) {
 func (self class) GetProcessThreadGroup() gdclass.NodeProcessThreadGroup {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodeProcessThreadGroup](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2405,8 +2405,8 @@ func (self class) GetProcessThreadGroup() gdclass.NodeProcessThreadGroup {
 func (self class) SetProcessThreadMessages(flags gdclass.NodeProcessThreadMessages) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2414,7 +2414,7 @@ func (self class) SetProcessThreadMessages(flags gdclass.NodeProcessThreadMessag
 func (self class) GetProcessThreadMessages() gdclass.NodeProcessThreadMessages {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodeProcessThreadMessages](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2424,8 +2424,8 @@ func (self class) GetProcessThreadMessages() gdclass.NodeProcessThreadMessages {
 func (self class) SetProcessThreadGroupOrder(order gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2433,7 +2433,7 @@ func (self class) SetProcessThreadGroupOrder(order gd.Int) {
 func (self class) GetProcessThreadGroupOrder() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2446,8 +2446,8 @@ If set to [code]true[/code], the node appears folded in the Scene dock. As a res
 func (self class) SetDisplayFolded(fold bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, fold)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_display_folded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_display_folded, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2458,7 +2458,7 @@ Returns [code]true[/code] if the node is folded (collapsed) in the Scene dock. T
 func (self class) IsDisplayedFolded() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_displayed_folded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_displayed_folded, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2472,8 +2472,8 @@ If set to [code]true[/code], enables internal processing for this node. Internal
 func (self class) SetProcessInternal(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_process_internal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2484,7 +2484,7 @@ Returns [code]true[/code] if internal processing is enabled (see [method set_pro
 func (self class) IsProcessingInternal() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_internal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2498,8 +2498,8 @@ If set to [code]true[/code], enables internal physics for this node. Internal ph
 func (self class) SetPhysicsProcessInternal(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_process_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_process_internal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2510,7 +2510,7 @@ Returns [code]true[/code] if internal physics processing is enabled (see [method
 func (self class) IsPhysicsProcessingInternal() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_processing_internal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_processing_internal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2520,8 +2520,8 @@ func (self class) IsPhysicsProcessingInternal() bool {
 func (self class) SetPhysicsInterpolationMode(mode gdclass.NodePhysicsInterpolationMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2529,7 +2529,7 @@ func (self class) SetPhysicsInterpolationMode(mode gdclass.NodePhysicsInterpolat
 func (self class) GetPhysicsInterpolationMode() gdclass.NodePhysicsInterpolationMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodePhysicsInterpolationMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2543,7 +2543,7 @@ Returns [code]true[/code] if physics interpolation is enabled for this node (see
 func (self class) IsPhysicsInterpolated() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_interpolated, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2558,7 +2558,7 @@ See [member SceneTree.physics_interpolation] and [member ProjectSettings.physics
 func (self class) IsPhysicsInterpolatedAndEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_interpolated_and_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_interpolated_and_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2573,8 +2573,8 @@ The notification [constant NOTIFICATION_RESET_PHYSICS_INTERPOLATION] will be rec
 //go:nosplit
 func (self class) ResetPhysicsInterpolation() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2582,8 +2582,8 @@ func (self class) ResetPhysicsInterpolation() {
 func (self class) SetAutoTranslateMode(mode gdclass.NodeAutoTranslateMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2591,7 +2591,7 @@ func (self class) SetAutoTranslateMode(mode gdclass.NodeAutoTranslateMode) {
 func (self class) GetAutoTranslateMode() gdclass.NodeAutoTranslateMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodeAutoTranslateMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2604,7 +2604,7 @@ Returns the [Window] that contains this node. If the node is in the main window,
 func (self class) GetWindow() [1]gdclass.Window {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_window, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2617,7 +2617,7 @@ Returns the [Window] that contains this node, or the last exclusive child in a c
 func (self class) GetLastExclusiveWindow() [1]gdclass.Window {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_last_exclusive_window, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_last_exclusive_window, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2630,7 +2630,7 @@ Returns the [SceneTree] that contains this node. If this node is not inside the 
 func (self class) GetTree() [1]gdclass.SceneTree {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SceneTree{gd.PointerMustAssertInstanceID[gdclass.SceneTree](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2654,7 +2654,7 @@ The Tween will start automatically on the next process frame or physics frame (d
 func (self class) CreateTween() [1]gdclass.Tween {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2669,7 +2669,7 @@ func (self class) Duplicate(flags gd.Int) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2685,8 +2685,8 @@ func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	callframe.Arg(frame, keep_groups)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_replace_by, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_replace_by, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2697,8 +2697,8 @@ If set to [code]true[/code], the node becomes a [InstancePlaceholder] when packe
 func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, load_placeholder)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2709,7 +2709,7 @@ Returns [code]true[/code] if this node is an instance load placeholder. See [Ins
 func (self class) GetSceneInstanceLoadPlaceholder() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2723,8 +2723,8 @@ func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, is_editable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_editable_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_editable_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2736,7 +2736,7 @@ func (self class) IsEditableInstance(node [1]gdclass.Node) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_editable_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_editable_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2749,7 +2749,7 @@ Returns the node's closest [Viewport] ancestor, if the node is inside the tree. 
 func (self class) GetViewport() [1]gdclass.Viewport {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_viewport, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_viewport, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Viewport{gd.PointerMustAssertInstanceID[gdclass.Viewport](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2763,8 +2763,8 @@ Unlike with [method Object.free], the node is not deleted instantly, and it can 
 //go:nosplit
 func (self class) QueueFree() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_queue_free, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_queue_free, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2775,8 +2775,8 @@ Requests [method _ready] to be called again the next time the node enters the tr
 //go:nosplit
 func (self class) RequestReady() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_request_ready, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_request_ready, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2788,7 +2788,7 @@ Returns [code]true[/code] if the node is ready, i.e. it's inside scene tree and 
 func (self class) IsNodeReady() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_node_ready, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_node_ready, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2804,8 +2804,8 @@ func (self class) SetMultiplayerAuthority(id gd.Int, recursive bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, recursive)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2816,7 +2816,7 @@ Returns the peer ID of the multiplayer authority for this node. See [method set_
 func (self class) GetMultiplayerAuthority() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2829,7 +2829,7 @@ Returns [code]true[/code] if the local system is the multiplayer authority of th
 func (self class) IsMultiplayerAuthority() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2839,7 +2839,7 @@ func (self class) IsMultiplayerAuthority() bool {
 func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2858,8 +2858,8 @@ func (self class) RpcConfig(method gd.StringName, config gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(config))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_rpc_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_rpc_config, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2867,8 +2867,8 @@ func (self class) RpcConfig(method gd.StringName, config gd.Variant) {
 func (self class) SetEditorDescription(editor_description gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(editor_description))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_editor_description, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_editor_description, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2876,7 +2876,7 @@ func (self class) SetEditorDescription(editor_description gd.String) {
 func (self class) GetEditorDescription() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_editor_description, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_editor_description, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2886,8 +2886,8 @@ func (self class) GetEditorDescription() gd.String {
 func (self class) SetUniqueNameInOwner(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2895,7 +2895,7 @@ func (self class) SetUniqueNameInOwner(enable bool) {
 func (self class) IsUniqueNameInOwner() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2913,7 +2913,7 @@ func (self class) Atr(message gd.String, context gd.StringName) gd.String {
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(context))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2935,7 +2935,7 @@ func (self class) AtrN(message gd.String, plural_message gd.StringName, n gd.Int
 	callframe.Arg(frame, n)
 	callframe.Arg(frame, pointers.Get(context))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr_n, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr_n, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2947,8 +2947,8 @@ Refreshes the warnings displayed for this node in the Scene dock. Use [method _g
 //go:nosplit
 func (self class) UpdateConfigurationWarnings() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_update_configuration_warnings, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_update_configuration_warnings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2960,8 +2960,8 @@ func (self class) SetDeferredThreadGroup(property gd.StringName, value gd.Varian
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2972,8 +2972,8 @@ Similar to [method call_deferred_thread_group], but for notifications.
 func (self class) NotifyDeferredThreadGroup(what gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_notify_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_notify_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2985,8 +2985,8 @@ func (self class) SetThreadSafe(property gd.StringName, value gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_thread_safe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_set_thread_safe, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2997,8 +2997,8 @@ Similar to [method call_thread_safe], but for notifications.
 func (self class) NotifyThreadSafe(what gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_notify_thread_safe, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_notify_thread_safe, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnReady(cb func()) {

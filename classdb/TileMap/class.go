@@ -597,8 +597,8 @@ func (self class) SetNavigationMap(layer gd.Int, mapping gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, mapping)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -610,7 +610,7 @@ func (self class) GetNavigationMap(layer gd.Int) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -623,8 +623,8 @@ Forces the TileMap and the layer [param layer] to update.
 func (self class) ForceUpdate(layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_force_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_force_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -632,8 +632,8 @@ func (self class) ForceUpdate(layer gd.Int) {
 func (self class) SetTileset(tileset [1]gdclass.TileSet) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tileset[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_tileset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_tileset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -641,7 +641,7 @@ func (self class) SetTileset(tileset [1]gdclass.TileSet) {
 func (self class) GetTileset() [1]gdclass.TileSet {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_tileset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_tileset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileSet{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSet](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -651,8 +651,8 @@ func (self class) GetTileset() [1]gdclass.TileSet {
 func (self class) SetRenderingQuadrantSize(size gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_rendering_quadrant_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_rendering_quadrant_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -660,7 +660,7 @@ func (self class) SetRenderingQuadrantSize(size gd.Int) {
 func (self class) GetRenderingQuadrantSize() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_rendering_quadrant_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_rendering_quadrant_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -673,7 +673,7 @@ Returns the number of layers in the TileMap.
 func (self class) GetLayersCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layers_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -686,8 +686,8 @@ Adds a layer at the given position [param to_position] in the array. If [param t
 func (self class) AddLayer(to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_add_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_add_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -699,8 +699,8 @@ func (self class) MoveLayer(layer gd.Int, to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_move_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_move_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -711,8 +711,8 @@ Removes the layer at index [param layer].
 func (self class) RemoveLayer(layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_remove_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_remove_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -725,8 +725,8 @@ func (self class) SetLayerName(layer gd.Int, name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -739,7 +739,7 @@ func (self class) GetLayerName(layer gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -754,8 +754,8 @@ func (self class) SetLayerEnabled(layer gd.Int, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -768,7 +768,7 @@ func (self class) IsLayerEnabled(layer gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_layer_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_layer_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -783,8 +783,8 @@ func (self class) SetLayerModulate(layer gd.Int, modulate gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -797,7 +797,7 @@ func (self class) GetLayerModulate(layer gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -813,8 +813,8 @@ func (self class) SetLayerYSortEnabled(layer gd.Int, y_sort_enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, y_sort_enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -827,7 +827,7 @@ func (self class) IsLayerYSortEnabled(layer gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_layer_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_layer_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -843,8 +843,8 @@ func (self class) SetLayerYSortOrigin(layer gd.Int, y_sort_origin gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, y_sort_origin)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_y_sort_origin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_y_sort_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -857,7 +857,7 @@ func (self class) GetLayerYSortOrigin(layer gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_y_sort_origin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_y_sort_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -872,8 +872,8 @@ func (self class) SetLayerZIndex(layer gd.Int, z_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, z_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_z_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -886,7 +886,7 @@ func (self class) GetLayerZIndex(layer gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_z_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -900,8 +900,8 @@ func (self class) SetLayerNavigationEnabled(layer gd.Int, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_navigation_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_navigation_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -913,7 +913,7 @@ func (self class) IsLayerNavigationEnabled(layer gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_layer_navigation_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_layer_navigation_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -930,8 +930,8 @@ func (self class) SetLayerNavigationMap(layer gd.Int, mapping gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, mapping)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -946,7 +946,7 @@ func (self class) GetLayerNavigationMap(layer gd.Int) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -956,8 +956,8 @@ func (self class) GetLayerNavigationMap(layer gd.Int) gd.RID {
 func (self class) SetCollisionAnimatable(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_collision_animatable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_collision_animatable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -965,7 +965,7 @@ func (self class) SetCollisionAnimatable(enabled bool) {
 func (self class) IsCollisionAnimatable() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_collision_animatable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_collision_animatable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -975,8 +975,8 @@ func (self class) IsCollisionAnimatable() bool {
 func (self class) SetCollisionVisibilityMode(collision_visibility_mode gdclass.TileMapVisibilityMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_visibility_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -984,7 +984,7 @@ func (self class) SetCollisionVisibilityMode(collision_visibility_mode gdclass.T
 func (self class) GetCollisionVisibilityMode() gdclass.TileMapVisibilityMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileMapVisibilityMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -994,8 +994,8 @@ func (self class) GetCollisionVisibilityMode() gdclass.TileMapVisibilityMode {
 func (self class) SetNavigationVisibilityMode(navigation_visibility_mode gdclass.TileMapVisibilityMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_visibility_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1003,7 +1003,7 @@ func (self class) SetNavigationVisibilityMode(navigation_visibility_mode gdclass
 func (self class) GetNavigationVisibilityMode() gdclass.TileMapVisibilityMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileMapVisibilityMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1025,8 +1025,8 @@ func (self class) SetCell(layer gd.Int, coords gd.Vector2i, source_id gd.Int, at
 	callframe.Arg(frame, source_id)
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_cell, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_cell, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1039,8 +1039,8 @@ func (self class) EraseCell(layer gd.Int, coords gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, coords)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_erase_cell, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_erase_cell, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1056,7 +1056,7 @@ func (self class) GetCellSourceId(layer gd.Int, coords gd.Vector2i, use_proxies 
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, use_proxies)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_source_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_source_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1074,7 +1074,7 @@ func (self class) GetCellAtlasCoords(layer gd.Int, coords gd.Vector2i, use_proxi
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, use_proxies)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_atlas_coords, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_atlas_coords, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1092,7 +1092,7 @@ func (self class) GetCellAlternativeTile(layer gd.Int, coords gd.Vector2i, use_p
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, use_proxies)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1119,7 +1119,7 @@ func (self class) GetCellTileData(layer gd.Int, coords gd.Vector2i, use_proxies 
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, use_proxies)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1133,7 +1133,7 @@ func (self class) GetCoordsForBodyRid(body gd.RID) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_coords_for_body_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_coords_for_body_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1147,7 +1147,7 @@ func (self class) GetLayerForBodyRid(body gd.RID) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_for_body_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_for_body_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1163,7 +1163,7 @@ func (self class) GetPattern(layer gd.Int, coords_array gd.Array) [1]gdclass.Til
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(coords_array))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1179,7 +1179,7 @@ func (self class) MapPattern(position_in_tilemap gd.Vector2i, coords_in_pattern 
 	callframe.Arg(frame, coords_in_pattern)
 	callframe.Arg(frame, pointers.Get(pattern[0])[0])
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_map_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_map_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1195,8 +1195,8 @@ func (self class) SetPattern(layer gd.Int, position gd.Vector2i, pattern [1]gdcl
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, pointers.Get(pattern[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1214,8 +1214,8 @@ func (self class) SetCellsTerrainConnect(layer gd.Int, cells gd.Array, terrain_s
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain)
 	callframe.Arg(frame, ignore_empty_terrains)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_cells_terrain_connect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_cells_terrain_connect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1233,8 +1233,8 @@ func (self class) SetCellsTerrainPath(layer gd.Int, path gd.Array, terrain_set g
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain)
 	callframe.Arg(frame, ignore_empty_terrains)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_cells_terrain_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_cells_terrain_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1244,8 +1244,8 @@ Clears cells that do not exist in the tileset.
 //go:nosplit
 func (self class) FixInvalidTiles() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_fix_invalid_tiles, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_fix_invalid_tiles, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1257,8 +1257,8 @@ If [param layer] is negative, the layers are accessed from the last one.
 func (self class) ClearLayer(layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_clear_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_clear_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1268,8 +1268,8 @@ Clears all cells.
 //go:nosplit
 func (self class) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1281,8 +1281,8 @@ However, for performance reasons, those updates are batched and delayed to the e
 //go:nosplit
 func (self class) UpdateInternals() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_update_internals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_update_internals, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1296,8 +1296,8 @@ If [param layer] is provided, only notifies changes for the given layer. Providi
 func (self class) NotifyRuntimeTileDataUpdate(layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_notify_runtime_tile_data_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_notify_runtime_tile_data_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1309,7 +1309,7 @@ func (self class) GetSurroundingCells(coords gd.Vector2i) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_surrounding_cells, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_surrounding_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1324,7 +1324,7 @@ func (self class) GetUsedCells(layer gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1344,7 +1344,7 @@ func (self class) GetUsedCellsById(layer gd.Int, source_id gd.Int, atlas_coords 
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells_by_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells_by_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1357,7 +1357,7 @@ Returns a rectangle enclosing the used (non-empty) tiles of the map, including a
 func (self class) GetUsedRect() gd.Rect2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1372,7 +1372,7 @@ func (self class) MapToLocal(map_position gd.Vector2i) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, map_position)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_map_to_local, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_map_to_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1386,7 +1386,7 @@ func (self class) LocalToMap(local_position gd.Vector2) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, local_position)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_local_to_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_local_to_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1401,7 +1401,7 @@ func (self class) GetNeighborCell(coords gd.Vector2i, neighbor gdclass.TileSetCe
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, neighbor)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_neighbor_cell, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_neighbor_cell, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

@@ -82,8 +82,8 @@ func (self Instance) SetRadianceSize(value gdclass.SkyRadianceSize) {
 func (self class) SetRadianceSize(size gdclass.SkyRadianceSize) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_set_radiance_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_set_radiance_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -91,7 +91,7 @@ func (self class) SetRadianceSize(size gdclass.SkyRadianceSize) {
 func (self class) GetRadianceSize() gdclass.SkyRadianceSize {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SkyRadianceSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_radiance_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_radiance_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -101,8 +101,8 @@ func (self class) GetRadianceSize() gdclass.SkyRadianceSize {
 func (self class) SetProcessMode(mode gdclass.SkyProcessMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -110,7 +110,7 @@ func (self class) SetProcessMode(mode gdclass.SkyProcessMode) {
 func (self class) GetProcessMode() gdclass.SkyProcessMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SkyProcessMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -120,8 +120,8 @@ func (self class) GetProcessMode() gdclass.SkyProcessMode {
 func (self class) SetMaterial(material [1]gdclass.Material) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -129,7 +129,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 func (self class) GetMaterial() [1]gdclass.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
 	return ret

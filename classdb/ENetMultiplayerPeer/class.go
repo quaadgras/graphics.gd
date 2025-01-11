@@ -115,7 +115,7 @@ func (self class) CreateServer(port gd.Int, max_clients gd.Int, max_channels gd.
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_server, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_server, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -134,7 +134,7 @@ func (self class) CreateClient(address gd.String, port gd.Int, channel_count gd.
 	callframe.Arg(frame, out_bandwidth)
 	callframe.Arg(frame, local_port)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_client, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_client, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -148,7 +148,7 @@ func (self class) CreateMesh(unique_id gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, unique_id)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -164,7 +164,7 @@ func (self class) AddMeshPeer(peer_id gd.Int, host [1]gdclass.ENetConnection) er
 	callframe.Arg(frame, peer_id)
 	callframe.Arg(frame, pointers.Get(host[0])[0])
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_add_mesh_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_add_mesh_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -177,8 +177,8 @@ The IP used when creating a server. This is set to the wildcard [code]"*"[/code]
 func (self class) SetBindIp(ip gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(ip))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_set_bind_ip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_set_bind_ip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -186,7 +186,7 @@ func (self class) SetBindIp(ip gd.String) {
 func (self class) GetHost() [1]gdclass.ENetConnection {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_host, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ENetConnection{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetConnection](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -200,7 +200,7 @@ func (self class) GetPeer(id gd.Int) [1]gdclass.ENetPacketPeer {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret.Get())}
 	frame.Free()
 	return ret

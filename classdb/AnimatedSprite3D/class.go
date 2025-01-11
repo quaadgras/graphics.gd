@@ -174,8 +174,8 @@ func (self Instance) SetSpeedScale(value Float.X) {
 func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(sprite_frames[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_sprite_frames, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_sprite_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -183,7 +183,7 @@ func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) {
 func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_sprite_frames, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_sprite_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SpriteFrames{gd.PointerWithOwnershipTransferredToGo[gdclass.SpriteFrames](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -193,8 +193,8 @@ func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames {
 func (self class) SetAnimation(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -202,7 +202,7 @@ func (self class) SetAnimation(name gd.StringName) {
 func (self class) GetAnimation() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -212,8 +212,8 @@ func (self class) GetAnimation() gd.StringName {
 func (self class) SetAutoplay(name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_autoplay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_autoplay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -221,7 +221,7 @@ func (self class) SetAutoplay(name gd.String) {
 func (self class) GetAutoplay() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_autoplay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_autoplay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -234,7 +234,7 @@ Returns [code]true[/code] if an animation is currently playing (even if [member 
 func (self class) IsPlaying() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -250,8 +250,8 @@ func (self class) Play(name gd.StringName, custom_speed gd.Float, from_end bool)
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, custom_speed)
 	callframe.Arg(frame, from_end)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_play, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_play, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -263,8 +263,8 @@ This method is a shorthand for [method play] with [code]custom_speed = -1.0[/cod
 func (self class) PlayBackwards(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_play_backwards, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_play_backwards, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -275,8 +275,8 @@ See also [method stop].
 //go:nosplit
 func (self class) Pause() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_pause, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_pause, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -286,8 +286,8 @@ Stops the currently playing animation. The animation position is reset to [code]
 //go:nosplit
 func (self class) Stop() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -295,8 +295,8 @@ func (self class) Stop() {
 func (self class) SetFrame(frame_ gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -304,7 +304,7 @@ func (self class) SetFrame(frame_ gd.Int) {
 func (self class) GetFrame() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -314,8 +314,8 @@ func (self class) GetFrame() gd.Int {
 func (self class) SetFrameProgress(progress gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, progress)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame_progress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -323,7 +323,7 @@ func (self class) SetFrameProgress(progress gd.Float) {
 func (self class) GetFrameProgress() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame_progress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -348,8 +348,8 @@ func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	callframe.Arg(frame, progress)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame_and_progress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame_and_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -357,8 +357,8 @@ func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float) {
 func (self class) SetSpeedScale(speed_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, speed_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_speed_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_set_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -366,7 +366,7 @@ func (self class) SetSpeedScale(speed_scale gd.Float) {
 func (self class) GetSpeedScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -380,7 +380,7 @@ Returns a negative value if the current animation is playing backwards.
 func (self class) GetPlayingSpeed() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_playing_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite3D.Bind_get_playing_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

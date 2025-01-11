@@ -330,8 +330,8 @@ func (self Instance) SetUseTexturePadding(value bool) {
 func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -339,7 +339,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 func (self class) GetTexture() [1]gdclass.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -349,8 +349,8 @@ func (self class) GetTexture() [1]gdclass.Texture2D {
 func (self class) SetMargins(margins gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, margins)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_margins, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_margins, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -358,7 +358,7 @@ func (self class) SetMargins(margins gd.Vector2i) {
 func (self class) GetMargins() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_margins, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_margins, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -368,8 +368,8 @@ func (self class) GetMargins() gd.Vector2i {
 func (self class) SetSeparation(separation gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, separation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_separation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_separation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -377,7 +377,7 @@ func (self class) SetSeparation(separation gd.Vector2i) {
 func (self class) GetSeparation() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_separation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_separation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -387,8 +387,8 @@ func (self class) GetSeparation() gd.Vector2i {
 func (self class) SetTextureRegionSize(texture_region_size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_region_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_texture_region_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_texture_region_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -396,7 +396,7 @@ func (self class) SetTextureRegionSize(texture_region_size gd.Vector2i) {
 func (self class) GetTextureRegionSize() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_texture_region_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_texture_region_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -406,8 +406,8 @@ func (self class) GetTextureRegionSize() gd.Vector2i {
 func (self class) SetUseTexturePadding(use_texture_padding bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, use_texture_padding)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_use_texture_padding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_use_texture_padding, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -415,7 +415,7 @@ func (self class) SetUseTexturePadding(use_texture_padding bool) {
 func (self class) GetUseTexturePadding() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_use_texture_padding, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_use_texture_padding, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -429,8 +429,8 @@ func (self class) CreateTile(atlas_coords gd.Vector2i, size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_create_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_create_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -441,8 +441,8 @@ Remove a tile and its alternative at coordinates [param atlas_coords].
 func (self class) RemoveTile(atlas_coords gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_remove_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_remove_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -457,8 +457,8 @@ func (self class) MoveTileInAtlas(atlas_coords gd.Vector2i, new_atlas_coords gd.
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, new_atlas_coords)
 	callframe.Arg(frame, new_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_move_tile_in_atlas, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_move_tile_in_atlas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -470,7 +470,7 @@ func (self class) GetTileSizeInAtlas(atlas_coords gd.Vector2i) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_size_in_atlas, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_size_in_atlas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -489,7 +489,7 @@ func (self class) HasRoomForTile(atlas_coords gd.Vector2i, size gd.Vector2i, ani
 	callframe.Arg(frame, frames_count)
 	callframe.Arg(frame, ignored_tile)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_has_room_for_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_has_room_for_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -506,7 +506,7 @@ func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, marg
 	callframe.Arg(frame, separation)
 	callframe.Arg(frame, texture_region_size)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tiles_to_be_removed_on_change, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tiles_to_be_removed_on_change, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -520,7 +520,7 @@ func (self class) GetTileAtCoords(atlas_coords gd.Vector2i) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_at_coords, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_at_coords, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -533,7 +533,7 @@ Checks if the source has any tiles that don't fit the texture area (either parti
 func (self class) HasTilesOutsideTexture() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_has_tiles_outside_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_has_tiles_outside_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -545,8 +545,8 @@ Removes all tiles that don't fit the available texture area. This method iterate
 //go:nosplit
 func (self class) ClearTilesOutsideTexture() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_clear_tiles_outside_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_clear_tiles_outside_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -558,8 +558,8 @@ func (self class) SetTileAnimationColumns(atlas_coords gd.Vector2i, frame_column
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_columns)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_columns, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_columns, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -571,7 +571,7 @@ func (self class) GetTileAnimationColumns(atlas_coords gd.Vector2i) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_columns, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_columns, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -585,8 +585,8 @@ func (self class) SetTileAnimationSeparation(atlas_coords gd.Vector2i, separatio
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, separation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_separation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_separation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -598,7 +598,7 @@ func (self class) GetTileAnimationSeparation(atlas_coords gd.Vector2i) gd.Vector
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_separation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_separation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -612,8 +612,8 @@ func (self class) SetTileAnimationSpeed(atlas_coords gd.Vector2i, speed gd.Float
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, speed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -625,7 +625,7 @@ func (self class) GetTileAnimationSpeed(atlas_coords gd.Vector2i) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -639,8 +639,8 @@ func (self class) SetTileAnimationMode(atlas_coords gd.Vector2i, mode gdclass.Ti
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -652,7 +652,7 @@ func (self class) GetTileAnimationMode(atlas_coords gd.Vector2i) gdclass.TileSet
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gdclass.TileSetAtlasSourceTileAnimationMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -666,8 +666,8 @@ func (self class) SetTileAnimationFramesCount(atlas_coords gd.Vector2i, frames_c
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frames_count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_frames_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_frames_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -679,7 +679,7 @@ func (self class) GetTileAnimationFramesCount(atlas_coords gd.Vector2i) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_frames_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_frames_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -694,8 +694,8 @@ func (self class) SetTileAnimationFrameDuration(atlas_coords gd.Vector2i, frame_
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_index)
 	callframe.Arg(frame, duration)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_frame_duration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_tile_animation_frame_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -708,7 +708,7 @@ func (self class) GetTileAnimationFrameDuration(atlas_coords gd.Vector2i, frame_
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_index)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_frame_duration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_frame_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -722,7 +722,7 @@ func (self class) GetTileAnimationTotalDuration(atlas_coords gd.Vector2i) gd.Flo
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_total_duration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_total_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -738,7 +738,7 @@ func (self class) CreateAlternativeTile(atlas_coords gd.Vector2i, alternative_id
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_id_override)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_create_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_create_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -753,8 +753,8 @@ func (self class) RemoveAlternativeTile(atlas_coords gd.Vector2i, alternative_ti
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_remove_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_remove_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -768,8 +768,8 @@ func (self class) SetAlternativeTileId(atlas_coords gd.Vector2i, alternative_til
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
 	callframe.Arg(frame, new_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_set_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -781,7 +781,7 @@ func (self class) GetNextAlternativeTileId(atlas_coords gd.Vector2i) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_next_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_next_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -796,7 +796,7 @@ func (self class) GetTileData(atlas_coords gd.Vector2i, alternative_tile gd.Int)
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -809,7 +809,7 @@ Returns the atlas grid size, which depends on how many tiles can fit in the text
 func (self class) GetAtlasGridSize() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_atlas_grid_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_atlas_grid_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -824,7 +824,7 @@ func (self class) GetTileTextureRegion(atlas_coords gd.Vector2i, frame_ gd.Int) 
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_texture_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_texture_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -837,7 +837,7 @@ If [member use_texture_padding] is [code]false[/code], returns [member texture].
 func (self class) GetRuntimeTexture() [1]gdclass.Texture2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_runtime_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_runtime_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -853,7 +853,7 @@ func (self class) GetRuntimeTileTextureRegion(atlas_coords gd.Vector2i, frame_ g
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_runtime_tile_texture_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_runtime_tile_texture_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

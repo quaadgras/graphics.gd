@@ -321,8 +321,8 @@ func (self class) AnimationSetNext(animation_from gd.StringName, animation_to gd
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(animation_from))
 	callframe.Arg(frame, pointers.Get(animation_to))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_animation_set_next, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_animation_set_next, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -334,7 +334,7 @@ func (self class) AnimationGetNext(animation_from gd.StringName) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(animation_from))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_animation_get_next, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_animation_get_next, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -349,8 +349,8 @@ func (self class) SetBlendTime(animation_from gd.StringName, animation_to gd.Str
 	callframe.Arg(frame, pointers.Get(animation_from))
 	callframe.Arg(frame, pointers.Get(animation_to))
 	callframe.Arg(frame, sec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_blend_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_blend_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -363,7 +363,7 @@ func (self class) GetBlendTime(animation_from gd.StringName, animation_to gd.Str
 	callframe.Arg(frame, pointers.Get(animation_from))
 	callframe.Arg(frame, pointers.Get(animation_to))
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_blend_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_blend_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -373,8 +373,8 @@ func (self class) GetBlendTime(animation_from gd.StringName, animation_to gd.Str
 func (self class) SetDefaultBlendTime(sec gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_default_blend_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_default_blend_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -382,7 +382,7 @@ func (self class) SetDefaultBlendTime(sec gd.Float) {
 func (self class) GetDefaultBlendTime() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_default_blend_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_default_blend_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -392,8 +392,8 @@ func (self class) GetDefaultBlendTime() gd.Float {
 func (self class) SetAutoCapture(auto_capture bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, auto_capture)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -401,7 +401,7 @@ func (self class) SetAutoCapture(auto_capture bool) {
 func (self class) IsAutoCapture() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_is_auto_capture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_is_auto_capture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -411,8 +411,8 @@ func (self class) IsAutoCapture() bool {
 func (self class) SetAutoCaptureDuration(auto_capture_duration gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, auto_capture_duration)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture_duration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -420,7 +420,7 @@ func (self class) SetAutoCaptureDuration(auto_capture_duration gd.Float) {
 func (self class) GetAutoCaptureDuration() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_duration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -430,8 +430,8 @@ func (self class) GetAutoCaptureDuration() gd.Float {
 func (self class) SetAutoCaptureTransitionType(auto_capture_transition_type gdclass.TweenTransitionType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, auto_capture_transition_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture_transition_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture_transition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -439,7 +439,7 @@ func (self class) SetAutoCaptureTransitionType(auto_capture_transition_type gdcl
 func (self class) GetAutoCaptureTransitionType() gdclass.TweenTransitionType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TweenTransitionType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_transition_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_transition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -449,8 +449,8 @@ func (self class) GetAutoCaptureTransitionType() gdclass.TweenTransitionType {
 func (self class) SetAutoCaptureEaseType(auto_capture_ease_type gdclass.TweenEaseType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, auto_capture_ease_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture_ease_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture_ease_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -458,7 +458,7 @@ func (self class) SetAutoCaptureEaseType(auto_capture_ease_type gdclass.TweenEas
 func (self class) GetAutoCaptureEaseType() gdclass.TweenEaseType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TweenEaseType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_ease_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_ease_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -477,8 +477,8 @@ func (self class) Play(name gd.StringName, custom_blend gd.Float, custom_speed g
 	callframe.Arg(frame, custom_blend)
 	callframe.Arg(frame, custom_speed)
 	callframe.Arg(frame, from_end)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -491,8 +491,8 @@ func (self class) PlayBackwards(name gd.StringName, custom_blend gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, custom_blend)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_backwards, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_backwards, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -517,8 +517,8 @@ func (self class) PlayWithCapture(name gd.StringName, duration gd.Float, custom_
 	callframe.Arg(frame, from_end)
 	callframe.Arg(frame, trans_type)
 	callframe.Arg(frame, ease_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_with_capture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_play_with_capture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -529,8 +529,8 @@ See also [method stop].
 //go:nosplit
 func (self class) Pause() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_pause, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_pause, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -543,8 +543,8 @@ If [param keep_state] is [code]true[/code], the animation state is not updated v
 func (self class) Stop(keep_state bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, keep_state)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -555,7 +555,7 @@ Returns [code]true[/code] if an animation is currently playing (even if [member 
 func (self class) IsPlaying() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -565,8 +565,8 @@ func (self class) IsPlaying() bool {
 func (self class) SetCurrentAnimation(animation gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(animation))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_current_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_current_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -574,7 +574,7 @@ func (self class) SetCurrentAnimation(animation gd.String) {
 func (self class) GetCurrentAnimation() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -584,8 +584,8 @@ func (self class) GetCurrentAnimation() gd.String {
 func (self class) SetAssignedAnimation(animation gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(animation))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_assigned_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_assigned_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -593,7 +593,7 @@ func (self class) SetAssignedAnimation(animation gd.String) {
 func (self class) GetAssignedAnimation() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_assigned_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_assigned_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -607,8 +607,8 @@ Queues an animation for playback once the current animation and all previously q
 func (self class) Queue(name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_queue, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_queue, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -619,7 +619,7 @@ Returns a list of the animation keys that are currently queued to play.
 func (self class) GetQueue() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_queue, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_queue, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -631,8 +631,8 @@ Clears all queued, unplayed animations.
 //go:nosplit
 func (self class) ClearQueue() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_clear_queue, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_clear_queue, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -640,8 +640,8 @@ func (self class) ClearQueue() {
 func (self class) SetSpeedScale(speed gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, speed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_speed_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -649,7 +649,7 @@ func (self class) SetSpeedScale(speed gd.Float) {
 func (self class) GetSpeedScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -663,7 +663,7 @@ Returns a negative value if the current animation is playing backwards.
 func (self class) GetPlayingSpeed() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_playing_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_playing_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -673,8 +673,8 @@ func (self class) GetPlayingSpeed() gd.Float {
 func (self class) SetAutoplay(name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_autoplay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_autoplay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -682,7 +682,7 @@ func (self class) SetAutoplay(name gd.String) {
 func (self class) GetAutoplay() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_autoplay, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_autoplay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -692,8 +692,8 @@ func (self class) GetAutoplay() gd.String {
 func (self class) SetMovieQuitOnFinishEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_movie_quit_on_finish_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_movie_quit_on_finish_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -701,7 +701,7 @@ func (self class) SetMovieQuitOnFinishEnabled(enabled bool) {
 func (self class) IsMovieQuitOnFinishEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_is_movie_quit_on_finish_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_is_movie_quit_on_finish_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -711,7 +711,7 @@ func (self class) IsMovieQuitOnFinishEnabled() bool {
 func (self class) GetCurrentAnimationPosition() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -721,7 +721,7 @@ func (self class) GetCurrentAnimationPosition() gd.Float {
 func (self class) GetCurrentAnimationLength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -738,8 +738,8 @@ func (self class) SeekTo(seconds gd.Float, update bool, update_only bool) {
 	callframe.Arg(frame, seconds)
 	callframe.Arg(frame, update)
 	callframe.Arg(frame, update_only)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_seek, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_seek, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -750,8 +750,8 @@ Sets the process notification in which to update animations.
 func (self class) SetProcessCallback(mode gdclass.AnimationPlayerAnimationProcessCallback) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_process_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_process_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -762,7 +762,7 @@ Returns the process notification in which to update animations.
 func (self class) GetProcessCallback() gdclass.AnimationPlayerAnimationProcessCallback {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationPlayerAnimationProcessCallback](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_process_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_process_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -775,8 +775,8 @@ Sets the call mode used for "Call Method" tracks.
 func (self class) SetMethodCallMode(mode gdclass.AnimationPlayerAnimationMethodCallMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_method_call_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_method_call_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -787,7 +787,7 @@ Returns the call mode used for "Call Method" tracks.
 func (self class) GetMethodCallMode() gdclass.AnimationPlayerAnimationMethodCallMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationPlayerAnimationMethodCallMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_method_call_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_method_call_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -800,8 +800,8 @@ Sets the node which node path references will travel from.
 func (self class) SetRoot(path gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_set_root, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -812,7 +812,7 @@ Returns the node which node path references will travel from.
 func (self class) GetRoot() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_root, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_root, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret

@@ -705,7 +705,7 @@ func (self class) AppendImportExternalResource(path gd.String, custom_options gd
 	callframe.Arg(frame, pointers.Get(custom_importer))
 	callframe.Arg(frame, pointers.Get(generator_parameters))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

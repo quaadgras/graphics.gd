@@ -207,7 +207,7 @@ func (self class) CreateHostBound(bind_address gd.String, bind_port gd.Int, max_
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host_bound, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host_bound, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -226,7 +226,7 @@ func (self class) CreateHost(max_peers gd.Int, max_channels gd.Int, in_bandwidth
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -238,8 +238,8 @@ Destroys the host and all resources associated with it.
 //go:nosplit
 func (self class) Destroy() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_destroy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_destroy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -255,7 +255,7 @@ func (self class) ConnectToHost(address gd.String, port gd.Int, channels gd.Int,
 	callframe.Arg(frame, channels)
 	callframe.Arg(frame, data)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -271,7 +271,7 @@ func (self class) Service(timeout gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_service, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_service, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -283,8 +283,8 @@ Sends any queued packets on the host specified to its designated peers.
 //go:nosplit
 func (self class) Flush() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_flush, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_flush, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -296,8 +296,8 @@ func (self class) BandwidthLimit(in_bandwidth gd.Int, out_bandwidth gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_bandwidth_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_bandwidth_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -308,8 +308,8 @@ Limits the maximum allowed channels of future incoming connections.
 func (self class) ChannelLimit(limit gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, limit)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_channel_limit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_channel_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -322,8 +322,8 @@ func (self class) Broadcast(channel gd.Int, packet gd.PackedByteArray, flags gd.
 	callframe.Arg(frame, channel)
 	callframe.Arg(frame, pointers.Get(packet))
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_broadcast, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_broadcast, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -336,8 +336,8 @@ Sets the compression method used for network packets. These have different trade
 func (self class) Compress(mode gdclass.ENetConnectionCompressionMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_compress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_compress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -349,7 +349,7 @@ func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(server_options[0])[0])
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_server_setup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_server_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -364,7 +364,7 @@ func (self class) DtlsClientSetup(hostname gd.String, client_options [1]gdclass.
 	callframe.Arg(frame, pointers.Get(hostname))
 	callframe.Arg(frame, pointers.Get(client_options[0])[0])
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_client_setup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_client_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -378,8 +378,8 @@ Configures the DTLS server to automatically drop new connections.
 func (self class) RefuseNewConnections(refuse bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, refuse)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_refuse_new_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_refuse_new_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -391,7 +391,7 @@ func (self class) PopStatistic(statistic gdclass.ENetConnectionHostStatistic) gd
 	var frame = callframe.New()
 	callframe.Arg(frame, statistic)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_pop_statistic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_pop_statistic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -404,7 +404,7 @@ Returns the maximum number of channels allowed for connected peers.
 func (self class) GetMaxChannels() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_max_channels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_max_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -417,7 +417,7 @@ Returns the local port to which this peer is bound.
 func (self class) GetLocalPort() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -431,7 +431,7 @@ Returns the list of peers associated with this host.
 func (self class) GetPeers() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -448,8 +448,8 @@ func (self class) SocketSend(destination_address gd.String, destination_port gd.
 	callframe.Arg(frame, pointers.Get(destination_address))
 	callframe.Arg(frame, destination_port)
 	callframe.Arg(frame, pointers.Get(packet))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_socket_send, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_socket_send, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsENetConnection() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

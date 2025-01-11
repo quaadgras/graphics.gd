@@ -329,7 +329,7 @@ func (self class) ProjectRayNormal(screen_point gd.Vector2) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_point)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_project_ray_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_project_ray_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -343,7 +343,7 @@ func (self class) ProjectLocalRayNormal(screen_point gd.Vector2) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_point)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_project_local_ray_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_project_local_ray_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -357,7 +357,7 @@ func (self class) ProjectRayOrigin(screen_point gd.Vector2) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_point)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_project_ray_origin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_project_ray_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -378,7 +378,7 @@ func (self class) UnprojectPosition(world_point gd.Vector3) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, world_point)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_unproject_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_unproject_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -393,7 +393,7 @@ func (self class) IsPositionBehind(world_point gd.Vector3) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, world_point)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_is_position_behind, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_is_position_behind, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -408,7 +408,7 @@ func (self class) ProjectPosition(screen_point gd.Vector2, z_depth gd.Float) gd.
 	callframe.Arg(frame, screen_point)
 	callframe.Arg(frame, z_depth)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_project_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_project_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -423,8 +423,8 @@ func (self class) SetPerspective(fov gd.Float, z_near gd.Float, z_far gd.Float) 
 	callframe.Arg(frame, fov)
 	callframe.Arg(frame, z_near)
 	callframe.Arg(frame, z_far)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_perspective, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_perspective, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -437,8 +437,8 @@ func (self class) SetOrthogonal(size gd.Float, z_near gd.Float, z_far gd.Float) 
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, z_near)
 	callframe.Arg(frame, z_far)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_orthogonal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_orthogonal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -452,8 +452,8 @@ func (self class) SetFrustum(size gd.Float, offset gd.Vector2, z_near gd.Float, 
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, z_near)
 	callframe.Arg(frame, z_far)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_frustum, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_frustum, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -463,8 +463,8 @@ Makes this camera the current camera for the [Viewport] (see class description).
 //go:nosplit
 func (self class) MakeCurrent() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_make_current, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_make_current, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -475,8 +475,8 @@ If this is the current camera, remove it from being current. If [param enable_ne
 func (self class) ClearCurrent(enable_next bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable_next)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_clear_current, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_clear_current, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -484,8 +484,8 @@ func (self class) ClearCurrent(enable_next bool) {
 func (self class) SetCurrent(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_current, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_current, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -493,7 +493,7 @@ func (self class) SetCurrent(enabled bool) {
 func (self class) IsCurrent() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_is_current, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_is_current, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -506,7 +506,7 @@ Returns the transform of the camera plus the vertical ([member v_offset]) and ho
 func (self class) GetCameraTransform() gd.Transform3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_camera_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_camera_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -519,7 +519,7 @@ Returns the projection matrix that this camera uses to render to its associated 
 func (self class) GetCameraProjection() gd.Projection {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Projection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_camera_projection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_camera_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -529,7 +529,7 @@ func (self class) GetCameraProjection() gd.Projection {
 func (self class) GetFov() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_fov, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_fov, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -539,7 +539,7 @@ func (self class) GetFov() gd.Float {
 func (self class) GetFrustumOffset() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_frustum_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_frustum_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -549,7 +549,7 @@ func (self class) GetFrustumOffset() gd.Vector2 {
 func (self class) GetSize() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -559,7 +559,7 @@ func (self class) GetSize() gd.Float {
 func (self class) GetFar() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_far, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_far, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -569,7 +569,7 @@ func (self class) GetFar() gd.Float {
 func (self class) GetNear() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_near, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_near, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -579,8 +579,8 @@ func (self class) GetNear() gd.Float {
 func (self class) SetFov(fov gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, fov)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_fov, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_fov, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -588,8 +588,8 @@ func (self class) SetFov(fov gd.Float) {
 func (self class) SetFrustumOffset(offset gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_frustum_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_frustum_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -597,8 +597,8 @@ func (self class) SetFrustumOffset(offset gd.Vector2) {
 func (self class) SetSize(size gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -606,8 +606,8 @@ func (self class) SetSize(size gd.Float) {
 func (self class) SetFar(far gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, far)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_far, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_far, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -615,8 +615,8 @@ func (self class) SetFar(far gd.Float) {
 func (self class) SetNear(near gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, near)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_near, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_near, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -624,7 +624,7 @@ func (self class) SetNear(near gd.Float) {
 func (self class) GetProjection() gdclass.Camera3DProjectionType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Camera3DProjectionType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_projection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -634,8 +634,8 @@ func (self class) GetProjection() gdclass.Camera3DProjectionType {
 func (self class) SetProjection(mode gdclass.Camera3DProjectionType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_projection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -643,8 +643,8 @@ func (self class) SetProjection(mode gdclass.Camera3DProjectionType) {
 func (self class) SetHOffset(offset gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_h_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_h_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -652,7 +652,7 @@ func (self class) SetHOffset(offset gd.Float) {
 func (self class) GetHOffset() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_h_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_h_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -662,8 +662,8 @@ func (self class) GetHOffset() gd.Float {
 func (self class) SetVOffset(offset gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_v_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_v_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -671,7 +671,7 @@ func (self class) SetVOffset(offset gd.Float) {
 func (self class) GetVOffset() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_v_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_v_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -681,8 +681,8 @@ func (self class) GetVOffset() gd.Float {
 func (self class) SetCullMask(mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -690,7 +690,7 @@ func (self class) SetCullMask(mask gd.Int) {
 func (self class) GetCullMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -700,8 +700,8 @@ func (self class) GetCullMask() gd.Int {
 func (self class) SetEnvironment(env [1]gdclass.Environment) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(env[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -709,7 +709,7 @@ func (self class) SetEnvironment(env [1]gdclass.Environment) {
 func (self class) GetEnvironment() [1]gdclass.Environment {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Environment{gd.PointerWithOwnershipTransferredToGo[gdclass.Environment](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -719,8 +719,8 @@ func (self class) GetEnvironment() [1]gdclass.Environment {
 func (self class) SetAttributes(env [1]gdclass.CameraAttributes) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(env[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -728,7 +728,7 @@ func (self class) SetAttributes(env [1]gdclass.CameraAttributes) {
 func (self class) GetAttributes() [1]gdclass.CameraAttributes {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraAttributes](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -738,8 +738,8 @@ func (self class) GetAttributes() [1]gdclass.CameraAttributes {
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(compositor[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_compositor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -747,7 +747,7 @@ func (self class) SetCompositor(compositor [1]gdclass.Compositor) {
 func (self class) GetCompositor() [1]gdclass.Compositor {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_compositor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Compositor{gd.PointerWithOwnershipTransferredToGo[gdclass.Compositor](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -757,8 +757,8 @@ func (self class) GetCompositor() [1]gdclass.Compositor {
 func (self class) SetKeepAspectMode(mode gdclass.Camera3DKeepAspect) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_keep_aspect_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_keep_aspect_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -766,7 +766,7 @@ func (self class) SetKeepAspectMode(mode gdclass.Camera3DKeepAspect) {
 func (self class) GetKeepAspectMode() gdclass.Camera3DKeepAspect {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Camera3DKeepAspect](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_keep_aspect_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_keep_aspect_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -776,8 +776,8 @@ func (self class) GetKeepAspectMode() gdclass.Camera3DKeepAspect {
 func (self class) SetDopplerTracking(mode gdclass.Camera3DDopplerTracking) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_doppler_tracking, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_doppler_tracking, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -785,7 +785,7 @@ func (self class) SetDopplerTracking(mode gdclass.Camera3DDopplerTracking) {
 func (self class) GetDopplerTracking() gdclass.Camera3DDopplerTracking {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Camera3DDopplerTracking](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_doppler_tracking, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_doppler_tracking, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -798,7 +798,7 @@ Returns the camera's frustum planes in world space units as an array of [Plane]s
 func (self class) GetFrustum() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_frustum, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_frustum, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -812,7 +812,7 @@ func (self class) IsPositionInFrustum(world_point gd.Vector3) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, world_point)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_is_position_in_frustum, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_is_position_in_frustum, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -825,7 +825,7 @@ Returns the camera's RID from the [RenderingServer].
 func (self class) GetCameraRid() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_camera_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_camera_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -838,7 +838,7 @@ Returns the RID of a pyramid shape encompassing the camera's view frustum, ignor
 func (self class) GetPyramidShapeRid() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_pyramid_shape_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_pyramid_shape_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -852,8 +852,8 @@ func (self class) SetCullMaskValue(layer_number gd.Int, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_cull_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_set_cull_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -865,7 +865,7 @@ func (self class) GetCullMaskValue(layer_number gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_cull_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_cull_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

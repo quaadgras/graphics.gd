@@ -104,7 +104,7 @@ func (self class) VariantToBase64(variant gd.Variant, full_objects bool) gd.Stri
 	callframe.Arg(frame, pointers.Get(variant))
 	callframe.Arg(frame, full_objects)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_variant_to_base64, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_variant_to_base64, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -121,7 +121,7 @@ func (self class) Base64ToVariant(base64_str gd.String, allow_objects bool) gd.V
 	callframe.Arg(frame, pointers.Get(base64_str))
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_variant, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_variant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -135,7 +135,7 @@ func (self class) RawToBase64(array gd.PackedByteArray) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_raw_to_base64, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_raw_to_base64, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -149,7 +149,7 @@ func (self class) Base64ToRaw(base64_str gd.String) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base64_str))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_raw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -163,7 +163,7 @@ func (self class) Utf8ToBase64(utf8_str gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(utf8_str))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_utf8_to_base64, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_utf8_to_base64, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -177,7 +177,7 @@ func (self class) Base64ToUtf8(base64_str gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base64_str))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_utf8, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_utf8, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret

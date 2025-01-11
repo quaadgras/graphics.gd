@@ -310,7 +310,7 @@ Returns the current format being used by this texture. See [enum Image.Format] f
 func (self class) GetFormat() gdclass.ImageFormat {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -323,7 +323,7 @@ Returns the [TextureLayered]'s type. The type determines how the data is accesse
 func (self class) GetLayeredType() gdclass.TextureLayeredLayeredType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextureLayeredLayeredType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layered_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layered_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -336,7 +336,7 @@ Returns the width of the texture in pixels. Width is typically represented by th
 func (self class) GetWidth() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -349,7 +349,7 @@ Returns the height of the texture in pixels. Height is typically represented by 
 func (self class) GetHeight() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -362,7 +362,7 @@ Returns the number of referenced [Image]s.
 func (self class) GetLayers() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -375,7 +375,7 @@ Returns [code]true[/code] if the layers have generated mipmaps.
 func (self class) HasMipmaps() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -389,7 +389,7 @@ func (self class) GetLayerData(layer gd.Int) [1]gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layer_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layer_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret

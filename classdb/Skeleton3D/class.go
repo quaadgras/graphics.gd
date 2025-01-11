@@ -413,7 +413,7 @@ func (self class) AddBone(name gd.String) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_add_bone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_add_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -427,7 +427,7 @@ func (self class) FindBone(name gd.String) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_find_bone, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_find_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -441,7 +441,7 @@ func (self class) GetBoneName(bone_idx gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -455,8 +455,8 @@ func (self class) SetBoneName(bone_idx gd.Int, name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -468,7 +468,7 @@ It is useful to set it as a hint for the enum property.
 func (self class) GetConcatenatedBoneNames() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_concatenated_bone_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_concatenated_bone_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -483,7 +483,7 @@ func (self class) GetBoneParent(bone_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -498,8 +498,8 @@ func (self class) SetBoneParent(bone_idx gd.Int, parent_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, parent_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -510,7 +510,7 @@ Returns the number of bones in the skeleton.
 func (self class) GetBoneCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -525,7 +525,7 @@ Use for invalidating caches in IK solvers and other nodes which process bones.
 func (self class) GetVersion() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -538,8 +538,8 @@ Unparents the bone at [param bone_idx] and sets its rest position to that of its
 func (self class) UnparentBoneAndRest(bone_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_unparent_bone_and_rest, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_unparent_bone_and_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -551,7 +551,7 @@ func (self class) GetBoneChildren(bone_idx gd.Int) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_children, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -564,7 +564,7 @@ Returns an array with all of the bones that are parentless. Another way to look 
 func (self class) GetParentlessBones() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_parentless_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_parentless_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -578,7 +578,7 @@ func (self class) GetBoneRest(bone_idx gd.Int) gd.Transform3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_rest, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -592,8 +592,8 @@ func (self class) SetBoneRest(bone_idx gd.Int, rest gd.Transform3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, rest)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_rest, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -605,7 +605,7 @@ func (self class) GetBoneGlobalRest(bone_idx gd.Int) gd.Transform3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_rest, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -615,7 +615,7 @@ func (self class) GetBoneGlobalRest(bone_idx gd.Int) gd.Transform3D {
 func (self class) CreateSkinFromRestTransforms() [1]gdclass.Skin {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_create_skin_from_rest_transforms, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_create_skin_from_rest_transforms, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -629,7 +629,7 @@ func (self class) RegisterSkin(skin [1]gdclass.Skin) [1]gdclass.SkinReference {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(skin[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_register_skin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_register_skin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SkinReference{gd.PointerWithOwnershipTransferredToGo[gdclass.SkinReference](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -641,8 +641,8 @@ Returns all bones in the skeleton to their rest poses.
 //go:nosplit
 func (self class) LocalizeRests() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_localize_rests, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_localize_rests, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -652,8 +652,8 @@ Clear all the bones in this skeleton.
 //go:nosplit
 func (self class) ClearBones() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_clear_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_clear_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -666,7 +666,7 @@ func (self class) GetBonePose(bone_idx gd.Int) gd.Transform3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -680,8 +680,8 @@ func (self class) SetBonePose(bone_idx gd.Int, pose gd.Transform3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pose)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -693,8 +693,8 @@ func (self class) SetBonePosePosition(bone_idx gd.Int, position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -706,8 +706,8 @@ func (self class) SetBonePoseRotation(bone_idx gd.Int, rotation gd.Quaternion) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, rotation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -719,8 +719,8 @@ func (self class) SetBonePoseScale(bone_idx gd.Int, scale gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -732,7 +732,7 @@ func (self class) GetBonePosePosition(bone_idx gd.Int) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -746,7 +746,7 @@ func (self class) GetBonePoseRotation(bone_idx gd.Int) gd.Quaternion {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Quaternion](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -760,7 +760,7 @@ func (self class) GetBonePoseScale(bone_idx gd.Int) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -773,8 +773,8 @@ Sets the bone pose to rest for [param bone_idx].
 func (self class) ResetBonePose(bone_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_reset_bone_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_reset_bone_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -784,8 +784,8 @@ Sets all bone poses to rests.
 //go:nosplit
 func (self class) ResetBonePoses() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_reset_bone_poses, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_reset_bone_poses, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -797,7 +797,7 @@ func (self class) IsBoneEnabled(bone_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_is_bone_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_is_bone_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -811,8 +811,8 @@ func (self class) SetBoneEnabled(bone_idx gd.Int, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -825,7 +825,7 @@ func (self class) GetBoneGlobalPose(bone_idx gd.Int) gd.Transform3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -840,8 +840,8 @@ func (self class) SetBoneGlobalPose(bone_idx gd.Int, pose gd.Transform3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pose)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_global_pose, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_global_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -851,8 +851,8 @@ Force updates the bone transforms/poses for all bones in the skeleton.
 //go:nosplit
 func (self class) ForceUpdateAllBoneTransforms() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_force_update_all_bone_transforms, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_force_update_all_bone_transforms, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -863,8 +863,8 @@ Force updates the bone transform for the bone at [param bone_idx] and all of its
 func (self class) ForceUpdateBoneChildTransform(bone_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_force_update_bone_child_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_force_update_bone_child_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -872,8 +872,8 @@ func (self class) ForceUpdateBoneChildTransform(bone_idx gd.Int) {
 func (self class) SetMotionScale(motion_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, motion_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_motion_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -881,7 +881,7 @@ func (self class) SetMotionScale(motion_scale gd.Float) {
 func (self class) GetMotionScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_motion_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -891,8 +891,8 @@ func (self class) GetMotionScale() gd.Float {
 func (self class) SetShowRestOnly(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_show_rest_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_show_rest_only, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -900,7 +900,7 @@ func (self class) SetShowRestOnly(enabled bool) {
 func (self class) IsShowRestOnly() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_is_show_rest_only, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_is_show_rest_only, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -910,8 +910,8 @@ func (self class) IsShowRestOnly() bool {
 func (self class) SetModifierCallbackModeProcess(mode gdclass.Skeleton3DModifierCallbackModeProcess) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_modifier_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_modifier_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -919,7 +919,7 @@ func (self class) SetModifierCallbackModeProcess(mode gdclass.Skeleton3DModifier
 func (self class) GetModifierCallbackModeProcess() gdclass.Skeleton3DModifierCallbackModeProcess {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Skeleton3DModifierCallbackModeProcess](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_modifier_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_modifier_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -931,8 +931,8 @@ Removes the global pose override on all bones in the skeleton.
 //go:nosplit
 func (self class) ClearBonesGlobalPoseOverride() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_clear_bones_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_clear_bones_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -948,8 +948,8 @@ func (self class) SetBoneGlobalPoseOverride(bone_idx gd.Int, pose gd.Transform3D
 	callframe.Arg(frame, pose)
 	callframe.Arg(frame, amount)
 	callframe.Arg(frame, persistent)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -961,7 +961,7 @@ func (self class) GetBoneGlobalPoseOverride(bone_idx gd.Int) gd.Transform3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -975,7 +975,7 @@ func (self class) GetBoneGlobalPoseNoOverride(bone_idx gd.Int) gd.Transform3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_no_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_no_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -985,8 +985,8 @@ func (self class) GetBoneGlobalPoseNoOverride(bone_idx gd.Int) gd.Transform3D {
 func (self class) SetAnimatePhysicalBones(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_animate_physical_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_animate_physical_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -994,7 +994,7 @@ func (self class) SetAnimatePhysicalBones(enabled bool) {
 func (self class) GetAnimatePhysicalBones() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_animate_physical_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_animate_physical_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1006,8 +1006,8 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
 //go:nosplit
 func (self class) PhysicalBonesStopSimulation() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_stop_simulation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_stop_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1019,8 +1019,8 @@ Optionally, a list of bone names can be passed-in, allowing only the passed-in b
 func (self class) PhysicalBonesStartSimulation(bones gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bones))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_start_simulation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_start_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1032,8 +1032,8 @@ Works just like the [RigidBody3D] node.
 func (self class) PhysicalBonesAddCollisionException(exception gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, exception)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_add_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_add_collision_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1045,8 +1045,8 @@ Works just like the [RigidBody3D] node.
 func (self class) PhysicalBonesRemoveCollisionException(exception gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, exception)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_remove_collision_exception, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_remove_collision_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnPoseUpdated(cb func()) {

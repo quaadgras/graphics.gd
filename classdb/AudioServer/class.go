@@ -414,8 +414,8 @@ func SetPlaybackSpeedScale(value Float.X) {
 func (self class) SetBusCount(amount gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -423,7 +423,7 @@ func (self class) SetBusCount(amount gd.Int) {
 func (self class) GetBusCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -436,8 +436,8 @@ Removes the bus at index [param index].
 func (self class) RemoveBus(index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_remove_bus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_remove_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -448,8 +448,8 @@ Adds a bus at [param at_position].
 func (self class) AddBus(at_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_add_bus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_add_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -461,8 +461,8 @@ func (self class) MoveBus(index gd.Int, to_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, to_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_move_bus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_move_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -474,8 +474,8 @@ func (self class) SetBusName(bus_idx gd.Int, name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -487,7 +487,7 @@ func (self class) GetBusName(bus_idx gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -501,7 +501,7 @@ func (self class) GetBusIndex(bus_name gd.StringName) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bus_name))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -515,7 +515,7 @@ func (self class) GetBusChannels(bus_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_channels, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -529,8 +529,8 @@ func (self class) SetBusVolumeDb(bus_idx gd.Int, volume_db gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, volume_db)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_volume_db, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -542,7 +542,7 @@ func (self class) GetBusVolumeDb(bus_idx gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_volume_db, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -556,8 +556,8 @@ func (self class) SetBusSend(bus_idx gd.Int, send gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, pointers.Get(send))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_send, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_send, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -569,7 +569,7 @@ func (self class) GetBusSend(bus_idx gd.Int) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_send, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_send, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -583,8 +583,8 @@ func (self class) SetBusSolo(bus_idx gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_solo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_solo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -596,7 +596,7 @@ func (self class) IsBusSolo(bus_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_bus_solo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_bus_solo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -610,8 +610,8 @@ func (self class) SetBusMute(bus_idx gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_mute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_mute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -623,7 +623,7 @@ func (self class) IsBusMute(bus_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_bus_mute, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_bus_mute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -637,8 +637,8 @@ func (self class) SetBusBypassEffects(bus_idx gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_bypass_effects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_bypass_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -650,7 +650,7 @@ func (self class) IsBusBypassingEffects(bus_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_bus_bypassing_effects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_bus_bypassing_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -665,8 +665,8 @@ func (self class) AddBusEffect(bus_idx gd.Int, effect [1]gdclass.AudioEffect, at
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, pointers.Get(effect[0])[0])
 	callframe.Arg(frame, at_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_add_bus_effect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_add_bus_effect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -678,8 +678,8 @@ func (self class) RemoveBusEffect(bus_idx gd.Int, effect_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_remove_bus_effect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_remove_bus_effect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -691,7 +691,7 @@ func (self class) GetBusEffectCount(bus_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -706,7 +706,7 @@ func (self class) GetBusEffect(bus_idx gd.Int, effect_idx gd.Int) [1]gdclass.Aud
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioEffect{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioEffect](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -722,7 +722,7 @@ func (self class) GetBusEffectInstance(bus_idx gd.Int, effect_idx gd.Int, channe
 	callframe.Arg(frame, effect_idx)
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect_instance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_effect_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioEffectInstance{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioEffectInstance](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -737,8 +737,8 @@ func (self class) SwapBusEffects(bus_idx gd.Int, effect_idx gd.Int, by_effect_id
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
 	callframe.Arg(frame, by_effect_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_swap_bus_effects, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_swap_bus_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -751,8 +751,8 @@ func (self class) SetBusEffectEnabled(bus_idx gd.Int, effect_idx gd.Int, enabled
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_effect_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_effect_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -765,7 +765,7 @@ func (self class) IsBusEffectEnabled(bus_idx gd.Int, effect_idx gd.Int) bool {
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_bus_effect_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_bus_effect_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -780,7 +780,7 @@ func (self class) GetBusPeakVolumeLeftDb(bus_idx gd.Int, channel gd.Int) gd.Floa
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_peak_volume_left_db, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_peak_volume_left_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -795,7 +795,7 @@ func (self class) GetBusPeakVolumeRightDb(bus_idx gd.Int, channel gd.Int) gd.Flo
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_peak_volume_right_db, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_peak_volume_right_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -805,8 +805,8 @@ func (self class) GetBusPeakVolumeRightDb(bus_idx gd.Int, channel gd.Int) gd.Flo
 func (self class) SetPlaybackSpeedScale(scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_playback_speed_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_playback_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -814,7 +814,7 @@ func (self class) SetPlaybackSpeedScale(scale gd.Float) {
 func (self class) GetPlaybackSpeedScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_playback_speed_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_playback_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -827,8 +827,8 @@ Locks the audio driver's main loop.
 //go:nosplit
 func (self class) Lock() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_lock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_lock, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -838,8 +838,8 @@ Unlocks the audio driver's main loop. (After locking it, you should always unloc
 //go:nosplit
 func (self class) Unlock() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_unlock, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_unlock, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -850,7 +850,7 @@ Returns the speaker configuration.
 func (self class) GetSpeakerMode() gdclass.AudioServerSpeakerMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioServerSpeakerMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_speaker_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_speaker_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -863,7 +863,7 @@ Returns the sample rate at the output of the [AudioServer].
 func (self class) GetMixRate() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_mix_rate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_mix_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -876,7 +876,7 @@ Returns the names of all audio output devices detected on the system.
 func (self class) GetOutputDeviceList() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_device_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_device_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -886,7 +886,7 @@ func (self class) GetOutputDeviceList() gd.PackedStringArray {
 func (self class) GetOutputDevice() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -896,8 +896,8 @@ func (self class) GetOutputDevice() gd.String {
 func (self class) SetOutputDevice(name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_output_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_output_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -908,7 +908,7 @@ Returns the relative time until the next mix occurs.
 func (self class) GetTimeToNextMix() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_time_to_next_mix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_time_to_next_mix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -921,7 +921,7 @@ Returns the relative time since the last mix occurred.
 func (self class) GetTimeSinceLastMix() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_time_since_last_mix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_time_since_last_mix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -935,7 +935,7 @@ Returns the audio driver's effective output latency. This is based on [member Pr
 func (self class) GetOutputLatency() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_latency, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_latency, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -949,7 +949,7 @@ Returns the names of all audio input devices detected on the system.
 func (self class) GetInputDeviceList() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_input_device_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_input_device_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -959,7 +959,7 @@ func (self class) GetInputDeviceList() gd.PackedStringArray {
 func (self class) GetInputDevice() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_input_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_input_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -969,8 +969,8 @@ func (self class) GetInputDevice() gd.String {
 func (self class) SetInputDevice(name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_input_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_input_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -981,8 +981,8 @@ Overwrites the currently used [AudioBusLayout].
 func (self class) SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bus_layout[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -993,7 +993,7 @@ Generates an [AudioBusLayout] using the available buses and effects.
 func (self class) GenerateBusLayout() [1]gdclass.AudioBusLayout {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_generate_bus_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_generate_bus_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioBusLayout{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioBusLayout](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1007,8 +1007,8 @@ If set to [code]true[/code], all instances of [AudioStreamPlayback] will call [m
 func (self class) SetEnableTaggingUsedAudioStreams(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_enable_tagging_used_audio_streams, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_enable_tagging_used_audio_streams, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1021,7 +1021,7 @@ func (self class) IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_stream_registered_as_sample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_is_stream_registered_as_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1035,8 +1035,8 @@ Forces the registration of a stream as a sample.
 func (self class) RegisterStreamAsSample(stream [1]gdclass.AudioStream) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_register_stream_as_sample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_register_stream_as_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func OnBusLayoutChanged(cb func()) {

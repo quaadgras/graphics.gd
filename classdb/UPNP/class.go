@@ -222,7 +222,7 @@ Returns the number of discovered [UPNPDevice]s.
 func (self class) GetDeviceCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_device_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_device_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -236,7 +236,7 @@ func (self class) GetDevice(index gd.Int) [1]gdclass.UPNPDevice {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.UPNPDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.UPNPDevice](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -249,8 +249,8 @@ Adds the given [UPNPDevice] to the list of discovered devices.
 func (self class) AddDevice(device [1]gdclass.UPNPDevice) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(device[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_add_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_add_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -262,8 +262,8 @@ func (self class) SetDevice(index gd.Int, device [1]gdclass.UPNPDevice) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(device[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -274,8 +274,8 @@ Removes the device at [param index] from the list of discovered devices.
 func (self class) RemoveDevice(index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_remove_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_remove_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -285,8 +285,8 @@ Clears the list of discovered devices.
 //go:nosplit
 func (self class) ClearDevices() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_clear_devices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_clear_devices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -297,7 +297,7 @@ Returns the default gateway. That is the first discovered [UPNPDevice] that is a
 func (self class) GetGateway() [1]gdclass.UPNPDevice {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_gateway, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_gateway, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.UPNPDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.UPNPDevice](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -315,7 +315,7 @@ func (self class) Discover(timeout gd.Int, ttl gd.Int, device_filter gd.String) 
 	callframe.Arg(frame, ttl)
 	callframe.Arg(frame, pointers.Get(device_filter))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_discover, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_discover, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -328,7 +328,7 @@ Returns the external [IP] address of the default gateway (see [method get_gatewa
 func (self class) QueryExternalAddress() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_query_external_address, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_query_external_address, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -351,7 +351,7 @@ func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc gd.Stri
 	callframe.Arg(frame, pointers.Get(proto))
 	callframe.Arg(frame, duration)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -366,7 +366,7 @@ func (self class) DeletePortMapping(port gd.Int, proto gd.String) gd.Int {
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(proto))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -376,8 +376,8 @@ func (self class) DeletePortMapping(port gd.Int, proto gd.String) gd.Int {
 func (self class) SetDiscoverMulticastIf(m_if gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(m_if))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -385,7 +385,7 @@ func (self class) SetDiscoverMulticastIf(m_if gd.String) {
 func (self class) GetDiscoverMulticastIf() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -395,8 +395,8 @@ func (self class) GetDiscoverMulticastIf() gd.String {
 func (self class) SetDiscoverLocalPort(port gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -404,7 +404,7 @@ func (self class) SetDiscoverLocalPort(port gd.Int) {
 func (self class) GetDiscoverLocalPort() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_discover_local_port, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_discover_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -414,8 +414,8 @@ func (self class) GetDiscoverLocalPort() gd.Int {
 func (self class) SetDiscoverIpv6(ipv6 bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ipv6)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_ipv6, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_set_discover_ipv6, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -423,7 +423,7 @@ func (self class) SetDiscoverIpv6(ipv6 bool) {
 func (self class) IsDiscoverIpv6() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_is_discover_ipv6, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_is_discover_ipv6, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

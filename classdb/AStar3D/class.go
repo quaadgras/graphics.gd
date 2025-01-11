@@ -432,7 +432,7 @@ Returns the next available point ID with no point associated to it.
 func (self class) GetAvailablePointId() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_available_point_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_available_point_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -459,8 +459,8 @@ func (self class) AddPoint(id gd.Int, position gd.Vector3, weight_scale gd.Float
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, weight_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_add_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_add_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -472,7 +472,7 @@ func (self class) GetPointPosition(id gd.Int) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -486,8 +486,8 @@ func (self class) SetPointPosition(id gd.Int, position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_set_point_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_set_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -499,7 +499,7 @@ func (self class) GetPointWeightScale(id gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_weight_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_weight_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -513,8 +513,8 @@ func (self class) SetPointWeightScale(id gd.Int, weight_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, weight_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_set_point_weight_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_set_point_weight_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -525,8 +525,8 @@ Removes the point associated with the given [param id] from the points pool.
 func (self class) RemovePoint(id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_remove_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_remove_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -538,7 +538,7 @@ func (self class) HasPoint(id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_has_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_has_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -577,7 +577,7 @@ func (self class) GetPointConnections(id gd.Int) gd.PackedInt64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_connections, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -590,7 +590,7 @@ Returns an array of all point IDs.
 func (self class) GetPointIds() gd.PackedInt64Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_ids, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -604,8 +604,8 @@ func (self class) SetPointDisabled(id gd.Int, disabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, disabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_set_point_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_set_point_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -617,7 +617,7 @@ func (self class) IsPointDisabled(id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_is_point_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_is_point_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -646,8 +646,8 @@ func (self class) ConnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) {
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, bidirectional)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_connect_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_connect_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -660,8 +660,8 @@ func (self class) DisconnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) 
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, bidirectional)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_disconnect_points, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_disconnect_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -675,7 +675,7 @@ func (self class) ArePointsConnected(id gd.Int, to_id gd.Int, bidirectional bool
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, bidirectional)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_are_points_connected, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_are_points_connected, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -688,7 +688,7 @@ Returns the number of points currently in the points pool.
 func (self class) GetPointCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -701,7 +701,7 @@ Returns the capacity of the structure backing the points, useful in conjunction 
 func (self class) GetPointCapacity() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_capacity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_capacity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -714,8 +714,8 @@ Reserves space internally for [param num_nodes] points. Useful if you're adding 
 func (self class) ReserveSpace(num_nodes gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, num_nodes)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_reserve_space, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_reserve_space, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -725,8 +725,8 @@ Clears all the points and segments.
 //go:nosplit
 func (self class) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -740,7 +740,7 @@ func (self class) GetClosestPoint(to_position gd.Vector3, include_disabled bool)
 	callframe.Arg(frame, to_position)
 	callframe.Arg(frame, include_disabled)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -771,7 +771,7 @@ func (self class) GetClosestPositionInSegment(to_position gd.Vector3) gd.Vector3
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_closest_position_in_segment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_closest_position_in_segment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -789,7 +789,7 @@ func (self class) GetPointPath(from_id gd.Int, to_id gd.Int, allow_partial_path 
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, allow_partial_path)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -835,7 +835,7 @@ func (self class) GetIdPath(from_id gd.Int, to_id gd.Int, allow_partial_path boo
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, allow_partial_path)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_id_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_id_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
 	return ret

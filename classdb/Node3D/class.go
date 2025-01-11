@@ -462,8 +462,8 @@ func (self Instance) SetVisibilityParent(value NodePath.String) {
 func (self class) SetTransform(local gd.Transform3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, local)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -471,7 +471,7 @@ func (self class) SetTransform(local gd.Transform3D) {
 func (self class) GetTransform() gd.Transform3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -481,8 +481,8 @@ func (self class) GetTransform() gd.Transform3D {
 func (self class) SetPosition(position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -490,7 +490,7 @@ func (self class) SetPosition(position gd.Vector3) {
 func (self class) GetPosition() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -500,8 +500,8 @@ func (self class) GetPosition() gd.Vector3 {
 func (self class) SetRotation(euler_radians gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, euler_radians)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -509,7 +509,7 @@ func (self class) SetRotation(euler_radians gd.Vector3) {
 func (self class) GetRotation() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -519,8 +519,8 @@ func (self class) GetRotation() gd.Vector3 {
 func (self class) SetRotationDegrees(euler_degrees gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, euler_degrees)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -528,7 +528,7 @@ func (self class) SetRotationDegrees(euler_degrees gd.Vector3) {
 func (self class) GetRotationDegrees() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -538,8 +538,8 @@ func (self class) GetRotationDegrees() gd.Vector3 {
 func (self class) SetRotationOrder(order EulerOrder) {
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -547,7 +547,7 @@ func (self class) SetRotationOrder(order EulerOrder) {
 func (self class) GetRotationOrder() EulerOrder {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[EulerOrder](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_order, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -557,8 +557,8 @@ func (self class) GetRotationOrder() EulerOrder {
 func (self class) SetRotationEditMode(edit_mode gdclass.Node3DRotationEditMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, edit_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation_edit_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation_edit_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -566,7 +566,7 @@ func (self class) SetRotationEditMode(edit_mode gdclass.Node3DRotationEditMode) 
 func (self class) GetRotationEditMode() gdclass.Node3DRotationEditMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Node3DRotationEditMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_edit_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_edit_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -576,8 +576,8 @@ func (self class) GetRotationEditMode() gdclass.Node3DRotationEditMode {
 func (self class) SetScale(scale gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -585,7 +585,7 @@ func (self class) SetScale(scale gd.Vector3) {
 func (self class) GetScale() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -595,8 +595,8 @@ func (self class) GetScale() gd.Vector3 {
 func (self class) SetQuaternion(quaternion gd.Quaternion) {
 	var frame = callframe.New()
 	callframe.Arg(frame, quaternion)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_quaternion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_quaternion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -604,7 +604,7 @@ func (self class) SetQuaternion(quaternion gd.Quaternion) {
 func (self class) GetQuaternion() gd.Quaternion {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Quaternion](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_quaternion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_quaternion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -614,8 +614,8 @@ func (self class) GetQuaternion() gd.Quaternion {
 func (self class) SetBasis(basis gd.Basis) {
 	var frame = callframe.New()
 	callframe.Arg(frame, basis)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_basis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -623,7 +623,7 @@ func (self class) SetBasis(basis gd.Basis) {
 func (self class) GetBasis() gd.Basis {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Basis](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_basis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -633,8 +633,8 @@ func (self class) GetBasis() gd.Basis {
 func (self class) SetGlobalTransform(global gd.Transform3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, global)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -642,7 +642,7 @@ func (self class) SetGlobalTransform(global gd.Transform3D) {
 func (self class) GetGlobalTransform() gd.Transform3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -652,8 +652,8 @@ func (self class) GetGlobalTransform() gd.Transform3D {
 func (self class) SetGlobalPosition(position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -661,7 +661,7 @@ func (self class) SetGlobalPosition(position gd.Vector3) {
 func (self class) GetGlobalPosition() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -671,8 +671,8 @@ func (self class) GetGlobalPosition() gd.Vector3 {
 func (self class) SetGlobalBasis(basis gd.Basis) {
 	var frame = callframe.New()
 	callframe.Arg(frame, basis)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_basis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -680,7 +680,7 @@ func (self class) SetGlobalBasis(basis gd.Basis) {
 func (self class) GetGlobalBasis() gd.Basis {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Basis](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_basis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -690,8 +690,8 @@ func (self class) GetGlobalBasis() gd.Basis {
 func (self class) SetGlobalRotation(euler_radians gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, euler_radians)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -699,7 +699,7 @@ func (self class) SetGlobalRotation(euler_radians gd.Vector3) {
 func (self class) GetGlobalRotation() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -709,8 +709,8 @@ func (self class) GetGlobalRotation() gd.Vector3 {
 func (self class) SetGlobalRotationDegrees(euler_degrees gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, euler_degrees)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -718,7 +718,7 @@ func (self class) SetGlobalRotationDegrees(euler_degrees gd.Vector3) {
 func (self class) GetGlobalRotationDegrees() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -732,7 +732,7 @@ Returns the parent [Node3D], or [code]null[/code] if no parent exists, the paren
 func (self class) GetParentNode3d() [1]gdclass.Node3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_parent_node_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_parent_node_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node3D{gd.PointerMustAssertInstanceID[gdclass.Node3D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -745,8 +745,8 @@ Sets whether the node ignores notification that its transformation (global or lo
 func (self class) SetIgnoreTransformNotification(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_ignore_transform_notification, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_ignore_transform_notification, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -754,8 +754,8 @@ func (self class) SetIgnoreTransformNotification(enabled bool) {
 func (self class) SetAsTopLevel(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -763,7 +763,7 @@ func (self class) SetAsTopLevel(enable bool) {
 func (self class) IsSetAsTopLevel() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -776,8 +776,8 @@ Sets whether the node uses a scale of [code](1, 1, 1)[/code] or its local transf
 func (self class) SetDisableScale(disable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, disable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_disable_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_disable_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -788,7 +788,7 @@ Returns whether this node uses a scale of [code](1, 1, 1)[/code] or its local tr
 func (self class) IsScaleDisabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_scale_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_scale_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -801,7 +801,7 @@ Returns the current [World3D] resource this [Node3D] node is registered to.
 func (self class) GetWorld3d() [1]gdclass.World3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -813,8 +813,8 @@ Forces the transform to update. Transform changes in physics are not instant for
 //go:nosplit
 func (self class) ForceUpdateTransform() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_force_update_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_force_update_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -822,8 +822,8 @@ func (self class) ForceUpdateTransform() {
 func (self class) SetVisibilityParent(path gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -831,7 +831,7 @@ func (self class) SetVisibilityParent(path gd.NodePath) {
 func (self class) GetVisibilityParent() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -843,8 +843,8 @@ Updates all the [Node3D] gizmos attached to this node.
 //go:nosplit
 func (self class) UpdateGizmos() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_update_gizmos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_update_gizmos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -856,8 +856,8 @@ Attach an editor gizmo to this [Node3D].
 func (self class) AddGizmo(gizmo [1]gdclass.Node3DGizmo) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gizmo[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_add_gizmo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_add_gizmo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -868,7 +868,7 @@ Returns all the gizmos attached to this [Node3D].
 func (self class) GetGizmos() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_gizmos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_gizmos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -880,8 +880,8 @@ Clear all gizmos attached to this [Node3D].
 //go:nosplit
 func (self class) ClearGizmos() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_clear_gizmos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_clear_gizmos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -895,8 +895,8 @@ func (self class) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id gd.Int, 
 	callframe.Arg(frame, pointers.Get(gizmo[0])[0])
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -906,8 +906,8 @@ Clears subgizmo selection for this node in the editor. Useful when subgizmo IDs 
 //go:nosplit
 func (self class) ClearSubgizmoSelection() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_clear_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_clear_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -915,8 +915,8 @@ func (self class) ClearSubgizmoSelection() {
 func (self class) SetVisible(visible bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -924,7 +924,7 @@ func (self class) SetVisible(visible bool) {
 func (self class) IsVisible() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -937,7 +937,7 @@ Returns [code]true[/code] if the node is present in the [SceneTree], its [member
 func (self class) IsVisibleInTree() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_visible_in_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_visible_in_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -949,8 +949,8 @@ Enables rendering of this node. Changes [member visible] to [code]true[/code].
 //go:nosplit
 func (self class) Show() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_show, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -960,8 +960,8 @@ Disables rendering of this node. Changes [member visible] to [code]false[/code].
 //go:nosplit
 func (self class) Hide() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_hide, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_hide, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -972,8 +972,8 @@ Sets whether the node notifies about its local transformation changes. [Node3D] 
 func (self class) SetNotifyLocalTransform(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_notify_local_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_notify_local_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -984,7 +984,7 @@ Returns whether node notifies about its local transformation changes. [Node3D] w
 func (self class) IsLocalTransformNotificationEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_local_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_local_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -997,8 +997,8 @@ Sets whether the node notifies about its global and local transformation changes
 func (self class) SetNotifyTransform(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_notify_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_notify_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1009,7 +1009,7 @@ Returns whether the node notifies about its global and local transformation chan
 func (self class) IsTransformNotificationEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1023,8 +1023,8 @@ func (self class) Rotate(axis gd.Vector3, angle gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, angle)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1036,8 +1036,8 @@ func (self class) GlobalRotate(axis gd.Vector3, angle gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, angle)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_global_rotate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_global_rotate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1048,8 +1048,8 @@ Scales the global (world) transformation by the given [Vector3] scale factors.
 func (self class) GlobalScale(scale gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_global_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_global_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1060,8 +1060,8 @@ Moves the global (world) transformation by [Vector3] offset. The offset is in gl
 func (self class) GlobalTranslate(offset gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_global_translate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_global_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1073,8 +1073,8 @@ func (self class) RotateObjectLocal(axis gd.Vector3, angle gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, angle)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_object_local, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_object_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1085,8 +1085,8 @@ Scales the local transformation by given 3D scale factors in object-local coordi
 func (self class) ScaleObjectLocal(scale gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_scale_object_local, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_scale_object_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1097,8 +1097,8 @@ Changes the node's position by the given offset [Vector3] in local space.
 func (self class) TranslateObjectLocal(offset gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_translate_object_local, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_translate_object_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1109,8 +1109,8 @@ Rotates the local transformation around the X axis by angle in radians.
 func (self class) RotateX(angle gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_x, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1121,8 +1121,8 @@ Rotates the local transformation around the Y axis by angle in radians.
 func (self class) RotateY(angle gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_y, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1133,8 +1133,8 @@ Rotates the local transformation around the Z axis by angle in radians.
 func (self class) RotateZ(angle gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_z, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_z, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1146,8 +1146,8 @@ Note that the translation [param offset] is affected by the node's scale, so if 
 func (self class) Translate(offset gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_translate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1157,8 +1157,8 @@ Resets this node's transformations (like scale, skew and taper) preserving its r
 //go:nosplit
 func (self class) Orthonormalize() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_orthonormalize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_orthonormalize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1168,8 +1168,8 @@ Reset all transformations for this node (sets its [Transform3D] to the identity 
 //go:nosplit
 func (self class) SetIdentity() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_identity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_identity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1186,8 +1186,8 @@ func (self class) LookAt(target gd.Vector3, up gd.Vector3, use_model_front bool)
 	callframe.Arg(frame, target)
 	callframe.Arg(frame, up)
 	callframe.Arg(frame, use_model_front)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_look_at, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_look_at, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1201,8 +1201,8 @@ func (self class) LookAtFromPosition(position gd.Vector3, target gd.Vector3, up 
 	callframe.Arg(frame, target)
 	callframe.Arg(frame, up)
 	callframe.Arg(frame, use_model_front)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_look_at_from_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_look_at_from_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1214,7 +1214,7 @@ func (self class) ToLocal(global_point gd.Vector3) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, global_point)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_to_local, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_to_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1228,7 +1228,7 @@ func (self class) ToGlobal(local_point gd.Vector3) gd.Vector3 {
 	var frame = callframe.New()
 	callframe.Arg(frame, local_point)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_to_global, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_to_global, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

@@ -123,7 +123,7 @@ func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTextur
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_create_from_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_create_from_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ImageTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ImageTexture](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -136,7 +136,7 @@ Returns the format of the texture, one of [enum Image.Format].
 func (self class) GetFormat() gdclass.ImageFormat {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -150,8 +150,8 @@ If you want to update the image, but don't need to change its parameters (format
 func (self class) SetImage(image [1]gdclass.Image) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_set_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_set_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -164,8 +164,8 @@ Use this method over [method set_image] if you need to update the texture freque
 func (self class) Update(image [1]gdclass.Image) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -176,8 +176,8 @@ Resizes the texture to the specified dimensions.
 func (self class) SetSizeOverride(size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_set_size_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_set_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsImageTexture() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

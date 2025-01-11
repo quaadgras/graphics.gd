@@ -136,7 +136,7 @@ Returns [code]true[/code] if this is a valid IGD (InternetGatewayDevice) which p
 func (self class) IsValidGateway() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_is_valid_gateway, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_is_valid_gateway, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -149,7 +149,7 @@ Returns the external IP address of this [UPNPDevice] or an empty string.
 func (self class) QueryExternalAddress() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_query_external_address, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_query_external_address, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -167,7 +167,7 @@ func (self class) AddPortMapping(port gd.Int, port_internal gd.Int, desc gd.Stri
 	callframe.Arg(frame, pointers.Get(proto))
 	callframe.Arg(frame, duration)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -182,7 +182,7 @@ func (self class) DeletePortMapping(port gd.Int, proto gd.String) gd.Int {
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(proto))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -192,8 +192,8 @@ func (self class) DeletePortMapping(port gd.Int, proto gd.String) gd.Int {
 func (self class) SetDescriptionUrl(url gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(url))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_description_url, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_description_url, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -201,7 +201,7 @@ func (self class) SetDescriptionUrl(url gd.String) {
 func (self class) GetDescriptionUrl() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_description_url, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_description_url, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -211,8 +211,8 @@ func (self class) GetDescriptionUrl() gd.String {
 func (self class) SetServiceType(atype gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(atype))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_service_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_service_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -220,7 +220,7 @@ func (self class) SetServiceType(atype gd.String) {
 func (self class) GetServiceType() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_service_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_service_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -230,8 +230,8 @@ func (self class) GetServiceType() gd.String {
 func (self class) SetIgdControlUrl(url gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(url))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_control_url, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_control_url, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -239,7 +239,7 @@ func (self class) SetIgdControlUrl(url gd.String) {
 func (self class) GetIgdControlUrl() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_control_url, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_control_url, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -249,8 +249,8 @@ func (self class) GetIgdControlUrl() gd.String {
 func (self class) SetIgdServiceType(atype gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(atype))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_service_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_service_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -258,7 +258,7 @@ func (self class) SetIgdServiceType(atype gd.String) {
 func (self class) GetIgdServiceType() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_service_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_service_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -268,8 +268,8 @@ func (self class) GetIgdServiceType() gd.String {
 func (self class) SetIgdOurAddr(addr gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(addr))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_our_addr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_our_addr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -277,7 +277,7 @@ func (self class) SetIgdOurAddr(addr gd.String) {
 func (self class) GetIgdOurAddr() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_our_addr, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_our_addr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -287,8 +287,8 @@ func (self class) GetIgdOurAddr() gd.String {
 func (self class) SetIgdStatus(status gdclass.UPNPDeviceIGDStatus) {
 	var frame = callframe.New()
 	callframe.Arg(frame, status)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -296,7 +296,7 @@ func (self class) SetIgdStatus(status gdclass.UPNPDeviceIGDStatus) {
 func (self class) GetIgdStatus() gdclass.UPNPDeviceIGDStatus {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.UPNPDeviceIGDStatus](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

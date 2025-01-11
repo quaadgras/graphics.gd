@@ -68,8 +68,8 @@ func (self Instance) SetGizmoExtents(value Float.X) {
 func (self class) SetGizmoExtents(extents gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, extents)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marker2D.Bind_set_gizmo_extents, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marker2D.Bind_set_gizmo_extents, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -77,7 +77,7 @@ func (self class) SetGizmoExtents(extents gd.Float) {
 func (self class) GetGizmoExtents() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marker2D.Bind_get_gizmo_extents, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marker2D.Bind_get_gizmo_extents, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

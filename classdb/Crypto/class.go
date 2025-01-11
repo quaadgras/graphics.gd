@@ -211,7 +211,7 @@ func (self class) GenerateRandomBytes(size gd.Int) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_random_bytes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_random_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -225,7 +225,7 @@ func (self class) GenerateRsa(size gd.Int) [1]gdclass.CryptoKey {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_rsa, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_rsa, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -259,7 +259,7 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 	callframe.Arg(frame, pointers.Get(not_before))
 	callframe.Arg(frame, pointers.Get(not_after))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_self_signed_certificate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_self_signed_certificate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -275,7 +275,7 @@ func (self class) Sign(hash_type gdclass.HashingContextHashType, hash gd.PackedB
 	callframe.Arg(frame, pointers.Get(hash))
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_sign, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_sign, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -292,7 +292,7 @@ func (self class) Verify(hash_type gdclass.HashingContextHashType, hash gd.Packe
 	callframe.Arg(frame, pointers.Get(signature))
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_verify, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_verify, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -308,7 +308,7 @@ func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext gd.PackedByteArray
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	callframe.Arg(frame, pointers.Get(plaintext))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_encrypt, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_encrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -324,7 +324,7 @@ func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext gd.PackedByteArra
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	callframe.Arg(frame, pointers.Get(ciphertext))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_decrypt, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_decrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -341,7 +341,7 @@ func (self class) HmacDigest(hash_type gdclass.HashingContextHashType, key gd.Pa
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(msg))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_hmac_digest, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_hmac_digest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -357,7 +357,7 @@ func (self class) ConstantTimeCompare(trusted gd.PackedByteArray, received gd.Pa
 	callframe.Arg(frame, pointers.Get(trusted))
 	callframe.Arg(frame, pointers.Get(received))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_constant_time_compare, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_constant_time_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

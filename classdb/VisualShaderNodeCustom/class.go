@@ -829,7 +829,7 @@ func (self class) GetOptionIndex(option gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCustom.Bind_get_option_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCustom.Bind_get_option_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

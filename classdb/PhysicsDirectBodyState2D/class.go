@@ -336,7 +336,7 @@ func (self Instance) SetTransform(value Transform2D.OriginXY) {
 func (self class) GetTotalGravity() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_total_gravity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_total_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -346,7 +346,7 @@ func (self class) GetTotalGravity() gd.Vector2 {
 func (self class) GetTotalLinearDamp() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_total_linear_damp, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_total_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -356,7 +356,7 @@ func (self class) GetTotalLinearDamp() gd.Float {
 func (self class) GetTotalAngularDamp() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_total_angular_damp, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_total_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -366,7 +366,7 @@ func (self class) GetTotalAngularDamp() gd.Float {
 func (self class) GetCenterOfMass() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -376,7 +376,7 @@ func (self class) GetCenterOfMass() gd.Vector2 {
 func (self class) GetCenterOfMassLocal() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_center_of_mass_local, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_center_of_mass_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -386,7 +386,7 @@ func (self class) GetCenterOfMassLocal() gd.Vector2 {
 func (self class) GetInverseMass() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_inverse_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_inverse_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -396,7 +396,7 @@ func (self class) GetInverseMass() gd.Float {
 func (self class) GetInverseInertia() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_inverse_inertia, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_inverse_inertia, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -406,8 +406,8 @@ func (self class) GetInverseInertia() gd.Float {
 func (self class) SetLinearVelocity(velocity gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -415,7 +415,7 @@ func (self class) SetLinearVelocity(velocity gd.Vector2) {
 func (self class) GetLinearVelocity() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -425,8 +425,8 @@ func (self class) GetLinearVelocity() gd.Vector2 {
 func (self class) SetAngularVelocity(velocity gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -434,7 +434,7 @@ func (self class) SetAngularVelocity(velocity gd.Float) {
 func (self class) GetAngularVelocity() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -444,8 +444,8 @@ func (self class) GetAngularVelocity() gd.Float {
 func (self class) SetTransform(transform gd.Transform2D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -453,7 +453,7 @@ func (self class) SetTransform(transform gd.Transform2D) {
 func (self class) GetTransform() gd.Transform2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -467,7 +467,7 @@ func (self class) GetVelocityAtLocalPosition(local_position gd.Vector2) gd.Vecto
 	var frame = callframe.New()
 	callframe.Arg(frame, local_position)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_velocity_at_local_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_velocity_at_local_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -482,8 +482,8 @@ This is equivalent to using [method apply_impulse] at the body's center of mass.
 func (self class) ApplyCentralImpulse(impulse gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_central_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_central_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -496,8 +496,8 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 func (self class) ApplyTorqueImpulse(impulse gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_torque_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_torque_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -511,8 +511,8 @@ func (self class) ApplyImpulse(impulse gd.Vector2, position gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -524,8 +524,8 @@ This is equivalent to using [method apply_force] at the body's center of mass.
 func (self class) ApplyCentralForce(force gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_central_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_central_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -538,8 +538,8 @@ func (self class) ApplyForce(force gd.Vector2, position gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -551,8 +551,8 @@ Applies a rotational force without affecting position. A force is time dependent
 func (self class) ApplyTorque(torque gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_apply_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -564,8 +564,8 @@ This is equivalent to using [method add_constant_force] at the body's center of 
 func (self class) AddConstantCentralForce(force gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_add_constant_central_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_add_constant_central_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -578,8 +578,8 @@ func (self class) AddConstantForce(force gd.Vector2, position gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_add_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_add_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -590,8 +590,8 @@ Adds a constant rotational force without affecting position that keeps being app
 func (self class) AddConstantTorque(torque gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_add_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_add_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -603,8 +603,8 @@ See [method add_constant_force] and [method add_constant_central_force].
 func (self class) SetConstantForce(force gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -616,7 +616,7 @@ See [method add_constant_force] and [method add_constant_central_force].
 func (self class) GetConstantForce() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -630,8 +630,8 @@ See [method add_constant_torque].
 func (self class) SetConstantTorque(torque gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -643,7 +643,7 @@ See [method add_constant_torque].
 func (self class) GetConstantTorque() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -653,8 +653,8 @@ func (self class) GetConstantTorque() gd.Float {
 func (self class) SetSleepState(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_sleep_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_set_sleep_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -662,7 +662,7 @@ func (self class) SetSleepState(enabled bool) {
 func (self class) IsSleeping() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_is_sleeping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_is_sleeping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -676,7 +676,7 @@ Returns the number of contacts this body has with other bodies.
 func (self class) GetContactCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -690,7 +690,7 @@ func (self class) GetContactLocalPosition(contact_idx gd.Int) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_local_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_local_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -704,7 +704,7 @@ func (self class) GetContactLocalNormal(contact_idx gd.Int) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_local_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_local_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -718,7 +718,7 @@ func (self class) GetContactLocalShape(contact_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_local_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_local_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -732,7 +732,7 @@ func (self class) GetContactLocalVelocityAtPosition(contact_idx gd.Int) gd.Vecto
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_local_velocity_at_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_local_velocity_at_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -746,7 +746,7 @@ func (self class) GetContactCollider(contact_idx gd.Int) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -760,7 +760,7 @@ func (self class) GetContactColliderPosition(contact_idx gd.Int) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -774,7 +774,7 @@ func (self class) GetContactColliderId(contact_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -788,7 +788,7 @@ func (self class) GetContactColliderObject(contact_idx gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_object, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_object, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
 	frame.Free()
 	return ret
@@ -802,7 +802,7 @@ func (self class) GetContactColliderShape(contact_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -816,7 +816,7 @@ func (self class) GetContactColliderVelocityAtPosition(contact_idx gd.Int) gd.Ve
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_velocity_at_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_collider_velocity_at_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -830,7 +830,7 @@ func (self class) GetContactImpulse(contact_idx gd.Int) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -840,7 +840,7 @@ func (self class) GetContactImpulse(contact_idx gd.Int) gd.Vector2 {
 func (self class) GetStep() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -852,8 +852,8 @@ Updates the body's linear and angular velocity by applying gravity and damping f
 //go:nosplit
 func (self class) IntegrateForces() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_integrate_forces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_integrate_forces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -864,7 +864,7 @@ Returns the current state of the space, useful for queries.
 func (self class) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_space_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_space_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState2D](r_ret.Get())}
 	frame.Free()
 	return ret

@@ -679,7 +679,7 @@ Returns the canvas item RID used by [RenderingServer] for this item.
 func (self class) GetCanvasItem() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -689,8 +689,8 @@ func (self class) GetCanvasItem() gd.RID {
 func (self class) SetVisible(visible bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -698,7 +698,7 @@ func (self class) SetVisible(visible bool) {
 func (self class) IsVisible() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -712,7 +712,7 @@ Visibility is checked only in parent nodes that inherit from [CanvasItem], [Canv
 func (self class) IsVisibleInTree() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_visible_in_tree, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_visible_in_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -724,8 +724,8 @@ Show the [CanvasItem] if it's currently hidden. This is equivalent to setting [m
 //go:nosplit
 func (self class) Show() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_show, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -735,8 +735,8 @@ Hide the [CanvasItem] if it's currently visible. This is equivalent to setting [
 //go:nosplit
 func (self class) Hide() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_hide, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_hide, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -746,8 +746,8 @@ Queues the [CanvasItem] to redraw. During idle time, if [CanvasItem] is visible,
 //go:nosplit
 func (self class) QueueRedraw() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_queue_redraw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_queue_redraw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -758,8 +758,8 @@ Internally, the node is moved to the bottom of parent's child list. The method h
 //go:nosplit
 func (self class) MoveToFront() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_move_to_front, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_move_to_front, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -767,8 +767,8 @@ func (self class) MoveToFront() {
 func (self class) SetAsTopLevel(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -776,7 +776,7 @@ func (self class) SetAsTopLevel(enable bool) {
 func (self class) IsSetAsTopLevel() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -786,8 +786,8 @@ func (self class) IsSetAsTopLevel() bool {
 func (self class) SetLightMask(light_mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, light_mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_light_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -795,7 +795,7 @@ func (self class) SetLightMask(light_mask gd.Int) {
 func (self class) GetLightMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_light_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -805,8 +805,8 @@ func (self class) GetLightMask() gd.Int {
 func (self class) SetModulate(modulate gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -814,7 +814,7 @@ func (self class) SetModulate(modulate gd.Color) {
 func (self class) GetModulate() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -824,8 +824,8 @@ func (self class) GetModulate() gd.Color {
 func (self class) SetSelfModulate(self_modulate gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, self_modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_self_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_self_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -833,7 +833,7 @@ func (self class) SetSelfModulate(self_modulate gd.Color) {
 func (self class) GetSelfModulate() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_self_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_self_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -843,8 +843,8 @@ func (self class) GetSelfModulate() gd.Color {
 func (self class) SetZIndex(z_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, z_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_z_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -852,7 +852,7 @@ func (self class) SetZIndex(z_index gd.Int) {
 func (self class) GetZIndex() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_z_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -862,8 +862,8 @@ func (self class) GetZIndex() gd.Int {
 func (self class) SetZAsRelative(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_z_as_relative, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_z_as_relative, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -871,7 +871,7 @@ func (self class) SetZAsRelative(enable bool) {
 func (self class) IsZRelative() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_z_relative, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_z_relative, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -881,8 +881,8 @@ func (self class) IsZRelative() bool {
 func (self class) SetYSortEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -890,7 +890,7 @@ func (self class) SetYSortEnabled(enabled bool) {
 func (self class) IsYSortEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -900,8 +900,8 @@ func (self class) IsYSortEnabled() bool {
 func (self class) SetDrawBehindParent(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_draw_behind_parent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_draw_behind_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -909,7 +909,7 @@ func (self class) SetDrawBehindParent(enable bool) {
 func (self class) IsDrawBehindParentEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_draw_behind_parent_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_draw_behind_parent_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -927,8 +927,8 @@ func (self class) DrawLine(from gd.Vector2, to gd.Vector2, color gd.Color, width
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -948,8 +948,8 @@ func (self class) DrawDashedLine(from gd.Vector2, to gd.Vector2, color gd.Color,
 	callframe.Arg(frame, dash)
 	callframe.Arg(frame, aligned)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_dashed_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_dashed_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -964,8 +964,8 @@ func (self class) DrawPolyline(points gd.PackedVector2Array, color gd.Color, wid
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polyline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polyline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -980,8 +980,8 @@ func (self class) DrawPolylineColors(points gd.PackedVector2Array, colors gd.Pac
 	callframe.Arg(frame, pointers.Get(colors))
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polyline_colors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polyline_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1001,8 +1001,8 @@ func (self class) DrawArc(center gd.Vector2, radius gd.Float, start_angle gd.Flo
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_arc, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_arc, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1018,8 +1018,8 @@ func (self class) DrawMultiline(points gd.PackedVector2Array, color gd.Color, wi
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1035,8 +1035,8 @@ func (self class) DrawMultilineColors(points gd.PackedVector2Array, colors gd.Pa
 	callframe.Arg(frame, pointers.Get(colors))
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline_colors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1055,8 +1055,8 @@ func (self class) DrawRect(rect gd.Rect2, color gd.Color, filled bool, width gd.
 	callframe.Arg(frame, filled)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1076,8 +1076,8 @@ func (self class) DrawCircle(position gd.Vector2, radius gd.Float, color gd.Colo
 	callframe.Arg(frame, filled)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, antialiased)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_circle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_circle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1090,8 +1090,8 @@ func (self class) DrawTexture(texture [1]gdclass.Texture2D, position gd.Vector2,
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1106,8 +1106,8 @@ func (self class) DrawTextureRect(texture [1]gdclass.Texture2D, rect gd.Rect2, t
 	callframe.Arg(frame, tile)
 	callframe.Arg(frame, modulate)
 	callframe.Arg(frame, transpose)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_texture_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_texture_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1123,8 +1123,8 @@ func (self class) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect gd.Re
 	callframe.Arg(frame, modulate)
 	callframe.Arg(frame, transpose)
 	callframe.Arg(frame, clip_uv)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1143,8 +1143,8 @@ func (self class) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect g
 	callframe.Arg(frame, outline)
 	callframe.Arg(frame, pixel_range)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_msdf_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_msdf_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1165,8 +1165,8 @@ func (self class) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect gd
 	callframe.Arg(frame, rect)
 	callframe.Arg(frame, src_rect)
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_lcd_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_lcd_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1178,8 +1178,8 @@ func (self class) DrawStyleBox(style_box [1]gdclass.StyleBox, rect gd.Rect2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(style_box[0])[0])
 	callframe.Arg(frame, rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_style_box, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_style_box, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1193,8 +1193,8 @@ func (self class) DrawPrimitive(points gd.PackedVector2Array, colors gd.PackedCo
 	callframe.Arg(frame, pointers.Get(colors))
 	callframe.Arg(frame, pointers.Get(uvs))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_primitive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_primitive, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1208,8 +1208,8 @@ func (self class) DrawPolygon(points gd.PackedVector2Array, colors gd.PackedColo
 	callframe.Arg(frame, pointers.Get(colors))
 	callframe.Arg(frame, pointers.Get(uvs))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polygon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1223,8 +1223,8 @@ func (self class) DrawColoredPolygon(points gd.PackedVector2Array, color gd.Colo
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, pointers.Get(uvs))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_colored_polygon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_colored_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1264,8 +1264,8 @@ func (self class) DrawString(font [1]gdclass.Font, pos gd.Vector2, text gd.Strin
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1287,8 +1287,8 @@ func (self class) DrawMultilineString(font [1]gdclass.Font, pos gd.Vector2, text
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1309,8 +1309,8 @@ func (self class) DrawStringOutline(font [1]gdclass.Font, pos gd.Vector2, text g
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_string_outline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_string_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1333,8 +1333,8 @@ func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos gd.Vector
 	callframe.Arg(frame, justification_flags)
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline_string_outline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline_string_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1349,8 +1349,8 @@ func (self class) DrawChar(font [1]gdclass.Font, pos gd.Vector2, char gd.String,
 	callframe.Arg(frame, pointers.Get(char))
 	callframe.Arg(frame, font_size)
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_char, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_char, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1366,8 +1366,8 @@ func (self class) DrawCharOutline(font [1]gdclass.Font, pos gd.Vector2, char gd.
 	callframe.Arg(frame, font_size)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_char_outline, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_char_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1381,8 +1381,8 @@ func (self class) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, t
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1394,8 +1394,8 @@ func (self class) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdcla
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(multimesh[0])[0])
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multimesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multimesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1409,8 +1409,8 @@ func (self class) DrawSetTransform(position gd.Vector2, rotation gd.Float, scale
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, rotation)
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_set_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1421,8 +1421,8 @@ Sets a custom transform for drawing via matrix. Anything drawn afterwards will b
 func (self class) DrawSetTransformMatrix(xform gd.Transform2D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_set_transform_matrix, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_set_transform_matrix, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1436,8 +1436,8 @@ func (self class) DrawAnimationSlice(animation_length gd.Float, slice_begin gd.F
 	callframe.Arg(frame, slice_begin)
 	callframe.Arg(frame, slice_end)
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_animation_slice, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_animation_slice, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1447,8 +1447,8 @@ After submitting all animations slices via [method draw_animation_slice], this f
 //go:nosplit
 func (self class) DrawEndAnimation() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_end_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_end_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1459,7 +1459,7 @@ Returns the transform matrix of this item.
 func (self class) GetTransform() gd.Transform2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1472,7 +1472,7 @@ Returns the global transform matrix of this item, i.e. the combined transform up
 func (self class) GetGlobalTransform() gd.Transform2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1485,7 +1485,7 @@ Returns the transform from the local coordinate system of this [CanvasItem] to t
 func (self class) GetGlobalTransformWithCanvas() gd.Transform2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_transform_with_canvas, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_transform_with_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1498,7 +1498,7 @@ Returns the transform from the coordinate system of the canvas, this item is in,
 func (self class) GetViewportTransform() gd.Transform2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_viewport_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_viewport_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1511,7 +1511,7 @@ Returns the viewport's boundaries as a [Rect2].
 func (self class) GetViewportRect() gd.Rect2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_viewport_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_viewport_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1524,7 +1524,7 @@ Returns the transform from the coordinate system of the canvas, this item is in,
 func (self class) GetCanvasTransform() gd.Transform2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1538,7 +1538,7 @@ Equals to [method get_global_transform] if the window is embedded (see [member V
 func (self class) GetScreenTransform() gd.Transform2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_screen_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_screen_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1551,7 +1551,7 @@ Returns the mouse's position in this [CanvasItem] using the local coordinate sys
 func (self class) GetLocalMousePosition() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_local_mouse_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_local_mouse_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1565,7 +1565,7 @@ Returns the mouse's position in the [CanvasLayer] that this [CanvasItem] is in u
 func (self class) GetGlobalMousePosition() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_mouse_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_mouse_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1578,7 +1578,7 @@ Returns the [RID] of the [World2D] canvas where this item is in.
 func (self class) GetCanvas() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1591,7 +1591,7 @@ Returns the [CanvasLayer] that contains this node, or [code]null[/code] if the n
 func (self class) GetCanvasLayerNode() [1]gdclass.CanvasLayer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_layer_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_layer_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CanvasLayer{gd.PointerLifetimeBoundTo[gdclass.CanvasLayer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1604,7 +1604,7 @@ Returns the [World2D] where this item is in.
 func (self class) GetWorld2d() [1]gdclass.World2D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1614,8 +1614,8 @@ func (self class) GetWorld2d() [1]gdclass.World2D {
 func (self class) SetMaterial(material [1]gdclass.Material) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1623,7 +1623,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 func (self class) GetMaterial() [1]gdclass.Material {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1633,8 +1633,8 @@ func (self class) GetMaterial() [1]gdclass.Material {
 func (self class) SetUseParentMaterial(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1642,7 +1642,7 @@ func (self class) SetUseParentMaterial(enable bool) {
 func (self class) GetUseParentMaterial() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1655,8 +1655,8 @@ If [param enable] is [code]true[/code], this node will receive [constant NOTIFIC
 func (self class) SetNotifyLocalTransform(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_notify_local_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_notify_local_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1667,7 +1667,7 @@ Returns [code]true[/code] if local transform notifications are communicated to c
 func (self class) IsLocalTransformNotificationEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_local_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_local_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1680,8 +1680,8 @@ If [param enable] is [code]true[/code], this node will receive [constant NOTIFIC
 func (self class) SetNotifyTransform(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_notify_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_notify_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1692,7 +1692,7 @@ Returns [code]true[/code] if global transform notifications are communicated to 
 func (self class) IsTransformNotificationEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1704,8 +1704,8 @@ Forces the transform to update. Transform changes in physics are not instant for
 //go:nosplit
 func (self class) ForceUpdateTransform() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_force_update_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_force_update_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1717,7 +1717,7 @@ func (self class) MakeCanvasPositionLocal(screen_point gd.Vector2) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_point)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_make_canvas_position_local, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_make_canvas_position_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1731,7 +1731,7 @@ func (self class) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEv
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(event[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_make_input_local, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_make_input_local, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.InputEvent{gd.PointerWithOwnershipTransferredToGo[gdclass.InputEvent](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1741,8 +1741,8 @@ func (self class) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEv
 func (self class) SetVisibilityLayer(layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_visibility_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_visibility_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1750,7 +1750,7 @@ func (self class) SetVisibilityLayer(layer gd.Int) {
 func (self class) GetVisibilityLayer() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_visibility_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_visibility_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1764,8 +1764,8 @@ func (self class) SetVisibilityLayerBit(layer gd.Int, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_visibility_layer_bit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_visibility_layer_bit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1777,7 +1777,7 @@ func (self class) GetVisibilityLayerBit(layer gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_visibility_layer_bit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_visibility_layer_bit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1787,8 +1787,8 @@ func (self class) GetVisibilityLayerBit(layer gd.Int) bool {
 func (self class) SetTextureFilter(mode gdclass.CanvasItemTextureFilter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1796,7 +1796,7 @@ func (self class) SetTextureFilter(mode gdclass.CanvasItemTextureFilter) {
 func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemTextureFilter](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1806,8 +1806,8 @@ func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter {
 func (self class) SetTextureRepeat(mode gdclass.CanvasItemTextureRepeat) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1815,7 +1815,7 @@ func (self class) SetTextureRepeat(mode gdclass.CanvasItemTextureRepeat) {
 func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemTextureRepeat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1825,8 +1825,8 @@ func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat {
 func (self class) SetClipChildrenMode(mode gdclass.CanvasItemClipChildrenMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_clip_children_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_clip_children_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1834,7 +1834,7 @@ func (self class) SetClipChildrenMode(mode gdclass.CanvasItemClipChildrenMode) {
 func (self class) GetClipChildrenMode() gdclass.CanvasItemClipChildrenMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemClipChildrenMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_clip_children_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_clip_children_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

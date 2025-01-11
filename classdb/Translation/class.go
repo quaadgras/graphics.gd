@@ -220,8 +220,8 @@ func (class) _get_message(impl func(ptr unsafe.Pointer, src_message gd.StringNam
 func (self class) SetLocale(locale gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_set_locale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_set_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -229,7 +229,7 @@ func (self class) SetLocale(locale gd.String) {
 func (self class) GetLocale() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -245,8 +245,8 @@ func (self class) AddMessage(src_message gd.StringName, xlated_message gd.String
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(xlated_message))
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_add_message, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_add_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -260,8 +260,8 @@ func (self class) AddPluralMessage(src_message gd.StringName, xlated_messages gd
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(xlated_messages))
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_add_plural_message, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_add_plural_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -274,7 +274,7 @@ func (self class) GetMessage(src_message gd.StringName, context gd.StringName) g
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(context))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -292,7 +292,7 @@ func (self class) GetPluralMessage(src_message gd.StringName, src_plural_message
 	callframe.Arg(frame, n)
 	callframe.Arg(frame, pointers.Get(context))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_plural_message, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_plural_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -306,8 +306,8 @@ func (self class) EraseMessage(src_message gd.StringName, context gd.StringName)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_erase_message, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_erase_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -318,7 +318,7 @@ Returns all the messages (keys).
 func (self class) GetMessageList() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -331,7 +331,7 @@ Returns all the messages (translated text).
 func (self class) GetTranslatedMessageList() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_translated_message_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_translated_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -344,7 +344,7 @@ Returns the number of existing messages.
 func (self class) GetMessageCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

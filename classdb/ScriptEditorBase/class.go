@@ -80,7 +80,7 @@ Returns the underlying [Control] used for editing scripts. For text scripts, thi
 func (self class) GetBaseEditor() [1]gdclass.Control {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditorBase.Bind_get_base_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditorBase.Bind_get_base_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -93,8 +93,8 @@ Adds a [EditorSyntaxHighlighter] to the open script.
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(highlighter[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditorBase.Bind_add_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditorBase.Bind_add_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnNameChanged(cb func()) {

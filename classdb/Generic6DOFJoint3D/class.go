@@ -99,8 +99,8 @@ func (self class) SetParamX(param gdclass.Generic6DOFJoint3DParam, value gd.Floa
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_x, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -109,7 +109,7 @@ func (self class) GetParamX(param gdclass.Generic6DOFJoint3DParam) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_x, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -120,8 +120,8 @@ func (self class) SetParamY(param gdclass.Generic6DOFJoint3DParam, value gd.Floa
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_y, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -130,7 +130,7 @@ func (self class) GetParamY(param gdclass.Generic6DOFJoint3DParam) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_y, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -141,8 +141,8 @@ func (self class) SetParamZ(param gdclass.Generic6DOFJoint3DParam, value gd.Floa
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_z, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_z, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -151,7 +151,7 @@ func (self class) GetParamZ(param gdclass.Generic6DOFJoint3DParam) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_z, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_z, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -162,8 +162,8 @@ func (self class) SetFlagX(flag gdclass.Generic6DOFJoint3DFlag, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_x, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -172,7 +172,7 @@ func (self class) GetFlagX(flag gdclass.Generic6DOFJoint3DFlag) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_x, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_x, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -183,8 +183,8 @@ func (self class) SetFlagY(flag gdclass.Generic6DOFJoint3DFlag, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_y, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -193,7 +193,7 @@ func (self class) GetFlagY(flag gdclass.Generic6DOFJoint3DFlag) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_y, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_y, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -204,8 +204,8 @@ func (self class) SetFlagZ(flag gdclass.Generic6DOFJoint3DFlag, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_z, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_z, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -214,7 +214,7 @@ func (self class) GetFlagZ(flag gdclass.Generic6DOFJoint3DFlag) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_z, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_z, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

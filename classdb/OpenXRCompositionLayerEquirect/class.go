@@ -100,8 +100,8 @@ func (self Instance) SetFallbackSegments(value int) {
 func (self class) SetRadius(radius gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -109,7 +109,7 @@ func (self class) SetRadius(radius gd.Float) {
 func (self class) GetRadius() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -119,8 +119,8 @@ func (self class) GetRadius() gd.Float {
 func (self class) SetCentralHorizontalAngle(angle gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_central_horizontal_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_central_horizontal_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -128,7 +128,7 @@ func (self class) SetCentralHorizontalAngle(angle gd.Float) {
 func (self class) GetCentralHorizontalAngle() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_central_horizontal_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_central_horizontal_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -138,8 +138,8 @@ func (self class) GetCentralHorizontalAngle() gd.Float {
 func (self class) SetUpperVerticalAngle(angle gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_upper_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_upper_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -147,7 +147,7 @@ func (self class) SetUpperVerticalAngle(angle gd.Float) {
 func (self class) GetUpperVerticalAngle() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_upper_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_upper_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -157,8 +157,8 @@ func (self class) GetUpperVerticalAngle() gd.Float {
 func (self class) SetLowerVerticalAngle(angle gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_lower_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_lower_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -166,7 +166,7 @@ func (self class) SetLowerVerticalAngle(angle gd.Float) {
 func (self class) GetLowerVerticalAngle() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_lower_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_lower_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -176,8 +176,8 @@ func (self class) GetLowerVerticalAngle() gd.Float {
 func (self class) SetFallbackSegments(segments gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, segments)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_fallback_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_fallback_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -185,7 +185,7 @@ func (self class) SetFallbackSegments(segments gd.Int) {
 func (self class) GetFallbackSegments() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_fallback_segments, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_fallback_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

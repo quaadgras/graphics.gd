@@ -29,10 +29,7 @@ type Frame struct {
 }
 
 // Nil implements [Any].
-type Nil struct{}
-
-// Uintptr always returns 0.
-func (Nil) Uintptr() uintptr { return 0 }
+var Nil Addr
 
 // New returns either a new [Frame], or a recycled frame.
 func New() *Frame {
@@ -103,6 +100,11 @@ func (ptr Ptr[T]) Get() T {
 	return *(*T)(unsafe.Pointer(ptr.void))
 }
 
+// Mut pointer.
+func (ptr Ptr[T]) Addr() Addr {
+	return Addr{pointer: ptr.void}
+}
+
 // Arg adds a new argument to the call frame.
 func Arg[T comparable](frame *Frame, arg T) Ptr[T] {
 	if unsafe.Sizeof([1]T{}) > 8*unsafe.Sizeof(uintptr(0)) {
@@ -127,4 +129,20 @@ func Ret[T comparable](frame *Frame) Ptr[T] {
 	frame.ret++
 	*(*T)(unsafe.Pointer(&frame.buf[frame.ret+15])) = [1]T{}[0]
 	return Ptr[T]{void: &frame.buf[frame.ret+15]}
+}
+
+type Addr struct {
+	pointer *[8]uintptr
+}
+
+func (addr Addr) Addr() Addr {
+	return addr
+}
+
+func (addr Addr) UnsafePointer() unsafe.Pointer {
+	return unsafe.Pointer(addr.pointer)
+}
+
+func (addr Addr) Uintptr() uintptr {
+	return uintptr(unsafe.Pointer(addr.pointer))
 }

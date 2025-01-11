@@ -150,8 +150,8 @@ func (self Instance) SetFlipBendDirection(value bool) {
 func (self class) SetTargetNode(target_nodepath gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(target_nodepath))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -159,7 +159,7 @@ func (self class) SetTargetNode(target_nodepath gd.NodePath) {
 func (self class) GetTargetNode() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -169,8 +169,8 @@ func (self class) GetTargetNode() gd.NodePath {
 func (self class) SetTargetMinimumDistance(minimum_distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, minimum_distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_target_minimum_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_target_minimum_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -178,7 +178,7 @@ func (self class) SetTargetMinimumDistance(minimum_distance gd.Float) {
 func (self class) GetTargetMinimumDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_minimum_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_minimum_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -188,8 +188,8 @@ func (self class) GetTargetMinimumDistance() gd.Float {
 func (self class) SetTargetMaximumDistance(maximum_distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, maximum_distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_target_maximum_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_target_maximum_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -197,7 +197,7 @@ func (self class) SetTargetMaximumDistance(maximum_distance gd.Float) {
 func (self class) GetTargetMaximumDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_maximum_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_maximum_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -207,8 +207,8 @@ func (self class) GetTargetMaximumDistance() gd.Float {
 func (self class) SetFlipBendDirection(flip_direction bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_direction)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_flip_bend_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_flip_bend_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -216,7 +216,7 @@ func (self class) SetFlipBendDirection(flip_direction bool) {
 func (self class) GetFlipBendDirection() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_flip_bend_direction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_flip_bend_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -229,8 +229,8 @@ Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK mod
 func (self class) SetJointOneBone2dNode(bone2d_node gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bone2d_node))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_one_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_one_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -241,7 +241,7 @@ Returns the [Bone2D] node that is being used as the first bone in the TwoBoneIK 
 func (self class) GetJointOneBone2dNode() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_one_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_one_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -254,8 +254,8 @@ Sets the index of the [Bone2D] node that is being used as the first bone in the 
 func (self class) SetJointOneBoneIdx(bone_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_one_bone_idx, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_one_bone_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -266,7 +266,7 @@ Returns the index of the [Bone2D] node that is being used as the first bone in t
 func (self class) GetJointOneBoneIdx() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_one_bone_idx, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_one_bone_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -279,8 +279,8 @@ Sets the [Bone2D] node that is being used as the second bone in the TwoBoneIK mo
 func (self class) SetJointTwoBone2dNode(bone2d_node gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bone2d_node))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_two_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_two_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -291,7 +291,7 @@ Returns the [Bone2D] node that is being used as the second bone in the TwoBoneIK
 func (self class) GetJointTwoBone2dNode() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_two_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_two_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -304,8 +304,8 @@ Sets the index of the [Bone2D] node that is being used as the second bone in the
 func (self class) SetJointTwoBoneIdx(bone_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_two_bone_idx, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_two_bone_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -316,7 +316,7 @@ Returns the index of the [Bone2D] node that is being used as the second bone in 
 func (self class) GetJointTwoBoneIdx() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_two_bone_idx, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_two_bone_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

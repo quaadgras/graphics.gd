@@ -158,8 +158,8 @@ Queue resort of the contained children. This is called automatically anyway, but
 //go:nosplit
 func (self class) QueueSort() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Container.Bind_queue_sort, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Container.Bind_queue_sort, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -171,8 +171,8 @@ func (self class) FitChildInRect(child [1]gdclass.Control, rect gd.Rect2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(child[0])[0])
 	callframe.Arg(frame, rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Container.Bind_fit_child_in_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Container.Bind_fit_child_in_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnPreSortChildren(cb func()) {

@@ -163,8 +163,8 @@ func (self Instance) SetEcho(value bool) {
 func (self class) SetPressed(pressed bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -172,8 +172,8 @@ func (self class) SetPressed(pressed bool) {
 func (self class) SetKeycode(keycode Key) {
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_keycode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -181,7 +181,7 @@ func (self class) SetKeycode(keycode Key) {
 func (self class) GetKeycode() Key {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_keycode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -191,8 +191,8 @@ func (self class) GetKeycode() Key {
 func (self class) SetPhysicalKeycode(physical_keycode Key) {
 	var frame = callframe.New()
 	callframe.Arg(frame, physical_keycode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_physical_keycode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_physical_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -200,7 +200,7 @@ func (self class) SetPhysicalKeycode(physical_keycode Key) {
 func (self class) GetPhysicalKeycode() Key {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -210,8 +210,8 @@ func (self class) GetPhysicalKeycode() Key {
 func (self class) SetKeyLabel(key_label Key) {
 	var frame = callframe.New()
 	callframe.Arg(frame, key_label)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_key_label, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_key_label, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -219,7 +219,7 @@ func (self class) SetKeyLabel(key_label Key) {
 func (self class) GetKeyLabel() Key {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_key_label, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_key_label, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -229,8 +229,8 @@ func (self class) GetKeyLabel() Key {
 func (self class) SetUnicode(unicode gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, unicode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_unicode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_unicode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -238,7 +238,7 @@ func (self class) SetUnicode(unicode gd.Int) {
 func (self class) GetUnicode() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_unicode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_unicode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -248,8 +248,8 @@ func (self class) GetUnicode() gd.Int {
 func (self class) SetLocation(location KeyLocation) {
 	var frame = callframe.New()
 	callframe.Arg(frame, location)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_location, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_location, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -257,7 +257,7 @@ func (self class) SetLocation(location KeyLocation) {
 func (self class) GetLocation() KeyLocation {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[KeyLocation](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_location, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_location, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -267,8 +267,8 @@ func (self class) GetLocation() KeyLocation {
 func (self class) SetEcho(echo bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, echo)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_echo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_set_echo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -280,7 +280,7 @@ To get a human-readable representation of the [InputEventKey] with modifiers, us
 func (self class) GetKeycodeWithModifiers() Key {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_keycode_with_modifiers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_keycode_with_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -294,7 +294,7 @@ To get a human-readable representation of the [InputEventKey] with modifiers, us
 func (self class) GetPhysicalKeycodeWithModifiers() Key {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode_with_modifiers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode_with_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -308,7 +308,7 @@ To get a human-readable representation of the [InputEventKey] with modifiers, us
 func (self class) GetKeyLabelWithModifiers() Key {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_key_label_with_modifiers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_key_label_with_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -321,7 +321,7 @@ Returns a [String] representation of the event's [member keycode] and modifiers.
 func (self class) AsTextKeycode() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_keycode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -334,7 +334,7 @@ Returns a [String] representation of the event's [member physical_keycode] and m
 func (self class) AsTextPhysicalKeycode() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_physical_keycode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_physical_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -347,7 +347,7 @@ Returns a [String] representation of the event's [member key_label] and modifier
 func (self class) AsTextKeyLabel() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_key_label, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_key_label, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -360,7 +360,7 @@ Returns a [String] representation of the event's [member location]. This will be
 func (self class) AsTextLocation() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_location, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_location, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret

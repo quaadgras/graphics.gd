@@ -87,7 +87,7 @@ func (self class) AddSpacer(begin bool) [1]gdclass.Control {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_add_spacer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_add_spacer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -97,8 +97,8 @@ func (self class) AddSpacer(begin bool) [1]gdclass.Control {
 func (self class) SetAlignment(alignment gdclass.BoxContainerAlignmentMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_set_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_set_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -106,7 +106,7 @@ func (self class) SetAlignment(alignment gdclass.BoxContainerAlignmentMode) {
 func (self class) GetAlignment() gdclass.BoxContainerAlignmentMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BoxContainerAlignmentMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -116,8 +116,8 @@ func (self class) GetAlignment() gdclass.BoxContainerAlignmentMode {
 func (self class) SetVertical(vertical bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, vertical)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_set_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_set_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -125,7 +125,7 @@ func (self class) SetVertical(vertical bool) {
 func (self class) IsVertical() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_is_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_is_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

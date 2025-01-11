@@ -83,7 +83,7 @@ func (self class) CreateFromImages(images gd.Array) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(images))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -100,8 +100,8 @@ func (self class) UpdateLayer(image [1]gdclass.Image, layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTextureLayered.Bind_update_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTextureLayered.Bind_update_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsImageTextureLayered() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

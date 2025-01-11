@@ -144,7 +144,7 @@ func (self class) ResolveHostname(host gd.String, ip_type gdclass.IPType) gd.Str
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -159,7 +159,7 @@ func (self class) ResolveHostnameAddresses(host gd.String, ip_type gdclass.IPTyp
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_addresses, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -174,7 +174,7 @@ func (self class) ResolveHostnameQueueItem(host gd.String, ip_type gdclass.IPTyp
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, ip_type)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_queue_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_queue_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -188,7 +188,7 @@ func (self class) GetResolveItemStatus(id gd.Int) gdclass.IPResolverStatus {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gdclass.IPResolverStatus](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -202,7 +202,7 @@ func (self class) GetResolveItemAddress(id gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_address, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_address, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -216,7 +216,7 @@ func (self class) GetResolveItemAddresses(id gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_addresses, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -229,8 +229,8 @@ Removes a given item [param id] from the queue. This should be used to free a qu
 func (self class) EraseResolveItem(id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_erase_resolve_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_erase_resolve_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -241,7 +241,7 @@ Returns all the user's current IPv4 and IPv6 addresses as an array.
 func (self class) GetLocalAddresses() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_addresses, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -263,7 +263,7 @@ Each adapter is a dictionary of the form:
 func (self class) GetLocalInterfaces() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_interfaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -276,8 +276,8 @@ Removes all of a [param hostname]'s cached references. If no [param hostname] is
 func (self class) ClearCache(hostname gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(hostname))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_clear_cache, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_clear_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) Virtual(name string) reflect.Value {

@@ -998,8 +998,8 @@ func (self Instance) SetDistanceFadeMaxDistance(value Float.X) {
 func (self class) SetAlbedo(albedo gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, albedo)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_albedo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1007,7 +1007,7 @@ func (self class) SetAlbedo(albedo gd.Color) {
 func (self class) GetAlbedo() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_albedo, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1017,8 +1017,8 @@ func (self class) GetAlbedo() gd.Color {
 func (self class) SetTransparency(transparency gdclass.BaseMaterial3DTransparency) {
 	var frame = callframe.New()
 	callframe.Arg(frame, transparency)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_transparency, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_transparency, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1026,7 +1026,7 @@ func (self class) SetTransparency(transparency gdclass.BaseMaterial3DTransparenc
 func (self class) GetTransparency() gdclass.BaseMaterial3DTransparency {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTransparency](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transparency, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transparency, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1036,8 +1036,8 @@ func (self class) GetTransparency() gdclass.BaseMaterial3DTransparency {
 func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiAliasing) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alpha_aa)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1045,7 +1045,7 @@ func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiA
 func (self class) GetAlphaAntialiasing() gdclass.BaseMaterial3DAlphaAntiAliasing {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DAlphaAntiAliasing](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1055,8 +1055,8 @@ func (self class) GetAlphaAntialiasing() gdclass.BaseMaterial3DAlphaAntiAliasing
 func (self class) SetAlphaAntialiasingEdge(edge gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, edge)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1064,7 +1064,7 @@ func (self class) SetAlphaAntialiasingEdge(edge gd.Float) {
 func (self class) GetAlphaAntialiasingEdge() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1074,8 +1074,8 @@ func (self class) GetAlphaAntialiasingEdge() gd.Float {
 func (self class) SetShadingMode(shading_mode gdclass.BaseMaterial3DShadingMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shading_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_shading_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_shading_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1083,7 +1083,7 @@ func (self class) SetShadingMode(shading_mode gdclass.BaseMaterial3DShadingMode)
 func (self class) GetShadingMode() gdclass.BaseMaterial3DShadingMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DShadingMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_shading_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_shading_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1093,8 +1093,8 @@ func (self class) GetShadingMode() gdclass.BaseMaterial3DShadingMode {
 func (self class) SetSpecular(specular gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, specular)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_specular, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_specular, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1102,7 +1102,7 @@ func (self class) SetSpecular(specular gd.Float) {
 func (self class) GetSpecular() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_specular, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_specular, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1112,8 +1112,8 @@ func (self class) GetSpecular() gd.Float {
 func (self class) SetMetallic(metallic gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, metallic)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_metallic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_metallic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1121,7 +1121,7 @@ func (self class) SetMetallic(metallic gd.Float) {
 func (self class) GetMetallic() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_metallic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_metallic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1131,8 +1131,8 @@ func (self class) GetMetallic() gd.Float {
 func (self class) SetRoughness(roughness gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, roughness)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_roughness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_roughness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1140,7 +1140,7 @@ func (self class) SetRoughness(roughness gd.Float) {
 func (self class) GetRoughness() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_roughness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_roughness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1150,8 +1150,8 @@ func (self class) GetRoughness() gd.Float {
 func (self class) SetEmission(emission gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, emission)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_emission, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1159,7 +1159,7 @@ func (self class) SetEmission(emission gd.Color) {
 func (self class) GetEmission() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1169,8 +1169,8 @@ func (self class) GetEmission() gd.Color {
 func (self class) SetEmissionEnergyMultiplier(emission_energy_multiplier gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, emission_energy_multiplier)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_emission_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_emission_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1178,7 +1178,7 @@ func (self class) SetEmissionEnergyMultiplier(emission_energy_multiplier gd.Floa
 func (self class) GetEmissionEnergyMultiplier() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1188,8 +1188,8 @@ func (self class) GetEmissionEnergyMultiplier() gd.Float {
 func (self class) SetEmissionIntensity(emission_energy_multiplier gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, emission_energy_multiplier)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_emission_intensity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_emission_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1197,7 +1197,7 @@ func (self class) SetEmissionIntensity(emission_energy_multiplier gd.Float) {
 func (self class) GetEmissionIntensity() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_intensity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1207,8 +1207,8 @@ func (self class) GetEmissionIntensity() gd.Float {
 func (self class) SetNormalScale(normal_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, normal_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_normal_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_normal_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1216,7 +1216,7 @@ func (self class) SetNormalScale(normal_scale gd.Float) {
 func (self class) GetNormalScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_normal_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_normal_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1226,8 +1226,8 @@ func (self class) GetNormalScale() gd.Float {
 func (self class) SetRim(rim gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rim)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_rim, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_rim, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1235,7 +1235,7 @@ func (self class) SetRim(rim gd.Float) {
 func (self class) GetRim() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_rim, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_rim, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1245,8 +1245,8 @@ func (self class) GetRim() gd.Float {
 func (self class) SetRimTint(rim_tint gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rim_tint)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_rim_tint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_rim_tint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1254,7 +1254,7 @@ func (self class) SetRimTint(rim_tint gd.Float) {
 func (self class) GetRimTint() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_rim_tint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_rim_tint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1264,8 +1264,8 @@ func (self class) GetRimTint() gd.Float {
 func (self class) SetClearcoat(clearcoat gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, clearcoat)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_clearcoat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_clearcoat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1273,7 +1273,7 @@ func (self class) SetClearcoat(clearcoat gd.Float) {
 func (self class) GetClearcoat() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1283,8 +1283,8 @@ func (self class) GetClearcoat() gd.Float {
 func (self class) SetClearcoatRoughness(clearcoat_roughness gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, clearcoat_roughness)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_clearcoat_roughness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_clearcoat_roughness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1292,7 +1292,7 @@ func (self class) SetClearcoatRoughness(clearcoat_roughness gd.Float) {
 func (self class) GetClearcoatRoughness() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat_roughness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat_roughness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1302,8 +1302,8 @@ func (self class) GetClearcoatRoughness() gd.Float {
 func (self class) SetAnisotropy(anisotropy gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, anisotropy)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_anisotropy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_anisotropy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1311,7 +1311,7 @@ func (self class) SetAnisotropy(anisotropy gd.Float) {
 func (self class) GetAnisotropy() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_anisotropy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_anisotropy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1321,8 +1321,8 @@ func (self class) GetAnisotropy() gd.Float {
 func (self class) SetHeightmapScale(heightmap_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, heightmap_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1330,7 +1330,7 @@ func (self class) SetHeightmapScale(heightmap_scale gd.Float) {
 func (self class) GetHeightmapScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1340,8 +1340,8 @@ func (self class) GetHeightmapScale() gd.Float {
 func (self class) SetSubsurfaceScatteringStrength(strength gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_subsurface_scattering_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_subsurface_scattering_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1349,7 +1349,7 @@ func (self class) SetSubsurfaceScatteringStrength(strength gd.Float) {
 func (self class) GetSubsurfaceScatteringStrength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_subsurface_scattering_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_subsurface_scattering_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1359,8 +1359,8 @@ func (self class) GetSubsurfaceScatteringStrength() gd.Float {
 func (self class) SetTransmittanceColor(color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1368,7 +1368,7 @@ func (self class) SetTransmittanceColor(color gd.Color) {
 func (self class) GetTransmittanceColor() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1378,8 +1378,8 @@ func (self class) GetTransmittanceColor() gd.Color {
 func (self class) SetTransmittanceDepth(depth gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_depth, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1387,7 +1387,7 @@ func (self class) SetTransmittanceDepth(depth gd.Float) {
 func (self class) GetTransmittanceDepth() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_depth, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1397,8 +1397,8 @@ func (self class) GetTransmittanceDepth() gd.Float {
 func (self class) SetTransmittanceBoost(boost gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, boost)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_boost, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_boost, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1406,7 +1406,7 @@ func (self class) SetTransmittanceBoost(boost gd.Float) {
 func (self class) GetTransmittanceBoost() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_boost, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_boost, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1416,8 +1416,8 @@ func (self class) GetTransmittanceBoost() gd.Float {
 func (self class) SetBacklight(backlight gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, backlight)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_backlight, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_backlight, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1425,7 +1425,7 @@ func (self class) SetBacklight(backlight gd.Color) {
 func (self class) GetBacklight() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_backlight, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_backlight, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1435,8 +1435,8 @@ func (self class) GetBacklight() gd.Color {
 func (self class) SetRefraction(refraction gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, refraction)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_refraction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_refraction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1444,7 +1444,7 @@ func (self class) SetRefraction(refraction gd.Float) {
 func (self class) GetRefraction() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_refraction, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_refraction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1454,8 +1454,8 @@ func (self class) GetRefraction() gd.Float {
 func (self class) SetPointSize(point_size gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, point_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_point_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_point_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1463,7 +1463,7 @@ func (self class) SetPointSize(point_size gd.Float) {
 func (self class) GetPointSize() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_point_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_point_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1473,8 +1473,8 @@ func (self class) GetPointSize() gd.Float {
 func (self class) SetDetailUv(detail_uv gdclass.BaseMaterial3DDetailUV) {
 	var frame = callframe.New()
 	callframe.Arg(frame, detail_uv)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_detail_uv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_detail_uv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1482,7 +1482,7 @@ func (self class) SetDetailUv(detail_uv gdclass.BaseMaterial3DDetailUV) {
 func (self class) GetDetailUv() gdclass.BaseMaterial3DDetailUV {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DDetailUV](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_detail_uv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_detail_uv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1492,8 +1492,8 @@ func (self class) GetDetailUv() gdclass.BaseMaterial3DDetailUV {
 func (self class) SetBlendMode(blend_mode gdclass.BaseMaterial3DBlendMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_blend_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1501,7 +1501,7 @@ func (self class) SetBlendMode(blend_mode gdclass.BaseMaterial3DBlendMode) {
 func (self class) GetBlendMode() gdclass.BaseMaterial3DBlendMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DBlendMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_blend_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1511,8 +1511,8 @@ func (self class) GetBlendMode() gdclass.BaseMaterial3DBlendMode {
 func (self class) SetDepthDrawMode(depth_draw_mode gdclass.BaseMaterial3DDepthDrawMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, depth_draw_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_depth_draw_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_depth_draw_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1520,7 +1520,7 @@ func (self class) SetDepthDrawMode(depth_draw_mode gdclass.BaseMaterial3DDepthDr
 func (self class) GetDepthDrawMode() gdclass.BaseMaterial3DDepthDrawMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DDepthDrawMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_depth_draw_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_depth_draw_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1530,8 +1530,8 @@ func (self class) GetDepthDrawMode() gdclass.BaseMaterial3DDepthDrawMode {
 func (self class) SetCullMode(cull_mode gdclass.BaseMaterial3DCullMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, cull_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_cull_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_cull_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1539,7 +1539,7 @@ func (self class) SetCullMode(cull_mode gdclass.BaseMaterial3DCullMode) {
 func (self class) GetCullMode() gdclass.BaseMaterial3DCullMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DCullMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_cull_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_cull_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1549,8 +1549,8 @@ func (self class) GetCullMode() gdclass.BaseMaterial3DCullMode {
 func (self class) SetDiffuseMode(diffuse_mode gdclass.BaseMaterial3DDiffuseMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, diffuse_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_diffuse_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_diffuse_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1558,7 +1558,7 @@ func (self class) SetDiffuseMode(diffuse_mode gdclass.BaseMaterial3DDiffuseMode)
 func (self class) GetDiffuseMode() gdclass.BaseMaterial3DDiffuseMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DDiffuseMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_diffuse_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_diffuse_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1568,8 +1568,8 @@ func (self class) GetDiffuseMode() gdclass.BaseMaterial3DDiffuseMode {
 func (self class) SetSpecularMode(specular_mode gdclass.BaseMaterial3DSpecularMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, specular_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_specular_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_specular_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1577,7 +1577,7 @@ func (self class) SetSpecularMode(specular_mode gdclass.BaseMaterial3DSpecularMo
 func (self class) GetSpecularMode() gdclass.BaseMaterial3DSpecularMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DSpecularMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_specular_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_specular_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1591,8 +1591,8 @@ func (self class) SetFlag(flag gdclass.BaseMaterial3DFlags, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1604,7 +1604,7 @@ func (self class) GetFlag(flag gdclass.BaseMaterial3DFlags) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1614,8 +1614,8 @@ func (self class) GetFlag(flag gdclass.BaseMaterial3DFlags) bool {
 func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1623,7 +1623,7 @@ func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) {
 func (self class) GetTextureFilter() gdclass.BaseMaterial3DTextureFilter {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureFilter](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1637,8 +1637,8 @@ func (self class) SetFeature(feature gdclass.BaseMaterial3DFeature, enable bool)
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_feature, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1650,7 +1650,7 @@ func (self class) GetFeature(feature gdclass.BaseMaterial3DFeature) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_feature, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1664,8 +1664,8 @@ func (self class) SetTexture(param gdclass.BaseMaterial3DTextureParam, texture [
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1677,7 +1677,7 @@ func (self class) GetTexture(param gdclass.BaseMaterial3DTextureParam) [1]gdclas
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1687,8 +1687,8 @@ func (self class) GetTexture(param gdclass.BaseMaterial3DTextureParam) [1]gdclas
 func (self class) SetDetailBlendMode(detail_blend_mode gdclass.BaseMaterial3DBlendMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, detail_blend_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_detail_blend_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_detail_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1696,7 +1696,7 @@ func (self class) SetDetailBlendMode(detail_blend_mode gdclass.BaseMaterial3DBle
 func (self class) GetDetailBlendMode() gdclass.BaseMaterial3DBlendMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DBlendMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_detail_blend_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_detail_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1706,8 +1706,8 @@ func (self class) GetDetailBlendMode() gdclass.BaseMaterial3DBlendMode {
 func (self class) SetUv1Scale(scale gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1715,7 +1715,7 @@ func (self class) SetUv1Scale(scale gd.Vector3) {
 func (self class) GetUv1Scale() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1725,8 +1725,8 @@ func (self class) GetUv1Scale() gd.Vector3 {
 func (self class) SetUv1Offset(offset gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1734,7 +1734,7 @@ func (self class) SetUv1Offset(offset gd.Vector3) {
 func (self class) GetUv1Offset() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1744,8 +1744,8 @@ func (self class) GetUv1Offset() gd.Vector3 {
 func (self class) SetUv1TriplanarBlendSharpness(sharpness gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sharpness)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1753,7 +1753,7 @@ func (self class) SetUv1TriplanarBlendSharpness(sharpness gd.Float) {
 func (self class) GetUv1TriplanarBlendSharpness() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1763,8 +1763,8 @@ func (self class) GetUv1TriplanarBlendSharpness() gd.Float {
 func (self class) SetUv2Scale(scale gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1772,7 +1772,7 @@ func (self class) SetUv2Scale(scale gd.Vector3) {
 func (self class) GetUv2Scale() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1782,8 +1782,8 @@ func (self class) GetUv2Scale() gd.Vector3 {
 func (self class) SetUv2Offset(offset gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1791,7 +1791,7 @@ func (self class) SetUv2Offset(offset gd.Vector3) {
 func (self class) GetUv2Offset() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1801,8 +1801,8 @@ func (self class) GetUv2Offset() gd.Vector3 {
 func (self class) SetUv2TriplanarBlendSharpness(sharpness gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sharpness)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1810,7 +1810,7 @@ func (self class) SetUv2TriplanarBlendSharpness(sharpness gd.Float) {
 func (self class) GetUv2TriplanarBlendSharpness() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_triplanar_blend_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1820,8 +1820,8 @@ func (self class) GetUv2TriplanarBlendSharpness() gd.Float {
 func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1829,7 +1829,7 @@ func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) {
 func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DBillboardMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1839,8 +1839,8 @@ func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode {
 func (self class) SetParticlesAnimHFrames(frames gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_h_frames, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_h_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1848,7 +1848,7 @@ func (self class) SetParticlesAnimHFrames(frames gd.Int) {
 func (self class) GetParticlesAnimHFrames() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_h_frames, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_h_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1858,8 +1858,8 @@ func (self class) GetParticlesAnimHFrames() gd.Int {
 func (self class) SetParticlesAnimVFrames(frames gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_v_frames, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_v_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1867,7 +1867,7 @@ func (self class) SetParticlesAnimVFrames(frames gd.Int) {
 func (self class) GetParticlesAnimVFrames() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_v_frames, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_v_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1877,8 +1877,8 @@ func (self class) GetParticlesAnimVFrames() gd.Int {
 func (self class) SetParticlesAnimLoop(loop bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, loop)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_loop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1886,7 +1886,7 @@ func (self class) SetParticlesAnimLoop(loop bool) {
 func (self class) GetParticlesAnimLoop() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_loop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1896,8 +1896,8 @@ func (self class) GetParticlesAnimLoop() bool {
 func (self class) SetHeightmapDeepParallax(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1905,7 +1905,7 @@ func (self class) SetHeightmapDeepParallax(enable bool) {
 func (self class) IsHeightmapDeepParallaxEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_is_heightmap_deep_parallax_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_is_heightmap_deep_parallax_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1915,8 +1915,8 @@ func (self class) IsHeightmapDeepParallaxEnabled() bool {
 func (self class) SetHeightmapDeepParallaxMinLayers(layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_min_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_min_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1924,7 +1924,7 @@ func (self class) SetHeightmapDeepParallaxMinLayers(layer gd.Int) {
 func (self class) GetHeightmapDeepParallaxMinLayers() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_min_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_min_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1934,8 +1934,8 @@ func (self class) GetHeightmapDeepParallaxMinLayers() gd.Int {
 func (self class) SetHeightmapDeepParallaxMaxLayers(layer gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_max_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_max_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1943,7 +1943,7 @@ func (self class) SetHeightmapDeepParallaxMaxLayers(layer gd.Int) {
 func (self class) GetHeightmapDeepParallaxMaxLayers() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_max_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_max_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1953,8 +1953,8 @@ func (self class) GetHeightmapDeepParallaxMaxLayers() gd.Int {
 func (self class) SetHeightmapDeepParallaxFlipTangent(flip bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flip)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_flip_tangent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_flip_tangent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1962,7 +1962,7 @@ func (self class) SetHeightmapDeepParallaxFlipTangent(flip bool) {
 func (self class) GetHeightmapDeepParallaxFlipTangent() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_flip_tangent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_flip_tangent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1972,8 +1972,8 @@ func (self class) GetHeightmapDeepParallaxFlipTangent() bool {
 func (self class) SetHeightmapDeepParallaxFlipBinormal(flip bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flip)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_flip_binormal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_flip_binormal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1981,7 +1981,7 @@ func (self class) SetHeightmapDeepParallaxFlipBinormal(flip bool) {
 func (self class) GetHeightmapDeepParallaxFlipBinormal() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_flip_binormal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_flip_binormal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1991,8 +1991,8 @@ func (self class) GetHeightmapDeepParallaxFlipBinormal() bool {
 func (self class) SetGrow(amount gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_grow, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_grow, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2000,7 +2000,7 @@ func (self class) SetGrow(amount gd.Float) {
 func (self class) GetGrow() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_grow, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_grow, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2010,8 +2010,8 @@ func (self class) GetGrow() gd.Float {
 func (self class) SetEmissionOperator(operator gdclass.BaseMaterial3DEmissionOperator) {
 	var frame = callframe.New()
 	callframe.Arg(frame, operator)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_emission_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_emission_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2019,7 +2019,7 @@ func (self class) SetEmissionOperator(operator gdclass.BaseMaterial3DEmissionOpe
 func (self class) GetEmissionOperator() gdclass.BaseMaterial3DEmissionOperator {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DEmissionOperator](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_operator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2029,8 +2029,8 @@ func (self class) GetEmissionOperator() gdclass.BaseMaterial3DEmissionOperator {
 func (self class) SetAoLightAffect(amount gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_ao_light_affect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_ao_light_affect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2038,7 +2038,7 @@ func (self class) SetAoLightAffect(amount gd.Float) {
 func (self class) GetAoLightAffect() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_ao_light_affect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_ao_light_affect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2048,8 +2048,8 @@ func (self class) GetAoLightAffect() gd.Float {
 func (self class) SetAlphaScissorThreshold(threshold gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2057,7 +2057,7 @@ func (self class) SetAlphaScissorThreshold(threshold gd.Float) {
 func (self class) GetAlphaScissorThreshold() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2067,8 +2067,8 @@ func (self class) GetAlphaScissorThreshold() gd.Float {
 func (self class) SetAlphaHashScale(threshold gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2076,7 +2076,7 @@ func (self class) SetAlphaHashScale(threshold gd.Float) {
 func (self class) GetAlphaHashScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2086,8 +2086,8 @@ func (self class) GetAlphaHashScale() gd.Float {
 func (self class) SetGrowEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_grow_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_grow_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2095,7 +2095,7 @@ func (self class) SetGrowEnabled(enable bool) {
 func (self class) IsGrowEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_is_grow_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_is_grow_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2105,8 +2105,8 @@ func (self class) IsGrowEnabled() bool {
 func (self class) SetMetallicTextureChannel(channel gdclass.BaseMaterial3DTextureChannel) {
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_metallic_texture_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_metallic_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2114,7 +2114,7 @@ func (self class) SetMetallicTextureChannel(channel gdclass.BaseMaterial3DTextur
 func (self class) GetMetallicTextureChannel() gdclass.BaseMaterial3DTextureChannel {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureChannel](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_metallic_texture_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_metallic_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2124,8 +2124,8 @@ func (self class) GetMetallicTextureChannel() gdclass.BaseMaterial3DTextureChann
 func (self class) SetRoughnessTextureChannel(channel gdclass.BaseMaterial3DTextureChannel) {
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_roughness_texture_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_roughness_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2133,7 +2133,7 @@ func (self class) SetRoughnessTextureChannel(channel gdclass.BaseMaterial3DTextu
 func (self class) GetRoughnessTextureChannel() gdclass.BaseMaterial3DTextureChannel {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureChannel](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_roughness_texture_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_roughness_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2143,8 +2143,8 @@ func (self class) GetRoughnessTextureChannel() gdclass.BaseMaterial3DTextureChan
 func (self class) SetAoTextureChannel(channel gdclass.BaseMaterial3DTextureChannel) {
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_ao_texture_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_ao_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2152,7 +2152,7 @@ func (self class) SetAoTextureChannel(channel gdclass.BaseMaterial3DTextureChann
 func (self class) GetAoTextureChannel() gdclass.BaseMaterial3DTextureChannel {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureChannel](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_ao_texture_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_ao_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2162,8 +2162,8 @@ func (self class) GetAoTextureChannel() gdclass.BaseMaterial3DTextureChannel {
 func (self class) SetRefractionTextureChannel(channel gdclass.BaseMaterial3DTextureChannel) {
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_refraction_texture_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_refraction_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2171,7 +2171,7 @@ func (self class) SetRefractionTextureChannel(channel gdclass.BaseMaterial3DText
 func (self class) GetRefractionTextureChannel() gdclass.BaseMaterial3DTextureChannel {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureChannel](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_refraction_texture_channel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_refraction_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2181,8 +2181,8 @@ func (self class) GetRefractionTextureChannel() gdclass.BaseMaterial3DTextureCha
 func (self class) SetProximityFadeEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_proximity_fade_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_proximity_fade_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2190,7 +2190,7 @@ func (self class) SetProximityFadeEnabled(enabled bool) {
 func (self class) IsProximityFadeEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_is_proximity_fade_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_is_proximity_fade_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2200,8 +2200,8 @@ func (self class) IsProximityFadeEnabled() bool {
 func (self class) SetProximityFadeDistance(distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_proximity_fade_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_proximity_fade_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2209,7 +2209,7 @@ func (self class) SetProximityFadeDistance(distance gd.Float) {
 func (self class) GetProximityFadeDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_proximity_fade_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_proximity_fade_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2219,8 +2219,8 @@ func (self class) GetProximityFadeDistance() gd.Float {
 func (self class) SetMsdfPixelRange(arange gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, arange)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2228,7 +2228,7 @@ func (self class) SetMsdfPixelRange(arange gd.Float) {
 func (self class) GetMsdfPixelRange() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2238,8 +2238,8 @@ func (self class) GetMsdfPixelRange() gd.Float {
 func (self class) SetMsdfOutlineSize(size gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_msdf_outline_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_msdf_outline_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2247,7 +2247,7 @@ func (self class) SetMsdfOutlineSize(size gd.Float) {
 func (self class) GetMsdfOutlineSize() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_outline_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_outline_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2257,8 +2257,8 @@ func (self class) GetMsdfOutlineSize() gd.Float {
 func (self class) SetDistanceFade(mode gdclass.BaseMaterial3DDistanceFadeMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2266,7 +2266,7 @@ func (self class) SetDistanceFade(mode gdclass.BaseMaterial3DDistanceFadeMode) {
 func (self class) GetDistanceFade() gdclass.BaseMaterial3DDistanceFadeMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DDistanceFadeMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2276,8 +2276,8 @@ func (self class) GetDistanceFade() gdclass.BaseMaterial3DDistanceFadeMode {
 func (self class) SetDistanceFadeMaxDistance(distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade_max_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2285,7 +2285,7 @@ func (self class) SetDistanceFadeMaxDistance(distance gd.Float) {
 func (self class) GetDistanceFadeMaxDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_max_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2295,8 +2295,8 @@ func (self class) GetDistanceFadeMaxDistance() gd.Float {
 func (self class) SetDistanceFadeMinDistance(distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade_min_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade_min_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2304,7 +2304,7 @@ func (self class) SetDistanceFadeMinDistance(distance gd.Float) {
 func (self class) GetDistanceFadeMinDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_min_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_min_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

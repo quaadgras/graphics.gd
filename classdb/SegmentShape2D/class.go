@@ -76,8 +76,8 @@ func (self Instance) SetB(value Vector2.XY) {
 func (self class) SetA(a gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, a)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_set_a, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_set_a, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -85,7 +85,7 @@ func (self class) SetA(a gd.Vector2) {
 func (self class) GetA() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_get_a, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_get_a, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -95,8 +95,8 @@ func (self class) GetA() gd.Vector2 {
 func (self class) SetB(b gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, b)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_set_b, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_set_b, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -104,7 +104,7 @@ func (self class) SetB(b gd.Vector2) {
 func (self class) GetB() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_get_b, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SegmentShape2D.Bind_get_b, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

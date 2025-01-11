@@ -71,7 +71,7 @@ func (self class) GetCache(shader gd.RID, set gd.Int, uniforms gd.Array) gd.RID 
 	callframe.Arg(frame, set)
 	callframe.Arg(frame, pointers.Get(uniforms))
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UniformSetCacheRD.Bind_get_cache, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UniformSetCacheRD.Bind_get_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

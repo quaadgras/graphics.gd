@@ -89,8 +89,8 @@ func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]g
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(root_node[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -101,8 +101,8 @@ Removes all polygons and vertices from the provided [param navigation_mesh] reso
 func (self class) Clear(navigation_mesh [1]gdclass.NavigationMesh) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -118,8 +118,8 @@ func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationM
 	callframe.Arg(frame, pointers.Get(source_geometry_data[0])[0])
 	callframe.Arg(frame, pointers.Get(root_node[0])[0])
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_parse_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_parse_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -132,8 +132,8 @@ func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.Navigati
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(source_geometry_data[0])[0])
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_bake_from_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_bake_from_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) Virtual(name string) reflect.Value {

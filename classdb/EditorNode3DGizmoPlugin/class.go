@@ -754,8 +754,8 @@ func (self class) CreateMaterial(name gd.String, color gd.Color, billboard bool,
 	callframe.Arg(frame, billboard)
 	callframe.Arg(frame, on_top)
 	callframe.Arg(frame, use_vertex_color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -769,8 +769,8 @@ func (self class) CreateIconMaterial(name gd.String, texture [1]gdclass.Texture2
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, on_top)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_icon_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_icon_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -784,8 +784,8 @@ func (self class) CreateHandleMaterial(name gd.String, billboard bool, texture [
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, billboard)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_handle_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_handle_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -797,8 +797,8 @@ func (self class) AddMaterial(name gd.String, material [1]gdclass.StandardMateri
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_add_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_add_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -811,7 +811,7 @@ func (self class) GetMaterial(name gd.String, gizmo [1]gdclass.EditorNode3DGizmo
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(gizmo[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.StandardMaterial3D{gd.PointerWithOwnershipTransferredToGo[gdclass.StandardMaterial3D](r_ret.Get())}
 	frame.Free()
 	return ret

@@ -365,8 +365,8 @@ func (self class) AddUsedExtension(extension_name gd.String, required bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	callframe.Arg(frame, required)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_add_used_extension, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_add_used_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -379,7 +379,7 @@ func (self class) AppendDataToBuffers(data gd.PackedByteArray, deduplication boo
 	callframe.Arg(frame, pointers.Get(data))
 	callframe.Arg(frame, deduplication)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_append_data_to_buffers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_append_data_to_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -389,7 +389,7 @@ func (self class) AppendDataToBuffers(data gd.PackedByteArray, deduplication boo
 func (self class) GetJson() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_json, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_json, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -399,8 +399,8 @@ func (self class) GetJson() gd.Dictionary {
 func (self class) SetJson(json gd.Dictionary) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(json))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_json, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_json, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -408,7 +408,7 @@ func (self class) SetJson(json gd.Dictionary) {
 func (self class) GetMajorVersion() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_major_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_major_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -418,8 +418,8 @@ func (self class) GetMajorVersion() gd.Int {
 func (self class) SetMajorVersion(major_version gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, major_version)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_major_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_major_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -427,7 +427,7 @@ func (self class) SetMajorVersion(major_version gd.Int) {
 func (self class) GetMinorVersion() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_minor_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_minor_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -437,8 +437,8 @@ func (self class) GetMinorVersion() gd.Int {
 func (self class) SetMinorVersion(minor_version gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, minor_version)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_minor_version, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_minor_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -446,7 +446,7 @@ func (self class) SetMinorVersion(minor_version gd.Int) {
 func (self class) GetCopyright() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_copyright, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_copyright, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -456,8 +456,8 @@ func (self class) GetCopyright() gd.String {
 func (self class) SetCopyright(copyright gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(copyright))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_copyright, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_copyright, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -465,7 +465,7 @@ func (self class) SetCopyright(copyright gd.String) {
 func (self class) GetGlbData() gd.PackedByteArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_glb_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_glb_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -475,8 +475,8 @@ func (self class) GetGlbData() gd.PackedByteArray {
 func (self class) SetGlbData(glb_data gd.PackedByteArray) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(glb_data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_glb_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_glb_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -484,7 +484,7 @@ func (self class) SetGlbData(glb_data gd.PackedByteArray) {
 func (self class) GetUseNamedSkinBinds() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_use_named_skin_binds, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_use_named_skin_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -494,8 +494,8 @@ func (self class) GetUseNamedSkinBinds() bool {
 func (self class) SetUseNamedSkinBinds(use_named_skin_binds bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, use_named_skin_binds)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_use_named_skin_binds, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_use_named_skin_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -506,7 +506,7 @@ Returns an array of all [GLTFNode]s in the GLTF file. These are the nodes that [
 func (self class) GetNodes() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_nodes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -519,8 +519,8 @@ Sets the [GLTFNode]s in the state. These are the nodes that [member GLTFNode.chi
 func (self class) SetNodes(nodes gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(nodes))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_nodes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -528,7 +528,7 @@ func (self class) SetNodes(nodes gd.Array) {
 func (self class) GetBuffers() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_buffers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -538,8 +538,8 @@ func (self class) GetBuffers() gd.Array {
 func (self class) SetBuffers(buffers gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffers))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_buffers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -547,7 +547,7 @@ func (self class) SetBuffers(buffers gd.Array) {
 func (self class) GetBufferViews() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_buffer_views, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_buffer_views, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -557,8 +557,8 @@ func (self class) GetBufferViews() gd.Array {
 func (self class) SetBufferViews(buffer_views gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer_views))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_buffer_views, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_buffer_views, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -566,7 +566,7 @@ func (self class) SetBufferViews(buffer_views gd.Array) {
 func (self class) GetAccessors() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_accessors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_accessors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -576,8 +576,8 @@ func (self class) GetAccessors() gd.Array {
 func (self class) SetAccessors(accessors gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(accessors))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_accessors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_accessors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -588,7 +588,7 @@ Returns an array of all [GLTFMesh]es in the GLTF file. These are the meshes that
 func (self class) GetMeshes() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_meshes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -601,8 +601,8 @@ Sets the [GLTFMesh]es in the state. These are the meshes that the [member GLTFNo
 func (self class) SetMeshes(meshes gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(meshes))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_meshes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -614,7 +614,7 @@ func (self class) GetAnimationPlayersCount(idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animation_players_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animation_players_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -628,7 +628,7 @@ func (self class) GetAnimationPlayer(idx gd.Int) [1]gdclass.AnimationPlayer {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animation_player, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animation_player, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AnimationPlayer{gd.PointerMustAssertInstanceID[gdclass.AnimationPlayer](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -638,7 +638,7 @@ func (self class) GetAnimationPlayer(idx gd.Int) [1]gdclass.AnimationPlayer {
 func (self class) GetMaterials() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_materials, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_materials, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -648,8 +648,8 @@ func (self class) GetMaterials() gd.Array {
 func (self class) SetMaterials(materials gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(materials))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_materials, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_materials, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -657,7 +657,7 @@ func (self class) SetMaterials(materials gd.Array) {
 func (self class) GetSceneName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_scene_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_scene_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -667,8 +667,8 @@ func (self class) GetSceneName() gd.String {
 func (self class) SetSceneName(scene_name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scene_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_scene_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_scene_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -676,7 +676,7 @@ func (self class) SetSceneName(scene_name gd.String) {
 func (self class) GetBasePath() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_base_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_base_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -686,8 +686,8 @@ func (self class) GetBasePath() gd.String {
 func (self class) SetBasePath(base_path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base_path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_base_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_base_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -695,7 +695,7 @@ func (self class) SetBasePath(base_path gd.String) {
 func (self class) GetFilename() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_filename, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_filename, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -705,8 +705,8 @@ func (self class) GetFilename() gd.String {
 func (self class) SetFilename(filename gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(filename))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_filename, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_filename, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -714,7 +714,7 @@ func (self class) SetFilename(filename gd.String) {
 func (self class) GetRootNodes() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_root_nodes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_root_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -724,8 +724,8 @@ func (self class) GetRootNodes() gd.PackedInt32Array {
 func (self class) SetRootNodes(root_nodes gd.PackedInt32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(root_nodes))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_root_nodes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_root_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -733,7 +733,7 @@ func (self class) SetRootNodes(root_nodes gd.PackedInt32Array) {
 func (self class) GetTextures() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_textures, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -743,8 +743,8 @@ func (self class) GetTextures() gd.Array {
 func (self class) SetTextures(textures gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(textures))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_textures, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -755,7 +755,7 @@ Retrieves the array of texture samplers that are used by the textures contained 
 func (self class) GetTextureSamplers() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_texture_samplers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_texture_samplers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -768,8 +768,8 @@ Sets the array of texture samplers that are used by the textures contained in th
 func (self class) SetTextureSamplers(texture_samplers gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture_samplers))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_texture_samplers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_texture_samplers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -780,7 +780,7 @@ Gets the images of the GLTF file as an array of [Texture2D]s. These are the imag
 func (self class) GetImages() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_images, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_images, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -793,8 +793,8 @@ Sets the images in the state stored as an array of [Texture2D]s. This can be use
 func (self class) SetImages(images gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(images))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_images, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_images, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -805,7 +805,7 @@ Returns an array of all [GLTFSkin]s in the GLTF file. These are the skins that t
 func (self class) GetSkins() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_skins, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_skins, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -818,8 +818,8 @@ Sets the [GLTFSkin]s in the state. These are the skins that the [member GLTFNode
 func (self class) SetSkins(skins gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(skins))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_skins, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_skins, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -830,7 +830,7 @@ Returns an array of all [GLTFCamera]s in the GLTF file. These are the cameras th
 func (self class) GetCameras() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_cameras, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_cameras, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -843,8 +843,8 @@ Sets the [GLTFCamera]s in the state. These are the cameras that the [member GLTF
 func (self class) SetCameras(cameras gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(cameras))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_cameras, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_cameras, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -855,7 +855,7 @@ Returns an array of all [GLTFLight]s in the GLTF file. These are the lights that
 func (self class) GetLights() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_lights, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_lights, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -868,8 +868,8 @@ Sets the [GLTFLight]s in the state. These are the lights that the [member GLTFNo
 func (self class) SetLights(lights gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(lights))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_lights, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_lights, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -880,7 +880,7 @@ Returns an array of unique node names. This is used in both the import process a
 func (self class) GetUniqueNames() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_unique_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_unique_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -893,8 +893,8 @@ Sets the unique node names in the state. This is used in both the import process
 func (self class) SetUniqueNames(unique_names gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(unique_names))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_unique_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_unique_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -905,7 +905,7 @@ Returns an array of unique animation names. This is only used during the import 
 func (self class) GetUniqueAnimationNames() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_unique_animation_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_unique_animation_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -918,8 +918,8 @@ Sets the unique animation names in the state. This is only used during the impor
 func (self class) SetUniqueAnimationNames(unique_animation_names gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(unique_animation_names))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_unique_animation_names, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_unique_animation_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -930,7 +930,7 @@ Returns an array of all [GLTFSkeleton]s in the GLTF file. These are the skeleton
 func (self class) GetSkeletons() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_skeletons, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_skeletons, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -943,8 +943,8 @@ Sets the [GLTFSkeleton]s in the state. These are the skeletons that the [member 
 func (self class) SetSkeletons(skeletons gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(skeletons))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_skeletons, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_skeletons, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -952,7 +952,7 @@ func (self class) SetSkeletons(skeletons gd.Array) {
 func (self class) GetCreateAnimations() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_create_animations, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_create_animations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -962,8 +962,8 @@ func (self class) GetCreateAnimations() bool {
 func (self class) SetCreateAnimations(create_animations bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, create_animations)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_create_animations, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_create_animations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -971,7 +971,7 @@ func (self class) SetCreateAnimations(create_animations bool) {
 func (self class) GetImportAsSkeletonBones() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_import_as_skeleton_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_import_as_skeleton_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -981,8 +981,8 @@ func (self class) GetImportAsSkeletonBones() bool {
 func (self class) SetImportAsSkeletonBones(import_as_skeleton_bones bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, import_as_skeleton_bones)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_import_as_skeleton_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_import_as_skeleton_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -993,7 +993,7 @@ Returns an array of all [GLTFAnimation]s in the GLTF file. When importing, these
 func (self class) GetAnimations() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animations, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1006,8 +1006,8 @@ Sets the [GLTFAnimation]s in the state. When importing, these will be generated 
 func (self class) SetAnimations(animations gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(animations))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_animations, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_animations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1020,7 +1020,7 @@ func (self class) GetSceneNode(idx gd.Int) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_scene_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_scene_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1035,7 +1035,7 @@ func (self class) GetNodeIndex(scene_node [1]gdclass.Node) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scene_node[0])[0])
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_node_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_node_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1050,7 +1050,7 @@ func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1065,8 +1065,8 @@ func (self class) SetAdditionalData(extension_name gd.StringName, additional_dat
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	callframe.Arg(frame, pointers.Get(additional_data))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1074,7 +1074,7 @@ func (self class) SetAdditionalData(extension_name gd.StringName, additional_dat
 func (self class) GetHandleBinaryImage() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_handle_binary_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_handle_binary_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1084,8 +1084,8 @@ func (self class) GetHandleBinaryImage() gd.Int {
 func (self class) SetHandleBinaryImage(method gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_handle_binary_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_handle_binary_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1093,8 +1093,8 @@ func (self class) SetHandleBinaryImage(method gd.Int) {
 func (self class) SetBakeFps(value gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_bake_fps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_bake_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1102,7 +1102,7 @@ func (self class) SetBakeFps(value gd.Float) {
 func (self class) GetBakeFps() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_bake_fps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_bake_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

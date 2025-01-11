@@ -238,8 +238,8 @@ func (self Instance) SetRenderPriority(value int) {
 func (self class) SetCentered(centered bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, centered)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_centered, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_centered, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -247,7 +247,7 @@ func (self class) SetCentered(centered bool) {
 func (self class) IsCentered() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_is_centered, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_is_centered, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -257,8 +257,8 @@ func (self class) IsCentered() bool {
 func (self class) SetOffset(offset gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -266,7 +266,7 @@ func (self class) SetOffset(offset gd.Vector2) {
 func (self class) GetOffset() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -276,8 +276,8 @@ func (self class) GetOffset() gd.Vector2 {
 func (self class) SetFlipH(flip_h bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_h)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_flip_h, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_flip_h, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -285,7 +285,7 @@ func (self class) SetFlipH(flip_h bool) {
 func (self class) IsFlippedH() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_is_flipped_h, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_is_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -295,8 +295,8 @@ func (self class) IsFlippedH() bool {
 func (self class) SetFlipV(flip_v bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_v)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_flip_v, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_flip_v, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -304,7 +304,7 @@ func (self class) SetFlipV(flip_v bool) {
 func (self class) IsFlippedV() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_is_flipped_v, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_is_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -314,8 +314,8 @@ func (self class) IsFlippedV() bool {
 func (self class) SetModulate(modulate gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, modulate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -323,7 +323,7 @@ func (self class) SetModulate(modulate gd.Color) {
 func (self class) GetModulate() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -333,8 +333,8 @@ func (self class) GetModulate() gd.Color {
 func (self class) SetRenderPriority(priority gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_render_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_render_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -342,7 +342,7 @@ func (self class) SetRenderPriority(priority gd.Int) {
 func (self class) GetRenderPriority() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_render_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_render_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -352,8 +352,8 @@ func (self class) GetRenderPriority() gd.Int {
 func (self class) SetPixelSize(pixel_size gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pixel_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_pixel_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_pixel_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -361,7 +361,7 @@ func (self class) SetPixelSize(pixel_size gd.Float) {
 func (self class) GetPixelSize() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_pixel_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_pixel_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -371,8 +371,8 @@ func (self class) GetPixelSize() gd.Float {
 func (self class) SetAxis(axis gd.Vector3Axis) {
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -380,7 +380,7 @@ func (self class) SetAxis(axis gd.Vector3Axis) {
 func (self class) GetAxis() gd.Vector3Axis {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3Axis](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -394,8 +394,8 @@ func (self class) SetDrawFlag(flag gdclass.SpriteBase3DDrawFlags, enabled bool) 
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_draw_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_draw_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -407,7 +407,7 @@ func (self class) GetDrawFlag(flag gdclass.SpriteBase3DDrawFlags) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_draw_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_draw_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -417,8 +417,8 @@ func (self class) GetDrawFlag(flag gdclass.SpriteBase3DDrawFlags) bool {
 func (self class) SetAlphaCutMode(mode gdclass.SpriteBase3DAlphaCutMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_cut_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_cut_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -426,7 +426,7 @@ func (self class) SetAlphaCutMode(mode gdclass.SpriteBase3DAlphaCutMode) {
 func (self class) GetAlphaCutMode() gdclass.SpriteBase3DAlphaCutMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SpriteBase3DAlphaCutMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_cut_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_cut_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -436,8 +436,8 @@ func (self class) GetAlphaCutMode() gdclass.SpriteBase3DAlphaCutMode {
 func (self class) SetAlphaScissorThreshold(threshold gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -445,7 +445,7 @@ func (self class) SetAlphaScissorThreshold(threshold gd.Float) {
 func (self class) GetAlphaScissorThreshold() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_scissor_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -455,8 +455,8 @@ func (self class) GetAlphaScissorThreshold() gd.Float {
 func (self class) SetAlphaHashScale(threshold gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -464,7 +464,7 @@ func (self class) SetAlphaHashScale(threshold gd.Float) {
 func (self class) GetAlphaHashScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_hash_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -474,8 +474,8 @@ func (self class) GetAlphaHashScale() gd.Float {
 func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiAliasing) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alpha_aa)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -483,7 +483,7 @@ func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiA
 func (self class) GetAlphaAntialiasing() gdclass.BaseMaterial3DAlphaAntiAliasing {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DAlphaAntiAliasing](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -493,8 +493,8 @@ func (self class) GetAlphaAntialiasing() gdclass.BaseMaterial3DAlphaAntiAliasing
 func (self class) SetAlphaAntialiasingEdge(edge gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, edge)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -502,7 +502,7 @@ func (self class) SetAlphaAntialiasingEdge(edge gd.Float) {
 func (self class) GetAlphaAntialiasingEdge() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_antialiasing_edge, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -512,8 +512,8 @@ func (self class) GetAlphaAntialiasingEdge() gd.Float {
 func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -521,7 +521,7 @@ func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) {
 func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DBillboardMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -531,8 +531,8 @@ func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode {
 func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -540,7 +540,7 @@ func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) {
 func (self class) GetTextureFilter() gdclass.BaseMaterial3DTextureFilter {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureFilter](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -553,7 +553,7 @@ Returns the rectangle representing this sprite.
 func (self class) GetItemRect() gd.Rect2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_item_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_item_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -566,7 +566,7 @@ Returns a [TriangleMesh] with the sprite's vertices following its current config
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.TriangleMesh](r_ret.Get())}
 	frame.Free()
 	return ret

@@ -161,7 +161,7 @@ func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GL
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(body_node[0])[0])
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_from_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_from_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -174,7 +174,7 @@ Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
 func (self class) ToNode() [1]gdclass.CollisionObject3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_to_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_to_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CollisionObject3D{gd.PointerWithOwnershipTransferredToGo[gdclass.CollisionObject3D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -188,7 +188,7 @@ func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFPhysic
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -201,7 +201,7 @@ Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the 
 func (self class) ToDictionary() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_to_dictionary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_to_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -211,7 +211,7 @@ func (self class) ToDictionary() gd.Dictionary {
 func (self class) GetBodyType() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_body_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_body_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -221,8 +221,8 @@ func (self class) GetBodyType() gd.String {
 func (self class) SetBodyType(body_type gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(body_type))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_body_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_body_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -230,7 +230,7 @@ func (self class) SetBodyType(body_type gd.String) {
 func (self class) GetMass() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -240,8 +240,8 @@ func (self class) GetMass() gd.Float {
 func (self class) SetMass(mass gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mass)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -249,7 +249,7 @@ func (self class) SetMass(mass gd.Float) {
 func (self class) GetLinearVelocity() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -259,8 +259,8 @@ func (self class) GetLinearVelocity() gd.Vector3 {
 func (self class) SetLinearVelocity(linear_velocity gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -268,7 +268,7 @@ func (self class) SetLinearVelocity(linear_velocity gd.Vector3) {
 func (self class) GetAngularVelocity() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -278,8 +278,8 @@ func (self class) GetAngularVelocity() gd.Vector3 {
 func (self class) SetAngularVelocity(angular_velocity gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -287,7 +287,7 @@ func (self class) SetAngularVelocity(angular_velocity gd.Vector3) {
 func (self class) GetCenterOfMass() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -297,8 +297,8 @@ func (self class) GetCenterOfMass() gd.Vector3 {
 func (self class) SetCenterOfMass(center_of_mass gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, center_of_mass)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -306,7 +306,7 @@ func (self class) SetCenterOfMass(center_of_mass gd.Vector3) {
 func (self class) GetInertiaDiagonal() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_diagonal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_diagonal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -316,8 +316,8 @@ func (self class) GetInertiaDiagonal() gd.Vector3 {
 func (self class) SetInertiaDiagonal(inertia_diagonal gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, inertia_diagonal)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_diagonal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_diagonal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -325,7 +325,7 @@ func (self class) SetInertiaDiagonal(inertia_diagonal gd.Vector3) {
 func (self class) GetInertiaOrientation() gd.Quaternion {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Quaternion](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_orientation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -335,8 +335,8 @@ func (self class) GetInertiaOrientation() gd.Quaternion {
 func (self class) SetInertiaOrientation(inertia_orientation gd.Quaternion) {
 	var frame = callframe.New()
 	callframe.Arg(frame, inertia_orientation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_orientation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -344,7 +344,7 @@ func (self class) SetInertiaOrientation(inertia_orientation gd.Quaternion) {
 func (self class) GetInertiaTensor() gd.Basis {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Basis](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -354,8 +354,8 @@ func (self class) GetInertiaTensor() gd.Basis {
 func (self class) SetInertiaTensor(inertia_tensor gd.Basis) {
 	var frame = callframe.New()
 	callframe.Arg(frame, inertia_tensor)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsGLTFPhysicsBody() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

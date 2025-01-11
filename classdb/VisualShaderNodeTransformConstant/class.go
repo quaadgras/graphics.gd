@@ -69,8 +69,8 @@ func (self Instance) SetConstant(value Transform3D.BasisOrigin) {
 func (self class) SetConstant(constant gd.Transform3D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, constant)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_set_constant, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_set_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -78,7 +78,7 @@ func (self class) SetConstant(constant gd.Transform3D) {
 func (self class) GetConstant() gd.Transform3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

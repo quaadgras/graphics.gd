@@ -187,8 +187,8 @@ func (self Instance) SetCcdikDataChainLength(value int) {
 func (self class) SetTargetNode(target_nodepath gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(target_nodepath))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -196,7 +196,7 @@ func (self class) SetTargetNode(target_nodepath gd.NodePath) {
 func (self class) GetTargetNode() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -206,8 +206,8 @@ func (self class) GetTargetNode() gd.NodePath {
 func (self class) SetTipNode(tip_nodepath gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tip_nodepath))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_tip_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_tip_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -215,7 +215,7 @@ func (self class) SetTipNode(tip_nodepath gd.NodePath) {
 func (self class) GetTipNode() gd.NodePath {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_tip_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_tip_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -225,8 +225,8 @@ func (self class) GetTipNode() gd.NodePath {
 func (self class) SetCcdikDataChainLength(length gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_data_chain_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_data_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -234,7 +234,7 @@ func (self class) SetCcdikDataChainLength(length gd.Int) {
 func (self class) GetCcdikDataChainLength() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_data_chain_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_data_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -248,8 +248,8 @@ func (self class) SetCcdikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath gd.N
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, pointers.Get(bone2d_nodepath))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -261,7 +261,7 @@ func (self class) GetCcdikJointBone2dNode(joint_idx gd.Int) gd.NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -275,8 +275,8 @@ func (self class) SetCcdikJointBoneIndex(joint_idx gd.Int, bone_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, bone_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_bone_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_bone_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -288,7 +288,7 @@ func (self class) GetCcdikJointBoneIndex(joint_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_bone_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_bone_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -302,8 +302,8 @@ func (self class) SetCcdikJointRotateFromJoint(joint_idx gd.Int, rotate_from_joi
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, rotate_from_joint)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_rotate_from_joint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_rotate_from_joint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -315,7 +315,7 @@ func (self class) GetCcdikJointRotateFromJoint(joint_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_rotate_from_joint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_rotate_from_joint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -329,8 +329,8 @@ func (self class) SetCcdikJointEnableConstraint(joint_idx gd.Int, enable_constra
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, enable_constraint)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_enable_constraint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_enable_constraint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -342,7 +342,7 @@ func (self class) GetCcdikJointEnableConstraint(joint_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_enable_constraint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_enable_constraint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -356,8 +356,8 @@ func (self class) SetCcdikJointConstraintAngleMin(joint_idx gd.Int, angle_min gd
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, angle_min)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_min, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -369,7 +369,7 @@ func (self class) GetCcdikJointConstraintAngleMin(joint_idx gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_min, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_min, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -383,8 +383,8 @@ func (self class) SetCcdikJointConstraintAngleMax(joint_idx gd.Int, angle_max gd
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, angle_max)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_max, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -396,7 +396,7 @@ func (self class) GetCcdikJointConstraintAngleMax(joint_idx gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_max, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_max, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -411,8 +411,8 @@ func (self class) SetCcdikJointConstraintAngleInvert(joint_idx gd.Int, invert bo
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, invert)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_invert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_invert, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -424,7 +424,7 @@ func (self class) GetCcdikJointConstraintAngleInvert(joint_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_invert, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_invert, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

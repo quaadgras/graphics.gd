@@ -76,7 +76,7 @@ Returns [code]true[/code] if this extension's library has been opened.
 func (self class) IsLibraryOpen() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtension.Bind_is_library_open, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtension.Bind_is_library_open, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -89,7 +89,7 @@ Returns the lowest level required for this extension to be properly initialized 
 func (self class) GetMinimumLibraryInitializationLevel() gd.GDExtensionInitializationLevel {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.GDExtensionInitializationLevel](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtension.Bind_get_minimum_library_initialization_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtension.Bind_get_minimum_library_initialization_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

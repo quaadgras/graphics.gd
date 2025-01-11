@@ -287,8 +287,8 @@ Adds a custom control, which is not necessarily a property editor.
 func (self class) AddCustomControl(control [1]gdclass.Control) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_custom_control, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_custom_control, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -304,8 +304,8 @@ func (self class) AddPropertyEditor(property gd.String, editor [1]gdclass.Contro
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
 	callframe.Arg(frame, add_to_end)
 	callframe.Arg(frame, pointers.Get(label))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -318,8 +318,8 @@ func (self class) AddPropertyEditorForMultipleProperties(label gd.String, proper
 	callframe.Arg(frame, pointers.Get(label))
 	callframe.Arg(frame, pointers.Get(properties))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor_for_multiple_properties, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor_for_multiple_properties, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsEditorInspectorPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

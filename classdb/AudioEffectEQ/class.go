@@ -85,8 +85,8 @@ func (self class) SetBandGainDb(band_idx gd.Int, volume_db gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, band_idx)
 	callframe.Arg(frame, volume_db)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_set_band_gain_db, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_set_band_gain_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -98,7 +98,7 @@ func (self class) GetBandGainDb(band_idx gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, band_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_get_band_gain_db, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_get_band_gain_db, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -111,7 +111,7 @@ Returns the number of bands of the equalizer.
 func (self class) GetBandCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_get_band_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_get_band_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

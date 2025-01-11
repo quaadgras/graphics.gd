@@ -69,8 +69,8 @@ func (self Instance) SetColumns(value int) {
 func (self class) SetColumns(columns gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, columns)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridContainer.Bind_set_columns, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridContainer.Bind_set_columns, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -78,7 +78,7 @@ func (self class) SetColumns(columns gd.Int) {
 func (self class) GetColumns() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridContainer.Bind_get_columns, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridContainer.Bind_get_columns, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

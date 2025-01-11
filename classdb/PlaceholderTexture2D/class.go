@@ -68,8 +68,8 @@ func (self Instance) SetSize(value Vector2.XY) {
 func (self class) SetSize(size gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaceholderTexture2D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaceholderTexture2D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsPlaceholderTexture2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

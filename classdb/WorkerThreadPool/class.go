@@ -164,7 +164,7 @@ func (self class) AddTask(action gd.Callable, high_priority bool, description gd
 	callframe.Arg(frame, high_priority)
 	callframe.Arg(frame, pointers.Get(description))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_add_task, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_add_task, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -179,7 +179,7 @@ func (self class) IsTaskCompleted(task_id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, task_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_is_task_completed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_is_task_completed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -196,7 +196,7 @@ func (self class) WaitForTaskCompletion(task_id gd.Int) error {
 	var frame = callframe.New()
 	callframe.Arg(frame, task_id)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_wait_for_task_completion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_wait_for_task_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -217,7 +217,7 @@ func (self class) AddGroupTask(action gd.Callable, elements gd.Int, tasks_needed
 	callframe.Arg(frame, high_priority)
 	callframe.Arg(frame, pointers.Get(description))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_add_group_task, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_add_group_task, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -232,7 +232,7 @@ func (self class) IsGroupTaskCompleted(group_id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, group_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_is_group_task_completed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_is_group_task_completed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -247,7 +247,7 @@ func (self class) GetGroupProcessedElementCount(group_id gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, group_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_get_group_processed_element_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_get_group_processed_element_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -260,8 +260,8 @@ Pauses the thread that calls this method until the group task with the given ID 
 func (self class) WaitForGroupTaskCompletion(group_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, group_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_wait_for_group_task_completion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_wait_for_group_task_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) Virtual(name string) reflect.Value {

@@ -171,8 +171,8 @@ func (self class) SetVertex(vertex_id gd.Int, vertex gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex_id)
 	callframe.Arg(frame, vertex)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_vertex, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_vertex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -184,8 +184,8 @@ func (self class) SetNormal(vertex_id gd.Int, normal gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex_id)
 	callframe.Arg(frame, normal)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -196,8 +196,8 @@ Sets the bounding box for the [SoftBody3D].
 func (self class) SetAabb(aabb gd.AABB) {
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsPhysicsServer3DRenderingServerHandler() Advanced {

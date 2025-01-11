@@ -102,7 +102,7 @@ Returns the current line count.
 func (self class) GetLineCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -112,8 +112,8 @@ func (self class) GetLineCount() gd.Int {
 func (self class) SetAlignment(alignment gdclass.FlowContainerAlignmentMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -121,7 +121,7 @@ func (self class) SetAlignment(alignment gdclass.FlowContainerAlignmentMode) {
 func (self class) GetAlignment() gdclass.FlowContainerAlignmentMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FlowContainerAlignmentMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -131,8 +131,8 @@ func (self class) GetAlignment() gdclass.FlowContainerAlignmentMode {
 func (self class) SetLastWrapAlignment(last_wrap_alignment gdclass.FlowContainerLastWrapAlignmentMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, last_wrap_alignment)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_last_wrap_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_last_wrap_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -140,7 +140,7 @@ func (self class) SetLastWrapAlignment(last_wrap_alignment gdclass.FlowContainer
 func (self class) GetLastWrapAlignment() gdclass.FlowContainerLastWrapAlignmentMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FlowContainerLastWrapAlignmentMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_last_wrap_alignment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_last_wrap_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -150,8 +150,8 @@ func (self class) GetLastWrapAlignment() gdclass.FlowContainerLastWrapAlignmentM
 func (self class) SetVertical(vertical bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, vertical)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -159,7 +159,7 @@ func (self class) SetVertical(vertical bool) {
 func (self class) IsVertical() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_is_vertical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_is_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -169,8 +169,8 @@ func (self class) IsVertical() bool {
 func (self class) SetReverseFill(reverse_fill bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, reverse_fill)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_reverse_fill, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_set_reverse_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -178,7 +178,7 @@ func (self class) SetReverseFill(reverse_fill bool) {
 func (self class) IsReverseFill() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_is_reverse_fill, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_is_reverse_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

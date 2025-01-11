@@ -96,8 +96,8 @@ func (self class) Config(inherits gd.String, path gd.String, built_in_enabled bo
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, built_in_enabled)
 	callframe.Arg(frame, load_enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptCreateDialog.Bind_config, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptCreateDialog.Bind_config, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnScriptCreated(cb func(script [1]gdclass.Script)) {

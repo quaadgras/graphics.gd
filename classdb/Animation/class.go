@@ -600,7 +600,7 @@ func (self class) AddTrack(atype gdclass.AnimationTrackType, at_position gd.Int)
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, at_position)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_add_track, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_add_track, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -613,8 +613,8 @@ Removes a track by specifying the track index.
 func (self class) RemoveTrack(track_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_remove_track, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_remove_track, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -625,7 +625,7 @@ Returns the amount of tracks in the animation.
 func (self class) GetTrackCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_track_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_track_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -639,7 +639,7 @@ func (self class) TrackGetType(track_idx gd.Int) gdclass.AnimationTrackType {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[gdclass.AnimationTrackType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -653,7 +653,7 @@ func (self class) TrackGetPath(track_idx gd.Int) gd.NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
 	return ret
@@ -668,8 +668,8 @@ func (self class) TrackSetPath(track_idx gd.Int, path gd.NodePath) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -682,7 +682,7 @@ func (self class) FindTrack(path gd.NodePath, atype gdclass.AnimationTrackType) 
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_find_track, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_find_track, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -695,8 +695,8 @@ Moves a track up.
 func (self class) TrackMoveUp(track_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_move_up, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_move_up, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -707,8 +707,8 @@ Moves a track down.
 func (self class) TrackMoveDown(track_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_move_down, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_move_down, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -720,8 +720,8 @@ func (self class) TrackMoveTo(track_idx gd.Int, to_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, to_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_move_to, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_move_to, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -733,8 +733,8 @@ func (self class) TrackSwap(track_idx gd.Int, with_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, with_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_swap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_swap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -746,8 +746,8 @@ func (self class) TrackSetImported(track_idx gd.Int, imported bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, imported)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_imported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_imported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -759,7 +759,7 @@ func (self class) TrackIsImported(track_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_is_imported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_is_imported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -773,8 +773,8 @@ func (self class) TrackSetEnabled(track_idx gd.Int, enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -786,7 +786,7 @@ func (self class) TrackIsEnabled(track_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_is_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -802,7 +802,7 @@ func (self class) PositionTrackInsertKey(track_idx gd.Int, time gd.Float, positi
 	callframe.Arg(frame, time)
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_position_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_position_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -818,7 +818,7 @@ func (self class) RotationTrackInsertKey(track_idx gd.Int, time gd.Float, rotati
 	callframe.Arg(frame, time)
 	callframe.Arg(frame, rotation)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_rotation_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_rotation_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -834,7 +834,7 @@ func (self class) ScaleTrackInsertKey(track_idx gd.Int, time gd.Float, scale gd.
 	callframe.Arg(frame, time)
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_scale_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_scale_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -850,7 +850,7 @@ func (self class) BlendShapeTrackInsertKey(track_idx gd.Int, time gd.Float, amou
 	callframe.Arg(frame, time)
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_blend_shape_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_blend_shape_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -866,7 +866,7 @@ func (self class) PositionTrackInterpolate(track_idx gd.Int, time_sec gd.Float, 
 	callframe.Arg(frame, time_sec)
 	callframe.Arg(frame, backward)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_position_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_position_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -882,7 +882,7 @@ func (self class) RotationTrackInterpolate(track_idx gd.Int, time_sec gd.Float, 
 	callframe.Arg(frame, time_sec)
 	callframe.Arg(frame, backward)
 	var r_ret = callframe.Ret[gd.Quaternion](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_rotation_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_rotation_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -898,7 +898,7 @@ func (self class) ScaleTrackInterpolate(track_idx gd.Int, time_sec gd.Float, bac
 	callframe.Arg(frame, time_sec)
 	callframe.Arg(frame, backward)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_scale_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_scale_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -914,7 +914,7 @@ func (self class) BlendShapeTrackInterpolate(track_idx gd.Int, time_sec gd.Float
 	callframe.Arg(frame, time_sec)
 	callframe.Arg(frame, backward)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_blend_shape_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_blend_shape_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -931,7 +931,7 @@ func (self class) TrackInsertKey(track_idx gd.Int, time gd.Float, key gd.Variant
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, transition)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -945,8 +945,8 @@ func (self class) TrackRemoveKey(track_idx gd.Int, key_idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_remove_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_remove_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -958,8 +958,8 @@ func (self class) TrackRemoveKeyAtTime(track_idx gd.Int, time gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_remove_key_at_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_remove_key_at_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -972,8 +972,8 @@ func (self class) TrackSetKeyValue(track_idx gd.Int, key gd.Int, value gd.Varian
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key)
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_key_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_key_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -986,8 +986,8 @@ func (self class) TrackSetKeyTransition(track_idx gd.Int, key_idx gd.Int, transi
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	callframe.Arg(frame, transition)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_key_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_key_transition, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1000,8 +1000,8 @@ func (self class) TrackSetKeyTime(track_idx gd.Int, key_idx gd.Int, time gd.Floa
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	callframe.Arg(frame, time)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_key_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_key_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1014,7 +1014,7 @@ func (self class) TrackGetKeyTransition(track_idx gd.Int, key_idx gd.Int) gd.Flo
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_transition, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_transition, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1028,7 +1028,7 @@ func (self class) TrackGetKeyCount(track_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1043,7 +1043,7 @@ func (self class) TrackGetKeyValue(track_idx gd.Int, key_idx gd.Int) gd.Variant 
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1058,7 +1058,7 @@ func (self class) TrackGetKeyTime(track_idx gd.Int, key_idx gd.Int) gd.Float {
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_time, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_key_time, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1079,7 +1079,7 @@ func (self class) TrackFindKey(track_idx gd.Int, time gd.Float, find_mode gdclas
 	callframe.Arg(frame, limit)
 	callframe.Arg(frame, backward)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_find_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_find_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1093,8 +1093,8 @@ func (self class) TrackSetInterpolationType(track_idx gd.Int, interpolation gdcl
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, interpolation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_interpolation_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_interpolation_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1106,7 +1106,7 @@ func (self class) TrackGetInterpolationType(track_idx gd.Int) gdclass.AnimationI
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[gdclass.AnimationInterpolationType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_interpolation_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_interpolation_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1120,8 +1120,8 @@ func (self class) TrackSetInterpolationLoopWrap(track_idx gd.Int, interpolation 
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, interpolation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_interpolation_loop_wrap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_set_interpolation_loop_wrap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1133,7 +1133,7 @@ func (self class) TrackGetInterpolationLoopWrap(track_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_interpolation_loop_wrap, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_interpolation_loop_wrap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1147,7 +1147,7 @@ func (self class) TrackIsCompressed(track_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_is_compressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_is_compressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1161,8 +1161,8 @@ func (self class) ValueTrackSetUpdateMode(track_idx gd.Int, mode gdclass.Animati
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_value_track_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_value_track_set_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1174,7 +1174,7 @@ func (self class) ValueTrackGetUpdateMode(track_idx gd.Int) gdclass.AnimationUpd
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[gdclass.AnimationUpdateMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_value_track_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_value_track_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1191,7 +1191,7 @@ func (self class) ValueTrackInterpolate(track_idx gd.Int, time_sec gd.Float, bac
 	callframe.Arg(frame, time_sec)
 	callframe.Arg(frame, backward)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_value_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_value_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1206,7 +1206,7 @@ func (self class) MethodTrackGetName(track_idx gd.Int, key_idx gd.Int) gd.String
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_method_track_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_method_track_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1221,7 +1221,7 @@ func (self class) MethodTrackGetParams(track_idx gd.Int, key_idx gd.Int) gd.Arra
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_method_track_get_params, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_method_track_get_params, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1240,7 +1240,7 @@ func (self class) BezierTrackInsertKey(track_idx gd.Int, time gd.Float, value gd
 	callframe.Arg(frame, in_handle)
 	callframe.Arg(frame, out_handle)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1255,8 +1255,8 @@ func (self class) BezierTrackSetKeyValue(track_idx gd.Int, key_idx gd.Int, value
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_set_key_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_set_key_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1270,8 +1270,8 @@ func (self class) BezierTrackSetKeyInHandle(track_idx gd.Int, key_idx gd.Int, in
 	callframe.Arg(frame, key_idx)
 	callframe.Arg(frame, in_handle)
 	callframe.Arg(frame, balanced_value_time_ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_set_key_in_handle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_set_key_in_handle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1285,8 +1285,8 @@ func (self class) BezierTrackSetKeyOutHandle(track_idx gd.Int, key_idx gd.Int, o
 	callframe.Arg(frame, key_idx)
 	callframe.Arg(frame, out_handle)
 	callframe.Arg(frame, balanced_value_time_ratio)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_set_key_out_handle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_set_key_out_handle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1299,7 +1299,7 @@ func (self class) BezierTrackGetKeyValue(track_idx gd.Int, key_idx gd.Int) gd.Fl
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_get_key_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_get_key_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1314,7 +1314,7 @@ func (self class) BezierTrackGetKeyInHandle(track_idx gd.Int, key_idx gd.Int) gd
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_get_key_in_handle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_get_key_in_handle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1329,7 +1329,7 @@ func (self class) BezierTrackGetKeyOutHandle(track_idx gd.Int, key_idx gd.Int) g
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_get_key_out_handle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_get_key_out_handle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1344,7 +1344,7 @@ func (self class) BezierTrackInterpolate(track_idx gd.Int, time gd.Float) gd.Flo
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_bezier_track_interpolate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1363,7 +1363,7 @@ func (self class) AudioTrackInsertKey(track_idx gd.Int, time gd.Float, stream [1
 	callframe.Arg(frame, start_offset)
 	callframe.Arg(frame, end_offset)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1378,8 +1378,8 @@ func (self class) AudioTrackSetKeyStream(track_idx gd.Int, key_idx gd.Int, strea
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_set_key_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_set_key_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1392,8 +1392,8 @@ func (self class) AudioTrackSetKeyStartOffset(track_idx gd.Int, key_idx gd.Int, 
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_set_key_start_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_set_key_start_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1406,8 +1406,8 @@ func (self class) AudioTrackSetKeyEndOffset(track_idx gd.Int, key_idx gd.Int, of
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	callframe.Arg(frame, offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_set_key_end_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_set_key_end_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1420,7 +1420,7 @@ func (self class) AudioTrackGetKeyStream(track_idx gd.Int, key_idx gd.Int) [1]gd
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_get_key_stream, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_get_key_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1436,7 +1436,7 @@ func (self class) AudioTrackGetKeyStartOffset(track_idx gd.Int, key_idx gd.Int) 
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_get_key_start_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_get_key_start_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1452,7 +1452,7 @@ func (self class) AudioTrackGetKeyEndOffset(track_idx gd.Int, key_idx gd.Int) gd
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_get_key_end_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_get_key_end_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1466,8 +1466,8 @@ func (self class) AudioTrackSetUseBlend(track_idx gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_set_use_blend, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_set_use_blend, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1479,7 +1479,7 @@ func (self class) AudioTrackIsUseBlend(track_idx gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_is_use_blend, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_audio_track_is_use_blend, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1495,7 +1495,7 @@ func (self class) AnimationTrackInsertKey(track_idx gd.Int, time gd.Float, anima
 	callframe.Arg(frame, time)
 	callframe.Arg(frame, pointers.Get(animation))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_animation_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_animation_track_insert_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1510,8 +1510,8 @@ func (self class) AnimationTrackSetKeyAnimation(track_idx gd.Int, key_idx gd.Int
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	callframe.Arg(frame, pointers.Get(animation))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_animation_track_set_key_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_animation_track_set_key_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1524,7 +1524,7 @@ func (self class) AnimationTrackGetKeyAnimation(track_idx gd.Int, key_idx gd.Int
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_animation_track_get_key_animation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_animation_track_get_key_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1534,8 +1534,8 @@ func (self class) AnimationTrackGetKeyAnimation(track_idx gd.Int, key_idx gd.Int
 func (self class) SetLength(time_sec gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, time_sec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_set_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_set_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1543,7 +1543,7 @@ func (self class) SetLength(time_sec gd.Float) {
 func (self class) GetLength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1553,8 +1553,8 @@ func (self class) GetLength() gd.Float {
 func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_set_loop_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_set_loop_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1562,7 +1562,7 @@ func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) {
 func (self class) GetLoopMode() gdclass.AnimationLoopMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationLoopMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_loop_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_loop_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1572,8 +1572,8 @@ func (self class) GetLoopMode() gdclass.AnimationLoopMode {
 func (self class) SetStep(size_sec gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size_sec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_set_step, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_set_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1581,7 +1581,7 @@ func (self class) SetStep(size_sec gd.Float) {
 func (self class) GetStep() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1593,8 +1593,8 @@ Clear the animation (clear all tracks and reset all).
 //go:nosplit
 func (self class) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1606,8 +1606,8 @@ func (self class) CopyTrack(track_idx gd.Int, to_animation [1]gdclass.Animation)
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, pointers.Get(to_animation[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_copy_track, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_copy_track, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1621,8 +1621,8 @@ func (self class) Compress(page_size gd.Int, fps gd.Int, split_tolerance gd.Floa
 	callframe.Arg(frame, page_size)
 	callframe.Arg(frame, fps)
 	callframe.Arg(frame, split_tolerance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_compress, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_compress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1630,7 +1630,7 @@ func (self class) Compress(page_size gd.Int, fps gd.Int, split_tolerance gd.Floa
 func (self class) IsCaptureIncluded() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_is_capture_included, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_is_capture_included, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

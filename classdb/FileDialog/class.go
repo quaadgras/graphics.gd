@@ -257,8 +257,8 @@ Clear all the added filters in the dialog.
 //go:nosplit
 func (self class) ClearFilters() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_clear_filters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_clear_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -272,8 +272,8 @@ func (self class) AddFilter(filter gd.String, description gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(filter))
 	callframe.Arg(frame, pointers.Get(description))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_add_filter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_add_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -281,8 +281,8 @@ func (self class) AddFilter(filter gd.String, description gd.String) {
 func (self class) SetFilters(filters gd.PackedStringArray) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(filters))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_filters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -290,7 +290,7 @@ func (self class) SetFilters(filters gd.PackedStringArray) {
 func (self class) GetFilters() gd.PackedStringArray {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_filters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -304,7 +304,7 @@ func (self class) GetOptionName(option gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -318,7 +318,7 @@ func (self class) GetOptionValues(option gd.Int) gd.PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_values, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_values, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -332,7 +332,7 @@ func (self class) GetOptionDefault(option gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_default, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_default, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -346,8 +346,8 @@ func (self class) SetOptionName(option gd.Int, name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -359,8 +359,8 @@ func (self class) SetOptionValues(option gd.Int, values gd.PackedStringArray) {
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, pointers.Get(values))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_values, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_values, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -372,8 +372,8 @@ func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, default_value_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_default, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_default, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -381,8 +381,8 @@ func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) {
 func (self class) SetOptionCount(count gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -390,7 +390,7 @@ func (self class) SetOptionCount(count gd.Int) {
 func (self class) GetOptionCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -406,8 +406,8 @@ func (self class) AddOption(name gd.String, values gd.PackedStringArray, default
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(values))
 	callframe.Arg(frame, default_value_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_add_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_add_option, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -418,7 +418,7 @@ Returns a [Dictionary] with the selected values of the additional [OptionButton]
 func (self class) GetSelectedOptions() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_selected_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_selected_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -428,7 +428,7 @@ func (self class) GetSelectedOptions() gd.Dictionary {
 func (self class) GetCurrentDir() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -438,7 +438,7 @@ func (self class) GetCurrentDir() gd.String {
 func (self class) GetCurrentFile() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -448,7 +448,7 @@ func (self class) GetCurrentFile() gd.String {
 func (self class) GetCurrentPath() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -458,8 +458,8 @@ func (self class) GetCurrentPath() gd.String {
 func (self class) SetCurrentDir(dir gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dir))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_dir, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -467,8 +467,8 @@ func (self class) SetCurrentDir(dir gd.String) {
 func (self class) SetCurrentFile(file gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_file, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -476,8 +476,8 @@ func (self class) SetCurrentFile(file gd.String) {
 func (self class) SetCurrentPath(path gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -485,8 +485,8 @@ func (self class) SetCurrentPath(path gd.String) {
 func (self class) SetModeOverridesTitle(override bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, override)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_mode_overrides_title, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_mode_overrides_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -494,7 +494,7 @@ func (self class) SetModeOverridesTitle(override bool) {
 func (self class) IsModeOverridingTitle() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_is_mode_overriding_title, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_is_mode_overriding_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -504,8 +504,8 @@ func (self class) IsModeOverridingTitle() bool {
 func (self class) SetFileMode(mode gdclass.FileDialogFileMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_file_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_file_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -513,7 +513,7 @@ func (self class) SetFileMode(mode gdclass.FileDialogFileMode) {
 func (self class) GetFileMode() gdclass.FileDialogFileMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FileDialogFileMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_file_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_file_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -528,7 +528,7 @@ Returns the vertical box container of the dialog, custom controls can be added t
 func (self class) GetVbox() [1]gdclass.VBoxContainer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_vbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_vbox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -542,7 +542,7 @@ Returns the LineEdit for the selected file.
 func (self class) GetLineEdit() [1]gdclass.LineEdit {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.LineEdit{gd.PointerLifetimeBoundTo[gdclass.LineEdit](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -552,8 +552,8 @@ func (self class) GetLineEdit() [1]gdclass.LineEdit {
 func (self class) SetAccess(access gdclass.FileDialogAccess) {
 	var frame = callframe.New()
 	callframe.Arg(frame, access)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_access, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_access, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -561,7 +561,7 @@ func (self class) SetAccess(access gdclass.FileDialogAccess) {
 func (self class) GetAccess() gdclass.FileDialogAccess {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FileDialogAccess](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_access, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_access, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -571,8 +571,8 @@ func (self class) GetAccess() gdclass.FileDialogAccess {
 func (self class) SetRootSubfolder(dir gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dir))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_root_subfolder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_root_subfolder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -580,7 +580,7 @@ func (self class) SetRootSubfolder(dir gd.String) {
 func (self class) GetRootSubfolder() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_root_subfolder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_root_subfolder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -590,8 +590,8 @@ func (self class) GetRootSubfolder() gd.String {
 func (self class) SetShowHiddenFiles(show bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, show)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_show_hidden_files, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_show_hidden_files, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -599,7 +599,7 @@ func (self class) SetShowHiddenFiles(show bool) {
 func (self class) IsShowingHiddenFiles() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_is_showing_hidden_files, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_is_showing_hidden_files, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -609,8 +609,8 @@ func (self class) IsShowingHiddenFiles() bool {
 func (self class) SetUseNativeDialog(native bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, native)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_use_native_dialog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_use_native_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -618,7 +618,7 @@ func (self class) SetUseNativeDialog(native bool) {
 func (self class) GetUseNativeDialog() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_use_native_dialog, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_use_native_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -630,8 +630,8 @@ Clear all currently selected items in the dialog.
 //go:nosplit
 func (self class) DeselectAll() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_deselect_all, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_deselect_all, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -642,8 +642,8 @@ Invalidate and update the current dialog content list.
 //go:nosplit
 func (self class) Invalidate() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_invalidate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_invalidate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnFileSelected(cb func(path string)) {

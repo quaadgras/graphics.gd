@@ -393,8 +393,8 @@ func (class) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.Ph
 func (self class) SetMass(mass gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mass)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -402,7 +402,7 @@ func (self class) SetMass(mass gd.Float) {
 func (self class) GetMass() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -412,8 +412,8 @@ func (self class) GetMass() gd.Float {
 func (self class) SetInertia(inertia gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, inertia)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_inertia, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_inertia, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -421,7 +421,7 @@ func (self class) SetInertia(inertia gd.Vector3) {
 func (self class) GetInertia() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_inertia, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_inertia, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -431,8 +431,8 @@ func (self class) GetInertia() gd.Vector3 {
 func (self class) SetCenterOfMassMode(mode gdclass.RigidBody3DCenterOfMassMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_center_of_mass_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_center_of_mass_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -440,7 +440,7 @@ func (self class) SetCenterOfMassMode(mode gdclass.RigidBody3DCenterOfMassMode) 
 func (self class) GetCenterOfMassMode() gdclass.RigidBody3DCenterOfMassMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RigidBody3DCenterOfMassMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_center_of_mass_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_center_of_mass_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -450,8 +450,8 @@ func (self class) GetCenterOfMassMode() gdclass.RigidBody3DCenterOfMassMode {
 func (self class) SetCenterOfMass(center_of_mass gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, center_of_mass)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -459,7 +459,7 @@ func (self class) SetCenterOfMass(center_of_mass gd.Vector3) {
 func (self class) GetCenterOfMass() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -469,8 +469,8 @@ func (self class) GetCenterOfMass() gd.Vector3 {
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(physics_material_override[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -478,7 +478,7 @@ func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclas
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -488,8 +488,8 @@ func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial {
 func (self class) SetLinearVelocity(linear_velocity gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -497,7 +497,7 @@ func (self class) SetLinearVelocity(linear_velocity gd.Vector3) {
 func (self class) GetLinearVelocity() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -507,8 +507,8 @@ func (self class) GetLinearVelocity() gd.Vector3 {
 func (self class) SetAngularVelocity(angular_velocity gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -516,7 +516,7 @@ func (self class) SetAngularVelocity(angular_velocity gd.Vector3) {
 func (self class) GetAngularVelocity() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -529,7 +529,7 @@ Returns the inverse inertia tensor basis. This is used to calculate the angular 
 func (self class) GetInverseInertiaTensor() gd.Basis {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Basis](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_inverse_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_inverse_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -539,8 +539,8 @@ func (self class) GetInverseInertiaTensor() gd.Basis {
 func (self class) SetGravityScale(gravity_scale gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gravity_scale)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_gravity_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_gravity_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -548,7 +548,7 @@ func (self class) SetGravityScale(gravity_scale gd.Float) {
 func (self class) GetGravityScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_gravity_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_gravity_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -558,8 +558,8 @@ func (self class) GetGravityScale() gd.Float {
 func (self class) SetLinearDampMode(linear_damp_mode gdclass.RigidBody3DDampMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_linear_damp_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_linear_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -567,7 +567,7 @@ func (self class) SetLinearDampMode(linear_damp_mode gdclass.RigidBody3DDampMode
 func (self class) GetLinearDampMode() gdclass.RigidBody3DDampMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RigidBody3DDampMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_linear_damp_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_linear_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -577,8 +577,8 @@ func (self class) GetLinearDampMode() gdclass.RigidBody3DDampMode {
 func (self class) SetAngularDampMode(angular_damp_mode gdclass.RigidBody3DDampMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_angular_damp_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_angular_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -586,7 +586,7 @@ func (self class) SetAngularDampMode(angular_damp_mode gdclass.RigidBody3DDampMo
 func (self class) GetAngularDampMode() gdclass.RigidBody3DDampMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RigidBody3DDampMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_angular_damp_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_angular_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -596,8 +596,8 @@ func (self class) GetAngularDampMode() gdclass.RigidBody3DDampMode {
 func (self class) SetLinearDamp(linear_damp gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_linear_damp, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -605,7 +605,7 @@ func (self class) SetLinearDamp(linear_damp gd.Float) {
 func (self class) GetLinearDamp() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_linear_damp, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -615,8 +615,8 @@ func (self class) GetLinearDamp() gd.Float {
 func (self class) SetAngularDamp(angular_damp gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_angular_damp, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -624,7 +624,7 @@ func (self class) SetAngularDamp(angular_damp gd.Float) {
 func (self class) GetAngularDamp() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_angular_damp, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -634,8 +634,8 @@ func (self class) GetAngularDamp() gd.Float {
 func (self class) SetMaxContactsReported(amount gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -643,7 +643,7 @@ func (self class) SetMaxContactsReported(amount gd.Int) {
 func (self class) GetMaxContactsReported() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -657,7 +657,7 @@ Returns the number of contacts this body has with other bodies. By default, this
 func (self class) GetContactCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_contact_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_contact_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -667,8 +667,8 @@ func (self class) GetContactCount() gd.Int {
 func (self class) SetUseCustomIntegrator(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_use_custom_integrator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_use_custom_integrator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -676,7 +676,7 @@ func (self class) SetUseCustomIntegrator(enable bool) {
 func (self class) IsUsingCustomIntegrator() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_using_custom_integrator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_using_custom_integrator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -686,8 +686,8 @@ func (self class) IsUsingCustomIntegrator() bool {
 func (self class) SetContactMonitor(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_contact_monitor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_contact_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -695,7 +695,7 @@ func (self class) SetContactMonitor(enabled bool) {
 func (self class) IsContactMonitorEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_contact_monitor_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_contact_monitor_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -705,8 +705,8 @@ func (self class) IsContactMonitorEnabled() bool {
 func (self class) SetUseContinuousCollisionDetection(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_use_continuous_collision_detection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_use_continuous_collision_detection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -714,7 +714,7 @@ func (self class) SetUseContinuousCollisionDetection(enable bool) {
 func (self class) IsUsingContinuousCollisionDetection() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_using_continuous_collision_detection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_using_continuous_collision_detection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -727,8 +727,8 @@ Sets an axis velocity. The velocity in the given vector axis will be set as the 
 func (self class) SetAxisVelocity(axis_velocity gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, axis_velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_axis_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_axis_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -741,8 +741,8 @@ This is equivalent to using [method apply_impulse] at the body's center of mass.
 func (self class) ApplyCentralImpulse(impulse gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_central_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_central_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -756,8 +756,8 @@ func (self class) ApplyImpulse(impulse gd.Vector3, position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -770,8 +770,8 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 func (self class) ApplyTorqueImpulse(impulse gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_torque_impulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_torque_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -783,8 +783,8 @@ This is equivalent to using [method apply_force] at the body's center of mass.
 func (self class) ApplyCentralForce(force gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_central_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_central_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -797,8 +797,8 @@ func (self class) ApplyForce(force gd.Vector3, position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -810,8 +810,8 @@ Applies a rotational force without affecting position. A force is time dependent
 func (self class) ApplyTorque(torque gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_apply_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -823,8 +823,8 @@ This is equivalent to using [method add_constant_force] at the body's center of 
 func (self class) AddConstantCentralForce(force gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_add_constant_central_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_add_constant_central_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -837,8 +837,8 @@ func (self class) AddConstantForce(force gd.Vector3, position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_add_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_add_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -849,8 +849,8 @@ Adds a constant rotational force without affecting position that keeps being app
 func (self class) AddConstantTorque(torque gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_add_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_add_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -858,8 +858,8 @@ func (self class) AddConstantTorque(torque gd.Vector3) {
 func (self class) SetConstantForce(force gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -867,7 +867,7 @@ func (self class) SetConstantForce(force gd.Vector3) {
 func (self class) GetConstantForce() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -877,8 +877,8 @@ func (self class) GetConstantForce() gd.Vector3 {
 func (self class) SetConstantTorque(torque gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -886,7 +886,7 @@ func (self class) SetConstantTorque(torque gd.Vector3) {
 func (self class) GetConstantTorque() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -896,8 +896,8 @@ func (self class) GetConstantTorque() gd.Vector3 {
 func (self class) SetSleeping(sleeping bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, sleeping)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_sleeping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_sleeping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -905,7 +905,7 @@ func (self class) SetSleeping(sleeping bool) {
 func (self class) IsSleeping() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_sleeping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_sleeping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -915,8 +915,8 @@ func (self class) IsSleeping() bool {
 func (self class) SetCanSleep(able_to_sleep bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, able_to_sleep)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_can_sleep, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_can_sleep, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -924,7 +924,7 @@ func (self class) SetCanSleep(able_to_sleep bool) {
 func (self class) IsAbleToSleep() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_able_to_sleep, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_able_to_sleep, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -934,8 +934,8 @@ func (self class) IsAbleToSleep() bool {
 func (self class) SetLockRotationEnabled(lock_rotation bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, lock_rotation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_lock_rotation_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_lock_rotation_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -943,7 +943,7 @@ func (self class) SetLockRotationEnabled(lock_rotation bool) {
 func (self class) IsLockRotationEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_lock_rotation_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_lock_rotation_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -953,8 +953,8 @@ func (self class) IsLockRotationEnabled() bool {
 func (self class) SetFreezeEnabled(freeze_mode bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, freeze_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_freeze_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_freeze_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -962,7 +962,7 @@ func (self class) SetFreezeEnabled(freeze_mode bool) {
 func (self class) IsFreezeEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_freeze_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_is_freeze_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -972,8 +972,8 @@ func (self class) IsFreezeEnabled() bool {
 func (self class) SetFreezeMode(freeze_mode gdclass.RigidBody3DFreezeMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, freeze_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_freeze_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_set_freeze_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -981,7 +981,7 @@ func (self class) SetFreezeMode(freeze_mode gdclass.RigidBody3DFreezeMode) {
 func (self class) GetFreezeMode() gdclass.RigidBody3DFreezeMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RigidBody3DFreezeMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_freeze_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_freeze_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -995,7 +995,7 @@ Returns a list of the bodies colliding with this one. Requires [member contact_m
 func (self class) GetCollidingBodies() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_colliding_bodies, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_colliding_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret

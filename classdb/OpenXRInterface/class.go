@@ -234,7 +234,7 @@ func (self Instance) SetVrsStrength(value Float.X) {
 func (self class) GetDisplayRefreshRate() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -244,8 +244,8 @@ func (self class) GetDisplayRefreshRate() gd.Float {
 func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, refresh_rate)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -253,7 +253,7 @@ func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) {
 func (self class) GetRenderTargetSizeMultiplier() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_render_target_size_multiplier, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_render_target_size_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -263,8 +263,8 @@ func (self class) GetRenderTargetSizeMultiplier() gd.Float {
 func (self class) SetRenderTargetSizeMultiplier(multiplier gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, multiplier)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_render_target_size_multiplier, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_render_target_size_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -276,7 +276,7 @@ Returns [code]true[/code] if OpenXR's foveation extension is supported, the inte
 func (self class) IsFoveationSupported() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_foveation_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_foveation_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -286,7 +286,7 @@ func (self class) IsFoveationSupported() bool {
 func (self class) GetFoveationLevel() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_foveation_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_foveation_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -296,8 +296,8 @@ func (self class) GetFoveationLevel() gd.Int {
 func (self class) SetFoveationLevel(foveation_level gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, foveation_level)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_foveation_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_foveation_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -305,7 +305,7 @@ func (self class) SetFoveationLevel(foveation_level gd.Int) {
 func (self class) GetFoveationDynamic() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_foveation_dynamic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_foveation_dynamic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -315,8 +315,8 @@ func (self class) GetFoveationDynamic() bool {
 func (self class) SetFoveationDynamic(foveation_dynamic bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, foveation_dynamic)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_foveation_dynamic, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_foveation_dynamic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -328,7 +328,7 @@ func (self class) IsActionSetActive(name gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_action_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_action_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -342,8 +342,8 @@ func (self class) SetActionSetActive(name gd.String, active bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, active)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_action_set_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_action_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -354,7 +354,7 @@ Returns a list of action sets registered with Godot (loaded from the action map 
 func (self class) GetActionSets() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_action_sets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_action_sets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -367,7 +367,7 @@ Returns display refresh rates supported by the current HMD. Only returned if thi
 func (self class) GetAvailableDisplayRefreshRates() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_available_display_refresh_rates, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_available_display_refresh_rates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -381,8 +381,8 @@ func (self class) SetMotionRange(hand gdclass.OpenXRInterfaceHand, motion_range 
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, motion_range)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_motion_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_motion_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -394,7 +394,7 @@ func (self class) GetMotionRange(hand gdclass.OpenXRInterfaceHand) gdclass.OpenX
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	var r_ret = callframe.Ret[gdclass.OpenXRInterfaceHandMotionRange](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_motion_range, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_motion_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -408,7 +408,7 @@ func (self class) GetHandTrackingSource(hand gdclass.OpenXRInterfaceHand) gdclas
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	var r_ret = callframe.Ret[gdclass.OpenXRInterfaceHandTrackedSource](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_tracking_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_tracking_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -423,7 +423,7 @@ func (self class) GetHandJointFlags(hand gdclass.OpenXRInterfaceHand, joint gdcl
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gdclass.OpenXRInterfaceHandJointFlags](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -438,7 +438,7 @@ func (self class) GetHandJointRotation(hand gdclass.OpenXRInterfaceHand, joint g
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Quaternion](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_rotation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -453,7 +453,7 @@ func (self class) GetHandJointPosition(hand gdclass.OpenXRInterfaceHand, joint g
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -468,7 +468,7 @@ func (self class) GetHandJointRadius(hand gdclass.OpenXRInterfaceHand, joint gdc
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -483,7 +483,7 @@ func (self class) GetHandJointLinearVelocity(hand gdclass.OpenXRInterfaceHand, j
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -498,7 +498,7 @@ func (self class) GetHandJointAngularVelocity(hand gdclass.OpenXRInterfaceHand, 
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_hand_joint_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -512,7 +512,7 @@ Returns [code]true[/code] if OpenXR's hand tracking is supported and enabled.
 func (self class) IsHandTrackingSupported() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_hand_tracking_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_hand_tracking_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -526,7 +526,7 @@ Returns [code]true[/code] if OpenXR's hand interaction profile is supported and 
 func (self class) IsHandInteractionSupported() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_hand_interaction_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_hand_interaction_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -540,7 +540,7 @@ Returns the capabilities of the eye gaze interaction extension.
 func (self class) IsEyeGazeInteractionSupported() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_eye_gaze_interaction_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_eye_gaze_interaction_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -550,7 +550,7 @@ func (self class) IsEyeGazeInteractionSupported() bool {
 func (self class) GetVrsMinRadius() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -560,8 +560,8 @@ func (self class) GetVrsMinRadius() gd.Float {
 func (self class) SetVrsMinRadius(radius gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -569,7 +569,7 @@ func (self class) SetVrsMinRadius(radius gd.Float) {
 func (self class) GetVrsStrength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -579,8 +579,8 @@ func (self class) GetVrsStrength() gd.Float {
 func (self class) SetVrsStrength(strength gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_set_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnSessionBegun(cb func()) {

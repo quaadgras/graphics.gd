@@ -103,8 +103,8 @@ func (self Instance) SetUseMipmaps(value bool) {
 func (self class) SetFitMargin(fit_margin gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, fit_margin)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_set_fit_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_set_fit_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -112,7 +112,7 @@ func (self class) SetFitMargin(fit_margin gd.Float) {
 func (self class) GetFitMargin() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_fit_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_fit_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -122,8 +122,8 @@ func (self class) GetFitMargin() gd.Float {
 func (self class) SetClearMargin(clear_margin gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, clear_margin)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_set_clear_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_set_clear_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -131,7 +131,7 @@ func (self class) SetClearMargin(clear_margin gd.Float) {
 func (self class) GetClearMargin() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_clear_margin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_clear_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -141,8 +141,8 @@ func (self class) GetClearMargin() gd.Float {
 func (self class) SetUseMipmaps(use_mipmaps bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, use_mipmaps)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_set_use_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_set_use_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -150,7 +150,7 @@ func (self class) SetUseMipmaps(use_mipmaps bool) {
 func (self class) IsUsingMipmaps() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_is_using_mipmaps, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_is_using_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

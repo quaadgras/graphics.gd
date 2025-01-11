@@ -348,8 +348,8 @@ func (class) _draw_port(impl func(ptr unsafe.Pointer, slot_index gd.Int, positio
 func (self class) SetTitle(title gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_title, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -357,7 +357,7 @@ func (self class) SetTitle(title gd.String) {
 func (self class) GetTitle() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -370,7 +370,7 @@ Returns the [HBoxContainer] used for the title bar, only containing a [Label] fo
 func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_titlebar_hbox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_titlebar_hbox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()
 	return ret
@@ -398,8 +398,8 @@ func (self class) SetSlot(slot_index gd.Int, enable_left_port bool, type_left gd
 	callframe.Arg(frame, pointers.Get(custom_icon_left[0])[0])
 	callframe.Arg(frame, pointers.Get(custom_icon_right[0])[0])
 	callframe.Arg(frame, draw_stylebox)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -410,8 +410,8 @@ Disables the slot with the given [param slot_index]. This will remove the corres
 func (self class) ClearSlot(slot_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_clear_slot, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_clear_slot, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -421,8 +421,8 @@ Disables all slots of the GraphNode. This will remove all input/output ports fro
 //go:nosplit
 func (self class) ClearAllSlots() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_clear_all_slots, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_clear_all_slots, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -434,7 +434,7 @@ func (self class) IsSlotEnabledLeft(slot_index gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_slot_enabled_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_slot_enabled_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -448,8 +448,8 @@ func (self class) SetSlotEnabledLeft(slot_index gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_enabled_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_enabled_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -461,8 +461,8 @@ func (self class) SetSlotTypeLeft(slot_index gd.Int, atype gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, atype)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_type_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_type_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -474,7 +474,7 @@ func (self class) GetSlotTypeLeft(slot_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_type_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_type_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -488,8 +488,8 @@ func (self class) SetSlotColorLeft(slot_index gd.Int, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_color_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_color_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -501,7 +501,7 @@ func (self class) GetSlotColorLeft(slot_index gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_color_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_color_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -515,8 +515,8 @@ func (self class) SetSlotCustomIconLeft(slot_index gd.Int, custom_icon [1]gdclas
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, pointers.Get(custom_icon[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_custom_icon_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_custom_icon_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -528,7 +528,7 @@ func (self class) GetSlotCustomIconLeft(slot_index gd.Int) [1]gdclass.Texture2D 
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_left, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_left, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -542,7 +542,7 @@ func (self class) IsSlotEnabledRight(slot_index gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_slot_enabled_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_slot_enabled_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -556,8 +556,8 @@ func (self class) SetSlotEnabledRight(slot_index gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_enabled_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_enabled_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -569,8 +569,8 @@ func (self class) SetSlotTypeRight(slot_index gd.Int, atype gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, atype)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_type_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_type_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -582,7 +582,7 @@ func (self class) GetSlotTypeRight(slot_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_type_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_type_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -596,8 +596,8 @@ func (self class) SetSlotColorRight(slot_index gd.Int, color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_color_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_color_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -609,7 +609,7 @@ func (self class) GetSlotColorRight(slot_index gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_color_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_color_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -623,8 +623,8 @@ func (self class) SetSlotCustomIconRight(slot_index gd.Int, custom_icon [1]gdcla
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, pointers.Get(custom_icon[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_custom_icon_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_custom_icon_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -636,7 +636,7 @@ func (self class) GetSlotCustomIconRight(slot_index gd.Int) [1]gdclass.Texture2D
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_right, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_right, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -650,7 +650,7 @@ func (self class) IsSlotDrawStylebox(slot_index gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_slot_draw_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_slot_draw_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -664,8 +664,8 @@ func (self class) SetSlotDrawStylebox(slot_index gd.Int, enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_draw_stylebox, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_draw_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -673,8 +673,8 @@ func (self class) SetSlotDrawStylebox(slot_index gd.Int, enable bool) {
 func (self class) SetIgnoreInvalidConnectionType(ignore bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, ignore)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_ignore_invalid_connection_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_ignore_invalid_connection_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -682,7 +682,7 @@ func (self class) SetIgnoreInvalidConnectionType(ignore bool) {
 func (self class) IsIgnoringValidConnectionType() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_ignoring_valid_connection_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_ignoring_valid_connection_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -695,7 +695,7 @@ Returns the number of slots with an enabled input port.
 func (self class) GetInputPortCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -709,7 +709,7 @@ func (self class) GetInputPortPosition(port_idx gd.Int) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -723,7 +723,7 @@ func (self class) GetInputPortType(port_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -737,7 +737,7 @@ func (self class) GetInputPortColor(port_idx gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -751,7 +751,7 @@ func (self class) GetInputPortSlot(port_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_slot, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_slot, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -764,7 +764,7 @@ Returns the number of slots with an enabled output port.
 func (self class) GetOutputPortCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -778,7 +778,7 @@ func (self class) GetOutputPortPosition(port_idx gd.Int) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -792,7 +792,7 @@ func (self class) GetOutputPortType(port_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -806,7 +806,7 @@ func (self class) GetOutputPortColor(port_idx gd.Int) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -820,7 +820,7 @@ func (self class) GetOutputPortSlot(port_idx gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_slot, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_slot, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

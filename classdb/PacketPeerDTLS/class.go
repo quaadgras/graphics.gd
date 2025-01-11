@@ -90,8 +90,8 @@ Poll the connection to check for incoming packets. Call this frequently to updat
 //go:nosplit
 func (self class) Poll() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -105,7 +105,7 @@ func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname g
 	callframe.Arg(frame, pointers.Get(hostname))
 	callframe.Arg(frame, pointers.Get(client_options[0])[0])
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_connect_to_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_connect_to_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -118,7 +118,7 @@ Returns the status of the connection. See [enum Status] for values.
 func (self class) GetStatus() gdclass.PacketPeerDTLSStatus {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.PacketPeerDTLSStatus](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -130,8 +130,8 @@ Disconnects this peer, terminating the DTLS session.
 //go:nosplit
 func (self class) DisconnectFromPeer() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_disconnect_from_peer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_disconnect_from_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsPacketPeerDTLS() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

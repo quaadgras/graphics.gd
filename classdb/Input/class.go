@@ -527,7 +527,7 @@ Returns [code]true[/code] if any action, key, joypad button, or mouse button is 
 func (self class) IsAnythingPressed() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_anything_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_anything_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -543,7 +543,7 @@ func (self class) IsKeyPressed(keycode Key) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_key_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_key_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -559,7 +559,7 @@ func (self class) IsPhysicalKeyPressed(keycode Key) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_physical_key_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_physical_key_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -573,7 +573,7 @@ func (self class) IsKeyLabelPressed(keycode Key) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_key_label_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_key_label_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -587,7 +587,7 @@ func (self class) IsMouseButtonPressed(button MouseButton) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, button)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_mouse_button_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_mouse_button_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -602,7 +602,7 @@ func (self class) IsJoyButtonPressed(device gd.Int, button JoyButton) bool {
 	callframe.Arg(frame, device)
 	callframe.Arg(frame, button)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_joy_button_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_joy_button_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -619,7 +619,7 @@ func (self class) IsActionPressed(action gd.StringName, exact_match bool) bool {
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -639,7 +639,7 @@ func (self class) IsActionJustPressed(action gd.StringName, exact_match bool) bo
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_just_pressed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_just_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -657,7 +657,7 @@ func (self class) IsActionJustReleased(action gd.StringName, exact_match bool) b
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_just_released, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_action_just_released, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -673,7 +673,7 @@ func (self class) GetActionStrength(action gd.StringName, exact_match bool) gd.F
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -689,7 +689,7 @@ func (self class) GetActionRawStrength(action gd.StringName, exact_match bool) g
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, exact_match)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_raw_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_action_raw_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -705,7 +705,7 @@ func (self class) GetAxis(negative_action gd.StringName, positive_action gd.Stri
 	callframe.Arg(frame, pointers.Get(negative_action))
 	callframe.Arg(frame, pointers.Get(positive_action))
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -725,7 +725,7 @@ func (self class) GetVector(negative_x gd.StringName, positive_x gd.StringName, 
 	callframe.Arg(frame, pointers.Get(positive_y))
 	callframe.Arg(frame, deadzone)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_vector, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_vector, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -739,8 +739,8 @@ func (self class) AddJoyMapping(mapping gd.String, update_existing bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mapping))
 	callframe.Arg(frame, update_existing)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_add_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_add_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -751,8 +751,8 @@ Removes all mappings from the internal database that match the given GUID.
 func (self class) RemoveJoyMapping(guid gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(guid))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_remove_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_remove_joy_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -764,7 +764,7 @@ func (self class) IsJoyKnown(device gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_joy_known, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_joy_known, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -779,7 +779,7 @@ func (self class) GetJoyAxis(device gd.Int, axis JoyAxis) gd.Float {
 	callframe.Arg(frame, device)
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -793,7 +793,7 @@ func (self class) GetJoyName(device gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -807,7 +807,7 @@ func (self class) GetJoyGuid(device gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_guid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_guid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -828,7 +828,7 @@ func (self class) GetJoyInfo(device gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -844,7 +844,7 @@ func (self class) ShouldIgnoreDevice(vendor_id gd.Int, product_id gd.Int) bool {
 	callframe.Arg(frame, vendor_id)
 	callframe.Arg(frame, product_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_should_ignore_device, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_should_ignore_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -857,7 +857,7 @@ Returns an [Array] containing the device IDs of all currently connected joypads.
 func (self class) GetConnectedJoypads() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_connected_joypads, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_connected_joypads, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -871,7 +871,7 @@ func (self class) GetJoyVibrationStrength(device gd.Int) gd.Vector2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_vibration_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_vibration_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -885,7 +885,7 @@ func (self class) GetJoyVibrationDuration(device gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_vibration_duration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_vibration_duration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -903,8 +903,8 @@ func (self class) StartJoyVibration(device gd.Int, weak_magnitude gd.Float, stro
 	callframe.Arg(frame, weak_magnitude)
 	callframe.Arg(frame, strong_magnitude)
 	callframe.Arg(frame, duration)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_start_joy_vibration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_start_joy_vibration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -915,8 +915,8 @@ Stops the vibration of the joypad started with [method start_joy_vibration].
 func (self class) StopJoyVibration(device gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_stop_joy_vibration, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_stop_joy_vibration, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -934,8 +934,8 @@ func (self class) VibrateHandheld(duration_ms gd.Int, amplitude gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, duration_ms)
 	callframe.Arg(frame, amplitude)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_vibrate_handheld, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_vibrate_handheld, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -947,7 +947,7 @@ Returns the gravity in m/s² of the device's accelerometer sensor, if the device
 func (self class) GetGravity() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -962,7 +962,7 @@ Note this method returns an empty [Vector3] when running from the editor even wh
 func (self class) GetAccelerometer() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_accelerometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_accelerometer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -976,7 +976,7 @@ Returns the magnetic field strength in micro-Tesla for all axes of the device's 
 func (self class) GetMagnetometer() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_magnetometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_magnetometer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -990,7 +990,7 @@ Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyr
 func (self class) GetGyroscope() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_gyroscope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_gyroscope, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1004,8 +1004,8 @@ Sets the gravity value of the accelerometer sensor. Can be used for debugging on
 func (self class) SetGravity(value gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_gravity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1017,8 +1017,8 @@ Sets the acceleration value of the accelerometer sensor. Can be used for debuggi
 func (self class) SetAccelerometer(value gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_accelerometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_accelerometer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1030,8 +1030,8 @@ Sets the value of the magnetic field of the magnetometer sensor. Can be used for
 func (self class) SetMagnetometer(value gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_magnetometer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_magnetometer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1043,8 +1043,8 @@ Sets the value of the rotation rate of the gyroscope sensor. Can be used for deb
 func (self class) SetGyroscope(value gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_gyroscope, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_gyroscope, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1055,7 +1055,7 @@ Returns the last mouse velocity. To provide a precise and jitter-free velocity, 
 func (self class) GetLastMouseVelocity() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_last_mouse_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_last_mouse_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1068,7 +1068,7 @@ Returns the last mouse velocity in screen coordinates. To provide a precise and 
 func (self class) GetLastMouseScreenVelocity() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_last_mouse_screen_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_last_mouse_screen_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1081,7 +1081,7 @@ Returns mouse buttons as a bitmask. If multiple mouse buttons are pressed at the
 func (self class) GetMouseButtonMask() MouseButtonMask {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[MouseButtonMask](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_mouse_button_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_mouse_button_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1091,8 +1091,8 @@ func (self class) GetMouseButtonMask() MouseButtonMask {
 func (self class) SetMouseMode(mode gdclass.InputMouseMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_mouse_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_mouse_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1100,7 +1100,7 @@ func (self class) SetMouseMode(mode gdclass.InputMouseMode) {
 func (self class) GetMouseMode() gdclass.InputMouseMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.InputMouseMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_mouse_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_mouse_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1115,8 +1115,8 @@ Mouse position is clipped to the limits of the screen resolution, or to the limi
 func (self class) WarpMouse(position gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1130,8 +1130,8 @@ func (self class) ActionPress(action gd.StringName, strength gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, strength)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_action_press, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_action_press, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1142,8 +1142,8 @@ If the specified action is already pressed, this will release it.
 func (self class) ActionRelease(action gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_action_release, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_action_release, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1156,8 +1156,8 @@ Sets the default cursor shape to be used in the viewport instead of [constant CU
 func (self class) SetDefaultCursorShape(shape gdclass.InputCursorShape) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_default_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_default_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1168,7 +1168,7 @@ Returns the currently assigned cursor shape (see [enum CursorShape]).
 func (self class) GetCurrentCursorShape() gdclass.InputCursorShape {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.InputCursorShape](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_current_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_current_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1188,8 +1188,8 @@ func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape gdclass.
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, shape)
 	callframe.Arg(frame, hotspot)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_custom_mouse_cursor, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_custom_mouse_cursor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1216,8 +1216,8 @@ Input.ParseInputEvent(cancelEvent);
 func (self class) ParseInputEvent(event [1]gdclass.InputEvent) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(event[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_parse_input_event, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_parse_input_event, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1225,8 +1225,8 @@ func (self class) ParseInputEvent(event [1]gdclass.InputEvent) {
 func (self class) SetUseAccumulatedInput(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_use_accumulated_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_use_accumulated_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1234,7 +1234,7 @@ func (self class) SetUseAccumulatedInput(enable bool) {
 func (self class) IsUsingAccumulatedInput() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_using_accumulated_input, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_using_accumulated_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1247,8 +1247,8 @@ The engine will already do this itself at key execution points (at least once pe
 //go:nosplit
 func (self class) FlushBufferedEvents() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_flush_buffered_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_flush_buffered_events, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1256,8 +1256,8 @@ func (self class) FlushBufferedEvents() {
 func (self class) SetEmulateMouseFromTouch(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_emulate_mouse_from_touch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_emulate_mouse_from_touch, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1265,7 +1265,7 @@ func (self class) SetEmulateMouseFromTouch(enable bool) {
 func (self class) IsEmulatingMouseFromTouch() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_emulating_mouse_from_touch, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_emulating_mouse_from_touch, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1275,8 +1275,8 @@ func (self class) IsEmulatingMouseFromTouch() bool {
 func (self class) SetEmulateTouchFromMouse(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_emulate_touch_from_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_set_emulate_touch_from_mouse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1284,7 +1284,7 @@ func (self class) SetEmulateTouchFromMouse(enable bool) {
 func (self class) IsEmulatingTouchFromMouse() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_emulating_touch_from_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_is_emulating_touch_from_mouse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

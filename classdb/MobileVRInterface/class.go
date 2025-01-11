@@ -149,8 +149,8 @@ func (self Instance) SetVrsStrength(value Float.X) {
 func (self class) SetEyeHeight(eye_height gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, eye_height)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_eye_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_eye_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -158,7 +158,7 @@ func (self class) SetEyeHeight(eye_height gd.Float) {
 func (self class) GetEyeHeight() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_eye_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_eye_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -168,8 +168,8 @@ func (self class) GetEyeHeight() gd.Float {
 func (self class) SetIod(iod gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, iod)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_iod, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_iod, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -177,7 +177,7 @@ func (self class) SetIod(iod gd.Float) {
 func (self class) GetIod() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_iod, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_iod, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -187,8 +187,8 @@ func (self class) GetIod() gd.Float {
 func (self class) SetDisplayWidth(display_width gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, display_width)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_display_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_display_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -196,7 +196,7 @@ func (self class) SetDisplayWidth(display_width gd.Float) {
 func (self class) GetDisplayWidth() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_display_width, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_display_width, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -206,8 +206,8 @@ func (self class) GetDisplayWidth() gd.Float {
 func (self class) SetDisplayToLens(display_to_lens gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, display_to_lens)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_display_to_lens, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_display_to_lens, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -215,7 +215,7 @@ func (self class) SetDisplayToLens(display_to_lens gd.Float) {
 func (self class) GetDisplayToLens() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_display_to_lens, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_display_to_lens, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -225,8 +225,8 @@ func (self class) GetDisplayToLens() gd.Float {
 func (self class) SetOffsetRect(offset_rect gd.Rect2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, offset_rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_offset_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_offset_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -234,7 +234,7 @@ func (self class) SetOffsetRect(offset_rect gd.Rect2) {
 func (self class) GetOffsetRect() gd.Rect2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_offset_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_offset_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -244,8 +244,8 @@ func (self class) GetOffsetRect() gd.Rect2 {
 func (self class) SetOversample(oversample gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, oversample)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_oversample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_oversample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -253,7 +253,7 @@ func (self class) SetOversample(oversample gd.Float) {
 func (self class) GetOversample() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_oversample, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_oversample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -263,8 +263,8 @@ func (self class) GetOversample() gd.Float {
 func (self class) SetK1(k gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, k)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_k1, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_k1, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -272,7 +272,7 @@ func (self class) SetK1(k gd.Float) {
 func (self class) GetK1() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_k1, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_k1, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -282,8 +282,8 @@ func (self class) GetK1() gd.Float {
 func (self class) SetK2(k gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, k)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_k2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_k2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -291,7 +291,7 @@ func (self class) SetK2(k gd.Float) {
 func (self class) GetK2() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_k2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_k2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -301,7 +301,7 @@ func (self class) GetK2() gd.Float {
 func (self class) GetVrsMinRadius() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -311,8 +311,8 @@ func (self class) GetVrsMinRadius() gd.Float {
 func (self class) SetVrsMinRadius(radius gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -320,7 +320,7 @@ func (self class) SetVrsMinRadius(radius gd.Float) {
 func (self class) GetVrsStrength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -330,8 +330,8 @@ func (self class) GetVrsStrength() gd.Float {
 func (self class) SetVrsStrength(strength gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsMobileVRInterface() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

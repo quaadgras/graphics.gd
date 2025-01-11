@@ -658,7 +658,7 @@ Returns a new unused source ID. This generated ID is the same that a call to [me
 func (self class) GetNextSourceId() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_next_source_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_next_source_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -675,7 +675,7 @@ func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_ove
 	callframe.Arg(frame, pointers.Get(source[0])[0])
 	callframe.Arg(frame, atlas_source_id_override)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -688,8 +688,8 @@ Removes the source with the given source ID.
 func (self class) RemoveSource(source_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -701,8 +701,8 @@ func (self class) SetSourceId(source_id gd.Int, new_source_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
 	callframe.Arg(frame, new_source_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_source_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_source_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -713,7 +713,7 @@ Returns the number of [TileSetSource] in this TileSet.
 func (self class) GetSourceCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -727,7 +727,7 @@ func (self class) GetSourceId(index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -741,7 +741,7 @@ func (self class) HasSource(source_id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_has_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_has_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -755,7 +755,7 @@ func (self class) GetSource(source_id gd.Int) [1]gdclass.TileSetSource {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileSetSource{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSetSource](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -765,8 +765,8 @@ func (self class) GetSource(source_id gd.Int) [1]gdclass.TileSetSource {
 func (self class) SetTileShape(shape gdclass.TileSetTileShape) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_tile_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_tile_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -774,7 +774,7 @@ func (self class) SetTileShape(shape gdclass.TileSetTileShape) {
 func (self class) GetTileShape() gdclass.TileSetTileShape {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileSetTileShape](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -784,8 +784,8 @@ func (self class) GetTileShape() gdclass.TileSetTileShape {
 func (self class) SetTileLayout(layout gdclass.TileSetTileLayout) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layout)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_tile_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_tile_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -793,7 +793,7 @@ func (self class) SetTileLayout(layout gdclass.TileSetTileLayout) {
 func (self class) GetTileLayout() gdclass.TileSetTileLayout {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileSetTileLayout](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -803,8 +803,8 @@ func (self class) GetTileLayout() gdclass.TileSetTileLayout {
 func (self class) SetTileOffsetAxis(alignment gdclass.TileSetTileOffsetAxis) {
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_tile_offset_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_tile_offset_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -812,7 +812,7 @@ func (self class) SetTileOffsetAxis(alignment gdclass.TileSetTileOffsetAxis) {
 func (self class) GetTileOffsetAxis() gdclass.TileSetTileOffsetAxis {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileSetTileOffsetAxis](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_offset_axis, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_offset_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -822,8 +822,8 @@ func (self class) GetTileOffsetAxis() gdclass.TileSetTileOffsetAxis {
 func (self class) SetTileSize(size gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_tile_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_tile_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -831,7 +831,7 @@ func (self class) SetTileSize(size gd.Vector2i) {
 func (self class) GetTileSize() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -841,8 +841,8 @@ func (self class) GetTileSize() gd.Vector2i {
 func (self class) SetUvClipping(uv_clipping bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, uv_clipping)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_uv_clipping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_uv_clipping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -850,7 +850,7 @@ func (self class) SetUvClipping(uv_clipping bool) {
 func (self class) IsUvClipping() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_is_uv_clipping, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_is_uv_clipping, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -863,7 +863,7 @@ Returns the occlusion layers count.
 func (self class) GetOcclusionLayersCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_occlusion_layers_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_occlusion_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -877,8 +877,8 @@ Occlusion layers allow assigning occlusion polygons to atlas tiles.
 func (self class) AddOcclusionLayer(to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_occlusion_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_occlusion_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -890,8 +890,8 @@ func (self class) MoveOcclusionLayer(layer_index gd.Int, to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_occlusion_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_occlusion_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -902,8 +902,8 @@ Removes the occlusion layer at index [param layer_index]. Also updates the atlas
 func (self class) RemoveOcclusionLayer(layer_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_occlusion_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_occlusion_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -915,8 +915,8 @@ func (self class) SetOcclusionLayerLightMask(layer_index gd.Int, light_mask gd.I
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, light_mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_occlusion_layer_light_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_occlusion_layer_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -928,7 +928,7 @@ func (self class) GetOcclusionLayerLightMask(layer_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_occlusion_layer_light_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_occlusion_layer_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -942,8 +942,8 @@ func (self class) SetOcclusionLayerSdfCollision(layer_index gd.Int, sdf_collisio
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, sdf_collision)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_occlusion_layer_sdf_collision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_occlusion_layer_sdf_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -955,7 +955,7 @@ func (self class) GetOcclusionLayerSdfCollision(layer_index gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_occlusion_layer_sdf_collision, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_occlusion_layer_sdf_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -968,7 +968,7 @@ Returns the physics layers count.
 func (self class) GetPhysicsLayersCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layers_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -982,8 +982,8 @@ Physics layers allow assigning collision polygons to atlas tiles.
 func (self class) AddPhysicsLayer(to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_physics_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_physics_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -995,8 +995,8 @@ func (self class) MovePhysicsLayer(layer_index gd.Int, to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_physics_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_physics_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1007,8 +1007,8 @@ Removes the physics layer at index [param layer_index]. Also updates the atlas t
 func (self class) RemovePhysicsLayer(layer_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_physics_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_physics_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1020,8 +1020,8 @@ func (self class) SetPhysicsLayerCollisionLayer(layer_index gd.Int, layer gd.Int
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layer)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_physics_layer_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_physics_layer_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1033,7 +1033,7 @@ func (self class) GetPhysicsLayerCollisionLayer(layer_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_collision_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1047,8 +1047,8 @@ func (self class) SetPhysicsLayerCollisionMask(layer_index gd.Int, mask gd.Int) 
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_physics_layer_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_physics_layer_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1060,7 +1060,7 @@ func (self class) GetPhysicsLayerCollisionMask(layer_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_collision_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1074,8 +1074,8 @@ func (self class) SetPhysicsLayerPhysicsMaterial(layer_index gd.Int, physics_mat
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, pointers.Get(physics_material[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_physics_layer_physics_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_physics_layer_physics_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1087,7 +1087,7 @@ func (self class) GetPhysicsLayerPhysicsMaterial(layer_index gd.Int) [1]gdclass.
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_physics_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layer_physics_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1100,7 +1100,7 @@ Returns the terrain sets count.
 func (self class) GetTerrainSetsCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_sets_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_sets_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1113,8 +1113,8 @@ Adds a new terrain set at the given position [param to_position] in the array. I
 func (self class) AddTerrainSet(to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_terrain_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_terrain_set, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1126,8 +1126,8 @@ func (self class) MoveTerrainSet(terrain_set gd.Int, to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_terrain_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_terrain_set, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1138,8 +1138,8 @@ Removes the terrain set at index [param terrain_set]. Also updates the atlas til
 func (self class) RemoveTerrainSet(terrain_set gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_terrain_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_terrain_set, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1151,8 +1151,8 @@ func (self class) SetTerrainSetMode(terrain_set gd.Int, mode gdclass.TileSetTerr
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_terrain_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_terrain_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1164,7 +1164,7 @@ func (self class) GetTerrainSetMode(terrain_set gd.Int) gdclass.TileSetTerrainMo
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	var r_ret = callframe.Ret[gdclass.TileSetTerrainMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1178,7 +1178,7 @@ func (self class) GetTerrainsCount(terrain_set gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrains_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrains_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1192,8 +1192,8 @@ func (self class) AddTerrain(terrain_set gd.Int, to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_terrain, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_terrain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1206,8 +1206,8 @@ func (self class) MoveTerrain(terrain_set gd.Int, terrain_index gd.Int, to_posit
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_terrain, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_terrain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1219,8 +1219,8 @@ func (self class) RemoveTerrain(terrain_set gd.Int, terrain_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_terrain, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_terrain, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1233,8 +1233,8 @@ func (self class) SetTerrainName(terrain_set gd.Int, terrain_index gd.Int, name 
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_terrain_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_terrain_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1247,7 +1247,7 @@ func (self class) GetTerrainName(terrain_set gd.Int, terrain_index gd.Int) gd.St
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1262,8 +1262,8 @@ func (self class) SetTerrainColor(terrain_set gd.Int, terrain_index gd.Int, colo
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_terrain_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_terrain_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1276,7 +1276,7 @@ func (self class) GetTerrainColor(terrain_set gd.Int, terrain_index gd.Int) gd.C
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1289,7 +1289,7 @@ Returns the navigation layers count.
 func (self class) GetNavigationLayersCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_navigation_layers_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_navigation_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1303,8 +1303,8 @@ Navigation layers allow assigning a navigable area to atlas tiles.
 func (self class) AddNavigationLayer(to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_navigation_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_navigation_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1316,8 +1316,8 @@ func (self class) MoveNavigationLayer(layer_index gd.Int, to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_navigation_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_navigation_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1328,8 +1328,8 @@ Removes the navigation layer at index [param layer_index]. Also updates the atla
 func (self class) RemoveNavigationLayer(layer_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_navigation_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_navigation_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1341,8 +1341,8 @@ func (self class) SetNavigationLayerLayers(layer_index gd.Int, layers gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_navigation_layer_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_navigation_layer_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1354,7 +1354,7 @@ func (self class) GetNavigationLayerLayers(layer_index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_navigation_layer_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_navigation_layer_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1369,8 +1369,8 @@ func (self class) SetNavigationLayerLayerValue(layer_index gd.Int, layer_number 
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_navigation_layer_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_navigation_layer_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1383,7 +1383,7 @@ func (self class) GetNavigationLayerLayerValue(layer_index gd.Int, layer_number 
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_navigation_layer_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_navigation_layer_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1396,7 +1396,7 @@ Returns the custom data layers count.
 func (self class) GetCustomDataLayersCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layers_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1410,8 +1410,8 @@ Custom data layers allow assigning custom properties to atlas tiles.
 func (self class) AddCustomDataLayer(to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_custom_data_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_custom_data_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1423,8 +1423,8 @@ func (self class) MoveCustomDataLayer(layer_index gd.Int, to_position gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, to_position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_custom_data_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_move_custom_data_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1435,8 +1435,8 @@ Removes the custom data layer at index [param layer_index]. Also updates the atl
 func (self class) RemoveCustomDataLayer(layer_index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_custom_data_layer, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_custom_data_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1448,7 +1448,7 @@ func (self class) GetCustomDataLayerByName(layer_name gd.String) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(layer_name))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_by_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1462,8 +1462,8 @@ func (self class) SetCustomDataLayerName(layer_index gd.Int, layer_name gd.Strin
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, pointers.Get(layer_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_custom_data_layer_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_custom_data_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1475,7 +1475,7 @@ func (self class) GetCustomDataLayerName(layer_index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1489,8 +1489,8 @@ func (self class) SetCustomDataLayerType(layer_index gd.Int, layer_type gd.Varia
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layer_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_custom_data_layer_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_custom_data_layer_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1502,7 +1502,7 @@ func (self class) GetCustomDataLayerType(layer_index gd.Int) gd.VariantType {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.VariantType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1518,8 +1518,8 @@ func (self class) SetSourceLevelTileProxy(source_from gd.Int, source_to gd.Int) 
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, source_to)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_source_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_source_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1532,7 +1532,7 @@ func (self class) GetSourceLevelTileProxy(source_from gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1546,7 +1546,7 @@ func (self class) HasSourceLevelTileProxy(source_from gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_has_source_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_has_source_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1559,8 +1559,8 @@ Removes a source-level tile proxy.
 func (self class) RemoveSourceLevelTileProxy(source_from gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_source_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_source_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1576,8 +1576,8 @@ func (self class) SetCoordsLevelTileProxy(p_source_from gd.Int, coords_from gd.V
 	callframe.Arg(frame, coords_from)
 	callframe.Arg(frame, source_to)
 	callframe.Arg(frame, coords_to)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_coords_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_coords_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1591,7 +1591,7 @@ func (self class) GetCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vec
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_coords_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_coords_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1606,7 +1606,7 @@ func (self class) HasCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vec
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_has_coords_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_has_coords_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1620,8 +1620,8 @@ func (self class) RemoveCoordsLevelTileProxy(source_from gd.Int, coords_from gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_coords_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_coords_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1639,8 +1639,8 @@ func (self class) SetAlternativeLevelTileProxy(source_from gd.Int, coords_from g
 	callframe.Arg(frame, source_to)
 	callframe.Arg(frame, coords_to)
 	callframe.Arg(frame, alternative_to)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_alternative_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_set_alternative_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1655,7 +1655,7 @@ func (self class) GetAlternativeLevelTileProxy(source_from gd.Int, coords_from g
 	callframe.Arg(frame, coords_from)
 	callframe.Arg(frame, alternative_from)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_alternative_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_alternative_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1671,7 +1671,7 @@ func (self class) HasAlternativeLevelTileProxy(source_from gd.Int, coords_from g
 	callframe.Arg(frame, coords_from)
 	callframe.Arg(frame, alternative_from)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_has_alternative_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_has_alternative_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1686,8 +1686,8 @@ func (self class) RemoveAlternativeLevelTileProxy(source_from gd.Int, coords_fro
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
 	callframe.Arg(frame, alternative_from)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_alternative_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_alternative_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1703,7 +1703,7 @@ func (self class) MapTileProxy(source_from gd.Int, coords_from gd.Vector2i, alte
 	callframe.Arg(frame, coords_from)
 	callframe.Arg(frame, alternative_from)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_map_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_map_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1715,8 +1715,8 @@ Clears tile proxies pointing to invalid tiles.
 //go:nosplit
 func (self class) CleanupInvalidTileProxies() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_cleanup_invalid_tile_proxies, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_cleanup_invalid_tile_proxies, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1726,8 +1726,8 @@ Clears all tile proxies.
 //go:nosplit
 func (self class) ClearTileProxies() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_clear_tile_proxies, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_clear_tile_proxies, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1740,7 +1740,7 @@ func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index gd.Int) gd
 	callframe.Arg(frame, pointers.Get(pattern[0])[0])
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_add_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1754,7 +1754,7 @@ func (self class) GetPattern(index gd.Int) [1]gdclass.TileMapPattern {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1767,8 +1767,8 @@ Remove the [TileMapPattern] at the given index.
 func (self class) RemovePattern(index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_pattern, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_remove_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1779,7 +1779,7 @@ Returns the number of [TileMapPattern] this tile set handles.
 func (self class) GetPatternsCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_patterns_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_patterns_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

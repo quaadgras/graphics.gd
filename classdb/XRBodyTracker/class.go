@@ -105,8 +105,8 @@ func (self Instance) SetBodyFlags(value gdclass.XRBodyTrackerBodyFlags) {
 func (self class) SetHasTrackingData(has_data bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, has_data)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_set_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_set_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -114,7 +114,7 @@ func (self class) SetHasTrackingData(has_data bool) {
 func (self class) GetHasTrackingData() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -124,8 +124,8 @@ func (self class) GetHasTrackingData() bool {
 func (self class) SetBodyFlags(flags gdclass.XRBodyTrackerBodyFlags) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_set_body_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_set_body_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -133,7 +133,7 @@ func (self class) SetBodyFlags(flags gdclass.XRBodyTrackerBodyFlags) {
 func (self class) GetBodyFlags() gdclass.XRBodyTrackerBodyFlags {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRBodyTrackerBodyFlags](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_body_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_body_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -147,8 +147,8 @@ func (self class) SetJointFlags(joint gdclass.XRBodyTrackerJoint, flags gdclass.
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_set_joint_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_set_joint_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -160,7 +160,7 @@ func (self class) GetJointFlags(joint gdclass.XRBodyTrackerJoint) gdclass.XRBody
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gdclass.XRBodyTrackerJointFlags](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_joint_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_joint_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -174,8 +174,8 @@ func (self class) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform 
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_set_joint_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_set_joint_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -187,7 +187,7 @@ func (self class) GetJointTransform(joint gdclass.XRBodyTrackerJoint) gd.Transfo
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_joint_transform, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_joint_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

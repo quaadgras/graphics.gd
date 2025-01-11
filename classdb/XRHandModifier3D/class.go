@@ -77,8 +77,8 @@ func (self Instance) SetBoneUpdate(value gdclass.XRHandModifier3DBoneUpdate) {
 func (self class) SetHandTracker(tracker_name gd.StringName) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tracker_name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_set_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_set_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -86,7 +86,7 @@ func (self class) SetHandTracker(tracker_name gd.StringName) {
 func (self class) GetHandTracker() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -96,8 +96,8 @@ func (self class) GetHandTracker() gd.StringName {
 func (self class) SetBoneUpdate(bone_update gdclass.XRHandModifier3DBoneUpdate) {
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_update)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_set_bone_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_set_bone_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -105,7 +105,7 @@ func (self class) SetBoneUpdate(bone_update gdclass.XRHandModifier3DBoneUpdate) 
 func (self class) GetBoneUpdate() gdclass.XRHandModifier3DBoneUpdate {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRHandModifier3DBoneUpdate](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_bone_update, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_bone_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

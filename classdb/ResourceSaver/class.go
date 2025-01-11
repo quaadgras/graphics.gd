@@ -93,7 +93,7 @@ func (self class) Save(resource [1]gdclass.Resource, path gd.String, flags gdcla
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_save, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -107,7 +107,7 @@ func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) gd.PackedSt
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(atype[0])[0])
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_get_recognized_extensions, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_get_recognized_extensions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -122,8 +122,8 @@ func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatS
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(format_saver[0])[0])
 	callframe.Arg(frame, at_front)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_add_resource_format_saver, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_add_resource_format_saver, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -134,8 +134,8 @@ Unregisters the given [ResourceFormatSaver].
 func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(format_saver[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_remove_resource_format_saver, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_remove_resource_format_saver, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) Virtual(name string) reflect.Value {

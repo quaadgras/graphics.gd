@@ -112,8 +112,8 @@ func (self Instance) SetData(value [1]gdclass.VoxelGIData) {
 func (self class) SetProbeData(data [1]gdclass.VoxelGIData) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_probe_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_probe_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -121,7 +121,7 @@ func (self class) SetProbeData(data [1]gdclass.VoxelGIData) {
 func (self class) GetProbeData() [1]gdclass.VoxelGIData {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_probe_data, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_probe_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.VoxelGIData{gd.PointerWithOwnershipTransferredToGo[gdclass.VoxelGIData](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -131,8 +131,8 @@ func (self class) GetProbeData() [1]gdclass.VoxelGIData {
 func (self class) SetSubdiv(subdiv gdclass.VoxelGISubdiv) {
 	var frame = callframe.New()
 	callframe.Arg(frame, subdiv)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_subdiv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -140,7 +140,7 @@ func (self class) SetSubdiv(subdiv gdclass.VoxelGISubdiv) {
 func (self class) GetSubdiv() gdclass.VoxelGISubdiv {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VoxelGISubdiv](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_subdiv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_subdiv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -150,8 +150,8 @@ func (self class) GetSubdiv() gdclass.VoxelGISubdiv {
 func (self class) SetSize(size gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -159,7 +159,7 @@ func (self class) SetSize(size gd.Vector3) {
 func (self class) GetSize() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -169,8 +169,8 @@ func (self class) GetSize() gd.Vector3 {
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(camera_attributes[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -178,7 +178,7 @@ func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttribu
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraAttributes](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -194,8 +194,8 @@ func (self class) Bake(from_node [1]gdclass.Node, create_visual_debug bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, create_visual_debug)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -205,8 +205,8 @@ Calls [method bake] with [code]create_visual_debug[/code] enabled.
 //go:nosplit
 func (self class) DebugBake() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_debug_bake, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_debug_bake, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsVoxelGI() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

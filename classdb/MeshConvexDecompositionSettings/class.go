@@ -162,8 +162,8 @@ func (self Instance) SetProjectHullVertices(value bool) {
 func (self class) SetMaxConcavity(max_concavity gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_concavity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_max_concavity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_max_concavity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -171,7 +171,7 @@ func (self class) SetMaxConcavity(max_concavity gd.Float) {
 func (self class) GetMaxConcavity() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_concavity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_concavity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -181,8 +181,8 @@ func (self class) GetMaxConcavity() gd.Float {
 func (self class) SetSymmetryPlanesClippingBias(symmetry_planes_clipping_bias gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, symmetry_planes_clipping_bias)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_symmetry_planes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_symmetry_planes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -190,7 +190,7 @@ func (self class) SetSymmetryPlanesClippingBias(symmetry_planes_clipping_bias gd
 func (self class) GetSymmetryPlanesClippingBias() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_symmetry_planes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_symmetry_planes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -200,8 +200,8 @@ func (self class) GetSymmetryPlanesClippingBias() gd.Float {
 func (self class) SetRevolutionAxesClippingBias(revolution_axes_clipping_bias gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, revolution_axes_clipping_bias)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_revolution_axes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_revolution_axes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -209,7 +209,7 @@ func (self class) SetRevolutionAxesClippingBias(revolution_axes_clipping_bias gd
 func (self class) GetRevolutionAxesClippingBias() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_revolution_axes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_revolution_axes_clipping_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -219,8 +219,8 @@ func (self class) GetRevolutionAxesClippingBias() gd.Float {
 func (self class) SetMinVolumePerConvexHull(min_volume_per_convex_hull gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_volume_per_convex_hull)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_min_volume_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_min_volume_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -228,7 +228,7 @@ func (self class) SetMinVolumePerConvexHull(min_volume_per_convex_hull gd.Float)
 func (self class) GetMinVolumePerConvexHull() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_min_volume_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_min_volume_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -238,8 +238,8 @@ func (self class) GetMinVolumePerConvexHull() gd.Float {
 func (self class) SetResolution(min_volume_per_convex_hull gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_volume_per_convex_hull)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -247,7 +247,7 @@ func (self class) SetResolution(min_volume_per_convex_hull gd.Int) {
 func (self class) GetResolution() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -257,8 +257,8 @@ func (self class) GetResolution() gd.Int {
 func (self class) SetMaxNumVerticesPerConvexHull(max_num_vertices_per_convex_hull gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_num_vertices_per_convex_hull)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_max_num_vertices_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_max_num_vertices_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -266,7 +266,7 @@ func (self class) SetMaxNumVerticesPerConvexHull(max_num_vertices_per_convex_hul
 func (self class) GetMaxNumVerticesPerConvexHull() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_num_vertices_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_num_vertices_per_convex_hull, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -276,8 +276,8 @@ func (self class) GetMaxNumVerticesPerConvexHull() gd.Int {
 func (self class) SetPlaneDownsampling(plane_downsampling gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, plane_downsampling)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_plane_downsampling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_plane_downsampling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -285,7 +285,7 @@ func (self class) SetPlaneDownsampling(plane_downsampling gd.Int) {
 func (self class) GetPlaneDownsampling() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_plane_downsampling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_plane_downsampling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -295,8 +295,8 @@ func (self class) GetPlaneDownsampling() gd.Int {
 func (self class) SetConvexHullDownsampling(convex_hull_downsampling gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, convex_hull_downsampling)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_convex_hull_downsampling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_convex_hull_downsampling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -304,7 +304,7 @@ func (self class) SetConvexHullDownsampling(convex_hull_downsampling gd.Int) {
 func (self class) GetConvexHullDownsampling() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_convex_hull_downsampling, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_convex_hull_downsampling, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -314,8 +314,8 @@ func (self class) GetConvexHullDownsampling() gd.Int {
 func (self class) SetNormalizeMesh(normalize_mesh bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, normalize_mesh)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_normalize_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_normalize_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -323,7 +323,7 @@ func (self class) SetNormalizeMesh(normalize_mesh bool) {
 func (self class) GetNormalizeMesh() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_normalize_mesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_normalize_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -333,8 +333,8 @@ func (self class) GetNormalizeMesh() bool {
 func (self class) SetMode(mode gdclass.MeshConvexDecompositionSettingsMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -342,7 +342,7 @@ func (self class) SetMode(mode gdclass.MeshConvexDecompositionSettingsMode) {
 func (self class) GetMode() gdclass.MeshConvexDecompositionSettingsMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.MeshConvexDecompositionSettingsMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -352,8 +352,8 @@ func (self class) GetMode() gdclass.MeshConvexDecompositionSettingsMode {
 func (self class) SetConvexHullApproximation(convex_hull_approximation bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, convex_hull_approximation)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_convex_hull_approximation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_convex_hull_approximation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -361,7 +361,7 @@ func (self class) SetConvexHullApproximation(convex_hull_approximation bool) {
 func (self class) GetConvexHullApproximation() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_convex_hull_approximation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_convex_hull_approximation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -371,8 +371,8 @@ func (self class) GetConvexHullApproximation() bool {
 func (self class) SetMaxConvexHulls(max_convex_hulls gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_convex_hulls)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_max_convex_hulls, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_max_convex_hulls, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -380,7 +380,7 @@ func (self class) SetMaxConvexHulls(max_convex_hulls gd.Int) {
 func (self class) GetMaxConvexHulls() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_convex_hulls, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_convex_hulls, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -390,8 +390,8 @@ func (self class) GetMaxConvexHulls() gd.Int {
 func (self class) SetProjectHullVertices(project_hull_vertices bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, project_hull_vertices)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_project_hull_vertices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_project_hull_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -399,7 +399,7 @@ func (self class) SetProjectHullVertices(project_hull_vertices bool) {
 func (self class) GetProjectHullVertices() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_project_hull_vertices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_project_hull_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

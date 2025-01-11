@@ -171,7 +171,7 @@ Returns the number or scene tiles this TileSet source has.
 func (self class) GetSceneTilesCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tiles_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tiles_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -185,7 +185,7 @@ func (self class) GetSceneTileId(index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -199,7 +199,7 @@ func (self class) HasSceneTileId(id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_has_scene_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_has_scene_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -215,7 +215,7 @@ func (self class) CreateSceneTile(packed_scene [1]gdclass.PackedScene, id_overri
 	callframe.Arg(frame, pointers.Get(packed_scene[0])[0])
 	callframe.Arg(frame, id_override)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_create_scene_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_create_scene_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -229,8 +229,8 @@ func (self class) SetSceneTileId(id gd.Int, new_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, new_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_set_scene_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_set_scene_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -242,8 +242,8 @@ func (self class) SetSceneTileScene(id gd.Int, packed_scene [1]gdclass.PackedSce
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(packed_scene[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_set_scene_tile_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_set_scene_tile_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -255,7 +255,7 @@ func (self class) GetSceneTileScene(id gd.Int) [1]gdclass.PackedScene {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tile_scene, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tile_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PackedScene{gd.PointerWithOwnershipTransferredToGo[gdclass.PackedScene](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -269,8 +269,8 @@ func (self class) SetSceneTileDisplayPlaceholder(id gd.Int, display_placeholder 
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, display_placeholder)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_set_scene_tile_display_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_set_scene_tile_display_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -282,7 +282,7 @@ func (self class) GetSceneTileDisplayPlaceholder(id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tile_display_placeholder, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tile_display_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -295,8 +295,8 @@ Remove the scene tile with [param id].
 func (self class) RemoveSceneTile(id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_remove_scene_tile, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_remove_scene_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -307,7 +307,7 @@ Returns the scene ID a following call to [method create_scene_tile] would return
 func (self class) GetNextSceneTileId() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_next_scene_tile_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_next_scene_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

@@ -86,8 +86,8 @@ func (self Instance) SetFftSize(value gdclass.AudioEffectSpectrumAnalyzerFFTSize
 func (self class) SetBufferLength(seconds gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_buffer_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_buffer_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -95,7 +95,7 @@ func (self class) SetBufferLength(seconds gd.Float) {
 func (self class) GetBufferLength() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_buffer_length, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_buffer_length, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -105,8 +105,8 @@ func (self class) GetBufferLength() gd.Float {
 func (self class) SetTapBackPos(seconds gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_tap_back_pos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_tap_back_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -114,7 +114,7 @@ func (self class) SetTapBackPos(seconds gd.Float) {
 func (self class) GetTapBackPos() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_tap_back_pos, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_tap_back_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -124,8 +124,8 @@ func (self class) GetTapBackPos() gd.Float {
 func (self class) SetFftSize(size gdclass.AudioEffectSpectrumAnalyzerFFTSize) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_fft_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_fft_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -133,7 +133,7 @@ func (self class) SetFftSize(size gdclass.AudioEffectSpectrumAnalyzerFFTSize) {
 func (self class) GetFftSize() gdclass.AudioEffectSpectrumAnalyzerFFTSize {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioEffectSpectrumAnalyzerFFTSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_fft_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_fft_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

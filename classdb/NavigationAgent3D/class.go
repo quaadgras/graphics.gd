@@ -433,7 +433,7 @@ Returns the [RID] of this agent on the [NavigationServer3D].
 func (self class) GetRid() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -443,8 +443,8 @@ func (self class) GetRid() gd.RID {
 func (self class) SetAvoidanceEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -452,7 +452,7 @@ func (self class) SetAvoidanceEnabled(enabled bool) {
 func (self class) GetAvoidanceEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -462,8 +462,8 @@ func (self class) GetAvoidanceEnabled() bool {
 func (self class) SetPathDesiredDistance(desired_distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, desired_distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_desired_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_desired_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -471,7 +471,7 @@ func (self class) SetPathDesiredDistance(desired_distance gd.Float) {
 func (self class) GetPathDesiredDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_desired_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_desired_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -481,8 +481,8 @@ func (self class) GetPathDesiredDistance() gd.Float {
 func (self class) SetTargetDesiredDistance(desired_distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, desired_distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_target_desired_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_target_desired_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -490,7 +490,7 @@ func (self class) SetTargetDesiredDistance(desired_distance gd.Float) {
 func (self class) GetTargetDesiredDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_target_desired_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_target_desired_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -500,8 +500,8 @@ func (self class) GetTargetDesiredDistance() gd.Float {
 func (self class) SetRadius(radius gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -509,7 +509,7 @@ func (self class) SetRadius(radius gd.Float) {
 func (self class) GetRadius() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -519,8 +519,8 @@ func (self class) GetRadius() gd.Float {
 func (self class) SetHeight(height gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -528,7 +528,7 @@ func (self class) SetHeight(height gd.Float) {
 func (self class) GetHeight() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -538,8 +538,8 @@ func (self class) GetHeight() gd.Float {
 func (self class) SetPathHeightOffset(path_height_offset gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, path_height_offset)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_height_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_height_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -547,7 +547,7 @@ func (self class) SetPathHeightOffset(path_height_offset gd.Float) {
 func (self class) GetPathHeightOffset() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_height_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_height_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -557,8 +557,8 @@ func (self class) GetPathHeightOffset() gd.Float {
 func (self class) SetUse3dAvoidance(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_use_3d_avoidance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_use_3d_avoidance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -566,7 +566,7 @@ func (self class) SetUse3dAvoidance(enabled bool) {
 func (self class) GetUse3dAvoidance() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_use_3d_avoidance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_use_3d_avoidance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -576,8 +576,8 @@ func (self class) GetUse3dAvoidance() bool {
 func (self class) SetKeepYVelocity(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_keep_y_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_keep_y_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -585,7 +585,7 @@ func (self class) SetKeepYVelocity(enabled bool) {
 func (self class) GetKeepYVelocity() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_keep_y_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_keep_y_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -595,8 +595,8 @@ func (self class) GetKeepYVelocity() bool {
 func (self class) SetNeighborDistance(neighbor_distance gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, neighbor_distance)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_neighbor_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_neighbor_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -604,7 +604,7 @@ func (self class) SetNeighborDistance(neighbor_distance gd.Float) {
 func (self class) GetNeighborDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_neighbor_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_neighbor_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -614,8 +614,8 @@ func (self class) GetNeighborDistance() gd.Float {
 func (self class) SetMaxNeighbors(max_neighbors gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_neighbors)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_max_neighbors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_max_neighbors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -623,7 +623,7 @@ func (self class) SetMaxNeighbors(max_neighbors gd.Int) {
 func (self class) GetMaxNeighbors() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_max_neighbors, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_max_neighbors, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -633,8 +633,8 @@ func (self class) GetMaxNeighbors() gd.Int {
 func (self class) SetTimeHorizonAgents(time_horizon gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, time_horizon)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_time_horizon_agents, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_time_horizon_agents, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -642,7 +642,7 @@ func (self class) SetTimeHorizonAgents(time_horizon gd.Float) {
 func (self class) GetTimeHorizonAgents() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_time_horizon_agents, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_time_horizon_agents, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -652,8 +652,8 @@ func (self class) GetTimeHorizonAgents() gd.Float {
 func (self class) SetTimeHorizonObstacles(time_horizon gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, time_horizon)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_time_horizon_obstacles, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_time_horizon_obstacles, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -661,7 +661,7 @@ func (self class) SetTimeHorizonObstacles(time_horizon gd.Float) {
 func (self class) GetTimeHorizonObstacles() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_time_horizon_obstacles, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_time_horizon_obstacles, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -671,8 +671,8 @@ func (self class) GetTimeHorizonObstacles() gd.Float {
 func (self class) SetMaxSpeed(max_speed gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_speed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_max_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_max_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -680,7 +680,7 @@ func (self class) SetMaxSpeed(max_speed gd.Float) {
 func (self class) GetMaxSpeed() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_max_speed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_max_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -690,8 +690,8 @@ func (self class) GetMaxSpeed() gd.Float {
 func (self class) SetPathMaxDistance(max_speed gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_speed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_max_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -699,7 +699,7 @@ func (self class) SetPathMaxDistance(max_speed gd.Float) {
 func (self class) GetPathMaxDistance() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_max_distance, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -709,8 +709,8 @@ func (self class) GetPathMaxDistance() gd.Float {
 func (self class) SetNavigationLayers(navigation_layers gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -718,7 +718,7 @@ func (self class) SetNavigationLayers(navigation_layers gd.Int) {
 func (self class) GetNavigationLayers() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -732,8 +732,8 @@ func (self class) SetNavigationLayerValue(layer_number gd.Int, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -745,7 +745,7 @@ func (self class) GetNavigationLayerValue(layer_number gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -755,8 +755,8 @@ func (self class) GetNavigationLayerValue(layer_number gd.Int) bool {
 func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pathfinding_algorithm)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -764,7 +764,7 @@ func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.Navigati
 func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -774,8 +774,8 @@ func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameter
 func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPathQueryParameters3DPathPostProcessing) {
 	var frame = callframe.New()
 	callframe.Arg(frame, path_postprocessing)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -783,7 +783,7 @@ func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPa
 func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters3DPathPostProcessing {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters3DPathPostProcessing](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -793,8 +793,8 @@ func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters3
 func (self class) SetPathMetadataFlags(flags gdclass.NavigationPathQueryParameters3DPathMetadataFlags) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_path_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -802,7 +802,7 @@ func (self class) SetPathMetadataFlags(flags gdclass.NavigationPathQueryParamete
 func (self class) GetPathMetadataFlags() gdclass.NavigationPathQueryParameters3DPathMetadataFlags {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters3DPathMetadataFlags](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -815,8 +815,8 @@ Sets the [RID] of the navigation map this NavigationAgent node should use and al
 func (self class) SetNavigationMap(navigation_map gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_map)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -827,7 +827,7 @@ Returns the [RID] of the navigation map for this NavigationAgent node. This func
 func (self class) GetNavigationMap() gd.RID {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -837,8 +837,8 @@ func (self class) GetNavigationMap() gd.RID {
 func (self class) SetTargetPosition(position gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_target_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -846,7 +846,7 @@ func (self class) SetTargetPosition(position gd.Vector3) {
 func (self class) GetTargetPosition() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -856,8 +856,8 @@ func (self class) GetTargetPosition() gd.Vector3 {
 func (self class) SetSimplifyPath(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_simplify_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_simplify_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -865,7 +865,7 @@ func (self class) SetSimplifyPath(enabled bool) {
 func (self class) GetSimplifyPath() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_simplify_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_simplify_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -875,8 +875,8 @@ func (self class) GetSimplifyPath() bool {
 func (self class) SetSimplifyEpsilon(epsilon gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, epsilon)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -884,7 +884,7 @@ func (self class) SetSimplifyEpsilon(epsilon gd.Float) {
 func (self class) GetSimplifyEpsilon() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -897,7 +897,7 @@ Returns the next position in global coordinates that can be moved to, making sur
 func (self class) GetNextPathPosition() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_next_path_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_next_path_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -910,8 +910,8 @@ Replaces the internal velocity in the collision avoidance simulation with [param
 func (self class) SetVelocityForced(velocity gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_velocity_forced, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_velocity_forced, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -919,8 +919,8 @@ func (self class) SetVelocityForced(velocity gd.Vector3) {
 func (self class) SetVelocity(velocity gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -928,7 +928,7 @@ func (self class) SetVelocity(velocity gd.Vector3) {
 func (self class) GetVelocity() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -941,7 +941,7 @@ Returns the distance to the target position, using the agent's global position. 
 func (self class) DistanceToTarget() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_distance_to_target, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_distance_to_target, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -954,7 +954,7 @@ Returns the path query result for the path the agent is currently following.
 func (self class) GetCurrentNavigationResult() [1]gdclass.NavigationPathQueryResult3D {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_current_navigation_result, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_current_navigation_result, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.NavigationPathQueryResult3D{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationPathQueryResult3D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -967,7 +967,7 @@ Returns this agent's current path from start to finish in global coordinates. Th
 func (self class) GetCurrentNavigationPath() gd.PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_current_navigation_path, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_current_navigation_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -980,7 +980,7 @@ Returns which index the agent is currently on in the navigation path's [PackedVe
 func (self class) GetCurrentNavigationPathIndex() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_current_navigation_path_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_current_navigation_path_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -993,7 +993,7 @@ Returns [code]true[/code] if the agent reached the target, i.e. the agent moved 
 func (self class) IsTargetReached() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_is_target_reached, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_is_target_reached, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1006,7 +1006,7 @@ Returns [code]true[/code] if [method get_final_position] is within [member targe
 func (self class) IsTargetReachable() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_is_target_reachable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_is_target_reachable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1020,7 +1020,7 @@ Returns [code]true[/code] if the agent's navigation has finished. If the target 
 func (self class) IsNavigationFinished() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_is_navigation_finished, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_is_navigation_finished, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1033,7 +1033,7 @@ Returns the reachable final position of the current navigation path in global co
 func (self class) GetFinalPosition() gd.Vector3 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_final_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_final_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1043,8 +1043,8 @@ func (self class) GetFinalPosition() gd.Vector3 {
 func (self class) SetAvoidanceLayers(layers gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layers)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1052,7 +1052,7 @@ func (self class) SetAvoidanceLayers(layers gd.Int) {
 func (self class) GetAvoidanceLayers() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_layers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1062,8 +1062,8 @@ func (self class) GetAvoidanceLayers() gd.Int {
 func (self class) SetAvoidanceMask(mask gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1071,7 +1071,7 @@ func (self class) SetAvoidanceMask(mask gd.Int) {
 func (self class) GetAvoidanceMask() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_mask, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1085,8 +1085,8 @@ func (self class) SetAvoidanceLayerValue(layer_number gd.Int, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1098,7 +1098,7 @@ func (self class) GetAvoidanceLayerValue(layer_number gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_layer_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1112,8 +1112,8 @@ func (self class) SetAvoidanceMaskValue(mask_number gd.Int, value bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mask_number)
 	callframe.Arg(frame, value)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1125,7 +1125,7 @@ func (self class) GetAvoidanceMaskValue(mask_number gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, mask_number)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_mask_value, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1135,8 +1135,8 @@ func (self class) GetAvoidanceMaskValue(mask_number gd.Int) bool {
 func (self class) SetAvoidancePriority(priority gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_avoidance_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1144,7 +1144,7 @@ func (self class) SetAvoidancePriority(priority gd.Float) {
 func (self class) GetAvoidancePriority() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_priority, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_avoidance_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1154,8 +1154,8 @@ func (self class) GetAvoidancePriority() gd.Float {
 func (self class) SetDebugEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_debug_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_debug_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1163,7 +1163,7 @@ func (self class) SetDebugEnabled(enabled bool) {
 func (self class) GetDebugEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1173,8 +1173,8 @@ func (self class) GetDebugEnabled() bool {
 func (self class) SetDebugUseCustom(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_debug_use_custom, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_debug_use_custom, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1182,7 +1182,7 @@ func (self class) SetDebugUseCustom(enabled bool) {
 func (self class) GetDebugUseCustom() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_use_custom, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_use_custom, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1192,8 +1192,8 @@ func (self class) GetDebugUseCustom() bool {
 func (self class) SetDebugPathCustomColor(color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_debug_path_custom_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_debug_path_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1201,7 +1201,7 @@ func (self class) SetDebugPathCustomColor(color gd.Color) {
 func (self class) GetDebugPathCustomColor() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_path_custom_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_path_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1211,8 +1211,8 @@ func (self class) GetDebugPathCustomColor() gd.Color {
 func (self class) SetDebugPathCustomPointSize(point_size gd.Float) {
 	var frame = callframe.New()
 	callframe.Arg(frame, point_size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_debug_path_custom_point_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_set_debug_path_custom_point_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1220,7 +1220,7 @@ func (self class) SetDebugPathCustomPointSize(point_size gd.Float) {
 func (self class) GetDebugPathCustomPointSize() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_path_custom_point_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_debug_path_custom_point_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

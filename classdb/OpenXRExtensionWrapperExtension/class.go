@@ -952,7 +952,7 @@ Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR
 func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.OpenXRAPIExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAPIExtension](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -964,8 +964,8 @@ Registers the extension. This should happen at core module initialization level.
 //go:nosplit
 func (self class) RegisterExtensionWrapper() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_register_extension_wrapper, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_register_extension_wrapper, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsOpenXRExtensionWrapperExtension() Advanced {

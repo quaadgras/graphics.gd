@@ -1922,7 +1922,7 @@ func (self class) HasFeature(feature gdclass.DisplayServerFeature) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1936,7 +1936,7 @@ The names of built-in display servers are [code]Windows[/code], [code]macOS[/cod
 func (self class) GetName() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1953,8 +1953,8 @@ func (self class) HelpSetSearchCallbacks(search_callback gd.Callable, action_cal
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(search_callback))
 	callframe.Arg(frame, pointers.Get(action_callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_help_set_search_callbacks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_help_set_search_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1967,8 +1967,8 @@ func (self class) GlobalMenuSetPopupCallbacks(menu_root gd.String, open_callback
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(open_callback))
 	callframe.Arg(frame, pointers.Get(close_callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_popup_callbacks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_popup_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1993,7 +1993,7 @@ func (self class) GlobalMenuAddSubmenuItem(menu_root gd.String, label gd.String,
 	callframe.Arg(frame, pointers.Get(submenu))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_submenu_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_submenu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2025,7 +2025,7 @@ func (self class) GlobalMenuAddItem(menu_root gd.String, label gd.String, callba
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2057,7 +2057,7 @@ func (self class) GlobalMenuAddCheckItem(menu_root gd.String, label gd.String, c
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_check_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_check_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2090,7 +2090,7 @@ func (self class) GlobalMenuAddIconItem(menu_root gd.String, icon [1]gdclass.Tex
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_icon_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_icon_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2123,7 +2123,7 @@ func (self class) GlobalMenuAddIconCheckItem(menu_root gd.String, icon [1]gdclas
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_icon_check_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_icon_check_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2156,7 +2156,7 @@ func (self class) GlobalMenuAddRadioCheckItem(menu_root gd.String, label gd.Stri
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_radio_check_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_radio_check_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2190,7 +2190,7 @@ func (self class) GlobalMenuAddIconRadioCheckItem(menu_root gd.String, icon [1]g
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_icon_radio_check_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_icon_radio_check_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2226,7 +2226,7 @@ func (self class) GlobalMenuAddMultistateItem(menu_root gd.String, label gd.Stri
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_multistate_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_multistate_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2251,7 +2251,7 @@ func (self class) GlobalMenuAddSeparator(menu_root gd.String, index gd.Int) gd.I
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_separator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_add_separator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2267,7 +2267,7 @@ func (self class) GlobalMenuGetItemIndexFromText(menu_root gd.String, text gd.St
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_index_from_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_index_from_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2283,7 +2283,7 @@ func (self class) GlobalMenuGetItemIndexFromTag(menu_root gd.String, tag gd.Vari
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(tag))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_index_from_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_index_from_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2299,7 +2299,7 @@ func (self class) GlobalMenuIsItemChecked(menu_root gd.String, idx gd.Int) bool 
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_checked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_checked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2315,7 +2315,7 @@ func (self class) GlobalMenuIsItemCheckable(menu_root gd.String, idx gd.Int) boo
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_checkable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2332,7 +2332,7 @@ func (self class) GlobalMenuIsItemRadioCheckable(menu_root gd.String, idx gd.Int
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2348,7 +2348,7 @@ func (self class) GlobalMenuGetItemCallback(menu_root gd.String, idx gd.Int) gd.
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[callablePointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2364,7 +2364,7 @@ func (self class) GlobalMenuGetItemKeyCallback(menu_root gd.String, idx gd.Int) 
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[callablePointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Callable](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2380,7 +2380,7 @@ func (self class) GlobalMenuGetItemTag(menu_root gd.String, idx gd.Int) gd.Varia
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[variantPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2396,7 +2396,7 @@ func (self class) GlobalMenuGetItemText(menu_root gd.String, idx gd.Int) gd.Stri
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2412,7 +2412,7 @@ func (self class) GlobalMenuGetItemSubmenu(menu_root gd.String, idx gd.Int) gd.S
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_submenu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_submenu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2428,7 +2428,7 @@ func (self class) GlobalMenuGetItemAccelerator(menu_root gd.String, idx gd.Int) 
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2445,7 +2445,7 @@ func (self class) GlobalMenuIsItemDisabled(menu_root gd.String, idx gd.Int) bool
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2462,7 +2462,7 @@ func (self class) GlobalMenuIsItemHidden(menu_root gd.String, idx gd.Int) bool {
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_hidden, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_is_item_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2478,7 +2478,7 @@ func (self class) GlobalMenuGetItemTooltip(menu_root gd.String, idx gd.Int) gd.S
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2494,7 +2494,7 @@ func (self class) GlobalMenuGetItemState(menu_root gd.String, idx gd.Int) gd.Int
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2510,7 +2510,7 @@ func (self class) GlobalMenuGetItemMaxStates(menu_root gd.String, idx gd.Int) gd
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_max_states, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_max_states, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2526,7 +2526,7 @@ func (self class) GlobalMenuGetItemIcon(menu_root gd.String, idx gd.Int) [1]gdcl
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -2542,7 +2542,7 @@ func (self class) GlobalMenuGetItemIndentationLevel(menu_root gd.String, idx gd.
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_indentation_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_indentation_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2558,8 +2558,8 @@ func (self class) GlobalMenuSetItemChecked(menu_root gd.String, idx gd.Int, chec
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, checked)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_checked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_checked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2573,8 +2573,8 @@ func (self class) GlobalMenuSetItemCheckable(menu_root gd.String, idx gd.Int, ch
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, checkable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_checkable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2589,8 +2589,8 @@ func (self class) GlobalMenuSetItemRadioCheckable(menu_root gd.String, idx gd.In
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, checkable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_radio_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2605,8 +2605,8 @@ func (self class) GlobalMenuSetItemCallback(menu_root gd.String, idx gd.Int, cal
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2621,8 +2621,8 @@ func (self class) GlobalMenuSetItemHoverCallbacks(menu_root gd.String, idx gd.In
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_hover_callbacks, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_hover_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2637,8 +2637,8 @@ func (self class) GlobalMenuSetItemKeyCallback(menu_root gd.String, idx gd.Int, 
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(key_callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2652,8 +2652,8 @@ func (self class) GlobalMenuSetItemTag(menu_root gd.String, idx gd.Int, tag gd.V
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(tag))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2667,8 +2667,8 @@ func (self class) GlobalMenuSetItemText(menu_root gd.String, idx gd.Int, text gd
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2682,8 +2682,8 @@ func (self class) GlobalMenuSetItemSubmenu(menu_root gd.String, idx gd.Int, subm
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(submenu))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_submenu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_submenu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2697,8 +2697,8 @@ func (self class) GlobalMenuSetItemAccelerator(menu_root gd.String, idx gd.Int, 
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, keycode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2712,8 +2712,8 @@ func (self class) GlobalMenuSetItemDisabled(menu_root gd.String, idx gd.Int, dis
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, disabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_disabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2727,8 +2727,8 @@ func (self class) GlobalMenuSetItemHidden(menu_root gd.String, idx gd.Int, hidde
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, hidden)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_hidden, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2742,8 +2742,8 @@ func (self class) GlobalMenuSetItemTooltip(menu_root gd.String, idx gd.Int, tool
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(tooltip))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2757,8 +2757,8 @@ func (self class) GlobalMenuSetItemState(menu_root gd.String, idx gd.Int, state 
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, state)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2772,8 +2772,8 @@ func (self class) GlobalMenuSetItemMaxStates(menu_root gd.String, idx gd.Int, ma
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, max_states)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_max_states, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_max_states, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2788,8 +2788,8 @@ func (self class) GlobalMenuSetItemIcon(menu_root gd.String, idx gd.Int, icon [1
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2803,8 +2803,8 @@ func (self class) GlobalMenuSetItemIndentationLevel(menu_root gd.String, idx gd.
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, level)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_indentation_level, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_indentation_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2817,7 +2817,7 @@ func (self class) GlobalMenuGetItemCount(menu_root gd.String) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2833,8 +2833,8 @@ func (self class) GlobalMenuRemoveItem(menu_root gd.String, idx gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_remove_item, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_remove_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2854,8 +2854,8 @@ Removes all items from the global menu with ID [param menu_root].
 func (self class) GlobalMenuClear(menu_root gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2867,7 +2867,7 @@ Returns Dictionary of supported system menu IDs and names.
 func (self class) GlobalMenuGetSystemMenuRoots() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_system_menu_roots, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_system_menu_roots, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2882,7 +2882,7 @@ Returns [code]true[/code] if the synthesizer is generating speech, or have utter
 func (self class) TtsIsSpeaking() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_is_speaking, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_is_speaking, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2897,7 +2897,7 @@ Returns [code]true[/code] if the synthesizer is in a paused state.
 func (self class) TtsIsPaused() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_is_paused, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_is_paused, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2917,7 +2917,7 @@ Note that Godot depends on system libraries for text-to-speech functionality. Th
 func (self class) TtsGetVoices() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_get_voices, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_get_voices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2933,7 +2933,7 @@ func (self class) TtsGetVoicesForLanguage(language gd.String) gd.PackedStringArr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_get_voices_for_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_get_voices_for_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2961,8 +2961,8 @@ func (self class) TtsSpeak(text gd.String, voice gd.String, volume gd.Int, pitch
 	callframe.Arg(frame, rate)
 	callframe.Arg(frame, utterance_id)
 	callframe.Arg(frame, interrupt)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_speak, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_speak, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2974,8 +2974,8 @@ Puts the synthesizer into a paused state.
 //go:nosplit
 func (self class) TtsPause() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_pause, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_pause, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2987,8 +2987,8 @@ Resumes the synthesizer if it was paused.
 //go:nosplit
 func (self class) TtsResume() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_resume, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_resume, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3000,8 +3000,8 @@ Stops synthesis in progress and removes all utterances from the queue.
 //go:nosplit
 func (self class) TtsStop() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_stop, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3018,8 +3018,8 @@ func (self class) TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranc
 	var frame = callframe.New()
 	callframe.Arg(frame, event)
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_set_utterance_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_set_utterance_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3031,7 +3031,7 @@ Returns [code]true[/code] if OS supports dark mode.
 func (self class) IsDarkModeSupported() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_dark_mode_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_dark_mode_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3045,7 +3045,7 @@ Returns [code]true[/code] if OS is using dark mode.
 func (self class) IsDarkMode() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_dark_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_dark_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3059,7 +3059,7 @@ Returns OS theme accent color. Returns [code]Color(0, 0, 0, 0)[/code], if accent
 func (self class) GetAccentColor() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_accent_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_accent_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3073,7 +3073,7 @@ Returns the OS theme base color (default control background). Returns [code]Colo
 func (self class) GetBaseColor() gd.Color {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_base_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_base_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3087,8 +3087,8 @@ Sets the [param callable] that should be called when system theme settings are c
 func (self class) SetSystemThemeChangeCallback(callable gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_set_system_theme_change_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_set_system_theme_change_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3099,8 +3099,8 @@ Sets the current mouse mode. See also [method mouse_get_mode].
 func (self class) MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mouse_mode)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3111,7 +3111,7 @@ Returns the current mouse mode. See also [method mouse_set_mode].
 func (self class) MouseGetMode() gdclass.DisplayServerMouseMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.DisplayServerMouseMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3125,8 +3125,8 @@ Sets the mouse cursor position to the given [param position] relative to an orig
 func (self class) WarpMouse(position gd.Vector2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_warp_mouse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3137,7 +3137,7 @@ Returns the mouse cursor's current position in screen coordinates.
 func (self class) MouseGetPosition() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3150,7 +3150,7 @@ Returns the current state of mouse buttons (whether each button is pressed) as a
 func (self class) MouseGetButtonState() MouseButtonMask {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[MouseButtonMask](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_button_state, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_button_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3163,8 +3163,8 @@ Sets the user's clipboard content to the given string.
 func (self class) ClipboardSet(clipboard gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(clipboard))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_set, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_set, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3175,7 +3175,7 @@ Returns the user's clipboard as a string if possible.
 func (self class) ClipboardGet() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3189,7 +3189,7 @@ Returns the user's clipboard as an image if possible.
 func (self class) ClipboardGetImage() [1]gdclass.Image {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -3202,7 +3202,7 @@ Returns [code]true[/code] if there is a text content on the user's clipboard.
 func (self class) ClipboardHas() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_has, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_has, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3215,7 +3215,7 @@ Returns [code]true[/code] if there is an image content on the user's clipboard.
 func (self class) ClipboardHasImage() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_has_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_has_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3229,8 +3229,8 @@ Sets the user's [url=https://unix.stackexchange.com/questions/139191/whats-the-d
 func (self class) ClipboardSetPrimary(clipboard_primary gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(clipboard_primary))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_set_primary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_set_primary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3242,7 +3242,7 @@ Returns the user's [url=https://unix.stackexchange.com/questions/139191/whats-th
 func (self class) ClipboardGetPrimary() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get_primary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get_primary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3256,7 +3256,7 @@ Returns an [Array] of [Rect2], each of which is the bounding rectangle for a dis
 func (self class) GetDisplayCutouts() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_display_cutouts, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_display_cutouts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3269,7 +3269,7 @@ Returns the unobscured area of the display where interactive controls should be 
 func (self class) GetDisplaySafeArea() gd.Rect2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_display_safe_area, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_display_safe_area, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3282,7 +3282,7 @@ Returns the number of displays available.
 func (self class) GetScreenCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_screen_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_screen_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3295,7 +3295,7 @@ Returns index of the primary screen.
 func (self class) GetPrimaryScreen() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_primary_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_primary_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3308,7 +3308,7 @@ Returns the index of the screen containing the window with the keyboard focus, o
 func (self class) GetKeyboardFocusScreen() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_keyboard_focus_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_keyboard_focus_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3322,7 +3322,7 @@ func (self class) GetScreenFromRect(rect gd.Rect2) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_screen_from_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_screen_from_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3346,7 +3346,7 @@ func (self class) ScreenGetPosition(screen gd.Int) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3360,7 +3360,7 @@ func (self class) ScreenGetSize(screen gd.Int) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3374,7 +3374,7 @@ func (self class) ScreenGetUsableRect(screen gd.Int) gd.Rect2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_usable_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_usable_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3399,7 +3399,7 @@ func (self class) ScreenGetDpi(screen gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_dpi, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_dpi, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3416,7 +3416,7 @@ func (self class) ScreenGetScale(screen gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3429,7 +3429,7 @@ Returns [code]true[/code] if touch events are available (Android or iOS), the ca
 func (self class) IsTouchscreenAvailable() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_touchscreen_available, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_touchscreen_available, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3444,7 +3444,7 @@ Returns the greatest scale factor of all screens.
 func (self class) ScreenGetMaxScale() gd.Float {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_max_scale, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_max_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3465,7 +3465,7 @@ func (self class) ScreenGetRefreshRate(screen gd.Int) gd.Float {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Float](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3481,7 +3481,7 @@ func (self class) ScreenGetPixel(position gd.Vector2i) gd.Color {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Color](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_pixel, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_pixel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3497,7 +3497,7 @@ func (self class) ScreenGetImage(screen gd.Int) [1]gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -3512,8 +3512,8 @@ func (self class) ScreenSetOrientation(orientation gdclass.DisplayServerScreenOr
 	var frame = callframe.New()
 	callframe.Arg(frame, orientation)
 	callframe.Arg(frame, screen)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_set_orientation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_set_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3526,7 +3526,7 @@ func (self class) ScreenGetOrientation(screen gd.Int) gdclass.DisplayServerScree
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gdclass.DisplayServerScreenOrientation](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_orientation, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3539,8 +3539,8 @@ Sets whether the screen should never be turned off by the operating system's pow
 func (self class) ScreenSetKeepOn(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_set_keep_on, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_set_keep_on, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3551,7 +3551,7 @@ Returns [code]true[/code] if the screen should never be turned off by the operat
 func (self class) ScreenIsKeptOn() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_is_kept_on, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_is_kept_on, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3565,7 +3565,7 @@ Returns the list of Godot window IDs belonging to this process.
 func (self class) GetWindowList() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_window_list, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_window_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -3587,7 +3587,7 @@ func (self class) GetWindowAtScreenPosition(position gd.Vector2i) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_window_at_screen_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_window_at_screen_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3603,7 +3603,7 @@ func (self class) WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleT
 	callframe.Arg(frame, handle_type)
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_native_handle, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_native_handle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3616,7 +3616,7 @@ Returns ID of the active popup window, or [constant INVALID_WINDOW_ID] if there 
 func (self class) WindowGetActivePopup() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_active_popup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_active_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3630,8 +3630,8 @@ func (self class) WindowSetPopupSafeRect(window gd.Int, rect gd.Rect2i) {
 	var frame = callframe.New()
 	callframe.Arg(frame, window)
 	callframe.Arg(frame, rect)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_popup_safe_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_popup_safe_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3643,7 +3643,7 @@ func (self class) WindowGetPopupSafeRect(window gd.Int) gd.Rect2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, window)
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_popup_safe_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_popup_safe_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3659,8 +3659,8 @@ func (self class) WindowSetTitle(title gd.String, window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_title, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3674,7 +3674,7 @@ func (self class) WindowGetTitleSize(title gd.String, window_id gd.Int) gd.Vecto
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_title_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_title_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3713,8 +3713,8 @@ func (self class) WindowSetMousePassthrough(region gd.PackedVector2Array, window
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(region))
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_mouse_passthrough, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_mouse_passthrough, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3726,7 +3726,7 @@ func (self class) WindowGetCurrentScreen(window_id gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_current_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_current_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3740,8 +3740,8 @@ func (self class) WindowSetCurrentScreen(screen gd.Int, window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_current_screen, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_current_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3753,7 +3753,7 @@ func (self class) WindowGetPosition(window_id gd.Int) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3767,7 +3767,7 @@ func (self class) WindowGetPositionWithDecorations(window_id gd.Int) gd.Vector2i
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_position_with_decorations, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_position_with_decorations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3792,8 +3792,8 @@ func (self class) WindowSetPosition(position gd.Vector2i, window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3805,7 +3805,7 @@ func (self class) WindowGetSize(window_id gd.Int) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3820,8 +3820,8 @@ func (self class) WindowSetSize(size gd.Vector2i, window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3834,8 +3834,8 @@ func (self class) WindowSetRectChangedCallback(callback gd.Callable, window_id g
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callback))
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_rect_changed_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_rect_changed_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3848,8 +3848,8 @@ func (self class) WindowSetWindowEventCallback(callback gd.Callable, window_id g
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callback))
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_window_event_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_window_event_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3862,8 +3862,8 @@ func (self class) WindowSetInputEventCallback(callback gd.Callable, window_id gd
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callback))
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_input_event_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_input_event_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3876,8 +3876,8 @@ func (self class) WindowSetInputTextCallback(callback gd.Callable, window_id gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callback))
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_input_text_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_input_text_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3891,8 +3891,8 @@ func (self class) WindowSetDropFilesCallback(callback gd.Callable, window_id gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callback))
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_drop_files_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_drop_files_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3904,7 +3904,7 @@ func (self class) WindowGetAttachedInstanceId(window_id gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_attached_instance_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_attached_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3918,7 +3918,7 @@ func (self class) WindowGetMaxSize(window_id gd.Int) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_max_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3934,8 +3934,8 @@ func (self class) WindowSetMaxSize(max_size gd.Vector2i, window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_size)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_max_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3947,7 +3947,7 @@ func (self class) WindowGetMinSize(window_id gd.Int) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_min_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_min_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3964,8 +3964,8 @@ func (self class) WindowSetMinSize(min_size gd.Vector2i, window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_size)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_min_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_min_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -3977,7 +3977,7 @@ func (self class) WindowGetSizeWithDecorations(window_id gd.Int) gd.Vector2i {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_size_with_decorations, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_size_with_decorations, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -3991,7 +3991,7 @@ func (self class) WindowGetMode(window_id gd.Int) gdclass.DisplayServerWindowMod
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gdclass.DisplayServerWindowMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4006,8 +4006,8 @@ func (self class) WindowSetMode(mode gdclass.DisplayServerWindowMode, window_id 
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4020,8 +4020,8 @@ func (self class) WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled b
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4034,7 +4034,7 @@ func (self class) WindowGetFlag(flag gdclass.DisplayServerWindowFlags, window_id
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_flag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4049,8 +4049,8 @@ func (self class) WindowSetWindowButtonsOffset(offset gd.Vector2i, window_id gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_window_buttons_offset, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_window_buttons_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4062,7 +4062,7 @@ func (self class) WindowGetSafeTitleMargins(window_id gd.Int) gd.Vector3i {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector3i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_safe_title_margins, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_safe_title_margins, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4075,8 +4075,8 @@ Makes the window specified by [param window_id] request attention, which is mate
 func (self class) WindowRequestAttention(window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_request_attention, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_request_attention, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4087,8 +4087,8 @@ Moves the window specified by [param window_id] to the foreground, so that it is
 func (self class) WindowMoveToForeground(window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_move_to_foreground, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_move_to_foreground, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4100,7 +4100,7 @@ func (self class) WindowIsFocused(window_id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_is_focused, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_is_focused, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4114,7 +4114,7 @@ func (self class) WindowCanDraw(window_id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_can_draw, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_can_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4130,8 +4130,8 @@ func (self class) WindowSetTransient(window_id gd.Int, parent_window_id gd.Int) 
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	callframe.Arg(frame, parent_window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_transient, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_transient, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4145,8 +4145,8 @@ func (self class) WindowSetExclusive(window_id gd.Int, exclusive bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	callframe.Arg(frame, exclusive)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_exclusive, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_exclusive, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4158,8 +4158,8 @@ func (self class) WindowSetImeActive(active bool, window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_ime_active, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_ime_active, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4171,8 +4171,8 @@ func (self class) WindowSetImePosition(position gd.Vector2i, window_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_ime_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_ime_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4187,8 +4187,8 @@ func (self class) WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode, 
 	var frame = callframe.New()
 	callframe.Arg(frame, vsync_mode)
 	callframe.Arg(frame, window_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_vsync_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_vsync_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4200,7 +4200,7 @@ func (self class) WindowGetVsyncMode(window_id gd.Int) gdclass.DisplayServerVSyn
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gdclass.DisplayServerVSyncMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_vsync_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_vsync_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4214,7 +4214,7 @@ func (self class) WindowIsMaximizeAllowed(window_id gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_is_maximize_allowed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_is_maximize_allowed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4228,7 +4228,7 @@ Returns [code]true[/code], if double-click on a window title should maximize it.
 func (self class) WindowMaximizeOnTitleDblClick() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_maximize_on_title_dbl_click, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_maximize_on_title_dbl_click, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4242,7 +4242,7 @@ Returns [code]true[/code], if double-click on a window title should minimize it.
 func (self class) WindowMinimizeOnTitleDblClick() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_minimize_on_title_dbl_click, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_minimize_on_title_dbl_click, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4256,7 +4256,7 @@ Returns the text selection in the [url=https://en.wikipedia.org/wiki/Input_metho
 func (self class) ImeGetSelection() gd.Vector2i {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_ime_get_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_ime_get_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4270,7 +4270,7 @@ Returns the composition string contained within the [url=https://en.wikipedia.or
 func (self class) ImeGetText() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_ime_get_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_ime_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4295,8 +4295,8 @@ func (self class) VirtualKeyboardShow(existing_text gd.String, position gd.Rect2
 	callframe.Arg(frame, max_length)
 	callframe.Arg(frame, cursor_start)
 	callframe.Arg(frame, cursor_end)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_virtual_keyboard_show, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_virtual_keyboard_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4306,8 +4306,8 @@ Hides the virtual keyboard if it is shown, does nothing otherwise.
 //go:nosplit
 func (self class) VirtualKeyboardHide() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_virtual_keyboard_hide, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_virtual_keyboard_hide, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4318,7 +4318,7 @@ Returns the on-screen keyboard's height in pixels. Returns 0 if there is no keyb
 func (self class) VirtualKeyboardGetHeight() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_virtual_keyboard_get_height, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_virtual_keyboard_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4331,8 +4331,8 @@ Sets the default mouse cursor shape. The cursor's appearance will vary depending
 func (self class) CursorSetShape(shape gdclass.DisplayServerCursorShape) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_cursor_set_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_cursor_set_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4343,7 +4343,7 @@ Returns the default mouse cursor shape set by [method cursor_set_shape].
 func (self class) CursorGetShape() gdclass.DisplayServerCursorShape {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.DisplayServerCursorShape](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_cursor_get_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_cursor_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4359,8 +4359,8 @@ func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape gdclass
 	callframe.Arg(frame, pointers.Get(cursor[0])[0])
 	callframe.Arg(frame, shape)
 	callframe.Arg(frame, hotspot)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_cursor_set_custom_image, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_cursor_set_custom_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4372,7 +4372,7 @@ Returns [code]true[/code] if positions of [b]OK[/b] and [b]Cancel[/b] buttons ar
 func (self class) GetSwapCancelOk() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_swap_cancel_ok, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_swap_cancel_ok, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4386,8 +4386,8 @@ Allows the [param process_id] PID to steal focus from this window. In other word
 func (self class) EnableForStealingFocus(process_id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, process_id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_enable_for_stealing_focus, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_enable_for_stealing_focus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4403,7 +4403,7 @@ func (self class) DialogShow(title gd.String, description gd.String, buttons gd.
 	callframe.Arg(frame, pointers.Get(buttons))
 	callframe.Arg(frame, pointers.Get(callback))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_show, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4421,7 +4421,7 @@ func (self class) DialogInputText(title gd.String, description gd.String, existi
 	callframe.Arg(frame, pointers.Get(existing_text))
 	callframe.Arg(frame, pointers.Get(callback))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_input_text, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_input_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4448,7 +4448,7 @@ func (self class) FileDialogShow(title gd.String, current_directory gd.String, f
 	callframe.Arg(frame, pointers.Get(filters))
 	callframe.Arg(frame, pointers.Get(callback))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_file_dialog_show, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_file_dialog_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4481,7 +4481,7 @@ func (self class) FileDialogWithOptionsShow(title gd.String, current_directory g
 	callframe.Arg(frame, pointers.Get(options))
 	callframe.Arg(frame, pointers.Get(callback))
 	var r_ret = callframe.Ret[error](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_file_dialog_with_options_show, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_file_dialog_with_options_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4495,7 +4495,7 @@ Returns the number of keyboard layouts.
 func (self class) KeyboardGetLayoutCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_layout_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_layout_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4509,7 +4509,7 @@ Returns active keyboard layout index.
 func (self class) KeyboardGetCurrentLayout() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_current_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_current_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4523,8 +4523,8 @@ Sets the active keyboard layout.
 func (self class) KeyboardSetCurrentLayout(index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_set_current_layout, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_set_current_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4537,7 +4537,7 @@ func (self class) KeyboardGetLayoutLanguage(index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_layout_language, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_layout_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4552,7 +4552,7 @@ func (self class) KeyboardGetLayoutName(index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_layout_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_layout_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4567,7 +4567,7 @@ func (self class) KeyboardGetKeycodeFromPhysical(keycode Key) Key {
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_keycode_from_physical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_keycode_from_physical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4582,7 +4582,7 @@ func (self class) KeyboardGetLabelFromPhysical(keycode Key) Key {
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_label_from_physical, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_label_from_physical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4594,8 +4594,8 @@ Perform window manager processing, including input flushing. See also [method fo
 //go:nosplit
 func (self class) ProcessEvents() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_process_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_process_events, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4606,8 +4606,8 @@ Forces window manager processing while ignoring all [InputEvent]s. See also [met
 //go:nosplit
 func (self class) ForceProcessAndDropEvents() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_force_process_and_drop_events, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_force_process_and_drop_events, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4619,8 +4619,8 @@ Sets the window icon (usually displayed in the top-left corner) in the operating
 func (self class) SetNativeIcon(filename gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(filename))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_set_native_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_set_native_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4632,8 +4632,8 @@ Sets the window icon (usually displayed in the top-left corner) with an [Image].
 func (self class) SetIcon(image [1]gdclass.Image) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_set_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_set_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4648,7 +4648,7 @@ func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip gd.St
 	callframe.Arg(frame, pointers.Get(tooltip))
 	callframe.Arg(frame, pointers.Get(callback))
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_create_status_indicator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_create_status_indicator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4663,8 +4663,8 @@ func (self class) StatusIndicatorSetIcon(id gd.Int, icon [1]gdclass.Texture2D) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_icon, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4677,8 +4677,8 @@ func (self class) StatusIndicatorSetTooltip(id gd.Int, tooltip gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(tooltip))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_tooltip, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4693,8 +4693,8 @@ func (self class) StatusIndicatorSetMenu(id gd.Int, menu_rid gd.RID) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, menu_rid)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_menu, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4707,8 +4707,8 @@ func (self class) StatusIndicatorSetCallback(id gd.Int, callback gd.Callable) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_callback, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4721,7 +4721,7 @@ func (self class) StatusIndicatorGetRect(id gd.Int) gd.Rect2 {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Rect2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_get_rect, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4734,8 +4734,8 @@ Removes the application status indicator.
 func (self class) DeleteStatusIndicator(id gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_delete_status_indicator, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_delete_status_indicator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4747,7 +4747,7 @@ Returns the total number of available tablet drivers.
 func (self class) TabletGetDriverCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_driver_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_driver_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4762,7 +4762,7 @@ func (self class) TabletGetDriverName(idx gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_driver_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_driver_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4776,7 +4776,7 @@ Returns current active tablet driver name.
 func (self class) TabletGetCurrentDriver() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_current_driver, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_current_driver, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -4794,8 +4794,8 @@ Supported drivers:
 func (self class) TabletSetCurrentDriver(name gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_set_current_driver, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_set_current_driver, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4806,7 +4806,7 @@ Returns [code]true[/code] if the window background can be made transparent. This
 func (self class) IsWindowTransparencyAvailable() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_window_transparency_available, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_window_transparency_available, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -4820,8 +4820,8 @@ This can be used to prevent Godot from skipping rendering when no normal windows
 func (self class) RegisterAdditionalOutput(obj [1]gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_register_additional_output, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_register_additional_output, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4832,8 +4832,8 @@ Unregisters an [Object] representing an additional output, that was registered v
 func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_unregister_additional_output, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_unregister_additional_output, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -4844,7 +4844,7 @@ Returns [code]true[/code] if any additional outputs have been registered via [me
 func (self class) HasAdditionalOutputs() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_has_additional_outputs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_has_additional_outputs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

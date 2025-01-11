@@ -334,8 +334,8 @@ By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS])
 func (self class) SetSkinWeightCount(count gdclass.SurfaceToolSkinWeightCount) {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -348,7 +348,7 @@ Returns [constant SKIN_8_WEIGHTS] if up to 8 influences are used.
 func (self class) GetSkinWeightCount() gdclass.SurfaceToolSkinWeightCount {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SurfaceToolSkinWeightCount](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -363,8 +363,8 @@ func (self class) SetCustomFormat(channel_index gd.Int, format gdclass.SurfaceTo
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	callframe.Arg(frame, format)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_custom_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_custom_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -376,7 +376,7 @@ func (self class) GetCustomFormat(channel_index gd.Int) gdclass.SurfaceToolCusto
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	var r_ret = callframe.Ret[gdclass.SurfaceToolCustomFormat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_custom_format, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_custom_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -389,8 +389,8 @@ Called before adding any vertices. Takes the primitive type as an argument (e.g.
 func (self class) Begin(primitive gdclass.MeshPrimitiveType) {
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_begin, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -401,8 +401,8 @@ Specifies the position of current vertex. Should be called after specifying othe
 func (self class) AddVertex(vertex gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_vertex, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_vertex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -414,8 +414,8 @@ Specifies a [Color] to use for the [i]next[/i] vertex. If every vertex needs to 
 func (self class) SetColor(color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -426,8 +426,8 @@ Specifies a normal to use for the [i]next[/i] vertex. If every vertex needs to h
 func (self class) SetNormal(normal gd.Vector3) {
 	var frame = callframe.New()
 	callframe.Arg(frame, normal)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_normal, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -438,8 +438,8 @@ Specifies a tangent to use for the [i]next[/i] vertex. If every vertex needs to 
 func (self class) SetTangent(tangent gd.Plane) {
 	var frame = callframe.New()
 	callframe.Arg(frame, tangent)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_tangent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_tangent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -450,8 +450,8 @@ Specifies a set of UV coordinates to use for the [i]next[/i] vertex. If every ve
 func (self class) SetUv(uv gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, uv)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_uv, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_uv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -462,8 +462,8 @@ Specifies an optional second set of UV coordinates to use for the [i]next[/i] ve
 func (self class) SetUv2(uv2 gd.Vector2) {
 	var frame = callframe.New()
 	callframe.Arg(frame, uv2)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_uv2, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_uv2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -474,8 +474,8 @@ Specifies an array of bones to use for the [i]next[/i] vertex. [param bones] mus
 func (self class) SetBones(bones gd.PackedInt32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bones))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_bones, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -486,8 +486,8 @@ Specifies weight values to use for the [i]next[/i] vertex. [param weights] must 
 func (self class) SetWeights(weights gd.PackedFloat32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(weights))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_weights, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -500,8 +500,8 @@ func (self class) SetCustom(channel_index gd.Int, custom_color gd.Color) {
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	callframe.Arg(frame, custom_color)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_custom, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_custom, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -513,8 +513,8 @@ Specifies the smooth group to use for the [i]next[/i] vertex. If this is never c
 func (self class) SetSmoothGroup(index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_smooth_group, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_smooth_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -531,8 +531,8 @@ func (self class) AddTriangleFan(vertices gd.PackedVector3Array, uvs gd.PackedVe
 	callframe.Arg(frame, pointers.Get(uv2s))
 	callframe.Arg(frame, pointers.Get(normals))
 	callframe.Arg(frame, pointers.Get(tangents))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_triangle_fan, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_triangle_fan, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -543,8 +543,8 @@ Adds a vertex to index array if you are using indexed vertices. Does not need to
 func (self class) AddIndex(index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -554,8 +554,8 @@ Shrinks the vertex array by creating an index array. This can improve performanc
 //go:nosplit
 func (self class) Index() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -565,8 +565,8 @@ Removes the index array by expanding the vertex array.
 //go:nosplit
 func (self class) Deindex() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_deindex, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_deindex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -579,8 +579,8 @@ Generates normals from vertices so you do not have to do it manually. If [param 
 func (self class) GenerateNormals(flip bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, flip)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_normals, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_normals, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -590,8 +590,8 @@ Generates a tangent vector for each vertex. Requires that each vertex have UVs a
 //go:nosplit
 func (self class) GenerateTangents() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_tangents, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_tangents, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -601,8 +601,8 @@ Optimizes triangle sorting for performance. Requires that [method get_primitive_
 //go:nosplit
 func (self class) OptimizeIndicesForCache() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_optimize_indices_for_cache, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_optimize_indices_for_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -613,7 +613,7 @@ Returns the axis-aligned bounding box of the vertex positions.
 func (self class) GetAabb() gd.AABB {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -628,7 +628,7 @@ func (self class) GenerateLod(nd_threshold gd.Float, target_index_count gd.Int) 
 	callframe.Arg(frame, nd_threshold)
 	callframe.Arg(frame, target_index_count)
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_lod, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_lod, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -641,8 +641,8 @@ Sets [Material] to be used by the [Mesh] you are constructing.
 func (self class) SetMaterial(material [1]gdclass.Material) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -653,7 +653,7 @@ Returns the type of mesh geometry, such as [constant Mesh.PRIMITIVE_TRIANGLES].
 func (self class) GetPrimitiveType() gdclass.MeshPrimitiveType {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.MeshPrimitiveType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -665,8 +665,8 @@ Clear all information passed into the surface tool so far.
 //go:nosplit
 func (self class) Clear() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -678,8 +678,8 @@ func (self class) CreateFrom(existing [1]gdclass.Mesh, surface gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -691,8 +691,8 @@ func (self class) CreateFromArrays(arrays gd.Array, primitive_type gdclass.MeshP
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(arrays))
 	callframe.Arg(frame, primitive_type)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -705,8 +705,8 @@ func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface gd.Int,
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, pointers.Get(blend_shape))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_blend_shape, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_blend_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -719,8 +719,8 @@ func (self class) AppendFrom(existing [1]gdclass.Mesh, surface gd.Int, transform
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, transform)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_append_from, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_append_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -734,7 +734,7 @@ func (self class) Commit(existing [1]gdclass.ArrayMesh, flags gd.Int) [1]gdclass
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -747,7 +747,7 @@ Commits the data to the same format used by [method ArrayMesh.add_surface_from_a
 func (self class) CommitToArrays() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit_to_arrays, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit_to_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret

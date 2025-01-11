@@ -821,8 +821,8 @@ func (class) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, ca
 func (self class) SetIndentSize(size gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_indent_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_indent_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -830,7 +830,7 @@ func (self class) SetIndentSize(size gd.Int) {
 func (self class) GetIndentSize() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_indent_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_indent_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -840,8 +840,8 @@ func (self class) GetIndentSize() gd.Int {
 func (self class) SetIndentUsingSpaces(use_spaces bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, use_spaces)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_indent_using_spaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_indent_using_spaces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -849,7 +849,7 @@ func (self class) SetIndentUsingSpaces(use_spaces bool) {
 func (self class) IsIndentUsingSpaces() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_indent_using_spaces, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_indent_using_spaces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -859,8 +859,8 @@ func (self class) IsIndentUsingSpaces() bool {
 func (self class) SetAutoIndentEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_indent_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_indent_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -868,7 +868,7 @@ func (self class) SetAutoIndentEnabled(enable bool) {
 func (self class) IsAutoIndentEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_auto_indent_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_auto_indent_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -878,8 +878,8 @@ func (self class) IsAutoIndentEnabled() bool {
 func (self class) SetAutoIndentPrefixes(prefixes gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(prefixes))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_indent_prefixes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_indent_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -887,7 +887,7 @@ func (self class) SetAutoIndentPrefixes(prefixes gd.Array) {
 func (self class) GetAutoIndentPrefixes() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_indent_prefixes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_indent_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -899,8 +899,8 @@ Perform an indent as if the user activated the "ui_text_indent" action.
 //go:nosplit
 func (self class) DoIndent() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_do_indent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_do_indent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -910,8 +910,8 @@ Indents selected lines, or in the case of no selection the caret line by one.
 //go:nosplit
 func (self class) IndentLines() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_indent_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_indent_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -921,8 +921,8 @@ Unindents selected lines, or in the case of no selection the caret line by one. 
 //go:nosplit
 func (self class) UnindentLines() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_unindent_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_unindent_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -935,8 +935,8 @@ func (self class) ConvertIndent(from_line gd.Int, to_line gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, to_line)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_convert_indent, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_convert_indent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -944,8 +944,8 @@ func (self class) ConvertIndent(from_line gd.Int, to_line gd.Int) {
 func (self class) SetAutoBraceCompletionEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_brace_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_brace_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -953,7 +953,7 @@ func (self class) SetAutoBraceCompletionEnabled(enable bool) {
 func (self class) IsAutoBraceCompletionEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_auto_brace_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_auto_brace_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -963,8 +963,8 @@ func (self class) IsAutoBraceCompletionEnabled() bool {
 func (self class) SetHighlightMatchingBracesEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_highlight_matching_braces_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_highlight_matching_braces_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -972,7 +972,7 @@ func (self class) SetHighlightMatchingBracesEnabled(enable bool) {
 func (self class) IsHighlightMatchingBracesEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_highlight_matching_braces_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_highlight_matching_braces_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -987,8 +987,8 @@ func (self class) AddAutoBraceCompletionPair(start_key gd.String, end_key gd.Str
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	callframe.Arg(frame, pointers.Get(end_key))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_add_auto_brace_completion_pair, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_add_auto_brace_completion_pair, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -996,8 +996,8 @@ func (self class) AddAutoBraceCompletionPair(start_key gd.String, end_key gd.Str
 func (self class) SetAutoBraceCompletionPairs(pairs gd.Dictionary) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pairs))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1005,7 +1005,7 @@ func (self class) SetAutoBraceCompletionPairs(pairs gd.Dictionary) {
 func (self class) GetAutoBraceCompletionPairs() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1019,7 +1019,7 @@ func (self class) HasAutoBraceCompletionOpenKey(open_key gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(open_key))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_has_auto_brace_completion_open_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_has_auto_brace_completion_open_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1033,7 +1033,7 @@ func (self class) HasAutoBraceCompletionCloseKey(close_key gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(close_key))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_has_auto_brace_completion_close_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_has_auto_brace_completion_close_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1047,7 +1047,7 @@ func (self class) GetAutoBraceCompletionCloseKey(open_key gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(open_key))
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_close_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_close_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1057,8 +1057,8 @@ func (self class) GetAutoBraceCompletionCloseKey(open_key gd.String) gd.String {
 func (self class) SetDrawBreakpointsGutter(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_breakpoints_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_breakpoints_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1066,7 +1066,7 @@ func (self class) SetDrawBreakpointsGutter(enable bool) {
 func (self class) IsDrawingBreakpointsGutter() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_breakpoints_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_breakpoints_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1076,8 +1076,8 @@ func (self class) IsDrawingBreakpointsGutter() bool {
 func (self class) SetDrawBookmarksGutter(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_bookmarks_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_bookmarks_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1085,7 +1085,7 @@ func (self class) SetDrawBookmarksGutter(enable bool) {
 func (self class) IsDrawingBookmarksGutter() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_bookmarks_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_bookmarks_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1095,8 +1095,8 @@ func (self class) IsDrawingBookmarksGutter() bool {
 func (self class) SetDrawExecutingLinesGutter(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_executing_lines_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_executing_lines_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1104,7 +1104,7 @@ func (self class) SetDrawExecutingLinesGutter(enable bool) {
 func (self class) IsDrawingExecutingLinesGutter() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_executing_lines_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_executing_lines_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1118,8 +1118,8 @@ func (self class) SetLineAsBreakpoint(line gd.Int, breakpointed bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, breakpointed)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_as_breakpoint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_as_breakpoint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1131,7 +1131,7 @@ func (self class) IsLineBreakpointed(line gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_breakpointed, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_breakpointed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1143,8 +1143,8 @@ Clears all breakpointed lines.
 //go:nosplit
 func (self class) ClearBreakpointedLines() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_breakpointed_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_breakpointed_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1155,7 +1155,7 @@ Gets all breakpointed lines.
 func (self class) GetBreakpointedLines() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_breakpointed_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_breakpointed_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1169,8 +1169,8 @@ func (self class) SetLineAsBookmarked(line gd.Int, bookmarked bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, bookmarked)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_as_bookmarked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_as_bookmarked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1182,7 +1182,7 @@ func (self class) IsLineBookmarked(line gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_bookmarked, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_bookmarked, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1194,8 +1194,8 @@ Clears all bookmarked lines.
 //go:nosplit
 func (self class) ClearBookmarkedLines() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_bookmarked_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_bookmarked_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1206,7 +1206,7 @@ Gets all bookmarked lines.
 func (self class) GetBookmarkedLines() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_bookmarked_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_bookmarked_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1220,8 +1220,8 @@ func (self class) SetLineAsExecuting(line gd.Int, executing bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, executing)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_as_executing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_as_executing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1233,7 +1233,7 @@ func (self class) IsLineExecuting(line gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_executing, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_executing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1245,8 +1245,8 @@ Clears all executed lines.
 //go:nosplit
 func (self class) ClearExecutingLines() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_executing_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_executing_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1257,7 +1257,7 @@ Gets all executing lines.
 func (self class) GetExecutingLines() gd.PackedInt32Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_executing_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_executing_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1267,8 +1267,8 @@ func (self class) GetExecutingLines() gd.PackedInt32Array {
 func (self class) SetDrawLineNumbers(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_line_numbers, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_line_numbers, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1276,7 +1276,7 @@ func (self class) SetDrawLineNumbers(enable bool) {
 func (self class) IsDrawLineNumbersEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_draw_line_numbers_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_draw_line_numbers_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1286,8 +1286,8 @@ func (self class) IsDrawLineNumbersEnabled() bool {
 func (self class) SetLineNumbersZeroPadded(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_numbers_zero_padded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_numbers_zero_padded, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1295,7 +1295,7 @@ func (self class) SetLineNumbersZeroPadded(enable bool) {
 func (self class) IsLineNumbersZeroPadded() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_numbers_zero_padded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_numbers_zero_padded, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1305,8 +1305,8 @@ func (self class) IsLineNumbersZeroPadded() bool {
 func (self class) SetDrawFoldGutter(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_fold_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_draw_fold_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1314,7 +1314,7 @@ func (self class) SetDrawFoldGutter(enable bool) {
 func (self class) IsDrawingFoldGutter() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_fold_gutter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_fold_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1324,8 +1324,8 @@ func (self class) IsDrawingFoldGutter() bool {
 func (self class) SetLineFoldingEnabled(enabled bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_folding_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_folding_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1333,7 +1333,7 @@ func (self class) SetLineFoldingEnabled(enabled bool) {
 func (self class) IsLineFoldingEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_folding_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_folding_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1347,7 +1347,7 @@ func (self class) CanFoldLine(line gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_can_fold_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_can_fold_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1360,8 +1360,8 @@ Folds the given line, if possible (see [method can_fold_line]).
 func (self class) FoldLine(line gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_fold_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_fold_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1372,8 +1372,8 @@ Unfolds all lines that were previously folded.
 func (self class) UnfoldLine(line gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_unfold_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_unfold_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1383,8 +1383,8 @@ Folds all lines that are possible to be folded (see [method can_fold_line]).
 //go:nosplit
 func (self class) FoldAllLines() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_fold_all_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_fold_all_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1394,8 +1394,8 @@ Unfolds all lines, folded or not.
 //go:nosplit
 func (self class) UnfoldAllLines() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_unfold_all_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_unfold_all_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1406,8 +1406,8 @@ Toggle the folding of the code block at the given line.
 func (self class) ToggleFoldableLine(line gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_toggle_foldable_line, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_toggle_foldable_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1417,8 +1417,8 @@ Toggle the folding of the code block on all lines with a caret on them.
 //go:nosplit
 func (self class) ToggleFoldableLinesAtCarets() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_toggle_foldable_lines_at_carets, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_toggle_foldable_lines_at_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1430,7 +1430,7 @@ func (self class) IsLineFolded(line gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_folded, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_folded, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1443,7 +1443,7 @@ Returns all lines that are current folded.
 func (self class) GetFoldedLines() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_folded_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_folded_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1458,8 +1458,8 @@ Code regions are delimited using start and end tags (respectively [code]region[/
 //go:nosplit
 func (self class) CreateCodeRegion() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_create_code_region, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_create_code_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1470,7 +1470,7 @@ Returns the code region start tag (without comment delimiter).
 func (self class) GetCodeRegionStartTag() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_region_start_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_region_start_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1483,7 +1483,7 @@ Returns the code region end tag (without comment delimiter).
 func (self class) GetCodeRegionEndTag() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_region_end_tag, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_region_end_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1497,8 +1497,8 @@ func (self class) SetCodeRegionTags(start gd.String, end gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start))
 	callframe.Arg(frame, pointers.Get(end))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_region_tags, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_region_tags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1510,7 +1510,7 @@ func (self class) IsLineCodeRegionStart(line gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_code_region_start, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_code_region_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1524,7 +1524,7 @@ func (self class) IsLineCodeRegionEnd(line gd.Int) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_code_region_end, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_code_region_end, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1540,8 +1540,8 @@ func (self class) AddStringDelimiter(start_key gd.String, end_key gd.String, lin
 	callframe.Arg(frame, pointers.Get(start_key))
 	callframe.Arg(frame, pointers.Get(end_key))
 	callframe.Arg(frame, line_only)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_add_string_delimiter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_add_string_delimiter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1552,8 +1552,8 @@ Removes the string delimiter with [param start_key].
 func (self class) RemoveStringDelimiter(start_key gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_remove_string_delimiter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_remove_string_delimiter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1565,7 +1565,7 @@ func (self class) HasStringDelimiter(start_key gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_has_string_delimiter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_has_string_delimiter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1575,8 +1575,8 @@ func (self class) HasStringDelimiter(start_key gd.String) bool {
 func (self class) SetStringDelimiters(string_delimiters gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(string_delimiters))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1586,8 +1586,8 @@ Removes all string delimiters.
 //go:nosplit
 func (self class) ClearStringDelimiters() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1595,7 +1595,7 @@ func (self class) ClearStringDelimiters() {
 func (self class) GetStringDelimiters() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1610,7 +1610,7 @@ func (self class) IsInString(line gd.Int, column gd.Int) gd.Int {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_in_string, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_in_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1626,8 +1626,8 @@ func (self class) AddCommentDelimiter(start_key gd.String, end_key gd.String, li
 	callframe.Arg(frame, pointers.Get(start_key))
 	callframe.Arg(frame, pointers.Get(end_key))
 	callframe.Arg(frame, line_only)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_add_comment_delimiter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_add_comment_delimiter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1638,8 +1638,8 @@ Removes the comment delimiter with [param start_key].
 func (self class) RemoveCommentDelimiter(start_key gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_remove_comment_delimiter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_remove_comment_delimiter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1651,7 +1651,7 @@ func (self class) HasCommentDelimiter(start_key gd.String) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_has_comment_delimiter, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_has_comment_delimiter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1661,8 +1661,8 @@ func (self class) HasCommentDelimiter(start_key gd.String) bool {
 func (self class) SetCommentDelimiters(comment_delimiters gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(comment_delimiters))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1672,8 +1672,8 @@ Removes all comment delimiters.
 //go:nosplit
 func (self class) ClearCommentDelimiters() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1681,7 +1681,7 @@ func (self class) ClearCommentDelimiters() {
 func (self class) GetCommentDelimiters() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1696,7 +1696,7 @@ func (self class) IsInComment(line gd.Int, column gd.Int) gd.Int {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_in_comment, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_in_comment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1710,7 +1710,7 @@ func (self class) GetDelimiterStartKey(delimiter_index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_start_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_start_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1724,7 +1724,7 @@ func (self class) GetDelimiterEndKey(delimiter_index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter_index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_end_key, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_end_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1739,7 +1739,7 @@ func (self class) GetDelimiterStartPosition(line gd.Int, column gd.Int) gd.Vecto
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_start_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_start_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1754,7 +1754,7 @@ func (self class) GetDelimiterEndPosition(line gd.Int, column gd.Int) gd.Vector2
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_end_position, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_end_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1767,8 +1767,8 @@ Sets the code hint text. Pass an empty string to clear.
 func (self class) SetCodeHint(code_hint gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(code_hint))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_hint, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1779,8 +1779,8 @@ Sets if the code hint should draw below the text.
 func (self class) SetCodeHintDrawBelow(draw_below bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, draw_below)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_hint_draw_below, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_hint_draw_below, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1791,7 +1791,7 @@ Returns the full text with char [code]0xFFFF[/code] at the caret location.
 func (self class) GetTextForCodeCompletion() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_for_code_completion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_for_code_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1804,8 +1804,8 @@ Emits [signal code_completion_requested], if [param force] is [code]true[/code] 
 func (self class) RequestCodeCompletion(force bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_request_code_completion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_request_code_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1824,8 +1824,8 @@ func (self class) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKi
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, location)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_add_code_completion_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_add_code_completion_option, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1837,8 +1837,8 @@ Submits all completion options added with [method add_code_completion_option]. W
 func (self class) UpdateCodeCompletionOptions(force bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_update_code_completion_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_update_code_completion_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1849,7 +1849,7 @@ Gets all completion options, see [method get_code_completion_option] for return 
 func (self class) GetCodeCompletionOptions() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_options, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1869,7 +1869,7 @@ func (self class) GetCodeCompletionOption(index gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_option, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_option, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1882,7 +1882,7 @@ Gets the index of the current selected completion option.
 func (self class) GetCodeCompletionSelectedIndex() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_selected_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_selected_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1895,8 +1895,8 @@ Sets the current selected completion option.
 func (self class) SetCodeCompletionSelectedIndex(index gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_completion_selected_index, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_completion_selected_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1907,8 +1907,8 @@ Inserts the selected entry into the text. If [param replace] is [code]true[/code
 func (self class) ConfirmCodeCompletion(replace bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, replace)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_confirm_code_completion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_confirm_code_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1918,8 +1918,8 @@ Cancels the autocomplete menu.
 //go:nosplit
 func (self class) CancelCodeCompletion() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_cancel_code_completion, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_cancel_code_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1927,8 +1927,8 @@ func (self class) CancelCodeCompletion() {
 func (self class) SetCodeCompletionEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1936,7 +1936,7 @@ func (self class) SetCodeCompletionEnabled(enable bool) {
 func (self class) IsCodeCompletionEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_code_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_code_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1946,8 +1946,8 @@ func (self class) IsCodeCompletionEnabled() bool {
 func (self class) SetCodeCompletionPrefixes(prefixes gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(prefixes))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_completion_prefixes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_completion_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1955,7 +1955,7 @@ func (self class) SetCodeCompletionPrefixes(prefixes gd.Array) {
 func (self class) GetCodeCompletionPrefixes() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_prefixes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1965,8 +1965,8 @@ func (self class) GetCodeCompletionPrefixes() gd.Array {
 func (self class) SetLineLengthGuidelines(guideline_columns gd.Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(guideline_columns))
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_length_guidelines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_length_guidelines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1974,7 +1974,7 @@ func (self class) SetLineLengthGuidelines(guideline_columns gd.Array) {
 func (self class) GetLineLengthGuidelines() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_line_length_guidelines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_line_length_guidelines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -1984,8 +1984,8 @@ func (self class) GetLineLengthGuidelines() gd.Array {
 func (self class) SetSymbolLookupOnClickEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_symbol_lookup_on_click_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_symbol_lookup_on_click_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1993,7 +1993,7 @@ func (self class) SetSymbolLookupOnClickEnabled(enable bool) {
 func (self class) IsSymbolLookupOnClickEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_symbol_lookup_on_click_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_symbol_lookup_on_click_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -2006,7 +2006,7 @@ Returns the full text with char [code]0xFFFF[/code] at the cursor location.
 func (self class) GetTextForSymbolLookup() gd.String {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_for_symbol_lookup, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_for_symbol_lookup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2021,7 +2021,7 @@ func (self class) GetTextWithCursorChar(line gd.Int, column gd.Int) gd.String {
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_with_cursor_char, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_with_cursor_char, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
 	return ret
@@ -2034,8 +2034,8 @@ Sets the symbol emitted by [signal symbol_validate] as a valid lookup.
 func (self class) SetSymbolLookupWordAsValid(valid bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, valid)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_symbol_lookup_word_as_valid, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_symbol_lookup_word_as_valid, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2045,8 +2045,8 @@ Moves all lines up that are selected or have a caret on them.
 //go:nosplit
 func (self class) MoveLinesUp() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_move_lines_up, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_move_lines_up, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2056,8 +2056,8 @@ Moves all lines down that are selected or have a caret on them.
 //go:nosplit
 func (self class) MoveLinesDown() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_move_lines_down, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_move_lines_down, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2067,8 +2067,8 @@ Deletes all lines that are selected or have a caret on them.
 //go:nosplit
 func (self class) DeleteLines() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_delete_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_delete_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2078,8 +2078,8 @@ Duplicates all selected text and duplicates all lines with a caret on them.
 //go:nosplit
 func (self class) DuplicateSelection() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_duplicate_selection, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_duplicate_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2089,8 +2089,8 @@ Duplicates all lines currently selected with any caret. Duplicates the entire li
 //go:nosplit
 func (self class) DuplicateLines() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_duplicate_lines, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_duplicate_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnBreakpointToggled(cb func(line int)) {

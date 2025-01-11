@@ -254,7 +254,7 @@ Returns the name of this interface ([code]"OpenXR"[/code], [code]"OpenVR"[/code]
 func (self class) GetName() gd.StringName {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
 	return ret
@@ -267,7 +267,7 @@ Returns a combination of [enum Capabilities] flags providing information about t
 func (self class) GetCapabilities() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_capabilities, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_capabilities, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -277,7 +277,7 @@ func (self class) GetCapabilities() gd.Int {
 func (self class) IsPrimary() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_is_primary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_is_primary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -287,8 +287,8 @@ func (self class) IsPrimary() bool {
 func (self class) SetPrimary(primary bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, primary)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_primary, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_primary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -299,7 +299,7 @@ Returns [code]true[/code] if this interface has been initialized.
 func (self class) IsInitialized() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_is_initialized, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_is_initialized, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -316,7 +316,7 @@ While currently not used, you can activate additional interfaces. You may wish t
 func (self class) Initialize() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_initialize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_initialize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -328,8 +328,8 @@ Turns the interface off.
 //go:nosplit
 func (self class) Uninitialize() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_uninitialize, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_uninitialize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -341,7 +341,7 @@ Returns a [Dictionary] with extra system info. Interfaces are expected to return
 func (self class) GetSystemInfo() gd.Dictionary {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_system_info, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_system_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
 	return ret
@@ -354,7 +354,7 @@ If supported, returns the status of our tracking. This will allow you to provide
 func (self class) GetTrackingStatus() gdclass.XRInterfaceTrackingStatus {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRInterfaceTrackingStatus](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_tracking_status, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_tracking_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -367,7 +367,7 @@ Returns the resolution at which we should render our intermediate results before
 func (self class) GetRenderTargetSize() gd.Vector2 {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_render_target_size, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_render_target_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -380,7 +380,7 @@ Returns the number of views that need to be rendered for this device. 1 for Mono
 func (self class) GetViewCount() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_view_count, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_view_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -404,8 +404,8 @@ func (self class) TriggerHapticPulse(action_name gd.String, tracker_name gd.Stri
 	callframe.Arg(frame, amplitude)
 	callframe.Arg(frame, duration_sec)
 	callframe.Arg(frame, delay_sec)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_trigger_haptic_pulse, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_trigger_haptic_pulse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -417,7 +417,7 @@ func (self class) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) boo
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_supports_play_area_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_supports_play_area_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -427,7 +427,7 @@ func (self class) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) boo
 func (self class) GetPlayAreaMode() gdclass.XRInterfacePlayAreaMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRInterfacePlayAreaMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_play_area_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_play_area_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -442,7 +442,7 @@ func (self class) SetPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_play_area_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_play_area_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -455,7 +455,7 @@ Returns an array of vectors that represent the physical play area mapped to the 
 func (self class) GetPlayArea() gd.PackedVector3Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_play_area, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_play_area, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -465,7 +465,7 @@ func (self class) GetPlayArea() gd.PackedVector3Array {
 func (self class) GetAnchorDetectionIsEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_anchor_detection_is_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_anchor_detection_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -475,8 +475,8 @@ func (self class) GetAnchorDetectionIsEnabled() bool {
 func (self class) SetAnchorDetectionIsEnabled(enable bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_anchor_detection_is_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_anchor_detection_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -487,7 +487,7 @@ If this is an AR interface that requires displaying a camera feed as the backgro
 func (self class) GetCameraFeedId() gd.Int {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_camera_feed_id, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_camera_feed_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -500,7 +500,7 @@ Returns [code]true[/code] if this interface supports passthrough.
 func (self class) IsPassthroughSupported() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_is_passthrough_supported, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_is_passthrough_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -513,7 +513,7 @@ Returns [code]true[/code] if passthrough is enabled.
 func (self class) IsPassthroughEnabled() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_is_passthrough_enabled, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_is_passthrough_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -527,7 +527,7 @@ Starts passthrough, will return [code]false[/code] if passthrough couldn't be st
 func (self class) StartPassthrough() bool {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_start_passthrough, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_start_passthrough, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -539,8 +539,8 @@ Stops passthrough.
 //go:nosplit
 func (self class) StopPassthrough() {
 	var frame = callframe.New()
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_stop_passthrough, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_stop_passthrough, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -555,7 +555,7 @@ func (self class) GetTransformForView(view gd.Int, cam_transform gd.Transform3D)
 	callframe.Arg(frame, view)
 	callframe.Arg(frame, cam_transform)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_transform_for_view, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_transform_for_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -572,7 +572,7 @@ func (self class) GetProjectionForView(view gd.Int, aspect gd.Float, near gd.Flo
 	callframe.Arg(frame, near)
 	callframe.Arg(frame, far)
 	var r_ret = callframe.Ret[gd.Projection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_projection_for_view, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_projection_for_view, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -585,7 +585,7 @@ Returns the an array of supported environment blend modes, see [enum XRInterface
 func (self class) GetSupportedEnvironmentBlendModes() gd.Array {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_supported_environment_blend_modes, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_supported_environment_blend_modes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
 	return ret
@@ -614,7 +614,7 @@ func (self class) SetEnvironmentBlendMode(mode gdclass.XRInterfaceEnvironmentBle
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_environment_blend_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_set_environment_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -624,7 +624,7 @@ func (self class) SetEnvironmentBlendMode(mode gdclass.XRInterfaceEnvironmentBle
 func (self class) GetEnvironmentBlendMode() gdclass.XRInterfaceEnvironmentBlendMode {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRInterfaceEnvironmentBlendMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_environment_blend_mode, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_environment_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

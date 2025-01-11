@@ -69,8 +69,8 @@ func (self Instance) SetMultimesh(value [1]gdclass.MultiMesh) {
 func (self class) SetMultimesh(multimesh [1]gdclass.MultiMesh) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(multimesh[0])[0])
-	var r_ret callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMeshInstance3D.Bind_set_multimesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMeshInstance3D.Bind_set_multimesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -78,7 +78,7 @@ func (self class) SetMultimesh(multimesh [1]gdclass.MultiMesh) {
 func (self class) GetMultimesh() [1]gdclass.MultiMesh {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[uintptr](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMeshInstance3D.Bind_get_multimesh, self.AsObject(), frame.Array(0), r_ret.Uintptr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMeshInstance3D.Bind_get_multimesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MultiMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiMesh](r_ret.Get())}
 	frame.Free()
 	return ret
