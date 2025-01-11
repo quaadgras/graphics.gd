@@ -125,5 +125,6 @@ func Ret[T comparable](frame *Frame) Ptr[T] {
 		panic("callframe: return value too large")
 	}
 	frame.ret++
+	*(*T)(unsafe.Pointer(&frame.buf[frame.ret+15])) = [1]T{}[0]
 	return Ptr[T]{void: &frame.buf[frame.ret+15]}
 }
