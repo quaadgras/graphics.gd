@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 The server that manages all language translations. Translations can be added to or removed from it.
 */
@@ -244,7 +240,7 @@ See also [method OS.get_locale] and [method OS.get_locale_language] to query the
 //go:nosplit
 func (self class) GetLocale() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -258,7 +254,7 @@ Returns the current locale of the editor.
 //go:nosplit
 func (self class) GetToolLocale() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_tool_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -287,7 +283,7 @@ Returns a [param locale] string standardized to match known locales (e.g. [code]
 func (self class) StandardizeLocale(locale gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_standardize_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -300,7 +296,7 @@ Returns array of known language codes.
 //go:nosplit
 func (self class) GetAllLanguages() gd.PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_all_languages, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -314,7 +310,7 @@ Returns a readable language name for the [param language] code.
 func (self class) GetLanguageName(language gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_language_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -327,7 +323,7 @@ Returns an array of known script codes.
 //go:nosplit
 func (self class) GetAllScripts() gd.PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_all_scripts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -341,7 +337,7 @@ Returns a readable script name for the [param script] code.
 func (self class) GetScriptName(script gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(script))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_script_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -354,7 +350,7 @@ Returns an array of known country codes.
 //go:nosplit
 func (self class) GetAllCountries() gd.PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_all_countries, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -368,7 +364,7 @@ Returns a readable country name for the [param country] code.
 func (self class) GetCountryName(country gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(country))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_country_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -382,7 +378,7 @@ Returns a locale's language and its variant (e.g. [code]"en_US"[/code] would ret
 func (self class) GetLocaleName(locale gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_locale_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -397,7 +393,7 @@ func (self class) Translate(message gd.StringName, context gd.StringName) gd.Str
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
@@ -415,7 +411,7 @@ func (self class) TranslatePlural(message gd.StringName, plural_message gd.Strin
 	callframe.Arg(frame, pointers.Get(plural_message))
 	callframe.Arg(frame, n)
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_translate_plural, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
@@ -454,7 +450,7 @@ It will return [code]null[/code] if there is no [Translation] instance that matc
 func (self class) GetTranslationObject(locale gd.String) [1]gdclass.Translation {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_translation_object, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Translation{gd.PointerWithOwnershipTransferredToGo[gdclass.Translation](r_ret.Get())}
 	frame.Free()
@@ -478,7 +474,7 @@ Returns an array of all loaded locales of the project.
 //go:nosplit
 func (self class) GetLoadedLocales() gd.PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_loaded_locales, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -522,7 +518,7 @@ Returns the pseudolocalized string based on the [param message] passed in.
 func (self class) Pseudolocalize(message gd.StringName) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_pseudolocalize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()

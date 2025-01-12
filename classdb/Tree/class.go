@@ -22,10 +22,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 A control used to show a set of internal [TreeItem]s in a hierarchical structure. The tree items can be selected, expanded and collapsed. The tree can have multiple columns with custom controls like [LineEdit]s, buttons and popups. It can be useful for structured displays and interactions.
 Trees are built via code, using [TreeItem] objects to create the structure. They have a single root, but multiple roots can be simulated with [member hide_root]:
@@ -503,7 +499,7 @@ func (self class) CreateItem(parent [1]gdclass.TreeItem, index gd.Int) [1]gdclas
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parent[0])[0])
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_create_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -516,7 +512,7 @@ Returns the tree's root item, or [code]null[/code] if the tree is empty.
 //go:nosplit
 func (self class) GetRoot() [1]gdclass.TreeItem {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_root, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -658,7 +654,7 @@ If [param from] is [code]null[/code], this returns the first selected item.
 func (self class) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from[0])[0])
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_next_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -673,7 +669,7 @@ To get the currently selected item(s), use [method get_next_selected].
 //go:nosplit
 func (self class) GetSelected() [1]gdclass.TreeItem {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -796,7 +792,7 @@ public void OnTreeItemEdited()
 //go:nosplit
 func (self class) GetEdited() [1]gdclass.TreeItem {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_edited, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -868,7 +864,7 @@ Returns the tree item at the specified position (relative to the tree origin pos
 func (self class) GetItemAtPosition(position gd.Vector2) [1]gdclass.TreeItem {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_item_at_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret.Get())}
 	frame.Free()
@@ -971,7 +967,7 @@ Returns the column's title.
 func (self class) GetColumnTitle(column gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_column_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1052,7 +1048,7 @@ Returns column title language code.
 func (self class) GetColumnTitleLanguage(column gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_column_title_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()

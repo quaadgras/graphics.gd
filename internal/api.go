@@ -195,7 +195,7 @@ type Packed[T any] interface {
 		PackedVector2Array | PackedVector3Array | PackedVector4Array |
 		PackedColorArray
 
-	pointers.Generic[T, [2]uintptr]
+	pointers.Generic[T, PackedPointers]
 	Len() int
 }
 
@@ -203,7 +203,7 @@ type PackedFunctionsFor[T Packed[T], V any] struct {
 	Index         func(T, Int) V
 	SetIndex      func(T, Int, V)
 	CopyAsSlice   func(T) []V
-	UnsafePointer func(T) unsafe.Pointer
+	CopyFromSlice func(T, []V)
 }
 
 type (
@@ -344,7 +344,7 @@ type ObjectInterface interface {
 	GetPropertyList() []PropertyInfo
 	PropertyCanRevert(StringName) bool
 	PropertyGetRevert(StringName) (Variant, bool)
-	ValidateProperty(StringName, *PropertyInfo) bool
+	ValidateProperty(*PropertyInfo) bool
 	Notification(int32, bool)
 	ToString() (String, bool)
 	Reference()

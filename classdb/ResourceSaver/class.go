@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 A singleton for saving resource types to the filesystem.
 It uses the many [ResourceFormatSaver] classes registered in the engine (either built-in or from a plugin) to save resource data to text-based (e.g. [code].tres[/code] or [code].tscn[/code]) or binary files (e.g. [code].res[/code] or [code].scn[/code]).
@@ -106,7 +102,7 @@ Returns the list of extensions available for saving a resource of a given type.
 func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) gd.PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(atype[0])[0])
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_get_recognized_extensions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()

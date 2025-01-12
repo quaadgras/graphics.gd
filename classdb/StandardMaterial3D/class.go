@@ -20,10 +20,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [StandardMaterial3D]'s properties are inherited from [BaseMaterial3D]. [StandardMaterial3D] uses separate textures for ambient occlusion, roughness and metallic maps. To use a single ORM map for all 3 textures, use an [ORMMaterial3D] instead.
 */

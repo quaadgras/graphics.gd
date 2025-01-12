@@ -21,10 +21,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 A container that arranges its child controls horizontally or vertically, rearranging them automatically when their minimum size changes.
 */
@@ -86,7 +82,7 @@ Adds a [Control] node to the box as a spacer. If [param begin] is [code]true[/co
 func (self class) AddSpacer(begin bool) [1]gdclass.Control {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_add_spacer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret.Get())}
 	frame.Free()

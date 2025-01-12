@@ -22,10 +22,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Provides OpenType variations, simulated bold / slant, and additional font settings like OpenType features and extra spacing.
 To use simulated bold font variant:
@@ -162,7 +158,7 @@ func (self class) SetBaseFont(font [1]gdclass.Font) {
 //go:nosplit
 func (self class) GetBaseFont() [1]gdclass.Font {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_base_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -181,7 +177,7 @@ func (self class) SetVariationOpentype(coords gd.Dictionary) {
 //go:nosplit
 func (self class) GetVariationOpentype() gd.Dictionary {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()

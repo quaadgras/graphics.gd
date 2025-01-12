@@ -24,10 +24,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Mesh is a type of [Resource] that contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials. The maximum number of surfaces per mesh is [constant RenderingServer.MAX_MESH_SURFACES].
 
@@ -206,7 +202,7 @@ Virtual method to override the setting of a [param material] at the given [param
 func (Instance) _surface_set_material(impl func(ptr unsafe.Pointer, index int, material [1]gdclass.Material)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
-		var material = [1]gdclass.Material{pointers.New[gdclass.Material]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})}
+		var material = [1]gdclass.Material{pointers.New[gdclass.Material]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
 		defer pointers.End(material[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(index), material)
@@ -262,7 +258,7 @@ Virtual method to override the names of blend shapes for a custom class extendin
 func (Instance) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index int, name string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(index), name.String())
@@ -510,7 +506,7 @@ Virtual method to override the setting of a [param material] at the given [param
 func (class) _surface_set_material(impl func(ptr unsafe.Pointer, index gd.Int, material [1]gdclass.Material)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
-		var material = [1]gdclass.Material{pointers.New[gdclass.Material]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})}
+		var material = [1]gdclass.Material{pointers.New[gdclass.Material]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(material[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, index, material)
@@ -566,7 +562,7 @@ Virtual method to override the names of blend shapes for a custom class extendin
 func (class) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int, name gd.StringName)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, index, name)
 	}
@@ -622,7 +618,7 @@ Returns all the vertices that make up the faces of the mesh. Each three vertices
 //go:nosplit
 func (self class) GetFaces() gd.PackedVector3Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -649,7 +645,7 @@ Returns the arrays for the vertices, normals, UVs, etc. that make up the request
 func (self class) SurfaceGetArrays(surf_idx gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -663,7 +659,7 @@ Returns the blend shape arrays for the requested surface.
 func (self class) SurfaceGetBlendShapeArrays(surf_idx gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_blend_shape_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -692,7 +688,7 @@ Returns a [Material] in a given surface. Surface is rendered using this material
 func (self class) SurfaceGetMaterial(surf_idx gd.Int) [1]gdclass.Material {
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_surface_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
 	frame.Free()
@@ -705,7 +701,7 @@ Creates a placeholder version of this resource ([PlaceholderMesh]).
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
 	frame.Free()
@@ -718,7 +714,7 @@ Calculate a [ConcavePolygonShape3D] from the mesh.
 //go:nosplit
 func (self class) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_trimesh_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ConcavePolygonShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.ConcavePolygonShape3D](r_ret.Get())}
 	frame.Free()
@@ -735,7 +731,7 @@ func (self class) CreateConvexShape(clean bool, simplify bool) [1]gdclass.Convex
 	var frame = callframe.New()
 	callframe.Arg(frame, clean)
 	callframe.Arg(frame, simplify)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_convex_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ConvexPolygonShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.ConvexPolygonShape3D](r_ret.Get())}
 	frame.Free()
@@ -750,7 +746,7 @@ Calculate an outline mesh at a defined offset (margin) from the original mesh.
 func (self class) CreateOutline(margin gd.Float) [1]gdclass.Mesh {
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret.Get())}
 	frame.Free()
@@ -763,7 +759,7 @@ Generate a [TriangleMesh] from the mesh. Considers only surfaces using one of th
 //go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.TriangleMesh](r_ret.Get())}
 	frame.Free()

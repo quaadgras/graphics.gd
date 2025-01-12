@@ -54,10 +54,10 @@ const shapesMax = 7
 //		freefunc func(any) // unsafe pointer to the free function method
 //		pointers T		   // the actual pointer values.
 //	 }
-var tables [shapesMax]atomicSlice[[pageSize]atomic.Uintptr]
+var tables [shapesMax]atomicSlice[[pageSize]atomic.Uint64]
 
-var static [shapesMax][][pageSize]uintptr
-var counts [shapesMax]atomic.Uintptr // static counts
+var static [shapesMax][][pageSize]uint64
+var counts [shapesMax]atomic.Uint64 // static counts
 
 const (
 	offsetRevision = iota
@@ -68,7 +68,7 @@ const (
 // revision number, two most significant bits (in order of most to least) are used
 // to indicate whether the pointer is pinned and whether or not it has been used in
 // the last cycle.
-type revision uintptr
+type revision uint64
 
 const (
 	revisionEOF    = 0
@@ -121,7 +121,7 @@ func (r revision) unpinned() revision {
 // writes stores a small ring of write indicies for each global, the garbage
 // collection will cycle through these indicies to determine the write head
 // for each table. Any entries -2 or less will be freed.
-var writes [shapesMax]atomic.Uintptr
+var writes [shapesMax]atomic.Uint64
 
 // Cycle triggers an deadline garbage collection cycle, to clean up temporary
 // objects, only pointers allocated in the current or last cycle will
@@ -131,7 +131,7 @@ func Cycle() {
 		tab := &tables[s]
 		for j := range tab.len.Load() {
 			page := tab.Index(j)
-			for i := uintptr(0); i < pageSize; i += uintptr(s + 2) {
+			for i := uint64(0); i < pageSize; i += uint64(s + 2) {
 				rev := revision(page[i+offsetRevision].Load())
 				if rev == revisionEOF {
 					break // end of the table.
@@ -141,91 +141,55 @@ func Cycle() {
 				}
 				if rev.isActive() {
 					if !rev.isPinned() {
-						page[i+offsetRevision].CompareAndSwap(uintptr(rev), uintptr(rev.expire()))
+						page[i+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.expire()))
 					}
 				} else {
-					jump := page[i+offsetFreeFunc].Load()
+					jump := uintptr(page[i+offsetFreeFunc].Load())
 					if jump == 0 {
-						end(rev, s, uintptr(j*pageSize+i))
-					} else if page[i+offsetFreeFunc].CompareAndSwap(jump, 0) {
+						end(rev, s, uint64(j*pageSize+i))
+					} else if page[i+offsetFreeFunc].CompareAndSwap(uint64(jump), 0) {
 						switch s {
 						case 1:
 							type Solo struct {
-								sentinal uintptr
+								sentinal uint64
 								revision revision
-								checksum [1]uintptr
+								checksum [1]uint64
 							}
 							free := *(*func(Solo))(unsafe.Pointer(&jump))
 							free(Solo{
 								sentinal: j*pageSize + i,
 								revision: rev,
-								checksum: [1]uintptr{page[i+offsetPointers].Load()},
+								checksum: [1]uint64{page[i+offsetPointers].Load()},
 							})
 						case 2:
 							type Pair struct {
-								sentinal uintptr
+								sentinal uint64
 								revision revision
-								checksum [2]uintptr
+								checksum [2]uint64
 							}
 							free := *(*func(Pair))(unsafe.Pointer(&jump))
 							free(Pair{
 								sentinal: j*pageSize + i,
 								revision: revision(page[i+offsetRevision].Load()),
-								checksum: [2]uintptr{
+								checksum: [2]uint64{
 									page[i+offsetPointers].Load(),
 									page[i+offsetPointers+1].Load(),
 								},
 							})
 						case 3:
 							type Trio struct {
-								sentinal uintptr
+								sentinal uint64
 								revision revision
-								checksum [3]uintptr
+								checksum [3]uint64
 							}
 							free := *(*func(Trio))(unsafe.Pointer(&jump))
 							free(Trio{
 								sentinal: j*pageSize + i,
 								revision: revision(page[i+offsetRevision].Load()),
-								checksum: [3]uintptr{
+								checksum: [3]uint64{
 									page[i+offsetPointers].Load(),
 									page[i+offsetPointers+1].Load(),
 									page[i+offsetPointers+2].Load(),
-								},
-							})
-						case 4:
-							type Quad struct {
-								sentinal uintptr
-								revision revision
-								checksum [4]uintptr
-							}
-							free := *(*func(Quad))(unsafe.Pointer(&jump))
-							free(Quad{
-								sentinal: j*pageSize + i,
-								revision: revision(page[i+offsetRevision].Load()),
-								checksum: [4]uintptr{
-									page[i+offsetPointers].Load(),
-									page[i+offsetPointers+1].Load(),
-									page[i+offsetPointers+2].Load(),
-									page[i+offsetPointers+3].Load(),
-								},
-							})
-						case 6:
-							type Hexa struct {
-								sentinal uintptr
-								revision revision
-								checksum [6]uintptr
-							}
-							free := *(*func(Hexa))(unsafe.Pointer(&jump))
-							free(Hexa{
-								sentinal: j*pageSize + i,
-								revision: revision(page[i+offsetRevision].Load()),
-								checksum: [6]uintptr{
-									page[i+offsetPointers].Load(),
-									page[i+offsetPointers+1].Load(),
-									page[i+offsetPointers+2].Load(),
-									page[i+offsetPointers+3].Load(),
-									page[i+offsetPointers+4].Load(),
-									page[i+offsetPointers+5].Load(),
 								},
 							})
 						}
@@ -257,19 +221,19 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 		rev := revision(arr[addr+offsetRevision].Load())
 		nxt := arr[addr+offsetPointers].Load()
 		if rev == 0 {
-			nxt = idx + offsetPointers + uintptr(len(ptr))
+			nxt = idx + offsetPointers + uint64(len(ptr))
 		}
-		if wat.CompareAndSwap(idx, nxt) && rev != revisionLocked && rev.isClosed() && arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), revisionLocked) {
+		if wat.CompareAndSwap(idx, nxt) && rev != revisionLocked && rev.isClosed() && arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
 			var current struct {
 				_ [0]*T
 
-				sentinal uintptr
+				sentinal uint64
 				revision revision
 				checksum P
 			}
 			current.sentinal = idx
 			rev := (max(rev, 2) + 1).active().reset()
-			arr[addr+offsetRevision].Store(uintptr(rev))
+			arr[addr+offsetRevision].Store(uint64(rev))
 			//
 			// NOTE the below function extraction is somewhat unsafe and
 			// relies on specific assumptions on how static function pointers
@@ -279,11 +243,15 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 			//
 			var (
 				free = free
-				jump = uintptr(*(*unsafe.Pointer)(unsafe.Pointer(&free)))
+				jump = uint64(uintptr(*(*unsafe.Pointer)(unsafe.Pointer(&free))))
 			)
+			var (
+				local [3]uint64
+			)
+			*(*P)(unsafe.Pointer(&local)) = ptr
 			arr[addr+offsetFreeFunc].Store(jump)
-			for i := range uintptr(len(ptr)) {
-				arr[addr+offsetPointers+i].Store(uintptr(ptr[i]))
+			for i := range uint64(len(ptr)) {
+				arr[addr+offsetPointers+i].Store(local[i])
 			}
 			current.revision = rev
 			current.checksum = ptr
@@ -292,18 +260,18 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 	}
 }
 
-func end(rev revision, s int, p uintptr) bool {
+func end(rev revision, s int, p uint64) bool {
 	if rev < 2 {
 		return false
 	}
-	page, addr := uintptr(p/pageSize), uintptr(p%pageSize)
+	page, addr := uint64(p/pageSize), uint64(p%pageSize)
 	arr := tables[s].Index(page)
 	existing := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(existing) {
 		return false
 	}
-	if arr[addr+offsetRevision].CompareAndSwap(uintptr(existing), revisionLocked) {
-		arr[addr+offsetRevision].Store(uintptr(existing.close())) // next free.
+	if arr[addr+offsetRevision].CompareAndSwap(uint64(existing), revisionLocked) {
+		arr[addr+offsetRevision].Store(uint64(existing.close())) // next free.
 		for {
 			end := writes[s].Load()
 			arr[addr+offsetPointers].Store(end)
@@ -321,7 +289,7 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 	p := (struct {
 		_ [0]*T
 
-		sentinal uintptr
+		sentinal uint64
 		revision revision
 		checksum P
 	})(ptr)
@@ -329,17 +297,17 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 		return p.checksum
 	}
 	if p.revision == 0 {
-		var result P
+		var result [3]uint64
 		for i := 0; i < len(p.checksum); i++ {
 			result[i] = static[len(p.checksum)][p.sentinal/pageSize][uintptr(p.sentinal)%pageSize+uintptr(i)]
 		}
-		return result
+		return *(*P)(unsafe.Pointer(&result))
 	}
-	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
-	var ptrs P
+	var ptrs [3]uint64
 	for i := 0; i < len(p.checksum); i++ {
-		ptrs[i] = arr[addr+offsetPointers+uintptr(i)].Load()
+		ptrs[i] = arr[addr+offsetPointers+uint64(i)].Load()
 	}
 	rev := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(p.revision) {
@@ -347,26 +315,28 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 		panic("expired pointer")
 	}
 	if !rev.isActive() {
-		arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), uintptr(rev.active()))
+		arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
 	}
-	return ptrs
+	return *(*P)(unsafe.Pointer(&ptrs))
 }
 
 // Add allocates a new pointer that can be mutated with [Set].
 func Add[T Generic[T, P], P Size](val P) T {
-	addr := counts[len(val)].Add(uintptr(len(val)))
+	addr := counts[len(val)].Add(uint64(len(val)))
 	var result struct {
 		_ [0]*T
 
-		sentinal uintptr
+		sentinal uint64
 		revision revision
 		checksum P
 	}
 	if len(static[len(val)]) <= int(addr/pageSize) {
-		static[len(val)] = append(static[len(val)], [pageSize]uintptr{})
+		static[len(val)] = append(static[len(val)], [pageSize]uint64{})
 	}
+	var local [3]uint64
+	*(*P)(unsafe.Pointer(&local)) = val
 	for i := 0; i < len(val); i++ {
-		static[len(val)][addr/pageSize][addr%pageSize+uintptr(i)] = uintptr(val[i])
+		static[len(val)][addr/pageSize][addr%pageSize+uint64(i)] = uint64(local[i])
 	}
 	result.sentinal = addr
 	return T(result)
@@ -377,7 +347,7 @@ func Set[T Generic[T, P], P Size](ptr T, val P) {
 	p := (struct {
 		_ [0]*T
 
-		sentinal uintptr
+		sentinal uint64
 		revision revision
 		checksum P
 	})(ptr)
@@ -385,22 +355,26 @@ func Set[T Generic[T, P], P Size](ptr T, val P) {
 		return
 	}
 	if p.revision == 0 {
+		var local [3]uint64
+		*(*P)(unsafe.Pointer(&local)) = val
 		for i := 0; i < len(val); i++ {
-			static[len(val)][p.sentinal/pageSize][uintptr(p.sentinal)%pageSize+uintptr(i)] = uintptr(val[i])
+			static[len(val)][p.sentinal/pageSize][uint64(p.sentinal)%pageSize+uint64(i)] = uint64(local[i])
 		}
 		return
 	}
-	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
 	rev := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(p.revision) {
 		panic("expired pointer")
 	}
-	if arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), revisionLocked) {
+	if arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
+		var local [3]uint64
+		*(*P)(unsafe.Pointer(&local)) = val
 		for i := 0; i < len(val); i++ {
-			arr[addr+offsetPointers+uintptr(i)].Store(uintptr(val[i]))
+			arr[addr+offsetPointers+uint64(i)].Store(uint64(local[i]))
 		}
-		arr[addr+offsetRevision].Store(uintptr(rev.active()))
+		arr[addr+offsetRevision].Store(uint64(rev.active()))
 	}
 	return
 }
@@ -408,18 +382,18 @@ func Set[T Generic[T, P], P Size](ptr T, val P) {
 type atomicSlice[T any] struct {
 	mut sync.Mutex // only locked for appends.
 	ptr atomic.Pointer[*T]
-	len atomic.Uintptr
+	len atomic.Uint64
 }
 
 // Index returns the element at the given index, extending the slice if necessary.
-func (s *atomicSlice[T]) Index(i uintptr) *T {
+func (s *atomicSlice[T]) Index(i uint64) *T {
 	l := s.len.Load()
 	old := unsafe.Slice(s.ptr.Load(), l)
-	if uintptr(i) >= l {
+	if uint64(i) >= l {
 		s.mut.Lock()
 		defer s.mut.Unlock()
 		l = s.len.Load()
-		if !(uintptr(i) >= l) {
+		if !(uint64(i) >= l) {
 			old := unsafe.Slice(s.ptr.Load(), l)
 			return old[i]
 		}
@@ -428,7 +402,7 @@ func (s *atomicSlice[T]) Index(i uintptr) *T {
 		copy(new, old)
 		new[len(old)] = end
 		s.ptr.Store(&new[0])
-		s.len.Store(uintptr(len(new)))
+		s.len.Store(uint64(len(new)))
 		return end
 	}
 	return old[i]
@@ -439,7 +413,7 @@ func Raw[T Generic[T, P], P Size](ptr P) T {
 	var result struct {
 		_ [0]*T
 
-		sentinal uintptr
+		sentinal uint64
 		revision revision
 		checksum P
 	}
@@ -452,20 +426,20 @@ func Pin[T Generic[T, P], P Size](ptr T) T {
 	p := (struct {
 		_ [0]*T
 
-		sentinal uintptr
+		sentinal uint64
 		revision revision
 		checksum P
 	})(ptr)
 	if p.revision == 0 {
 		panic("cannot pin a nil pointer")
 	}
-	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
 	rev := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(p.revision) {
 		panic("expired pointer")
 	}
-	arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), uintptr(rev.pinned()))
+	arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.pinned()))
 	return ptr
 }
 
@@ -474,17 +448,17 @@ func Debug[T Generic[T, P], P Size](ptr T) {
 	p := (struct {
 		_ [0]*T
 
-		sentinal uintptr
+		sentinal uint64
 		revision revision
 		checksum P
 	})(ptr)
 	if p.revision == 0 && p.sentinal == 0 {
-		fmt.Printf("pointer raw\n", p.sentinal)
+		fmt.Printf("pointer raw %d\n", p.sentinal)
 	}
 	if p.revision == 0 {
 		fmt.Printf("pointer static %d\n", p.sentinal)
 	}
-	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
 	rev := revision(arr[addr+offsetRevision].Load())
 	free := arr[addr+offsetFreeFunc].Load()
@@ -496,7 +470,7 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 	p := (struct {
 		_ [0]*T
 
-		sentinal uintptr
+		sentinal uint64
 		revision revision
 		checksum P
 	})(ptr)
@@ -506,22 +480,22 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 	if p.revision == 0 {
 		panic("cannot let a nil pointer")
 	}
-	page, addr := uintptr(p.sentinal/pageSize), uintptr(p.sentinal%pageSize)
+	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
 	rev := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(p.revision) {
 		panic("expired pointer")
 	}
-	if arr[addr+offsetRevision].CompareAndSwap(uintptr(rev), revisionLocked) {
+	if arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
 		arr[addr+offsetFreeFunc].Store(0)
-		arr[addr+offsetRevision].Store(uintptr(rev.active()))
+		arr[addr+offsetRevision].Store(uint64(rev.active()))
 	}
 	return ptr
 }
 
 // Size of a pointer up to [3]uintptr's, suitable for supporting fat pointers.
 type Size interface {
-	[1]uintptr | [2]uintptr | [3]uintptr | [4]uintptr | [6]uintptr
+	[1]uint32 | [1]uint64 | [2]uint64 | [3]uint64
 }
 
 // Generic pointer.
@@ -529,7 +503,7 @@ type Generic[T any, S Size] interface {
 	~struct {
 		_ [0]*T
 
-		sentinal uintptr
+		sentinal uint64
 		revision revision
 		checksum S
 	}
@@ -542,21 +516,21 @@ func End[T Generic[T, Raw], Raw Size](ptr T) (Raw, bool) {
 	p := (struct {
 		_ [0]*T
 
-		sentinal uintptr
+		sentinal uint64
 		revision revision
 		checksum Raw
 	})(ptr)
 	if p.checksum == [1]Raw{}[0] {
 		return [1]Raw{}[0], false
 	}
-	if end(p.revision, len(p.checksum), uintptr(p.sentinal)) {
+	if end(p.revision, len(p.checksum), uint64(p.sentinal)) {
 		return p.checksum, true
 	}
 	return [1]Raw{}[0], false
 }
 
-// Solo pointer value that safely wraps a single uintptr-sized value.
-type Solo[T Generic[T, [1]uintptr]] struct {
+// Half pointer value that safely wraps a single uintptr-sized value.
+type Half[T Generic[T, [1]uint32]] struct {
 	_ [0]*T // prevents converting between different pointer types.
 
 	// if both 'sentinal' and 'revision' fields are zero, then this is
@@ -566,13 +540,29 @@ type Solo[T Generic[T, [1]uintptr]] struct {
 	// if the 'sentinal' is non-zero but the 'revision' is zero, then
 	// this is a static pointer, it cannot be freed and the checksum
 	// value is ignored.
-	sentinal uintptr
+	sentinal uint64
 	revision revision
-	checksum [1]uintptr
+	checksum [1]uint32
+}
+
+// Solo pointer value that safely wraps a single uintptr-sized value.
+type Solo[T Generic[T, [1]uint64]] struct {
+	_ [0]*T // prevents converting between different pointer types.
+
+	// if both 'sentinal' and 'revision' fields are zero, then this is
+	// an unsafe pointer and the checksum value is used directly, in
+	// this case, no memory-safety protections are provided.
+	//
+	// if the 'sentinal' is non-zero but the 'revision' is zero, then
+	// this is a static pointer, it cannot be freed and the checksum
+	// value is ignored.
+	sentinal uint64
+	revision revision
+	checksum [1]uint64
 }
 
 // Pair pointer value that safely wraps a pair of uintptr-sized values.
-type Pair[T Generic[T, [2]uintptr]] struct {
+type Pair[T Generic[T, [2]uint64]] struct {
 	_ [0]*T // prevents converting between different pointer types.
 
 	// if both 'sentinal' and 'revision' fields are zero, then this is
@@ -582,13 +572,13 @@ type Pair[T Generic[T, [2]uintptr]] struct {
 	// if the 'sentinal' is non-zero but the 'revision' is zero, then
 	// this is a static pointer, it cannot be freed and the checksum
 	// value is ignored.
-	sentinal uintptr
+	sentinal uint64
 	revision revision
-	checksum [2]uintptr
+	checksum [2]uint64
 }
 
 // Trio pointer value that safely wraps three uintptr-sized values.
-type Trio[T Generic[T, [3]uintptr]] struct {
+type Trio[T Generic[T, [3]uint64]] struct {
 	_ [0]*T // prevents converting between different pointer types.
 
 	// if both 'sentinal' and 'revision' fields are zero, then this is
@@ -598,39 +588,7 @@ type Trio[T Generic[T, [3]uintptr]] struct {
 	// if the 'sentinal' is non-zero but the 'revision' is zero, then
 	// this is a static pointer, it cannot be freed and the checksum
 	// value is ignored.
-	sentinal uintptr
+	sentinal uint64
 	revision revision
-	checksum [3]uintptr
-}
-
-// Quad pointer value that safely wraps four uintptr-sized values.
-type Quad[T Generic[T, [4]uintptr]] struct {
-	_ [0]*T // prevents converting between different pointer types.
-
-	// if both 'sentinal' and 'revision' fields are zero, then this is
-	// an unsafe pointer and the checksum value is used directly, in
-	// this case, no memory-safety protections are provided.
-	//
-	// if the 'sentinal' is non-zero but the 'revision' is zero, then
-	// this is a static pointer, it cannot be freed and the checksum
-	// value is ignored.
-	sentinal uintptr
-	revision revision
-	checksum [4]uintptr
-}
-
-// Hexa pointer value that safely wraps six uintptr-sized values.
-type Hexa[T Generic[T, [6]uintptr]] struct {
-	_ [0]*T // prevents converting between different pointer types.
-
-	// if both 'sentinal' and 'revision' fields are zero, then this is
-	// an unsafe pointer and the checksum value is used directly, in
-	// this case, no memory-safety protections are provided.
-	//
-	// if the 'sentinal' is non-zero but the 'revision' is zero, then
-	// this is a static pointer, it cannot be freed and the checksum
-	// value is ignored.
-	sentinal uintptr
-	revision revision
-	checksum [6]uintptr
+	checksum [3]uint64
 }

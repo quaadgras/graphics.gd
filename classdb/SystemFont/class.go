@@ -20,10 +20,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [SystemFont] loads a font from a system font with the first matching name from [member font_names].
 It will attempt to match font style, but it's not guaranteed.
@@ -384,7 +380,7 @@ func (self class) GetOversampling() gd.Float {
 //go:nosplit
 func (self class) GetFontNames() gd.PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_font_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()

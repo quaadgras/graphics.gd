@@ -20,10 +20,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Comes with a built-in editor for texture's curves.
 */
@@ -76,7 +72,7 @@ func (self class) SetTexture(texture [1]gdclass.CurveXYZTexture) {
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.CurveXYZTexture {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CurveXYZTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.CurveXYZTexture](r_ret.Get())}
 	frame.Free()

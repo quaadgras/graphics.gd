@@ -23,10 +23,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 CodeEdit is a specialized [TextEdit] designed for editing plain text code files. It has many features commonly found in code editors such as line numbers, line folding, code completion, indent management, and string/comment management.
 [b]Note:[/b] Regardless of locale, [CodeEdit] will by default always use left-to-right text direction to correctly display source code.
@@ -89,7 +85,7 @@ Both [param candidates] and the return is a [Array] of [Dictionary], see [method
 */
 func (Instance) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates gd.Array) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var candidates = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var candidates = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(candidates)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, candidates)
@@ -806,7 +802,7 @@ Both [param candidates] and the return is a [Array] of [Dictionary], see [method
 */
 func (class) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates gd.Array) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var candidates = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var candidates = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, candidates)
 		ptr, ok := pointers.End(ret)
@@ -886,7 +882,7 @@ func (self class) SetAutoIndentPrefixes(prefixes gd.Array) {
 //go:nosplit
 func (self class) GetAutoIndentPrefixes() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_indent_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1004,7 +1000,7 @@ func (self class) SetAutoBraceCompletionPairs(pairs gd.Dictionary) {
 //go:nosplit
 func (self class) GetAutoBraceCompletionPairs() gd.Dictionary {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -1046,7 +1042,7 @@ Gets the matching auto brace close key for [param open_key].
 func (self class) GetAutoBraceCompletionCloseKey(open_key gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(open_key))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_close_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1154,7 +1150,7 @@ Gets all breakpointed lines.
 //go:nosplit
 func (self class) GetBreakpointedLines() gd.PackedInt32Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_breakpointed_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -1205,7 +1201,7 @@ Gets all bookmarked lines.
 //go:nosplit
 func (self class) GetBookmarkedLines() gd.PackedInt32Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_bookmarked_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -1256,7 +1252,7 @@ Gets all executing lines.
 //go:nosplit
 func (self class) GetExecutingLines() gd.PackedInt32Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_executing_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -1442,7 +1438,7 @@ Returns all lines that are current folded.
 //go:nosplit
 func (self class) GetFoldedLines() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_folded_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1469,7 +1465,7 @@ Returns the code region start tag (without comment delimiter).
 //go:nosplit
 func (self class) GetCodeRegionStartTag() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_region_start_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1482,7 +1478,7 @@ Returns the code region end tag (without comment delimiter).
 //go:nosplit
 func (self class) GetCodeRegionEndTag() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_region_end_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1594,7 +1590,7 @@ func (self class) ClearStringDelimiters() {
 //go:nosplit
 func (self class) GetStringDelimiters() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1680,7 +1676,7 @@ func (self class) ClearCommentDelimiters() {
 //go:nosplit
 func (self class) GetCommentDelimiters() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1709,7 +1705,7 @@ Gets the start key for a string or comment region index.
 func (self class) GetDelimiterStartKey(delimiter_index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_start_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1723,7 +1719,7 @@ Gets the end key for a string or comment region index.
 func (self class) GetDelimiterEndKey(delimiter_index gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_delimiter_end_key, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1790,7 +1786,7 @@ Returns the full text with char [code]0xFFFF[/code] at the caret location.
 //go:nosplit
 func (self class) GetTextForCodeCompletion() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_for_code_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1848,7 +1844,7 @@ Gets all completion options, see [method get_code_completion_option] for return 
 //go:nosplit
 func (self class) GetCodeCompletionOptions() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1868,7 +1864,7 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 func (self class) GetCodeCompletionOption(index gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_option, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -1954,7 +1950,7 @@ func (self class) SetCodeCompletionPrefixes(prefixes gd.Array) {
 //go:nosplit
 func (self class) GetCodeCompletionPrefixes() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1973,7 +1969,7 @@ func (self class) SetLineLengthGuidelines(guideline_columns gd.Array) {
 //go:nosplit
 func (self class) GetLineLengthGuidelines() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_line_length_guidelines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -2005,7 +2001,7 @@ Returns the full text with char [code]0xFFFF[/code] at the cursor location.
 //go:nosplit
 func (self class) GetTextForSymbolLookup() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_for_symbol_lookup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -2020,7 +2016,7 @@ func (self class) GetTextWithCursorChar(line gd.Int, column gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_with_cursor_char, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()

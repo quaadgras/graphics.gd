@@ -22,10 +22,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 NavigationServer3D is the server that handles navigation maps, regions and agents. It does not handle A* navigation from [AStar3D].
 Maps are divided into regions, which are composed of navigation meshes. Together, they define the navigable areas in the 3D world.
@@ -1232,7 +1228,7 @@ Returns all created navigation map [RID]s on the NavigationServer. This returns 
 //go:nosplit
 func (self class) GetMaps() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_get_maps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1479,7 +1475,7 @@ func (self class) MapGetPath(mapping gd.RID, origin gd.Vector3, destination gd.V
 	callframe.Arg(frame, destination)
 	callframe.Arg(frame, optimize)
 	callframe.Arg(frame, navigation_layers)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_map_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -1555,7 +1551,7 @@ Returns all navigation link [RID]s that are currently assigned to the requested 
 func (self class) MapGetLinks(mapping gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_map_get_links, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1569,7 +1565,7 @@ Returns all navigation regions [RID]s that are currently assigned to the request
 func (self class) MapGetRegions(mapping gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_map_get_regions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1583,7 +1579,7 @@ Returns all navigation agents [RID]s that are currently assigned to the requeste
 func (self class) MapGetAgents(mapping gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_map_get_agents, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1597,7 +1593,7 @@ Returns all navigation obstacle [RID]s that are currently assigned to the reques
 func (self class) MapGetObstacles(mapping gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_map_get_obstacles, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -3007,7 +3003,7 @@ Returns the outline vertices for the specified [param obstacle].
 func (self class) ObstacleGetVertices(obstacle gd.RID) gd.PackedVector3Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, obstacle)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -3138,7 +3134,7 @@ func (self class) SimplifyPath(path gd.PackedVector3Array, epsilon gd.Float) gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, epsilon)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_simplify_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()

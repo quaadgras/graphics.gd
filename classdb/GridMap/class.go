@@ -25,10 +25,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 GridMap lets you place meshes on a grid interactively. It works both from the editor and from scripts, which can help you create in-game level editors.
 GridMaps use a [MeshLibrary] which contains a list of tiles. Each tile is a mesh with materials plus optional collision and navigation shapes.
@@ -447,7 +443,7 @@ func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) {
 //go:nosplit
 func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_physics_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret.Get())}
 	frame.Free()
@@ -511,7 +507,7 @@ func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) {
 //go:nosplit
 func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_mesh_library, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MeshLibrary{gd.PointerWithOwnershipTransferredToGo[gdclass.MeshLibrary](r_ret.Get())}
 	frame.Free()
@@ -775,7 +771,7 @@ Returns an array of [Vector3] with the non-empty cell coordinates in the grid ma
 //go:nosplit
 func (self class) GetUsedCells() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -789,7 +785,7 @@ Returns an array of all cells with the given item index specified in [param item
 func (self class) GetUsedCellsByItem(item gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_used_cells_by_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -802,7 +798,7 @@ Returns an array of [Transform3D] and [Mesh] references corresponding to the non
 //go:nosplit
 func (self class) GetMeshes() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -815,7 +811,7 @@ Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshe
 //go:nosplit
 func (self class) GetBakeMeshes() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_bake_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()

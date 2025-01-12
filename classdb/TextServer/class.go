@@ -26,10 +26,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [TextServer] is the API backend for managing fonts and rendering text.
 [b]Note:[/b] This is a low-level API, consider using [TextLine], [TextParagraph], and [Font] classes instead.
@@ -1645,7 +1641,7 @@ Returns the name of the server interface.
 //go:nosplit
 func (self class) GetName() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1686,7 +1682,7 @@ Returns default TextServer database (e.g. ICU break iterators and dictionaries) 
 //go:nosplit
 func (self class) GetSupportDataFilename() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_get_support_data_filename, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1699,7 +1695,7 @@ Returns TextServer database (e.g. ICU break iterators and dictionaries) descript
 //go:nosplit
 func (self class) GetSupportDataInfo() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_get_support_data_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1756,7 +1752,7 @@ Converts OpenType tag to readable feature, variation, script, or language name.
 func (self class) TagToName(tag gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, tag)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_tag_to_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1918,7 +1914,7 @@ Returns font family name.
 func (self class) FontGetName(font_rid gd.RID) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1932,7 +1928,7 @@ Returns [Dictionary] with OpenType font name strings (localized font names, vers
 func (self class) FontGetOtNameStrings(font_rid gd.RID) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_ot_name_strings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -1959,7 +1955,7 @@ Returns font style name.
 func (self class) FontGetStyleName(font_rid gd.RID) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_style_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -2478,7 +2474,7 @@ Returns variation coordinates for the specified font cache entry. See [method fo
 func (self class) FontGetVariationCoordinates(font_rid gd.RID) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_variation_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -2519,7 +2515,7 @@ Returns list of the font sizes in the cache. Each size is [Vector2i] with font s
 func (self class) FontGetSizeCacheList(font_rid gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_size_cache_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -2764,7 +2760,7 @@ func (self class) FontGetTextureImage(font_rid gd.RID, size gd.Vector2i, texture
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_texture_image, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -2795,7 +2791,7 @@ func (self class) FontGetTextureOffsets(font_rid gd.RID, size gd.Vector2i, textu
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, texture_index)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_texture_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -2810,7 +2806,7 @@ func (self class) FontGetGlyphList(font_rid gd.RID, size gd.Vector2i) gd.PackedI
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_glyph_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -3049,7 +3045,7 @@ func (self class) FontGetGlyphContours(font gd.RID, size gd.Int, index gd.Int) g
 	callframe.Arg(frame, font)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_glyph_contours, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -3064,7 +3060,7 @@ func (self class) FontGetKerningList(font_rid gd.RID, size gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_kerning_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -3184,7 +3180,7 @@ Returns a string containing all the characters available in the font.
 func (self class) FontGetSupportedChars(font_rid gd.RID) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_supported_chars, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -3323,7 +3319,7 @@ Returns list of language support overrides.
 func (self class) FontGetLanguageSupportOverrides(font_rid gd.RID) gd.PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_language_support_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -3394,7 +3390,7 @@ Returns list of script support overrides.
 func (self class) FontGetScriptSupportOverrides(font_rid gd.RID) gd.PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_script_support_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -3421,7 +3417,7 @@ Returns font OpenType feature set override.
 func (self class) FontGetOpentypeFeatureOverrides(font_rid gd.RID) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -3435,7 +3431,7 @@ Returns the dictionary of the supported OpenType features.
 func (self class) FontSupportedFeatureList(font_rid gd.RID) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_supported_feature_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -3449,7 +3445,7 @@ Returns the dictionary of the supported OpenType variation coordinates.
 func (self class) FontSupportedVariationList(font_rid gd.RID) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_supported_variation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -3618,7 +3614,7 @@ Returns custom punctuation character list, used for word breaking. If set to emp
 func (self class) ShapedTextGetCustomPunctuation(shaped gd.RID) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_custom_punctuation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -3843,7 +3839,7 @@ func (self class) ShapedGetSpanMeta(shaped gd.RID, index gd.Int) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_get_span_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -3977,7 +3973,7 @@ Returns an array of glyphs in the visual order.
 func (self class) ShapedTextGetGlyphs(shaped gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_glyphs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -3991,7 +3987,7 @@ Returns text glyphs in the logical order.
 func (self class) ShapedTextSortLogical(shaped gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_sort_logical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -4037,7 +4033,7 @@ func (self class) ShapedTextGetLineBreaksAdv(shaped gd.RID, width gd.PackedFloat
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, once)
 	callframe.Arg(frame, break_flags)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_line_breaks_adv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -4054,7 +4050,7 @@ func (self class) ShapedTextGetLineBreaks(shaped gd.RID, width gd.Float, start g
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, break_flags)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_line_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -4070,7 +4066,7 @@ func (self class) ShapedTextGetWordBreaks(shaped gd.RID, grapheme_flags gdclass.
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, grapheme_flags)
 	callframe.Arg(frame, skip_grapheme_flags)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_word_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -4112,7 +4108,7 @@ Returns array of the glyphs in the ellipsis.
 func (self class) ShapedTextGetEllipsisGlyphs(shaped gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_ellipsis_glyphs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -4154,7 +4150,7 @@ Returns array of inline objects.
 func (self class) ShapedTextGetObjects(shaped gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_objects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -4300,7 +4296,7 @@ func (self class) ShapedTextGetCarets(shaped gd.RID, position gd.Int) gd.Diction
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -4316,7 +4312,7 @@ func (self class) ShapedTextGetSelection(shaped gd.RID, start gd.Int, end gd.Int
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
@@ -4405,7 +4401,7 @@ Returns array of the composite character boundaries.
 func (self class) ShapedTextGetCharacterBreaks(shaped gd.RID) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_character_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -4517,7 +4513,7 @@ func (self class) FormatNumber(number gd.String, language gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(number))
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_format_number, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -4532,7 +4528,7 @@ func (self class) ParseNumber(number gd.String, language gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(number))
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_parse_number, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -4546,7 +4542,7 @@ Returns percent sign used in the [param language].
 func (self class) PercentSign(language gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_percent_sign, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -4569,7 +4565,7 @@ func (self class) StringGetWordBreaks(s gd.String, language gd.String, chars_per
 	callframe.Arg(frame, pointers.Get(s))
 	callframe.Arg(frame, pointers.Get(language))
 	callframe.Arg(frame, chars_per_line)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_get_word_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -4588,7 +4584,7 @@ func (self class) StringGetCharacterBreaks(s gd.String, language gd.String) gd.P
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_get_character_breaks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -4635,7 +4631,7 @@ Strips diacritics from the string.
 func (self class) StripDiacritics(s gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_strip_diacritics, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -4688,7 +4684,7 @@ func (self class) StringToUpper(s gd.String, language gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_to_upper, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -4705,7 +4701,7 @@ func (self class) StringToLower(s gd.String, language gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_to_lower, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -4722,7 +4718,7 @@ func (self class) StringToTitle(s gd.String, language gd.String) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
 	callframe.Arg(frame, pointers.Get(language))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_string_to_title, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -4738,7 +4734,7 @@ func (self class) ParseStructuredText(parser_type gdclass.TextServerStructuredTe
 	callframe.Arg(frame, parser_type)
 	callframe.Arg(frame, pointers.Get(args))
 	callframe.Arg(frame, pointers.Get(text))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_parse_structured_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()

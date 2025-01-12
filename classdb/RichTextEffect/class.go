@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 A custom effect for a [RichTextLabel], which can be loaded in the [RichTextLabel] inspector or using [method RichTextLabel.install_effect].
 [b]Note:[/b] For a [RichTextEffect] to be usable, a BBCode tag must be defined as a member variable called [code]bbcode[/code] in the script.
@@ -65,7 +61,7 @@ Override this method to modify properties in [param char_fx]. The method must re
 */
 func (Instance) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx [1]gdclass.CharFXTransform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(char_fx[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, char_fx)
@@ -97,7 +93,7 @@ Override this method to modify properties in [param char_fx]. The method must re
 */
 func (class) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx [1]gdclass.CharFXTransform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(char_fx[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, char_fx)

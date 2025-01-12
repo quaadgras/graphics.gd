@@ -39,9 +39,9 @@ func (a Array) Iter() iter.Seq2[Int, Variant] {
 
 func NewArray() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[[1]EnginePointer](frame)
 	Global.typeset.creation.Array[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
-	return pointers.New[Array]([1]uintptr{raw})
+	return pointers.New[Array](raw)
 }

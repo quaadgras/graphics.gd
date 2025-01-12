@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [OpenXRExtensionWrapperExtension] allows clients to implement OpenXR extensions with GDExtension. The extension should be registered with [method register_extension_wrapper].
 
@@ -488,7 +484,7 @@ Adds additional data structures to composition layers created by [OpenXRComposit
 func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-		var property_values = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var property_values = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(property_values)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -895,7 +891,7 @@ Adds additional data structures to composition layers created by [OpenXRComposit
 func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values gd.Dictionary, next_pointer unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-		var property_values = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var property_values = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, layer, property_values, next_pointer)
@@ -951,7 +947,7 @@ Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR
 //go:nosplit
 func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.OpenXRAPIExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAPIExtension](r_ret.Get())}
 	frame.Free()

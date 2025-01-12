@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 A [SkeletonProfile] as a preset that is optimized for the human form. This exists for standardization, so all parameters are read-only.
 A humanoid skeleton profile contains 54 bones divided in 4 groups: [code]"Body"[/code], [code]"Face"[/code], [code]"LeftHand"[/code], and [code]"RightHand"[/code]. It is structured as follows:

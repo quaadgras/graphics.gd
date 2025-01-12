@@ -25,10 +25,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
 [GraphEdit] by itself is only an empty container, representing an infinite grid where [GraphNode]s can be placed. Each [GraphNode] represents a node in the graph, a single unit of data in the connected scheme. [GraphEdit], in turn, helps to control various interactions with nodes and between nodes. When the user attempts to connect, disconnect, or delete a [GraphNode], a signal is emitted in the [GraphEdit], but no action is taken by default. It is the responsibility of the programmer utilizing this control to implement the necessary logic to determine how each request should be handled.
@@ -125,7 +121,7 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 */
 func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
@@ -151,7 +147,7 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 */
 func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
@@ -201,10 +197,10 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 */
 func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node string, from_port int, to_node string, to_port int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(from_node)
 		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
-		var to_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 2))
+		var to_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(to_node)
 		var to_port = gd.UnsafeGet[gd.Int](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -613,7 +609,7 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 */
 func (class) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
@@ -639,7 +635,7 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 */
 func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
@@ -689,9 +685,9 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 */
 func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
-		var to_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 2))
+		var to_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		var to_port = gd.UnsafeGet[gd.Int](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_node, from_port, to_node, to_port)
@@ -770,7 +766,7 @@ Returns an [Array] containing the list of connections. A connection consists in 
 //go:nosplit
 func (self class) GetConnectionList() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -792,7 +788,7 @@ func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, max_distance)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_closest_connection_at_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -806,7 +802,7 @@ Returns an [Array] containing the list of connections that intersect with the gi
 func (self class) GetConnectionsIntersectingWithRect(rect gd.Rect2) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connections_intersecting_with_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -956,7 +952,7 @@ func (self class) GetConnectionLine(from_node gd.Vector2, to_node gd.Vector2) gd
 	var frame = callframe.New()
 	callframe.Arg(frame, from_node)
 	callframe.Arg(frame, to_node)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
@@ -995,7 +991,7 @@ Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 func (self class) GetElementFrame(element gd.StringName) [1]gdclass.GraphFrame {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(element))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_element_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GraphFrame{gd.PointerLifetimeBoundTo[gdclass.GraphFrame](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -1009,7 +1005,7 @@ Returns an array of node names that are attached to the [GraphFrame] with the gi
 func (self class) GetAttachedNodesOfFrame(frame_ gd.StringName) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(frame_))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_attached_nodes_of_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1441,7 +1437,7 @@ Gets the [HBoxContainer] that contains the zooming and grid snap controls in the
 //go:nosplit
 func (self class) GetMenuHbox() [1]gdclass.HBoxContainer {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_menu_hbox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret.Get())}
 	frame.Free()

@@ -25,6 +25,7 @@ func (Godot *API) Init(level GDExtensionInitializationLevel) {
 		Godot.linkBuiltin()
 		Godot.linkSingletons()
 		Godot.linkMethods(false)
+		Linked = true
 	}
 	if level == GDExtensionInitializationLevelEditor {
 		Godot.linkMethods(true)

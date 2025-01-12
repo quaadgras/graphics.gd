@@ -22,10 +22,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 PhysicsServer2D is the server responsible for all 2D physics. It can directly create and manipulate all physics objects:
 - A [i]space[/i] is a self-contained world for a physics simulation. It contains bodies, areas, and joints. Its state can be queried for collision and intersection information, and several parameters of the simulation can be modified.
@@ -1204,7 +1200,7 @@ Returns the shape data that defines the configuration of the shape, such as the 
 func (self class) ShapeGetData(shape gd.RID) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_shape_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -1287,7 +1283,7 @@ Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be 
 func (self class) SpaceGetDirectState(space gd.RID) [1]gdclass.PhysicsDirectSpaceState2D {
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState2D](r_ret.Get())}
 	frame.Free()
@@ -1551,7 +1547,7 @@ func (self class) AreaGetParam(area gd.RID, param gdclass.PhysicsServer2DAreaPar
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -2074,7 +2070,7 @@ func (self class) BodyGetParam(body gd.RID, param gdclass.PhysicsServer2DBodyPar
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -2116,7 +2112,7 @@ func (self class) BodyGetState(body gd.RID, state gdclass.PhysicsServer2DBodySta
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -2462,7 +2458,7 @@ Returns the [PhysicsDirectBodyState2D] of the body. Returns [code]null[/code] if
 func (self class) BodyGetDirectState(body gd.RID) [1]gdclass.PhysicsDirectBodyState2D {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PhysicsDirectBodyState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectBodyState2D](r_ret.Get())}
 	frame.Free()

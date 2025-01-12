@@ -148,14 +148,14 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 		var expert = classDB.convertType(class.Name, arg.Meta, arg.Type)
 
 		if arg.Type == "Object" {
-			fmt.Fprintf(w, "\t\tvar %v = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n", fixReserved(arg.Name), i)
+			fmt.Fprintf(w, "\t\tvar %v = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args,%d))})}\n", fixReserved(arg.Name), i)
 			fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 			continue
 		}
 
 		_, ok := classDB[arg.Type]
 		if ok {
-			fmt.Fprintf(w, "\t\tvar %v = %s{pointers.New[gdclass.%v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n", fixReserved(arg.Name), expert, arg.Type, i)
+			fmt.Fprintf(w, "\t\tvar %v = %s{pointers.New[gdclass.%v]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args,%d))})}\n", fixReserved(arg.Name), expert, arg.Type, i)
 			fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 			continue
 		}
@@ -241,14 +241,14 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			var argType = classDB.convertType(class.Name, arg.Meta, arg.Type)
 
 			if arg.Type == "Object" {
-				fmt.Fprintf(w, "\t\tvar %v = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n", fixReserved(arg.Name), i)
+				fmt.Fprintf(w, "\t\tvar %v = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args,%d))})}\n", fixReserved(arg.Name), i)
 				fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 				continue
 			}
 
 			_, ok := classDB[arg.Type]
 			if ok {
-				fmt.Fprintf(w, "\t\tvar %v = [1]gdclass.%v{pointers.New[gdclass.%[2]v]([3]uintptr{gd.UnsafeGet[uintptr](p_args,%d)})}\n",
+				fmt.Fprintf(w, "\t\tvar %v = [1]gdclass.%v{pointers.New[gdclass.%[2]v]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args,%d))})}\n",
 					fixReserved(arg.Name), arg.Type, i)
 				fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
 				continue
@@ -397,7 +397,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			} else if strings.HasPrefix(result, "gd.ArrayOf") {
 				fmt.Fprint(w, "\tvar ret = pointers.New[gd.Array](r_ret.Get())\n")
 			} else if result == "[1]gd.Object" {
-				fmt.Fprintf(w, "\tvar ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}\n")
+				fmt.Fprintf(w, "\tvar ret = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(r_ret.Get())})}\n")
 			} else {
 				fmt.Fprintf(w, "\tvar ret = pointers.New[%v](r_ret.Get())\n", result)
 			}

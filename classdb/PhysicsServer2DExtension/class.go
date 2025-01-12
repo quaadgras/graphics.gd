@@ -22,10 +22,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 This class extends [PhysicsServer2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
 Intended for use with GDExtension to create custom implementations of [PhysicsServer2D].
@@ -676,7 +672,7 @@ Overridable version of [method PhysicsServer2D.shape_set_data].
 func (Instance) _shape_set_data(impl func(ptr unsafe.Pointer, shape Resource.ID, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape, data.Interface())
@@ -1082,7 +1078,7 @@ func (Instance) _area_set_param(impl func(ptr unsafe.Pointer, area Resource.ID, 
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DAreaParameter](p_args, 1)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		defer pointers.End(value)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, param, value.Interface())
@@ -1209,7 +1205,7 @@ Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
 func (Instance) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback Callable.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
-		var callback = pointers.New[gd.Callable](gd.UnsafeGet[callablePointers](p_args, 1))
+		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
 		defer pointers.End(callback)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, callback)
@@ -1222,7 +1218,7 @@ Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
 func (Instance) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback Callable.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
-		var callback = pointers.New[gd.Callable](gd.UnsafeGet[callablePointers](p_args, 1))
+		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
 		defer pointers.End(callback)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, callback)
@@ -1567,7 +1563,7 @@ func (Instance) _body_set_param(impl func(ptr unsafe.Pointer, body Resource.ID, 
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DBodyParameter](p_args, 1)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		defer pointers.End(value)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, param, value.Interface())
@@ -1609,7 +1605,7 @@ func (Instance) _body_set_state(impl func(ptr unsafe.Pointer, body Resource.ID, 
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var state = gd.UnsafeGet[gdclass.PhysicsServer2DBodyState](p_args, 1)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		defer pointers.End(value)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, state, value.Interface())
@@ -1926,7 +1922,7 @@ Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
 func (Instance) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable Callable.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
-		var callable = pointers.New[gd.Callable](gd.UnsafeGet[callablePointers](p_args, 1))
+		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
 		defer pointers.End(callable)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable)
@@ -1939,9 +1935,9 @@ Overridable version of [method PhysicsServer2D.body_set_force_integration_callba
 func (Instance) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable Callable.Any, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
-		var callable = pointers.New[gd.Callable](gd.UnsafeGet[callablePointers](p_args, 1))
+		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
 		defer pointers.End(callable)
-		var userdata = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
+		var userdata = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		defer pointers.End(userdata)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable, userdata.Interface())
@@ -2461,7 +2457,7 @@ Overridable version of [method PhysicsServer2D.shape_set_data].
 func (class) _shape_set_data(impl func(ptr unsafe.Pointer, shape gd.RID, data gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var shape = gd.UnsafeGet[gd.RID](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape, data)
 	}
@@ -2866,7 +2862,7 @@ func (class) _area_set_param(impl func(ptr unsafe.Pointer, area gd.RID, param gd
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DAreaParameter](p_args, 1)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, param, value)
 	}
@@ -2992,7 +2988,7 @@ Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
 func (class) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RID, callback gd.Callable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
-		var callback = pointers.New[gd.Callable](gd.UnsafeGet[callablePointers](p_args, 1))
+		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, callback)
 	}
@@ -3004,7 +3000,7 @@ Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
 func (class) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RID, callback gd.Callable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
-		var callback = pointers.New[gd.Callable](gd.UnsafeGet[callablePointers](p_args, 1))
+		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, callback)
 	}
@@ -3348,7 +3344,7 @@ func (class) _body_set_param(impl func(ptr unsafe.Pointer, body gd.RID, param gd
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var param = gd.UnsafeGet[gdclass.PhysicsServer2DBodyParameter](p_args, 1)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, param, value)
 	}
@@ -3389,7 +3385,7 @@ func (class) _body_set_state(impl func(ptr unsafe.Pointer, body gd.RID, state gd
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		var state = gd.UnsafeGet[gdclass.PhysicsServer2DBodyState](p_args, 1)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, state, value)
 	}
@@ -3705,7 +3701,7 @@ Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
 func (class) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body gd.RID, callable gd.Callable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
-		var callable = pointers.New[gd.Callable](gd.UnsafeGet[callablePointers](p_args, 1))
+		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable)
 	}
@@ -3717,8 +3713,8 @@ Overridable version of [method PhysicsServer2D.body_set_force_integration_callba
 func (class) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body gd.RID, callable gd.Callable, userdata gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
-		var callable = pointers.New[gd.Callable](gd.UnsafeGet[callablePointers](p_args, 1))
-		var userdata = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 2))
+		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
+		var userdata = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable, userdata)
 	}

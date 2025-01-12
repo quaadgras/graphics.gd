@@ -21,10 +21,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Provides a set of helper functions to create geometric shapes, compute intersections between shapes, and process various other geometric operations in 3D.
 */
@@ -174,7 +170,7 @@ Calculates and returns all the vertex points of a convex shape defined by an arr
 func (self class) ComputeConvexMeshPoints(planes gd.Array) gd.PackedVector3Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(planes))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_compute_convex_mesh_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -188,7 +184,7 @@ Returns an array with 6 [Plane]s that describe the sides of a box centered at th
 func (self class) BuildBoxPlanes(extents gd.Vector3) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, extents)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_build_box_planes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -205,7 +201,7 @@ func (self class) BuildCylinderPlanes(radius gd.Float, height gd.Float, sides gd
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, sides)
 	callframe.Arg(frame, axis)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_build_cylinder_planes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -223,7 +219,7 @@ func (self class) BuildCapsulePlanes(radius gd.Float, height gd.Float, sides gd.
 	callframe.Arg(frame, sides)
 	callframe.Arg(frame, lats)
 	callframe.Arg(frame, axis)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_build_capsule_planes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -240,7 +236,7 @@ func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector3, p2 gd.Vector3, 
 	callframe.Arg(frame, p2)
 	callframe.Arg(frame, q1)
 	callframe.Arg(frame, q2)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_get_closest_points_between_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -308,7 +304,7 @@ func (self class) RayIntersectsTriangle(from gd.Vector3, dir gd.Vector3, a gd.Ve
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
 	callframe.Arg(frame, c)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_ray_intersects_triangle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -326,7 +322,7 @@ func (self class) SegmentIntersectsTriangle(from gd.Vector3, to gd.Vector3, a gd
 	callframe.Arg(frame, a)
 	callframe.Arg(frame, b)
 	callframe.Arg(frame, c)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_segment_intersects_triangle, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -343,7 +339,7 @@ func (self class) SegmentIntersectsSphere(from gd.Vector3, to gd.Vector3, sphere
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, sphere_position)
 	callframe.Arg(frame, sphere_radius)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_segment_intersects_sphere, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -360,7 +356,7 @@ func (self class) SegmentIntersectsCylinder(from gd.Vector3, to gd.Vector3, heig
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, radius)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_segment_intersects_cylinder, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -376,7 +372,7 @@ func (self class) SegmentIntersectsConvex(from gd.Vector3, to gd.Vector3, planes
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, pointers.Get(planes))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_segment_intersects_convex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -391,7 +387,7 @@ func (self class) ClipPolygon(points gd.PackedVector3Array, plane gd.Plane) gd.P
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, plane)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_clip_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -405,7 +401,7 @@ Tetrahedralizes the volume specified by a discrete set of [param points] in 3D s
 func (self class) TetrahedralizeDelaunay(points gd.PackedVector3Array) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_tetrahedralize_delaunay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()

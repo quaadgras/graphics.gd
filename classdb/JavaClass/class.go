@@ -17,10 +17,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Represents an object from the Java Native Interface. It is returned from [method JavaClassWrapper.wrap].
 [b]Note:[/b] This class only works on Android. For any other build, this class does nothing.

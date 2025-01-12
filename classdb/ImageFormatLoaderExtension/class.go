@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 The engine supports multiple image formats out of the box (PNG, SVG, JPEG, WebP to name a few), but you can choose to implement support for additional image formats by extending this class.
 Be sure to respect the documented return types and values. You should create an instance of it, and call [method add_format_loader] to register that loader during the initialization phase.
@@ -75,9 +71,9 @@ Loads the content of [param fileaccess] into the provided [param image].
 */
 func (Instance) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(image[0])
-		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})}
+		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[gdclass.ImageFormatLoaderLoaderFlags](p_args, 2)
 		var scale = gd.UnsafeGet[gd.Float](p_args, 3)
@@ -140,9 +136,9 @@ Loads the content of [param fileaccess] into the provided [param image].
 */
 func (class) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale gd.Float) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(image[0])
-		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})}
+		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[gdclass.ImageFormatLoaderLoaderFlags](p_args, 2)
 		var scale = gd.UnsafeGet[gd.Float](p_args, 3)

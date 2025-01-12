@@ -17,10 +17,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 The Crypto class provides access to advanced cryptographic functionalities.
 Currently, this includes asymmetric key encryption/decryption, signing/verification, and generating cryptographically secure random bytes, RSA keys, HMAC digests, and self-signed [X509Certificate]s.
@@ -210,7 +206,7 @@ Generates a [PackedByteArray] of cryptographically secure random bytes with give
 func (self class) GenerateRandomBytes(size gd.Int) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_random_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -224,7 +220,7 @@ Generates an RSA [CryptoKey] that can be used for creating self-signed certifica
 func (self class) GenerateRsa(size gd.Int) [1]gdclass.CryptoKey {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_rsa, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret.Get())}
 	frame.Free()
@@ -258,7 +254,7 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 	callframe.Arg(frame, pointers.Get(issuer_name))
 	callframe.Arg(frame, pointers.Get(not_before))
 	callframe.Arg(frame, pointers.Get(not_after))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_self_signed_certificate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret.Get())}
 	frame.Free()
@@ -274,7 +270,7 @@ func (self class) Sign(hash_type gdclass.HashingContextHashType, hash gd.PackedB
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(hash))
 	callframe.Arg(frame, pointers.Get(key[0])[0])
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_sign, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -307,7 +303,7 @@ func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext gd.PackedByteArray
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	callframe.Arg(frame, pointers.Get(plaintext))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_encrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -323,7 +319,7 @@ func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext gd.PackedByteArra
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	callframe.Arg(frame, pointers.Get(ciphertext))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_decrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -340,7 +336,7 @@ func (self class) HmacDigest(hash_type gdclass.HashingContextHashType, key gd.Pa
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(msg))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_hmac_digest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()

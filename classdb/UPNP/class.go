@@ -17,10 +17,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 This class can be used to discover compatible [UPNPDevice]s on the local network and execute commands on them, like managing port mappings (for port forwarding/NAT traversal) and querying the local and remote network IP address. Note that methods on this class are synchronous and block the calling thread.
 To forward a specific port (here [code]7777[/code], note both [method discover] and [method add_port_mapping] can return errors that should be checked):
@@ -235,7 +231,7 @@ Returns the [UPNPDevice] at the given [param index].
 func (self class) GetDevice(index gd.Int) [1]gdclass.UPNPDevice {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.UPNPDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.UPNPDevice](r_ret.Get())}
 	frame.Free()
@@ -296,7 +292,7 @@ Returns the default gateway. That is the first discovered [UPNPDevice] that is a
 //go:nosplit
 func (self class) GetGateway() [1]gdclass.UPNPDevice {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_gateway, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.UPNPDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.UPNPDevice](r_ret.Get())}
 	frame.Free()
@@ -327,7 +323,7 @@ Returns the external [IP] address of the default gateway (see [method get_gatewa
 //go:nosplit
 func (self class) QueryExternalAddress() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_query_external_address, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -384,7 +380,7 @@ func (self class) SetDiscoverMulticastIf(m_if gd.String) {
 //go:nosplit
 func (self class) GetDiscoverMulticastIf() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNP.Bind_get_discover_multicast_if, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()

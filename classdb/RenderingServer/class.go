@@ -32,10 +32,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 The rendering server is the API backend for everything visible. The whole scene system mounts on it to display. The rendering server is completely opaque: the internals are entirely implementation-specific and cannot be accessed.
 The rendering server can be used to bypass the scene/[Node] system entirely. This can improve performance in cases where the scene system is the bottleneck, but won't improve performance otherwise (for instance, if the GPU is already fully utilized).
@@ -4231,7 +4227,7 @@ $Sprite2D.texture = texture
 func (self class) Texture2dGet(texture gd.RID) [1]gdclass.Image {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -4246,7 +4242,7 @@ func (self class) Texture2dLayerGet(texture gd.RID, layer gd.Int) [1]gdclass.Ima
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_layer_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -4260,7 +4256,7 @@ Returns 3D texture data as an array of [Image]s for the specified texture [RID].
 func (self class) Texture3dGet(texture gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -4305,7 +4301,7 @@ func (self class) TextureSetPath(texture gd.RID, path gd.String) {
 func (self class) TextureGetPath(texture gd.RID) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -4430,7 +4426,7 @@ Returns a shader's source code as a string.
 func (self class) ShaderGetCode(shader gd.RID) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -4444,7 +4440,7 @@ Returns the parameters of a shader.
 func (self class) GetShaderParameterList(shader gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -4459,7 +4455,7 @@ func (self class) ShaderGetParameterDefault(shader gd.RID, name gd.StringName) g
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_shader_get_parameter_default, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -4549,7 +4545,7 @@ func (self class) MaterialGetParam(material gd.RID, parameter gd.StringName) gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, material)
 	callframe.Arg(frame, pointers.Get(parameter))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_material_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -4785,7 +4781,7 @@ func (self class) MeshGetSurface(mesh gd.RID, surface gd.Int) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -4800,7 +4796,7 @@ func (self class) MeshSurfaceGetArrays(mesh gd.RID, surface gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -4815,7 +4811,7 @@ func (self class) MeshSurfaceGetBlendShapeArrays(mesh gd.RID, surface gd.Int) gd
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_blend_shape_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -5209,7 +5205,7 @@ Returns the MultiMesh data (such as instance transforms, colors, etc.). See [met
 func (self class) MultimeshGetBuffer(multimesh gd.RID) gd.PackedFloat32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedFloat32Array](r_ret.Get())
 	frame.Free()
@@ -6023,7 +6019,7 @@ func (self class) VoxelGiGetOctreeSize(voxel_gi gd.RID) gd.Vector3i {
 func (self class) VoxelGiGetOctreeCells(voxel_gi gd.RID) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_octree_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -6034,7 +6030,7 @@ func (self class) VoxelGiGetOctreeCells(voxel_gi gd.RID) gd.PackedByteArray {
 func (self class) VoxelGiGetDataCells(voxel_gi gd.RID) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_data_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -6045,7 +6041,7 @@ func (self class) VoxelGiGetDataCells(voxel_gi gd.RID) gd.PackedByteArray {
 func (self class) VoxelGiGetDistanceField(voxel_gi gd.RID) gd.PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_distance_field, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -6056,7 +6052,7 @@ func (self class) VoxelGiGetDistanceField(voxel_gi gd.RID) gd.PackedByteArray {
 func (self class) VoxelGiGetLevelCounts(voxel_gi gd.RID) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_level_counts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -6256,7 +6252,7 @@ func (self class) LightmapSetProbeCaptureData(lightmap gd.RID, points gd.PackedV
 func (self class) LightmapGetProbeCapturePoints(lightmap gd.RID) gd.PackedVector3Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
 	frame.Free()
@@ -6267,7 +6263,7 @@ func (self class) LightmapGetProbeCapturePoints(lightmap gd.RID) gd.PackedVector
 func (self class) LightmapGetProbeCaptureSh(lightmap gd.RID) gd.PackedColorArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_sh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedColorArray](r_ret.Get())
 	frame.Free()
@@ -6278,7 +6274,7 @@ func (self class) LightmapGetProbeCaptureSh(lightmap gd.RID) gd.PackedColorArray
 func (self class) LightmapGetProbeCaptureTetrahedra(lightmap gd.RID) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_tetrahedra, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -6289,7 +6285,7 @@ func (self class) LightmapGetProbeCaptureTetrahedra(lightmap gd.RID) gd.PackedIn
 func (self class) LightmapGetProbeCaptureBspTree(lightmap gd.RID) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, lightmap)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_bsp_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -7949,7 +7945,7 @@ func (self class) SkyBakePanorama(sky gd.RID, energy gd.Float, bake_irradiance b
 	callframe.Arg(frame, energy)
 	callframe.Arg(frame, bake_irradiance)
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_sky_bake_panorama, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -8453,7 +8449,7 @@ func (self class) EnvironmentBakePanorama(environment gd.RID, bake_irradiance bo
 	callframe.Arg(frame, environment)
 	callframe.Arg(frame, bake_irradiance)
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_bake_panorama, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
@@ -9020,7 +9016,7 @@ func (self class) InstanceGeometryGetShaderParameter(instance gd.RID, parameter 
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, pointers.Get(parameter))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -9035,7 +9031,7 @@ func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance gd.RID
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, pointers.Get(parameter))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -9049,7 +9045,7 @@ Returns a dictionary of per-instance shader uniform names of the per-instance sh
 func (self class) InstanceGeometryGetShaderParameterList(instance gd.RID) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -9065,7 +9061,7 @@ func (self class) InstancesCullAabb(aabb gd.AABB, scenario gd.RID) gd.PackedInt6
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
 	callframe.Arg(frame, scenario)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
@@ -9082,7 +9078,7 @@ func (self class) InstancesCullRay(from gd.Vector3, to gd.Vector3, scenario gd.R
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, scenario)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_ray, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
@@ -9098,7 +9094,7 @@ func (self class) InstancesCullConvex(convex gd.Array, scenario gd.RID) gd.Packe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(convex))
 	callframe.Arg(frame, scenario)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_convex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())
 	frame.Free()
@@ -9114,7 +9110,7 @@ func (self class) BakeRenderUv2(base gd.RID, material_overrides gd.Array, image_
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, pointers.Get(material_overrides))
 	callframe.Arg(frame, image_size)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_bake_render_uv2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -10467,7 +10463,7 @@ Returns the list of global shader uniform names.
 //go:nosplit
 func (self class) GlobalShaderParameterGetList() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -10508,7 +10504,7 @@ Returns the value of the global shader uniform specified by [param name].
 func (self class) GlobalShaderParameterGet(name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -10598,7 +10594,7 @@ Returns the name of the video adapter (e.g. "GeForce GTX 1080/PCIe/SSE2").
 //go:nosplit
 func (self class) GetVideoAdapterName() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -10612,7 +10608,7 @@ Returns the vendor of the video adapter (e.g. "NVIDIA Corporation").
 //go:nosplit
 func (self class) GetVideoAdapterVendor() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_vendor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -10640,7 +10636,7 @@ Returns the version of the graphics video adapter [i]currently in use[/i] (e.g. 
 //go:nosplit
 func (self class) GetVideoAdapterApiVersion() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_api_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -10843,7 +10839,7 @@ Returns the global RenderingDevice.
 //go:nosplit
 func (self class) GetRenderingDevice() [1]gdclass.RenderingDevice {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_rendering_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.RenderingDevice{gd.PointerBorrowedTemporarily[gdclass.RenderingDevice](r_ret.Get())}
 	frame.Free()
@@ -10857,7 +10853,7 @@ Creates a RenderingDevice that can be used to do draw and compute operations on 
 //go:nosplit
 func (self class) CreateLocalRenderingDevice() [1]gdclass.RenderingDevice {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_create_local_rendering_device, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderingDevice](r_ret.Get())}
 	frame.Free()

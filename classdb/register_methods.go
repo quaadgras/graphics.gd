@@ -104,7 +104,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			case gd.TypeFloat:
 				value = gd.UnsafeGet[gd.Float](p_args, i-offset)
 			case gd.TypeString:
-				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
 				val := pointers.Let[gd.String](ptr)
 				defer val.Free()
 				value = val
@@ -141,74 +141,74 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			case gd.TypeColor:
 				value = gd.UnsafeGet[gd.Color](p_args, i-offset)
 			case gd.TypeStringName:
-				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
 				val := pointers.Let[gd.StringName](ptr)
 				value = val
 			case gd.TypeNodePath:
-				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
 				val := pointers.Let[gd.NodePath](ptr)
 				value = val
 			case gd.TypeRID:
 				value = gd.UnsafeGet[gd.RID](p_args, i-offset)
 			case gd.TypeObject:
-				ptr := gd.UnsafeGet[[3]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[[3]uint64](p_args, i-offset)
 				val := [1]gd.Object{pointers.Let[gd.Object](ptr)}
 				value = val
 			case gd.TypeCallable:
-				ptr := gd.UnsafeGet[gd.CallablePointers](p_args, i-offset)
+				ptr := gd.UnsafeGet[[2]uint64](p_args, i-offset)
 				val := pointers.Let[gd.Callable](ptr)
 				defer val.Free()
 				value = val
 			case gd.TypeSignal:
-				ptr := gd.UnsafeGet[gd.SignalPointers](p_args, i-offset)
+				ptr := gd.UnsafeGet[[2]uint64](p_args, i-offset)
 				val := pointers.Let[gd.Signal](ptr)
 				value = val
 			case gd.TypeDictionary:
-				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
 				val := pointers.Let[gd.Dictionary](ptr)
 				value = val
 			case gd.TypeArray:
-				ptr := gd.UnsafeGet[[1]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
 				val := pointers.Let[gd.Array](ptr)
 				value = val
 			case gd.TypePackedByteArray:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedByteArray](ptr)
 				value = val
 			case gd.TypePackedInt32Array:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedInt32Array](ptr)
 				value = val
 			case gd.TypePackedInt64Array:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedInt64Array](ptr)
 				value = val
 			case gd.TypePackedFloat32Array:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedFloat32Array](ptr)
 				value = val
 			case gd.TypePackedFloat64Array:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedFloat64Array](ptr)
 				value = val
 			case gd.TypePackedStringArray:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedStringArray](ptr)
 				value = val
 			case gd.TypePackedVector2Array:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedVector2Array](ptr)
 				value = val
 			case gd.TypePackedVector3Array:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedVector3Array](ptr)
 				value = val
 			case gd.TypePackedColorArray:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedColorArray](ptr)
 				value = val
 			case gd.TypePackedVector4Array:
-				ptr := gd.UnsafeGet[[2]uintptr](p_args, i-offset)
+				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedVector4Array](ptr)
 				value = val
 			case gd.TypeNil:
@@ -241,7 +241,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 		case gd.Float:
 			gd.UnsafeSet[gd.Float](p_ret, val)
 		case gd.String:
-			gd.UnsafeSet[[1]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Vector2:
 			gd.UnsafeSet[gd.Vector2](p_ret, val)
@@ -276,49 +276,49 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 		case gd.Color:
 			gd.UnsafeSet[gd.Color](p_ret, val)
 		case gd.StringName:
-			gd.UnsafeSet[[1]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.NodePath:
-			gd.UnsafeSet[[1]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.RID:
 			gd.UnsafeSet[gd.RID](p_ret, val)
 		case [1]gd.Object:
-			gd.UnsafeSet[uintptr](p_ret, pointers.Get(val[0])[0])
+			gd.UnsafeSet[gd.EnginePointer](p_ret, gd.EnginePointer(pointers.Get(val[0])[0]))
 			_, ok := gd.ExtensionInstances.Load(pointers.Get(val[0])[0])
 			if !ok {
 				pointers.End(val[0])
 			}
 		case gd.Callable:
-			gd.UnsafeSet[gd.CallablePointers](p_ret, pointers.Get(val))
+			gd.UnsafeSet[[2]uint64](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Signal:
-			gd.UnsafeSet[gd.SignalPointers](p_ret, pointers.Get(val))
+			gd.UnsafeSet[[2]uint64](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Dictionary:
-			gd.UnsafeSet[[1]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Array:
-			gd.UnsafeSet[[1]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.PackedByteArray:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedInt32Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedInt64Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedFloat32Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedFloat64Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedStringArray:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedVector2Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedVector3Array:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		case gd.PackedColorArray:
-			gd.UnsafeSet[[2]uintptr](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
 		default:
 			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", method.Type().Out(0)))
 		}

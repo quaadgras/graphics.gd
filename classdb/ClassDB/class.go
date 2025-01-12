@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Provides access to metadata stored for every available class.
 */
@@ -259,7 +255,7 @@ Returns the names of all the classes available.
 //go:nosplit
 func (self class) GetClassList() gd.PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_get_class_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -273,7 +269,7 @@ Returns the names of all the classes that directly or indirectly inherit from [p
 func (self class) GetInheritersFromClass(class_ gd.StringName) gd.PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_get_inheriters_from_class, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -287,7 +283,7 @@ Returns the parent class of [param class].
 func (self class) GetParentClass(class_ gd.StringName) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_get_parent_class, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
@@ -344,7 +340,7 @@ Creates an instance of [param class].
 func (self class) Instantiate(class_ gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_instantiate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -374,7 +370,7 @@ func (self class) ClassGetSignal(class_ gd.StringName, signal gd.StringName) gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()
@@ -389,7 +385,7 @@ func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_signal_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -404,7 +400,7 @@ func (self class) ClassGetPropertyList(class_ gd.StringName, no_inheritance bool
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -419,7 +415,7 @@ func (self class) ClassGetProperty(obj [1]gd.Object, property gd.StringName) gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -450,7 +446,7 @@ func (self class) ClassGetPropertyDefaultValue(class_ gd.StringName, property gd
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -498,7 +494,7 @@ func (self class) ClassGetMethodList(class_ gd.StringName, no_inheritance bool) 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_method_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -513,7 +509,7 @@ func (self class) ClassGetIntegerConstantList(class_ gd.StringName, no_inheritan
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_integer_constant_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -574,7 +570,7 @@ func (self class) ClassGetEnumList(class_ gd.StringName, no_inheritance bool) gd
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_enum_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -590,7 +586,7 @@ func (self class) ClassGetEnumConstants(class_ gd.StringName, enum gd.StringName
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(enum))
 	callframe.Arg(frame, no_inheritance)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_enum_constants, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -606,7 +602,7 @@ func (self class) ClassGetIntegerConstantEnum(class_ gd.StringName, name gd.Stri
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, no_inheritance)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_integer_constant_enum, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()

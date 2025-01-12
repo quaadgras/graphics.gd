@@ -22,9 +22,9 @@ type Frame struct {
 	ret uint8
 
 	pin runtime.Pinner
-	ptr [16]*[maxValueSizeInUintptrs]uintptr
+	ptr [16]*[16]uint32
 	typ [16]reflect.Type
-	buf [20][maxValueSizeInUintptrs]uintptr
+	buf [20][16]uint32
 }
 
 // Nil implements [Any].
@@ -35,7 +35,7 @@ func New() *Frame {
 	frame, ok := frames.Get().(*Frame)
 	if !ok {
 		frame = new(Frame)
-		frame.ptr = [16]*[maxValueSizeInUintptrs]uintptr{
+		frame.ptr = [16]*[16]uint32{
 			&frame.buf[0], &frame.buf[1], &frame.buf[2], &frame.buf[3],
 			&frame.buf[4], &frame.buf[5], &frame.buf[6], &frame.buf[7],
 			&frame.buf[8], &frame.buf[9], &frame.buf[10], &frame.buf[11],
@@ -51,7 +51,7 @@ type array struct{}
 // Array of arguments.
 type Args struct {
 	_     [0]array
-	slice []*[maxValueSizeInUintptrs]uintptr
+	slice []*[16]uint32
 }
 
 func (array Args) Len() int {
@@ -96,7 +96,7 @@ func (frame *Frame) Free() {
 // freed.
 type Ptr[T comparable] struct {
 	_    [0]T
-	void *[maxValueSizeInUintptrs]uintptr
+	void *[16]uint32
 }
 
 // Uintptr returns the uintptr value of the pointer. Useful for passing to C code.
@@ -124,6 +124,7 @@ func Arg[T comparable](frame *Frame, arg T) Ptr[T] {
 	if unsafe.Sizeof([1]T{}) > 8*unsafe.Sizeof(uintptr(0)) {
 		panic("callframe: argument too large")
 	}
+	*(*T)(unsafe.Pointer(&frame.buf[frame.arg])) = [1]T{}[0]
 	*(*T)(unsafe.Pointer(&frame.buf[frame.arg])) = arg
 	frame.arg++
 	return Ptr[T]{void: &frame.buf[frame.arg-1]}
@@ -141,7 +142,7 @@ func Ret[T comparable](frame *Frame) Ptr[T] {
 }
 
 type Addr struct {
-	pointer *[maxValueSizeInUintptrs]uintptr
+	pointer *[16]uint32
 }
 
 func (addr Addr) Addr() Addr {
@@ -156,6 +157,6 @@ func (addr Addr) Uintptr() uintptr {
 	return uintptr(unsafe.Pointer(addr.pointer))
 }
 
-func (addr Addr) Pointer() *[maxValueSizeInUintptrs]uintptr {
+func (addr Addr) Pointer() *[16]uint32 {
 	return addr.pointer
 }

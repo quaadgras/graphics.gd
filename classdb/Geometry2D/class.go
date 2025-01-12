@@ -21,10 +21,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Provides a set of helper functions to create geometric shapes, compute intersections between shapes, and process various other geometric operations in 2D.
 */
@@ -299,7 +295,7 @@ func (self class) SegmentIntersectsSegment(from_a gd.Vector2, to_a gd.Vector2, f
 	callframe.Arg(frame, to_a)
 	callframe.Arg(frame, from_b)
 	callframe.Arg(frame, to_b)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_segment_intersects_segment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -317,7 +313,7 @@ func (self class) LineIntersectsLine(from_a gd.Vector2, dir_a gd.Vector2, from_b
 	callframe.Arg(frame, dir_a)
 	callframe.Arg(frame, from_b)
 	callframe.Arg(frame, dir_b)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_line_intersects_line, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()
@@ -334,7 +330,7 @@ func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector2, q1 gd.Vector2, 
 	callframe.Arg(frame, q1)
 	callframe.Arg(frame, p2)
 	callframe.Arg(frame, q2)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_get_closest_points_between_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
@@ -427,7 +423,7 @@ Triangulates the polygon specified by the points in [param polygon]. Returns a [
 func (self class) TriangulatePolygon(polygon gd.PackedVector2Array) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_triangulate_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -441,7 +437,7 @@ Triangulates the area specified by discrete set of [param points] such that no p
 func (self class) TriangulateDelaunay(points gd.PackedVector2Array) gd.PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_triangulate_delaunay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -455,7 +451,7 @@ Given an array of [Vector2]s, returns the convex hull as a list of points in cou
 func (self class) ConvexHull(points gd.PackedVector2Array) gd.PackedVector2Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_convex_hull, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
@@ -469,7 +465,7 @@ Decomposes the [param polygon] into multiple convex hulls and returns an array o
 func (self class) DecomposePolygonInConvex(polygon gd.PackedVector2Array) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_decompose_polygon_in_convex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -485,7 +481,7 @@ func (self class) MergePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.Pa
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_merge_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -501,7 +497,7 @@ func (self class) ClipPolygons(polygon_a gd.PackedVector2Array, polygon_b gd.Pac
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_clip_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -517,7 +513,7 @@ func (self class) IntersectPolygons(polygon_a gd.PackedVector2Array, polygon_b g
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_intersect_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -533,7 +529,7 @@ func (self class) ExcludePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_exclude_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -548,7 +544,7 @@ func (self class) ClipPolylineWithPolygon(polyline gd.PackedVector2Array, polygo
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polyline))
 	callframe.Arg(frame, pointers.Get(polygon))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_clip_polyline_with_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -563,7 +559,7 @@ func (self class) IntersectPolylineWithPolygon(polyline gd.PackedVector2Array, p
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polyline))
 	callframe.Arg(frame, pointers.Get(polygon))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_intersect_polyline_with_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -596,7 +592,7 @@ func (self class) OffsetPolygon(polygon gd.PackedVector2Array, delta gd.Float, j
 	callframe.Arg(frame, pointers.Get(polygon))
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, join_type)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_offset_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -616,7 +612,7 @@ func (self class) OffsetPolyline(polyline gd.PackedVector2Array, delta gd.Float,
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, join_type)
 	callframe.Arg(frame, end_type)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_offset_polyline, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -630,7 +626,7 @@ Given an array of [Vector2]s representing tiles, builds an atlas. The returned d
 func (self class) MakeAtlas(sizes gd.PackedVector2Array) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(sizes))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_make_atlas, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
 	frame.Free()

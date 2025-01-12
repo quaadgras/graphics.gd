@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Resource tooltip plugins are used by [FileSystemDock] to generate customized tooltips for specific resources. E.g. tooltip for a [Texture2D] displays a bigger preview and the texture's dimensions.
 A plugin must be first registered with [method FileSystemDock.add_resource_tooltip_plugin]. When the user hovers a resource in filesystem dock which is handled by the plugin, [method _make_tooltip_for_path] is called to create the tooltip. It works similarly to [method Control._make_custom_tooltip].
@@ -70,7 +66,7 @@ Return [code]true[/code] if the plugin is going to handle the given [Resource] [
 */
 func (Instance) _handles(impl func(ptr unsafe.Pointer, atype string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(atype)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype.String())
@@ -96,11 +92,11 @@ func _make_tooltip_for_path(path, metadata, base):
 */
 func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(metadata)
-		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 2)})}
+		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 2))})}
 		defer pointers.End(base[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), metadata, base)
@@ -143,7 +139,7 @@ Return [code]true[/code] if the plugin is going to handle the given [Resource] [
 */
 func (class) _handles(impl func(ptr unsafe.Pointer, atype gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
@@ -168,9 +164,9 @@ func _make_tooltip_for_path(path, metadata, base):
 */
 func (class) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path gd.String, metadata gd.Dictionary, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 1))
-		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 2)})}
+		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 		defer pointers.End(base[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, metadata, base)

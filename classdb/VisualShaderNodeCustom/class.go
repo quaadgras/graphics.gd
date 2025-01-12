@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 By inheriting this class you can create a custom [VisualShader] script addon which will be automatically added to the Visual Shader Editor. The [VisualShaderNode]'s behavior is defined by overriding the provided virtual methods.
 In order for the node to be registered as an editor addon, you must use the [code]@tool[/code] annotation and provide a [code]class_name[/code] for your custom script. For example:
@@ -393,9 +389,9 @@ Defining this method is [b]required[/b].
 */
 func (Instance) _get_code(impl func(ptr unsafe.Pointer, input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var input_vars = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var input_vars = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(input_vars)
-		var output_vars = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var output_vars = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(output_vars)
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 2)
 		var atype = gd.UnsafeGet[gdclass.VisualShaderType](p_args, 3)
@@ -742,8 +738,8 @@ Defining this method is [b]required[/b].
 */
 func (class) _get_code(impl func(ptr unsafe.Pointer, input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var input_vars = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var output_vars = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var input_vars = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var output_vars = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 2)
 		var atype = gd.UnsafeGet[gdclass.VisualShaderType](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()

@@ -23,10 +23,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Abstract base class for all 2D shapes, intended for use in physics.
 [b]Performance:[/b] Primitive shapes, especially [CircleShape2D], are fast to check collisions against. [ConvexPolygonShape2D] is slower, and [ConcavePolygonShape2D] is the slowest.
@@ -185,7 +181,7 @@ func (self class) CollideAndGetContacts(local_xform gd.Transform2D, with_shape [
 	callframe.Arg(frame, local_xform)
 	callframe.Arg(frame, pointers.Get(with_shape[0])[0])
 	callframe.Arg(frame, shape_xform)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_and_get_contacts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()
@@ -206,7 +202,7 @@ func (self class) CollideWithMotionAndGetContacts(local_xform gd.Transform2D, lo
 	callframe.Arg(frame, pointers.Get(with_shape[0])[0])
 	callframe.Arg(frame, shape_xform)
 	callframe.Arg(frame, shape_motion)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_collide_with_motion_and_get_contacts, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()

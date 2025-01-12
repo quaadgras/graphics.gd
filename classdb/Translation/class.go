@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [Translation]s are resources that can be loaded and unloaded on demand. They map a collection of strings to their individual translations, and they also provide convenience methods for pluralization.
 
@@ -58,12 +54,12 @@ Virtual method to override [method get_plural_message].
 */
 func (Instance) _get_plural_message(impl func(ptr unsafe.Pointer, src_message string, src_plural_message string, n int, context string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(src_message)
-		var src_plural_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var src_plural_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(src_plural_message)
 		var n = gd.UnsafeGet[gd.Int](p_args, 2)
-		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 3))
+		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
 		defer pointers.End(context)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message.String(), src_plural_message.String(), int(n), context.String())
@@ -80,9 +76,9 @@ Virtual method to override [method get_message].
 */
 func (Instance) _get_message(impl func(ptr unsafe.Pointer, src_message string, context string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(src_message)
-		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(context)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message.String(), context.String())
@@ -185,10 +181,10 @@ Virtual method to override [method get_plural_message].
 */
 func (class) _get_plural_message(impl func(ptr unsafe.Pointer, src_message gd.StringName, src_plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var src_plural_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var src_plural_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		var n = gd.UnsafeGet[gd.Int](p_args, 2)
-		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 3))
+		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message, src_plural_message, n, context)
 		ptr, ok := pointers.End(ret)
@@ -204,8 +200,8 @@ Virtual method to override [method get_message].
 */
 func (class) _get_message(impl func(ptr unsafe.Pointer, src_message gd.StringName, context gd.StringName) gd.StringName) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message, context)
 		ptr, ok := pointers.End(ret)
@@ -228,7 +224,7 @@ func (self class) SetLocale(locale gd.String) {
 //go:nosplit
 func (self class) GetLocale() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -273,7 +269,7 @@ func (self class) GetMessage(src_message gd.StringName, context gd.StringName) g
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
@@ -291,7 +287,7 @@ func (self class) GetPluralMessage(src_message gd.StringName, src_plural_message
 	callframe.Arg(frame, pointers.Get(src_plural_message))
 	callframe.Arg(frame, n)
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_plural_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
@@ -317,7 +313,7 @@ Returns all the messages (keys).
 //go:nosplit
 func (self class) GetMessageList() gd.PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()
@@ -330,7 +326,7 @@ Returns all the messages (translated text).
 //go:nosplit
 func (self class) GetTranslatedMessageList() gd.PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_translated_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedStringArray](r_ret.Get())
 	frame.Free()

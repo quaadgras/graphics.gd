@@ -20,10 +20,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [BoxOccluder3D] stores a cuboid shape that can be used by the engine's occlusion culling system.
 See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.

@@ -20,10 +20,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [EditorImportPlugin]s provide a way to extend the editor's resource import functionality. Use them to import resources from custom files or to provide alternatives to the editor's existing importers.
 EditorImportPlugins work by associating with specific file extensions and a resource type. See [method _get_recognized_extensions] and [method _get_resource_type]. They may optionally specify some import presets that affect the import process. EditorImportPlugins are responsible for creating the resources and saving them in the [code].godot/imported[/code] directory (see [member ProjectSettings.application/config/use_hidden_project_data_directory]).
@@ -314,7 +310,7 @@ Gets the options and default values for the preset at this index. Returns an Arr
 */
 func (Instance) _get_import_options(impl func(ptr unsafe.Pointer, path string, preset_index int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
 		var preset_index = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -411,11 +407,11 @@ Returns [code]true[/code] to make all options always visible.
 */
 func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string, option_name string, options Dictionary.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var option_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var option_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(option_name)
-		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 2))
+		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(options)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), option_name.String(), options)
@@ -429,15 +425,15 @@ This method must be overridden to do the actual importing work. See this class' 
 */
 func (Instance) _import(impl func(ptr unsafe.Pointer, source_file string, save_path string, options Dictionary.Any, platform_variants gd.Array, gen_files gd.Array) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var source_file = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var source_file = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(source_file)
-		var save_path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var save_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(save_path)
-		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 2))
+		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(options)
-		var platform_variants = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 3))
+		var platform_variants = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
 		defer pointers.End(platform_variants)
-		var gen_files = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 4))
+		var gen_files = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))
 		defer pointers.End(gen_files)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, source_file.String(), save_path.String(), options, platform_variants, gen_files)
@@ -560,7 +556,7 @@ Gets the options and default values for the preset at this index. Returns an Arr
 */
 func (class) _get_import_options(impl func(ptr unsafe.Pointer, path gd.String, preset_index gd.Int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var preset_index = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, preset_index)
@@ -656,9 +652,9 @@ Returns [code]true[/code] to make all options always visible.
 */
 func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path gd.String, option_name gd.StringName, options gd.Dictionary) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var option_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
-		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 2))
+		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var option_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, option_name, options)
 		gd.UnsafeSet(p_back, ret)
@@ -671,11 +667,11 @@ This method must be overridden to do the actual importing work. See this class' 
 */
 func (class) _import(impl func(ptr unsafe.Pointer, source_file gd.String, save_path gd.String, options gd.Dictionary, platform_variants gd.Array, gen_files gd.Array) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var source_file = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var save_path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
-		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 2))
-		var platform_variants = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 3))
-		var gen_files = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 4))
+		var source_file = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var save_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		var platform_variants = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
+		var gen_files = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, source_file, save_path, options, platform_variants, gen_files)
 		gd.UnsafeSet(p_back, ret)

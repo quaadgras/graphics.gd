@@ -20,10 +20,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
 A tree of nodes is called a [i]scene[/i]. Scenes can be saved to the disk and then instantiated into other scenes. This allows for very high flexibility in the architecture and data model of Godot projects.
@@ -234,7 +230,7 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 */
 func (Instance) _input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -250,7 +246,7 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 */
 func (Instance) _shortcut_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -266,7 +262,7 @@ For gameplay input, this method is usually a better fit than [method _input], as
 */
 func (Instance) _unhandled_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -283,7 +279,7 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 */
 func (Instance) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1358,7 +1354,7 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 */
 func (class) _input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1374,7 +1370,7 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 */
 func (class) _shortcut_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1390,7 +1386,7 @@ For gameplay input, this method is usually a better fit than [method _input], as
 */
 func (class) _unhandled_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1407,7 +1403,7 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 */
 func (class) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1454,7 +1450,7 @@ func (self class) SetName(name gd.String) {
 //go:nosplit
 func (self class) GetName() gd.StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
@@ -1546,7 +1542,7 @@ If [param include_internal] is [code]false[/code], excludes internal children fr
 func (self class) GetChildren(include_internal bool) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1572,7 +1568,7 @@ func (self class) GetChild(idx gd.Int, include_internal bool) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, include_internal)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1629,7 +1625,7 @@ GetNode("/root/MyGame");
 func (self class) GetNode(path gd.NodePath) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1643,7 +1639,7 @@ Fetches a node by [NodePath]. Similar to [method get_node], but does not generat
 func (self class) GetNodeOrNull(path gd.NodePath) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_or_null, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1656,7 +1652,7 @@ Returns this node's parent node, or [code]null[/code] if the node doesn't have a
 //go:nosplit
 func (self class) GetParent() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1676,7 +1672,7 @@ func (self class) FindChild(pattern gd.String, recursive bool, owned bool) [1]gd
 	callframe.Arg(frame, pointers.Get(pattern))
 	callframe.Arg(frame, recursive)
 	callframe.Arg(frame, owned)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_child, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1698,7 +1694,7 @@ func (self class) FindChildren(pattern gd.String, atype gd.String, recursive boo
 	callframe.Arg(frame, pointers.Get(atype))
 	callframe.Arg(frame, recursive)
 	callframe.Arg(frame, owned)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_children, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1713,7 +1709,7 @@ Finds the first ancestor of this node whose [member name] matches [param pattern
 func (self class) FindParent(pattern gd.String) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pattern))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -1779,7 +1775,7 @@ GD.Print(c[2]);             // Prints ^":region"
 func (self class) GetNodeAndResource(path gd.NodePath) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1846,7 +1842,7 @@ Returns the node's absolute path, relative to the [member SceneTree.root]. If th
 //go:nosplit
 func (self class) GetPath() gd.NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
@@ -1863,7 +1859,7 @@ func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) gd.NodeP
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, use_unique_path)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path_to, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
@@ -1952,7 +1948,7 @@ foreach (string group in GetGroups())
 //go:nosplit
 func (self class) GetGroups() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_groups, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1971,7 +1967,7 @@ func (self class) SetOwner(owner [1]gdclass.Node) {
 //go:nosplit
 func (self class) GetOwner() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -2048,7 +2044,7 @@ TheGame/SplashScreen/Camera2D
 //go:nosplit
 func (self class) GetTreeString() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -2070,7 +2066,7 @@ May print, for example:
 //go:nosplit
 func (self class) GetTreeStringPretty() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string_pretty, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -2089,7 +2085,7 @@ func (self class) SetSceneFilePath(scene_file_path gd.String) {
 //go:nosplit
 func (self class) GetSceneFilePath() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -2603,7 +2599,7 @@ Returns the [Window] that contains this node. If the node is in the main window,
 //go:nosplit
 func (self class) GetWindow() [1]gdclass.Window {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_window, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret.Get())}
 	frame.Free()
@@ -2616,7 +2612,7 @@ Returns the [Window] that contains this node, or the last exclusive child in a c
 //go:nosplit
 func (self class) GetLastExclusiveWindow() [1]gdclass.Window {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_last_exclusive_window, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret.Get())}
 	frame.Free()
@@ -2629,7 +2625,7 @@ Returns the [SceneTree] that contains this node. If this node is not inside the 
 //go:nosplit
 func (self class) GetTree() [1]gdclass.SceneTree {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SceneTree{gd.PointerMustAssertInstanceID[gdclass.SceneTree](r_ret.Get())}
 	frame.Free()
@@ -2653,7 +2649,7 @@ The Tween will start automatically on the next process frame or physics frame (d
 //go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret.Get())}
 	frame.Free()
@@ -2668,7 +2664,7 @@ Duplicates the node, returning a new node with all of its properties, signals an
 func (self class) Duplicate(flags gd.Int) [1]gdclass.Node {
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret.Get())}
 	frame.Free()
@@ -2748,7 +2744,7 @@ Returns the node's closest [Viewport] ancestor, if the node is inside the tree. 
 //go:nosplit
 func (self class) GetViewport() [1]gdclass.Viewport {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_viewport, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Viewport{gd.PointerMustAssertInstanceID[gdclass.Viewport](r_ret.Get())}
 	frame.Free()
@@ -2838,7 +2834,7 @@ func (self class) IsMultiplayerAuthority() bool {
 //go:nosplit
 func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret.Get())}
 	frame.Free()
@@ -2875,7 +2871,7 @@ func (self class) SetEditorDescription(editor_description gd.String) {
 //go:nosplit
 func (self class) GetEditorDescription() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_editor_description, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -2912,7 +2908,7 @@ func (self class) Atr(message gd.String, context gd.StringName) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -2934,7 +2930,7 @@ func (self class) AtrN(message gd.String, plural_message gd.StringName, n gd.Int
 	callframe.Arg(frame, pointers.Get(plural_message))
 	callframe.Arg(frame, n)
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_atr_n, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()

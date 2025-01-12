@@ -20,10 +20,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Describes the motion and collision result from [method PhysicsServer3D.body_test_motion].
 */
@@ -296,9 +292,9 @@ Returns the colliding body's attached [Object] given a collision index (the deep
 func (self class) GetCollider(collision_index gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionResult3D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(r_ret.Get())})}
 	frame.Free()
 	return ret
 }

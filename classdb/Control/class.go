@@ -25,10 +25,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Base class for all UI-related nodes. [Control] features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and offsets relative to the anchor. The offsets update automatically when the node, any of its parents, or the screen size change.
 For more information on Godot's UI system, anchors, offsets, and containers, see the related tutorials in the manual. To build flexible UIs, you'll need a mix of UI elements that inherit from [Control] and [Container] nodes.
@@ -234,9 +230,9 @@ Returns an [Array] of [Vector3i] text ranges and text base directions, in the le
 */
 func (Instance) _structured_text_parser(impl func(ptr unsafe.Pointer, args Array.Any, text string) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(args)
-		var text = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(text)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, args, text.String())
@@ -342,7 +338,7 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 func (Instance) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position, data.Interface())
@@ -382,7 +378,7 @@ public override void _DropData(Vector2 atPosition, Variant data)
 func (Instance) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, at_position, data.Interface())
@@ -440,7 +436,7 @@ public override Control _MakeCustomTooltip(string forText)
 */
 func (Instance) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text string) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var for_text = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var for_text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(for_text)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_text.String())
@@ -489,7 +485,7 @@ The event won't trigger if:
 */
 func (Instance) _gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1491,8 +1487,8 @@ Returns an [Array] of [Vector3i] text ranges and text base directions, in the le
 */
 func (class) _structured_text_parser(impl func(ptr unsafe.Pointer, args gd.Array, text gd.String) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var text = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, args, text)
 		ptr, ok := pointers.End(ret)
@@ -1597,7 +1593,7 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 func (class) _can_drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position, data)
 		gd.UnsafeSet(p_back, ret)
@@ -1636,7 +1632,7 @@ public override void _DropData(Vector2 atPosition, Variant data)
 func (class) _drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
-		var data = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
+		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, at_position, data)
 	}
@@ -1693,7 +1689,7 @@ public override Control _MakeCustomTooltip(string forText)
 */
 func (class) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text gd.String) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var for_text = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var for_text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_text)
 		ptr, ok := pointers.End(ret[0])
@@ -1741,7 +1737,7 @@ The event won't trigger if:
 */
 func (class) _gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -2255,7 +2251,7 @@ Finds the previous (above in the tree) [Control] that can receive the focus.
 //go:nosplit
 func (self class) FindPrevValidFocus() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_find_prev_valid_focus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -2268,7 +2264,7 @@ Finds the next (below in the tree) [Control] that can receive the focus.
 //go:nosplit
 func (self class) FindNextValidFocus() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_find_next_valid_focus, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -2283,7 +2279,7 @@ Finds the next [Control] that can receive the focus on the specified [enum Side]
 func (self class) FindValidFocusNeighbor(side Side) [1]gdclass.Control {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_find_valid_focus_neighbor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -2359,7 +2355,7 @@ func (self class) SetTheme(theme [1]gdclass.Theme) {
 //go:nosplit
 func (self class) GetTheme() [1]gdclass.Theme {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret.Get())}
 	frame.Free()
@@ -2378,7 +2374,7 @@ func (self class) SetThemeTypeVariation(theme_type gd.StringName) {
 //go:nosplit
 func (self class) GetThemeTypeVariation() gd.StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_type_variation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()
@@ -2616,7 +2612,7 @@ func (self class) GetThemeIcon(name gd.StringName, theme_type gd.StringName) [1]
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
@@ -2632,7 +2628,7 @@ func (self class) GetThemeStylebox(name gd.StringName, theme_type gd.StringName)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret.Get())}
 	frame.Free()
@@ -2648,7 +2644,7 @@ func (self class) GetThemeFont(name gd.StringName, theme_type gd.StringName) [1]
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -2928,7 +2924,7 @@ See [method get_theme_color] for details.
 //go:nosplit
 func (self class) GetThemeDefaultFont() [1]gdclass.Font {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_theme_default_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret.Get())}
 	frame.Free()
@@ -2955,7 +2951,7 @@ Returns the parent control node.
 //go:nosplit
 func (self class) GetParentControl() [1]gdclass.Control {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_parent_control, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret.Get())}
 	frame.Free()
@@ -3012,7 +3008,7 @@ func (self class) SetTooltipText(hint gd.String) {
 //go:nosplit
 func (self class) GetTooltipText() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_tooltip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -3028,7 +3024,7 @@ This method can be overridden to customize its behavior. See [method _get_toolti
 func (self class) GetTooltip(at_position gd.Vector2) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, at_position)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -3089,7 +3085,7 @@ Returns the focus neighbor for the specified [enum Side]. A getter method for [m
 func (self class) GetFocusNeighbor(side Side) gd.NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_focus_neighbor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
@@ -3108,7 +3104,7 @@ func (self class) SetFocusNext(next gd.NodePath) {
 //go:nosplit
 func (self class) GetFocusNext() gd.NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_focus_next, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
@@ -3127,7 +3123,7 @@ func (self class) SetFocusPrevious(previous gd.NodePath) {
 //go:nosplit
 func (self class) GetFocusPrevious() gd.NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_focus_previous, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.NodePath](r_ret.Get())
 	frame.Free()
@@ -3322,7 +3318,7 @@ func (self class) SetShortcutContext(node [1]gdclass.Node) {
 //go:nosplit
 func (self class) GetShortcutContext() [1]gdclass.Node {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_shortcut_context, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
 	frame.Free()

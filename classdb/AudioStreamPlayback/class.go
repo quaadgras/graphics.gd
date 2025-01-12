@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStreamOggVorbis] for usage.
 
@@ -171,9 +167,9 @@ Set the current value of a playback parameter by name (see [method AudioStream._
 */
 func (Instance) _set_parameter(impl func(ptr unsafe.Pointer, name string, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(name)
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		defer pointers.End(value)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name.String(), value.Interface())
@@ -185,7 +181,7 @@ Return the current value of a playback parameter by name (see [method AudioStrea
 */
 func (Instance) _get_parameter(impl func(ptr unsafe.Pointer, name string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name.String())
@@ -325,8 +321,8 @@ Set the current value of a playback parameter by name (see [method AudioStream._
 */
 func (class) _set_parameter(impl func(ptr unsafe.Pointer, name gd.StringName, value gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var value = pointers.New[gd.Variant](gd.UnsafeGet[variantPointers](p_args, 1))
+		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name, value)
 	}
@@ -337,7 +333,7 @@ Return the current value of a playback parameter by name (see [method AudioStrea
 */
 func (class) _get_parameter(impl func(ptr unsafe.Pointer, name gd.StringName) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name)
 		ptr, ok := pointers.End(ret)
@@ -366,7 +362,7 @@ Returns the [AudioSamplePlayback] associated with this [AudioStreamPlayback] for
 //go:nosplit
 func (self class) GetSamplePlayback() [1]gdclass.AudioSamplePlayback {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_get_sample_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioSamplePlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSamplePlayback](r_ret.Get())}
 	frame.Free()

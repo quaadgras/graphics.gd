@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 This object manages all render data for the rendering device based renderers.
 [b]Note:[/b] This is an internal rendering server object only exposed for GDExtension plugins.

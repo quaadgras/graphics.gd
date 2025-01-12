@@ -36,7 +36,7 @@ func Is[T gd.IsClass](value gd.IsClass) (T, bool) {
 	}
 	var classtag = gd.Global.ClassDB.GetClassTag(gd.NewStringName(nameOf(rtype)))
 	casted := gd.Global.Object.CastTo(value.AsObject(), classtag)
-	if casted != ([1]gd.Object{}) && pointers.Get(casted[0]) != ([3]uintptr{}) {
+	if casted != ([1]gd.Object{}) && pointers.Get(casted[0]) != ([3]uint64{}) {
 		return (*(*T)(unsafe.Pointer(&casted))), true
 	}
 	return zero, false

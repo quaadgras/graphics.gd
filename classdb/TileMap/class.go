@@ -25,10 +25,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Node for 2D tile-based maps. Tilemaps use a [TileSet] which contain a list of tiles which are used to create grid-based maps. A TileMap may have several layers, layouting tiles on top of each other.
 For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
@@ -92,7 +88,7 @@ func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer in
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var layer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 1)
-		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 2)})}
+		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 2))})}
 		defer pointers.End(tile_data[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(layer), coords, tile_data)
@@ -582,7 +578,7 @@ func (class) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer gd.In
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var layer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 1)
-		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 2)})}
+		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 		defer pointers.End(tile_data[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, layer, coords, tile_data)
@@ -640,7 +636,7 @@ func (self class) SetTileset(tileset [1]gdclass.TileSet) {
 //go:nosplit
 func (self class) GetTileset() [1]gdclass.TileSet {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_tileset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileSet{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSet](r_ret.Get())}
 	frame.Free()
@@ -738,7 +734,7 @@ If [param layer] is negative, the layers are accessed from the last one.
 func (self class) GetLayerName(layer gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -1118,7 +1114,7 @@ func (self class) GetCellTileData(layer gd.Int, coords gd.Vector2i, use_proxies 
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret.Get())}
 	frame.Free()
@@ -1162,7 +1158,7 @@ func (self class) GetPattern(layer gd.Int, coords_array gd.Array) [1]gdclass.Til
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(coords_array))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret.Get())}
 	frame.Free()
@@ -1308,7 +1304,7 @@ Returns the list of all neighbourings cells to the one at [param coords].
 func (self class) GetSurroundingCells(coords gd.Vector2i) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_surrounding_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1323,7 +1319,7 @@ If [param layer] is negative, the layers are accessed from the last one.
 func (self class) GetUsedCells(layer gd.Int) gd.Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()
@@ -1343,7 +1339,7 @@ func (self class) GetUsedCellsById(layer gd.Int, source_id gd.Int, atlas_coords 
 	callframe.Arg(frame, source_id)
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells_by_id, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()

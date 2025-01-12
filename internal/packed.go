@@ -2,7 +2,6 @@ package gd
 
 import (
 	"strings"
-	"unsafe"
 
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
@@ -42,15 +41,9 @@ func (p PackedByteArray) SetIndex(idx Int, value Int) {
 	Global.PackedByteArray.SetIndex(p, idx, byte(value))
 }
 
-func (p PackedByteArray) UnsafePointer() unsafe.Pointer {
-	return Global.PackedByteArray.UnsafePointer(p)
-}
-
 // Bytes returns a copy of the byte array as a byte slice.
 func (p PackedByteArray) Bytes() []byte {
-	var bytes = make([]byte, p.Size())
-	copy(bytes, unsafe.Slice((*byte)(p.UnsafePointer()), len(bytes)))
-	return bytes
+	return Global.PackedByteArray.CopyAsSlice(p)
 }
 
 func (p PackedByteArray) Len() int { return int(p.Size()) }
@@ -80,10 +73,6 @@ func (p PackedInt32Array) Free() {
 	}
 }
 
-func (p PackedInt32Array) UnsafePointer() unsafe.Pointer {
-	return Global.PackedInt32Array.UnsafePointer(p)
-}
-
 func (p PackedInt32Array) Len() int { return int(p.Size()) }
 func (p PackedInt32Array) Cap() int { return int(p.Size()) }
 
@@ -101,10 +90,6 @@ func (p PackedInt64Array) Free() {
 		Global.typeset.destruct.PackedInt64Array(callframe.Arg(frame, ptr).Addr())
 		frame.Free()
 	}
-}
-
-func (p PackedInt64Array) UnsafePointer() unsafe.Pointer {
-	return Global.PackedInt64Array.UnsafePointer(p)
 }
 
 func (p PackedInt64Array) Len() int { return int(p.Size()) }
@@ -129,10 +114,6 @@ func (p PackedFloat32Array) Free() {
 func (p PackedFloat32Array) Len() int { return int(p.Size()) }
 func (p PackedFloat32Array) Cap() int { return int(p.Size()) }
 
-func (p PackedFloat32Array) UnsafePointer() unsafe.Pointer {
-	return Global.PackedFloat32Array.UnsafePointer(p)
-}
-
 func (p PackedFloat64Array) Index(idx Int) Float {
 	return Float(Global.PackedFloat64Array.Index(p, idx))
 }
@@ -147,10 +128,6 @@ func (p PackedFloat64Array) Free() {
 		Global.typeset.destruct.PackedFloat64Array(callframe.Arg(frame, ptr).Addr())
 		frame.Free()
 	}
-}
-
-func (p PackedFloat64Array) UnsafePointer() unsafe.Pointer {
-	return Global.PackedFloat64Array.UnsafePointer(p)
 }
 
 func (p PackedFloat64Array) Len() int { return int(p.Size()) }
@@ -208,9 +185,6 @@ func (p PackedVector2Array) Free() {
 
 func (p PackedVector2Array) Len() int { return int(p.Size()) }
 func (p PackedVector2Array) Cap() int { return int(p.Size()) }
-func (p PackedVector2Array) UnsafePointer() unsafe.Pointer {
-	return Global.PackedVector2Array.UnsafePointer(p)
-}
 
 func (p PackedVector3Array) Index(idx Int) Vector3 {
 	return Global.PackedVector3Array.Index(p, idx)
@@ -230,9 +204,6 @@ func (p PackedVector3Array) Free() {
 
 func (p PackedVector3Array) Len() int { return int(p.Size()) }
 func (p PackedVector3Array) Cap() int { return int(p.Size()) }
-func (p PackedVector3Array) UnsafePointer() unsafe.Pointer {
-	return Global.PackedVector3Array.UnsafePointer(p)
-}
 
 func (p PackedVector4Array) Index(idx Int) Vector4 {
 	return Global.PackedVector4Array.Index(p, idx)
@@ -252,9 +223,6 @@ func (p PackedVector4Array) Free() {
 
 func (p PackedVector4Array) Len() int { return int(p.Size()) }
 func (p PackedVector4Array) Cap() int { return int(p.Size()) }
-func (p PackedVector4Array) UnsafePointer() unsafe.Pointer {
-	return Global.PackedVector4Array.UnsafePointer(p)
-}
 
 func (p PackedColorArray) Index(idx Int) Color {
 	return Global.PackedColorArray.Index(p, idx)
@@ -274,13 +242,10 @@ func (p PackedColorArray) Free() {
 
 func (p PackedColorArray) Len() int { return int(p.Size()) }
 func (p PackedColorArray) Cap() int { return int(p.Size()) }
-func (p PackedColorArray) UnsafePointer() unsafe.Pointer {
-	return Global.PackedColorArray.UnsafePointer(p)
-}
 
 func NewPackedByteArray() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedByteArray[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -291,13 +256,13 @@ func NewPackedByteArray() PackedByteArray {
 func NewPackedByteSlice(data []byte) PackedByteArray {
 	var array = NewPackedByteArray()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*byte)(array.UnsafePointer()), len(data)), data)
+	Global.PackedByteArray.CopyFromSlice(array, data)
 	return array
 }
 
 func NewPackedColorArray() PackedColorArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedColorArray[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -307,13 +272,13 @@ func NewPackedColorArray() PackedColorArray {
 func NewPackedColorSlice(data []Color) PackedColorArray {
 	var array = NewPackedColorArray()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*Color)(array.UnsafePointer()), len(data)), data)
+	Global.PackedColorArray.CopyFromSlice(array, data)
 	return array
 }
 
 func NewPackedFloat32Array() PackedFloat32Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedFloat32Array[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -323,13 +288,13 @@ func NewPackedFloat32Array() PackedFloat32Array {
 func NewPackedFloat32Slice(data []float32) PackedFloat32Array {
 	var array = NewPackedFloat32Array()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*float32)(array.UnsafePointer()), len(data)), data)
+	Global.PackedFloat32Array.CopyFromSlice(array, data)
 	return array
 }
 
 func NewPackedInt32Array() PackedInt32Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedInt32Array[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -339,13 +304,13 @@ func NewPackedInt32Array() PackedInt32Array {
 func NewPackedInt32Slice(data []int32) PackedInt32Array {
 	var array = NewPackedInt32Array()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*int32)(array.UnsafePointer()), len(data)), data)
+	Global.PackedInt32Array.CopyFromSlice(array, data)
 	return array
 }
 
 func NewPackedStringArray() PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedStringArray[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -363,7 +328,7 @@ func NewPackedStringSlice(data []string) PackedStringArray {
 
 func NewPackedVector2Array() PackedVector2Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedVector2Array[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -373,13 +338,13 @@ func NewPackedVector2Array() PackedVector2Array {
 func NewPackedVector2Slice(data []Vector2) PackedVector2Array {
 	var array = NewPackedVector2Array()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*Vector2)(array.UnsafePointer()), len(data)), data)
+	Global.PackedVector2Array.CopyFromSlice(array, data)
 	return array
 }
 
 func NewPackedVector3Array() PackedVector3Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedVector3Array[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -389,13 +354,13 @@ func NewPackedVector3Array() PackedVector3Array {
 func NewPackedVector3Slice(data []Vector3) PackedVector3Array {
 	var array = NewPackedVector3Array()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*Vector3)(array.UnsafePointer()), len(data)), data)
+	Global.PackedVector3Array.CopyFromSlice(array, data)
 	return array
 }
 
 func NewPackedVector4Array() PackedVector4Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedVector4Array[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -405,13 +370,13 @@ func NewPackedVector4Array() PackedVector4Array {
 func NewPackedVector4Slice(data []Vector4) PackedVector4Array {
 	var array = NewPackedVector4Array()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*Vector4)(array.UnsafePointer()), len(data)), data)
+	Global.PackedVector4Array.CopyFromSlice(array, data)
 	return array
 }
 
 func NewPackedInt64Array() PackedInt64Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedInt64Array[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -421,13 +386,13 @@ func NewPackedInt64Array() PackedInt64Array {
 func NewPackedInt64Slice(data []int64) PackedInt64Array {
 	var array = NewPackedInt64Array()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*int64)(array.UnsafePointer()), len(data)), data)
+	Global.PackedInt64Array.CopyFromSlice(array, data)
 	return array
 }
 
 func NewPackedFloat64Array() PackedFloat64Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[PackedPointers](frame)
 	Global.typeset.creation.PackedFloat64Array[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
@@ -437,6 +402,6 @@ func NewPackedFloat64Array() PackedFloat64Array {
 func NewPackedFloat64Slice(data []float64) PackedFloat64Array {
 	var array = NewPackedFloat64Array()
 	array.Resize(Int(len(data)))
-	copy(unsafe.Slice((*float64)(array.UnsafePointer()), len(data)), data)
+	Global.PackedFloat64Array.CopyFromSlice(array, data)
 	return array
 }

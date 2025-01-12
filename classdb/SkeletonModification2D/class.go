@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 This resource provides an interface that can be expanded so code that operates on [Bone2D] nodes in a [Skeleton2D] can be mixed and matched together to create complex interactions.
 This is used to provide Godot with a flexible and powerful Inverse Kinematics solution that can be adapted for many different uses.
@@ -75,7 +71,7 @@ Called when the modification is setup. This is where the modification performs i
 */
 func (Instance) _setup_modification(impl func(ptr unsafe.Pointer, modification_stack [1]gdclass.SkeletonModificationStack2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var modification_stack = [1]gdclass.SkeletonModificationStack2D{pointers.New[gdclass.SkeletonModificationStack2D]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var modification_stack = [1]gdclass.SkeletonModificationStack2D{pointers.New[gdclass.SkeletonModificationStack2D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(modification_stack[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, modification_stack)
@@ -186,7 +182,7 @@ Called when the modification is setup. This is where the modification performs i
 */
 func (class) _setup_modification(impl func(ptr unsafe.Pointer, modification_stack [1]gdclass.SkeletonModificationStack2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var modification_stack = [1]gdclass.SkeletonModificationStack2D{pointers.New[gdclass.SkeletonModificationStack2D]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var modification_stack = [1]gdclass.SkeletonModificationStack2D{pointers.New[gdclass.SkeletonModificationStack2D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(modification_stack[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, modification_stack)
@@ -229,7 +225,7 @@ Returns the [SkeletonModificationStack2D] that this modification is bound to. Th
 //go:nosplit
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2D.Bind_get_modification_stack, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModificationStack2D](r_ret.Get())}
 	frame.Free()

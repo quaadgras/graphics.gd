@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Object holds scene data related to rendering a single frame of a viewport.
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.

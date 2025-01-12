@@ -31,7 +31,7 @@ func NewSignalOf(object [1]Object, signal StringName) Signal {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(object[0]))
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[SignalPointers](frame)
+	var r_ret = callframe.Ret[[2]uint64](frame)
 	Global.typeset.creation.Signal[2](r_ret.Addr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()

@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [PropertyTweener] is used to interpolate a property in an object. See [method Tween.tween_property] for more usage information.
 [b]Note:[/b] [method Tween.tween_property] is the only correct way to create [PropertyTweener]. Any [PropertyTweener] created manually will not function correctly.
@@ -146,7 +142,7 @@ tween.tween_property(self, "position", Vector2(200, 100), 1).from(Vector2(100, 1
 func (self class) From(value gd.Variant) [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
@@ -163,7 +159,7 @@ tween.tween_property(self, "position", Vector2(200, 100), 1).from_current()
 //go:nosplit
 func (self class) FromCurrent() [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_from_current, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
@@ -181,7 +177,7 @@ tween.tween_property(self, "position", Vector2.RIGHT * 100, 1).as_relative() #th
 //go:nosplit
 func (self class) AsRelative() [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_as_relative, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
@@ -195,7 +191,7 @@ Sets the type of used transition from [enum Tween.TransitionType]. If not set, t
 func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, trans)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_trans, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
@@ -209,7 +205,7 @@ Sets the type of used easing from [enum Tween.EaseType]. If not set, the default
 func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, ease)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_ease, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
@@ -235,7 +231,7 @@ func tween_curve(v):
 func (self class) SetCustomInterpolator(interpolator_method gd.Callable) [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(interpolator_method))
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_custom_interpolator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()
@@ -249,7 +245,7 @@ Sets the time in seconds after which the [PropertyTweener] will start interpolat
 func (self class) SetDelay(delay gd.Float) [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}
 	frame.Free()

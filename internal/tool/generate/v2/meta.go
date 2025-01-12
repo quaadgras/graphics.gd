@@ -430,30 +430,30 @@ func (db ClassDB) isPointer(t string) (string, bool) {
 	t = strings.TrimPrefix(t, "gdclass.")
 	t = strings.TrimPrefix(t, "[1]gdclass.")
 	if strings.HasPrefix(t, "ArrayOf") {
-		return "[1]uintptr", true
+		return "[1]gd.EnginePointer", true
 	}
 	switch t {
 	case "String", "StringName", "NodePath",
 		"Dictionary", "Array":
-		return "[1]uintptr", true
+		return "[1]gd.EnginePointer", true
 	case "Signal":
-		return "signalPointers", true
+		return "[2]uint64", true
 	case "Callable":
-		return "callablePointers", true
+		return "[2]uint64", true
 	case "PackedByteArray", "PackedInt32Array",
 		"PackedInt64Array", "PackedFloat32Array",
 		"PackedFloat64Array", "PackedStringArray",
 		"PackedVector2Array", "PackedVector3Array",
 		"PackedVector4Array",
 		"PackedColorArray":
-		return "[2]uintptr", true
+		return "gd.PackedPointers", true
 	case "Variant":
-		return "variantPointers", true
+		return "[3]uint64", true
 	case "Object":
-		return "uintptr", true
+		return "gd.EnginePointer", true
 	default:
 		if entry, ok := db[t]; ok && !entry.IsEnum {
-			return "uintptr", true
+			return "gd.EnginePointer", true
 		}
 		return "", false
 	}

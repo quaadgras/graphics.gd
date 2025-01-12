@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 This class can be used to implement custom profilers that are able to interact with the engine and editor debugger.
 See [EngineDebugger] and [EditorDebuggerPlugin] for more information.
@@ -64,7 +60,7 @@ Called when the profiler is enabled/disabled, along with a set of [param options
 func (Instance) _toggle(impl func(ptr unsafe.Pointer, enable bool, options Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
-		var options = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var options = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(options)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, enable, options)
@@ -76,7 +72,7 @@ Called when data is added to profiler using [method EngineDebugger.profiler_add_
 */
 func (Instance) _add_frame(impl func(ptr unsafe.Pointer, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var data = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var data = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, data)
@@ -122,7 +118,7 @@ Called when the profiler is enabled/disabled, along with a set of [param options
 func (class) _toggle(impl func(ptr unsafe.Pointer, enable bool, options gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
-		var options = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var options = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, enable, options)
 	}
@@ -133,7 +129,7 @@ Called when data is added to profiler using [method EngineDebugger.profiler_add_
 */
 func (class) _add_frame(impl func(ptr unsafe.Pointer, data gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var data = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var data = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, data)
 	}

@@ -17,10 +17,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [EditorTranslationParserPlugin] is invoked when a file is being parsed to extract strings that require translation. To define the parsing and string extraction logic, override the [method _parse_file] method in script.
 Add the extracted strings to argument [code]msgids[/code] or [code]msgids_context_plural[/code] if context or plural is used.
@@ -159,11 +155,11 @@ Override this method to define a custom parsing logic to extract the translatabl
 */
 func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids gd.Array, msgids_context_plural gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var msgids = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var msgids = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(msgids)
-		var msgids_context_plural = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 2))
+		var msgids_context_plural = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(msgids_context_plural)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, path.String(), msgids, msgids_context_plural)
@@ -209,9 +205,9 @@ Override this method to define a custom parsing logic to extract the translatabl
 */
 func (class) _parse_file(impl func(ptr unsafe.Pointer, path gd.String, msgids gd.Array, msgids_context_plural gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var path = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var msgids = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 1))
-		var msgids_context_plural = pointers.New[gd.Array](gd.UnsafeGet[[1]uintptr](p_args, 2))
+		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var msgids = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		var msgids_context_plural = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, path, msgids, msgids_context_plural)
 	}

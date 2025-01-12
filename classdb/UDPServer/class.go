@@ -17,10 +17,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 A simple server that opens a UDP socket and returns connected [PacketPeerUDP] upon receiving new packets. See also [method PacketPeerUDP.connect_to_host].
 After starting the server ([method listen]), you will need to [method poll] it at regular intervals (e.g. inside [method Node._process]) for it to process new packets, delivering them to the appropriate [PacketPeerUDP], and taking new connections.
@@ -309,7 +305,7 @@ Returns the first pending connection (connected to the appropriate address/port)
 //go:nosplit
 func (self class) TakeConnection() [1]gdclass.PacketPeerUDP {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PacketPeerUDP{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerUDP](r_ret.Get())}
 	frame.Free()

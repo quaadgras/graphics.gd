@@ -53,7 +53,7 @@ type Advanced = gd.String
 // Can be initialised ahead of time as a global variable.
 func New(vals ...any) Advanced { //gd:String() str
 	if !gd.Linked {
-		str := pointers.Add[gd.String]([1]uintptr{})
+		str := pointers.Add[gd.String]([1]gd.EnginePointer{})
 		static[fmt.Sprint(vals...)] = str
 		return str
 	}

@@ -12,7 +12,7 @@ import (
 func (s String) StringName() StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]EnginePointer](frame)
 	Global.typeset.creation.StringName[2](r_ret.Addr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
@@ -23,7 +23,7 @@ func (s String) StringName() StringName {
 func (s String) Copy() String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
-	var ret = callframe.Ret[[1]uintptr](frame)
+	var ret = callframe.Ret[[1]EnginePointer](frame)
 	Global.typeset.creation.String[1](ret.Addr(), frame.Array(0))
 	var raw = ret.Get()
 	frame.Free()
@@ -54,7 +54,7 @@ func (s String) Len() int { return int(s.Length()) }
 func (s String) Cap() int { return int(s.Length()) }
 
 func (s String) String() string {
-	if pointers.Get(s) == ([1]uintptr{}) {
+	if pointers.Get(s) == ([1]EnginePointer{}) {
 		return ""
 	}
 	return Global.Strings.Get(s)
@@ -63,7 +63,7 @@ func (s String) String() string {
 func (Godot *API) StringFromStringName(s StringName) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]EnginePointer](frame)
 	Godot.typeset.creation.String[2](r_ret.Addr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
@@ -73,7 +73,7 @@ func (Godot *API) StringFromStringName(s StringName) String {
 func (Godot *API) StringFromNodePath(s NodePath) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]EnginePointer](frame)
 	Godot.typeset.creation.String[3](r_ret.Addr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
@@ -83,7 +83,7 @@ func (Godot *API) StringFromNodePath(s NodePath) String {
 func NewStringNameFromString(s String) StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]EnginePointer](frame)
 	Global.typeset.creation.StringName[2](r_ret.Addr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()
@@ -101,7 +101,7 @@ func (s StringName) Free() {
 }
 
 func (s StringName) String() string {
-	if pointers.Get(s) == ([1]uintptr{}) {
+	if pointers.Get(s) == ([1]EnginePointer{}) {
 		return ""
 	}
 	var tmp = Global.StringFromStringName(s)
@@ -111,7 +111,7 @@ func (s StringName) String() string {
 func (s String) NodePath() NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]EnginePointer](frame)
 	Global.typeset.creation.NodePath[2](r_ret.Addr(), frame.Array(0))
 	var raw = r_ret.Get()
 	frame.Free()

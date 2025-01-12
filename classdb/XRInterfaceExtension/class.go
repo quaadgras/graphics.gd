@@ -26,10 +26,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 External XR interface plugins should inherit from this class.
 
@@ -424,7 +420,7 @@ Returns a [PackedStringArray] with pose names configured by this interface. Note
 */
 func (Instance) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name string) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(tracker_name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, tracker_name.String())
@@ -452,9 +448,9 @@ Triggers a haptic pulse to be emitted on the specified tracker.
 */
 func (Instance) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var action_name = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var action_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(action_name)
-		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(tracker_name)
 		var frequency = gd.UnsafeGet[gd.Float](p_args, 2)
 		var amplitude = gd.UnsafeGet[gd.Float](p_args, 3)
@@ -843,7 +839,7 @@ Returns a [PackedStringArray] with pose names configured by this interface. Note
 */
 func (class) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name gd.StringName) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, tracker_name)
 		ptr, ok := pointers.End(ret)
@@ -870,8 +866,8 @@ Triggers a haptic pulse to be emitted on the specified tracker.
 */
 func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name gd.String, tracker_name gd.StringName, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var action_name = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
-		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 1))
+		var action_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var tracker_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		var frequency = gd.UnsafeGet[gd.Float](p_args, 2)
 		var amplitude = gd.UnsafeGet[gd.Float](p_args, 3)
 		var duration_sec = gd.UnsafeGet[gd.Float](p_args, 4)

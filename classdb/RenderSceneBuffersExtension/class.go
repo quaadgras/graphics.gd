@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 This class allows for a RenderSceneBuffer implementation to be made in GDExtension.
 
@@ -63,7 +59,7 @@ Implement this in GDExtension to handle the (re)sizing of a viewport.
 */
 func (Instance) _configure(impl func(ptr unsafe.Pointer, config [1]gdclass.RenderSceneBuffersConfiguration)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var config = [1]gdclass.RenderSceneBuffersConfiguration{pointers.New[gdclass.RenderSceneBuffersConfiguration]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var config = [1]gdclass.RenderSceneBuffersConfiguration{pointers.New[gdclass.RenderSceneBuffersConfiguration]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(config[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, config)
@@ -127,7 +123,7 @@ Implement this in GDExtension to handle the (re)sizing of a viewport.
 */
 func (class) _configure(impl func(ptr unsafe.Pointer, config [1]gdclass.RenderSceneBuffersConfiguration)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var config = [1]gdclass.RenderSceneBuffersConfiguration{pointers.New[gdclass.RenderSceneBuffersConfiguration]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var config = [1]gdclass.RenderSceneBuffersConfiguration{pointers.New[gdclass.RenderSceneBuffersConfiguration]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(config[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, config)

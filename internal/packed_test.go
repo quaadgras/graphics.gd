@@ -9,6 +9,9 @@ import (
 func TestPacked(t *testing.T) {
 	var array = gd.NewPackedInt32Array()
 	array.Resize(2)
+	if array.Size() != 2 {
+		t.Fatal("packed array failed to resize")
+	}
 	array.Set(0, 1)
 	if array.Index(0) != 1 {
 		t.Fatal("bad")

@@ -23,10 +23,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Abstract base class for 2D physics objects. [CollisionObject2D] can hold any number of [Shape2D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
 [b]Note:[/b] Only collisions between objects within the same canvas ([Viewport] canvas or [CanvasLayer]) are supported. The behavior of collisions between objects in different canvases is undefined.
@@ -75,9 +71,9 @@ Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the cli
 */
 func (Instance) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(viewport[0])
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
 		defer pointers.End(event[0])
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -359,9 +355,9 @@ Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the cli
 */
 func (class) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(viewport[0])
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(event[0])
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -605,7 +601,7 @@ Returns an [Array] of [code]owner_id[/code] identifiers. You can use these ids i
 //go:nosplit
 func (self class) GetShapeOwners() gd.PackedInt32Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_shape_owners, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt32Array](r_ret.Get())
 	frame.Free()
@@ -646,9 +642,9 @@ Returns the parent object of the given shape owner.
 func (self class) ShapeOwnerGetOwner(owner_id gd.Int) [1]gd.Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{r_ret.Get()})}
+	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(r_ret.Get())})}
 	frame.Free()
 	return ret
 }
@@ -769,7 +765,7 @@ func (self class) ShapeOwnerGetShape(owner_id gd.Int, shape_id gd.Int) [1]gdclas
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, shape_id)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Shape2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape2D](r_ret.Get())}
 	frame.Free()

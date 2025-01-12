@@ -18,10 +18,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 The [CameraServer] keeps track of different cameras accessible in Godot. These are external cameras such as webcams or the cameras on your phone.
 It is notably used to provide AR modules with a video feed from the camera.
@@ -92,7 +88,7 @@ Returns the [CameraFeed] corresponding to the camera with the given [param index
 func (self class) GetFeed(index gd.Int) [1]gdclass.CameraFeed {
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_get_feed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CameraFeed{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraFeed](r_ret.Get())}
 	frame.Free()
@@ -118,7 +114,7 @@ Returns an array of [CameraFeed]s.
 //go:nosplit
 func (self class) Feeds() gd.Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_feeds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Array](r_ret.Get())
 	frame.Free()

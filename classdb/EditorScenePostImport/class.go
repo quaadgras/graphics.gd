@@ -17,10 +17,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Imported scenes can be automatically modified right after import by setting their [b]Custom Script[/b] Import property to a [code]tool[/code] script that inherits from this class.
 The [method _post_import] callback receives the imported scene's root node and returns the modified version of the scene. Usage example:
@@ -105,7 +101,7 @@ Called after the scene was imported. This method must return the modified versio
 */
 func (Instance) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene)
@@ -148,7 +144,7 @@ Called after the scene was imported. This method must return the modified versio
 */
 func (class) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene)
@@ -166,7 +162,7 @@ Returns the source file path which got imported (e.g. [code]res://scene.dae[/cod
 //go:nosplit
 func (self class) GetSourceFile() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScenePostImport.Bind_get_source_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()

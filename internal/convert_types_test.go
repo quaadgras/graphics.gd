@@ -3,6 +3,7 @@ package gd_test
 import (
 	"errors"
 	"testing"
+	"time"
 
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/GDScript"
@@ -220,7 +221,12 @@ func TestConversions(t *testing.T) {
 	script.Reload()
 	Object.Instance(converter.AsObject()).SetScript(script)
 	SceneTree.Add(converter)
-	if err := <-doneConversionsTest; err != nil {
-		t.Fatal(err)
+	select {
+	case err := <-doneConversionsTest:
+		if err != nil {
+			t.Fatal(err)
+		}
+	case <-time.NewTimer(500 * time.Millisecond).C:
+		t.Fatal("timeout")
 	}
 }

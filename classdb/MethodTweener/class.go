@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 [MethodTweener] is similar to a combination of [CallbackTweener] and [PropertyTweener]. It calls a method providing an interpolated value as a parameter. See [method Tween.tween_method] for more usage information.
 The tweener will finish automatically if the callback's target object is freed.
@@ -85,7 +81,7 @@ Sets the time in seconds after which the [MethodTweener] will start interpolatin
 func (self class) SetDelay(delay gd.Float) [1]gdclass.MethodTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MethodTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret.Get())}
 	frame.Free()
@@ -99,7 +95,7 @@ Sets the type of used transition from [enum Tween.TransitionType]. If not set, t
 func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.MethodTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, trans)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MethodTweener.Bind_set_trans, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret.Get())}
 	frame.Free()
@@ -113,7 +109,7 @@ Sets the type of used easing from [enum Tween.EaseType]. If not set, the default
 func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.MethodTweener {
 	var frame = callframe.New()
 	callframe.Arg(frame, ease)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MethodTweener.Bind_set_ease, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret.Get())}
 	frame.Free()

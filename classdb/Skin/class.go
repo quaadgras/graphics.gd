@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 type Instance [1]gdclass.Skin
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -160,7 +156,7 @@ func (self class) SetBindName(bind_index gd.Int, name gd.StringName) {
 func (self class) GetBindName(bind_index gd.Int) gd.StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_get_bind_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.StringName](r_ret.Get())
 	frame.Free()

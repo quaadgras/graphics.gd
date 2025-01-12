@@ -19,10 +19,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 This class is designed to be inherited from a GDExtension plugin to implement custom networking layers for the multiplayer API (such as WebRTC). All the methods below [b]must[/b] be implemented to have a working custom multiplayer implementation. See also [MultiplayerAPI].
 
@@ -183,7 +179,7 @@ Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_p
 */
 func (Instance) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer []byte) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var p_buffer = pointers.New[gd.PackedByteArray](gd.UnsafeGet[[2]uintptr](p_args, 0))
+		var p_buffer = pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
 		defer pointers.End(p_buffer)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer.Bytes())
@@ -464,7 +460,7 @@ Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_p
 */
 func (class) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer gd.PackedByteArray) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var p_buffer = pointers.New[gd.PackedByteArray](gd.UnsafeGet[[2]uintptr](p_args, 0))
+		var p_buffer = pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer)
 		gd.UnsafeSet(p_back, ret)

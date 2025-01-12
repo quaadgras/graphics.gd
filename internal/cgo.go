@@ -21,8 +21,8 @@ type cache struct {
 }
 
 type variant struct {
-	FromType [TypeMax]func(ret callframe.Ptr[VariantPointers], arg callframe.Addr)
-	IntoType [TypeMax]func(ret callframe.Addr, arg callframe.Ptr[VariantPointers])
+	FromType [TypeMax]func(ret callframe.Ptr[[3]uint64], arg callframe.Addr)
+	IntoType [TypeMax]func(ret callframe.Addr, arg callframe.Ptr[[3]uint64])
 }
 
 type ObjectID uint64

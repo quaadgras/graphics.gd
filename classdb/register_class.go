@@ -87,6 +87,7 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 		impl, ok := registered.Load(reflect.TypeFor[T]())
 		if !ok {
 			Register[T]()
+			impl, ok = registered.Load(reflect.TypeFor[T]())
 		}
 		if ok {
 			instancer := impl.(*classImplementation)
@@ -419,7 +420,7 @@ func (class classImplementation) GetVirtual(name gd.StringName) any {
 }
 
 type instanceImplementation struct {
-	object  uintptr
+	object  uint64
 	Value   isClass
 	signals []signalChan
 

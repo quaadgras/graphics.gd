@@ -23,10 +23,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 A 2D agent used to pathfind to a position while avoiding static and dynamic obstacles. The calculation can be used by the parent node to dynamically move it along the path. Requires navigation data to work correctly.
 Dynamic obstacles are avoided using RVO collision avoidance. Avoidance is computed before physics, so the pathfinding information can be used safely in the physics step.
@@ -853,7 +849,7 @@ Returns the path query result for the path the agent is currently following.
 //go:nosplit
 func (self class) GetCurrentNavigationResult() [1]gdclass.NavigationPathQueryResult2D {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent2D.Bind_get_current_navigation_result, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.NavigationPathQueryResult2D{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationPathQueryResult2D](r_ret.Get())}
 	frame.Free()
@@ -866,7 +862,7 @@ Returns this agent's current path from start to finish in global coordinates. Th
 //go:nosplit
 func (self class) GetCurrentNavigationPath() gd.PackedVector2Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent2D.Bind_get_current_navigation_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector2Array](r_ret.Get())
 	frame.Free()

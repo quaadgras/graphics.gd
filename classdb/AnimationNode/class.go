@@ -22,10 +22,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Base resource for [AnimationTree] nodes. In general, it's not used directly, but you can create custom ones with custom blending formulas.
 Inherit this when creating animation nodes mainly for use in [AnimationNodeBlendTree], otherwise [AnimationRootNode] should be used instead.
@@ -120,7 +116,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _get_child_by_name(impl func(ptr unsafe.Pointer, name string) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name.String())
@@ -137,7 +133,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(parameter)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
@@ -154,7 +150,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(parameter)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
@@ -359,7 +355,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_child_by_name(impl func(ptr unsafe.Pointer, name gd.StringName) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name)
 		ptr, ok := pointers.End(ret[0])
@@ -375,7 +371,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter gd.StringName) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
 		ptr, ok := pointers.End(ret)
@@ -391,7 +387,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter gd.StringName) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
 		gd.UnsafeSet(p_back, ret)
@@ -489,7 +485,7 @@ Gets the name of an input by index.
 func (self class) GetInputName(input gd.Int) gd.String {
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_get_input_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
@@ -651,7 +647,7 @@ Gets the value of a parameter. Parameters are custom local memory used for your 
 func (self class) GetParameter(name gd.StringName) gd.Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_get_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Variant](r_ret.Get())
 	frame.Free()

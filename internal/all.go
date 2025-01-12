@@ -185,7 +185,7 @@ func Posmod(x Int, y Int) Int {
 func Floor(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.floor(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -215,7 +215,7 @@ func Floori(x Float) Int {
 func Ceil(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.ceil(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -245,7 +245,7 @@ func Ceili(x Float) Int {
 func Round(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.round(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -275,7 +275,7 @@ func Roundi(x Float) Int {
 func Abs(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.abs(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -305,7 +305,7 @@ func Absi(x Int) Int {
 func Sign(x Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.sign(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -336,7 +336,7 @@ func Snapped(x Variant, step Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(x))
 	callframe.Arg(frame, pointers.Get(step))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.snapped(r_ret.Addr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -473,7 +473,7 @@ func Lerp(from Variant, to Variant, weight Variant) Variant {
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, pointers.Get(weight))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.lerp(r_ret.Addr(), frame.Array(0), 3)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -712,7 +712,7 @@ func Wrap(value Variant, min Variant, max Variant) Variant {
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, pointers.Get(min))
 	callframe.Arg(frame, pointers.Get(max))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.wrap(r_ret.Addr(), frame.Array(0), 3)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -750,7 +750,7 @@ func Max(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.max(r_ret.Addr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -786,7 +786,7 @@ func Min(arg1 Variant, arg2 Variant, args ...Variant) Variant {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.min(r_ret.Addr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -820,7 +820,7 @@ func Clamp(value Variant, min Variant, max Variant) Variant {
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, pointers.Get(min))
 	callframe.Arg(frame, pointers.Get(max))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.clamp(r_ret.Addr(), frame.Array(0), 3)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -941,7 +941,7 @@ func Seed(base Int) {
 func RandFromSeed(seed Int) PackedInt64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, seed)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	Global.utility.rand_from_seed(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[PackedInt64Array](r_ret.Get())
 	frame.Free()
@@ -951,7 +951,7 @@ func RandFromSeed(seed Int) PackedInt64Array {
 func Weakref(obj Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.weakref(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -972,7 +972,7 @@ func TypeConvert(variant Variant, atype Int) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variant))
 	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.type_convert(r_ret.Addr(), frame.Array(0), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -985,7 +985,7 @@ func Str(arg1 Variant, args ...Variant) String {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.utility.str(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -995,7 +995,7 @@ func Str(arg1 Variant, args ...Variant) String {
 func ErrorString(error Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, error)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.utility.error_string(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -1005,7 +1005,7 @@ func ErrorString(error Int) String {
 func TypeToString(atype Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.utility.type_string(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -1114,7 +1114,7 @@ func PushWarning(arg1 Variant, args ...Variant) {
 func VarToStr(variable Variant) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.utility.var_to_str(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -1124,7 +1124,7 @@ func VarToStr(variable Variant) String {
 func StrToVar(s String) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.str_to_var(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -1134,7 +1134,7 @@ func StrToVar(s String) Variant {
 func VarToBytes(variable Variant) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	Global.utility.var_to_bytes(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -1144,7 +1144,7 @@ func VarToBytes(variable Variant) PackedByteArray {
 func BytesToVar(bytes PackedByteArray) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytes))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.bytes_to_var(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -1154,7 +1154,7 @@ func BytesToVar(bytes PackedByteArray) Variant {
 func VarToBytesWithObjects(variable Variant) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	Global.utility.var_to_bytes_with_objects(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
 	frame.Free()
@@ -1164,7 +1164,7 @@ func VarToBytesWithObjects(variable Variant) PackedByteArray {
 func BytesToVarWithObjects(bytes PackedByteArray) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytes))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.utility.bytes_to_var_with_objects(r_ret.Addr(), frame.Array(0), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -1184,7 +1184,7 @@ func Hash(variable Variant) Int {
 func InstanceFromId(instance_id Int) Object {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance_id)
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[enginePointer](frame)
 	Global.utility.instance_from_id(r_ret.Addr(), frame.Array(0), 1)
 	var ret Object = PointerMustAssertInstanceID[Object](r_ret.Get())
 	frame.Free()
@@ -1365,7 +1365,7 @@ func (self String) Substr(from Int, len Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, len)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.substr(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1386,7 +1386,7 @@ func (self String) GetSlice(delimiter String, slice Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, slice)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.get_slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1403,7 +1403,7 @@ func (self String) GetSlicec(delimiter Int, slice Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter)
 	callframe.Arg(frame, slice)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.get_slicec(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1648,7 +1648,7 @@ print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
 //go:nosplit
 func (self String) Bigrams() PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.bigrams(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
@@ -1709,7 +1709,7 @@ func (self String) Format(values Variant, placeholder String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(values))
 	callframe.Arg(frame, pointers.Get(placeholder))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.format(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1725,7 +1725,7 @@ func (self String) Replace(what String, forwhat String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, pointers.Get(forwhat))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.replace(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1741,7 +1741,7 @@ func (self String) Replacen(what String, forwhat String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, pointers.Get(forwhat))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.replacen(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1756,7 +1756,7 @@ Repeats this string a number of times. [param count] needs to be greater than [c
 func (self String) Repeat(count Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.repeat(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1770,7 +1770,7 @@ Returns the copy of this string in reverse order. This operation works on unicod
 //go:nosplit
 func (self String) Reverse() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1786,7 +1786,7 @@ func (self String) Insert(position Int, what String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1802,7 +1802,7 @@ func (self String) Erase(position Int, chars Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, chars)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.erase(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1828,7 +1828,7 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 //go:nosplit
 func (self String) Capitalize() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.capitalize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1842,7 +1842,7 @@ Returns the string converted to [code]camelCase[/code].
 //go:nosplit
 func (self String) ToCamelCase() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_camel_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1856,7 +1856,7 @@ Returns the string converted to [code]PascalCase[/code].
 //go:nosplit
 func (self String) ToPascalCase() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_pascal_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1883,7 +1883,7 @@ Returns the string converted to [code]snake_case[/code].
 //go:nosplit
 func (self String) ToSnakeCase() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_snake_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -1922,7 +1922,7 @@ func (self String) Split(delimiter String, allow_empty Bool, maxsplit Int) Packe
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
 	callframe.Arg(frame, maxsplit)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.split(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
@@ -1955,7 +1955,7 @@ func (self String) Rsplit(delimiter String, allow_empty Bool, maxsplit Int) Pack
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
 	callframe.Arg(frame, maxsplit)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.rsplit(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
@@ -1977,7 +1977,7 @@ func (self String) SplitFloats(delimiter String, allow_empty Bool) PackedFloat64
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.split_floats(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
@@ -2008,7 +2008,7 @@ GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
 func (self String) Join(parts PackedStringArray) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parts))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.join(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2022,7 +2022,7 @@ Returns the string converted to [code]UPPERCASE[/code].
 //go:nosplit
 func (self String) ToUpper() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_upper(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2036,7 +2036,7 @@ Returns the string converted to [code]lowercase[/code].
 //go:nosplit
 func (self String) ToLower() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_lower(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2055,7 +2055,7 @@ print("Hello World!".left(-4)) # Prints "Hello Wo"
 func (self String) Left(length Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.left(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2074,7 +2074,7 @@ print("Hello World!".right(-4)) # Prints "o World!"
 func (self String) Right(length Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.right(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2091,7 +2091,7 @@ func (self String) StripEdges(left Bool, right Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, left)
 	callframe.Arg(frame, right)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.strip_edges(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2105,7 +2105,7 @@ Strips all escape characters from the string. These include all non-printable co
 //go:nosplit
 func (self String) StripEscapes() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.strip_escapes(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2121,7 +2121,7 @@ Removes a set of characters defined in [param chars] from the string's beginning
 func (self String) Lstrip(chars String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(chars))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.lstrip(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2137,7 +2137,7 @@ Removes a set of characters defined in [param chars] from the string's end. See 
 func (self String) Rstrip(chars String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(chars))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.rstrip(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2162,7 +2162,7 @@ var h = "".get_extension()           # h is ""
 //go:nosplit
 func (self String) GetExtension() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.get_extension(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2179,7 +2179,7 @@ var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
 //go:nosplit
 func (self String) GetBasename() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.get_basename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2195,7 +2195,7 @@ Concatenates [param file] at the end of the string as a subpath, adding [code]/[
 func (self String) PathJoin(file String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.path_join(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2226,7 +2226,7 @@ For example, the string can be indented with two tabulations using [code]"\t\t"[
 func (self String) Indent(prefix String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(prefix))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.indent(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2240,7 +2240,7 @@ Returns a copy of the string with indentation (leading tabs and spaces) removed.
 //go:nosplit
 func (self String) Dedent() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.dedent(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2269,7 +2269,7 @@ Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string 
 //go:nosplit
 func (self String) Md5Text() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.md5_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2283,7 +2283,7 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the str
 //go:nosplit
 func (self String) Sha1Text() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.sha1_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2297,7 +2297,7 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the s
 //go:nosplit
 func (self String) Sha256Text() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.sha256_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2311,7 +2311,7 @@ Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string 
 //go:nosplit
 func (self String) Md5Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.md5_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -2325,7 +2325,7 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the str
 //go:nosplit
 func (self String) Sha1Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.sha1_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -2339,7 +2339,7 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the s
 //go:nosplit
 func (self String) Sha256Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.sha256_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -2443,7 +2443,7 @@ print(simple_path) # Prints "path/file"
 //go:nosplit
 func (self String) SimplifyPath() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.simplify_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2460,7 +2460,7 @@ var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
 //go:nosplit
 func (self String) GetBaseDir() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.get_base_dir(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2477,7 +2477,7 @@ var file = "/path/to/icon.png".get_file() # file is "icon.png"
 //go:nosplit
 func (self String) GetFile() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.get_file(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2492,7 +2492,7 @@ Returns a copy of the string with special characters escaped using the XML stand
 func (self String) XmlEscape(escape_quotes Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, escape_quotes)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.xml_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2506,7 +2506,7 @@ Returns a copy of the string with escaped characters replaced by their meanings 
 //go:nosplit
 func (self String) XmlUnescape() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.xml_unescape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2534,7 +2534,7 @@ GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
 //go:nosplit
 func (self String) UriEncode() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.uri_encode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2558,7 +2558,7 @@ GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
 //go:nosplit
 func (self String) UriDecode() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.uri_decode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2572,7 +2572,7 @@ Returns a copy of the string with special characters escaped using the C languag
 //go:nosplit
 func (self String) CEscape() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.c_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2587,7 +2587,7 @@ Returns a copy of the string with escaped characters replaced by their meanings.
 //go:nosplit
 func (self String) CUnescape() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.c_unescape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2601,7 +2601,7 @@ Returns a copy of the string with special characters escaped using the JSON stan
 //go:nosplit
 func (self String) JsonEscape() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.json_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2615,7 +2615,7 @@ Returns a copy of the string with all characters that are not allowed in [member
 //go:nosplit
 func (self String) ValidateNodeName() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.validate_node_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2629,7 +2629,7 @@ Returns a copy of the string with all characters that are not allowed in [method
 //go:nosplit
 func (self String) ValidateFilename() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.validate_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2862,7 +2862,7 @@ func (self String) Lpad(min_length Int, character String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
 	callframe.Arg(frame, pointers.Get(character))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.lpad(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2878,7 +2878,7 @@ func (self String) Rpad(min_length Int, character String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
 	callframe.Arg(frame, pointers.Get(character))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.rpad(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2893,7 +2893,7 @@ Formats the string representing a number to have an exact number of [param digit
 func (self String) PadDecimals(digits Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.pad_decimals(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2908,7 +2908,7 @@ Formats the string representing a number to have an exact number of [param digit
 func (self String) PadZeros(digits Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.pad_zeros(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2923,7 +2923,7 @@ Removes the given [param prefix] from the start of the string, or returns the st
 func (self String) TrimPrefix(prefix String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(prefix))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.trim_prefix(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2938,7 +2938,7 @@ Removes the given [param suffix] from the end of the string, or returns the stri
 func (self String) TrimSuffix(suffix String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(suffix))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.trim_suffix(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -2952,7 +2952,7 @@ Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/L
 //go:nosplit
 func (self String) ToAsciiBuffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_ascii_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -2966,7 +2966,7 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] en
 //go:nosplit
 func (self String) ToUtf8Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_utf8_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -2980,7 +2980,7 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] 
 //go:nosplit
 func (self String) ToUtf16Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_utf16_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -2994,7 +2994,7 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] 
 //go:nosplit
 func (self String) ToUtf32Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_utf32_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -3020,7 +3020,7 @@ GD.Print(buf.HexDecode().GetStringFromUtf8());
 //go:nosplit
 func (self String) HexDecode() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.hex_decode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -3034,7 +3034,7 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide 
 //go:nosplit
 func (self String) ToWcharBuffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.String.to_wchar_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -3064,7 +3064,7 @@ GD.Print(n.ToString("e1")); // Prints -5.2e+008
 func (self String) NumScientific(number Float) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.builtin.String.num_scientific(callframe.Nil, frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -3095,7 +3095,7 @@ func (self String) Num(number Float, decimals Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, decimals)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.builtin.String.num(callframe.Nil, frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -3113,7 +3113,7 @@ func (self String) NumInt64(number Int, base Int, capitalize_hex Bool) String {
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, capitalize_hex)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.builtin.String.num_int64(callframe.Nil, frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -3131,7 +3131,7 @@ func (self String) NumUint64(number Int, base Int, capitalize_hex Bool) String {
 	callframe.Arg(frame, number)
 	callframe.Arg(frame, base)
 	callframe.Arg(frame, capitalize_hex)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.builtin.String.num_uint64(callframe.Nil, frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -3149,7 +3149,7 @@ print(String.chr(129302)) # Prints "🤖" (robot face emoji)
 func (self String) Chr(char Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, char)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.builtin.String.chr(callframe.Nil, frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -3164,7 +3164,7 @@ The result is in [url=https://en.wikipedia.org/wiki/Binary_prefix#IEC_prefixes]I
 func (self String) HumanizeSize(size Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.builtin.String.humanize_size(callframe.Nil, frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -3295,7 +3295,7 @@ func (self StringName) Substr(from Int, len Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, len)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.substr(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3316,7 +3316,7 @@ func (self StringName) GetSlice(delimiter String, slice Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, slice)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.get_slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3333,7 +3333,7 @@ func (self StringName) GetSlicec(delimiter Int, slice Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter)
 	callframe.Arg(frame, slice)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.get_slicec(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3578,7 +3578,7 @@ print("Get up!".bigrams()) # Prints ["Ge", "et", "t ", " u", "up", "p!"]
 //go:nosplit
 func (self StringName) Bigrams() PackedStringArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.bigrams(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
@@ -3632,7 +3632,7 @@ func (self StringName) Format(values Variant, placeholder String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(values))
 	callframe.Arg(frame, pointers.Get(placeholder))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.format(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3648,7 +3648,7 @@ func (self StringName) Replace(what String, forwhat String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, pointers.Get(forwhat))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.replace(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3664,7 +3664,7 @@ func (self StringName) Replacen(what String, forwhat String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(what))
 	callframe.Arg(frame, pointers.Get(forwhat))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.replacen(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3679,7 +3679,7 @@ Repeats this string a number of times. [param count] needs to be greater than [c
 func (self StringName) Repeat(count Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.repeat(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3693,7 +3693,7 @@ Returns the copy of this string in reverse order. This operation works on unicod
 //go:nosplit
 func (self StringName) Reverse() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.reverse(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3709,7 +3709,7 @@ func (self StringName) Insert(position Int, what String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, pointers.Get(what))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.insert(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3725,7 +3725,7 @@ func (self StringName) Erase(position Int, chars Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, chars)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.erase(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3751,7 +3751,7 @@ Changes the appearance of the string: replaces underscores ([code]_[/code]) with
 //go:nosplit
 func (self StringName) Capitalize() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.capitalize(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3765,7 +3765,7 @@ Returns the string converted to [code]camelCase[/code].
 //go:nosplit
 func (self StringName) ToCamelCase() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_camel_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3779,7 +3779,7 @@ Returns the string converted to [code]PascalCase[/code].
 //go:nosplit
 func (self StringName) ToPascalCase() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_pascal_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3806,7 +3806,7 @@ Returns the string converted to [code]snake_case[/code].
 //go:nosplit
 func (self StringName) ToSnakeCase() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_snake_case(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3845,7 +3845,7 @@ func (self StringName) Split(delimiter String, allow_empty Bool, maxsplit Int) P
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
 	callframe.Arg(frame, maxsplit)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.split(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
@@ -3878,7 +3878,7 @@ func (self StringName) Rsplit(delimiter String, allow_empty Bool, maxsplit Int) 
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
 	callframe.Arg(frame, maxsplit)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.rsplit(p_self.Addr(), frame.Array(0), r_ret.Addr(), 3)
 	var ret = pointers.New[PackedStringArray](r_ret.Get())
@@ -3900,7 +3900,7 @@ func (self StringName) SplitFloats(delimiter String, allow_empty Bool) PackedFlo
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(delimiter))
 	callframe.Arg(frame, allow_empty)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.split_floats(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[PackedFloat64Array](r_ret.Get())
@@ -3931,7 +3931,7 @@ GD.Print(string.Join("---", fruits)); // Prints "Apple---Orange---Pear---Kiwi"
 func (self StringName) Join(parts PackedStringArray) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parts))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.join(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3945,7 +3945,7 @@ Returns the string converted to [code]UPPERCASE[/code].
 //go:nosplit
 func (self StringName) ToUpper() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_upper(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3959,7 +3959,7 @@ Returns the string converted to [code]lowercase[/code].
 //go:nosplit
 func (self StringName) ToLower() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_lower(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3978,7 +3978,7 @@ print("Hello World!".left(-4)) # Prints "Hello Wo"
 func (self StringName) Left(length Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.left(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -3997,7 +3997,7 @@ print("Hello World!".right(-4)) # Prints "o World!"
 func (self StringName) Right(length Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.right(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4014,7 +4014,7 @@ func (self StringName) StripEdges(left Bool, right Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, left)
 	callframe.Arg(frame, right)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.strip_edges(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4028,7 +4028,7 @@ Strips all escape characters from the string. These include all non-printable co
 //go:nosplit
 func (self StringName) StripEscapes() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.strip_escapes(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4044,7 +4044,7 @@ Removes a set of characters defined in [param chars] from the string's beginning
 func (self StringName) Lstrip(chars String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(chars))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.lstrip(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4060,7 +4060,7 @@ Removes a set of characters defined in [param chars] from the string's end. See 
 func (self StringName) Rstrip(chars String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(chars))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.rstrip(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4085,7 +4085,7 @@ var h = "".get_extension()           # h is ""
 //go:nosplit
 func (self StringName) GetExtension() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.get_extension(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4102,7 +4102,7 @@ var base = "/path/to/file.txt".get_basename() # base is "/path/to/file"
 //go:nosplit
 func (self StringName) GetBasename() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.get_basename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4118,7 +4118,7 @@ Concatenates [param file] at the end of the string as a subpath, adding [code]/[
 func (self StringName) PathJoin(file String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.path_join(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4149,7 +4149,7 @@ For example, the string can be indented with two tabulations using [code]"\t\t"[
 func (self StringName) Indent(prefix String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(prefix))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.indent(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4163,7 +4163,7 @@ Returns a copy of the string with indentation (leading tabs and spaces) removed.
 //go:nosplit
 func (self StringName) Dedent() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.dedent(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4177,7 +4177,7 @@ Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string 
 //go:nosplit
 func (self StringName) Md5Text() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.md5_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4191,7 +4191,7 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the str
 //go:nosplit
 func (self StringName) Sha1Text() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.sha1_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4205,7 +4205,7 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the s
 //go:nosplit
 func (self StringName) Sha256Text() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.sha256_text(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4219,7 +4219,7 @@ Returns the [url=https://en.wikipedia.org/wiki/MD5]MD5 hash[/url] of the string 
 //go:nosplit
 func (self StringName) Md5Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.md5_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -4233,7 +4233,7 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-1]SHA-1[/url] hash of the str
 //go:nosplit
 func (self StringName) Sha1Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.sha1_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -4247,7 +4247,7 @@ Returns the [url=https://en.wikipedia.org/wiki/SHA-2]SHA-256[/url] hash of the s
 //go:nosplit
 func (self StringName) Sha256Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.sha256_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -4351,7 +4351,7 @@ print(simple_path) # Prints "path/file"
 //go:nosplit
 func (self StringName) SimplifyPath() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.simplify_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4368,7 +4368,7 @@ var dir_path = "/path/to/file.txt".get_base_dir() # dir_path is "/path/to"
 //go:nosplit
 func (self StringName) GetBaseDir() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.get_base_dir(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4385,7 +4385,7 @@ var file = "/path/to/icon.png".get_file() # file is "icon.png"
 //go:nosplit
 func (self StringName) GetFile() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.get_file(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4400,7 +4400,7 @@ Returns a copy of the string with special characters escaped using the XML stand
 func (self StringName) XmlEscape(escape_quotes Bool) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, escape_quotes)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.xml_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4414,7 +4414,7 @@ Returns a copy of the string with escaped characters replaced by their meanings 
 //go:nosplit
 func (self StringName) XmlUnescape() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.xml_unescape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4442,7 +4442,7 @@ GD.Print(url); // Prints "$DOCS_URL/?highlight=Godot%20Engine%3%docs"
 //go:nosplit
 func (self StringName) UriEncode() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.uri_encode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4466,7 +4466,7 @@ GD.Print(url.URIDecode()) // Prints "$DOCS_URL/?highlight=Godot Engine:docs"
 //go:nosplit
 func (self StringName) UriDecode() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.uri_decode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4480,7 +4480,7 @@ Returns a copy of the string with special characters escaped using the C languag
 //go:nosplit
 func (self StringName) CEscape() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.c_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4495,7 +4495,7 @@ Returns a copy of the string with escaped characters replaced by their meanings.
 //go:nosplit
 func (self StringName) CUnescape() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.c_unescape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4509,7 +4509,7 @@ Returns a copy of the string with special characters escaped using the JSON stan
 //go:nosplit
 func (self StringName) JsonEscape() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.json_escape(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4523,7 +4523,7 @@ Returns a copy of the string with all characters that are not allowed in [member
 //go:nosplit
 func (self StringName) ValidateNodeName() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.validate_node_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4537,7 +4537,7 @@ Returns a copy of the string with all characters that are not allowed in [method
 //go:nosplit
 func (self StringName) ValidateFilename() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.validate_filename(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4770,7 +4770,7 @@ func (self StringName) Lpad(min_length Int, character String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
 	callframe.Arg(frame, pointers.Get(character))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.lpad(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4786,7 +4786,7 @@ func (self StringName) Rpad(min_length Int, character String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, min_length)
 	callframe.Arg(frame, pointers.Get(character))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.rpad(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4801,7 +4801,7 @@ Formats the string representing a number to have an exact number of [param digit
 func (self StringName) PadDecimals(digits Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.pad_decimals(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4816,7 +4816,7 @@ Formats the string representing a number to have an exact number of [param digit
 func (self StringName) PadZeros(digits Int) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, digits)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.pad_zeros(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4831,7 +4831,7 @@ Removes the given [param prefix] from the start of the string, or returns the st
 func (self StringName) TrimPrefix(prefix String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(prefix))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.trim_prefix(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4846,7 +4846,7 @@ Removes the given [param suffix] from the end of the string, or returns the stri
 func (self StringName) TrimSuffix(suffix String) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(suffix))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.trim_suffix(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[String](r_ret.Get())
@@ -4860,7 +4860,7 @@ Converts the string to an [url=https://en.wikipedia.org/wiki/ASCII]ASCII[/url]/L
 //go:nosplit
 func (self StringName) ToAsciiBuffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_ascii_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -4874,7 +4874,7 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-8]UTF-8[/url] en
 //go:nosplit
 func (self StringName) ToUtf8Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_utf8_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -4888,7 +4888,7 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-16]UTF-16[/url] 
 //go:nosplit
 func (self StringName) ToUtf16Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_utf16_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -4902,7 +4902,7 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/UTF-32]UTF-32[/url] 
 //go:nosplit
 func (self StringName) ToUtf32Buffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_utf32_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -4928,7 +4928,7 @@ GD.Print(buf.HexDecode().GetStringFromUtf8());
 //go:nosplit
 func (self StringName) HexDecode() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.hex_decode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -4942,7 +4942,7 @@ Converts the string to a [url=https://en.wikipedia.org/wiki/Wide_character]wide 
 //go:nosplit
 func (self StringName) ToWcharBuffer() PackedByteArray {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.StringName.to_wchar_buffer(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[PackedByteArray](r_ret.Get())
@@ -5015,7 +5015,7 @@ GD.Print(spritePath.GetName(2)); // Prints "Sprite".
 func (self NodePath) GetName(idx Int) StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.get_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[StringName](r_ret.Get())
@@ -5072,7 +5072,7 @@ GD.Print(pathToName.GetSubname(1)); // Prints "resource_name".
 func (self NodePath) GetSubname(idx Int) StringName {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.get_subname(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[StringName](r_ret.Get())
@@ -5086,7 +5086,7 @@ Returns all node names concatenated with a slash character ([code]/[/code]) as a
 //go:nosplit
 func (self NodePath) GetConcatenatedNames() StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.get_concatenated_names(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
@@ -5110,7 +5110,7 @@ GD.Print(nodePath.GetConcatenatedSubnames()); // Prints "texture:resource_name".
 //go:nosplit
 func (self NodePath) GetConcatenatedSubnames() StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.get_concatenated_subnames(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
@@ -5128,7 +5128,7 @@ func (self NodePath) Slice(begin Int, end Int) NodePath {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[NodePath](r_ret.Get())
@@ -5160,7 +5160,7 @@ GD.Print(propertyPath); // Prints ":position:x".
 //go:nosplit
 func (self NodePath) GetAsPropertyPath() NodePath {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.NodePath.get_as_property_path(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[NodePath](r_ret.Get())
@@ -5191,7 +5191,7 @@ func (self Callable) Create(variant Variant, method StringName) Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variant))
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[callablePointers](frame)
+	var r_ret = callframe.Ret[[2]uint64](frame)
 	Global.builtin.Callable.create(callframe.Nil, frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Callable](r_ret.Get())
 	frame.Free()
@@ -5205,7 +5205,7 @@ Calls the method represented by this [Callable]. Unlike [method call], this meth
 func (self Callable) Callv(arguments Array) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.callv(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -5279,7 +5279,7 @@ Returns the object on which this [Callable] is called.
 //go:nosplit
 func (self Callable) GetObject() Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.get_object(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret Object = PointerWithOwnershipTransferredToGo[Object](r_ret.Get())
@@ -5307,7 +5307,7 @@ Returns the name of the method represented by this [Callable]. If the callable i
 //go:nosplit
 func (self Callable) GetMethod() StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.get_method(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
@@ -5349,7 +5349,7 @@ Return the bound arguments (as long as [method get_bound_arguments_count] is gre
 //go:nosplit
 func (self Callable) GetBoundArguments() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.get_bound_arguments(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Array](r_ret.Get())
@@ -5380,7 +5380,7 @@ Returns a copy of this [Callable] with one or more arguments bound, reading them
 func (self Callable) Bindv(arguments Array) Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret = callframe.Ret[callablePointers](frame)
+	var r_ret = callframe.Ret[[2]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.bindv(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Callable](r_ret.Get())
@@ -5401,7 +5401,7 @@ func _ready():
 func (self Callable) Unbind(argcount Int) Callable {
 	var frame = callframe.New()
 	callframe.Arg(frame, argcount)
-	var r_ret = callframe.Ret[callablePointers](frame)
+	var r_ret = callframe.Ret[[2]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.unbind(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Callable](r_ret.Get())
@@ -5418,7 +5418,7 @@ func (self Callable) Call(args ...Variant) Variant {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.call(p_self.Addr(), frame.Array(0), r_ret.Addr(), int32(len(args))+0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -5496,7 +5496,7 @@ func (self Callable) Bind(args ...Variant) Callable {
 	for _, arg := range args {
 		callframe.Arg(frame, pointers.Get(arg))
 	}
-	var r_ret = callframe.Ret[callablePointers](frame)
+	var r_ret = callframe.Ret[[2]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Callable.bind(p_self.Addr(), frame.Array(0), r_ret.Addr(), int32(len(args))+0)
 	var ret = pointers.New[Callable](r_ret.Get())
@@ -5524,7 +5524,7 @@ Returns the object emitting this signal.
 //go:nosplit
 func (self Signal) GetObject() Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.get_object(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret Object = PointerWithOwnershipTransferredToGo[Object](r_ret.Get())
@@ -5552,7 +5552,7 @@ Returns the name of this signal.
 //go:nosplit
 func (self Signal) GetName() StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.get_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
@@ -5621,7 +5621,7 @@ Returns an [Array] of connections for this signal. Each connection is represente
 //go:nosplit
 func (self Signal) GetConnections() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Signal.get_connections(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Array](r_ret.Get())
@@ -5751,7 +5751,7 @@ func (self Dictionary) Merged(dictionary Dictionary, overwrite Bool) Dictionary 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	callframe.Arg(frame, overwrite)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.merged(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Dictionary](r_ret.Get())
@@ -5830,7 +5830,7 @@ Finds and returns the first key whose associated value is equal to [param value]
 func (self Dictionary) FindKey(value Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.find_key(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -5891,7 +5891,7 @@ Returns the list of keys in the dictionary.
 //go:nosplit
 func (self Dictionary) Keys() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.keys(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Array](r_ret.Get())
@@ -5905,7 +5905,7 @@ Returns the list of values in this dictionary.
 //go:nosplit
 func (self Dictionary) Values() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.values(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Array](r_ret.Get())
@@ -5920,7 +5920,7 @@ Creates and returns a new copy of the dictionary. If [param deep] is [code]true[
 func (self Dictionary) Duplicate(deep Bool) Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, deep)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Dictionary](r_ret.Get())
@@ -5936,7 +5936,7 @@ func (self Dictionary) Get(key Variant, def Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(def))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.get(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -5952,7 +5952,7 @@ func (self Dictionary) GetOrAdd(key Variant, def Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(def))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Dictionary.get_or_add(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6231,7 +6231,7 @@ Returns the first element of the array. If the array is empty, fails and returns
 //go:nosplit
 func (self Array) Front() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.front(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6246,7 +6246,7 @@ Returns the last element of the array. If the array is empty, fails and returns 
 //go:nosplit
 func (self Array) Back() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6271,7 +6271,7 @@ GD.Print(array.PickRandom()); // May print 1, 2, 3.25, or "Hi".
 //go:nosplit
 func (self Array) PickRandom() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.pick_random(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6371,7 +6371,7 @@ Removes and returns the last element of the array. Returns [code]null[/code] if 
 //go:nosplit
 func (self Array) PopBack() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.pop_back(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6386,7 +6386,7 @@ Removes and returns the first element of the array. Returns [code]null[/code] if
 //go:nosplit
 func (self Array) PopFront() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.pop_front(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6402,7 +6402,7 @@ Removes and returns the element of the array at index [param position]. If negat
 func (self Array) PopAt(position Int) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.pop_at(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6575,7 +6575,7 @@ By default, a [b]shallow[/b] copy is returned: all nested [Array] and [Dictionar
 func (self Array) Duplicate(deep Bool) Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, deep)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Array](r_ret.Get())
@@ -6606,7 +6606,7 @@ func (self Array) Slice(begin Int, end Int, step Int, deep Bool) Array {
 	callframe.Arg(frame, end)
 	callframe.Arg(frame, step)
 	callframe.Arg(frame, deep)
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 4)
 	var ret = pointers.New[Array](r_ret.Get())
@@ -6633,7 +6633,7 @@ See also [method any], [method all], [method map] and [method reduce].
 func (self Array) Filter(method Callable) Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.filter(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Array](r_ret.Get())
@@ -6660,7 +6660,7 @@ See also [method filter], [method reduce], [method any] and [method all].
 func (self Array) Map(method Callable) Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.map_(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	var ret = pointers.New[Array](r_ret.Get())
@@ -6700,7 +6700,7 @@ func (self Array) Reduce(method Callable, accum Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(accum))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.reduce(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6802,7 +6802,7 @@ To find the maximum value using a custom comparator, you can use [method reduce]
 //go:nosplit
 func (self Array) Max() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.max(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6816,7 +6816,7 @@ Returns the minimum value contained in the array, if all elements can be compare
 //go:nosplit
 func (self Array) Min() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.min(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -6878,7 +6878,7 @@ Returns the [b]built-in[/b] class name of the typed array, if the built-in [Vari
 //go:nosplit
 func (self Array) GetTypedClassName() StringName {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.get_typed_class_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[StringName](r_ret.Get())
@@ -6892,7 +6892,7 @@ Returns the [Script] instance associated with this typed array, or [code]null[/c
 //go:nosplit
 func (self Array) GetTypedScript() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.Array.get_typed_script(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	var ret = pointers.New[Variant](r_ret.Get())
@@ -7146,7 +7146,7 @@ func (selfPtr *PackedByteArray) Slice(begin Int, end Int) PackedByteArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7195,7 +7195,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedByteArray) Duplicate() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7264,7 +7264,7 @@ Converts ASCII/Latin-1 encoded array to [String]. Fast alternative to [method ge
 func (selfPtr *PackedByteArray) GetStringFromAscii() String {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_ascii(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7280,7 +7280,7 @@ Converts UTF-8 encoded array to [String]. Slower than [method get_string_from_as
 func (selfPtr *PackedByteArray) GetStringFromUtf8() String {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_utf8(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7296,7 +7296,7 @@ Converts UTF-16 encoded array to [String]. If the BOM is missing, system endiann
 func (selfPtr *PackedByteArray) GetStringFromUtf16() String {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_utf16(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7312,7 +7312,7 @@ Converts UTF-32 encoded array to [String]. System endianness is assumed. Returns
 func (selfPtr *PackedByteArray) GetStringFromUtf32() String {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_utf32(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7328,7 +7328,7 @@ Converts wide character ([code]wchar_t[/code], UTF-16 on Windows, UTF-32 on othe
 func (selfPtr *PackedByteArray) GetStringFromWchar() String {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.get_string_from_wchar(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7354,7 +7354,7 @@ GD.Print(array.HexEncode()); // Prints: 0b2eff
 func (selfPtr *PackedByteArray) HexEncode() String {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.hex_encode(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7371,7 +7371,7 @@ func (selfPtr *PackedByteArray) Compress(compression_mode Int) PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
 	callframe.Arg(frame, compression_mode)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.compress(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7390,7 +7390,7 @@ func (selfPtr *PackedByteArray) Decompress(buffer_size Int, compression_mode Int
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
 	callframe.Arg(frame, compression_mode)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decompress(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7411,7 +7411,7 @@ func (selfPtr *PackedByteArray) DecompressDynamic(max_output_size Int, compressi
 	var frame = callframe.New()
 	callframe.Arg(frame, max_output_size)
 	callframe.Arg(frame, compression_mode)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decompress_dynamic(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7634,7 +7634,7 @@ func (selfPtr *PackedByteArray) DecodeVar(byte_offset Int, allow_objects Bool) V
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	callframe.Arg(frame, allow_objects)
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.decode_var(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7670,7 +7670,7 @@ If the original data can't be converted to signed 32-bit integers, the resulting
 func (selfPtr *PackedByteArray) ToInt32Array() PackedInt32Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.to_int32_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7688,7 +7688,7 @@ If the original data can't be converted to signed 64-bit integers, the resulting
 func (selfPtr *PackedByteArray) ToInt64Array() PackedInt64Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.to_int64_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7706,7 +7706,7 @@ If the original data can't be converted to 32-bit floats, the resulting data is 
 func (selfPtr *PackedByteArray) ToFloat32Array() PackedFloat32Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.to_float32_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -7724,7 +7724,7 @@ If the original data can't be converted to 64-bit floats, the resulting data is 
 func (selfPtr *PackedByteArray) ToFloat64Array() PackedFloat64Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedByteArray.to_float64_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -8146,7 +8146,7 @@ func (selfPtr *PackedInt32Array) Slice(begin Int, end Int) PackedInt32Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -8163,7 +8163,7 @@ The size of the new array will be [code]int32_array.size() * 4[/code].
 func (selfPtr *PackedInt32Array) ToByteArray() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -8212,7 +8212,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedInt32Array) Duplicate() PackedInt32Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt32Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -8492,7 +8492,7 @@ func (selfPtr *PackedInt64Array) Slice(begin Int, end Int) PackedInt64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -8509,7 +8509,7 @@ The size of the new array will be [code]int64_array.size() * 8[/code].
 func (selfPtr *PackedInt64Array) ToByteArray() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -8558,7 +8558,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedInt64Array) Duplicate() PackedInt64Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedInt64Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -8839,7 +8839,7 @@ func (selfPtr *PackedFloat32Array) Slice(begin Int, end Int) PackedFloat32Array 
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -8856,7 +8856,7 @@ The size of the new array will be [code]float32_array.size() * 4[/code].
 func (selfPtr *PackedFloat32Array) ToByteArray() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -8907,7 +8907,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedFloat32Array) Duplicate() PackedFloat32Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat32Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -9191,7 +9191,7 @@ func (selfPtr *PackedFloat64Array) Slice(begin Int, end Int) PackedFloat64Array 
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -9208,7 +9208,7 @@ The size of the new array will be [code]float64_array.size() * 8[/code].
 func (selfPtr *PackedFloat64Array) ToByteArray() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -9259,7 +9259,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedFloat64Array) Duplicate() PackedFloat64Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedFloat64Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -9542,7 +9542,7 @@ func (selfPtr *PackedStringArray) Slice(begin Int, end Int) PackedStringArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -9558,7 +9558,7 @@ Returns a [PackedByteArray] with each string encoded as bytes.
 func (selfPtr *PackedStringArray) ToByteArray() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -9607,7 +9607,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedStringArray) Duplicate() PackedStringArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedStringArray.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -9888,7 +9888,7 @@ func (selfPtr *PackedVector2Array) Slice(begin Int, end Int) PackedVector2Array 
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -9904,7 +9904,7 @@ Returns a [PackedByteArray] with each vector encoded as bytes.
 func (selfPtr *PackedVector2Array) ToByteArray() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -9955,7 +9955,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedVector2Array) Duplicate() PackedVector2Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector2Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -10239,7 +10239,7 @@ func (selfPtr *PackedVector3Array) Slice(begin Int, end Int) PackedVector3Array 
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -10255,7 +10255,7 @@ Returns a [PackedByteArray] with each vector encoded as bytes.
 func (selfPtr *PackedVector3Array) ToByteArray() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -10306,7 +10306,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedVector3Array) Duplicate() PackedVector3Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector3Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -10589,7 +10589,7 @@ func (selfPtr *PackedColorArray) Slice(begin Int, end Int) PackedColorArray {
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -10605,7 +10605,7 @@ Returns a [PackedByteArray] with each color encoded as bytes.
 func (selfPtr *PackedColorArray) ToByteArray() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -10654,7 +10654,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedColorArray) Duplicate() PackedColorArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedColorArray.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -10935,7 +10935,7 @@ func (selfPtr *PackedVector4Array) Slice(begin Int, end Int) PackedVector4Array 
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.slice(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -10951,7 +10951,7 @@ Returns a [PackedByteArray] with each vector encoded as bytes.
 func (selfPtr *PackedVector4Array) ToByteArray() PackedByteArray {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.to_byte_array(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -11002,7 +11002,7 @@ Creates a copy of the array, and returns it.
 func (selfPtr *PackedVector4Array) Duplicate() PackedVector4Array {
 	var self = *selfPtr
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[2]uintptr](frame)
+	var r_ret = callframe.Ret[packedPointers](frame)
 	var p_self = callframe.Arg(frame, pointers.Get(self))
 	Global.builtin.PackedVector4Array.duplicate(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
 	pointers.Set(*selfPtr, p_self.Get())
@@ -11076,7 +11076,7 @@ Returns the object's built-in class name, as a [String]. See also [method is_cla
 //go:nosplit
 func (self Object) GetClass() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_class, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -11158,7 +11158,7 @@ var a = node.Get(Node2D.PropertyName.Rotation); // a is 1.5
 func (self Object) Get(property StringName) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11217,7 +11217,7 @@ var b = node.GetIndexed("position:y"); // b is -10
 func (self Object) GetIndexed(property_path NodePath) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property_path))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_indexed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11237,7 +11237,7 @@ Returns the object's property list as an [Array] of dictionaries. Each [Dictiona
 //go:nosplit
 func (self Object) GetPropertyList() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_property_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
@@ -11257,7 +11257,7 @@ Returns this object's methods and their signatures as an [Array] of dictionaries
 //go:nosplit
 func (self Object) GetMethodList() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_method_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
@@ -11287,7 +11287,7 @@ Returns the custom default value of the given [param property]. Use [method prop
 func (self Object) PropertyGetRevert(property StringName) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_property_get_revert, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11336,7 +11336,7 @@ Returns a [String] representing the object. Defaults to [code]"<ClassName#RID>"[
 //go:nosplit
 func (self Object) ToString() String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_to_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -11376,7 +11376,7 @@ Returns the object's [Script] instance, or [code]null[/code] if no script is att
 //go:nosplit
 func (self Object) GetScript() Variant {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_script, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11423,7 +11423,7 @@ func (self Object) GetMeta(name StringName, def Variant) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(def))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11452,7 +11452,7 @@ Returns the object's metadata entry names as a [PackedStringArray].
 //go:nosplit
 func (self Object) GetMetaList() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_meta_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
@@ -11576,7 +11576,7 @@ func (self Object) Callv(method StringName, arg_array Array) Variant {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(arg_array))
-	var r_ret = callframe.Ret[variantPointers](frame)
+	var r_ret = callframe.Ret[[3]uint64](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_callv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Variant](r_ret.Get())
 	frame.Free()
@@ -11635,7 +11635,7 @@ Returns the list of existing signals as an [Array] of dictionaries.
 //go:nosplit
 func (self Object) GetSignalList() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_signal_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
@@ -11652,7 +11652,7 @@ Returns an [Array] of connections for the given [param signal] name. Each connec
 func (self Object) GetSignalConnectionList(signal StringName) Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_signal_connection_list, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
@@ -11668,7 +11668,7 @@ Returns an [Array] of signal connections received by this object. Each connectio
 //go:nosplit
 func (self Object) GetIncomingConnections() Array {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_get_incoming_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[Array](r_ret.Get())
 	frame.Free()
@@ -11917,7 +11917,7 @@ func (self Object) Tr(message StringName, context StringName) String {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_tr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()
@@ -11939,7 +11939,7 @@ func (self Object) TrN(message StringName, plural_message StringName, n Int, con
 	callframe.Arg(frame, pointers.Get(plural_message))
 	callframe.Arg(frame, n)
 	callframe.Arg(frame, pointers.Get(context))
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]enginePointer](frame)
 	Global.Object.MethodBindPointerCall(Global.Methods.Object.Bind_tr_n, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[String](r_ret.Get())
 	frame.Free()

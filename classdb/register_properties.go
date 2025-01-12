@@ -212,12 +212,12 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 	return gd.NewVariant(value.Elem().Interface()), true
 }
 
-func (instance *instanceImplementation) ValidateProperty(name gd.StringName, info *gd.PropertyInfo) bool {
+func (instance *instanceImplementation) ValidateProperty(info *gd.PropertyInfo) bool {
 	switch validate := instance.Value.(type) {
 	case interface {
-		ValidateProperty(string, *gd.PropertyInfo) bool
+		ValidateProperty(*gd.PropertyInfo) bool
 	}:
-		return bool(validate.ValidateProperty(name.String(), info))
+		return bool(validate.ValidateProperty(info))
 	}
 	return true
 }

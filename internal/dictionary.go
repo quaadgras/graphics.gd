@@ -23,9 +23,9 @@ func (d Dictionary) Free() {
 
 func NewDictionary() Dictionary {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[[1]EnginePointer](frame)
 	Global.typeset.creation.Dictionary[0](r_ret.Addr(), callframe.Args{})
 	var raw = r_ret.Get()
 	frame.Free()
-	return pointers.New[Dictionary]([1]uintptr{raw})
+	return pointers.New[Dictionary](raw)
 }

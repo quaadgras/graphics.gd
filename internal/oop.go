@@ -15,33 +15,33 @@ var ExtensionInstances sync.Map
 
 type NotificationType int32
 
-func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uintptr]](ptr uintptr) T {
-	return pointers.New[T]([3]uintptr{ptr})
+func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uint64]](ptr EnginePointer) T {
+	return pointers.New[T]([3]uint64{uint64(ptr)})
 }
 
-func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uintptr]](ptr uintptr) T {
-	return pointers.Let[T]([3]uintptr{ptr})
+func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uint64]](ptr EnginePointer) T {
+	return pointers.Let[T]([3]uint64{uint64(ptr)})
 }
 
-func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uintptr]](ptr T) uintptr {
+func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uint64]](ptr T) EnginePointer {
 	raw := pointers.Get(ptr)
-	pointers.Set(ptr, [3]uintptr{raw[0], uintptr(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uintptr{raw[0]})}))})
+	pointers.Set(ptr, [3]uint64{raw[0], uint64(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uint64{raw[0]})}))})
 	pointers.Lay(ptr)
 	if raw[1] != 0 {
 		panic("illegal transfer of ownership from Go -> Godot")
 	}
-	return raw[0]
+	return EnginePointer(raw[0])
 }
 
-func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uintptr]](ptr uintptr) T {
+func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr EnginePointer) T {
 	if ptr == 0 {
 		return T{}
 	}
-	return pointers.Let[T]([3]uintptr{ptr, uintptr(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uintptr{ptr})}))})
+	return pointers.Let[T]([3]uint64{uint64(ptr), uint64(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uint64{uint64(ptr)})}))})
 }
 
-func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uintptr]](obj [1]Object, ptr uintptr) T {
-	return pointers.Let[T]([3]uintptr{ptr, 0})
+func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uint64]](obj [1]Object, ptr EnginePointer) T {
+	return pointers.Let[T]([3]uint64{uint64(ptr), 0})
 }
 
 func (self Object) AsObject() [1]Object {
@@ -129,7 +129,7 @@ func As[T IsClass](class IsClass) (T, bool) {
 	}
 	var classtag = Global.ClassDB.GetClassTag(NewStringName(classNameOf(rtype)))
 	casted := Global.Object.CastTo(class.AsObject(), classtag)
-	if casted != ([1]Object{}) && pointers.Get(casted[0]) != ([3]uintptr{}) {
+	if casted != ([1]Object{}) && pointers.Get(casted[0]) != ([3]uint64{}) {
 		return (*(*T)(unsafe.Pointer(&casted))), true
 	}
 	return zero, false
@@ -144,7 +144,7 @@ func as[T any](v Variant) T {
 	if obj, ok := val.(IsClass); ok {
 		var classtag = Global.ClassDB.GetClassTag(obj.AsObject()[0].GetClass().StringName())
 		casted := Global.Object.CastTo(obj.AsObject(), classtag)
-		if casted != ([1]Object{}) && pointers.Get(casted[0]) != ([3]uintptr{}) {
+		if casted != ([1]Object{}) && pointers.Get(casted[0]) != ([3]uint64{}) {
 			any(&zero).(PointerToClass).SetPointer(casted)
 		}
 		return zero

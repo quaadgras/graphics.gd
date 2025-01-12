@@ -20,10 +20,6 @@ var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
 
-type variantPointers = gd.VariantPointers
-type signalPointers = gd.SignalPointers
-type callablePointers = gd.CallablePointers
-
 /*
 Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
 [b]Note:[/b] Some names in this class contain "left" or "right" (e.g. [constant DOCK_SLOT_LEFT_UL]). These APIs assume left-to-right layout, and would be backwards when using right-to-left layout. These names are kept for compatibility reasons.
@@ -404,7 +400,7 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 */
 func (Instance) _forward_canvas_gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)
@@ -455,7 +451,7 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 */
 func (Instance) _forward_canvas_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport_control)
@@ -468,7 +464,7 @@ You need to enable calling of this method by using [method set_force_draw_over_f
 */
 func (Instance) _forward_canvas_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport_control)
@@ -519,9 +515,9 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, I
 */
 func (Instance) _forward_3d_gui_input(impl func(ptr unsafe.Pointer, viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(viewport_camera[0])
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, viewport_camera, event)
@@ -572,7 +568,7 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D viewportC
 */
 func (Instance) _forward_3d_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport_control)
@@ -585,7 +581,7 @@ You need to enable calling of this method by using [method set_force_draw_over_f
 */
 func (Instance) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport_control)
@@ -704,7 +700,7 @@ This function is used for plugins that edit specific object types (nodes or reso
 */
 func (Instance) _edit(impl func(ptr unsafe.Pointer, obj Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj)
@@ -717,7 +713,7 @@ Implement this function if your plugin edits a specific type of object (Resource
 */
 func (Instance) _handles(impl func(ptr unsafe.Pointer, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj)
@@ -763,7 +759,7 @@ func _set_state(data):
 */
 func (Instance) _set_state(impl func(ptr unsafe.Pointer, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var state = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var state = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(state)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, state)
@@ -811,7 +807,7 @@ func _get_unsaved_status(for_scene):
 */
 func (Instance) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var for_scene = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var for_scene = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(for_scene)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_scene.String())
@@ -871,7 +867,7 @@ func _set_window_layout(configuration):
 */
 func (Instance) _set_window_layout(impl func(ptr unsafe.Pointer, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(configuration[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, configuration)
@@ -891,7 +887,7 @@ func _get_window_layout(configuration):
 */
 func (Instance) _get_window_layout(impl func(ptr unsafe.Pointer, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(configuration[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, configuration)
@@ -1351,7 +1347,7 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 */
 func (class) _forward_canvas_gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)
@@ -1402,7 +1398,7 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 */
 func (class) _forward_canvas_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport_control)
@@ -1415,7 +1411,7 @@ You need to enable calling of this method by using [method set_force_draw_over_f
 */
 func (class) _forward_canvas_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport_control)
@@ -1466,9 +1462,9 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, I
 */
 func (class) _forward_3d_gui_input(impl func(ptr unsafe.Pointer, viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(viewport_camera[0])
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 1)})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, viewport_camera, event)
@@ -1519,7 +1515,7 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D viewportC
 */
 func (class) _forward_3d_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport_control)
@@ -1532,7 +1528,7 @@ You need to enable calling of this method by using [method set_force_draw_over_f
 */
 func (class) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(viewport_control[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport_control)
@@ -1651,7 +1647,7 @@ This function is used for plugins that edit specific object types (nodes or reso
 */
 func (class) _edit(impl func(ptr unsafe.Pointer, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj)
@@ -1664,7 +1660,7 @@ Implement this function if your plugin edits a specific type of object (Resource
 */
 func (class) _handles(impl func(ptr unsafe.Pointer, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj)
@@ -1710,7 +1706,7 @@ func _set_state(data):
 */
 func (class) _set_state(impl func(ptr unsafe.Pointer, state gd.Dictionary)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var state = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var state = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, state)
 	}
@@ -1757,7 +1753,7 @@ func _get_unsaved_status(for_scene):
 */
 func (class) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var for_scene = pointers.New[gd.String](gd.UnsafeGet[[1]uintptr](p_args, 0))
+		var for_scene = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_scene)
 		ptr, ok := pointers.End(ret)
@@ -1816,7 +1812,7 @@ func _set_window_layout(configuration):
 */
 func (class) _set_window_layout(impl func(ptr unsafe.Pointer, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(configuration[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, configuration)
@@ -1836,7 +1832,7 @@ func _get_window_layout(configuration):
 */
 func (class) _get_window_layout(impl func(ptr unsafe.Pointer, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
-		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uintptr{gd.UnsafeGet[uintptr](p_args, 0)})}
+		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(configuration[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, configuration)
@@ -1900,7 +1896,7 @@ func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title gd.S
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_control_to_bottom_panel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Button{gd.PointerMustAssertInstanceID[gdclass.Button](r_ret.Get())}
 	frame.Free()
@@ -2018,7 +2014,7 @@ Returns the [PopupMenu] under [b]Scene > Export As...[/b].
 //go:nosplit
 func (self class) GetExportAsMenu() [1]gdclass.PopupMenu {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_export_as_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -2124,7 +2120,7 @@ Gets the undo/redo object. Most actions in the editor can be undoable, so use th
 //go:nosplit
 func (self class) GetUndoRedo() [1]gdclass.EditorUndoRedoManager {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_undo_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -2411,7 +2407,7 @@ Returns the [EditorInterface] singleton instance.
 //go:nosplit
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.EditorInterface{gd.PointerLifetimeBoundTo[gdclass.EditorInterface](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -2426,7 +2422,7 @@ Gets the Editor's dialog used for making scripts.
 //go:nosplit
 func (self class) GetScriptCreateDialog() [1]gdclass.ScriptCreateDialog {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[uintptr](frame)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_script_create_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ScriptCreateDialog{gd.PointerLifetimeBoundTo[gdclass.ScriptCreateDialog](self.AsObject(), r_ret.Get())}
 	frame.Free()
@@ -2463,7 +2459,7 @@ Provide the version of the plugin declared in the [code]plugin.cfg[/code] config
 //go:nosplit
 func (self class) GetPluginVersion() gd.String {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]uintptr](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_get_plugin_version, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())
 	frame.Free()
