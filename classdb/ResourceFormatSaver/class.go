@@ -67,7 +67,7 @@ Saves the given resource object to a file at the target [param path]. [param fla
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
 func (Instance) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path string, flags int) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(resource[0])
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -83,7 +83,7 @@ func (Instance) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource
 Sets a new UID for the resource at the given [param path]. Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
 func (Instance) _set_uid(impl func(ptr unsafe.Pointer, path string, uid int) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
 		var uid = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -97,7 +97,7 @@ func (Instance) _set_uid(impl func(ptr unsafe.Pointer, path string, uid int) err
 Returns whether the given resource object can be saved by this saver.
 */
 func (Instance) _recognize(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -110,7 +110,7 @@ func (Instance) _recognize(impl func(ptr unsafe.Pointer, resource [1]gdclass.Res
 Returns the list of extensions available for saving the resource object, provided it is recognized (see [method _recognize]).
 */
 func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -128,7 +128,7 @@ Returns [code]true[/code] if this saver handles a given save path and [code]fals
 If this method is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions].
 */
 func (Instance) _recognize_path(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(resource[0])
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -163,7 +163,7 @@ Saves the given resource object to a file at the target [param path]. [param fla
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
 func (class) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path gd.String, flags gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(resource[0])
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -178,7 +178,7 @@ func (class) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, p
 Sets a new UID for the resource at the given [param path]. Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
 func (class) _set_uid(impl func(ptr unsafe.Pointer, path gd.String, uid gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var uid = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -191,7 +191,7 @@ func (class) _set_uid(impl func(ptr unsafe.Pointer, path gd.String, uid gd.Int) 
 Returns whether the given resource object can be saved by this saver.
 */
 func (class) _recognize(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -204,7 +204,7 @@ func (class) _recognize(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resour
 Returns the list of extensions available for saving the resource object, provided it is recognized (see [method _recognize]).
 */
 func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -222,7 +222,7 @@ Returns [code]true[/code] if this saver handles a given save path and [code]fals
 If this method is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions].
 */
 func (class) _recognize_path(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(resource[0])
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))

@@ -122,7 +122,7 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 [/codeblock]
 */
 func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -148,7 +148,7 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 [/codeblock]
 */
 func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -163,7 +163,7 @@ func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node Obje
 Virtual method which can be overridden to customize how connections are drawn.
 */
 func (Instance) _get_connection_line(impl func(ptr unsafe.Pointer, from_position Vector2.XY, to_position Vector2.XY) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var to_position = gd.UnsafeGet[gd.Vector2](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -198,7 +198,7 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 [/codeblocks]
 */
 func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node string, from_port int, to_node string, to_port int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(from_node)
 		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -610,7 +610,7 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 [/codeblock]
 */
 func (class) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -636,7 +636,7 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 [/codeblock]
 */
 func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port gd.Int, mouse_position gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -651,7 +651,7 @@ func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.O
 Virtual method which can be overridden to customize how connections are drawn.
 */
 func (class) _get_connection_line(impl func(ptr unsafe.Pointer, from_position gd.Vector2, to_position gd.Vector2) gd.PackedVector2Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var to_position = gd.UnsafeGet[gd.Vector2](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -686,7 +686,7 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 [/codeblocks]
 */
 func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
 		var to_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))

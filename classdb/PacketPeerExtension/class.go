@@ -44,7 +44,7 @@ func (self implementation) PutPacket(p_buffer unsafe.Pointer, p_buffer_size int)
 func (self implementation) GetAvailablePacketCount() (_ int)                                  { return }
 func (self implementation) GetMaxPacketSize() (_ int)                                         { return }
 func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -53,7 +53,7 @@ func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointe
 	}
 }
 func (Instance) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -62,14 +62,14 @@ func (Instance) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointe
 	}
 }
 func (Instance) _get_available_packet_count(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
 func (Instance) _get_max_packet_size(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -96,7 +96,7 @@ func New() Instance {
 }
 
 func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -106,7 +106,7 @@ func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, 
 }
 
 func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -116,7 +116,7 @@ func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, 
 }
 
 func (class) _get_available_packet_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -124,7 +124,7 @@ func (class) _get_available_packet_count(impl func(ptr unsafe.Pointer) gd.Int) (
 }
 
 func (class) _get_max_packet_size(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)

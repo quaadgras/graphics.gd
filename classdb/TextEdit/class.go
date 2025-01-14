@@ -77,7 +77,7 @@ func (self implementation) PastePrimaryClipboard(caret_index int)               
 Override this method to define what happens when the user types in the provided key [param unicode_char].
 */
 func (Instance) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char int, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var unicode_char = gd.UnsafeGet[gd.Int](p_args, 0)
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -89,7 +89,7 @@ func (Instance) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char
 Override this method to define what happens when the user presses the backspace key.
 */
 func (Instance) _backspace(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -100,7 +100,7 @@ func (Instance) _backspace(impl func(ptr unsafe.Pointer, caret_index int)) (cb g
 Override this method to define what happens when the user performs a cut operation.
 */
 func (Instance) _cut(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -111,7 +111,7 @@ func (Instance) _cut(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.Exte
 Override this method to define what happens when the user performs a copy operation.
 */
 func (Instance) _copy(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -122,7 +122,7 @@ func (Instance) _copy(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.Ext
 Override this method to define what happens when the user performs a paste operation.
 */
 func (Instance) _paste(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -134,7 +134,7 @@ Override this method to define what happens when the user performs a paste opera
 [b]Note:[/b] This method is only implemented on Linux.
 */
 func (Instance) _paste_primary_clipboard(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
@@ -1659,7 +1659,7 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
 Override this method to define what happens when the user types in the provided key [param unicode_char].
 */
 func (class) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char gd.Int, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var unicode_char = gd.UnsafeGet[gd.Int](p_args, 0)
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1671,7 +1671,7 @@ func (class) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char gd
 Override this method to define what happens when the user presses the backspace key.
 */
 func (class) _backspace(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
@@ -1682,7 +1682,7 @@ func (class) _backspace(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb g
 Override this method to define what happens when the user performs a cut operation.
 */
 func (class) _cut(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
@@ -1693,7 +1693,7 @@ func (class) _cut(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.Exte
 Override this method to define what happens when the user performs a copy operation.
 */
 func (class) _copy(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
@@ -1704,7 +1704,7 @@ func (class) _copy(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.Ext
 Override this method to define what happens when the user performs a paste operation.
 */
 func (class) _paste(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
@@ -1716,7 +1716,7 @@ Override this method to define what happens when the user performs a paste opera
 [b]Note:[/b] This method is only implemented on Linux.
 */
 func (class) _paste_primary_clipboard(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)

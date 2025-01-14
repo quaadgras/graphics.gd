@@ -70,7 +70,7 @@ Should return [code]true[/code] if the tile at coordinates [param coords] requir
 [b]Note:[/b] If the result of this function should change, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
 */
 func (Instance) _use_tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords Vector2i.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, coords)
@@ -85,7 +85,7 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 [b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
 */
 func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords Vector2i.XY, tile_data [1]gdclass.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 0)
 		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
 		defer pointers.End(tile_data[0])
@@ -415,7 +415,7 @@ Should return [code]true[/code] if the tile at coordinates [param coords] requir
 [b]Note:[/b] If the result of this function should change, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
 */
 func (class) _use_tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords gd.Vector2i) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, coords)
@@ -430,7 +430,7 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 [b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
 */
 func (class) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords gd.Vector2i, tile_data [1]gdclass.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 0)
 		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(tile_data[0])

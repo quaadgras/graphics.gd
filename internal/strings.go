@@ -3,8 +3,6 @@
 package gd
 
 import (
-	"unsafe"
-
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
 )
@@ -44,10 +42,6 @@ func (s *String) Append(other String) {
 	modified := Global.Strings.Append(*s, other)
 	pointers.End(*s)
 	*s = modified
-}
-
-func (s String) UnsafePointer() unsafe.Pointer {
-	return Global.Strings.UnsafePointer(s)
 }
 
 func (s String) Len() int { return int(s.Length()) }

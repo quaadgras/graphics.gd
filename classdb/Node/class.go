@@ -135,7 +135,7 @@ Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Objec
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
@@ -149,7 +149,7 @@ Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [meth
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
@@ -161,7 +161,7 @@ Called when the node enters the [SceneTree] (e.g. upon instantiating, scene chan
 Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Object._notification].
 */
 func (Instance) _enter_tree(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -172,7 +172,7 @@ Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene
 Corresponds to the [constant NOTIFICATION_EXIT_TREE] notification in [method Object._notification] and signal [signal tree_exiting]. To get notified when the node has already left the active tree, connect to the [signal tree_exited].
 */
 func (Instance) _exit_tree(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -185,7 +185,7 @@ Usually used for initialization. For even earlier initialization, [method Object
 [b]Note:[/b] This method may be called only once for each node. After removing a node from the scene tree and adding it again, [method _ready] will [b]not[/b] be called a second time. This can be bypassed by requesting another call with [method request_ready], which may be called anywhere before adding the node again.
 */
 func (Instance) _ready(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -212,7 +212,7 @@ func _get_configuration_warnings():
 [/codeblock]
 */
 func (Instance) _get_configuration_warnings(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
@@ -231,7 +231,7 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (Instance) _input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -247,7 +247,7 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
 */
 func (Instance) _shortcut_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -263,7 +263,7 @@ For gameplay input, this method is usually a better fit than [method _input], as
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (Instance) _unhandled_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -280,7 +280,7 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (Instance) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1259,7 +1259,7 @@ Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Objec
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (class) _process(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
@@ -1273,7 +1273,7 @@ Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [meth
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (class) _physics_process(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
@@ -1285,7 +1285,7 @@ Called when the node enters the [SceneTree] (e.g. upon instantiating, scene chan
 Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Object._notification].
 */
 func (class) _enter_tree(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -1296,7 +1296,7 @@ Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene
 Corresponds to the [constant NOTIFICATION_EXIT_TREE] notification in [method Object._notification] and signal [signal tree_exiting]. To get notified when the node has already left the active tree, connect to the [signal tree_exited].
 */
 func (class) _exit_tree(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -1309,7 +1309,7 @@ Usually used for initialization. For even earlier initialization, [method Object
 [b]Note:[/b] This method may be called only once for each node. After removing a node from the scene tree and adding it again, [method _ready] will [b]not[/b] be called a second time. This can be bypassed by requesting another call with [method request_ready], which may be called anywhere before adding the node again.
 */
 func (class) _ready(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -1336,7 +1336,7 @@ func _get_configuration_warnings():
 [/codeblock]
 */
 func (class) _get_configuration_warnings(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -1355,7 +1355,7 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (class) _input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1371,7 +1371,7 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
 */
 func (class) _shortcut_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1387,7 +1387,7 @@ For gameplay input, this method is usually a better fit than [method _input], as
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (class) _unhandled_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1404,7 +1404,7 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (class) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()

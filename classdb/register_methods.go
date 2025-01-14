@@ -54,7 +54,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type) {
 		gd.Global.ClassDB.RegisterClassMethod(gd.Global.ExtensionToken, class, gd.Method{
 			Name: gd.NewStringName(method.Name),
 			Call: variantCall(method),
-			PointerCall: func(instance any, args gd.UnsafeArgs, ret gd.UnsafeBack) {
+			PointerCall: func(instance any, args gd.Address, ret gd.Address) {
 				extensionInstance := instance.(*instanceImplementation).Value
 				slowCall(hasContext, reflect.ValueOf(extensionInstance).Method(i), args, ret)
 			},
@@ -85,7 +85,7 @@ func variantCall(method reflect.Method) func(instance any, v ...gd.Variant) (gd.
 	}
 }
 
-func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret gd.UnsafeBack) {
+func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd.Address) {
 	var (
 		args = make([]reflect.Value, method.Type().NumIn())
 	)
@@ -151,8 +151,8 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 			case gd.TypeRID:
 				value = gd.UnsafeGet[gd.RID](p_args, i-offset)
 			case gd.TypeObject:
-				ptr := gd.UnsafeGet[[3]uint64](p_args, i-offset)
-				val := [1]gd.Object{pointers.Let[gd.Object](ptr)}
+				ptr := gd.UnsafeGet[gd.EnginePointer](p_args, i-offset)
+				val := [1]gd.Object{pointers.Let[gd.Object]([3]uint64{uint64(ptr)})}
 				value = val
 			case gd.TypeCallable:
 				ptr := gd.UnsafeGet[[2]uint64](p_args, i-offset)
@@ -231,7 +231,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.UnsafeArgs, p_ret
 		}
 		vvalue := gd.NewVariant(result.Interface())
 		if vvalue.Type() != vtype {
-			panic(fmt.Sprintf("gdextension: unsupported Go -> Godot type %v", result.Type()))
+			panic(fmt.Sprintf("gdextension: expected %v, got %v", vtype, vvalue.Type()))
 		}
 		switch val := vvalue.Interface().(type) {
 		case gd.Bool:

@@ -41,7 +41,7 @@ type implementation struct{}
 func (self implementation) MixResampled(dst_buffer *AudioFrame, frame_count int) (_ int) { return }
 func (self implementation) GetStreamSamplingRate() (_ Float.X)                           { return }
 func (Instance) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count int) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -50,7 +50,7 @@ func (Instance) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFr
 	}
 }
 func (Instance) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Float(ret))
@@ -80,7 +80,7 @@ func New() Instance {
 }
 
 func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -90,7 +90,7 @@ func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame
 }
 
 func (class) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)

@@ -42,7 +42,7 @@ import (
 //go:embed convert_types_test.gd
 var convert_types_test string
 
-var doneConversionsTest = make(chan error, 2)
+var doneConversionsTest = make(chan error, 100)
 
 type Converter struct {
 	classdb.Extension[Converter, Node.Instance]

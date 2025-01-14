@@ -118,7 +118,7 @@ func (self implementation) Finalize()                             { return }
 Called once during initialization.
 */
 func (Instance) _initialize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -129,7 +129,7 @@ Called each physics frame with the time since the last physics frame as argument
 If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 */
 func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, Float.X(delta))
@@ -142,7 +142,7 @@ Called each process (idle) frame with the time since the last process frame as a
 If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 */
 func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, Float.X(delta))
@@ -154,7 +154,7 @@ func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X) bool) (cb 
 Called before the program exits.
 */
 func (Instance) _finalize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -182,7 +182,7 @@ func New() Instance {
 Called once during initialization.
 */
 func (class) _initialize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -193,7 +193,7 @@ Called each physics frame with the time since the last physics frame as argument
 If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 */
 func (class) _physics_process(impl func(ptr unsafe.Pointer, delta gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, delta)
@@ -206,7 +206,7 @@ Called each process (idle) frame with the time since the last process frame as a
 If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 */
 func (class) _process(impl func(ptr unsafe.Pointer, delta gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, delta)
@@ -218,7 +218,7 @@ func (class) _process(impl func(ptr unsafe.Pointer, delta gd.Float) bool) (cb gd
 Called before the program exits.
 */
 func (class) _finalize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}

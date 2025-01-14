@@ -53,7 +53,7 @@ Called by the [PhysicsServer3D] to set the position for the [SoftBody3D] vertex 
 [b]Note:[/b] The [param vertex] parameter used to be of type [code]const void*[/code] prior to Godot 4.2.
 */
 func (Instance) _set_vertex(impl func(ptr unsafe.Pointer, vertex_id int, vertex Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var vertex_id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var vertex = gd.UnsafeGet[gd.Vector3](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -66,7 +66,7 @@ Called by the [PhysicsServer3D] to set the normal for the [SoftBody3D] vertex at
 [b]Note:[/b] The [param normal] parameter used to be of type [code]const void*[/code] prior to Godot 4.2.
 */
 func (Instance) _set_normal(impl func(ptr unsafe.Pointer, vertex_id int, normal Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var vertex_id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var normal = gd.UnsafeGet[gd.Vector3](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -78,7 +78,7 @@ func (Instance) _set_normal(impl func(ptr unsafe.Pointer, vertex_id int, normal 
 Called by the [PhysicsServer3D] to set the bounding box for the [SoftBody3D].
 */
 func (Instance) _set_aabb(impl func(ptr unsafe.Pointer, aabb AABB.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var aabb = gd.UnsafeGet[gd.AABB](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, aabb)
@@ -129,7 +129,7 @@ Called by the [PhysicsServer3D] to set the position for the [SoftBody3D] vertex 
 [b]Note:[/b] The [param vertex] parameter used to be of type [code]const void*[/code] prior to Godot 4.2.
 */
 func (class) _set_vertex(impl func(ptr unsafe.Pointer, vertex_id gd.Int, vertex gd.Vector3)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var vertex_id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var vertex = gd.UnsafeGet[gd.Vector3](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -142,7 +142,7 @@ Called by the [PhysicsServer3D] to set the normal for the [SoftBody3D] vertex at
 [b]Note:[/b] The [param normal] parameter used to be of type [code]const void*[/code] prior to Godot 4.2.
 */
 func (class) _set_normal(impl func(ptr unsafe.Pointer, vertex_id gd.Int, normal gd.Vector3)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var vertex_id = gd.UnsafeGet[gd.Int](p_args, 0)
 		var normal = gd.UnsafeGet[gd.Vector3](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -154,7 +154,7 @@ func (class) _set_normal(impl func(ptr unsafe.Pointer, vertex_id gd.Int, normal 
 Called by the [PhysicsServer3D] to set the bounding box for the [SoftBody3D].
 */
 func (class) _set_aabb(impl func(ptr unsafe.Pointer, aabb gd.AABB)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var aabb = gd.UnsafeGet[gd.AABB](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, aabb)

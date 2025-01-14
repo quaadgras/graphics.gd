@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"graphics.gd/variant/String"
+	"graphics.gd/variant/StringName"
 )
 
 func TestStrings(t *testing.T) {
@@ -15,6 +16,13 @@ func TestStrings(t *testing.T) {
 	}
 	str.Append(String.New(" from Go!"))
 	if str.String() != "Hello, World! from Go!" {
+		t.Fail()
+	}
+}
+
+func TestStringNames(t *testing.T) {
+	var str = StringName.New("Hello, World!")
+	if str.String() != "Hello, World!" {
 		t.Fail()
 	}
 }

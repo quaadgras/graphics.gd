@@ -118,7 +118,7 @@ func (self implementation) GetLineDiff(file_path string, text string) (_ gd.Arra
 Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at [param project_path].
 */
 func (Instance) _initialize(impl func(ptr unsafe.Pointer, project_path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var project_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(project_path)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -131,7 +131,7 @@ func (Instance) _initialize(impl func(ptr unsafe.Pointer, project_path string) b
 Set user credentials in the underlying VCS. [param username] and [param password] are used only during HTTPS authentication unless not already mentioned in the remote URL. [param ssh_public_key_path], [param ssh_private_key_path], and [param ssh_passphrase] are only used during SSH authentication.
 */
 func (Instance) _set_credentials(impl func(ptr unsafe.Pointer, username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var username = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(username)
 		var password = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -151,7 +151,7 @@ func (Instance) _set_credentials(impl func(ptr unsafe.Pointer, username string, 
 Returns an [Array] of [Dictionary] items (see [method create_status_file]), each containing the status data of every modified file in the project folder.
 */
 func (Instance) _get_modified_files_data(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -166,7 +166,7 @@ func (Instance) _get_modified_files_data(impl func(ptr unsafe.Pointer) gd.Array)
 Stages the file present at [param file_path] to the staged area.
 */
 func (Instance) _stage_file(impl func(ptr unsafe.Pointer, file_path string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(file_path)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -178,7 +178,7 @@ func (Instance) _stage_file(impl func(ptr unsafe.Pointer, file_path string)) (cb
 Unstages the file present at [param file_path] from the staged area to the unstaged area.
 */
 func (Instance) _unstage_file(impl func(ptr unsafe.Pointer, file_path string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(file_path)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -190,7 +190,7 @@ func (Instance) _unstage_file(impl func(ptr unsafe.Pointer, file_path string)) (
 Discards the changes made in a file present at [param file_path].
 */
 func (Instance) _discard_file(impl func(ptr unsafe.Pointer, file_path string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(file_path)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -202,7 +202,7 @@ func (Instance) _discard_file(impl func(ptr unsafe.Pointer, file_path string)) (
 Commits the currently staged changes and applies the commit [param msg] to the resulting commit.
 */
 func (Instance) _commit(impl func(ptr unsafe.Pointer, msg string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var msg = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(msg)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -214,7 +214,7 @@ func (Instance) _commit(impl func(ptr unsafe.Pointer, msg string)) (cb gd.Extens
 Returns an array of [Dictionary] items (see [method create_diff_file], [method create_diff_hunk], [method create_diff_line], [method add_line_diffs_into_diff_hunk] and [method add_diff_hunks_into_diff_file]), each containing information about a diff. If [param identifier] is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
 */
 func (Instance) _get_diff(impl func(ptr unsafe.Pointer, identifier string, area int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var identifier = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(identifier)
 		var area = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -232,7 +232,7 @@ func (Instance) _get_diff(impl func(ptr unsafe.Pointer, identifier string, area 
 Shuts down VCS plugin instance. Called when the user either closes the editor or shuts down the VCS plugin through the editor UI.
 */
 func (Instance) _shut_down(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -243,7 +243,7 @@ func (Instance) _shut_down(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionC
 Returns the name of the underlying VCS provider.
 */
 func (Instance) _get_vcs_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewString(ret))
@@ -258,7 +258,7 @@ func (Instance) _get_vcs_name(impl func(ptr unsafe.Pointer) string) (cb gd.Exten
 Returns an [Array] of [Dictionary] items (see [method create_commit]), each containing the data for a past commit.
 */
 func (Instance) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_commits = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(max_commits))
@@ -274,7 +274,7 @@ func (Instance) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits 
 Gets an instance of an [Array] of [String]s containing available branch names in the VCS.
 */
 func (Instance) _get_branch_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -289,7 +289,7 @@ func (Instance) _get_branch_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.
 Returns an [Array] of [String]s, each containing the name of a remote configured in the VCS.
 */
 func (Instance) _get_remotes(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -304,7 +304,7 @@ func (Instance) _get_remotes(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.Exte
 Creates a new branch named [param branch_name] in the VCS.
 */
 func (Instance) _create_branch(impl func(ptr unsafe.Pointer, branch_name string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var branch_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(branch_name)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -316,7 +316,7 @@ func (Instance) _create_branch(impl func(ptr unsafe.Pointer, branch_name string)
 Remove a branch from the local VCS.
 */
 func (Instance) _remove_branch(impl func(ptr unsafe.Pointer, branch_name string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var branch_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(branch_name)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -328,7 +328,7 @@ func (Instance) _remove_branch(impl func(ptr unsafe.Pointer, branch_name string)
 Creates a new remote destination with name [param remote_name] and points it to [param remote_url]. This can be an HTTPS remote or an SSH remote.
 */
 func (Instance) _create_remote(impl func(ptr unsafe.Pointer, remote_name string, remote_url string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(remote_name)
 		var remote_url = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -342,7 +342,7 @@ func (Instance) _create_remote(impl func(ptr unsafe.Pointer, remote_name string,
 Remove a remote from the local VCS.
 */
 func (Instance) _remove_remote(impl func(ptr unsafe.Pointer, remote_name string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(remote_name)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -354,7 +354,7 @@ func (Instance) _remove_remote(impl func(ptr unsafe.Pointer, remote_name string)
 Gets the current branch name defined in the VCS.
 */
 func (Instance) _get_current_branch_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewString(ret))
@@ -369,7 +369,7 @@ func (Instance) _get_current_branch_name(impl func(ptr unsafe.Pointer) string) (
 Checks out a [param branch_name] in the VCS.
 */
 func (Instance) _checkout_branch(impl func(ptr unsafe.Pointer, branch_name string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var branch_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(branch_name)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -382,7 +382,7 @@ func (Instance) _checkout_branch(impl func(ptr unsafe.Pointer, branch_name strin
 Pulls changes from the remote. This can give rise to merge conflicts.
 */
 func (Instance) _pull(impl func(ptr unsafe.Pointer, remote string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(remote)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -394,7 +394,7 @@ func (Instance) _pull(impl func(ptr unsafe.Pointer, remote string)) (cb gd.Exten
 Pushes changes to the [param remote]. If [param force] is [code]true[/code], a force push will override the change history already present on the remote.
 */
 func (Instance) _push(impl func(ptr unsafe.Pointer, remote string, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(remote)
 		var force = gd.UnsafeGet[bool](p_args, 1)
@@ -407,7 +407,7 @@ func (Instance) _push(impl func(ptr unsafe.Pointer, remote string, force bool)) 
 Fetches new changes from the [param remote], but doesn't write changes to the current working directory. Equivalent to [code]git fetch[/code].
 */
 func (Instance) _fetch(impl func(ptr unsafe.Pointer, remote string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(remote)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -419,7 +419,7 @@ func (Instance) _fetch(impl func(ptr unsafe.Pointer, remote string)) (cb gd.Exte
 Returns an [Array] of [Dictionary] items (see [method create_diff_hunk]), each containing a line diff between a file at [param file_path] and the [param text] which is passed in.
 */
 func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, text string) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(file_path)
 		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -512,7 +512,7 @@ func New() Instance {
 Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at [param project_path].
 */
 func (class) _initialize(impl func(ptr unsafe.Pointer, project_path gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var project_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, project_path)
@@ -524,7 +524,7 @@ func (class) _initialize(impl func(ptr unsafe.Pointer, project_path gd.String) b
 Set user credentials in the underlying VCS. [param username] and [param password] are used only during HTTPS authentication unless not already mentioned in the remote URL. [param ssh_public_key_path], [param ssh_private_key_path], and [param ssh_passphrase] are only used during SSH authentication.
 */
 func (class) _set_credentials(impl func(ptr unsafe.Pointer, username gd.String, password gd.String, ssh_public_key_path gd.String, ssh_private_key_path gd.String, ssh_passphrase gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var username = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var password = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		var ssh_public_key_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
@@ -539,7 +539,7 @@ func (class) _set_credentials(impl func(ptr unsafe.Pointer, username gd.String, 
 Returns an [Array] of [Dictionary] items (see [method create_status_file]), each containing the status data of every modified file in the project folder.
 */
 func (class) _get_modified_files_data(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -554,7 +554,7 @@ func (class) _get_modified_files_data(impl func(ptr unsafe.Pointer) gd.Array) (c
 Stages the file present at [param file_path] to the staged area.
 */
 func (class) _stage_file(impl func(ptr unsafe.Pointer, file_path gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, file_path)
@@ -565,7 +565,7 @@ func (class) _stage_file(impl func(ptr unsafe.Pointer, file_path gd.String)) (cb
 Unstages the file present at [param file_path] from the staged area to the unstaged area.
 */
 func (class) _unstage_file(impl func(ptr unsafe.Pointer, file_path gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, file_path)
@@ -576,7 +576,7 @@ func (class) _unstage_file(impl func(ptr unsafe.Pointer, file_path gd.String)) (
 Discards the changes made in a file present at [param file_path].
 */
 func (class) _discard_file(impl func(ptr unsafe.Pointer, file_path gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, file_path)
@@ -587,7 +587,7 @@ func (class) _discard_file(impl func(ptr unsafe.Pointer, file_path gd.String)) (
 Commits the currently staged changes and applies the commit [param msg] to the resulting commit.
 */
 func (class) _commit(impl func(ptr unsafe.Pointer, msg gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var msg = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, msg)
@@ -598,7 +598,7 @@ func (class) _commit(impl func(ptr unsafe.Pointer, msg gd.String)) (cb gd.Extens
 Returns an array of [Dictionary] items (see [method create_diff_file], [method create_diff_hunk], [method create_diff_line], [method add_line_diffs_into_diff_hunk] and [method add_diff_hunks_into_diff_file]), each containing information about a diff. If [param identifier] is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
 */
 func (class) _get_diff(impl func(ptr unsafe.Pointer, identifier gd.String, area gd.Int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var identifier = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var area = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -615,7 +615,7 @@ func (class) _get_diff(impl func(ptr unsafe.Pointer, identifier gd.String, area 
 Shuts down VCS plugin instance. Called when the user either closes the editor or shuts down the VCS plugin through the editor UI.
 */
 func (class) _shut_down(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -626,7 +626,7 @@ func (class) _shut_down(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClas
 Returns the name of the underlying VCS provider.
 */
 func (class) _get_vcs_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -641,7 +641,7 @@ func (class) _get_vcs_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Exten
 Returns an [Array] of [Dictionary] items (see [method create_commit]), each containing the data for a past commit.
 */
 func (class) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits gd.Int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_commits = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, max_commits)
@@ -657,7 +657,7 @@ func (class) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits gd.
 Gets an instance of an [Array] of [String]s containing available branch names in the VCS.
 */
 func (class) _get_branch_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -672,7 +672,7 @@ func (class) _get_branch_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.Ext
 Returns an [Array] of [String]s, each containing the name of a remote configured in the VCS.
 */
 func (class) _get_remotes(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -687,7 +687,7 @@ func (class) _get_remotes(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.Extensi
 Creates a new branch named [param branch_name] in the VCS.
 */
 func (class) _create_branch(impl func(ptr unsafe.Pointer, branch_name gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var branch_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, branch_name)
@@ -698,7 +698,7 @@ func (class) _create_branch(impl func(ptr unsafe.Pointer, branch_name gd.String)
 Remove a branch from the local VCS.
 */
 func (class) _remove_branch(impl func(ptr unsafe.Pointer, branch_name gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var branch_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, branch_name)
@@ -709,7 +709,7 @@ func (class) _remove_branch(impl func(ptr unsafe.Pointer, branch_name gd.String)
 Creates a new remote destination with name [param remote_name] and points it to [param remote_url]. This can be an HTTPS remote or an SSH remote.
 */
 func (class) _create_remote(impl func(ptr unsafe.Pointer, remote_name gd.String, remote_url gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var remote_url = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -721,7 +721,7 @@ func (class) _create_remote(impl func(ptr unsafe.Pointer, remote_name gd.String,
 Remove a remote from the local VCS.
 */
 func (class) _remove_remote(impl func(ptr unsafe.Pointer, remote_name gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote_name)
@@ -732,7 +732,7 @@ func (class) _remove_remote(impl func(ptr unsafe.Pointer, remote_name gd.String)
 Gets the current branch name defined in the VCS.
 */
 func (class) _get_current_branch_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -747,7 +747,7 @@ func (class) _get_current_branch_name(impl func(ptr unsafe.Pointer) gd.String) (
 Checks out a [param branch_name] in the VCS.
 */
 func (class) _checkout_branch(impl func(ptr unsafe.Pointer, branch_name gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var branch_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, branch_name)
@@ -759,7 +759,7 @@ func (class) _checkout_branch(impl func(ptr unsafe.Pointer, branch_name gd.Strin
 Pulls changes from the remote. This can give rise to merge conflicts.
 */
 func (class) _pull(impl func(ptr unsafe.Pointer, remote gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote)
@@ -770,7 +770,7 @@ func (class) _pull(impl func(ptr unsafe.Pointer, remote gd.String)) (cb gd.Exten
 Pushes changes to the [param remote]. If [param force] is [code]true[/code], a force push will override the change history already present on the remote.
 */
 func (class) _push(impl func(ptr unsafe.Pointer, remote gd.String, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var force = gd.UnsafeGet[bool](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -782,7 +782,7 @@ func (class) _push(impl func(ptr unsafe.Pointer, remote gd.String, force bool)) 
 Fetches new changes from the [param remote], but doesn't write changes to the current working directory. Equivalent to [code]git fetch[/code].
 */
 func (class) _fetch(impl func(ptr unsafe.Pointer, remote gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote)
@@ -793,7 +793,7 @@ func (class) _fetch(impl func(ptr unsafe.Pointer, remote gd.String)) (cb gd.Exte
 Returns an [Array] of [Dictionary] items (see [method create_diff_hunk]), each containing a line diff between a file at [param file_path] and the [param text] which is passed in.
 */
 func (class) _get_line_diff(impl func(ptr unsafe.Pointer, file_path gd.String, text gd.String) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()

@@ -17,6 +17,8 @@ func (t VariantType) String() string {
 	return Global.Variants.GetTypeName(t).String()
 }
 
+type Address uintptr
+
 // API specification for Godot's GDExtension.
 type API struct {
 	api.Specification
@@ -25,9 +27,12 @@ type API struct {
 	GetNativeStructSize func(StringName) uintptr
 
 	Memory struct {
-		Allocate   func(uintptr) unsafe.Pointer
-		Reallocate func(unsafe.Pointer, uintptr) unsafe.Pointer
-		Free       func(unsafe.Pointer)
+		Allocate   func(uintptr) Address
+		Reallocate func(Address, uintptr) Address
+		Free       func(Address)
+
+		Index func(addr Address, n int, size uintptr) unsafe.Pointer
+		Write func(dst Address, src unsafe.Pointer, size uintptr)
 	}
 
 	PrintError              func(code, function, file string, line int32, notifyEditor bool)
@@ -93,8 +98,6 @@ type API struct {
 		Append     func(String, String) String
 		AppendRune func(String, rune)
 		Resize     func(String, Int)
-
-		UnsafePointer func(String) unsafe.Pointer
 	}
 	StringNames struct {
 		New func(string) StringName
@@ -349,12 +352,12 @@ type ObjectInterface interface {
 	ToString() (String, bool)
 	Reference()
 	Unreference()
-	CallVirtual(StringName, any, UnsafeArgs, UnsafeBack)
+	CallVirtual(StringName, any, Address, Address)
 	GetRID() RID
 	Free()
 }
 
-type ExtensionClassCallVirtualFunc func(any, UnsafeArgs, UnsafeBack)
+type ExtensionClassCallVirtualFunc func(any, Address, Address)
 
 type ClassMethodArgumentMetadata uint32
 
@@ -375,7 +378,7 @@ const (
 type Method struct {
 	Name                StringName
 	Call                func(any, ...Variant) (Variant, error)
-	PointerCall         func(any, UnsafeArgs, UnsafeBack)
+	PointerCall         func(any, Address, Address)
 	MethodFlags         MethodFlags
 	ReturnValueInfo     *PropertyInfo
 	ReturnValueMetadata ClassMethodArgumentMetadata

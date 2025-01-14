@@ -57,7 +57,7 @@ func (self implementation) PostProcessKeyValue(animation [1]gdclass.Animation, t
 A virtual function for processing after getting a key during playback.
 */
 func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(animation[0])
 		var track = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -437,7 +437,7 @@ func (self Instance) SetCallbackModeDiscrete(value gdclass.AnimationMixerAnimati
 A virtual function for processing after getting a key during playback.
 */
 func (class) _post_process_key_value(impl func(ptr unsafe.Pointer, animation [1]gdclass.Animation, track gd.Int, value gd.Variant, object_id gd.Int, object_sub_idx gd.Int) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(animation[0])
 		var track = gd.UnsafeGet[gd.Int](p_args, 1)

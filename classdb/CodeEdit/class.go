@@ -63,7 +63,7 @@ func (self implementation) FilterCodeCompletionCandidates(candidates gd.Array) (
 Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.
 */
 func (Instance) _confirm_code_completion(impl func(ptr unsafe.Pointer, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, replace)
@@ -74,7 +74,7 @@ func (Instance) _confirm_code_completion(impl func(ptr unsafe.Pointer, replace b
 Override this method to define what happens when the user requests code completion. If [param force] is [code]true[/code], any checks should be bypassed.
 */
 func (Instance) _request_code_completion(impl func(ptr unsafe.Pointer, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
@@ -86,7 +86,7 @@ Override this method to define what items in [param candidates] should be displa
 Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
 */
 func (Instance) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates gd.Array) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var candidates = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(candidates)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -780,7 +780,7 @@ func (self Instance) SetAutoBraceCompletionPairs(value Dictionary.Any) {
 Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.
 */
 func (class) _confirm_code_completion(impl func(ptr unsafe.Pointer, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, replace)
@@ -791,7 +791,7 @@ func (class) _confirm_code_completion(impl func(ptr unsafe.Pointer, replace bool
 Override this method to define what happens when the user requests code completion. If [param force] is [code]true[/code], any checks should be bypassed.
 */
 func (class) _request_code_completion(impl func(ptr unsafe.Pointer, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
@@ -803,7 +803,7 @@ Override this method to define what items in [param candidates] should be displa
 Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
 */
 func (class) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates gd.Array) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var candidates = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, candidates)

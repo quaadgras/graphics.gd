@@ -49,7 +49,6 @@ func Engine() {
 // After this function is called, all graphics functions will be available to use.
 // A subsequent call to [Engine] is required to continue to the default main loop.
 func Loader() {
-	<-intialized
 	if pause_main != nil {
 		gd.NewCallable(func() {
 			resume_main()
@@ -58,6 +57,13 @@ func Loader() {
 		if EngineClass.IsEditorHint() {
 			stop_main()
 		}
+	} else {
+		<-intialized
+		var loaded = make(chan struct{})
+		gd.NewCallable(func() {
+			close(loaded)
+		}).CallDeferred()
+		<-loaded
 	}
 }
 

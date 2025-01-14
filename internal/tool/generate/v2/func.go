@@ -143,7 +143,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, "", arg.Meta, arg.Type))
 	}
 	fmt.Fprintf(w, ") %v) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
-	fmt.Fprintf(w, "\treturn func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {\n")
+	fmt.Fprintf(w, "\treturn func(class any, p_args gd.Address, p_back gd.Address) {\n")
 	for i, arg := range method.Arguments {
 		var expert = classDB.convertType(class.Name, arg.Meta, arg.Type)
 
@@ -188,7 +188,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 			} else {
 				ret = fmt.Sprintf("pointers.End(%s)", ret)
 			}
-			fmt.Fprintf(w, "ptr, ok := "+ret)
+			fmt.Fprint(w, "ptr, ok := "+ret)
 			fmt.Fprintf(w, "\n\t\tif !ok {\n")
 			fmt.Fprintf(w, "\t\t\treturn\n")
 			fmt.Fprintf(w, "\t\t}\n")
@@ -236,7 +236,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(class.Name, arg.Meta, arg.Type))
 		}
 		fmt.Fprintf(w, ") %v) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
-		fmt.Fprintf(w, "\treturn func(class any, p_args "+prefix+"UnsafeArgs, p_back "+prefix+"UnsafeBack) {\n")
+		fmt.Fprintf(w, "\treturn func(class any, p_args "+prefix+"Address, p_back "+prefix+"Address) {\n")
 		for i, arg := range method.Arguments {
 			var argType = classDB.convertType(class.Name, arg.Meta, arg.Type)
 

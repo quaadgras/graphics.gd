@@ -34,11 +34,11 @@ static inline void get_godot_version(pointer fn, GDExtensionGodotVersion *r_vers
 static inline void *mem_alloc(pointer fn, size_t size) {
 	return ((GDExtensionInterfaceMemAlloc)fn)(size);
 }
-static inline void *mem_realloc(pointer fn, void *ptr, size_t size) {
-	return ((GDExtensionInterfaceMemRealloc)fn)(ptr, size);
+static inline void *mem_realloc(pointer fn, uintptr_t ptr, size_t size) {
+	return ((GDExtensionInterfaceMemRealloc)fn)((void *)ptr, size);
 }
-static inline void mem_free(pointer fn, void *ptr) {
-	((GDExtensionInterfaceMemFree)fn)(ptr);
+static inline void mem_free(pointer fn, uintptr_t ptr) {
+	((GDExtensionInterfaceMemFree)fn)((void *)ptr);
 }
 static inline void print_error(pointer fn, string p_description, string p_function, string p_file, int32_t p_line, GDExtensionBool p_notify_editor) {
 	((GDExtensionInterfacePrintError)fn)(p_description, p_function, p_file, p_line, p_notify_editor);
@@ -508,16 +508,16 @@ func linkCGO(API *gd.API) {
 		}
 	}
 	mem_alloc := dlsymGD("mem_alloc")
-	API.Memory.Allocate = func(size uintptr) unsafe.Pointer {
-		return unsafe.Pointer(C.mem_alloc(C.uintptr_t(uintptr(mem_alloc)), C.size_t(size)))
+	API.Memory.Allocate = func(size uintptr) gd.Address {
+		return gd.Address(C.mem_alloc(C.uintptr_t(uintptr(mem_alloc)), C.size_t(size)))
 	}
 	mem_realloc := dlsymGD("mem_realloc")
-	API.Memory.Reallocate = func(ptr unsafe.Pointer, size uintptr) unsafe.Pointer {
-		return unsafe.Pointer(C.mem_realloc(C.uintptr_t(uintptr(mem_realloc)), ptr, C.size_t(size)))
+	API.Memory.Reallocate = func(ptr gd.Address, size uintptr) gd.Address {
+		return gd.Address(C.mem_realloc(C.uintptr_t(uintptr(mem_realloc)), C.uintptr_t(ptr), C.size_t(size)))
 	}
 	mem_free := dlsymGD("mem_free")
-	API.Memory.Free = func(ptr unsafe.Pointer) {
-		C.mem_free(C.uintptr_t(uintptr(mem_free)), ptr)
+	API.Memory.Free = func(ptr gd.Address) {
+		C.mem_free(C.uintptr_t(uintptr(mem_free)), C.uintptr_t(ptr))
 	}
 	print_error := dlsymGD("print_error")
 	API.PrintError = func(code, function, file string, line int32, notifyEditor bool) {
@@ -1446,17 +1446,6 @@ func linkCGO(API *gd.API) {
 		)
 		frame.Free()
 		return rune(*ret)
-	}
-	API.Strings.UnsafePointer = func(s gd.String) unsafe.Pointer {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(s))
-		var ret = C.string_operator_index_const(
-			C.uintptr_t(uintptr(string_operator_index_const)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(0),
-		)
-		frame.Free()
-		return unsafe.Pointer(ret)
 	}
 	string_operator_plus_eq_string := dlsymGD("string_operator_plus_eq_string")
 	API.Strings.Append = func(s gd.String, other gd.String) gd.String {
@@ -2544,7 +2533,7 @@ func get_virtual_call_data_func(p_class uintptr, p_name unsafe.Pointer) uintptr 
 //export call_virtual_with_data_func
 func call_virtual_with_data_func(p_instance uintptr, p_name unsafe.Pointer, p_data uintptr, p_args, p_ret unsafe.Pointer) {
 	var name = pointers.Let[gd.StringName](*(*[1]gd.EnginePointer)(p_name))
-	cgo.Handle(p_instance).Value().(gd.ObjectInterface).CallVirtual(name, cgo.Handle(p_data).Value(), gd.UnsafeArgs(p_args), gd.UnsafeBack(p_ret))
+	cgo.Handle(p_instance).Value().(gd.ObjectInterface).CallVirtual(name, cgo.Handle(p_data).Value(), gd.Address(p_args), gd.Address(p_ret))
 }
 
 //export get_rid_func
@@ -2591,5 +2580,5 @@ func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, co
 //export method_ptrcall
 func method_ptrcall(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, p_ret unsafe.Pointer) {
 	method := cgo.Handle(p_method).Value().(*gd.Method)
-	method.PointerCall(cgo.Handle(p_instance).Value(), gd.UnsafeArgs(p_args), gd.UnsafeBack(p_ret))
+	method.PointerCall(cgo.Handle(p_instance).Value(), gd.Address(p_args), gd.Address(p_ret))
 }

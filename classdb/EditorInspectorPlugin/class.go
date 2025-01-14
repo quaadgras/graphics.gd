@@ -72,7 +72,7 @@ func (self implementation) ParseEnd(obj Object.Instance) { return }
 Returns [code]true[/code] if this object can be handled by this plugin.
 */
 func (Instance) _can_handle(impl func(ptr unsafe.Pointer, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -85,7 +85,7 @@ func (Instance) _can_handle(impl func(ptr unsafe.Pointer, obj Object.Instance) b
 Called to allow adding controls at the beginning of the property list for [param object].
 */
 func (Instance) _parse_begin(impl func(ptr unsafe.Pointer, obj Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -97,7 +97,7 @@ func (Instance) _parse_begin(impl func(ptr unsafe.Pointer, obj Object.Instance))
 Called to allow adding controls at the beginning of a category in the property list for [param object].
 */
 func (Instance) _parse_category(impl func(ptr unsafe.Pointer, obj Object.Instance, category string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var category = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -111,7 +111,7 @@ func (Instance) _parse_category(impl func(ptr unsafe.Pointer, obj Object.Instanc
 Called to allow adding controls at the beginning of a group or a sub-group in the property list for [param object].
 */
 func (Instance) _parse_group(impl func(ptr unsafe.Pointer, obj Object.Instance, group string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var group = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -125,7 +125,7 @@ func (Instance) _parse_group(impl func(ptr unsafe.Pointer, obj Object.Instance, 
 Called to allow adding property-specific editors to the property list for [param object]. The added editor control must extend [EditorProperty]. Returning [code]true[/code] removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
 */
 func (Instance) _parse_property(impl func(ptr unsafe.Pointer, obj Object.Instance, atype gd.VariantType, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var atype = gd.UnsafeGet[gd.VariantType](p_args, 1)
@@ -146,7 +146,7 @@ func (Instance) _parse_property(impl func(ptr unsafe.Pointer, obj Object.Instanc
 Called to allow adding controls at the end of the property list for [param object].
 */
 func (Instance) _parse_end(impl func(ptr unsafe.Pointer, obj Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -200,7 +200,7 @@ func New() Instance {
 Returns [code]true[/code] if this object can be handled by this plugin.
 */
 func (class) _can_handle(impl func(ptr unsafe.Pointer, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -213,7 +213,7 @@ func (class) _can_handle(impl func(ptr unsafe.Pointer, obj [1]gd.Object) bool) (
 Called to allow adding controls at the beginning of the property list for [param object].
 */
 func (class) _parse_begin(impl func(ptr unsafe.Pointer, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -225,7 +225,7 @@ func (class) _parse_begin(impl func(ptr unsafe.Pointer, obj [1]gd.Object)) (cb g
 Called to allow adding controls at the beginning of a category in the property list for [param object].
 */
 func (class) _parse_category(impl func(ptr unsafe.Pointer, obj [1]gd.Object, category gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var category = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -238,7 +238,7 @@ func (class) _parse_category(impl func(ptr unsafe.Pointer, obj [1]gd.Object, cat
 Called to allow adding controls at the beginning of a group or a sub-group in the property list for [param object].
 */
 func (class) _parse_group(impl func(ptr unsafe.Pointer, obj [1]gd.Object, group gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var group = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -251,7 +251,7 @@ func (class) _parse_group(impl func(ptr unsafe.Pointer, obj [1]gd.Object, group 
 Called to allow adding property-specific editors to the property list for [param object]. The added editor control must extend [EditorProperty]. Returning [code]true[/code] removes the built-in editor for this property, otherwise allows to insert a custom editor before the built-in one.
 */
 func (class) _parse_property(impl func(ptr unsafe.Pointer, obj [1]gd.Object, atype gd.VariantType, name gd.String, hint_type PropertyHint, hint_string gd.String, usage_flags PropertyUsageFlags, wide bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var atype = gd.UnsafeGet[gd.VariantType](p_args, 1)
@@ -270,7 +270,7 @@ func (class) _parse_property(impl func(ptr unsafe.Pointer, obj [1]gd.Object, aty
 Called to allow adding controls at the end of the property list for [param object].
 */
 func (class) _parse_end(impl func(ptr unsafe.Pointer, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		self := reflect.ValueOf(class).UnsafePointer()

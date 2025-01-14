@@ -4,7 +4,6 @@ package gd
 
 import (
 	"structs"
-	"unsafe"
 
 	"graphics.gd/internal/callframe"
 )
@@ -26,18 +25,6 @@ type variant struct {
 }
 
 type ObjectID uint64
-
-type UnsafeArgs unsafe.Pointer
-
-func UnsafeGet[T any](frame UnsafeArgs, index int) T {
-	return *unsafe.Slice((**T)(unsafe.Pointer(frame)), index+1)[index]
-}
-
-type UnsafeBack unsafe.Pointer
-
-func UnsafeSet[T any](frame UnsafeBack, value T) {
-	*(*T)(unsafe.Pointer(frame)) = value
-}
 
 type AudioFrame struct {
 	_ structs.HostLayout

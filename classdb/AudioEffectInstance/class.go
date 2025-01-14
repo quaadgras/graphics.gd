@@ -57,7 +57,7 @@ Called by the [AudioServer] to process this effect. When [method _process_silenc
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
 func (Instance) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 2)
@@ -71,7 +71,7 @@ Override this method to customize the processing behavior of this effect instanc
 Should return [code]true[/code] to force the [AudioServer] to always call [method _process], even if the bus has been muted or cannot otherwise be heard.
 */
 func (Instance) _process_silence(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -102,7 +102,7 @@ Called by the [AudioServer] to process this effect. When [method _process_silenc
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
 func (class) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 2)
@@ -116,7 +116,7 @@ Override this method to customize the processing behavior of this effect instanc
 Should return [code]true[/code] to force the [AudioServer] to always call [method _process], even if the bus has been muted or cannot otherwise be heard.
 */
 func (class) _process_silence(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)

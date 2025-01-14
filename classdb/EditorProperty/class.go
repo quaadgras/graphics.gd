@@ -57,7 +57,7 @@ func (self implementation) SetReadOnly(read_only bool) { return }
 When this virtual function is called, you must update your editor.
 */
 func (Instance) _update_property(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -67,7 +67,7 @@ func (Instance) _update_property(impl func(ptr unsafe.Pointer)) (cb gd.Extension
 Called when the read-only status of the property is changed. It may be used to change custom controls into a read-only or modifiable state.
 */
 func (Instance) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var read_only = gd.UnsafeGet[bool](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, read_only)
@@ -190,7 +190,7 @@ func (self Instance) SetDeletable(value bool) {
 When this virtual function is called, you must update your editor.
 */
 func (class) _update_property(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -200,7 +200,7 @@ func (class) _update_property(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionCla
 Called when the read-only status of the property is changed. It may be used to change custom controls into a read-only or modifiable state.
 */
 func (class) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var read_only = gd.UnsafeGet[bool](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, read_only)

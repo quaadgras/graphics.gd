@@ -61,7 +61,7 @@ func (self implementation) DrawEditorGizmo() { return }
 Executes the given modification. This is where the modification performs whatever function it is designed to do.
 */
 func (Instance) _execute(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
@@ -72,7 +72,7 @@ func (Instance) _execute(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.Ex
 Called when the modification is setup. This is where the modification performs initialization.
 */
 func (Instance) _setup_modification(impl func(ptr unsafe.Pointer, modification_stack [1]gdclass.SkeletonModificationStack2D)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var modification_stack = [1]gdclass.SkeletonModificationStack2D{pointers.New[gdclass.SkeletonModificationStack2D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(modification_stack[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -85,7 +85,7 @@ Used for drawing [b]editor-only[/b] modification gizmos. This function will only
 [b]Note:[/b] You will need to use the Skeleton2D from [method SkeletonModificationStack2D.get_skeleton] and it's draw functions, as the [SkeletonModification2D] resource cannot draw on its own.
 */
 func (Instance) _draw_editor_gizmo(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}
@@ -172,7 +172,7 @@ func (self Instance) SetExecutionMode(value int) {
 Executes the given modification. This is where the modification performs whatever function it is designed to do.
 */
 func (class) _execute(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
@@ -183,7 +183,7 @@ func (class) _execute(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.Exte
 Called when the modification is setup. This is where the modification performs initialization.
 */
 func (class) _setup_modification(impl func(ptr unsafe.Pointer, modification_stack [1]gdclass.SkeletonModificationStack2D)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var modification_stack = [1]gdclass.SkeletonModificationStack2D{pointers.New[gdclass.SkeletonModificationStack2D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(modification_stack[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -196,7 +196,7 @@ Used for drawing [b]editor-only[/b] modification gizmos. This function will only
 [b]Note:[/b] You will need to use the Skeleton2D from [method SkeletonModificationStack2D.get_skeleton] and it's draw functions, as the [SkeletonModification2D] resource cannot draw on its own.
 */
 func (class) _draw_editor_gizmo(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self)
 	}

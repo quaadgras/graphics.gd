@@ -156,7 +156,7 @@ func (self implementation) GetRecognizedExtensions() (_ []string) { return }
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
 func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids gd.Array, msgids_context_plural gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
 		var msgids = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -172,7 +172,7 @@ func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids gd
 Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
 */
 func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
@@ -206,7 +206,7 @@ func New() Instance {
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
 func (class) _parse_file(impl func(ptr unsafe.Pointer, path gd.String, msgids gd.Array, msgids_context_plural gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var msgids = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		var msgids_context_plural = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
@@ -219,7 +219,7 @@ func (class) _parse_file(impl func(ptr unsafe.Pointer, path gd.String, msgids gd
 Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
 */
 func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)

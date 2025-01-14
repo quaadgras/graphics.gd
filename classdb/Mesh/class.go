@@ -95,7 +95,7 @@ func (self implementation) GetAabb() (_ AABB.PositionSize)                      
 Virtual method to override the surface count for a custom class extending [Mesh].
 */
 func (Instance) _get_surface_count(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -106,7 +106,7 @@ func (Instance) _get_surface_count(impl func(ptr unsafe.Pointer) int) (cb gd.Ext
 Virtual method to override the surface array length for a custom class extending [Mesh].
 */
 func (Instance) _surface_get_array_len(impl func(ptr unsafe.Pointer, index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
@@ -118,7 +118,7 @@ func (Instance) _surface_get_array_len(impl func(ptr unsafe.Pointer, index int) 
 Virtual method to override the surface array index length for a custom class extending [Mesh].
 */
 func (Instance) _surface_get_array_index_len(impl func(ptr unsafe.Pointer, index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
@@ -130,7 +130,7 @@ func (Instance) _surface_get_array_index_len(impl func(ptr unsafe.Pointer, index
 Virtual method to override the surface arrays for a custom class extending [Mesh].
 */
 func (Instance) _surface_get_arrays(impl func(ptr unsafe.Pointer, index int) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
@@ -146,7 +146,7 @@ func (Instance) _surface_get_arrays(impl func(ptr unsafe.Pointer, index int) Arr
 Virtual method to override the blend shape arrays for a custom class extending [Mesh].
 */
 func (Instance) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, index int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
@@ -162,7 +162,7 @@ func (Instance) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, in
 Virtual method to override the surface LODs for a custom class extending [Mesh].
 */
 func (Instance) _surface_get_lods(impl func(ptr unsafe.Pointer, index int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
@@ -178,7 +178,7 @@ func (Instance) _surface_get_lods(impl func(ptr unsafe.Pointer, index int) Dicti
 Virtual method to override the surface format for a custom class extending [Mesh].
 */
 func (Instance) _surface_get_format(impl func(ptr unsafe.Pointer, index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
@@ -190,7 +190,7 @@ func (Instance) _surface_get_format(impl func(ptr unsafe.Pointer, index int) int
 Virtual method to override the surface primitive type for a custom class extending [Mesh].
 */
 func (Instance) _surface_get_primitive_type(impl func(ptr unsafe.Pointer, index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
@@ -202,7 +202,7 @@ func (Instance) _surface_get_primitive_type(impl func(ptr unsafe.Pointer, index 
 Virtual method to override the setting of a [param material] at the given [param index] for a custom class extending [Mesh].
 */
 func (Instance) _surface_set_material(impl func(ptr unsafe.Pointer, index int, material [1]gdclass.Material)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		var material = [1]gdclass.Material{pointers.New[gdclass.Material]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
 		defer pointers.End(material[0])
@@ -215,7 +215,7 @@ func (Instance) _surface_set_material(impl func(ptr unsafe.Pointer, index int, m
 Virtual method to override the surface material for a custom class extending [Mesh].
 */
 func (Instance) _surface_get_material(impl func(ptr unsafe.Pointer, index int) [1]gdclass.Material) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
@@ -231,7 +231,7 @@ func (Instance) _surface_get_material(impl func(ptr unsafe.Pointer, index int) [
 Virtual method to override the number of blend shapes for a custom class extending [Mesh].
 */
 func (Instance) _get_blend_shape_count(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -242,7 +242,7 @@ func (Instance) _get_blend_shape_count(impl func(ptr unsafe.Pointer) int) (cb gd
 Virtual method to override the retrieval of blend shape names for a custom class extending [Mesh].
 */
 func (Instance) _get_blend_shape_name(impl func(ptr unsafe.Pointer, index int) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
@@ -258,7 +258,7 @@ func (Instance) _get_blend_shape_name(impl func(ptr unsafe.Pointer, index int) s
 Virtual method to override the names of blend shapes for a custom class extending [Mesh].
 */
 func (Instance) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index int, name string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(name)
@@ -271,7 +271,7 @@ func (Instance) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index int, n
 Virtual method to override the [AABB] for a custom class extending [Mesh].
 */
 func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.AABB(ret))
@@ -399,7 +399,7 @@ func (self Instance) SetLightmapSizeHint(value Vector2i.XY) {
 Virtual method to override the surface count for a custom class extending [Mesh].
 */
 func (class) _get_surface_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -410,7 +410,7 @@ func (class) _get_surface_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Ext
 Virtual method to override the surface array length for a custom class extending [Mesh].
 */
 func (class) _surface_get_array_len(impl func(ptr unsafe.Pointer, index gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
@@ -422,7 +422,7 @@ func (class) _surface_get_array_len(impl func(ptr unsafe.Pointer, index gd.Int) 
 Virtual method to override the surface array index length for a custom class extending [Mesh].
 */
 func (class) _surface_get_array_index_len(impl func(ptr unsafe.Pointer, index gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
@@ -434,7 +434,7 @@ func (class) _surface_get_array_index_len(impl func(ptr unsafe.Pointer, index gd
 Virtual method to override the surface arrays for a custom class extending [Mesh].
 */
 func (class) _surface_get_arrays(impl func(ptr unsafe.Pointer, index gd.Int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
@@ -450,7 +450,7 @@ func (class) _surface_get_arrays(impl func(ptr unsafe.Pointer, index gd.Int) gd.
 Virtual method to override the blend shape arrays for a custom class extending [Mesh].
 */
 func (class) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, index gd.Int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
@@ -466,7 +466,7 @@ func (class) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, index
 Virtual method to override the surface LODs for a custom class extending [Mesh].
 */
 func (class) _surface_get_lods(impl func(ptr unsafe.Pointer, index gd.Int) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
@@ -482,7 +482,7 @@ func (class) _surface_get_lods(impl func(ptr unsafe.Pointer, index gd.Int) gd.Di
 Virtual method to override the surface format for a custom class extending [Mesh].
 */
 func (class) _surface_get_format(impl func(ptr unsafe.Pointer, index gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
@@ -494,7 +494,7 @@ func (class) _surface_get_format(impl func(ptr unsafe.Pointer, index gd.Int) gd.
 Virtual method to override the surface primitive type for a custom class extending [Mesh].
 */
 func (class) _surface_get_primitive_type(impl func(ptr unsafe.Pointer, index gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
@@ -506,7 +506,7 @@ func (class) _surface_get_primitive_type(impl func(ptr unsafe.Pointer, index gd.
 Virtual method to override the setting of a [param material] at the given [param index] for a custom class extending [Mesh].
 */
 func (class) _surface_set_material(impl func(ptr unsafe.Pointer, index gd.Int, material [1]gdclass.Material)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		var material = [1]gdclass.Material{pointers.New[gdclass.Material]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(material[0])
@@ -519,7 +519,7 @@ func (class) _surface_set_material(impl func(ptr unsafe.Pointer, index gd.Int, m
 Virtual method to override the surface material for a custom class extending [Mesh].
 */
 func (class) _surface_get_material(impl func(ptr unsafe.Pointer, index gd.Int) [1]gdclass.Material) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
@@ -535,7 +535,7 @@ func (class) _surface_get_material(impl func(ptr unsafe.Pointer, index gd.Int) [
 Virtual method to override the number of blend shapes for a custom class extending [Mesh].
 */
 func (class) _get_blend_shape_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -546,7 +546,7 @@ func (class) _get_blend_shape_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd
 Virtual method to override the retrieval of blend shape names for a custom class extending [Mesh].
 */
 func (class) _get_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int) gd.StringName) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
@@ -562,7 +562,7 @@ func (class) _get_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int) g
 Virtual method to override the names of blend shapes for a custom class extending [Mesh].
 */
 func (class) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int, name gd.StringName)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -574,7 +574,7 @@ func (class) _set_blend_shape_name(impl func(ptr unsafe.Pointer, index gd.Int, n
 Virtual method to override the [AABB] for a custom class extending [Mesh].
 */
 func (class) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)

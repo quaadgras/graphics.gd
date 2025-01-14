@@ -68,7 +68,7 @@ func (self implementation) GetData() (_ gd.Array)              { return }
 Called when the [Texture3D]'s format is queried.
 */
 func (Instance) _get_format(impl func(ptr unsafe.Pointer) gdclass.ImageFormat) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -79,7 +79,7 @@ func (Instance) _get_format(impl func(ptr unsafe.Pointer) gdclass.ImageFormat) (
 Called when the [Texture3D]'s width is queried.
 */
 func (Instance) _get_width(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -90,7 +90,7 @@ func (Instance) _get_width(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionCl
 Called when the [Texture3D]'s height is queried.
 */
 func (Instance) _get_height(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -101,7 +101,7 @@ func (Instance) _get_height(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionC
 Called when the [Texture3D]'s depth is queried.
 */
 func (Instance) _get_depth(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -112,7 +112,7 @@ func (Instance) _get_depth(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionCl
 Called when the presence of mipmaps in the [Texture3D] is queried.
 */
 func (Instance) _has_mipmaps(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -123,7 +123,7 @@ func (Instance) _has_mipmaps(impl func(ptr unsafe.Pointer) bool) (cb gd.Extensio
 Called when the [Texture3D]'s data is queried.
 */
 func (Instance) _get_data(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -206,7 +206,7 @@ func New() Instance {
 Called when the [Texture3D]'s format is queried.
 */
 func (class) _get_format(impl func(ptr unsafe.Pointer) gdclass.ImageFormat) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -217,7 +217,7 @@ func (class) _get_format(impl func(ptr unsafe.Pointer) gdclass.ImageFormat) (cb 
 Called when the [Texture3D]'s width is queried.
 */
 func (class) _get_width(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -228,7 +228,7 @@ func (class) _get_width(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionCl
 Called when the [Texture3D]'s height is queried.
 */
 func (class) _get_height(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -239,7 +239,7 @@ func (class) _get_height(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionC
 Called when the [Texture3D]'s depth is queried.
 */
 func (class) _get_depth(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -250,7 +250,7 @@ func (class) _get_depth(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionCl
 Called when the presence of mipmaps in the [Texture3D] is queried.
 */
 func (class) _has_mipmaps(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -261,7 +261,7 @@ func (class) _has_mipmaps(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionCl
 Called when the [Texture3D]'s data is queried.
 */
 func (class) _get_data(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)

@@ -1,6 +1,7 @@
-package classdb
+package startup
 
 import (
+	"graphics.gd/classdb"
 	NodeClass "graphics.gd/classdb/Node"
 	SceneTreeClass "graphics.gd/classdb/SceneTree"
 	gd "graphics.gd/internal"
@@ -12,7 +13,11 @@ import (
 // goRuntime is injected into the scene tree so that the process function can process
 // the frame-based garbage collection routine.
 type goRuntime struct {
-	Extension[goRuntime, NodeClass.Instance] `gd:"GoRuntime"`
+	classdb.Extension[goRuntime, NodeClass.Instance] `gd:"GoRuntime"`
+}
+
+func (goRuntime) Ready() {
+
 }
 
 func (gr goRuntime) AsNode() NodeClass.Instance { return gr.Super().AsNode() }
@@ -25,7 +30,7 @@ func (goRuntime) Process(delta Float.X) {
 
 func init() {
 	gd.StartupFunctions = append(gd.StartupFunctions, func() {
-		Register[goRuntime]()
+		classdb.Register[goRuntime]()
 	})
 	gd.PostStartupFunctions = append(gd.PostStartupFunctions, func() {
 		Callable.New(func() {

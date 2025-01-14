@@ -56,7 +56,7 @@ func (self implementation) GetDrawRect(rect Rect2.PositionSize) (_ Rect2.Positio
 func (self implementation) GetMinimumSize() (_ Vector2.XY)                              { return }
 func (self implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (_ bool) { return }
 func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -64,7 +64,7 @@ func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, 
 	}
 }
 func (Instance) _get_draw_rect(impl func(ptr unsafe.Pointer, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, rect)
@@ -76,14 +76,14 @@ func (Instance) _get_draw_rect(impl func(ptr unsafe.Pointer, rect Rect2.Position
 Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [method get_minimum_size] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
 */
 func (Instance) _get_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Vector2(ret))
 	}
 }
 func (Instance) _test_mask(impl func(ptr unsafe.Pointer, point Vector2.XY, rect Rect2.PositionSize) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -195,7 +195,7 @@ func (self Instance) SetContentMarginBottom(value Float.X) {
 }
 
 func (class) _draw(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -204,7 +204,7 @@ func (class) _draw(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.
 }
 
 func (class) _get_draw_rect(impl func(ptr unsafe.Pointer, rect gd.Rect2) gd.Rect2) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, rect)
@@ -216,7 +216,7 @@ func (class) _get_draw_rect(impl func(ptr unsafe.Pointer, rect gd.Rect2) gd.Rect
 Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [method get_minimum_size] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
 */
 func (class) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -224,7 +224,7 @@ func (class) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.
 }
 
 func (class) _test_mask(impl func(ptr unsafe.Pointer, point gd.Vector2, rect gd.Rect2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 0)
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()

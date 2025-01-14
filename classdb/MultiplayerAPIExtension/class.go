@@ -161,7 +161,7 @@ func (self implementation) ObjectConfigurationRemove(obj Object.Instance, config
 Callback for [method MultiplayerAPI.poll].
 */
 func (Instance) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -172,7 +172,7 @@ func (Instance) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClass
 Called when the [member MultiplayerAPI.multiplayer_peer] is set.
 */
 func (Instance) _set_multiplayer_peer(impl func(ptr unsafe.Pointer, multiplayer_peer [1]gdclass.MultiplayerPeer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var multiplayer_peer = [1]gdclass.MultiplayerPeer{pointers.New[gdclass.MultiplayerPeer]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(multiplayer_peer[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -184,7 +184,7 @@ func (Instance) _set_multiplayer_peer(impl func(ptr unsafe.Pointer, multiplayer_
 Called when the [member MultiplayerAPI.multiplayer_peer] is retrieved.
 */
 func (Instance) _get_multiplayer_peer(impl func(ptr unsafe.Pointer) [1]gdclass.MultiplayerPeer) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
@@ -199,7 +199,7 @@ func (Instance) _get_multiplayer_peer(impl func(ptr unsafe.Pointer) [1]gdclass.M
 Callback for [method MultiplayerAPI.get_unique_id].
 */
 func (Instance) _get_unique_id(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -210,7 +210,7 @@ func (Instance) _get_unique_id(impl func(ptr unsafe.Pointer) int) (cb gd.Extensi
 Callback for [method MultiplayerAPI.get_peers].
 */
 func (Instance) _get_peer_ids(impl func(ptr unsafe.Pointer) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
@@ -225,7 +225,7 @@ func (Instance) _get_peer_ids(impl func(ptr unsafe.Pointer) []int32) (cb gd.Exte
 Callback for [method MultiplayerAPI.rpc].
 */
 func (Instance) _rpc(impl func(ptr unsafe.Pointer, peer int, obj Object.Instance, method string, args Array.Any) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var peer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(obj[0])
@@ -243,7 +243,7 @@ func (Instance) _rpc(impl func(ptr unsafe.Pointer, peer int, obj Object.Instance
 Callback for [method MultiplayerAPI.get_remote_sender_id].
 */
 func (Instance) _get_remote_sender_id(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -254,7 +254,7 @@ func (Instance) _get_remote_sender_id(impl func(ptr unsafe.Pointer) int) (cb gd.
 Callback for [method MultiplayerAPI.object_configuration_add].
 */
 func (Instance) _object_configuration_add(impl func(ptr unsafe.Pointer, obj Object.Instance, configuration any) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
@@ -269,7 +269,7 @@ func (Instance) _object_configuration_add(impl func(ptr unsafe.Pointer, obj Obje
 Callback for [method MultiplayerAPI.object_configuration_remove].
 */
 func (Instance) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj Object.Instance, configuration any) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
@@ -303,7 +303,7 @@ func New() Instance {
 Callback for [method MultiplayerAPI.poll].
 */
 func (class) _poll(impl func(ptr unsafe.Pointer) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -314,7 +314,7 @@ func (class) _poll(impl func(ptr unsafe.Pointer) gd.Error) (cb gd.ExtensionClass
 Called when the [member MultiplayerAPI.multiplayer_peer] is set.
 */
 func (class) _set_multiplayer_peer(impl func(ptr unsafe.Pointer, multiplayer_peer [1]gdclass.MultiplayerPeer)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var multiplayer_peer = [1]gdclass.MultiplayerPeer{pointers.New[gdclass.MultiplayerPeer]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(multiplayer_peer[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -326,7 +326,7 @@ func (class) _set_multiplayer_peer(impl func(ptr unsafe.Pointer, multiplayer_pee
 Called when the [member MultiplayerAPI.multiplayer_peer] is retrieved.
 */
 func (class) _get_multiplayer_peer(impl func(ptr unsafe.Pointer) [1]gdclass.MultiplayerPeer) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
@@ -341,7 +341,7 @@ func (class) _get_multiplayer_peer(impl func(ptr unsafe.Pointer) [1]gdclass.Mult
 Callback for [method MultiplayerAPI.get_unique_id].
 */
 func (class) _get_unique_id(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -352,7 +352,7 @@ func (class) _get_unique_id(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Extensi
 Callback for [method MultiplayerAPI.get_peers].
 */
 func (class) _get_peer_ids(impl func(ptr unsafe.Pointer) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
@@ -367,7 +367,7 @@ func (class) _get_peer_ids(impl func(ptr unsafe.Pointer) gd.PackedInt32Array) (c
 Callback for [method MultiplayerAPI.rpc].
 */
 func (class) _rpc(impl func(ptr unsafe.Pointer, peer gd.Int, obj [1]gd.Object, method gd.StringName, args gd.Array) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var peer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(obj[0])
@@ -383,7 +383,7 @@ func (class) _rpc(impl func(ptr unsafe.Pointer, peer gd.Int, obj [1]gd.Object, m
 Callback for [method MultiplayerAPI.get_remote_sender_id].
 */
 func (class) _get_remote_sender_id(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -394,7 +394,7 @@ func (class) _get_remote_sender_id(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.
 Callback for [method MultiplayerAPI.object_configuration_add].
 */
 func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj [1]gd.Object, configuration gd.Variant) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
@@ -408,7 +408,7 @@ func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj [1]gd.O
 Callback for [method MultiplayerAPI.object_configuration_remove].
 */
 func (class) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj [1]gd.Object, configuration gd.Variant) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))

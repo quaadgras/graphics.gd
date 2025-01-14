@@ -463,7 +463,7 @@ func (instance *instanceImplementation) ToString() (gd.String, bool) {
 func (instance *instanceImplementation) Reference()   {}
 func (instance *instanceImplementation) Unreference() {}
 
-func (instance *instanceImplementation) CallVirtual(name gd.StringName, virtual any, args gd.UnsafeArgs, back gd.UnsafeBack) {
+func (instance *instanceImplementation) CallVirtual(name gd.StringName, virtual any, args gd.Address, back gd.Address) {
 	virtual.(gd.ExtensionClassCallVirtualFunc)(instance.Value, args, back)
 }
 

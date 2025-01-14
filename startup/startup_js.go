@@ -100,6 +100,11 @@ func linkJS(API *gd.API) {
 	API.Strings.Get = func(s gd.String) string {
 		return string_get.Invoke(pointers.Get(s)[0], s.Len()).String()
 	}
+	string_operator_plus_eq_string := dlsym("string_operator_plus_eq_string")
+	API.Strings.Append = func(s gd.String, other gd.String) gd.String {
+		raw := string_operator_plus_eq_string.Invoke(pointers.Get(s)[0], pointers.Get(other)[0])
+		return pointers.New[gd.String]([1]gd.EnginePointer{gd.EnginePointer(raw.Int())})
+	}
 	get_godot_version := dlsym("get_godot_version")
 	API.GetGodotVersion = func() gd.Version {
 		version := js.Global().Get("Object").New()
@@ -153,6 +158,14 @@ func linkJS(API *gd.API) {
 		}
 		return pointers.New[gd.Callable](*(*[2]uint64)(unsafe.Pointer(&raw)))
 	}
+	variant_get_type := dlsym("variant_get_type")
+	API.Variants.GetType = func(v gd.Variant) gd.VariantType {
+		var raw = pointers.Get(v)
+		var vnt = *(*[6]uint32)(unsafe.Pointer(&raw))
+		return gd.VariantType(variant_get_type.Invoke(
+			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
+		).Int())
+	}
 	variant_get_ptr_constructor := dlsym("variant_get_ptr_constructor")
 	call_variant_get_ptr_constructor := dlsym("call_variant_get_ptr_constructor")
 	API.Variants.GetPointerConstructor = func(vtype gd.VariantType, index int32) func(base callframe.Addr, args callframe.Args) {
@@ -194,19 +207,19 @@ func linkJS(API *gd.API) {
 		}
 	}
 	get_variant_to_type_constructor := dlsym("get_variant_to_type_constructor")
-	call_get_variant_to_type_constructor := dlsym("call_get_variant_to_type_constructor")
+	call_variant_to_type_constructor := dlsym("call_variant_to_type_constructor")
 	API.Variants.ToTypeConstructor = func(vt gd.VariantType) func(ret callframe.Addr, arg callframe.Ptr[gd.VariantPointers]) {
 		fn := get_variant_to_type_constructor.Invoke(uint32(vt))
 		return func(ret callframe.Addr, arg callframe.Ptr[gd.VariantPointers]) {
 			writeCallFrameArgument(0, 0, arg.Addr())
-			call_get_variant_to_type_constructor.Invoke(fn)
+			call_variant_to_type_constructor.Invoke(fn)
 			readCallFrameResult(0, ret)
 		}
 	}
 	variant_get_ptr_utility_function := dlsym("variant_get_ptr_utility_function")
 	call_variant_get_ptr_utility_function := dlsym("call_variant_get_ptr_utility_function")
 	API.Variants.GetPointerUtilityFunction = func(name gd.StringName, hash gd.Int) func(ret callframe.Addr, args callframe.Args, c int32) {
-		fn := variant_get_ptr_utility_function.Invoke(pointers.Get(name)[0], uint32(hash))
+		fn := variant_get_ptr_utility_function.Invoke(pointers.Get(name)[0], *(*float64)(unsafe.Pointer(&hash)))
 		return func(ret callframe.Addr, args callframe.Args, c int32) {
 			writeCallFrameArguments(0, args)
 			call_variant_get_ptr_utility_function.Invoke(fn, c)
@@ -219,8 +232,8 @@ func linkJS(API *gd.API) {
 	}
 	variant_get_ptr_builtin_method := dlsym("variant_get_ptr_builtin_method")
 	call_variant_get_ptr_builtin_method := dlsym("call_variant_get_ptr_builtin_method")
-	API.Variants.GetPointerBuiltinMethod = func(vt gd.VariantType, sn gd.StringName, i gd.Int) func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) {
-		fn := variant_get_ptr_builtin_method.Invoke(uint32(vt), pointers.Get(sn)[0], uint32(i))
+	API.Variants.GetPointerBuiltinMethod = func(vt gd.VariantType, sn gd.StringName, hash gd.Int) func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) {
+		fn := variant_get_ptr_builtin_method.Invoke(uint32(vt), pointers.Get(sn)[0], *(*float64)(unsafe.Pointer(&hash)))
 		return func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) {
 			writeCallFrameArgument(1, 0, base)
 			writeCallFrameArguments(0, args)
@@ -241,10 +254,10 @@ func linkJS(API *gd.API) {
 		info.Set("is_abstract", info_go.IsAbstract())
 		info.Set("is_exposed", info_go.IsExposed())
 		info.Set("is_runtime", false)
-		info.Set("create_instance_func", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		info.Set("create_instance", js.FuncOf(func(_ js.Value, args []js.Value) any {
 			return pointers.Get(info_go.CreateInstance()[0])[0]
 		}))
-		info.Set("get_virtual_call_data_func", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		info.Set("get_virtual_call_data", js.FuncOf(func(_ js.Value, args []js.Value) any {
 			p_class := args[0].Int()
 			p_name := args[1].Int()
 			var name = pointers.Let[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(p_name)})
@@ -253,14 +266,6 @@ func linkJS(API *gd.API) {
 				return 0
 			}
 			return uintptr(cgoNewHandle(virtual))
-		}))
-		info.Set("call_virtual_with_data_func", js.FuncOf(func(_ js.Value, args []js.Value) any {
-			/*p_instance := args[0].Int()
-			p_name := args[1].Int()
-			p_data := args[2].Int()
-			var name = pointers.Let[gd.StringName]([1]uintptr{uintptr(p_name)})*/
-			panic("not supported")
-			//cgoHandle(p_instance).Value().(gd.ObjectInterface).CallVirtual(name, cgoHandle(p_data).Value(), gd.UnsafeArgs(p_args), gd.UnsafeBack(p_ret))
 		}))
 		classdb_register_extension_class3.Invoke(uint32(library), pointers.Get(name)[0], pointers.Get(extends)[0], info)
 	}
@@ -271,7 +276,7 @@ func linkJS(API *gd.API) {
 	object_method_bind_ptrcall := dlsym("object_method_bind_ptrcall")
 	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret callframe.Addr) {
 		writeCallFrameArguments(0, arg)
-		object_method_bind_ptrcall.Invoke(uint32(method), pointers.Get(obj[0])[0])
+		object_method_bind_ptrcall.Invoke(uint32(method), uint32(pointers.Get(obj[0])[0]))
 		readCallFrameResult(0, ret)
 	}
 	global_get_singleton := dlsym("global_get_singleton")
@@ -286,6 +291,8 @@ func linkJS(API *gd.API) {
 			methods = append(methods, fn)
 			return fn
 		}
+		handle := cgoNewHandle(oi)
+		wrapper.Set("ref", uint32(handle))
 		wrapper.Set("set", cleanup(js.FuncOf(func(_ js.Value, args []js.Value) any {
 			var field = pointers.New[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
 			var variant [6]uint32
@@ -375,10 +382,14 @@ func linkJS(API *gd.API) {
 			for _, fn := range methods {
 				fn.Release()
 			}
+			handle.Delete()
 			return nil
 		})))
 		wrapper.Set("call_virtual", cleanup(js.FuncOf(func(_ js.Value, args []js.Value) any {
-			panic("bad times ahead")
+			name := pointers.Let[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
+			wrap := cgoHandle(args[1].Int()).Value()
+			oi.CallVirtual(name, wrap, gd.Address(args[2].Int()), gd.Address(args[3].Int()))
+			return nil
 		})))
 		object_set_instance.Invoke(pointers.Get(o[0])[0], pointers.Get(sn)[0], wrapper)
 	}
@@ -392,7 +403,11 @@ func linkJS(API *gd.API) {
 	}
 	object_cast_to := dlsym("object_cast_to")
 	API.Object.CastTo = func(o [1]gd.Object, sn gd.ClassTag) [1]gd.Object {
-		return [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(object_cast_to.Invoke(pointers.Get(o[0])[0], uint32(sn)).Int())})}
+		casted := object_cast_to.Invoke(pointers.Get(o[0])[0], uint32(sn)).Int()
+		if casted == 0 {
+			return [1]gd.Object{}
+		}
+		return o
 	}
 	variant_new_nil := dlsym("variant_new_nil")
 	API.Variants.NewNil = func() gd.Variant {
@@ -425,7 +440,104 @@ func linkJS(API *gd.API) {
 		converted.Set("class_name", pointers.Get(info.ClassName)[0])
 		classdb_register_extension_class_property.Invoke(uint32(library), pointers.Get(class)[0], converted, pointers.Get(getter)[0], pointers.Get(setter)[0])
 	}
-	API.ClassDB.RegisterClassMethod = func(library gd.ExtensionToken, class gd.StringName, info gd.Method) {}
+	classdb_register_extension_class_signal := dlsym("classdb_register_extension_class_signal")
+	API.ClassDB.RegisterClassSignal = func(library gd.ExtensionToken, class, signal gd.StringName, args []gd.PropertyInfo) {
+		converted := js.Global().Get("Array").New()
+		for _, arg := range args {
+			argument := js.Global().Get("Object").New()
+			argument.Set("name", pointers.Get(arg.Name)[0])
+			argument.Set("type", uint32(arg.Type))
+			argument.Set("hint", uint32(arg.Hint))
+			argument.Set("hint_string", pointers.Get(arg.HintString)[0])
+			argument.Set("usage", uint32(arg.Usage))
+			argument.Set("class_name", pointers.Get(arg.ClassName)[0])
+			converted.Call("push", argument)
+		}
+		classdb_register_extension_class_signal.Invoke(uint32(library), pointers.Get(class)[0], pointers.Get(signal)[0], converted)
+	}
+	classdb_register_extension_class_method := dlsym("classdb_register_extension_class_method")
+	API.ClassDB.RegisterClassMethod = func(library gd.ExtensionToken, class gd.StringName, info gd.Method) {
+		converted := js.Global().Get("Object").New()
+		converted.Set("name", pointers.Get(info.Name)[0])
+		converted.Set("method_flags", uint32(info.MethodFlags))
+		converted.Set("call", js.FuncOf(func(_ js.Value, args []js.Value) any {
+			instance := cgoHandle(args[0].Int()).Value()
+			arg_count := args[1].Int()
+			var arguments = make([]gd.Variant, arg_count)
+			for i := range arg_count {
+				var raw [6]uint32
+				for j := range raw {
+					raw[j] = uint32(read_result_buffer.Invoke(0, i, j).Int())
+				}
+				arguments[i] = pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&raw)))
+			}
+			result, err := info.Call(instance, arguments...)
+			if err != nil {
+				return 1
+			}
+			raw := pointers.Get(result)
+			vnt := *(*[6]uint32)(unsafe.Pointer(&raw))
+			for i := range vnt {
+				write_params_buffer.Invoke(0, 0, i, vnt[i])
+			}
+			return 0
+		}))
+		converted.Set("ptrcall", js.FuncOf(func(_ js.Value, args []js.Value) any {
+			info.PointerCall(cgoHandle(args[0].Int()).Value(), gd.Address(args[1].Int()), gd.Address(args[2].Int()))
+			return nil
+		}))
+		if info.ReturnValueInfo != nil {
+			returnValueInfo := js.Global().Get("Object").New()
+			returnValueInfo.Set("name", pointers.Get(info.ReturnValueInfo.Name)[0])
+			returnValueInfo.Set("type", uint32(info.ReturnValueInfo.Type))
+			returnValueInfo.Set("hint", uint32(info.ReturnValueInfo.Hint))
+			returnValueInfo.Set("hint_string", pointers.Get(info.ReturnValueInfo.HintString)[0])
+			returnValueInfo.Set("usage", uint32(info.ReturnValueInfo.Usage))
+			returnValueInfo.Set("class_name", pointers.Get(info.ReturnValueInfo.ClassName)[0])
+			converted.Set("return_value_info", returnValueInfo)
+			converted.Set("return_value_metadata", uint32(info.ReturnValueMetadata))
+		}
+		var arguments = js.Global().Get("Array").New()
+		var argument_metadatas = js.Global().Get("Array").New()
+		for i, arg := range info.Arguments {
+			argument := js.Global().Get("Object").New()
+			argument.Set("name", pointers.Get(arg.Name)[0])
+			argument.Set("type", uint32(arg.Type))
+			argument.Set("hint", uint32(arg.Hint))
+			argument.Set("hint_string", pointers.Get(arg.HintString)[0])
+			argument.Set("usage", uint32(arg.Usage))
+			argument.Set("class_name", pointers.Get(arg.ClassName)[0])
+			arguments.Call("push", argument)
+			argument_metadatas.Call("push", uint32(info.ArgumentsMetadata[i]))
+		}
+		converted.Set("arguments_info", arguments)
+		converted.Set("arguments_metadata", argument_metadatas)
+		converted.Set("default_argument_count", uint32(len(info.DefaultArguments)))
+		for i, arg := range info.DefaultArguments {
+			u64 := pointers.Get(arg)
+			u32 := *(*[6]uint32)(unsafe.Pointer(&u64))
+			for j, v := range u32 {
+				write_params_buffer.Invoke(0, i, j, v)
+			}
+		}
+		classdb_register_extension_class_method.Invoke(uint32(library), pointers.Get(class)[0], converted)
+	}
+	var scratch [16 * 16]uint32
+	memory_index := dlsym("mem_index")
+	API.Memory.Index = func(frame gd.Address, index int, size uintptr) unsafe.Pointer {
+		memory_index.Invoke(uint32(frame), uint32(index), uint32(size))
+		for i := uintptr(0); i < size/4; i++ {
+			scratch[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
+		}
+		return unsafe.Pointer(&scratch)
+	}
+	memory_write := dlsym("mem_write")
+	API.Memory.Write = func(frame gd.Address, ptr unsafe.Pointer, size uintptr) {
+		for i := uintptr(0); i < size/4; i++ {
+			write_params_buffer.Invoke(0, 0, i, scratch[i])
+		}
+		memory_write.Invoke(uint32(frame), uint32(size))
+	}
 }
 
 func makePackedFunctions[T gd.Packed[T], V comparable](prefix string) gd.PackedFunctionsFor[T, V] {

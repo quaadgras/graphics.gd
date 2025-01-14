@@ -53,7 +53,7 @@ func (self implementation) ValueChanged(new_value Float.X) { return }
 Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
 */
 func (Instance) _value_changed(impl func(ptr unsafe.Pointer, new_value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var new_value = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(new_value))
@@ -183,7 +183,7 @@ func (self Instance) SetAllowLesser(value bool) {
 Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
 */
 func (class) _value_changed(impl func(ptr unsafe.Pointer, new_value gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var new_value = gd.UnsafeGet[gd.Float](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, new_value)

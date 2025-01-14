@@ -1,6 +1,8 @@
 package gd
 
 import (
+	"unsafe"
+
 	"graphics.gd/internal/pointers"
 )
 
@@ -29,3 +31,13 @@ type PackedColorArray pointers.Solo[PackedColorArray]
 
 type EnginePointer = uint32
 type PackedPointers = [1]uint64
+
+func UnsafeGet[T any](frame Address, index int) T {
+	return *(*T)(Global.Memory.Index(frame, index, unsafe.Sizeof([1]T{})))
+}
+
+func UnsafeSet[T any](frame Address, value T) {
+	ptr := Global.Memory.Index(frame, -1, unsafe.Sizeof([1]T{}))
+	*(*T)(ptr) = value
+	Global.Memory.Write(frame, ptr, unsafe.Sizeof([1]T{}))
+}

@@ -28,7 +28,7 @@ func _init():
     if Uint32() != 32:                          fail("UInt32()")
     if !ValidUint32(32):                        fail("ValidUInt32()")
     if Uint64().get_id() != 64:                 fail("UInt64()")
-    if !ValidUint64(rid_from_int64(64)):                        fail("ValidUInt64()")
+    if !ValidUint64(rid_from_int64(64)):        fail("ValidUInt64()")
     if self.RID() != rid_from_int64(22):        fail("RID()")
     if !ValidRID(rid_from_int64(22)):           fail("ValidRID()")
     if self.Complex64() != Vector2(2.0, 2.0):   fail("Complex32()")
