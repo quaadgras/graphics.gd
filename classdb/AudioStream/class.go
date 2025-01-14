@@ -55,15 +55,17 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) InstantiatePlayback() (_ [1]gdclass.AudioStreamPlayback) { return }
-func (self Implementation) GetStreamName() (_ string)                               { return }
-func (self Implementation) GetLength() (_ Float.X)                                  { return }
-func (self Implementation) IsMonophonic() (_ bool)                                  { return }
-func (self Implementation) GetBpm() (_ Float.X)                                     { return }
-func (self Implementation) GetBeatCount() (_ int)                                   { return }
-func (self Implementation) GetParameterList() (_ gd.Array)                          { return }
+type implementation struct{}
+
+func (self implementation) InstantiatePlayback() (_ [1]gdclass.AudioStreamPlayback) { return }
+func (self implementation) GetStreamName() (_ string)                               { return }
+func (self implementation) GetLength() (_ Float.X)                                  { return }
+func (self implementation) IsMonophonic() (_ bool)                                  { return }
+func (self implementation) GetBpm() (_ Float.X)                                     { return }
+func (self implementation) GetBeatCount() (_ int)                                   { return }
+func (self implementation) GetParameterList() (_ gd.Array)                          { return }
 
 /*
 Override this method to customize the returned value of [method instantiate_playback]. Should returned a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer])..

@@ -75,10 +75,10 @@ Creates an [ImageTextureLayered] from an array of [Image]s. See [method Image.cr
 Each [Image] represents one [code]layer[/code].
 */
 //go:nosplit
-func (self class) CreateFromImages(images gd.Array) error {
+func (self class) CreateFromImages(images gd.Array) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(images))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -144,7 +144,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

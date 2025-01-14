@@ -166,13 +166,13 @@ Loads the resource using threads. If [param use_sub_threads] is [code]true[/code
 The [param cache_mode] property defines whether and how the cache should be used or updated when loading the resource. See [enum CacheMode] for details.
 */
 //go:nosplit
-func (self class) LoadThreadedRequest(path gd.String, type_hint gd.String, use_sub_threads bool, cache_mode gdclass.ResourceLoaderCacheMode) error {
+func (self class) LoadThreadedRequest(path gd.String, type_hint gd.String, use_sub_threads bool, cache_mode gdclass.ResourceLoaderCacheMode) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(type_hint))
 	callframe.Arg(frame, use_sub_threads)
 	callframe.Arg(frame, cache_mode)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_request, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -391,7 +391,7 @@ const (
 	CacheModeReplaceDeep CacheMode = 4
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

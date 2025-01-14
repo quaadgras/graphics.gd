@@ -111,54 +111,56 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetRequestedExtensions() (_ Dictionary.Any) { return }
-func (self Implementation) SetSystemPropertiesAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
+type implementation struct{}
+
+func (self implementation) GetRequestedExtensions() (_ Dictionary.Any) { return }
+func (self implementation) SetSystemPropertiesAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
 	return
 }
-func (self Implementation) SetInstanceCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
+func (self implementation) SetInstanceCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
 	return
 }
-func (self Implementation) SetSessionCreateAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
+func (self implementation) SetSessionCreateAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
 	return
 }
-func (self Implementation) SetSwapchainCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
+func (self implementation) SetSwapchainCreateInfoAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
 	return
 }
-func (self Implementation) SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer unsafe.Pointer) (_ int) {
+func (self implementation) SetHandJointLocationsAndGetNextPointer(hand_index int, next_pointer unsafe.Pointer) (_ int) {
 	return
 }
-func (self Implementation) GetCompositionLayerCount() (_ int)           { return }
-func (self Implementation) GetCompositionLayer(index int) (_ int)       { return }
-func (self Implementation) GetCompositionLayerOrder(index int) (_ int)  { return }
-func (self Implementation) GetSuggestedTrackerNames() (_ []string)      { return }
-func (self Implementation) OnRegisterMetadata()                         { return }
-func (self Implementation) OnBeforeInstanceCreated()                    { return }
-func (self Implementation) OnInstanceCreated(instance int)              { return }
-func (self Implementation) OnInstanceDestroyed()                        { return }
-func (self Implementation) OnSessionCreated(session int)                { return }
-func (self Implementation) OnProcess()                                  { return }
-func (self Implementation) OnPreRender()                                { return }
-func (self Implementation) OnMainSwapchainsCreated()                    { return }
-func (self Implementation) OnSessionDestroyed()                         { return }
-func (self Implementation) OnStateIdle()                                { return }
-func (self Implementation) OnStateReady()                               { return }
-func (self Implementation) OnStateSynchronized()                        { return }
-func (self Implementation) OnStateVisible()                             { return }
-func (self Implementation) OnStateFocused()                             { return }
-func (self Implementation) OnStateStopping()                            { return }
-func (self Implementation) OnStateLossPending()                         { return }
-func (self Implementation) OnStateExiting()                             { return }
-func (self Implementation) OnEventPolled(event unsafe.Pointer) (_ bool) { return }
-func (self Implementation) SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) (_ int) {
+func (self implementation) GetCompositionLayerCount() (_ int)           { return }
+func (self implementation) GetCompositionLayer(index int) (_ int)       { return }
+func (self implementation) GetCompositionLayerOrder(index int) (_ int)  { return }
+func (self implementation) GetSuggestedTrackerNames() (_ []string)      { return }
+func (self implementation) OnRegisterMetadata()                         { return }
+func (self implementation) OnBeforeInstanceCreated()                    { return }
+func (self implementation) OnInstanceCreated(instance int)              { return }
+func (self implementation) OnInstanceDestroyed()                        { return }
+func (self implementation) OnSessionCreated(session int)                { return }
+func (self implementation) OnProcess()                                  { return }
+func (self implementation) OnPreRender()                                { return }
+func (self implementation) OnMainSwapchainsCreated()                    { return }
+func (self implementation) OnSessionDestroyed()                         { return }
+func (self implementation) OnStateIdle()                                { return }
+func (self implementation) OnStateReady()                               { return }
+func (self implementation) OnStateSynchronized()                        { return }
+func (self implementation) OnStateVisible()                             { return }
+func (self implementation) OnStateFocused()                             { return }
+func (self implementation) OnStateStopping()                            { return }
+func (self implementation) OnStateLossPending()                         { return }
+func (self implementation) OnStateExiting()                             { return }
+func (self implementation) OnEventPolled(event unsafe.Pointer) (_ bool) { return }
+func (self implementation) SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) (_ int) {
 	return
 }
-func (self Implementation) GetViewportCompositionLayerExtensionProperties() (_ gd.Array) { return }
-func (self Implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ Dictionary.Any) {
+func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ gd.Array) { return }
+func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) OnViewportCompositionLayerDestroyed(layer unsafe.Pointer) { return }
+func (self implementation) OnViewportCompositionLayerDestroyed(layer unsafe.Pointer) { return }
 
 /*
 Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dictionary] should contain the name of the extension, mapped to a [code]bool *[/code] cast to an integer:

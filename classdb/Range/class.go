@@ -43,9 +43,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) ValueChanged(new_value Float.X) { return }
+type implementation struct{}
+
+func (self implementation) ValueChanged(new_value Float.X) { return }
 
 /*
 Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).

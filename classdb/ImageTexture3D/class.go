@@ -71,7 +71,7 @@ func New() Instance {
 Creates the [ImageTexture3D] with specified [param width], [param height], and [param depth]. See [enum Image.Format] for [param format] options. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for the [ImageTexture3D].
 */
 //go:nosplit
-func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int, depth gd.Int, use_mipmaps bool, data gd.Array) error {
+func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int, depth gd.Int, use_mipmaps bool, data gd.Array) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, width)
@@ -79,7 +79,7 @@ func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int
 	callframe.Arg(frame, depth)
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture3D.Bind_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -141,7 +141,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

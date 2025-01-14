@@ -194,7 +194,7 @@ Creates an ENetHost bound to the given [param bind_address] and [param bind_port
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 //go:nosplit
-func (self class) CreateHostBound(bind_address gd.String, bind_port gd.Int, max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) error {
+func (self class) CreateHostBound(bind_address gd.String, bind_port gd.Int, max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bind_address))
 	callframe.Arg(frame, bind_port)
@@ -202,7 +202,7 @@ func (self class) CreateHostBound(bind_address gd.String, bind_port gd.Int, max_
 	callframe.Arg(frame, max_channels)
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host_bound, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -215,13 +215,13 @@ This method binds a random available dynamic UDP port on the host machine at the
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 //go:nosplit
-func (self class) CreateHost(max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) error {
+func (self class) CreateHost(max_peers gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, max_peers)
 	callframe.Arg(frame, max_channels)
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -341,10 +341,10 @@ func (self class) Compress(mode gdclass.ENetConnectionCompressionMode) {
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet servers. Call this right after [method create_host_bound] to have ENet expect peers to connect using DTLS. See [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) error {
+func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(server_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_server_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -355,11 +355,11 @@ func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) error {
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) DtlsClientSetup(hostname gd.String, client_options [1]gdclass.TLSOptions) error {
+func (self class) DtlsClientSetup(hostname gd.String, client_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(hostname))
 	callframe.Arg(frame, pointers.Get(client_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_client_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -519,7 +519,7 @@ const (
 	HostTotalReceivedPackets HostStatistic = 3
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

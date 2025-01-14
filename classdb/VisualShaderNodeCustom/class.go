@@ -115,35 +115,37 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetName() (_ string)                                            { return }
-func (self Implementation) GetDescription() (_ string)                                     { return }
-func (self Implementation) GetCategory() (_ string)                                        { return }
-func (self Implementation) GetReturnIconType() (_ gdclass.VisualShaderNodePortType)        { return }
-func (self Implementation) GetInputPortCount() (_ int)                                     { return }
-func (self Implementation) GetInputPortType(port int) (_ gdclass.VisualShaderNodePortType) { return }
-func (self Implementation) GetInputPortName(port int) (_ string)                           { return }
-func (self Implementation) GetInputPortDefaultValue(port int) (_ any)                      { return }
-func (self Implementation) GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) (_ int) {
+type implementation struct{}
+
+func (self implementation) GetName() (_ string)                                            { return }
+func (self implementation) GetDescription() (_ string)                                     { return }
+func (self implementation) GetCategory() (_ string)                                        { return }
+func (self implementation) GetReturnIconType() (_ gdclass.VisualShaderNodePortType)        { return }
+func (self implementation) GetInputPortCount() (_ int)                                     { return }
+func (self implementation) GetInputPortType(port int) (_ gdclass.VisualShaderNodePortType) { return }
+func (self implementation) GetInputPortName(port int) (_ string)                           { return }
+func (self implementation) GetInputPortDefaultValue(port int) (_ any)                      { return }
+func (self implementation) GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) (_ int) {
 	return
 }
-func (self Implementation) GetOutputPortCount() (_ int)                                     { return }
-func (self Implementation) GetOutputPortType(port int) (_ gdclass.VisualShaderNodePortType) { return }
-func (self Implementation) GetOutputPortName(port int) (_ string)                           { return }
-func (self Implementation) GetPropertyCount() (_ int)                                       { return }
-func (self Implementation) GetPropertyName(index int) (_ string)                            { return }
-func (self Implementation) GetPropertyDefaultIndex(index int) (_ int)                       { return }
-func (self Implementation) GetPropertyOptions(index int) (_ []string)                       { return }
-func (self Implementation) GetCode(input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ string) {
+func (self implementation) GetOutputPortCount() (_ int)                                     { return }
+func (self implementation) GetOutputPortType(port int) (_ gdclass.VisualShaderNodePortType) { return }
+func (self implementation) GetOutputPortName(port int) (_ string)                           { return }
+func (self implementation) GetPropertyCount() (_ int)                                       { return }
+func (self implementation) GetPropertyName(index int) (_ string)                            { return }
+func (self implementation) GetPropertyDefaultIndex(index int) (_ int)                       { return }
+func (self implementation) GetPropertyOptions(index int) (_ []string)                       { return }
+func (self implementation) GetCode(input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ string) {
 	return
 }
-func (self Implementation) GetFuncCode(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ string) {
+func (self implementation) GetFuncCode(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ string) {
 	return
 }
-func (self Implementation) GetGlobalCode(mode gdclass.ShaderMode) (_ string) { return }
-func (self Implementation) IsHighend() (_ bool)                              { return }
-func (self Implementation) IsAvailable(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ bool) {
+func (self implementation) GetGlobalCode(mode gdclass.ShaderMode) (_ string) { return }
+func (self implementation) IsHighend() (_ bool)                              { return }
+func (self implementation) IsAvailable(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ bool) {
 	return
 }
 

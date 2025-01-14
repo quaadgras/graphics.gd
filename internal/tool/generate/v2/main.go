@@ -93,10 +93,14 @@ func generateEnum(code io.Writer, prefix string, enum gdjson.Enum, classdb strin
 	rename = strings.Replace(rename, ".", "", -1)
 	enum.Name = strings.Replace(enum.Name, ".", "", -1)
 
-	if classdb != "" {
-		fmt.Fprintf(code, "type %v = %s%s%s\n\n", rename, classdb, prefix, enum.Name)
+	if enum.Name == "Error" {
+		fmt.Fprintf(code, "type Error = gd.Error\n\n")
 	} else {
-		fmt.Fprintf(code, "type %v int\n\n", rename)
+		if classdb != "" {
+			fmt.Fprintf(code, "type %v = %s%s%s\n\n", rename, classdb, prefix, enum.Name)
+		} else {
+			fmt.Fprintf(code, "type %v int\n\n", rename)
+		}
 	}
 	fmt.Fprintf(code, "const (\n")
 	for _, value := range enum.Values {
@@ -246,11 +250,12 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "}\n")
 
 			fmt.Fprintf(file, "// Implementation implements [Interface] with empty methods.\n")
-			fmt.Fprintf(file, "type Implementation struct{}\n\n")
+			fmt.Fprintf(file, "type Implementation = implementation\n\n")
+			fmt.Fprintf(file, "type implementation struct{}\n")
 
 			for _, method := range class.Methods {
 				if method.IsVirtual {
-					fmt.Fprintf(file, "func (self Implementation) %[1]v(", convertName(method.Name))
+					fmt.Fprintf(file, "func (self implementation) %[1]v(", convertName(method.Name))
 					for i, arg := range method.Arguments {
 						if i > 0 {
 							fmt.Fprint(file, ", ")

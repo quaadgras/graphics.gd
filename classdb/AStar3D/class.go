@@ -79,10 +79,12 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) EstimateCost(from_id int, to_id int) (_ Float.X) { return }
-func (self Implementation) ComputeCost(from_id int, to_id int) (_ Float.X)  { return }
+type implementation struct{}
+
+func (self implementation) EstimateCost(from_id int, to_id int) (_ Float.X) { return }
+func (self implementation) ComputeCost(from_id int, to_id int) (_ Float.X)  { return }
 
 /*
 Called when estimating the cost between a point and the path's ending point.

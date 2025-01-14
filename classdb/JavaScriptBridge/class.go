@@ -186,9 +186,9 @@ Performs the live update of the progressive web app. Forcing the new version to 
 [b]Note:[/b] Only relevant when exported as a Progressive Web App and [method pwa_needs_update] returns [code]true[/code].
 */
 //go:nosplit
-func (self class) PwaUpdate() error {
+func (self class) PwaUpdate() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_pwa_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -222,7 +222,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

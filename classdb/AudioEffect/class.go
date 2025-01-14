@@ -53,9 +53,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Instantiate() (_ [1]gdclass.AudioEffectInstance) { return }
+type implementation struct{}
+
+func (self implementation) Instantiate() (_ [1]gdclass.AudioEffectInstance) { return }
 
 /*
 Override this method to customize the [AudioEffectInstance] created when this effect is applied on a bus in the editor's Audio panel, or through [method AudioServer.add_bus_effect].

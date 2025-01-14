@@ -50,26 +50,28 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) (_ error) { return }
-func (self Implementation) PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) (_ error)    { return }
-func (self Implementation) GetAvailablePacketCount() (_ int)                                  { return }
-func (self Implementation) GetMaxPacketSize() (_ int)                                         { return }
-func (self Implementation) Poll() (_ error)                                                   { return }
-func (self Implementation) Close()                                                            { return }
-func (self Implementation) SetWriteMode(p_write_mode gdclass.WebRTCDataChannelWriteMode)      { return }
-func (self Implementation) GetWriteMode() (_ gdclass.WebRTCDataChannelWriteMode)              { return }
-func (self Implementation) WasStringPacket() (_ bool)                                         { return }
-func (self Implementation) GetReadyState() (_ gdclass.WebRTCDataChannelChannelState)          { return }
-func (self Implementation) GetLabel() (_ string)                                              { return }
-func (self Implementation) IsOrdered() (_ bool)                                               { return }
-func (self Implementation) GetId() (_ int)                                                    { return }
-func (self Implementation) GetMaxPacketLifeTime() (_ int)                                     { return }
-func (self Implementation) GetMaxRetransmits() (_ int)                                        { return }
-func (self Implementation) GetProtocol() (_ string)                                           { return }
-func (self Implementation) IsNegotiated() (_ bool)                                            { return }
-func (self Implementation) GetBufferedAmount() (_ int)                                        { return }
+type implementation struct{}
+
+func (self implementation) GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) (_ error) { return }
+func (self implementation) PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) (_ error)    { return }
+func (self implementation) GetAvailablePacketCount() (_ int)                                  { return }
+func (self implementation) GetMaxPacketSize() (_ int)                                         { return }
+func (self implementation) Poll() (_ error)                                                   { return }
+func (self implementation) Close()                                                            { return }
+func (self implementation) SetWriteMode(p_write_mode gdclass.WebRTCDataChannelWriteMode)      { return }
+func (self implementation) GetWriteMode() (_ gdclass.WebRTCDataChannelWriteMode)              { return }
+func (self implementation) WasStringPacket() (_ bool)                                         { return }
+func (self implementation) GetReadyState() (_ gdclass.WebRTCDataChannelChannelState)          { return }
+func (self implementation) GetLabel() (_ string)                                              { return }
+func (self implementation) IsOrdered() (_ bool)                                               { return }
+func (self implementation) GetId() (_ int)                                                    { return }
+func (self implementation) GetMaxPacketLifeTime() (_ int)                                     { return }
+func (self implementation) GetMaxRetransmits() (_ int)                                        { return }
+func (self implementation) GetProtocol() (_ string)                                           { return }
+func (self implementation) IsNegotiated() (_ bool)                                            { return }
+func (self implementation) GetBufferedAmount() (_ int)                                        { return }
 func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
@@ -227,7 +229,7 @@ func New() Instance {
 	return casted
 }
 
-func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
@@ -237,7 +239,7 @@ func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, 
 	}
 }
 
-func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size gd.Int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -263,7 +265,7 @@ func (class) _get_max_packet_size(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.E
 	}
 }
 
-func (class) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _poll(impl func(ptr unsafe.Pointer) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -498,7 +500,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

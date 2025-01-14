@@ -668,9 +668,9 @@ func (self class) OpenCompressed(path gd.String, mode_flags gdclass.FileAccessMo
 Returns the result of the last [method open] call in the current thread.
 */
 //go:nosplit
-func (self class) GetOpenError() error {
+func (self class) GetOpenError() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_open_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -711,10 +711,10 @@ func (self class) GetFileAsString(path gd.String) gd.String {
 Resizes the file to a specified length. The file must be open in a mode that permits writing. If the file is extended, NUL characters are appended. If the file is truncated, all data from the end file to the original length of the file is lost.
 */
 //go:nosplit
-func (self class) Resize(length gd.Int) error {
+func (self class) Resize(length gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_resize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1056,9 +1056,9 @@ func (self class) SetBigEndian(big_endian bool) {
 Returns the last error that happened when trying to perform operations. Compare with the [code]ERR_FILE_*[/code] constants from [enum Error].
 */
 //go:nosplit
-func (self class) GetError() error {
+func (self class) GetError() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1359,11 +1359,11 @@ Sets file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
-func (self class) SetUnixPermissions(file gd.String, permissions gdclass.FileAccessUnixPermissionFlags) error {
+func (self class) SetUnixPermissions(file gd.String, permissions gdclass.FileAccessUnixPermissionFlags) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
 	callframe.Arg(frame, permissions)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_unix_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1390,11 +1390,11 @@ Sets file [b]hidden[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
-func (self class) SetHiddenAttribute(file gd.String, hidden bool) error {
+func (self class) SetHiddenAttribute(file gd.String, hidden bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
 	callframe.Arg(frame, hidden)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_hidden_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1406,11 +1406,11 @@ Sets file [b]read only[/b] attribute.
 [b]Note:[/b] This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
-func (self class) SetReadOnlyAttribute(file gd.String, ro bool) error {
+func (self class) SetReadOnlyAttribute(file gd.String, ro bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
 	callframe.Arg(frame, ro)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_read_only_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1516,7 +1516,7 @@ const (
 	UnixRestrictedDelete UnixPermissionFlags = 512
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -83,12 +83,12 @@ Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
 //go:nosplit
-func (self class) Save(resource [1]gdclass.Resource, path gd.String, flags gdclass.ResourceSaverSaverFlags) error {
+func (self class) Save(resource [1]gdclass.Resource, path gd.String, flags gdclass.ResourceSaverSaverFlags) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -167,7 +167,7 @@ const (
 	FlagReplaceSubresourcePaths SaverFlags = 64
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

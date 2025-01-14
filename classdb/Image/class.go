@@ -827,10 +827,10 @@ Generates mipmaps for the image. Mipmaps are precalculated lower-resolution copi
 It is possible to check if the image has mipmaps by calling [method has_mipmaps] or [method get_mipmap_count]. Calling [method generate_mipmaps] on an image that already has mipmaps will replace existing mipmaps in the image.
 */
 //go:nosplit
-func (self class) GenerateMipmaps(renormalize bool) error {
+func (self class) GenerateMipmaps(renormalize bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, renormalize)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_generate_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -935,10 +935,10 @@ Loads an image from file [param path]. See [url=$DOCS_URL/tutorials/assets_pipel
 See also [ImageTexture] description for usage examples.
 */
 //go:nosplit
-func (self class) Load(path gd.String) error {
+func (self class) Load(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -963,10 +963,10 @@ func (self class) LoadFromFile(path gd.String) [1]gdclass.Image {
 Saves the image as a PNG file to the file at [param path].
 */
 //go:nosplit
-func (self class) SavePng(path gd.String) error {
+func (self class) SavePng(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_png, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -991,11 +991,11 @@ Saves the image as a JPEG file to [param path] with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting JPEG file won't contain the alpha channel.
 */
 //go:nosplit
-func (self class) SaveJpg(path gd.String, quality gd.Float) error {
+func (self class) SaveJpg(path gd.String, quality gd.Float) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, quality)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_jpg, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1022,11 +1022,11 @@ Saves the image as an EXR file to [param path]. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return [constant ERR_UNAVAILABLE] when it is called from an exported project.
 */
 //go:nosplit
-func (self class) SaveExr(path gd.String, grayscale bool) error {
+func (self class) SaveExr(path gd.String, grayscale bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, grayscale)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_exr, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1053,12 +1053,12 @@ Saves the image as a WebP (Web Picture) file to the file at [param path]. By def
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 //go:nosplit
-func (self class) SaveWebp(path gd.String, lossy bool, quality gd.Float) error {
+func (self class) SaveWebp(path gd.String, lossy bool, quality gd.Float) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, lossy)
 	callframe.Arg(frame, quality)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_webp, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1127,12 +1127,12 @@ The [param source] parameter helps to pick the best compression method for DXT a
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 //go:nosplit
-func (self class) Compress(mode gdclass.ImageCompressMode, source gdclass.ImageCompressSource, astc_format gdclass.ImageASTCFormat) error {
+func (self class) Compress(mode gdclass.ImageCompressMode, source gdclass.ImageCompressSource, astc_format gdclass.ImageASTCFormat) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, source)
 	callframe.Arg(frame, astc_format)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1145,12 +1145,12 @@ This is an alternative to [method compress] that lets the user supply the channe
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 //go:nosplit
-func (self class) CompressFromChannels(mode gdclass.ImageCompressMode, channels gdclass.ImageUsedChannels, astc_format gdclass.ImageASTCFormat) error {
+func (self class) CompressFromChannels(mode gdclass.ImageCompressMode, channels gdclass.ImageUsedChannels, astc_format gdclass.ImageASTCFormat) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, channels)
 	callframe.Arg(frame, astc_format)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compress_from_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1162,9 +1162,9 @@ Decompresses the image if it is VRAM compressed in a supported format. Returns [
 [b]Note:[/b] The following formats can be decompressed: DXT, RGTC, BPTC. The formats ETC1 and ETC2 are not supported.
 */
 //go:nosplit
-func (self class) Decompress() error {
+func (self class) Decompress() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_decompress, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1526,10 +1526,10 @@ func (self class) AdjustBcs(brightness gd.Float, contrast gd.Float, saturation g
 Loads an image from the binary contents of a PNG file.
 */
 //go:nosplit
-func (self class) LoadPngFromBuffer(buffer gd.PackedByteArray) error {
+func (self class) LoadPngFromBuffer(buffer gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_png_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1540,10 +1540,10 @@ func (self class) LoadPngFromBuffer(buffer gd.PackedByteArray) error {
 Loads an image from the binary contents of a JPEG file.
 */
 //go:nosplit
-func (self class) LoadJpgFromBuffer(buffer gd.PackedByteArray) error {
+func (self class) LoadJpgFromBuffer(buffer gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_jpg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1554,10 +1554,10 @@ func (self class) LoadJpgFromBuffer(buffer gd.PackedByteArray) error {
 Loads an image from the binary contents of a WebP file.
 */
 //go:nosplit
-func (self class) LoadWebpFromBuffer(buffer gd.PackedByteArray) error {
+func (self class) LoadWebpFromBuffer(buffer gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_webp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1569,10 +1569,10 @@ Loads an image from the binary contents of a TGA file.
 [b]Note:[/b] This method is only available in engine builds with the TGA module enabled. By default, the TGA module is enabled, but it can be disabled at build-time using the [code]module_tga_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadTgaFromBuffer(buffer gd.PackedByteArray) error {
+func (self class) LoadTgaFromBuffer(buffer gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_tga_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1585,10 +1585,10 @@ Loads an image from the binary contents of a BMP file.
 [b]Note:[/b] This method is only available in engine builds with the BMP module enabled. By default, the BMP module is enabled, but it can be disabled at build-time using the [code]module_bmp_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadBmpFromBuffer(buffer gd.PackedByteArray) error {
+func (self class) LoadBmpFromBuffer(buffer gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_bmp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1601,10 +1601,10 @@ Loads an image from the binary contents of a [url=https://github.com/KhronosGrou
 [b]Note:[/b] This method is only available in engine builds with the KTX module enabled. By default, the KTX module is enabled, but it can be disabled at build-time using the [code]module_ktx_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadKtxFromBuffer(buffer gd.PackedByteArray) error {
+func (self class) LoadKtxFromBuffer(buffer gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_ktx_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1617,11 +1617,11 @@ Loads an image from the UTF-8 binary contents of an [b]uncompressed[/b] SVG file
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadSvgFromBuffer(buffer gd.PackedByteArray, scale gd.Float) error {
+func (self class) LoadSvgFromBuffer(buffer gd.PackedByteArray, scale gd.Float) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
 	callframe.Arg(frame, scale)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_svg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1633,11 +1633,11 @@ Loads an image from the string contents of an SVG file ([b].svg[/b]).
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 //go:nosplit
-func (self class) LoadSvgFromString(svg_str gd.String, scale gd.Float) error {
+func (self class) LoadSvgFromString(svg_str gd.String, scale gd.Float) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(svg_str))
 	callframe.Arg(frame, scale)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_svg_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1862,7 +1862,7 @@ const (
 	Counterclockwise ClockDirection = 1
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

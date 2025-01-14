@@ -1315,10 +1315,10 @@ Kill (terminate) the process identified by the given process ID ([param pid]), s
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) Kill(pid gd.Int) error {
+func (self class) Kill(pid gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_kill, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1335,10 +1335,10 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) ShellOpen(uri gd.String) error {
+func (self class) ShellOpen(uri gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(uri))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_open, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1352,11 +1352,11 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 [b]Note:[/b] This method is currently only implemented on Windows and macOS. On other platforms, it will fallback to [method shell_open] with a directory path of [param file_or_dir_path] prefixed with [code]file://[/code].
 */
 //go:nosplit
-func (self class) ShellShowInFileManager(file_or_dir_path gd.String, open_folder bool) error {
+func (self class) ShellShowInFileManager(file_or_dir_path gd.String, open_folder bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file_or_dir_path))
 	callframe.Arg(frame, open_folder)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_show_in_file_manager, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1872,10 +1872,10 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 [b]Note:[/b] If the user has disabled the recycle bin on their system, the file will be permanently deleted instead.
 */
 //go:nosplit
-func (self class) MoveToTrash(path gd.String) error {
+func (self class) MoveToTrash(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_move_to_trash, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2080,10 +2080,10 @@ func (self class) SetUseFileAccessSaveAndSwap(enabled bool) {
 Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE] if unavailable on the current platform.
 */
 //go:nosplit
-func (self class) SetThreadName(name gd.String) error {
+func (self class) SetThreadName(name gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_thread_name, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2243,7 +2243,7 @@ const (
 	SystemDirRingtones SystemDir = 7
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

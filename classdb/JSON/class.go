@@ -257,11 +257,11 @@ Non-static variant of [method parse_string], if you want custom error handling.
 The optional [param keep_text] argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [method get_parsed_text] function and is used when saving the resource (instead of generating new text from [member data]).
 */
 //go:nosplit
-func (self class) Parse(json_text gd.String, keep_text bool) error {
+func (self class) Parse(json_text gd.String, keep_text bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(json_text))
 	callframe.Arg(frame, keep_text)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -357,7 +357,7 @@ func init() {
 	gdclass.Register("JSON", func(ptr gd.Object) any { return [1]gdclass.JSON{*(*gdclass.JSON)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

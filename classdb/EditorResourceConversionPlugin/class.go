@@ -65,11 +65,13 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) ConvertsTo() (_ string)                                       { return }
-func (self Implementation) Handles(resource [1]gdclass.Resource) (_ bool)                { return }
-func (self Implementation) Convert(resource [1]gdclass.Resource) (_ [1]gdclass.Resource) { return }
+type implementation struct{}
+
+func (self implementation) ConvertsTo() (_ string)                                       { return }
+func (self implementation) Handles(resource [1]gdclass.Resource) (_ bool)                { return }
+func (self implementation) Convert(resource [1]gdclass.Resource) (_ [1]gdclass.Resource) { return }
 
 /*
 Returns the class name of the target type of [Resource] that this plugin converts source resources to.

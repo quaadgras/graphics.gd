@@ -57,17 +57,19 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Handles(atype string) (_ bool) { return }
-func (self Implementation) Generate(resource [1]gdclass.Resource, size Vector2i.XY, metadata Dictionary.Any) (_ [1]gdclass.Texture2D) {
+type implementation struct{}
+
+func (self implementation) Handles(atype string) (_ bool) { return }
+func (self implementation) Generate(resource [1]gdclass.Resource, size Vector2i.XY, metadata Dictionary.Any) (_ [1]gdclass.Texture2D) {
 	return
 }
-func (self Implementation) GenerateFromPath(path string, size Vector2i.XY, metadata Dictionary.Any) (_ [1]gdclass.Texture2D) {
+func (self implementation) GenerateFromPath(path string, size Vector2i.XY, metadata Dictionary.Any) (_ [1]gdclass.Texture2D) {
 	return
 }
-func (self Implementation) GenerateSmallPreviewAutomatically() (_ bool) { return }
-func (self Implementation) CanGenerateSmallPreview() (_ bool)           { return }
+func (self implementation) GenerateSmallPreviewAutomatically() (_ bool) { return }
+func (self implementation) CanGenerateSmallPreview() (_ bool)           { return }
 
 /*
 Returns [code]true[/code] if your generator supports the resource of type [param type].

@@ -146,9 +146,9 @@ func (self Instance) SetWriteMode(value gdclass.WebRTCDataChannelWriteMode) {
 Reserved, but not used for now.
 */
 //go:nosplit
-func (self class) Poll() error {
+func (self class) Poll() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -373,7 +373,7 @@ const (
 	StateClosed ChannelState = 3
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

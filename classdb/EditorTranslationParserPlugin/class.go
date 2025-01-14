@@ -143,12 +143,14 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) ParseFile(path string, msgids gd.Array, msgids_context_plural gd.Array) {
+type implementation struct{}
+
+func (self implementation) ParseFile(path string, msgids gd.Array, msgids_context_plural gd.Array) {
 	return
 }
-func (self Implementation) GetRecognizedExtensions() (_ []string) { return }
+func (self implementation) GetRecognizedExtensions() (_ []string) { return }
 
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.

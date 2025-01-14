@@ -218,10 +218,10 @@ func New() Instance {
 Setup the DTLS server to use the given [param server_options]. See [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) Setup(server_options [1]gdclass.TLSOptions) error {
+func (self class) Setup(server_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(server_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DTLSServer.Bind_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -268,7 +268,7 @@ func init() {
 	gdclass.Register("DTLSServer", func(ptr gd.Object) any { return [1]gdclass.DTLSServer{*(*gdclass.DTLSServer)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

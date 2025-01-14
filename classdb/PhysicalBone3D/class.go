@@ -47,9 +47,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) IntegrateForces(state [1]gdclass.PhysicsDirectBodyState3D) { return }
+type implementation struct{}
+
+func (self implementation) IntegrateForces(state [1]gdclass.PhysicsDirectBodyState3D) { return }
 
 /*
 Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.

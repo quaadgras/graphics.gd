@@ -42,12 +42,14 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetPluralMessage(src_message string, src_plural_message string, n int, context string) (_ string) {
+type implementation struct{}
+
+func (self implementation) GetPluralMessage(src_message string, src_plural_message string, n int, context string) (_ string) {
 	return
 }
-func (self Implementation) GetMessage(src_message string, context string) (_ string) { return }
+func (self implementation) GetMessage(src_message string, context string) (_ string) { return }
 
 /*
 Virtual method to override [method get_plural_message].

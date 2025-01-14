@@ -36,21 +36,23 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) (_ error) {
+type implementation struct{}
+
+func (self implementation) GetData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) (_ error) {
 	return
 }
-func (self Implementation) GetPartialData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) (_ error) {
+func (self implementation) GetPartialData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) (_ error) {
 	return
 }
-func (self Implementation) PutData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) (_ error) {
+func (self implementation) PutData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) (_ error) {
 	return
 }
-func (self Implementation) PutPartialData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) (_ error) {
+func (self implementation) PutPartialData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) (_ error) {
 	return
 }
-func (self Implementation) GetAvailableBytes() (_ int) { return }
+func (self implementation) GetAvailableBytes() (_ int) { return }
 func (Instance) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
@@ -118,7 +120,7 @@ func New() Instance {
 	return casted
 }
 
-func (class) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes gd.Int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes gd.Int, r_received *int32) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var r_bytes = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -129,7 +131,7 @@ func (class) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_
 	}
 }
 
-func (class) _get_partial_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes gd.Int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_partial_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes gd.Int, r_received *int32) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var r_bytes = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -140,7 +142,7 @@ func (class) _get_partial_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Poi
 	}
 }
 
-func (class) _put_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_bytes gd.Int, r_sent *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_bytes gd.Int, r_sent *int32) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_data = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var p_bytes = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -151,7 +153,7 @@ func (class) _put_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_by
 	}
 }
 
-func (class) _put_partial_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_bytes gd.Int, r_sent *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_partial_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_bytes gd.Int, r_sent *int32) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_data = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var p_bytes = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -224,7 +226,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

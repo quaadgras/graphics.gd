@@ -164,7 +164,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 
 	// strange C++ cases
 	case "enum::Error":
-		return "error"
+		return "gd.Error"
 	case "const uint8_t **":
 		return "unsafe.Pointer"
 	case "const void*", "const uint8_t*", "const uint8_t *":

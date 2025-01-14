@@ -40,9 +40,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) RenderCallback(effect_callback_type int, render_data [1]gdclass.RenderData) {
+type implementation struct{}
+
+func (self implementation) RenderCallback(effect_callback_type int, render_data [1]gdclass.RenderData) {
 	return
 }
 

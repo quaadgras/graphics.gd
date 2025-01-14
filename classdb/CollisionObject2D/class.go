@@ -55,15 +55,17 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) InputEvent(viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int) {
+type implementation struct{}
+
+func (self implementation) InputEvent(viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int) {
 	return
 }
-func (self Implementation) MouseEnter()                   { return }
-func (self Implementation) MouseExit()                    { return }
-func (self Implementation) MouseShapeEnter(shape_idx int) { return }
-func (self Implementation) MouseShapeExit(shape_idx int)  { return }
+func (self implementation) MouseEnter()                   { return }
+func (self implementation) MouseExit()                    { return }
+func (self implementation) MouseShapeEnter(shape_idx int) { return }
+func (self implementation) MouseShapeExit(shape_idx int)  { return }
 
 /*
 Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.

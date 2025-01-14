@@ -700,10 +700,10 @@ Loads an AngelCode BMFont (.fnt, .font) bitmap font from file [param path].
 [b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
 */
 //go:nosplit
-func (self class) LoadBitmapFont(path gd.String) error {
+func (self class) LoadBitmapFont(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_load_bitmap_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -715,10 +715,10 @@ Loads a TrueType (.ttf), OpenType (.otf), WOFF (.woff), WOFF2 (.woff2) or Type 1
 [b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
 */
 //go:nosplit
-func (self class) LoadDynamicFont(path gd.String) error {
+func (self class) LoadDynamicFont(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_load_dynamic_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2016,7 +2016,7 @@ func init() {
 	gdclass.Register("FontFile", func(ptr gd.Object) any { return [1]gdclass.FontFile{*(*gdclass.FontFile)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

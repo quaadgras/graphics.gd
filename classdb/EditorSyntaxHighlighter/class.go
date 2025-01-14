@@ -44,10 +44,12 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetName() (_ string)                 { return }
-func (self Implementation) GetSupportedLanguages() (_ []string) { return }
+type implementation struct{}
+
+func (self implementation) GetName() (_ string)                 { return }
+func (self implementation) GetSupportedLanguages() (_ []string) { return }
 
 /*
 Virtual method which can be overridden to return the syntax highlighter name.

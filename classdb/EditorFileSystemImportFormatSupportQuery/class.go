@@ -43,11 +43,13 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) IsActive() (_ bool)              { return }
-func (self Implementation) GetFileExtensions() (_ []string) { return }
-func (self Implementation) Query() (_ bool)                 { return }
+type implementation struct{}
+
+func (self implementation) IsActive() (_ bool)              { return }
+func (self implementation) GetFileExtensions() (_ []string) { return }
+func (self implementation) Query() (_ bool)                 { return }
 
 /*
 Return whether this importer is active.

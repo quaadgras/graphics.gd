@@ -40,11 +40,13 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) SetVertex(vertex_id int, vertex Vector3.XYZ) { return }
-func (self Implementation) SetNormal(vertex_id int, normal Vector3.XYZ) { return }
-func (self Implementation) SetAabb(aabb AABB.PositionSize)              { return }
+type implementation struct{}
+
+func (self implementation) SetVertex(vertex_id int, vertex Vector3.XYZ) { return }
+func (self implementation) SetNormal(vertex_id int, normal Vector3.XYZ) { return }
+func (self implementation) SetAabb(aabb AABB.PositionSize)              { return }
 
 /*
 Called by the [PhysicsServer3D] to set the position for the [SoftBody3D] vertex at the index specified by [param vertex_id].

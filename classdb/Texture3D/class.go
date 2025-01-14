@@ -53,14 +53,16 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetFormat() (_ gdclass.ImageFormat) { return }
-func (self Implementation) GetWidth() (_ int)                  { return }
-func (self Implementation) GetHeight() (_ int)                 { return }
-func (self Implementation) GetDepth() (_ int)                  { return }
-func (self Implementation) HasMipmaps() (_ bool)               { return }
-func (self Implementation) GetData() (_ gd.Array)              { return }
+type implementation struct{}
+
+func (self implementation) GetFormat() (_ gdclass.ImageFormat) { return }
+func (self implementation) GetWidth() (_ int)                  { return }
+func (self implementation) GetHeight() (_ int)                 { return }
+func (self implementation) GetDepth() (_ int)                  { return }
+func (self implementation) HasMipmaps() (_ bool)               { return }
+func (self implementation) GetData() (_ gd.Array)              { return }
 
 /*
 Called when the [Texture3D]'s format is queried.

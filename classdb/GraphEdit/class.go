@@ -89,18 +89,20 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) IsInInputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) (_ bool) {
+type implementation struct{}
+
+func (self implementation) IsInInputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) (_ bool) {
 	return
 }
-func (self Implementation) IsInOutputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) (_ bool) {
+func (self implementation) IsInOutputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) (_ bool) {
 	return
 }
-func (self Implementation) GetConnectionLine(from_position Vector2.XY, to_position Vector2.XY) (_ []Vector2.XY) {
+func (self implementation) GetConnectionLine(from_position Vector2.XY, to_position Vector2.XY) (_ []Vector2.XY) {
 	return
 }
-func (self Implementation) IsNodeHoverValid(from_node string, from_port int, to_node string, to_port int) (_ bool) {
+func (self implementation) IsNodeHoverValid(from_node string, from_port int, to_node string, to_port int) (_ bool) {
 	return
 }
 
@@ -699,13 +701,13 @@ func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node gd.Str
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 */
 //go:nosplit
-func (self class) ConnectNode(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) error {
+func (self class) ConnectNode(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node))
 	callframe.Arg(frame, from_port)
 	callframe.Arg(frame, pointers.Get(to_node))
 	callframe.Arg(frame, to_port)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_connect_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1604,7 +1606,7 @@ const (
 	GridPatternDots GridPattern = 1
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

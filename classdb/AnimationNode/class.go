@@ -68,18 +68,20 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetChildNodes() (_ Dictionary.Any)                       { return }
-func (self Implementation) GetParameterList() (_ Array.Any)                         { return }
-func (self Implementation) GetChildByName(name string) (_ [1]gdclass.AnimationNode) { return }
-func (self Implementation) GetParameterDefaultValue(parameter string) (_ any)       { return }
-func (self Implementation) IsParameterReadOnly(parameter string) (_ bool)           { return }
-func (self Implementation) Process(time Float.X, seek bool, is_external_seeking bool, test_only bool) (_ Float.X) {
+type implementation struct{}
+
+func (self implementation) GetChildNodes() (_ Dictionary.Any)                       { return }
+func (self implementation) GetParameterList() (_ Array.Any)                         { return }
+func (self implementation) GetChildByName(name string) (_ [1]gdclass.AnimationNode) { return }
+func (self implementation) GetParameterDefaultValue(parameter string) (_ any)       { return }
+func (self implementation) IsParameterReadOnly(parameter string) (_ bool)           { return }
+func (self implementation) Process(time Float.X, seek bool, is_external_seeking bool, test_only bool) (_ Float.X) {
 	return
 }
-func (self Implementation) GetCaption() (_ string) { return }
-func (self Implementation) HasFilter() (_ bool)    { return }
+func (self implementation) GetCaption() (_ string) { return }
+func (self implementation) HasFilter() (_ bool)    { return }
 
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.

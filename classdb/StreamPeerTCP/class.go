@@ -121,11 +121,11 @@ Opens the TCP socket, and binds it to the specified local address.
 This method is generally not needed, and only used to force the subsequent call to [method connect_to_host] to use the specified [param host] and [param port] as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
 */
 //go:nosplit
-func (self class) Bind(port gd.Int, host gd.String) error {
+func (self class) Bind(port gd.Int, host gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(host))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_bind, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -136,11 +136,11 @@ func (self class) Bind(port gd.Int, host gd.String) error {
 Connects to the specified [code]host:port[/code] pair. A hostname will be resolved if valid. Returns [constant OK] on success.
 */
 //go:nosplit
-func (self class) ConnectToHost(host gd.String, port gd.Int) error {
+func (self class) ConnectToHost(host gd.String, port gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, port)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -151,9 +151,9 @@ func (self class) ConnectToHost(host gd.String, port gd.Int) error {
 Poll the socket, updating its state. See [method get_status].
 */
 //go:nosplit
-func (self class) Poll() error {
+func (self class) Poll() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -282,7 +282,7 @@ const (
 	StatusError Status = 3
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

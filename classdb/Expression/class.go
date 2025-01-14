@@ -133,11 +133,11 @@ Parses the expression and returns an [enum Error] code.
 You can optionally specify names of variables that may appear in the expression with [param input_names], so that you can bind them when it gets executed.
 */
 //go:nosplit
-func (self class) Parse(expression gd.String, input_names gd.PackedStringArray) error {
+func (self class) Parse(expression gd.String, input_names gd.PackedStringArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expression))
 	callframe.Arg(frame, pointers.Get(input_names))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -213,7 +213,7 @@ func init() {
 	gdclass.Register("Expression", func(ptr gd.Object) any { return [1]gdclass.Expression{*(*gdclass.Expression)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -223,11 +223,11 @@ func (self class) GetAuthenticatingPeers() gd.PackedInt32Array {
 Sends the specified [param data] to the remote peer identified by [param id] as part of an authentication message. This can be used to authenticate peers, and control when [signal MultiplayerAPI.peer_connected] is emitted (and the remote peer accepted as one of the connected peers).
 */
 //go:nosplit
-func (self class) SendAuth(id gd.Int, data gd.PackedByteArray) error {
+func (self class) SendAuth(id gd.Int, data gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_send_auth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -239,10 +239,10 @@ Mark the authentication step as completed for the remote peer identified by [par
 If a peer disconnects before completing authentication, either due to a network issue, the [member auth_timeout] expiring, or manually calling [method disconnect_peer], the [signal peer_authentication_failed] signal will be emitted instead of [signal MultiplayerAPI.peer_disconnected].
 */
 //go:nosplit
-func (self class) CompleteAuth(id gd.Int) error {
+func (self class) CompleteAuth(id gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_complete_auth, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -348,13 +348,13 @@ func (self class) IsServerRelayEnabled() bool {
 Sends the given raw [param bytes] to a specific peer identified by [param id] (see [method MultiplayerPeer.set_target_peer]). Default ID is [code]0[/code], i.e. broadcast to all peers.
 */
 //go:nosplit
-func (self class) SendBytes(bytes gd.PackedByteArray, id gd.Int, mode gdclass.MultiplayerPeerTransferMode, channel gd.Int) error {
+func (self class) SendBytes(bytes gd.PackedByteArray, id gd.Int, mode gdclass.MultiplayerPeerTransferMode, channel gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytes))
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, channel)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_send_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -444,7 +444,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

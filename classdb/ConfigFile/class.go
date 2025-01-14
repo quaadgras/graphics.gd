@@ -380,10 +380,10 @@ Loads the config file specified as a parameter. The file's contents are parsed a
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) Load(path gd.String) error {
+func (self class) Load(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -395,10 +395,10 @@ Parses the passed string as the contents of a config file. The string is parsed 
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) Parse(data gd.String) error {
+func (self class) Parse(data gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -410,10 +410,10 @@ Saves the contents of the [ConfigFile] object to the file specified as a paramet
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) Save(path gd.String) error {
+func (self class) Save(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -438,11 +438,11 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) LoadEncrypted(path gd.String, key gd.PackedByteArray) error {
+func (self class) LoadEncrypted(path gd.String, key gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(key))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -454,11 +454,11 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) LoadEncryptedPass(path gd.String, password gd.String) error {
+func (self class) LoadEncryptedPass(path gd.String, password gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(password))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -470,11 +470,11 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) SaveEncrypted(path gd.String, key gd.PackedByteArray) error {
+func (self class) SaveEncrypted(path gd.String, key gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(key))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -486,11 +486,11 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 //go:nosplit
-func (self class) SaveEncryptedPass(path gd.String, password gd.String) error {
+func (self class) SaveEncryptedPass(path gd.String, password gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(password))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -533,7 +533,7 @@ func init() {
 	gdclass.Register("ConfigFile", func(ptr gd.Object) any { return [1]gdclass.ConfigFile{*(*gdclass.ConfigFile)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

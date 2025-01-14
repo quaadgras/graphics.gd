@@ -47,11 +47,13 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetLineSyntaxHighlighting(line int) (_ Dictionary.Any) { return }
-func (self Implementation) ClearHighlightingCache()                               { return }
-func (self Implementation) UpdateCache()                                          { return }
+type implementation struct{}
+
+func (self implementation) GetLineSyntaxHighlighting(line int) (_ Dictionary.Any) { return }
+func (self implementation) ClearHighlightingCache()                               { return }
+func (self implementation) UpdateCache()                                          { return }
 
 /*
 Virtual method which can be overridden to return syntax highlighting data.

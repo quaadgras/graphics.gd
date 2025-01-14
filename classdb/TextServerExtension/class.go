@@ -692,416 +692,418 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) HasFeature(feature gdclass.TextServerFeature) (_ bool)          { return }
-func (self Implementation) GetName() (_ string)                                            { return }
-func (self Implementation) GetFeatures() (_ int)                                           { return }
-func (self Implementation) FreeRid(rid Resource.ID)                                        { return }
-func (self Implementation) Has(rid Resource.ID) (_ bool)                                   { return }
-func (self Implementation) LoadSupportData(filename string) (_ bool)                       { return }
-func (self Implementation) GetSupportDataFilename() (_ string)                             { return }
-func (self Implementation) GetSupportDataInfo() (_ string)                                 { return }
-func (self Implementation) SaveSupportData(filename string) (_ bool)                       { return }
-func (self Implementation) IsLocaleRightToLeft(locale string) (_ bool)                     { return }
-func (self Implementation) NameToTag(name string) (_ int)                                  { return }
-func (self Implementation) TagToName(tag int) (_ string)                                   { return }
-func (self Implementation) CreateFont() (_ Resource.ID)                                    { return }
-func (self Implementation) CreateFontLinkedVariation(font_rid Resource.ID) (_ Resource.ID) { return }
-func (self Implementation) FontSetData(font_rid Resource.ID, data []byte)                  { return }
-func (self Implementation) FontSetDataPtr(font_rid Resource.ID, data_ptr unsafe.Pointer, data_size int) {
+type implementation struct{}
+
+func (self implementation) HasFeature(feature gdclass.TextServerFeature) (_ bool)          { return }
+func (self implementation) GetName() (_ string)                                            { return }
+func (self implementation) GetFeatures() (_ int)                                           { return }
+func (self implementation) FreeRid(rid Resource.ID)                                        { return }
+func (self implementation) Has(rid Resource.ID) (_ bool)                                   { return }
+func (self implementation) LoadSupportData(filename string) (_ bool)                       { return }
+func (self implementation) GetSupportDataFilename() (_ string)                             { return }
+func (self implementation) GetSupportDataInfo() (_ string)                                 { return }
+func (self implementation) SaveSupportData(filename string) (_ bool)                       { return }
+func (self implementation) IsLocaleRightToLeft(locale string) (_ bool)                     { return }
+func (self implementation) NameToTag(name string) (_ int)                                  { return }
+func (self implementation) TagToName(tag int) (_ string)                                   { return }
+func (self implementation) CreateFont() (_ Resource.ID)                                    { return }
+func (self implementation) CreateFontLinkedVariation(font_rid Resource.ID) (_ Resource.ID) { return }
+func (self implementation) FontSetData(font_rid Resource.ID, data []byte)                  { return }
+func (self implementation) FontSetDataPtr(font_rid Resource.ID, data_ptr unsafe.Pointer, data_size int) {
 	return
 }
-func (self Implementation) FontSetFaceIndex(font_rid Resource.ID, face_index int) { return }
-func (self Implementation) FontGetFaceIndex(font_rid Resource.ID) (_ int)         { return }
-func (self Implementation) FontGetFaceCount(font_rid Resource.ID) (_ int)         { return }
-func (self Implementation) FontSetStyle(font_rid Resource.ID, style gdclass.TextServerFontStyle) {
+func (self implementation) FontSetFaceIndex(font_rid Resource.ID, face_index int) { return }
+func (self implementation) FontGetFaceIndex(font_rid Resource.ID) (_ int)         { return }
+func (self implementation) FontGetFaceCount(font_rid Resource.ID) (_ int)         { return }
+func (self implementation) FontSetStyle(font_rid Resource.ID, style gdclass.TextServerFontStyle) {
 	return
 }
-func (self Implementation) FontGetStyle(font_rid Resource.ID) (_ gdclass.TextServerFontStyle) { return }
-func (self Implementation) FontSetName(font_rid Resource.ID, name string)                     { return }
-func (self Implementation) FontGetName(font_rid Resource.ID) (_ string)                       { return }
-func (self Implementation) FontGetOtNameStrings(font_rid Resource.ID) (_ Dictionary.Any)      { return }
-func (self Implementation) FontSetStyleName(font_rid Resource.ID, name_style string)          { return }
-func (self Implementation) FontGetStyleName(font_rid Resource.ID) (_ string)                  { return }
-func (self Implementation) FontSetWeight(font_rid Resource.ID, weight int)                    { return }
-func (self Implementation) FontGetWeight(font_rid Resource.ID) (_ int)                        { return }
-func (self Implementation) FontSetStretch(font_rid Resource.ID, stretch int)                  { return }
-func (self Implementation) FontGetStretch(font_rid Resource.ID) (_ int)                       { return }
-func (self Implementation) FontSetAntialiasing(font_rid Resource.ID, antialiasing gdclass.TextServerFontAntialiasing) {
+func (self implementation) FontGetStyle(font_rid Resource.ID) (_ gdclass.TextServerFontStyle) { return }
+func (self implementation) FontSetName(font_rid Resource.ID, name string)                     { return }
+func (self implementation) FontGetName(font_rid Resource.ID) (_ string)                       { return }
+func (self implementation) FontGetOtNameStrings(font_rid Resource.ID) (_ Dictionary.Any)      { return }
+func (self implementation) FontSetStyleName(font_rid Resource.ID, name_style string)          { return }
+func (self implementation) FontGetStyleName(font_rid Resource.ID) (_ string)                  { return }
+func (self implementation) FontSetWeight(font_rid Resource.ID, weight int)                    { return }
+func (self implementation) FontGetWeight(font_rid Resource.ID) (_ int)                        { return }
+func (self implementation) FontSetStretch(font_rid Resource.ID, stretch int)                  { return }
+func (self implementation) FontGetStretch(font_rid Resource.ID) (_ int)                       { return }
+func (self implementation) FontSetAntialiasing(font_rid Resource.ID, antialiasing gdclass.TextServerFontAntialiasing) {
 	return
 }
-func (self Implementation) FontGetAntialiasing(font_rid Resource.ID) (_ gdclass.TextServerFontAntialiasing) {
+func (self implementation) FontGetAntialiasing(font_rid Resource.ID) (_ gdclass.TextServerFontAntialiasing) {
 	return
 }
-func (self Implementation) FontSetDisableEmbeddedBitmaps(font_rid Resource.ID, disable_embedded_bitmaps bool) {
+func (self implementation) FontSetDisableEmbeddedBitmaps(font_rid Resource.ID, disable_embedded_bitmaps bool) {
 	return
 }
-func (self Implementation) FontGetDisableEmbeddedBitmaps(font_rid Resource.ID) (_ bool) { return }
-func (self Implementation) FontSetGenerateMipmaps(font_rid Resource.ID, generate_mipmaps bool) {
+func (self implementation) FontGetDisableEmbeddedBitmaps(font_rid Resource.ID) (_ bool) { return }
+func (self implementation) FontSetGenerateMipmaps(font_rid Resource.ID, generate_mipmaps bool) {
 	return
 }
-func (self Implementation) FontGetGenerateMipmaps(font_rid Resource.ID) (_ bool) { return }
-func (self Implementation) FontSetMultichannelSignedDistanceField(font_rid Resource.ID, msdf bool) {
+func (self implementation) FontGetGenerateMipmaps(font_rid Resource.ID) (_ bool) { return }
+func (self implementation) FontSetMultichannelSignedDistanceField(font_rid Resource.ID, msdf bool) {
 	return
 }
-func (self Implementation) FontIsMultichannelSignedDistanceField(font_rid Resource.ID) (_ bool) {
+func (self implementation) FontIsMultichannelSignedDistanceField(font_rid Resource.ID) (_ bool) {
 	return
 }
-func (self Implementation) FontSetMsdfPixelRange(font_rid Resource.ID, msdf_pixel_range int) { return }
-func (self Implementation) FontGetMsdfPixelRange(font_rid Resource.ID) (_ int)               { return }
-func (self Implementation) FontSetMsdfSize(font_rid Resource.ID, msdf_size int)              { return }
-func (self Implementation) FontGetMsdfSize(font_rid Resource.ID) (_ int)                     { return }
-func (self Implementation) FontSetFixedSize(font_rid Resource.ID, fixed_size int)            { return }
-func (self Implementation) FontGetFixedSize(font_rid Resource.ID) (_ int)                    { return }
-func (self Implementation) FontSetFixedSizeScaleMode(font_rid Resource.ID, fixed_size_scale_mode gdclass.TextServerFixedSizeScaleMode) {
+func (self implementation) FontSetMsdfPixelRange(font_rid Resource.ID, msdf_pixel_range int) { return }
+func (self implementation) FontGetMsdfPixelRange(font_rid Resource.ID) (_ int)               { return }
+func (self implementation) FontSetMsdfSize(font_rid Resource.ID, msdf_size int)              { return }
+func (self implementation) FontGetMsdfSize(font_rid Resource.ID) (_ int)                     { return }
+func (self implementation) FontSetFixedSize(font_rid Resource.ID, fixed_size int)            { return }
+func (self implementation) FontGetFixedSize(font_rid Resource.ID) (_ int)                    { return }
+func (self implementation) FontSetFixedSizeScaleMode(font_rid Resource.ID, fixed_size_scale_mode gdclass.TextServerFixedSizeScaleMode) {
 	return
 }
-func (self Implementation) FontGetFixedSizeScaleMode(font_rid Resource.ID) (_ gdclass.TextServerFixedSizeScaleMode) {
+func (self implementation) FontGetFixedSizeScaleMode(font_rid Resource.ID) (_ gdclass.TextServerFixedSizeScaleMode) {
 	return
 }
-func (self Implementation) FontSetAllowSystemFallback(font_rid Resource.ID, allow_system_fallback bool) {
+func (self implementation) FontSetAllowSystemFallback(font_rid Resource.ID, allow_system_fallback bool) {
 	return
 }
-func (self Implementation) FontIsAllowSystemFallback(font_rid Resource.ID) (_ bool) { return }
-func (self Implementation) FontSetForceAutohinter(font_rid Resource.ID, force_autohinter bool) {
+func (self implementation) FontIsAllowSystemFallback(font_rid Resource.ID) (_ bool) { return }
+func (self implementation) FontSetForceAutohinter(font_rid Resource.ID, force_autohinter bool) {
 	return
 }
-func (self Implementation) FontIsForceAutohinter(font_rid Resource.ID) (_ bool) { return }
-func (self Implementation) FontSetHinting(font_rid Resource.ID, hinting gdclass.TextServerHinting) {
+func (self implementation) FontIsForceAutohinter(font_rid Resource.ID) (_ bool) { return }
+func (self implementation) FontSetHinting(font_rid Resource.ID, hinting gdclass.TextServerHinting) {
 	return
 }
-func (self Implementation) FontGetHinting(font_rid Resource.ID) (_ gdclass.TextServerHinting) { return }
-func (self Implementation) FontSetSubpixelPositioning(font_rid Resource.ID, subpixel_positioning gdclass.TextServerSubpixelPositioning) {
+func (self implementation) FontGetHinting(font_rid Resource.ID) (_ gdclass.TextServerHinting) { return }
+func (self implementation) FontSetSubpixelPositioning(font_rid Resource.ID, subpixel_positioning gdclass.TextServerSubpixelPositioning) {
 	return
 }
-func (self Implementation) FontGetSubpixelPositioning(font_rid Resource.ID) (_ gdclass.TextServerSubpixelPositioning) {
+func (self implementation) FontGetSubpixelPositioning(font_rid Resource.ID) (_ gdclass.TextServerSubpixelPositioning) {
 	return
 }
-func (self Implementation) FontSetEmbolden(font_rid Resource.ID, strength Float.X) { return }
-func (self Implementation) FontGetEmbolden(font_rid Resource.ID) (_ Float.X)       { return }
-func (self Implementation) FontSetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType, value int) {
+func (self implementation) FontSetEmbolden(font_rid Resource.ID, strength Float.X) { return }
+func (self implementation) FontGetEmbolden(font_rid Resource.ID) (_ Float.X)       { return }
+func (self implementation) FontSetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType, value int) {
 	return
 }
-func (self Implementation) FontGetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType) (_ int) {
+func (self implementation) FontGetSpacing(font_rid Resource.ID, spacing gdclass.TextServerSpacingType) (_ int) {
 	return
 }
-func (self Implementation) FontSetBaselineOffset(font_rid Resource.ID, baseline_offset Float.X) {
+func (self implementation) FontSetBaselineOffset(font_rid Resource.ID, baseline_offset Float.X) {
 	return
 }
-func (self Implementation) FontGetBaselineOffset(font_rid Resource.ID) (_ Float.X) { return }
-func (self Implementation) FontSetTransform(font_rid Resource.ID, transform Transform2D.OriginXY) {
+func (self implementation) FontGetBaselineOffset(font_rid Resource.ID) (_ Float.X) { return }
+func (self implementation) FontSetTransform(font_rid Resource.ID, transform Transform2D.OriginXY) {
 	return
 }
-func (self Implementation) FontGetTransform(font_rid Resource.ID) (_ Transform2D.OriginXY) { return }
-func (self Implementation) FontSetVariationCoordinates(font_rid Resource.ID, variation_coordinates Dictionary.Any) {
+func (self implementation) FontGetTransform(font_rid Resource.ID) (_ Transform2D.OriginXY) { return }
+func (self implementation) FontSetVariationCoordinates(font_rid Resource.ID, variation_coordinates Dictionary.Any) {
 	return
 }
-func (self Implementation) FontGetVariationCoordinates(font_rid Resource.ID) (_ Dictionary.Any) {
+func (self implementation) FontGetVariationCoordinates(font_rid Resource.ID) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) FontSetOversampling(font_rid Resource.ID, oversampling Float.X) { return }
-func (self Implementation) FontGetOversampling(font_rid Resource.ID) (_ Float.X)           { return }
-func (self Implementation) FontGetSizeCacheList(font_rid Resource.ID) (_ gd.Array)         { return }
-func (self Implementation) FontClearSizeCache(font_rid Resource.ID)                        { return }
-func (self Implementation) FontRemoveSizeCache(font_rid Resource.ID, size Vector2i.XY)     { return }
-func (self Implementation) FontSetAscent(font_rid Resource.ID, size int, ascent Float.X)   { return }
-func (self Implementation) FontGetAscent(font_rid Resource.ID, size int) (_ Float.X)       { return }
-func (self Implementation) FontSetDescent(font_rid Resource.ID, size int, descent Float.X) { return }
-func (self Implementation) FontGetDescent(font_rid Resource.ID, size int) (_ Float.X)      { return }
-func (self Implementation) FontSetUnderlinePosition(font_rid Resource.ID, size int, underline_position Float.X) {
+func (self implementation) FontSetOversampling(font_rid Resource.ID, oversampling Float.X) { return }
+func (self implementation) FontGetOversampling(font_rid Resource.ID) (_ Float.X)           { return }
+func (self implementation) FontGetSizeCacheList(font_rid Resource.ID) (_ gd.Array)         { return }
+func (self implementation) FontClearSizeCache(font_rid Resource.ID)                        { return }
+func (self implementation) FontRemoveSizeCache(font_rid Resource.ID, size Vector2i.XY)     { return }
+func (self implementation) FontSetAscent(font_rid Resource.ID, size int, ascent Float.X)   { return }
+func (self implementation) FontGetAscent(font_rid Resource.ID, size int) (_ Float.X)       { return }
+func (self implementation) FontSetDescent(font_rid Resource.ID, size int, descent Float.X) { return }
+func (self implementation) FontGetDescent(font_rid Resource.ID, size int) (_ Float.X)      { return }
+func (self implementation) FontSetUnderlinePosition(font_rid Resource.ID, size int, underline_position Float.X) {
 	return
 }
-func (self Implementation) FontGetUnderlinePosition(font_rid Resource.ID, size int) (_ Float.X) {
+func (self implementation) FontGetUnderlinePosition(font_rid Resource.ID, size int) (_ Float.X) {
 	return
 }
-func (self Implementation) FontSetUnderlineThickness(font_rid Resource.ID, size int, underline_thickness Float.X) {
+func (self implementation) FontSetUnderlineThickness(font_rid Resource.ID, size int, underline_thickness Float.X) {
 	return
 }
-func (self Implementation) FontGetUnderlineThickness(font_rid Resource.ID, size int) (_ Float.X) {
+func (self implementation) FontGetUnderlineThickness(font_rid Resource.ID, size int) (_ Float.X) {
 	return
 }
-func (self Implementation) FontSetScale(font_rid Resource.ID, size int, scale Float.X) { return }
-func (self Implementation) FontGetScale(font_rid Resource.ID, size int) (_ Float.X)    { return }
-func (self Implementation) FontGetTextureCount(font_rid Resource.ID, size Vector2i.XY) (_ int) {
+func (self implementation) FontSetScale(font_rid Resource.ID, size int, scale Float.X) { return }
+func (self implementation) FontGetScale(font_rid Resource.ID, size int) (_ Float.X)    { return }
+func (self implementation) FontGetTextureCount(font_rid Resource.ID, size Vector2i.XY) (_ int) {
 	return
 }
-func (self Implementation) FontClearTextures(font_rid Resource.ID, size Vector2i.XY) { return }
-func (self Implementation) FontRemoveTexture(font_rid Resource.ID, size Vector2i.XY, texture_index int) {
+func (self implementation) FontClearTextures(font_rid Resource.ID, size Vector2i.XY) { return }
+func (self implementation) FontRemoveTexture(font_rid Resource.ID, size Vector2i.XY, texture_index int) {
 	return
 }
-func (self Implementation) FontSetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int, image [1]gdclass.Image) {
+func (self implementation) FontSetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int, image [1]gdclass.Image) {
 	return
 }
-func (self Implementation) FontGetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int) (_ [1]gdclass.Image) {
+func (self implementation) FontGetTextureImage(font_rid Resource.ID, size Vector2i.XY, texture_index int) (_ [1]gdclass.Image) {
 	return
 }
-func (self Implementation) FontSetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int, offset []int32) {
+func (self implementation) FontSetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int, offset []int32) {
 	return
 }
-func (self Implementation) FontGetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int) (_ []int32) {
+func (self implementation) FontGetTextureOffsets(font_rid Resource.ID, size Vector2i.XY, texture_index int) (_ []int32) {
 	return
 }
-func (self Implementation) FontGetGlyphList(font_rid Resource.ID, size Vector2i.XY) (_ []int32) {
+func (self implementation) FontGetGlyphList(font_rid Resource.ID, size Vector2i.XY) (_ []int32) {
 	return
 }
-func (self Implementation) FontClearGlyphs(font_rid Resource.ID, size Vector2i.XY)            { return }
-func (self Implementation) FontRemoveGlyph(font_rid Resource.ID, size Vector2i.XY, glyph int) { return }
-func (self Implementation) FontGetGlyphAdvance(font_rid Resource.ID, size int, glyph int) (_ Vector2.XY) {
+func (self implementation) FontClearGlyphs(font_rid Resource.ID, size Vector2i.XY)            { return }
+func (self implementation) FontRemoveGlyph(font_rid Resource.ID, size Vector2i.XY, glyph int) { return }
+func (self implementation) FontGetGlyphAdvance(font_rid Resource.ID, size int, glyph int) (_ Vector2.XY) {
 	return
 }
-func (self Implementation) FontSetGlyphAdvance(font_rid Resource.ID, size int, glyph int, advance Vector2.XY) {
+func (self implementation) FontSetGlyphAdvance(font_rid Resource.ID, size int, glyph int, advance Vector2.XY) {
 	return
 }
-func (self Implementation) FontGetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Vector2.XY) {
+func (self implementation) FontGetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Vector2.XY) {
 	return
 }
-func (self Implementation) FontSetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int, offset Vector2.XY) {
+func (self implementation) FontSetGlyphOffset(font_rid Resource.ID, size Vector2i.XY, glyph int, offset Vector2.XY) {
 	return
 }
-func (self Implementation) FontGetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Vector2.XY) {
+func (self implementation) FontGetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Vector2.XY) {
 	return
 }
-func (self Implementation) FontSetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int, gl_size Vector2.XY) {
+func (self implementation) FontSetGlyphSize(font_rid Resource.ID, size Vector2i.XY, glyph int, gl_size Vector2.XY) {
 	return
 }
-func (self Implementation) FontGetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Rect2.PositionSize) {
+func (self implementation) FontGetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Rect2.PositionSize) {
 	return
 }
-func (self Implementation) FontSetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize) {
+func (self implementation) FontSetGlyphUvRect(font_rid Resource.ID, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize) {
 	return
 }
-func (self Implementation) FontGetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ int) {
+func (self implementation) FontGetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ int) {
 	return
 }
-func (self Implementation) FontSetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int, texture_idx int) {
+func (self implementation) FontSetGlyphTextureIdx(font_rid Resource.ID, size Vector2i.XY, glyph int, texture_idx int) {
 	return
 }
-func (self Implementation) FontGetGlyphTextureRid(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Resource.ID) {
+func (self implementation) FontGetGlyphTextureRid(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Resource.ID) {
 	return
 }
-func (self Implementation) FontGetGlyphTextureSize(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Vector2.XY) {
+func (self implementation) FontGetGlyphTextureSize(font_rid Resource.ID, size Vector2i.XY, glyph int) (_ Vector2.XY) {
 	return
 }
-func (self Implementation) FontGetGlyphContours(font_rid Resource.ID, size int, index int) (_ Dictionary.Any) {
+func (self implementation) FontGetGlyphContours(font_rid Resource.ID, size int, index int) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) FontGetKerningList(font_rid Resource.ID, size int) (_ gd.Array) { return }
-func (self Implementation) FontClearKerningMap(font_rid Resource.ID, size int)             { return }
-func (self Implementation) FontRemoveKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) {
+func (self implementation) FontGetKerningList(font_rid Resource.ID, size int) (_ gd.Array) { return }
+func (self implementation) FontClearKerningMap(font_rid Resource.ID, size int)             { return }
+func (self implementation) FontRemoveKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) {
 	return
 }
-func (self Implementation) FontSetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY, kerning Vector2.XY) {
+func (self implementation) FontSetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY, kerning Vector2.XY) {
 	return
 }
-func (self Implementation) FontGetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) (_ Vector2.XY) {
+func (self implementation) FontGetKerning(font_rid Resource.ID, size int, glyph_pair Vector2i.XY) (_ Vector2.XY) {
 	return
 }
-func (self Implementation) FontGetGlyphIndex(font_rid Resource.ID, size int, char int, variation_selector int) (_ int) {
+func (self implementation) FontGetGlyphIndex(font_rid Resource.ID, size int, char int, variation_selector int) (_ int) {
 	return
 }
-func (self Implementation) FontGetCharFromGlyphIndex(font_rid Resource.ID, size int, glyph_index int) (_ int) {
+func (self implementation) FontGetCharFromGlyphIndex(font_rid Resource.ID, size int, glyph_index int) (_ int) {
 	return
 }
-func (self Implementation) FontHasChar(font_rid Resource.ID, char int) (_ bool)   { return }
-func (self Implementation) FontGetSupportedChars(font_rid Resource.ID) (_ string) { return }
-func (self Implementation) FontRenderRange(font_rid Resource.ID, size Vector2i.XY, start int, end int) {
+func (self implementation) FontHasChar(font_rid Resource.ID, char int) (_ bool)   { return }
+func (self implementation) FontGetSupportedChars(font_rid Resource.ID) (_ string) { return }
+func (self implementation) FontRenderRange(font_rid Resource.ID, size Vector2i.XY, start int, end int) {
 	return
 }
-func (self Implementation) FontRenderGlyph(font_rid Resource.ID, size Vector2i.XY, index int) { return }
-func (self Implementation) FontDrawGlyph(font_rid Resource.ID, canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA) {
+func (self implementation) FontRenderGlyph(font_rid Resource.ID, size Vector2i.XY, index int) { return }
+func (self implementation) FontDrawGlyph(font_rid Resource.ID, canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA) {
 	return
 }
-func (self Implementation) FontDrawGlyphOutline(font_rid Resource.ID, canvas Resource.ID, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA) {
+func (self implementation) FontDrawGlyphOutline(font_rid Resource.ID, canvas Resource.ID, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA) {
 	return
 }
-func (self Implementation) FontIsLanguageSupported(font_rid Resource.ID, language string) (_ bool) {
+func (self implementation) FontIsLanguageSupported(font_rid Resource.ID, language string) (_ bool) {
 	return
 }
-func (self Implementation) FontSetLanguageSupportOverride(font_rid Resource.ID, language string, supported bool) {
+func (self implementation) FontSetLanguageSupportOverride(font_rid Resource.ID, language string, supported bool) {
 	return
 }
-func (self Implementation) FontGetLanguageSupportOverride(font_rid Resource.ID, language string) (_ bool) {
+func (self implementation) FontGetLanguageSupportOverride(font_rid Resource.ID, language string) (_ bool) {
 	return
 }
-func (self Implementation) FontRemoveLanguageSupportOverride(font_rid Resource.ID, language string) {
+func (self implementation) FontRemoveLanguageSupportOverride(font_rid Resource.ID, language string) {
 	return
 }
-func (self Implementation) FontGetLanguageSupportOverrides(font_rid Resource.ID) (_ []string) { return }
-func (self Implementation) FontIsScriptSupported(font_rid Resource.ID, script string) (_ bool) {
+func (self implementation) FontGetLanguageSupportOverrides(font_rid Resource.ID) (_ []string) { return }
+func (self implementation) FontIsScriptSupported(font_rid Resource.ID, script string) (_ bool) {
 	return
 }
-func (self Implementation) FontSetScriptSupportOverride(font_rid Resource.ID, script string, supported bool) {
+func (self implementation) FontSetScriptSupportOverride(font_rid Resource.ID, script string, supported bool) {
 	return
 }
-func (self Implementation) FontGetScriptSupportOverride(font_rid Resource.ID, script string) (_ bool) {
+func (self implementation) FontGetScriptSupportOverride(font_rid Resource.ID, script string) (_ bool) {
 	return
 }
-func (self Implementation) FontRemoveScriptSupportOverride(font_rid Resource.ID, script string) {
+func (self implementation) FontRemoveScriptSupportOverride(font_rid Resource.ID, script string) {
 	return
 }
-func (self Implementation) FontGetScriptSupportOverrides(font_rid Resource.ID) (_ []string) { return }
-func (self Implementation) FontSetOpentypeFeatureOverrides(font_rid Resource.ID, overrides Dictionary.Any) {
+func (self implementation) FontGetScriptSupportOverrides(font_rid Resource.ID) (_ []string) { return }
+func (self implementation) FontSetOpentypeFeatureOverrides(font_rid Resource.ID, overrides Dictionary.Any) {
 	return
 }
-func (self Implementation) FontGetOpentypeFeatureOverrides(font_rid Resource.ID) (_ Dictionary.Any) {
+func (self implementation) FontGetOpentypeFeatureOverrides(font_rid Resource.ID) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) FontSupportedFeatureList(font_rid Resource.ID) (_ Dictionary.Any) { return }
-func (self Implementation) FontSupportedVariationList(font_rid Resource.ID) (_ Dictionary.Any) {
+func (self implementation) FontSupportedFeatureList(font_rid Resource.ID) (_ Dictionary.Any) { return }
+func (self implementation) FontSupportedVariationList(font_rid Resource.ID) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) FontGetGlobalOversampling() (_ Float.X)               { return }
-func (self Implementation) FontSetGlobalOversampling(oversampling Float.X)       { return }
-func (self Implementation) GetHexCodeBoxSize(size int, index int) (_ Vector2.XY) { return }
-func (self Implementation) DrawHexCodeBox(canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA) {
+func (self implementation) FontGetGlobalOversampling() (_ Float.X)               { return }
+func (self implementation) FontSetGlobalOversampling(oversampling Float.X)       { return }
+func (self implementation) GetHexCodeBoxSize(size int, index int) (_ Vector2.XY) { return }
+func (self implementation) DrawHexCodeBox(canvas Resource.ID, size int, pos Vector2.XY, index int, color Color.RGBA) {
 	return
 }
-func (self Implementation) CreateShapedText(direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) (_ Resource.ID) {
+func (self implementation) CreateShapedText(direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) (_ Resource.ID) {
 	return
 }
-func (self Implementation) ShapedTextClear(shaped Resource.ID) { return }
-func (self Implementation) ShapedTextSetDirection(shaped Resource.ID, direction gdclass.TextServerDirection) {
+func (self implementation) ShapedTextClear(shaped Resource.ID) { return }
+func (self implementation) ShapedTextSetDirection(shaped Resource.ID, direction gdclass.TextServerDirection) {
 	return
 }
-func (self Implementation) ShapedTextGetDirection(shaped Resource.ID) (_ gdclass.TextServerDirection) {
+func (self implementation) ShapedTextGetDirection(shaped Resource.ID) (_ gdclass.TextServerDirection) {
 	return
 }
-func (self Implementation) ShapedTextGetInferredDirection(shaped Resource.ID) (_ gdclass.TextServerDirection) {
+func (self implementation) ShapedTextGetInferredDirection(shaped Resource.ID) (_ gdclass.TextServerDirection) {
 	return
 }
-func (self Implementation) ShapedTextSetBidiOverride(shaped Resource.ID, override Array.Any) { return }
-func (self Implementation) ShapedTextSetCustomPunctuation(shaped Resource.ID, punct string)  { return }
-func (self Implementation) ShapedTextGetCustomPunctuation(shaped Resource.ID) (_ string)     { return }
-func (self Implementation) ShapedTextSetCustomEllipsis(shaped Resource.ID, char int)         { return }
-func (self Implementation) ShapedTextGetCustomEllipsis(shaped Resource.ID) (_ int)           { return }
-func (self Implementation) ShapedTextSetOrientation(shaped Resource.ID, orientation gdclass.TextServerOrientation) {
+func (self implementation) ShapedTextSetBidiOverride(shaped Resource.ID, override Array.Any) { return }
+func (self implementation) ShapedTextSetCustomPunctuation(shaped Resource.ID, punct string)  { return }
+func (self implementation) ShapedTextGetCustomPunctuation(shaped Resource.ID) (_ string)     { return }
+func (self implementation) ShapedTextSetCustomEllipsis(shaped Resource.ID, char int)         { return }
+func (self implementation) ShapedTextGetCustomEllipsis(shaped Resource.ID) (_ int)           { return }
+func (self implementation) ShapedTextSetOrientation(shaped Resource.ID, orientation gdclass.TextServerOrientation) {
 	return
 }
-func (self Implementation) ShapedTextGetOrientation(shaped Resource.ID) (_ gdclass.TextServerOrientation) {
+func (self implementation) ShapedTextGetOrientation(shaped Resource.ID) (_ gdclass.TextServerOrientation) {
 	return
 }
-func (self Implementation) ShapedTextSetPreserveInvalid(shaped Resource.ID, enabled bool) { return }
-func (self Implementation) ShapedTextGetPreserveInvalid(shaped Resource.ID) (_ bool)      { return }
-func (self Implementation) ShapedTextSetPreserveControl(shaped Resource.ID, enabled bool) { return }
-func (self Implementation) ShapedTextGetPreserveControl(shaped Resource.ID) (_ bool)      { return }
-func (self Implementation) ShapedTextSetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType, value int) {
+func (self implementation) ShapedTextSetPreserveInvalid(shaped Resource.ID, enabled bool) { return }
+func (self implementation) ShapedTextGetPreserveInvalid(shaped Resource.ID) (_ bool)      { return }
+func (self implementation) ShapedTextSetPreserveControl(shaped Resource.ID, enabled bool) { return }
+func (self implementation) ShapedTextGetPreserveControl(shaped Resource.ID) (_ bool)      { return }
+func (self implementation) ShapedTextSetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType, value int) {
 	return
 }
-func (self Implementation) ShapedTextGetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType) (_ int) {
+func (self implementation) ShapedTextGetSpacing(shaped Resource.ID, spacing gdclass.TextServerSpacingType) (_ int) {
 	return
 }
-func (self Implementation) ShapedTextAddString(shaped Resource.ID, text string, fonts gd.Array, size int, opentype_features Dictionary.Any, language string, meta any) (_ bool) {
+func (self implementation) ShapedTextAddString(shaped Resource.ID, text string, fonts gd.Array, size int, opentype_features Dictionary.Any, language string, meta any) (_ bool) {
 	return
 }
-func (self Implementation) ShapedTextAddObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) (_ bool) {
+func (self implementation) ShapedTextAddObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) (_ bool) {
 	return
 }
-func (self Implementation) ShapedTextResizeObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) (_ bool) {
+func (self implementation) ShapedTextResizeObject(shaped Resource.ID, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) (_ bool) {
 	return
 }
-func (self Implementation) ShapedGetSpanCount(shaped Resource.ID) (_ int)           { return }
-func (self Implementation) ShapedGetSpanMeta(shaped Resource.ID, index int) (_ any) { return }
-func (self Implementation) ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts gd.Array, size int, opentype_features Dictionary.Any) {
+func (self implementation) ShapedGetSpanCount(shaped Resource.ID) (_ int)           { return }
+func (self implementation) ShapedGetSpanMeta(shaped Resource.ID, index int) (_ any) { return }
+func (self implementation) ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts gd.Array, size int, opentype_features Dictionary.Any) {
 	return
 }
-func (self Implementation) ShapedTextSubstr(shaped Resource.ID, start int, length int) (_ Resource.ID) {
+func (self implementation) ShapedTextSubstr(shaped Resource.ID, start int, length int) (_ Resource.ID) {
 	return
 }
-func (self Implementation) ShapedTextGetParent(shaped Resource.ID) (_ Resource.ID) { return }
-func (self Implementation) ShapedTextFitToWidth(shaped Resource.ID, width Float.X, justification_flags gdclass.TextServerJustificationFlag) (_ Float.X) {
+func (self implementation) ShapedTextGetParent(shaped Resource.ID) (_ Resource.ID) { return }
+func (self implementation) ShapedTextFitToWidth(shaped Resource.ID, width Float.X, justification_flags gdclass.TextServerJustificationFlag) (_ Float.X) {
 	return
 }
-func (self Implementation) ShapedTextTabAlign(shaped Resource.ID, tab_stops []float32) (_ Float.X) {
+func (self implementation) ShapedTextTabAlign(shaped Resource.ID, tab_stops []float32) (_ Float.X) {
 	return
 }
-func (self Implementation) ShapedTextShape(shaped Resource.ID) (_ bool)                  { return }
-func (self Implementation) ShapedTextUpdateBreaks(shaped Resource.ID) (_ bool)           { return }
-func (self Implementation) ShapedTextUpdateJustificationOps(shaped Resource.ID) (_ bool) { return }
-func (self Implementation) ShapedTextIsReady(shaped Resource.ID) (_ bool)                { return }
-func (self Implementation) ShapedTextGetGlyphs(shaped Resource.ID) (_ *Glyph)            { return }
-func (self Implementation) ShapedTextSortLogical(shaped Resource.ID) (_ *Glyph)          { return }
-func (self Implementation) ShapedTextGetGlyphCount(shaped Resource.ID) (_ int)           { return }
-func (self Implementation) ShapedTextGetRange(shaped Resource.ID) (_ Vector2i.XY)        { return }
-func (self Implementation) ShapedTextGetLineBreaksAdv(shaped Resource.ID, width []float32, start int, once bool, break_flags gdclass.TextServerLineBreakFlag) (_ []int32) {
+func (self implementation) ShapedTextShape(shaped Resource.ID) (_ bool)                  { return }
+func (self implementation) ShapedTextUpdateBreaks(shaped Resource.ID) (_ bool)           { return }
+func (self implementation) ShapedTextUpdateJustificationOps(shaped Resource.ID) (_ bool) { return }
+func (self implementation) ShapedTextIsReady(shaped Resource.ID) (_ bool)                { return }
+func (self implementation) ShapedTextGetGlyphs(shaped Resource.ID) (_ *Glyph)            { return }
+func (self implementation) ShapedTextSortLogical(shaped Resource.ID) (_ *Glyph)          { return }
+func (self implementation) ShapedTextGetGlyphCount(shaped Resource.ID) (_ int)           { return }
+func (self implementation) ShapedTextGetRange(shaped Resource.ID) (_ Vector2i.XY)        { return }
+func (self implementation) ShapedTextGetLineBreaksAdv(shaped Resource.ID, width []float32, start int, once bool, break_flags gdclass.TextServerLineBreakFlag) (_ []int32) {
 	return
 }
-func (self Implementation) ShapedTextGetLineBreaks(shaped Resource.ID, width Float.X, start int, break_flags gdclass.TextServerLineBreakFlag) (_ []int32) {
+func (self implementation) ShapedTextGetLineBreaks(shaped Resource.ID, width Float.X, start int, break_flags gdclass.TextServerLineBreakFlag) (_ []int32) {
 	return
 }
-func (self Implementation) ShapedTextGetWordBreaks(shaped Resource.ID, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) (_ []int32) {
+func (self implementation) ShapedTextGetWordBreaks(shaped Resource.ID, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) (_ []int32) {
 	return
 }
-func (self Implementation) ShapedTextGetTrimPos(shaped Resource.ID) (_ int)            { return }
-func (self Implementation) ShapedTextGetEllipsisPos(shaped Resource.ID) (_ int)        { return }
-func (self Implementation) ShapedTextGetEllipsisGlyphCount(shaped Resource.ID) (_ int) { return }
-func (self Implementation) ShapedTextGetEllipsisGlyphs(shaped Resource.ID) (_ *Glyph)  { return }
-func (self Implementation) ShapedTextOverrunTrimToWidth(shaped Resource.ID, width Float.X, trim_flags gdclass.TextServerTextOverrunFlag) {
+func (self implementation) ShapedTextGetTrimPos(shaped Resource.ID) (_ int)            { return }
+func (self implementation) ShapedTextGetEllipsisPos(shaped Resource.ID) (_ int)        { return }
+func (self implementation) ShapedTextGetEllipsisGlyphCount(shaped Resource.ID) (_ int) { return }
+func (self implementation) ShapedTextGetEllipsisGlyphs(shaped Resource.ID) (_ *Glyph)  { return }
+func (self implementation) ShapedTextOverrunTrimToWidth(shaped Resource.ID, width Float.X, trim_flags gdclass.TextServerTextOverrunFlag) {
 	return
 }
-func (self Implementation) ShapedTextGetObjects(shaped Resource.ID) (_ Array.Any) { return }
-func (self Implementation) ShapedTextGetObjectRect(shaped Resource.ID, key any) (_ Rect2.PositionSize) {
+func (self implementation) ShapedTextGetObjects(shaped Resource.ID) (_ Array.Any) { return }
+func (self implementation) ShapedTextGetObjectRect(shaped Resource.ID, key any) (_ Rect2.PositionSize) {
 	return
 }
-func (self Implementation) ShapedTextGetObjectRange(shaped Resource.ID, key any) (_ Vector2i.XY) {
+func (self implementation) ShapedTextGetObjectRange(shaped Resource.ID, key any) (_ Vector2i.XY) {
 	return
 }
-func (self Implementation) ShapedTextGetObjectGlyph(shaped Resource.ID, key any) (_ int)   { return }
-func (self Implementation) ShapedTextGetSize(shaped Resource.ID) (_ Vector2.XY)            { return }
-func (self Implementation) ShapedTextGetAscent(shaped Resource.ID) (_ Float.X)             { return }
-func (self Implementation) ShapedTextGetDescent(shaped Resource.ID) (_ Float.X)            { return }
-func (self Implementation) ShapedTextGetWidth(shaped Resource.ID) (_ Float.X)              { return }
-func (self Implementation) ShapedTextGetUnderlinePosition(shaped Resource.ID) (_ Float.X)  { return }
-func (self Implementation) ShapedTextGetUnderlineThickness(shaped Resource.ID) (_ Float.X) { return }
-func (self Implementation) ShapedTextGetDominantDirectionInRange(shaped Resource.ID, start int, end int) (_ int) {
+func (self implementation) ShapedTextGetObjectGlyph(shaped Resource.ID, key any) (_ int)   { return }
+func (self implementation) ShapedTextGetSize(shaped Resource.ID) (_ Vector2.XY)            { return }
+func (self implementation) ShapedTextGetAscent(shaped Resource.ID) (_ Float.X)             { return }
+func (self implementation) ShapedTextGetDescent(shaped Resource.ID) (_ Float.X)            { return }
+func (self implementation) ShapedTextGetWidth(shaped Resource.ID) (_ Float.X)              { return }
+func (self implementation) ShapedTextGetUnderlinePosition(shaped Resource.ID) (_ Float.X)  { return }
+func (self implementation) ShapedTextGetUnderlineThickness(shaped Resource.ID) (_ Float.X) { return }
+func (self implementation) ShapedTextGetDominantDirectionInRange(shaped Resource.ID, start int, end int) (_ int) {
 	return
 }
-func (self Implementation) ShapedTextGetCarets(shaped Resource.ID, position int, caret *CaretInfo) {
+func (self implementation) ShapedTextGetCarets(shaped Resource.ID, position int, caret *CaretInfo) {
 	return
 }
-func (self Implementation) ShapedTextGetSelection(shaped Resource.ID, start int, end int) (_ []Vector2.XY) {
+func (self implementation) ShapedTextGetSelection(shaped Resource.ID, start int, end int) (_ []Vector2.XY) {
 	return
 }
-func (self Implementation) ShapedTextHitTestGrapheme(shaped Resource.ID, coord Float.X) (_ int) {
+func (self implementation) ShapedTextHitTestGrapheme(shaped Resource.ID, coord Float.X) (_ int) {
 	return
 }
-func (self Implementation) ShapedTextHitTestPosition(shaped Resource.ID, coord Float.X) (_ int) {
+func (self implementation) ShapedTextHitTestPosition(shaped Resource.ID, coord Float.X) (_ int) {
 	return
 }
-func (self Implementation) ShapedTextDraw(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA) {
+func (self implementation) ShapedTextDraw(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA) {
 	return
 }
-func (self Implementation) ShapedTextDrawOutline(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA) {
+func (self implementation) ShapedTextDrawOutline(shaped Resource.ID, canvas Resource.ID, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA) {
 	return
 }
-func (self Implementation) ShapedTextGetGraphemeBounds(shaped Resource.ID, pos int) (_ Vector2.XY) {
+func (self implementation) ShapedTextGetGraphemeBounds(shaped Resource.ID, pos int) (_ Vector2.XY) {
 	return
 }
-func (self Implementation) ShapedTextNextGraphemePos(shaped Resource.ID, pos int) (_ int)     { return }
-func (self Implementation) ShapedTextPrevGraphemePos(shaped Resource.ID, pos int) (_ int)     { return }
-func (self Implementation) ShapedTextGetCharacterBreaks(shaped Resource.ID) (_ []int32)       { return }
-func (self Implementation) ShapedTextNextCharacterPos(shaped Resource.ID, pos int) (_ int)    { return }
-func (self Implementation) ShapedTextPrevCharacterPos(shaped Resource.ID, pos int) (_ int)    { return }
-func (self Implementation) ShapedTextClosestCharacterPos(shaped Resource.ID, pos int) (_ int) { return }
-func (self Implementation) FormatNumber(number string, language string) (_ string)            { return }
-func (self Implementation) ParseNumber(number string, language string) (_ string)             { return }
-func (self Implementation) PercentSign(language string) (_ string)                            { return }
-func (self Implementation) StripDiacritics(s string) (_ string)                               { return }
-func (self Implementation) IsValidIdentifier(s string) (_ bool)                               { return }
-func (self Implementation) IsValidLetter(unicode int) (_ bool)                                { return }
-func (self Implementation) StringGetWordBreaks(s string, language string, chars_per_line int) (_ []int32) {
+func (self implementation) ShapedTextNextGraphemePos(shaped Resource.ID, pos int) (_ int)     { return }
+func (self implementation) ShapedTextPrevGraphemePos(shaped Resource.ID, pos int) (_ int)     { return }
+func (self implementation) ShapedTextGetCharacterBreaks(shaped Resource.ID) (_ []int32)       { return }
+func (self implementation) ShapedTextNextCharacterPos(shaped Resource.ID, pos int) (_ int)    { return }
+func (self implementation) ShapedTextPrevCharacterPos(shaped Resource.ID, pos int) (_ int)    { return }
+func (self implementation) ShapedTextClosestCharacterPos(shaped Resource.ID, pos int) (_ int) { return }
+func (self implementation) FormatNumber(number string, language string) (_ string)            { return }
+func (self implementation) ParseNumber(number string, language string) (_ string)             { return }
+func (self implementation) PercentSign(language string) (_ string)                            { return }
+func (self implementation) StripDiacritics(s string) (_ string)                               { return }
+func (self implementation) IsValidIdentifier(s string) (_ bool)                               { return }
+func (self implementation) IsValidLetter(unicode int) (_ bool)                                { return }
+func (self implementation) StringGetWordBreaks(s string, language string, chars_per_line int) (_ []int32) {
 	return
 }
-func (self Implementation) StringGetCharacterBreaks(s string, language string) (_ []int32) { return }
-func (self Implementation) IsConfusable(s string, dict []string) (_ int)                   { return }
-func (self Implementation) SpoofCheck(s string) (_ bool)                                   { return }
-func (self Implementation) StringToUpper(s string, language string) (_ string)             { return }
-func (self Implementation) StringToLower(s string, language string) (_ string)             { return }
-func (self Implementation) StringToTitle(s string, language string) (_ string)             { return }
-func (self Implementation) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text string) (_ gd.Array) {
+func (self implementation) StringGetCharacterBreaks(s string, language string) (_ []int32) { return }
+func (self implementation) IsConfusable(s string, dict []string) (_ int)                   { return }
+func (self implementation) SpoofCheck(s string) (_ bool)                                   { return }
+func (self implementation) StringToUpper(s string, language string) (_ string)             { return }
+func (self implementation) StringToLower(s string, language string) (_ string)             { return }
+func (self implementation) StringToTitle(s string, language string) (_ string)             { return }
+func (self implementation) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text string) (_ gd.Array) {
 	return
 }
-func (self Implementation) Cleanup() { return }
+func (self implementation) Cleanup() { return }
 
 /*
 [b]Required.[/b]

@@ -44,10 +44,12 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetRecognizedExtensions() (_ []string) { return }
-func (self Implementation) LoadImage(image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) (_ error) {
+type implementation struct{}
+
+func (self implementation) GetRecognizedExtensions() (_ []string) { return }
+func (self implementation) LoadImage(image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) (_ error) {
 	return
 }
 
@@ -134,7 +136,7 @@ func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedS
 /*
 Loads the content of [param fileaccess] into the provided [param image].
 */
-func (class) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale gd.Float) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale gd.Float) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(image[0])
@@ -215,7 +217,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -45,9 +45,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) PropagateInputEvent(event [1]gdclass.InputEvent) (_ bool) { return }
+type implementation struct{}
+
+func (self implementation) PropagateInputEvent(event [1]gdclass.InputEvent) (_ bool) { return }
 
 /*
 Virtual method to be implemented by the user. If it returns [code]true[/code], the [param event] is propagated to [SubViewport] children. Propagation doesn't happen if it returns [code]false[/code]. If the function is not implemented, all events are propagated to SubViewports.

@@ -510,11 +510,11 @@ func (self class) RegenNormalMaps() {
 Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 */
 //go:nosplit
-func (self class) LightmapUnwrap(transform gd.Transform3D, texel_size gd.Float) error {
+func (self class) LightmapUnwrap(transform gd.Transform3D, texel_size gd.Float) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, texel_size)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_lightmap_unwrap, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -592,7 +592,7 @@ func init() {
 	gdclass.Register("ArrayMesh", func(ptr gd.Object) any { return [1]gdclass.ArrayMesh{*(*gdclass.ArrayMesh)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

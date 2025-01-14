@@ -71,26 +71,28 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Redraw()                                             { return }
-func (self Implementation) GetHandleName(id int, secondary bool) (_ string)     { return }
-func (self Implementation) IsHandleHighlighted(id int, secondary bool) (_ bool) { return }
-func (self Implementation) GetHandleValue(id int, secondary bool) (_ any)       { return }
-func (self Implementation) BeginHandleAction(id int, secondary bool)            { return }
-func (self Implementation) SetHandle(id int, secondary bool, camera [1]gdclass.Camera3D, point Vector2.XY) {
+type implementation struct{}
+
+func (self implementation) Redraw()                                             { return }
+func (self implementation) GetHandleName(id int, secondary bool) (_ string)     { return }
+func (self implementation) IsHandleHighlighted(id int, secondary bool) (_ bool) { return }
+func (self implementation) GetHandleValue(id int, secondary bool) (_ any)       { return }
+func (self implementation) BeginHandleAction(id int, secondary bool)            { return }
+func (self implementation) SetHandle(id int, secondary bool, camera [1]gdclass.Camera3D, point Vector2.XY) {
 	return
 }
-func (self Implementation) CommitHandle(id int, secondary bool, restore any, cancel bool) { return }
-func (self Implementation) SubgizmosIntersectRay(camera [1]gdclass.Camera3D, point Vector2.XY) (_ int) {
+func (self implementation) CommitHandle(id int, secondary bool, restore any, cancel bool) { return }
+func (self implementation) SubgizmosIntersectRay(camera [1]gdclass.Camera3D, point Vector2.XY) (_ int) {
 	return
 }
-func (self Implementation) SubgizmosIntersectFrustum(camera [1]gdclass.Camera3D, frustum gd.Array) (_ []int32) {
+func (self implementation) SubgizmosIntersectFrustum(camera [1]gdclass.Camera3D, frustum gd.Array) (_ []int32) {
 	return
 }
-func (self Implementation) SetSubgizmoTransform(id int, transform Transform3D.BasisOrigin) { return }
-func (self Implementation) GetSubgizmoTransform(id int) (_ Transform3D.BasisOrigin)        { return }
-func (self Implementation) CommitSubgizmos(ids []int32, restores gd.Array, cancel bool)    { return }
+func (self implementation) SetSubgizmoTransform(id int, transform Transform3D.BasisOrigin) { return }
+func (self implementation) GetSubgizmoTransform(id int) (_ Transform3D.BasisOrigin)        { return }
+func (self implementation) CommitSubgizmos(ids []int32, restores gd.Array, cancel bool)    { return }
 
 /*
 Override this method to add all the gizmo elements whenever a gizmo update is requested. It's common to call [method clear] at the beginning of this method and then add visual elements depending on the node's properties.

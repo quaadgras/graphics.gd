@@ -47,12 +47,14 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetShaderRid() (_ Resource.ID)         { return }
-func (self Implementation) GetShaderMode() (_ gdclass.ShaderMode) { return }
-func (self Implementation) CanDoNextPass() (_ bool)               { return }
-func (self Implementation) CanUseRenderPriority() (_ bool)        { return }
+type implementation struct{}
+
+func (self implementation) GetShaderRid() (_ Resource.ID)         { return }
+func (self implementation) GetShaderMode() (_ gdclass.ShaderMode) { return }
+func (self implementation) CanDoNextPass() (_ bool)               { return }
+func (self implementation) CanUseRenderPriority() (_ bool)        { return }
 
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].

@@ -72,22 +72,24 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetSurfaceCount() (_ int)                                   { return }
-func (self Implementation) SurfaceGetArrayLen(index int) (_ int)                       { return }
-func (self Implementation) SurfaceGetArrayIndexLen(index int) (_ int)                  { return }
-func (self Implementation) SurfaceGetArrays(index int) (_ Array.Any)                   { return }
-func (self Implementation) SurfaceGetBlendShapeArrays(index int) (_ gd.Array)          { return }
-func (self Implementation) SurfaceGetLods(index int) (_ Dictionary.Any)                { return }
-func (self Implementation) SurfaceGetFormat(index int) (_ int)                         { return }
-func (self Implementation) SurfaceGetPrimitiveType(index int) (_ int)                  { return }
-func (self Implementation) SurfaceSetMaterial(index int, material [1]gdclass.Material) { return }
-func (self Implementation) SurfaceGetMaterial(index int) (_ [1]gdclass.Material)       { return }
-func (self Implementation) GetBlendShapeCount() (_ int)                                { return }
-func (self Implementation) GetBlendShapeName(index int) (_ string)                     { return }
-func (self Implementation) SetBlendShapeName(index int, name string)                   { return }
-func (self Implementation) GetAabb() (_ AABB.PositionSize)                             { return }
+type implementation struct{}
+
+func (self implementation) GetSurfaceCount() (_ int)                                   { return }
+func (self implementation) SurfaceGetArrayLen(index int) (_ int)                       { return }
+func (self implementation) SurfaceGetArrayIndexLen(index int) (_ int)                  { return }
+func (self implementation) SurfaceGetArrays(index int) (_ Array.Any)                   { return }
+func (self implementation) SurfaceGetBlendShapeArrays(index int) (_ gd.Array)          { return }
+func (self implementation) SurfaceGetLods(index int) (_ Dictionary.Any)                { return }
+func (self implementation) SurfaceGetFormat(index int) (_ int)                         { return }
+func (self implementation) SurfaceGetPrimitiveType(index int) (_ int)                  { return }
+func (self implementation) SurfaceSetMaterial(index int, material [1]gdclass.Material) { return }
+func (self implementation) SurfaceGetMaterial(index int) (_ [1]gdclass.Material)       { return }
+func (self implementation) GetBlendShapeCount() (_ int)                                { return }
+func (self implementation) GetBlendShapeName(index int) (_ string)                     { return }
+func (self implementation) SetBlendShapeName(index int, name string)                   { return }
+func (self implementation) GetAabb() (_ AABB.PositionSize)                             { return }
 
 /*
 Virtual method to override the surface count for a custom class extending [Mesh].

@@ -47,13 +47,15 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Execute(delta Float.X) { return }
-func (self Implementation) SetupModification(modification_stack [1]gdclass.SkeletonModificationStack2D) {
+type implementation struct{}
+
+func (self implementation) Execute(delta Float.X) { return }
+func (self implementation) SetupModification(modification_stack [1]gdclass.SkeletonModificationStack2D) {
 	return
 }
-func (self Implementation) DrawEditorGizmo() { return }
+func (self implementation) DrawEditorGizmo() { return }
 
 /*
 Executes the given modification. This is where the modification performs whatever function it is designed to do.

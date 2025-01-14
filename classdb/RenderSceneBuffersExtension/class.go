@@ -47,12 +47,14 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { return }
-func (self Implementation) SetFsrSharpness(fsr_sharpness Float.X)                       { return }
-func (self Implementation) SetTextureMipmapBias(texture_mipmap_bias Float.X)            { return }
-func (self Implementation) SetUseDebanding(use_debanding bool)                          { return }
+type implementation struct{}
+
+func (self implementation) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { return }
+func (self implementation) SetFsrSharpness(fsr_sharpness Float.X)                       { return }
+func (self implementation) SetTextureMipmapBias(texture_mipmap_bias Float.X)            { return }
+func (self implementation) SetUseDebanding(use_debanding bool)                          { return }
 
 /*
 Implement this in GDExtension to handle the (re)sizing of a viewport.

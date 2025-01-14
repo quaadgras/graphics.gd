@@ -47,12 +47,14 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetRenderSceneBuffers() (_ [1]gdclass.RenderSceneBuffers) { return }
-func (self Implementation) GetRenderSceneData() (_ [1]gdclass.RenderSceneData)       { return }
-func (self Implementation) GetEnvironment() (_ Resource.ID)                          { return }
-func (self Implementation) GetCameraAttributes() (_ Resource.ID)                     { return }
+type implementation struct{}
+
+func (self implementation) GetRenderSceneBuffers() (_ [1]gdclass.RenderSceneBuffers) { return }
+func (self implementation) GetRenderSceneData() (_ [1]gdclass.RenderSceneData)       { return }
+func (self implementation) GetEnvironment() (_ Resource.ID)                          { return }
+func (self implementation) GetCameraAttributes() (_ Resource.ID)                     { return }
 
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.

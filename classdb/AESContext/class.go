@@ -157,12 +157,12 @@ func New() Instance {
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 //go:nosplit
-func (self class) Start(mode gdclass.AESContextMode, key gd.PackedByteArray, iv gd.PackedByteArray) error {
+func (self class) Start(mode gdclass.AESContextMode, key gd.PackedByteArray, iv gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, pointers.Get(iv))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -249,7 +249,7 @@ const (
 	ModeMax Mode = 4
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

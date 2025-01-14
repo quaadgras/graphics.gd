@@ -245,11 +245,11 @@ Connects to the given URL. TLS certificates will be verified against the hostnam
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
 //go:nosplit
-func (self class) ConnectToUrl(url gd.String, tls_client_options [1]gdclass.TLSOptions) error {
+func (self class) ConnectToUrl(url gd.String, tls_client_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(url))
 	callframe.Arg(frame, pointers.Get(tls_client_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_connect_to_url, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -261,10 +261,10 @@ Accepts a peer connection performing the HTTP handshake as a WebSocket server. T
 [b]Note:[/b] Not supported in Web exports due to browsers' restrictions.
 */
 //go:nosplit
-func (self class) AcceptStream(stream [1]gdclass.StreamPeer) error {
+func (self class) AcceptStream(stream [1]gdclass.StreamPeer) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_accept_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -275,11 +275,11 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer) error {
 Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
 */
 //go:nosplit
-func (self class) Send(message gd.PackedByteArray, write_mode gdclass.WebSocketPeerWriteMode) error {
+func (self class) Send(message gd.PackedByteArray, write_mode gdclass.WebSocketPeerWriteMode) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, write_mode)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -290,10 +290,10 @@ func (self class) Send(message gd.PackedByteArray, write_mode gdclass.WebSocketP
 Sends the given [param message] using WebSocket text mode. Prefer this method over [method PacketPeer.put_packet] when interacting with third-party text-based API (e.g. when using [JSON] formatted messages).
 */
 //go:nosplit
-func (self class) SendText(message gd.String) error {
+func (self class) SendText(message gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_send_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -608,7 +608,7 @@ const (
 	StateClosed State = 3
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

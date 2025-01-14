@@ -43,25 +43,27 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetConnectionState() (_ gdclass.WebRTCPeerConnectionConnectionState) {
+type implementation struct{}
+
+func (self implementation) GetConnectionState() (_ gdclass.WebRTCPeerConnectionConnectionState) {
 	return
 }
-func (self Implementation) GetGatheringState() (_ gdclass.WebRTCPeerConnectionGatheringState) { return }
-func (self Implementation) GetSignalingState() (_ gdclass.WebRTCPeerConnectionSignalingState) { return }
-func (self Implementation) Initialize(p_config Dictionary.Any) (_ error)                      { return }
-func (self Implementation) CreateDataChannel(p_label string, p_config Dictionary.Any) (_ [1]gdclass.WebRTCDataChannel) {
+func (self implementation) GetGatheringState() (_ gdclass.WebRTCPeerConnectionGatheringState) { return }
+func (self implementation) GetSignalingState() (_ gdclass.WebRTCPeerConnectionSignalingState) { return }
+func (self implementation) Initialize(p_config Dictionary.Any) (_ error)                      { return }
+func (self implementation) CreateDataChannel(p_label string, p_config Dictionary.Any) (_ [1]gdclass.WebRTCDataChannel) {
 	return
 }
-func (self Implementation) CreateOffer() (_ error)                                     { return }
-func (self Implementation) SetRemoteDescription(p_type string, p_sdp string) (_ error) { return }
-func (self Implementation) SetLocalDescription(p_type string, p_sdp string) (_ error)  { return }
-func (self Implementation) AddIceCandidate(p_sdp_mid_name string, p_sdp_mline_index int, p_sdp_name string) (_ error) {
+func (self implementation) CreateOffer() (_ error)                                     { return }
+func (self implementation) SetRemoteDescription(p_type string, p_sdp string) (_ error) { return }
+func (self implementation) SetLocalDescription(p_type string, p_sdp string) (_ error)  { return }
+func (self implementation) AddIceCandidate(p_sdp_mid_name string, p_sdp_mline_index int, p_sdp_name string) (_ error) {
 	return
 }
-func (self Implementation) Poll() (_ error) { return }
-func (self Implementation) Close()          { return }
+func (self implementation) Poll() (_ error) { return }
+func (self implementation) Close()          { return }
 func (Instance) _get_connection_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPeerConnectionConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -205,7 +207,7 @@ func (class) _get_signaling_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPe
 	}
 }
 
-func (class) _initialize(impl func(ptr unsafe.Pointer, p_config gd.Dictionary) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _initialize(impl func(ptr unsafe.Pointer, p_config gd.Dictionary) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_config = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -228,7 +230,7 @@ func (class) _create_data_channel(impl func(ptr unsafe.Pointer, p_label gd.Strin
 	}
 }
 
-func (class) _create_offer(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _create_offer(impl func(ptr unsafe.Pointer) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -236,7 +238,7 @@ func (class) _create_offer(impl func(ptr unsafe.Pointer) error) (cb gd.Extension
 	}
 }
 
-func (class) _set_remote_description(impl func(ptr unsafe.Pointer, p_type gd.String, p_sdp gd.String) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_remote_description(impl func(ptr unsafe.Pointer, p_type gd.String, p_sdp gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_type = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var p_sdp = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -246,7 +248,7 @@ func (class) _set_remote_description(impl func(ptr unsafe.Pointer, p_type gd.Str
 	}
 }
 
-func (class) _set_local_description(impl func(ptr unsafe.Pointer, p_type gd.String, p_sdp gd.String) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_local_description(impl func(ptr unsafe.Pointer, p_type gd.String, p_sdp gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_type = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var p_sdp = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -256,7 +258,7 @@ func (class) _set_local_description(impl func(ptr unsafe.Pointer, p_type gd.Stri
 	}
 }
 
-func (class) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name gd.String, p_sdp_mline_index gd.Int, p_sdp_name gd.String) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name gd.String, p_sdp_mline_index gd.Int, p_sdp_name gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_sdp_mid_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var p_sdp_mline_index = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -267,7 +269,7 @@ func (class) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name gd.
 	}
 }
 
-func (class) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _poll(impl func(ptr unsafe.Pointer) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -364,7 +366,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

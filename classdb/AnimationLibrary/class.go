@@ -96,11 +96,11 @@ func New() Instance {
 Adds the [param animation] to the library, accessible by the key [param name].
 */
 //go:nosplit
-func (self class) AddAnimation(name gd.StringName, animation [1]gdclass.Animation) error {
+func (self class) AddAnimation(name gd.StringName, animation [1]gdclass.Animation) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(animation[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_add_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -222,7 +222,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

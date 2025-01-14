@@ -125,63 +125,65 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) ExportFile(path string, atype string, features []string) { return }
-func (self Implementation) ExportBegin(features []string, is_debug bool, path string, flags int) {
+type implementation struct{}
+
+func (self implementation) ExportFile(path string, atype string, features []string) { return }
+func (self implementation) ExportBegin(features []string, is_debug bool, path string, flags int) {
 	return
 }
-func (self Implementation) ExportEnd() { return }
-func (self Implementation) BeginCustomizeResources(platform [1]gdclass.EditorExportPlatform, features []string) (_ bool) {
+func (self implementation) ExportEnd() { return }
+func (self implementation) BeginCustomizeResources(platform [1]gdclass.EditorExportPlatform, features []string) (_ bool) {
 	return
 }
-func (self Implementation) CustomizeResource(resource [1]gdclass.Resource, path string) (_ [1]gdclass.Resource) {
+func (self implementation) CustomizeResource(resource [1]gdclass.Resource, path string) (_ [1]gdclass.Resource) {
 	return
 }
-func (self Implementation) BeginCustomizeScenes(platform [1]gdclass.EditorExportPlatform, features []string) (_ bool) {
+func (self implementation) BeginCustomizeScenes(platform [1]gdclass.EditorExportPlatform, features []string) (_ bool) {
 	return
 }
-func (self Implementation) CustomizeScene(scene [1]gdclass.Node, path string) (_ [1]gdclass.Node) {
+func (self implementation) CustomizeScene(scene [1]gdclass.Node, path string) (_ [1]gdclass.Node) {
 	return
 }
-func (self Implementation) GetCustomizationConfigurationHash() (_ int) { return }
-func (self Implementation) EndCustomizeScenes()                        { return }
-func (self Implementation) EndCustomizeResources()                     { return }
-func (self Implementation) GetExportOptions(platform [1]gdclass.EditorExportPlatform) (_ gd.Array) {
+func (self implementation) GetCustomizationConfigurationHash() (_ int) { return }
+func (self implementation) EndCustomizeScenes()                        { return }
+func (self implementation) EndCustomizeResources()                     { return }
+func (self implementation) GetExportOptions(platform [1]gdclass.EditorExportPlatform) (_ gd.Array) {
 	return
 }
-func (self Implementation) GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) (_ Dictionary.Any) {
+func (self implementation) GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) (_ bool) {
+func (self implementation) ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) (_ bool) {
 	return
 }
-func (self Implementation) GetExportOptionWarning(platform [1]gdclass.EditorExportPlatform, option string) (_ string) {
+func (self implementation) GetExportOptionWarning(platform [1]gdclass.EditorExportPlatform, option string) (_ string) {
 	return
 }
-func (self Implementation) GetExportFeatures(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+func (self implementation) GetExportFeatures(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
 	return
 }
-func (self Implementation) GetName() (_ string) { return }
-func (self Implementation) SupportsPlatform(platform [1]gdclass.EditorExportPlatform) (_ bool) {
+func (self implementation) GetName() (_ string) { return }
+func (self implementation) SupportsPlatform(platform [1]gdclass.EditorExportPlatform) (_ bool) {
 	return
 }
-func (self Implementation) GetAndroidDependencies(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+func (self implementation) GetAndroidDependencies(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
 	return
 }
-func (self Implementation) GetAndroidDependenciesMavenRepos(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+func (self implementation) GetAndroidDependenciesMavenRepos(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
 	return
 }
-func (self Implementation) GetAndroidLibraries(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+func (self implementation) GetAndroidLibraries(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
 	return
 }
-func (self Implementation) GetAndroidManifestActivityElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
+func (self implementation) GetAndroidManifestActivityElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
 	return
 }
-func (self Implementation) GetAndroidManifestApplicationElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
+func (self implementation) GetAndroidManifestApplicationElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
 	return
 }
-func (self Implementation) GetAndroidManifestElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
+func (self implementation) GetAndroidManifestElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
 	return
 }
 

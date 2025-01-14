@@ -40,9 +40,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) InstantiatePlayback() (_ [1]gdclass.VideoStreamPlayback) { return }
+type implementation struct{}
+
+func (self implementation) InstantiatePlayback() (_ [1]gdclass.VideoStreamPlayback) { return }
 
 /*
 Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].

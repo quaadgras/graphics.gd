@@ -54,10 +54,12 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Handles(atype string) (_ bool) { return }
-func (self Implementation) MakeTooltipForPath(path string, metadata Dictionary.Any, base [1]gdclass.Control) (_ [1]gdclass.Control) {
+type implementation struct{}
+
+func (self implementation) Handles(atype string) (_ bool) { return }
+func (self implementation) MakeTooltipForPath(path string, metadata Dictionary.Any, base [1]gdclass.Control) (_ [1]gdclass.Control) {
 	return
 }
 

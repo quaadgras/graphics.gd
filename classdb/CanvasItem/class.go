@@ -51,9 +51,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Draw() { return }
+type implementation struct{}
+
+func (self implementation) Draw() { return }
 
 /*
 Called when [CanvasItem] has been requested to redraw (after [method queue_redraw] is called, either manually or by the engine).

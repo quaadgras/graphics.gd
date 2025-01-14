@@ -47,9 +47,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetContentsMinimumSize() (_ Vector2.XY) { return }
+type implementation struct{}
+
+func (self implementation) GetContentsMinimumSize() (_ Vector2.XY) { return }
 
 /*
 Virtual method to be implemented by the user. Overrides the value returned by [method get_contents_minimum_size].

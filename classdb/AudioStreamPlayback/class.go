@@ -59,18 +59,20 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Start(from_pos Float.X)                                         { return }
-func (self Implementation) Stop()                                                          { return }
-func (self Implementation) IsPlaying() (_ bool)                                            { return }
-func (self Implementation) GetLoopCount() (_ int)                                          { return }
-func (self Implementation) GetPlaybackPosition() (_ Float.X)                               { return }
-func (self Implementation) Seek(position Float.X)                                          { return }
-func (self Implementation) Mix(buffer *AudioFrame, rate_scale Float.X, frames int) (_ int) { return }
-func (self Implementation) TagUsedStreams()                                                { return }
-func (self Implementation) SetParameter(name string, value any)                            { return }
-func (self Implementation) GetParameter(name string) (_ any)                               { return }
+type implementation struct{}
+
+func (self implementation) Start(from_pos Float.X)                                         { return }
+func (self implementation) Stop()                                                          { return }
+func (self implementation) IsPlaying() (_ bool)                                            { return }
+func (self implementation) GetLoopCount() (_ int)                                          { return }
+func (self implementation) GetPlaybackPosition() (_ Float.X)                               { return }
+func (self implementation) Seek(position Float.X)                                          { return }
+func (self implementation) Mix(buffer *AudioFrame, rate_scale Float.X, frames int) (_ int) { return }
+func (self implementation) TagUsedStreams()                                                { return }
+func (self implementation) SetParameter(name string, value any)                            { return }
+func (self implementation) GetParameter(name string) (_ any)                               { return }
 
 /*
 Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].

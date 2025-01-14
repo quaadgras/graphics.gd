@@ -1126,9 +1126,9 @@ func (self class) GetEditedSceneRoot() [1]gdclass.Node {
 Saves the currently active scene. Returns either [constant OK] or [constant ERR_CANT_CREATE].
 */
 //go:nosplit
-func (self class) SaveScene() error {
+func (self class) SaveScene() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_save_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1271,7 +1271,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

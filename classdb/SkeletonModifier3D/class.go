@@ -45,9 +45,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) ProcessModification() { return }
+type implementation struct{}
+
+func (self implementation) ProcessModification() { return }
 
 /*
 Override this virtual method to implement a custom skeleton modifier. You should do things like get the [Skeleton3D]'s current pose and apply the pose here.

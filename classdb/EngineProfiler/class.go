@@ -46,11 +46,13 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Toggle(enable bool, options Array.Any) { return }
-func (self Implementation) AddFrame(data Array.Any)               { return }
-func (self Implementation) Tick(frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X) {
+type implementation struct{}
+
+func (self implementation) Toggle(enable bool, options Array.Any) { return }
+func (self implementation) AddFrame(data Array.Any)               { return }
+func (self implementation) Tick(frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X) {
 	return
 }
 

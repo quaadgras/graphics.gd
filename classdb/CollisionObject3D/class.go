@@ -51,13 +51,15 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) InputEvent(camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int) {
+type implementation struct{}
+
+func (self implementation) InputEvent(camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int) {
 	return
 }
-func (self Implementation) MouseEnter() { return }
-func (self Implementation) MouseExit()  { return }
+func (self implementation) MouseEnter() { return }
+func (self implementation) MouseExit()  { return }
 
 /*
 Receives unhandled [InputEvent]s. [param event_position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.

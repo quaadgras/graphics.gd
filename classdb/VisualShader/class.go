@@ -366,14 +366,14 @@ func (self class) CanConnectNodes(atype gdclass.VisualShaderType, from_node gd.I
 Connects the specified nodes and ports.
 */
 //go:nosplit
-func (self class) ConnectNodes(atype gdclass.VisualShaderType, from_node gd.Int, from_port gd.Int, to_node gd.Int, to_port gd.Int) error {
+func (self class) ConnectNodes(atype gdclass.VisualShaderType, from_node gd.Int, from_port gd.Int, to_node gd.Int, to_port gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, from_node)
 	callframe.Arg(frame, from_port)
 	callframe.Arg(frame, to_node)
 	callframe.Arg(frame, to_port)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_connect_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -608,7 +608,7 @@ const (
 	VaryingTypeMax VaryingType = 8
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

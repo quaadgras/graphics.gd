@@ -317,38 +317,40 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) ForwardCanvasGuiInput(event [1]gdclass.InputEvent) (_ bool)        { return }
-func (self Implementation) ForwardCanvasDrawOverViewport(viewport_control [1]gdclass.Control) { return }
-func (self Implementation) ForwardCanvasForceDrawOverViewport(viewport_control [1]gdclass.Control) {
+type implementation struct{}
+
+func (self implementation) ForwardCanvasGuiInput(event [1]gdclass.InputEvent) (_ bool)        { return }
+func (self implementation) ForwardCanvasDrawOverViewport(viewport_control [1]gdclass.Control) { return }
+func (self implementation) ForwardCanvasForceDrawOverViewport(viewport_control [1]gdclass.Control) {
 	return
 }
-func (self Implementation) Forward3dGuiInput(viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) (_ int) {
+func (self implementation) Forward3dGuiInput(viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) (_ int) {
 	return
 }
-func (self Implementation) Forward3dDrawOverViewport(viewport_control [1]gdclass.Control) { return }
-func (self Implementation) Forward3dForceDrawOverViewport(viewport_control [1]gdclass.Control) {
+func (self implementation) Forward3dDrawOverViewport(viewport_control [1]gdclass.Control) { return }
+func (self implementation) Forward3dForceDrawOverViewport(viewport_control [1]gdclass.Control) {
 	return
 }
-func (self Implementation) GetPluginName() (_ string)                           { return }
-func (self Implementation) GetPluginIcon() (_ [1]gdclass.Texture2D)             { return }
-func (self Implementation) HasMainScreen() (_ bool)                             { return }
-func (self Implementation) MakeVisible(visible bool)                            { return }
-func (self Implementation) Edit(obj Object.Instance)                            { return }
-func (self Implementation) Handles(obj Object.Instance) (_ bool)                { return }
-func (self Implementation) GetState() (_ Dictionary.Any)                        { return }
-func (self Implementation) SetState(state Dictionary.Any)                       { return }
-func (self Implementation) Clear()                                              { return }
-func (self Implementation) GetUnsavedStatus(for_scene string) (_ string)        { return }
-func (self Implementation) SaveExternalData()                                   { return }
-func (self Implementation) ApplyChanges()                                       { return }
-func (self Implementation) GetBreakpoints() (_ []string)                        { return }
-func (self Implementation) SetWindowLayout(configuration [1]gdclass.ConfigFile) { return }
-func (self Implementation) GetWindowLayout(configuration [1]gdclass.ConfigFile) { return }
-func (self Implementation) Build() (_ bool)                                     { return }
-func (self Implementation) EnablePlugin()                                       { return }
-func (self Implementation) DisablePlugin()                                      { return }
+func (self implementation) GetPluginName() (_ string)                           { return }
+func (self implementation) GetPluginIcon() (_ [1]gdclass.Texture2D)             { return }
+func (self implementation) HasMainScreen() (_ bool)                             { return }
+func (self implementation) MakeVisible(visible bool)                            { return }
+func (self implementation) Edit(obj Object.Instance)                            { return }
+func (self implementation) Handles(obj Object.Instance) (_ bool)                { return }
+func (self implementation) GetState() (_ Dictionary.Any)                        { return }
+func (self implementation) SetState(state Dictionary.Any)                       { return }
+func (self implementation) Clear()                                              { return }
+func (self implementation) GetUnsavedStatus(for_scene string) (_ string)        { return }
+func (self implementation) SaveExternalData()                                   { return }
+func (self implementation) ApplyChanges()                                       { return }
+func (self implementation) GetBreakpoints() (_ []string)                        { return }
+func (self implementation) SetWindowLayout(configuration [1]gdclass.ConfigFile) { return }
+func (self implementation) GetWindowLayout(configuration [1]gdclass.ConfigFile) { return }
+func (self implementation) Build() (_ bool)                                     { return }
+func (self implementation) EnablePlugin()                                       { return }
+func (self implementation) DisablePlugin()                                      { return }
 
 /*
 Called when there is a root node in the current edited scene, [method _handles] is implemented and an [InputEvent] happens in the 2D viewport. Intercepts the [InputEvent], if [code]return true[/code] [EditorPlugin] consumes the [param event], otherwise forwards [param event] to other Editor classes.

@@ -85,31 +85,33 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) (_ error) { return }
-func (self Implementation) PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) (_ error)    { return }
-func (self Implementation) GetAvailablePacketCount() (_ int)                                  { return }
-func (self Implementation) GetMaxPacketSize() (_ int)                                         { return }
-func (self Implementation) GetPacketScript() (_ []byte)                                       { return }
-func (self Implementation) PutPacketScript(p_buffer []byte) (_ error)                         { return }
-func (self Implementation) GetPacketChannel() (_ int)                                         { return }
-func (self Implementation) GetPacketMode() (_ gdclass.MultiplayerPeerTransferMode)            { return }
-func (self Implementation) SetTransferChannel(p_channel int)                                  { return }
-func (self Implementation) GetTransferChannel() (_ int)                                       { return }
-func (self Implementation) SetTransferMode(p_mode gdclass.MultiplayerPeerTransferMode)        { return }
-func (self Implementation) GetTransferMode() (_ gdclass.MultiplayerPeerTransferMode)          { return }
-func (self Implementation) SetTargetPeer(p_peer int)                                          { return }
-func (self Implementation) GetPacketPeer() (_ int)                                            { return }
-func (self Implementation) IsServer() (_ bool)                                                { return }
-func (self Implementation) Poll()                                                             { return }
-func (self Implementation) Close()                                                            { return }
-func (self Implementation) DisconnectPeer(p_peer int, p_force bool)                           { return }
-func (self Implementation) GetUniqueId() (_ int)                                              { return }
-func (self Implementation) SetRefuseNewConnections(p_enable bool)                             { return }
-func (self Implementation) IsRefusingNewConnections() (_ bool)                                { return }
-func (self Implementation) IsServerRelaySupported() (_ bool)                                  { return }
-func (self Implementation) GetConnectionStatus() (_ gdclass.MultiplayerPeerConnectionStatus)  { return }
+type implementation struct{}
+
+func (self implementation) GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) (_ error) { return }
+func (self implementation) PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) (_ error)    { return }
+func (self implementation) GetAvailablePacketCount() (_ int)                                  { return }
+func (self implementation) GetMaxPacketSize() (_ int)                                         { return }
+func (self implementation) GetPacketScript() (_ []byte)                                       { return }
+func (self implementation) PutPacketScript(p_buffer []byte) (_ error)                         { return }
+func (self implementation) GetPacketChannel() (_ int)                                         { return }
+func (self implementation) GetPacketMode() (_ gdclass.MultiplayerPeerTransferMode)            { return }
+func (self implementation) SetTransferChannel(p_channel int)                                  { return }
+func (self implementation) GetTransferChannel() (_ int)                                       { return }
+func (self implementation) SetTransferMode(p_mode gdclass.MultiplayerPeerTransferMode)        { return }
+func (self implementation) GetTransferMode() (_ gdclass.MultiplayerPeerTransferMode)          { return }
+func (self implementation) SetTargetPeer(p_peer int)                                          { return }
+func (self implementation) GetPacketPeer() (_ int)                                            { return }
+func (self implementation) IsServer() (_ bool)                                                { return }
+func (self implementation) Poll()                                                             { return }
+func (self implementation) Close()                                                            { return }
+func (self implementation) DisconnectPeer(p_peer int, p_force bool)                           { return }
+func (self implementation) GetUniqueId() (_ int)                                              { return }
+func (self implementation) SetRefuseNewConnections(p_enable bool)                             { return }
+func (self implementation) IsRefusingNewConnections() (_ bool)                                { return }
+func (self implementation) IsServerRelaySupported() (_ bool)                                  { return }
+func (self implementation) GetConnectionStatus() (_ gdclass.MultiplayerPeerConnectionStatus)  { return }
 
 /*
 Called when a packet needs to be received by the [MultiplayerAPI], with [param r_buffer_size] being the size of the binary [param r_buffer] in bytes.
@@ -395,7 +397,7 @@ func New() Instance {
 /*
 Called when a packet needs to be received by the [MultiplayerAPI], with [param r_buffer_size] being the size of the binary [param r_buffer] in bytes.
 */
-func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
@@ -408,7 +410,7 @@ func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, 
 /*
 Called when a packet needs to be sent by the [MultiplayerAPI], with [param p_buffer_size] being the size of the binary [param p_buffer] in bytes.
 */
-func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size gd.Int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -458,7 +460,7 @@ func (class) _get_packet_script(impl func(ptr unsafe.Pointer) gd.PackedByteArray
 /*
 Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_packet] isn't implemented. Use this when extending this class via GDScript.
 */
-func (class) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer gd.PackedByteArray) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer gd.PackedByteArray) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var p_buffer = pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -787,7 +789,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

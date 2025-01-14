@@ -63,18 +63,20 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetAudioMixRate() (_ int)                                { return }
-func (self Implementation) GetAudioSpeakerMode() (_ gdclass.AudioServerSpeakerMode) { return }
-func (self Implementation) HandlesFile(path string) (_ bool)                        { return }
-func (self Implementation) WriteBegin(movie_size Vector2i.XY, fps int, base_path string) (_ error) {
+type implementation struct{}
+
+func (self implementation) GetAudioMixRate() (_ int)                                { return }
+func (self implementation) GetAudioSpeakerMode() (_ gdclass.AudioServerSpeakerMode) { return }
+func (self implementation) HandlesFile(path string) (_ bool)                        { return }
+func (self implementation) WriteBegin(movie_size Vector2i.XY, fps int, base_path string) (_ error) {
 	return
 }
-func (self Implementation) WriteFrame(frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) (_ error) {
+func (self implementation) WriteFrame(frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) (_ error) {
 	return
 }
-func (self Implementation) WriteEnd() { return }
+func (self implementation) WriteEnd() { return }
 
 /*
 Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [method _get_audio_mix_rate] is not overridden.
@@ -231,7 +233,7 @@ func (class) _handles_file(impl func(ptr unsafe.Pointer, path gd.String) bool) (
 /*
 Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
 */
-func (class) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, fps gd.Int, base_path gd.String) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, fps gd.Int, base_path gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var movie_size = gd.UnsafeGet[gd.Vector2i](p_args, 0)
 		var fps = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -245,7 +247,7 @@ func (class) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, 
 /*
 Called at the end of every rendered frame. The [param frame_image] and [param audio_frame_block] function arguments should be written to.
 */
-func (class) _write_frame(impl func(ptr unsafe.Pointer, frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _write_frame(impl func(ptr unsafe.Pointer, frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var frame_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(frame_image[0])
@@ -323,7 +325,7 @@ func init() {
 	gdclass.Register("MovieWriter", func(ptr gd.Object) any { return [1]gdclass.MovieWriter{*(*gdclass.MovieWriter)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

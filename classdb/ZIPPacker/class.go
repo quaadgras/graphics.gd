@@ -108,11 +108,11 @@ Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
 //go:nosplit
-func (self class) Open(path gd.String, append gdclass.ZIPPackerZipAppend) error {
+func (self class) Open(path gd.String, append gdclass.ZIPPackerZipAppend) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, append)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -124,10 +124,10 @@ Starts writing to a file within the archive. Only one file can be written at the
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) StartFile(path gd.String) error {
+func (self class) StartFile(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_start_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -139,10 +139,10 @@ Write the given [param data] to the file.
 Needs to be called after [method start_file].
 */
 //go:nosplit
-func (self class) WriteFile(data gd.PackedByteArray) error {
+func (self class) WriteFile(data gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_write_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -154,9 +154,9 @@ Stops writing to a file within the archive.
 It will fail if there is no open file.
 */
 //go:nosplit
-func (self class) CloseFile() error {
+func (self class) CloseFile() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_close_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -167,9 +167,9 @@ func (self class) CloseFile() error {
 Closes the underlying resources used by this instance.
 */
 //go:nosplit
-func (self class) Close() error {
+func (self class) Close() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -212,7 +212,7 @@ const (
 	AppendAddinzip ZipAppend = 2
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

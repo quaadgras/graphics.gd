@@ -89,10 +89,10 @@ Packs the given container into a binary representation. The [param value] must b
 [b]Note:[/b] Subsequent calls to this method will overwrite the existing data.
 */
 //go:nosplit
-func (self class) Pack(value gd.Variant) error {
+func (self class) Pack(value gd.Variant) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedDataContainer.Bind_pack, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -145,7 +145,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

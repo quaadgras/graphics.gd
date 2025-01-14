@@ -53,24 +53,26 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetInternalImportOptions(category int) { return }
-func (self Implementation) GetInternalOptionVisibility(category int, for_animation bool, option string) (_ any) {
+type implementation struct{}
+
+func (self implementation) GetInternalImportOptions(category int) { return }
+func (self implementation) GetInternalOptionVisibility(category int, for_animation bool, option string) (_ any) {
 	return
 }
-func (self Implementation) GetInternalOptionUpdateViewRequired(category int, option string) (_ any) {
+func (self implementation) GetInternalOptionUpdateViewRequired(category int, option string) (_ any) {
 	return
 }
-func (self Implementation) InternalProcess(category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource) {
+func (self implementation) InternalProcess(category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource) {
 	return
 }
-func (self Implementation) GetImportOptions(path string) { return }
-func (self Implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
+func (self implementation) GetImportOptions(path string) { return }
+func (self implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
 	return
 }
-func (self Implementation) PreProcess(scene [1]gdclass.Node)  { return }
-func (self Implementation) PostProcess(scene [1]gdclass.Node) { return }
+func (self implementation) PreProcess(scene [1]gdclass.Node)  { return }
+func (self implementation) PostProcess(scene [1]gdclass.Node) { return }
 
 /*
 Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].

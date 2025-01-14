@@ -91,14 +91,16 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) SetupSession(session_id int)                                     { return }
-func (self Implementation) HasCapture(capture string) (_ bool)                              { return }
-func (self Implementation) Capture(message string, data Array.Any, session_id int) (_ bool) { return }
-func (self Implementation) GotoScriptLine(script [1]gdclass.Script, line int)               { return }
-func (self Implementation) BreakpointsClearedInTree()                                       { return }
-func (self Implementation) BreakpointSetInTree(script [1]gdclass.Script, line int, enabled bool) {
+type implementation struct{}
+
+func (self implementation) SetupSession(session_id int)                                     { return }
+func (self implementation) HasCapture(capture string) (_ bool)                              { return }
+func (self implementation) Capture(message string, data Array.Any, session_id int) (_ bool) { return }
+func (self implementation) GotoScriptLine(script [1]gdclass.Script, line int)               { return }
+func (self implementation) BreakpointsClearedInTree()                                       { return }
+func (self implementation) BreakpointSetInTree(script [1]gdclass.Script, line int, enabled bool) {
 	return
 }
 

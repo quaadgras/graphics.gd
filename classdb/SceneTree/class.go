@@ -744,10 +744,10 @@ Returns [constant OK] on success, [constant ERR_CANT_OPEN] if the [param path] c
 [b]Note:[/b] See [method change_scene_to_packed] for details on the order of operations.
 */
 //go:nosplit
-func (self class) ChangeSceneToFile(path gd.String) error {
+func (self class) ChangeSceneToFile(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_change_scene_to_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -763,10 +763,10 @@ Returns [constant OK] on success, [constant ERR_CANT_CREATE] if the scene cannot
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [method Node.queue_free].
 */
 //go:nosplit
-func (self class) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) error {
+func (self class) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(packed_scene[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_change_scene_to_packed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -778,9 +778,9 @@ Reloads the currently active scene, replacing [member current_scene] with a new 
 Returns [constant OK] on success, [constant ERR_UNCONFIGURED] if no [member current_scene] is defined, [constant ERR_CANT_OPEN] if [member current_scene] cannot be loaded into a [PackedScene], or [constant ERR_CANT_CREATE] if the scene cannot be instantiated.
 */
 //go:nosplit
-func (self class) ReloadCurrentScene() error {
+func (self class) ReloadCurrentScene() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_reload_current_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -916,7 +916,7 @@ const (
 	GroupCallUnique GroupCallFlags = 4
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

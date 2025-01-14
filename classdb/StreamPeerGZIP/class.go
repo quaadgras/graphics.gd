@@ -83,11 +83,11 @@ func New() Instance {
 Start the stream in compression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
 //go:nosplit
-func (self class) StartCompression(use_deflate bool, buffer_size gd.Int) error {
+func (self class) StartCompression(use_deflate bool, buffer_size gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, use_deflate)
 	callframe.Arg(frame, buffer_size)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerGZIP.Bind_start_compression, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -98,11 +98,11 @@ func (self class) StartCompression(use_deflate bool, buffer_size gd.Int) error {
 Start the stream in decompression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
 //go:nosplit
-func (self class) StartDecompression(use_deflate bool, buffer_size gd.Int) error {
+func (self class) StartDecompression(use_deflate bool, buffer_size gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, use_deflate)
 	callframe.Arg(frame, buffer_size)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerGZIP.Bind_start_decompression, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -113,9 +113,9 @@ func (self class) StartDecompression(use_deflate bool, buffer_size gd.Int) error
 Finalizes the stream, compressing or decompressing any buffered chunk left.
 */
 //go:nosplit
-func (self class) Finish() error {
+func (self class) Finish() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerGZIP.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -166,7 +166,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

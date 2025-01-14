@@ -267,12 +267,12 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) ConnectToHost(host gd.String, port gd.Int, tls_options [1]gdclass.TLSOptions) error {
+func (self class) ConnectToHost(host gd.String, port gd.Int, tls_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(tls_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -305,13 +305,13 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 //go:nosplit
-func (self class) RequestRaw(method gdclass.HTTPClientMethod, url gd.String, headers gd.PackedStringArray, body gd.PackedByteArray) error {
+func (self class) RequestRaw(method gdclass.HTTPClientMethod, url gd.String, headers gd.PackedStringArray, body gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(url))
 	callframe.Arg(frame, pointers.Get(headers))
 	callframe.Arg(frame, pointers.Get(body))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -340,13 +340,13 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 //go:nosplit
-func (self class) Request(method gdclass.HTTPClientMethod, url gd.String, headers gd.PackedStringArray, body gd.String) error {
+func (self class) Request(method gdclass.HTTPClientMethod, url gd.String, headers gd.PackedStringArray, body gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(url))
 	callframe.Arg(frame, pointers.Get(headers))
 	callframe.Arg(frame, pointers.Get(body))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_request, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -519,9 +519,9 @@ func (self class) GetStatus() gdclass.HTTPClientStatus {
 This needs to be called in order to have any request processed. Check results with [method get_status].
 */
 //go:nosplit
-func (self class) Poll() error {
+func (self class) Poll() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -802,7 +802,7 @@ const (
 	ResponseNetworkAuthRequired ResponseCode = 511
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

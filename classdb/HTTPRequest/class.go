@@ -341,13 +341,13 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 //go:nosplit
-func (self class) Request(url gd.String, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data gd.String) error {
+func (self class) Request(url gd.String, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(url))
 	callframe.Arg(frame, pointers.Get(custom_headers))
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(request_data))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -359,13 +359,13 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 //go:nosplit
-func (self class) RequestRaw(url gd.String, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data_raw gd.PackedByteArray) error {
+func (self class) RequestRaw(url gd.String, custom_headers gd.PackedStringArray, method gdclass.HTTPClientMethod, request_data_raw gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(url))
 	callframe.Arg(frame, pointers.Get(custom_headers))
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(request_data_raw))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -652,7 +652,7 @@ const (
 	ResultTimeout Result = 13
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

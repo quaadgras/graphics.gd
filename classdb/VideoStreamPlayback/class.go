@@ -65,21 +65,23 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Stop()                                { return }
-func (self Implementation) Play()                                { return }
-func (self Implementation) IsPlaying() (_ bool)                  { return }
-func (self Implementation) SetPaused(paused bool)                { return }
-func (self Implementation) IsPaused() (_ bool)                   { return }
-func (self Implementation) GetLength() (_ Float.X)               { return }
-func (self Implementation) GetPlaybackPosition() (_ Float.X)     { return }
-func (self Implementation) Seek(time Float.X)                    { return }
-func (self Implementation) SetAudioTrack(idx int)                { return }
-func (self Implementation) GetTexture() (_ [1]gdclass.Texture2D) { return }
-func (self Implementation) Update(delta Float.X)                 { return }
-func (self Implementation) GetChannels() (_ int)                 { return }
-func (self Implementation) GetMixRate() (_ int)                  { return }
+type implementation struct{}
+
+func (self implementation) Stop()                                { return }
+func (self implementation) Play()                                { return }
+func (self implementation) IsPlaying() (_ bool)                  { return }
+func (self implementation) SetPaused(paused bool)                { return }
+func (self implementation) IsPaused() (_ bool)                   { return }
+func (self implementation) GetLength() (_ Float.X)               { return }
+func (self implementation) GetPlaybackPosition() (_ Float.X)     { return }
+func (self implementation) Seek(time Float.X)                    { return }
+func (self implementation) SetAudioTrack(idx int)                { return }
+func (self implementation) GetTexture() (_ [1]gdclass.Texture2D) { return }
+func (self implementation) Update(delta Float.X)                 { return }
+func (self implementation) GetChannels() (_ int)                 { return }
+func (self implementation) GetMixRate() (_ int)                  { return }
 
 /*
 Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return false once stopped.

@@ -44,9 +44,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) CreateMeshArray() (_ Array.Any) { return }
+type implementation struct{}
+
+func (self implementation) CreateMeshArray() (_ Array.Any) { return }
 
 /*
 Override this method to customize how this primitive mesh should be generated. Should return an [Array] where each element is another Array of values required for the mesh (see the [enum Mesh.ArrayType] constants).

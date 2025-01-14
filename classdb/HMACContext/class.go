@@ -121,11 +121,11 @@ func New() Instance {
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [method finish] has been called.
 */
 //go:nosplit
-func (self class) Start(hash_type gdclass.HashingContextHashType, key gd.PackedByteArray) error {
+func (self class) Start(hash_type gdclass.HashingContextHashType, key gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(key))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -136,10 +136,10 @@ func (self class) Start(hash_type gdclass.HashingContextHashType, key gd.PackedB
 Updates the message to be HMACed. This can be called multiple times before [method finish] is called to append [param data] to the message, but cannot be called until [method start] has been called.
 */
 //go:nosplit
-func (self class) Update(data gd.PackedByteArray) error {
+func (self class) Update(data gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -184,7 +184,7 @@ func init() {
 	gdclass.Register("HMACContext", func(ptr gd.Object) any { return [1]gdclass.HMACContext{*(*gdclass.HMACContext)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

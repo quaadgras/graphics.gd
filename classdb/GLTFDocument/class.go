@@ -202,13 +202,13 @@ Takes a path to a GLTF file and imports the data at that file path to the given 
 [b]Note:[/b] The [param base_path] tells [method append_from_file] where to find dependencies and can be empty.
 */
 //go:nosplit
-func (self class) AppendFromFile(path gd.String, state [1]gdclass.GLTFState, flags gd.Int, base_path gd.String) error {
+func (self class) AppendFromFile(path gd.String, state [1]gdclass.GLTFState, flags gd.Int, base_path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	callframe.Arg(frame, flags)
 	callframe.Arg(frame, pointers.Get(base_path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_append_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -220,13 +220,13 @@ Takes a [PackedByteArray] defining a GLTF and imports the data to the given [GLT
 [b]Note:[/b] The [param base_path] tells [method append_from_buffer] where to find dependencies and can be empty.
 */
 //go:nosplit
-func (self class) AppendFromBuffer(bytes gd.PackedByteArray, base_path gd.String, state [1]gdclass.GLTFState, flags gd.Int) error {
+func (self class) AppendFromBuffer(bytes gd.PackedByteArray, base_path gd.String, state [1]gdclass.GLTFState, flags gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytes))
 	callframe.Arg(frame, pointers.Get(base_path))
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_append_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -237,12 +237,12 @@ func (self class) AppendFromBuffer(bytes gd.PackedByteArray, base_path gd.String
 Takes a Godot Engine scene node and exports it and its descendants to the given [GLTFState] object through the [param state] parameter.
 */
 //go:nosplit
-func (self class) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFState, flags gd.Int) error {
+func (self class) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFState, flags gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_append_from_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -286,11 +286,11 @@ Takes a [GLTFState] object through the [param state] parameter and writes a glTF
 [b]Note:[/b] The extension of the glTF file determines if it is a .glb binary file or a .gltf text file.
 */
 //go:nosplit
-func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path gd.String) error {
+func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_write_to_filesystem, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -367,7 +367,7 @@ const (
 	RootNodeModeMultiRoot RootNodeMode = 2
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

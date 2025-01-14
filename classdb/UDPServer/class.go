@@ -236,11 +236,11 @@ func (self Instance) SetMaxPendingConnections(value int) {
 Starts the server by opening a UDP socket listening on the given [param port]. You can optionally specify a [param bind_address] to only listen for packets sent to that address. See also [method PacketPeerUDP.bind].
 */
 //go:nosplit
-func (self class) Listen(port gd.Int, bind_address gd.String) error {
+func (self class) Listen(port gd.Int, bind_address gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(bind_address))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -251,9 +251,9 @@ func (self class) Listen(port gd.Int, bind_address gd.String) error {
 Call this method at regular intervals (e.g. inside [method Node._process]) to process new packets. And packet from known address/port pair will be delivered to the appropriate [PacketPeerUDP], any packet received from an unknown address/port pair will be added as a pending connection (see [method is_connection_available], [method take_connection]). The maximum number of pending connection is defined via [member max_pending_connections].
 */
 //go:nosplit
-func (self class) Poll() error {
+func (self class) Poll() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UDPServer.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -367,7 +367,7 @@ func init() {
 	gdclass.Register("UDPServer", func(ptr gd.Object) any { return [1]gdclass.UDPServer{*(*gdclass.UDPServer)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

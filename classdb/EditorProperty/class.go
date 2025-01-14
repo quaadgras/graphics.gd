@@ -46,10 +46,12 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) UpdateProperty()            { return }
-func (self Implementation) SetReadOnly(read_only bool) { return }
+type implementation struct{}
+
+func (self implementation) UpdateProperty()            { return }
+func (self implementation) SetReadOnly(read_only bool) { return }
 
 /*
 When this virtual function is called, you must update your editor.

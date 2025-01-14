@@ -93,93 +93,95 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetName() (_ string)                          { return }
-func (self Implementation) Init()                                        { return }
-func (self Implementation) GetType() (_ string)                          { return }
-func (self Implementation) GetExtension() (_ string)                     { return }
-func (self Implementation) Finish()                                      { return }
-func (self Implementation) GetReservedWords() (_ []string)               { return }
-func (self Implementation) IsControlFlowKeyword(keyword string) (_ bool) { return }
-func (self Implementation) GetCommentDelimiters() (_ []string)           { return }
-func (self Implementation) GetDocCommentDelimiters() (_ []string)        { return }
-func (self Implementation) GetStringDelimiters() (_ []string)            { return }
-func (self Implementation) MakeTemplate(template string, class_name string, base_class_name string) (_ [1]gdclass.Script) {
+type implementation struct{}
+
+func (self implementation) GetName() (_ string)                          { return }
+func (self implementation) Init()                                        { return }
+func (self implementation) GetType() (_ string)                          { return }
+func (self implementation) GetExtension() (_ string)                     { return }
+func (self implementation) Finish()                                      { return }
+func (self implementation) GetReservedWords() (_ []string)               { return }
+func (self implementation) IsControlFlowKeyword(keyword string) (_ bool) { return }
+func (self implementation) GetCommentDelimiters() (_ []string)           { return }
+func (self implementation) GetDocCommentDelimiters() (_ []string)        { return }
+func (self implementation) GetStringDelimiters() (_ []string)            { return }
+func (self implementation) MakeTemplate(template string, class_name string, base_class_name string) (_ [1]gdclass.Script) {
 	return
 }
-func (self Implementation) GetBuiltInTemplates(obj string) (_ gd.Array) { return }
-func (self Implementation) IsUsingTemplates() (_ bool)                  { return }
-func (self Implementation) Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) (_ Dictionary.Any) {
+func (self implementation) GetBuiltInTemplates(obj string) (_ gd.Array) { return }
+func (self implementation) IsUsingTemplates() (_ bool)                  { return }
+func (self implementation) Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) ValidatePath(path string) (_ string)               { return }
-func (self Implementation) CreateScript() (_ Object.Instance)                 { return }
-func (self Implementation) HasNamedClasses() (_ bool)                         { return }
-func (self Implementation) SupportsBuiltinMode() (_ bool)                     { return }
-func (self Implementation) SupportsDocumentation() (_ bool)                   { return }
-func (self Implementation) CanInheritFromFile() (_ bool)                      { return }
-func (self Implementation) FindFunction(function string, code string) (_ int) { return }
-func (self Implementation) MakeFunction(class_name string, function_name string, function_args []string) (_ string) {
+func (self implementation) ValidatePath(path string) (_ string)               { return }
+func (self implementation) CreateScript() (_ Object.Instance)                 { return }
+func (self implementation) HasNamedClasses() (_ bool)                         { return }
+func (self implementation) SupportsBuiltinMode() (_ bool)                     { return }
+func (self implementation) SupportsDocumentation() (_ bool)                   { return }
+func (self implementation) CanInheritFromFile() (_ bool)                      { return }
+func (self implementation) FindFunction(function string, code string) (_ int) { return }
+func (self implementation) MakeFunction(class_name string, function_name string, function_args []string) (_ string) {
 	return
 }
-func (self Implementation) CanMakeFunction() (_ bool) { return }
-func (self Implementation) OpenInExternalEditor(script [1]gdclass.Script, line int, column int) (_ error) {
+func (self implementation) CanMakeFunction() (_ bool) { return }
+func (self implementation) OpenInExternalEditor(script [1]gdclass.Script, line int, column int) (_ error) {
 	return
 }
-func (self Implementation) OverridesExternalEditor() (_ bool) { return }
-func (self Implementation) PreferredFileNameCasing() (_ gdclass.ScriptLanguageScriptNameCasing) {
+func (self implementation) OverridesExternalEditor() (_ bool) { return }
+func (self implementation) PreferredFileNameCasing() (_ gdclass.ScriptLanguageScriptNameCasing) {
 	return
 }
-func (self Implementation) CompleteCode(code string, path string, owner Object.Instance) (_ Dictionary.Any) {
+func (self implementation) CompleteCode(code string, path string, owner Object.Instance) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) LookupCode(code string, symbol string, path string, owner Object.Instance) (_ Dictionary.Any) {
+func (self implementation) LookupCode(code string, symbol string, path string, owner Object.Instance) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) AutoIndentCode(code string, from_line int, to_line int) (_ string) { return }
-func (self Implementation) AddGlobalConstant(name string, value any)                          { return }
-func (self Implementation) AddNamedGlobalConstant(name string, value any)                     { return }
-func (self Implementation) RemoveNamedGlobalConstant(name string)                             { return }
-func (self Implementation) ThreadEnter()                                                      { return }
-func (self Implementation) ThreadExit()                                                       { return }
-func (self Implementation) DebugGetError() (_ string)                                         { return }
-func (self Implementation) DebugGetStackLevelCount() (_ int)                                  { return }
-func (self Implementation) DebugGetStackLevelLine(level int) (_ int)                          { return }
-func (self Implementation) DebugGetStackLevelFunction(level int) (_ string)                   { return }
-func (self Implementation) DebugGetStackLevelSource(level int) (_ string)                     { return }
-func (self Implementation) DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) (_ Dictionary.Any) {
+func (self implementation) AutoIndentCode(code string, from_line int, to_line int) (_ string) { return }
+func (self implementation) AddGlobalConstant(name string, value any)                          { return }
+func (self implementation) AddNamedGlobalConstant(name string, value any)                     { return }
+func (self implementation) RemoveNamedGlobalConstant(name string)                             { return }
+func (self implementation) ThreadEnter()                                                      { return }
+func (self implementation) ThreadExit()                                                       { return }
+func (self implementation) DebugGetError() (_ string)                                         { return }
+func (self implementation) DebugGetStackLevelCount() (_ int)                                  { return }
+func (self implementation) DebugGetStackLevelLine(level int) (_ int)                          { return }
+func (self implementation) DebugGetStackLevelFunction(level int) (_ string)                   { return }
+func (self implementation) DebugGetStackLevelSource(level int) (_ string)                     { return }
+func (self implementation) DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) (_ Dictionary.Any) {
+func (self implementation) DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) DebugGetStackLevelInstance(level int) (_ unsafe.Pointer) { return }
-func (self Implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ Dictionary.Any) {
+func (self implementation) DebugGetStackLevelInstance(level int) (_ unsafe.Pointer) { return }
+func (self implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ Dictionary.Any) {
 	return
 }
-func (self Implementation) DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) (_ string) {
+func (self implementation) DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) (_ string) {
 	return
 }
-func (self Implementation) DebugGetCurrentStackInfo() (_ gd.Array)                      { return }
-func (self Implementation) ReloadAllScripts()                                           { return }
-func (self Implementation) ReloadToolScript(script [1]gdclass.Script, soft_reload bool) { return }
-func (self Implementation) GetRecognizedExtensions() (_ []string)                       { return }
-func (self Implementation) GetPublicFunctions() (_ gd.Array)                            { return }
-func (self Implementation) GetPublicConstants() (_ Dictionary.Any)                      { return }
-func (self Implementation) GetPublicAnnotations() (_ gd.Array)                          { return }
-func (self Implementation) ProfilingStart()                                             { return }
-func (self Implementation) ProfilingStop()                                              { return }
-func (self Implementation) ProfilingSetSaveNativeCalls(enable bool)                     { return }
-func (self Implementation) ProfilingGetAccumulatedData(info_array *ProfilingInfo, info_max int) (_ int) {
+func (self implementation) DebugGetCurrentStackInfo() (_ gd.Array)                      { return }
+func (self implementation) ReloadAllScripts()                                           { return }
+func (self implementation) ReloadToolScript(script [1]gdclass.Script, soft_reload bool) { return }
+func (self implementation) GetRecognizedExtensions() (_ []string)                       { return }
+func (self implementation) GetPublicFunctions() (_ gd.Array)                            { return }
+func (self implementation) GetPublicConstants() (_ Dictionary.Any)                      { return }
+func (self implementation) GetPublicAnnotations() (_ gd.Array)                          { return }
+func (self implementation) ProfilingStart()                                             { return }
+func (self implementation) ProfilingStop()                                              { return }
+func (self implementation) ProfilingSetSaveNativeCalls(enable bool)                     { return }
+func (self implementation) ProfilingGetAccumulatedData(info_array *ProfilingInfo, info_max int) (_ int) {
 	return
 }
-func (self Implementation) ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) (_ int) {
+func (self implementation) ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) (_ int) {
 	return
 }
-func (self Implementation) Frame()                                            { return }
-func (self Implementation) HandlesGlobalClassType(atype string) (_ bool)      { return }
-func (self Implementation) GetGlobalClassName(path string) (_ Dictionary.Any) { return }
+func (self implementation) Frame()                                            { return }
+func (self implementation) HandlesGlobalClassType(atype string) (_ bool)      { return }
+func (self implementation) GetGlobalClassName(path string) (_ Dictionary.Any) { return }
 func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1068,7 +1070,7 @@ func (class) _can_make_function(impl func(ptr unsafe.Pointer) bool) (cb gd.Exten
 	}
 }
 
-func (class) _open_in_external_editor(impl func(ptr unsafe.Pointer, script [1]gdclass.Script, line gd.Int, column gd.Int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _open_in_external_editor(impl func(ptr unsafe.Pointer, script [1]gdclass.Script, line gd.Int, column gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(script[0])
@@ -1769,7 +1771,7 @@ const (
 	CodeCompletionKindMax       CodeCompletionKind = 10
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

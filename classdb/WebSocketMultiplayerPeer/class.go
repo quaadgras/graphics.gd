@@ -142,11 +142,11 @@ Starts a new multiplayer client connecting to the given [param url]. TLS certifi
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
 //go:nosplit
-func (self class) CreateClient(url gd.String, tls_client_options [1]gdclass.TLSOptions) error {
+func (self class) CreateClient(url gd.String, tls_client_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(url))
 	callframe.Arg(frame, pointers.Get(tls_client_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_create_client, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -157,12 +157,12 @@ func (self class) CreateClient(url gd.String, tls_client_options [1]gdclass.TLSO
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) CreateServer(port gd.Int, bind_address gd.String, tls_server_options [1]gdclass.TLSOptions) error {
+func (self class) CreateServer(port gd.Int, bind_address gd.String, tls_server_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(bind_address))
 	callframe.Arg(frame, pointers.Get(tls_server_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_create_server, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -366,7 +366,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

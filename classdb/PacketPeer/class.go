@@ -124,11 +124,11 @@ Sends a [Variant] as a packet. If [param full_objects] is [code]true[/code], enc
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
 //go:nosplit
-func (self class) PutVar(v gd.Variant, full_objects bool) error {
+func (self class) PutVar(v gd.Variant, full_objects bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(v))
 	callframe.Arg(frame, full_objects)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_put_var, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -152,10 +152,10 @@ func (self class) GetPacket() gd.PackedByteArray {
 Sends a raw packet.
 */
 //go:nosplit
-func (self class) PutPacket(buffer gd.PackedByteArray) error {
+func (self class) PutPacket(buffer gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_put_packet, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -166,9 +166,9 @@ func (self class) PutPacket(buffer gd.PackedByteArray) error {
 Returns the error state of the last packet received (via [method get_packet] and [method get_var]).
 */
 //go:nosplit
-func (self class) GetPacketError() error {
+func (self class) GetPacketError() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_packet_error, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -232,7 +232,7 @@ func init() {
 	gdclass.Register("PacketPeer", func(ptr gd.Object) any { return [1]gdclass.PacketPeer{*(*gdclass.PacketPeer)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

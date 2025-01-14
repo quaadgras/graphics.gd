@@ -51,9 +51,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) SetupLocalToScene() { return }
+type implementation struct{}
+
+func (self implementation) SetupLocalToScene() { return }
 
 /*
 Override this method to customize the newly duplicated resource created from [method PackedScene.instantiate], if the original's [member resource_local_to_scene] is set to [code]true[/code].

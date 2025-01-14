@@ -102,11 +102,11 @@ If [param bind_address] is set as [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
 */
 //go:nosplit
-func (self class) Listen(port gd.Int, bind_address gd.String) error {
+func (self class) Listen(port gd.Int, bind_address gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(bind_address))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -201,7 +201,7 @@ func init() {
 	gdclass.Register("TCPServer", func(ptr gd.Object) any { return [1]gdclass.TCPServer{*(*gdclass.TCPServer)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

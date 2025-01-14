@@ -103,14 +103,14 @@ func (self Instance) Host() [1]gdclass.ENetConnection {
 Create server that listens to connections via [param port]. The port needs to be an available, unused port between 0 and 65535. Note that ports below 1024 are privileged and may require elevated permissions depending on the platform. To change the interface the server listens on, use [method set_bind_ip]. The default IP is the wildcard [code]"*"[/code], which listens on all available interfaces. [param max_clients] is the maximum number of clients that are allowed at once, any number up to 4095 may be used, although the achievable number of simultaneous clients may be far lower and depends on the application. For additional details on the bandwidth parameters, see [method create_client]. Returns [constant OK] if a server was created, [constant ERR_ALREADY_IN_USE] if this ENetMultiplayerPeer instance already has an open connection (in which case you need to call [method MultiplayerPeer.close] first) or [constant ERR_CANT_CREATE] if the server could not be created.
 */
 //go:nosplit
-func (self class) CreateServer(port gd.Int, max_clients gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) error {
+func (self class) CreateServer(port gd.Int, max_clients gd.Int, max_channels gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, max_clients)
 	callframe.Arg(frame, max_channels)
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_server, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -121,7 +121,7 @@ func (self class) CreateServer(port gd.Int, max_clients gd.Int, max_channels gd.
 Create client that connects to a server at [param address] using specified [param port]. The given address needs to be either a fully qualified domain name (e.g. [code]"www.example.com"[/code]) or an IP address in IPv4 or IPv6 format (e.g. [code]"192.168.1.1"[/code]). The [param port] is the port the server is listening on. The [param channel_count] parameter can be used to specify the number of ENet channels allocated for the connection. The [param in_bandwidth] and [param out_bandwidth] parameters can be used to limit the incoming and outgoing bandwidth to the given number of bytes per second. The default of 0 means unlimited bandwidth. Note that ENet will strategically drop packets on specific sides of a connection between peers to ensure the peer's bandwidth is not overwhelmed. The bandwidth parameters also determine the window size of a connection which limits the amount of reliable packets that may be in transit at any given time. Returns [constant OK] if a client was created, [constant ERR_ALREADY_IN_USE] if this ENetMultiplayerPeer instance already has an open connection (in which case you need to call [method MultiplayerPeer.close] first) or [constant ERR_CANT_CREATE] if the client could not be created. If [param local_port] is specified, the client will also listen to the given port; this is useful for some NAT traversal techniques.
 */
 //go:nosplit
-func (self class) CreateClient(address gd.String, port gd.Int, channel_count gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int, local_port gd.Int) error {
+func (self class) CreateClient(address gd.String, port gd.Int, channel_count gd.Int, in_bandwidth gd.Int, out_bandwidth gd.Int, local_port gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(address))
 	callframe.Arg(frame, port)
@@ -129,7 +129,7 @@ func (self class) CreateClient(address gd.String, port gd.Int, channel_count gd.
 	callframe.Arg(frame, in_bandwidth)
 	callframe.Arg(frame, out_bandwidth)
 	callframe.Arg(frame, local_port)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_client, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -140,10 +140,10 @@ func (self class) CreateClient(address gd.String, port gd.Int, channel_count gd.
 Initialize this [MultiplayerPeer] in mesh mode. The provided [param unique_id] will be used as the local peer network unique ID once assigned as the [member MultiplayerAPI.multiplayer_peer]. In the mesh configuration you will need to set up each new peer manually using [ENetConnection] before calling [method add_mesh_peer]. While this technique is more advanced, it allows for better control over the connection process (e.g. when dealing with NAT punch-through) and for better distribution of the network load (which would otherwise be more taxing on the server).
 */
 //go:nosplit
-func (self class) CreateMesh(unique_id gd.Int) error {
+func (self class) CreateMesh(unique_id gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, unique_id)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -155,11 +155,11 @@ Add a new remote peer with the given [param peer_id] connected to the given [par
 [b]Note:[/b] The [param host] must have exactly one peer in the [constant ENetPacketPeer.STATE_CONNECTED] state.
 */
 //go:nosplit
-func (self class) AddMeshPeer(peer_id gd.Int, host [1]gdclass.ENetConnection) error {
+func (self class) AddMeshPeer(peer_id gd.Int, host [1]gdclass.ENetConnection) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	callframe.Arg(frame, pointers.Get(host[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_add_mesh_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -241,7 +241,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

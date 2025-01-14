@@ -398,11 +398,11 @@ Uses specified surface of given [Mesh] to populate data for MeshDataTool.
 Requires [Mesh] with primitive type [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface gd.Int) error {
+func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	callframe.Arg(frame, surface)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_create_from_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -413,11 +413,11 @@ func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface gd.Int) e
 Adds a new surface to specified [Mesh] with edited data.
 */
 //go:nosplit
-func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags gd.Int) error {
+func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	callframe.Arg(frame, compression_flags)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshDataTool.Bind_commit_to_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -942,7 +942,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

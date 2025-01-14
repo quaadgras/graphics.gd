@@ -57,15 +57,17 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetFormat() (_ gdclass.ImageFormat)                { return }
-func (self Implementation) GetLayeredType() (_ int)                           { return }
-func (self Implementation) GetWidth() (_ int)                                 { return }
-func (self Implementation) GetHeight() (_ int)                                { return }
-func (self Implementation) GetLayers() (_ int)                                { return }
-func (self Implementation) HasMipmaps() (_ bool)                              { return }
-func (self Implementation) GetLayerData(layer_index int) (_ [1]gdclass.Image) { return }
+type implementation struct{}
+
+func (self implementation) GetFormat() (_ gdclass.ImageFormat)                { return }
+func (self implementation) GetLayeredType() (_ int)                           { return }
+func (self implementation) GetWidth() (_ int)                                 { return }
+func (self implementation) GetHeight() (_ int)                                { return }
+func (self implementation) GetLayers() (_ int)                                { return }
+func (self implementation) HasMipmaps() (_ bool)                              { return }
+func (self implementation) GetLayerData(layer_index int) (_ [1]gdclass.Image) { return }
 
 /*
 Called when the [TextureLayered]'s format is queried.

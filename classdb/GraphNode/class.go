@@ -49,9 +49,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) DrawPort(slot_index int, position Vector2i.XY, left bool, color Color.RGBA) {
+type implementation struct{}
+
+func (self implementation) DrawPort(slot_index int, position Vector2i.XY, left bool, color Color.RGBA) {
 	return
 }
 func (Instance) _draw_port(impl func(ptr unsafe.Pointer, slot_index int, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {

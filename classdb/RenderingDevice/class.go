@@ -929,12 +929,12 @@ Updates texture data with new data, replacing the previous data in place. The up
 [b]Note:[/b] The existing [param texture] requires the [constant TEXTURE_USAGE_CAN_UPDATE_BIT] to be updatable.
 */
 //go:nosplit
-func (self class) TextureUpdate(texture gd.RID, layer gd.Int, data gd.PackedByteArray) error {
+func (self class) TextureUpdate(texture gd.RID, layer gd.Int, data gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1010,7 +1010,7 @@ Copies the [param from_texture] to [param to_texture] with the specified [param 
 [b]Note:[/b] [param from_texture] and [param to_texture] must be of the same type (color or depth).
 */
 //go:nosplit
-func (self class) TextureCopy(from_texture gd.RID, to_texture gd.RID, from_pos gd.Vector3, to_pos gd.Vector3, size gd.Vector3, src_mipmap gd.Int, dst_mipmap gd.Int, src_layer gd.Int, dst_layer gd.Int) error {
+func (self class) TextureCopy(from_texture gd.RID, to_texture gd.RID, from_pos gd.Vector3, to_pos gd.Vector3, size gd.Vector3, src_mipmap gd.Int, dst_mipmap gd.Int, src_layer gd.Int, dst_layer gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, from_texture)
 	callframe.Arg(frame, to_texture)
@@ -1021,7 +1021,7 @@ func (self class) TextureCopy(from_texture gd.RID, to_texture gd.RID, from_pos g
 	callframe.Arg(frame, dst_mipmap)
 	callframe.Arg(frame, src_layer)
 	callframe.Arg(frame, dst_layer)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_copy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1033,7 +1033,7 @@ Clears the specified [param texture] by replacing all of its pixels with the spe
 [b]Note:[/b] [param texture] can't be cleared while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to clear this texture.
 */
 //go:nosplit
-func (self class) TextureClear(texture gd.RID, color gd.Color, base_mipmap gd.Int, mipmap_count gd.Int, base_layer gd.Int, layer_count gd.Int) error {
+func (self class) TextureClear(texture gd.RID, color gd.Color, base_mipmap gd.Int, mipmap_count gd.Int, base_layer gd.Int, layer_count gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	callframe.Arg(frame, color)
@@ -1041,7 +1041,7 @@ func (self class) TextureClear(texture gd.RID, color gd.Color, base_mipmap gd.In
 	callframe.Arg(frame, mipmap_count)
 	callframe.Arg(frame, base_layer)
 	callframe.Arg(frame, layer_count)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1059,11 +1059,11 @@ Resolves the [param from_texture] texture onto [param to_texture] with multisamp
 [b]Note:[/b] [param to_texture] texture must [b]not[/b] be multisampled and must also be 2D (or a slice of a 3D/cubemap texture).
 */
 //go:nosplit
-func (self class) TextureResolveMultisample(from_texture gd.RID, to_texture gd.RID) error {
+func (self class) TextureResolveMultisample(from_texture gd.RID, to_texture gd.RID) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, from_texture)
 	callframe.Arg(frame, to_texture)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_resolve_multisample, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1533,14 +1533,14 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 //go:nosplit
-func (self class) BufferCopy(src_buffer gd.RID, dst_buffer gd.RID, src_offset gd.Int, dst_offset gd.Int, size gd.Int) error {
+func (self class) BufferCopy(src_buffer gd.RID, dst_buffer gd.RID, src_offset gd.Int, dst_offset gd.Int, size gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, src_buffer)
 	callframe.Arg(frame, dst_buffer)
 	callframe.Arg(frame, src_offset)
 	callframe.Arg(frame, dst_offset)
 	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_copy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1555,13 +1555,13 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 //go:nosplit
-func (self class) BufferUpdate(buffer gd.RID, offset gd.Int, size_bytes gd.Int, data gd.PackedByteArray) error {
+func (self class) BufferUpdate(buffer gd.RID, offset gd.Int, size_bytes gd.Int, data gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, size_bytes)
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1577,12 +1577,12 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 //go:nosplit
-func (self class) BufferClear(buffer gd.RID, offset gd.Int, size_bytes gd.Int) error {
+func (self class) BufferClear(buffer gd.RID, offset gd.Int, size_bytes gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer)
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, size_bytes)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3518,7 +3518,7 @@ const (
 	MemoryTotal MemoryType = 2
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

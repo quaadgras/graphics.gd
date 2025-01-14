@@ -44,10 +44,12 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Pressed()                { return }
-func (self Implementation) Toggled(toggled_on bool) { return }
+type implementation struct{}
+
+func (self implementation) Pressed()                { return }
+func (self implementation) Toggled(toggled_on bool) { return }
 
 /*
 Called when the button is pressed. If you need to know the button's pressed state (and [member toggle_mode] is active), use [method _toggled] instead.

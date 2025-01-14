@@ -230,9 +230,9 @@ Method used for polling the MultiplayerAPI. You only need to worry about this if
 [b]Note:[/b] This method results in RPCs being called, so they will be executed in the same context of this function (e.g. [code]_process[/code], [code]physics[/code], [Thread]).
 */
 //go:nosplit
-func (self class) Poll() error {
+func (self class) Poll() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -244,13 +244,13 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 //go:nosplit
-func (self class) Rpc(peer gd.Int, obj [1]gd.Object, method gd.StringName, arguments gd.Array) error {
+func (self class) Rpc(peer gd.Int, obj [1]gd.Object, method gd.StringName, arguments gd.Array) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_rpc, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -262,11 +262,11 @@ Notifies the MultiplayerAPI of a new [param configuration] for the given [param 
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 //go:nosplit
-func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration gd.Variant) error {
+func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration gd.Variant) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(configuration))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_object_configuration_add, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -278,11 +278,11 @@ Notifies the MultiplayerAPI to remove a [param configuration] for the given [par
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 //go:nosplit
-func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration gd.Variant) error {
+func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration gd.Variant) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(configuration))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_object_configuration_remove, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -398,7 +398,7 @@ const (
 	RpcModeAuthority RPCMode = 2
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -246,10 +246,10 @@ func (self class) SetSourceCode(source gd.String) {
 Reloads the script's class implementation. Returns an error code.
 */
 //go:nosplit
-func (self class) Reload(keep_state bool) error {
+func (self class) Reload(keep_state bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, keep_state)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_reload, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -447,7 +447,7 @@ func init() {
 	gdclass.Register("Script", func(ptr gd.Object) any { return [1]gdclass.Script{*(*gdclass.Script)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

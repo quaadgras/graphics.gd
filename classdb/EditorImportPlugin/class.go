@@ -213,25 +213,27 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetImporterName() (_ string)                                 { return }
-func (self Implementation) GetVisibleName() (_ string)                                  { return }
-func (self Implementation) GetPresetCount() (_ int)                                     { return }
-func (self Implementation) GetPresetName(preset_index int) (_ string)                   { return }
-func (self Implementation) GetRecognizedExtensions() (_ []string)                       { return }
-func (self Implementation) GetImportOptions(path string, preset_index int) (_ gd.Array) { return }
-func (self Implementation) GetSaveExtension() (_ string)                                { return }
-func (self Implementation) GetResourceType() (_ string)                                 { return }
-func (self Implementation) GetPriority() (_ Float.X)                                    { return }
-func (self Implementation) GetImportOrder() (_ int)                                     { return }
-func (self Implementation) GetOptionVisibility(path string, option_name string, options Dictionary.Any) (_ bool) {
+type implementation struct{}
+
+func (self implementation) GetImporterName() (_ string)                                 { return }
+func (self implementation) GetVisibleName() (_ string)                                  { return }
+func (self implementation) GetPresetCount() (_ int)                                     { return }
+func (self implementation) GetPresetName(preset_index int) (_ string)                   { return }
+func (self implementation) GetRecognizedExtensions() (_ []string)                       { return }
+func (self implementation) GetImportOptions(path string, preset_index int) (_ gd.Array) { return }
+func (self implementation) GetSaveExtension() (_ string)                                { return }
+func (self implementation) GetResourceType() (_ string)                                 { return }
+func (self implementation) GetPriority() (_ Float.X)                                    { return }
+func (self implementation) GetImportOrder() (_ int)                                     { return }
+func (self implementation) GetOptionVisibility(path string, option_name string, options Dictionary.Any) (_ bool) {
 	return
 }
-func (self Implementation) Import(source_file string, save_path string, options Dictionary.Any, platform_variants gd.Array, gen_files gd.Array) (_ error) {
+func (self implementation) Import(source_file string, save_path string, options Dictionary.Any, platform_variants gd.Array, gen_files gd.Array) (_ error) {
 	return
 }
-func (self Implementation) CanImportThreaded() (_ bool) { return }
+func (self implementation) CanImportThreaded() (_ bool) { return }
 
 /*
 Gets the unique name of the importer.
@@ -665,7 +667,7 @@ func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path gd.String
 Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
 This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
 */
-func (class) _import(impl func(ptr unsafe.Pointer, source_file gd.String, save_path gd.String, options gd.Dictionary, platform_variants gd.Array, gen_files gd.Array) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import(impl func(ptr unsafe.Pointer, source_file gd.String, save_path gd.String, options gd.Dictionary, platform_variants gd.Array, gen_files gd.Array) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var source_file = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var save_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -694,13 +696,13 @@ func (class) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.Ext
 This function can only be called during the [method _import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the [param custom_options]. Additionally, in cases where multiple importers can handle a file, the [param custom_importer] can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. [param generator_parameters] defines optional extra metadata which will be stored as [code skip-lint]generator_parameters[/code] in the [code]remap[/code] section of the [code].import[/code] file, for example to store a md5 hash of the source data.
 */
 //go:nosplit
-func (self class) AppendImportExternalResource(path gd.String, custom_options gd.Dictionary, custom_importer gd.String, generator_parameters gd.Variant) error {
+func (self class) AppendImportExternalResource(path gd.String, custom_options gd.Dictionary, custom_importer gd.String, generator_parameters gd.Variant) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(custom_options))
 	callframe.Arg(frame, pointers.Get(custom_importer))
 	callframe.Arg(frame, pointers.Get(generator_parameters))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -792,7 +794,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

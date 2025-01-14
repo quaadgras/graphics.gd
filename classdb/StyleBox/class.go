@@ -47,12 +47,14 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Draw(to_canvas_item Resource.ID, rect Rect2.PositionSize)    { return }
-func (self Implementation) GetDrawRect(rect Rect2.PositionSize) (_ Rect2.PositionSize)  { return }
-func (self Implementation) GetMinimumSize() (_ Vector2.XY)                              { return }
-func (self Implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (_ bool) { return }
+type implementation struct{}
+
+func (self implementation) Draw(to_canvas_item Resource.ID, rect Rect2.PositionSize)    { return }
+func (self implementation) GetDrawRect(rect Rect2.PositionSize) (_ Rect2.PositionSize)  { return }
+func (self implementation) GetMinimumSize() (_ Vector2.XY)                              { return }
+func (self implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (_ bool) { return }
 func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)

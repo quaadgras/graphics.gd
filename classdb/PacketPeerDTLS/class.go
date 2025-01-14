@@ -95,12 +95,12 @@ func (self class) Poll() {
 Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname gd.String, client_options [1]gdclass.TLSOptions) error {
+func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname gd.String, client_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(packet_peer[0])[0])
 	callframe.Arg(frame, pointers.Get(hostname))
 	callframe.Arg(frame, pointers.Get(client_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_connect_to_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -179,7 +179,7 @@ const (
 	StatusErrorHostnameMismatch Status = 4
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

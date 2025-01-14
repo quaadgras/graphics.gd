@@ -4392,13 +4392,13 @@ Shows a text dialog which uses the operating system's native look-and-feel. [par
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS and Windows.
 */
 //go:nosplit
-func (self class) DialogShow(title gd.String, description gd.String, buttons gd.PackedStringArray, callback gd.Callable) error {
+func (self class) DialogShow(title gd.String, description gd.String, buttons gd.PackedStringArray, callback gd.Callable) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(description))
 	callframe.Arg(frame, pointers.Get(buttons))
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4410,13 +4410,13 @@ Shows a text input dialog which uses the operating system's native look-and-feel
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS and Windows.
 */
 //go:nosplit
-func (self class) DialogInputText(title gd.String, description gd.String, existing_text gd.String, callback gd.Callable) error {
+func (self class) DialogInputText(title gd.String, description gd.String, existing_text gd.String, callback gd.Callable) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(description))
 	callframe.Arg(frame, pointers.Get(existing_text))
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_input_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4434,7 +4434,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogShow(title gd.String, current_directory gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, callback gd.Callable) error {
+func (self class) FileDialogShow(title gd.String, current_directory gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, callback gd.Callable) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(current_directory))
@@ -4443,7 +4443,7 @@ func (self class) FileDialogShow(title gd.String, current_directory gd.String, f
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, pointers.Get(filters))
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_file_dialog_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4465,7 +4465,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogWithOptionsShow(title gd.String, current_directory gd.String, root gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options gd.Array, callback gd.Callable) error {
+func (self class) FileDialogWithOptionsShow(title gd.String, current_directory gd.String, root gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options gd.Array, callback gd.Callable) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(current_directory))
@@ -4476,7 +4476,7 @@ func (self class) FileDialogWithOptionsShow(title gd.String, current_directory g
 	callframe.Arg(frame, pointers.Get(filters))
 	callframe.Arg(frame, pointers.Get(options))
 	callframe.Arg(frame, pointers.Get(callback))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_file_dialog_with_options_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5155,7 +5155,7 @@ const (
 	TtsUtteranceBoundary TTSUtteranceEvent = 3
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

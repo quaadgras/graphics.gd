@@ -107,49 +107,51 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetName() (_ string)               { return }
-func (self Implementation) GetCapabilities() (_ int)          { return }
-func (self Implementation) IsInitialized() (_ bool)           { return }
-func (self Implementation) Initialize() (_ bool)              { return }
-func (self Implementation) Uninitialize()                     { return }
-func (self Implementation) GetSystemInfo() (_ Dictionary.Any) { return }
-func (self Implementation) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) (_ bool) {
+type implementation struct{}
+
+func (self implementation) GetName() (_ string)               { return }
+func (self implementation) GetCapabilities() (_ int)          { return }
+func (self implementation) IsInitialized() (_ bool)           { return }
+func (self implementation) Initialize() (_ bool)              { return }
+func (self implementation) Uninitialize()                     { return }
+func (self implementation) GetSystemInfo() (_ Dictionary.Any) { return }
+func (self implementation) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) (_ bool) {
 	return
 }
-func (self Implementation) GetPlayAreaMode() (_ gdclass.XRInterfacePlayAreaMode)          { return }
-func (self Implementation) SetPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) (_ bool) { return }
-func (self Implementation) GetPlayArea() (_ []Vector3.XYZ)                                { return }
-func (self Implementation) GetRenderTargetSize() (_ Vector2.XY)                           { return }
-func (self Implementation) GetViewCount() (_ int)                                         { return }
-func (self Implementation) GetCameraTransform() (_ Transform3D.BasisOrigin)               { return }
-func (self Implementation) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) (_ Transform3D.BasisOrigin) {
+func (self implementation) GetPlayAreaMode() (_ gdclass.XRInterfacePlayAreaMode)          { return }
+func (self implementation) SetPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) (_ bool) { return }
+func (self implementation) GetPlayArea() (_ []Vector3.XYZ)                                { return }
+func (self implementation) GetRenderTargetSize() (_ Vector2.XY)                           { return }
+func (self implementation) GetViewCount() (_ int)                                         { return }
+func (self implementation) GetCameraTransform() (_ Transform3D.BasisOrigin)               { return }
+func (self implementation) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) (_ Transform3D.BasisOrigin) {
 	return
 }
-func (self Implementation) GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) (_ []float64) {
+func (self implementation) GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) (_ []float64) {
 	return
 }
-func (self Implementation) GetVrsTexture() (_ Resource.ID)                     { return }
-func (self Implementation) Process()                                           { return }
-func (self Implementation) PreRender()                                         { return }
-func (self Implementation) PreDrawViewport(render_target Resource.ID) (_ bool) { return }
-func (self Implementation) PostDrawViewport(render_target Resource.ID, screen_rect Rect2.PositionSize) {
+func (self implementation) GetVrsTexture() (_ Resource.ID)                     { return }
+func (self implementation) Process()                                           { return }
+func (self implementation) PreRender()                                         { return }
+func (self implementation) PreDrawViewport(render_target Resource.ID) (_ bool) { return }
+func (self implementation) PostDrawViewport(render_target Resource.ID, screen_rect Rect2.PositionSize) {
 	return
 }
-func (self Implementation) EndFrame()                                                { return }
-func (self Implementation) GetSuggestedTrackerNames() (_ []string)                   { return }
-func (self Implementation) GetSuggestedPoseNames(tracker_name string) (_ []string)   { return }
-func (self Implementation) GetTrackingStatus() (_ gdclass.XRInterfaceTrackingStatus) { return }
-func (self Implementation) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) {
+func (self implementation) EndFrame()                                                { return }
+func (self implementation) GetSuggestedTrackerNames() (_ []string)                   { return }
+func (self implementation) GetSuggestedPoseNames(tracker_name string) (_ []string)   { return }
+func (self implementation) GetTrackingStatus() (_ gdclass.XRInterfaceTrackingStatus) { return }
+func (self implementation) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) {
 	return
 }
-func (self Implementation) GetAnchorDetectionIsEnabled() (_ bool)    { return }
-func (self Implementation) SetAnchorDetectionIsEnabled(enabled bool) { return }
-func (self Implementation) GetCameraFeedId() (_ int)                 { return }
-func (self Implementation) GetColorTexture() (_ Resource.ID)         { return }
-func (self Implementation) GetDepthTexture() (_ Resource.ID)         { return }
-func (self Implementation) GetVelocityTexture() (_ Resource.ID)      { return }
+func (self implementation) GetAnchorDetectionIsEnabled() (_ bool)    { return }
+func (self implementation) SetAnchorDetectionIsEnabled(enabled bool) { return }
+func (self implementation) GetCameraFeedId() (_ int)                 { return }
+func (self implementation) GetColorTexture() (_ Resource.ID)         { return }
+func (self implementation) GetDepthTexture() (_ Resource.ID)         { return }
+func (self implementation) GetVelocityTexture() (_ Resource.ID)      { return }
 
 /*
 Returns the name of this interface.

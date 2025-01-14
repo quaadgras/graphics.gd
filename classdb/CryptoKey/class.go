@@ -93,11 +93,11 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 //go:nosplit
-func (self class) Save(path gd.String, public_only bool) error {
+func (self class) Save(path gd.String, public_only bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, public_only)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -109,11 +109,11 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 //go:nosplit
-func (self class) Load(path gd.String, public_only bool) error {
+func (self class) Load(path gd.String, public_only bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, public_only)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -151,11 +151,11 @@ func (self class) SaveToString(public_only bool) gd.String {
 Loads a key from the given [param string_key]. If [param public_only] is [code]true[/code], only the public key will be loaded.
 */
 //go:nosplit
-func (self class) LoadFromString(string_key gd.String, public_only bool) error {
+func (self class) LoadFromString(string_key gd.String, public_only bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(string_key))
 	callframe.Arg(frame, public_only)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -193,7 +193,7 @@ func init() {
 	gdclass.Register("CryptoKey", func(ptr gd.Object) any { return [1]gdclass.CryptoKey{*(*gdclass.CryptoKey)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

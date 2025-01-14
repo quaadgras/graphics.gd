@@ -152,10 +152,10 @@ func New() Instance {
 Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [member Node.owner].
 */
 //go:nosplit
-func (self class) Pack(path [1]gdclass.Node) error {
+func (self class) Pack(path [1]gdclass.Node) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_pack, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -249,7 +249,7 @@ const (
 	GenEditStateMainInherited GenEditState = 3
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

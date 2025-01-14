@@ -426,12 +426,12 @@ func (self class) ClassGetProperty(obj [1]gd.Object, property gd.StringName) gd.
 Sets [param property] value of [param object] to [param value].
 */
 //go:nosplit
-func (self class) ClassSetProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) error {
+func (self class) ClassSetProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_set_property, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -648,7 +648,7 @@ func init() {
 	gdclass.Register("ClassDB", func(ptr gd.Object) any { return [1]gdclass.ClassDB{*(*gdclass.ClassDB)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

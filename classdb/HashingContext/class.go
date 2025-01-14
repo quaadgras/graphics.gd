@@ -129,10 +129,10 @@ func New() Instance {
 Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA256] to start computation of an SHA-256).
 */
 //go:nosplit
-func (self class) Start(atype gdclass.HashingContextHashType) error {
+func (self class) Start(atype gdclass.HashingContextHashType) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -143,10 +143,10 @@ func (self class) Start(atype gdclass.HashingContextHashType) error {
 Updates the computation with the given [param chunk] of data.
 */
 //go:nosplit
-func (self class) Update(chunk gd.PackedByteArray) error {
+func (self class) Update(chunk gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(chunk))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -204,7 +204,7 @@ const (
 	HashSha256 HashType = 2
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

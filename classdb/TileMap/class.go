@@ -56,10 +56,12 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) UseTileDataRuntimeUpdate(layer int, coords Vector2i.XY) (_ bool) { return }
-func (self Implementation) TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data [1]gdclass.TileData) {
+type implementation struct{}
+
+func (self implementation) UseTileDataRuntimeUpdate(layer int, coords Vector2i.XY) (_ bool) { return }
+func (self implementation) TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data [1]gdclass.TileData) {
 	return
 }
 

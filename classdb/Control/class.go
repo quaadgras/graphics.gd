@@ -198,17 +198,19 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) HasPoint(point Vector2.XY) (_ bool)                            { return }
-func (self Implementation) StructuredTextParser(args Array.Any, text string) (_ gd.Array) { return }
-func (self Implementation) GetMinimumSize() (_ Vector2.XY)                                { return }
-func (self Implementation) GetTooltip(at_position Vector2.XY) (_ string)                  { return }
-func (self Implementation) GetDragData(at_position Vector2.XY) (_ any)                    { return }
-func (self Implementation) CanDropData(at_position Vector2.XY, data any) (_ bool)         { return }
-func (self Implementation) DropData(at_position Vector2.XY, data any)                     { return }
-func (self Implementation) MakeCustomTooltip(for_text string) (_ Object.Instance)         { return }
-func (self Implementation) GuiInput(event [1]gdclass.InputEvent)                          { return }
+type implementation struct{}
+
+func (self implementation) HasPoint(point Vector2.XY) (_ bool)                            { return }
+func (self implementation) StructuredTextParser(args Array.Any, text string) (_ gd.Array) { return }
+func (self implementation) GetMinimumSize() (_ Vector2.XY)                                { return }
+func (self implementation) GetTooltip(at_position Vector2.XY) (_ string)                  { return }
+func (self implementation) GetDragData(at_position Vector2.XY) (_ any)                    { return }
+func (self implementation) CanDropData(at_position Vector2.XY, data any) (_ bool)         { return }
+func (self implementation) DropData(at_position Vector2.XY, data any)                     { return }
+func (self implementation) MakeCustomTooltip(for_text string) (_ Object.Instance)         { return }
+func (self implementation) GuiInput(event [1]gdclass.InputEvent)                          { return }
 
 /*
 Virtual method to be implemented by the user. Returns whether the given [param point] is inside this control.

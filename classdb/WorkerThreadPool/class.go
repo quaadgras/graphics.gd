@@ -188,10 +188,10 @@ Returns [constant @GlobalScope.ERR_INVALID_PARAMETER] if a task with the passed 
 Returns [constant @GlobalScope.ERR_BUSY] if the call is made from another running task and, due to task scheduling, there's potential for deadlocking (e.g., the task to await may be at a lower level in the call stack and therefore can't progress). This is an advanced situation that should only matter when some tasks depend on others (in the current implementation, the tricky case is a task trying to wait on an older one).
 */
 //go:nosplit
-func (self class) WaitForTaskCompletion(task_id gd.Int) error {
+func (self class) WaitForTaskCompletion(task_id gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, task_id)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorkerThreadPool.Bind_wait_for_task_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -272,7 +272,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

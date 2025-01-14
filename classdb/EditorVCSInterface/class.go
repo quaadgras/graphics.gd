@@ -84,33 +84,35 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Initialize(project_path string) (_ bool) { return }
-func (self Implementation) SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string) {
+type implementation struct{}
+
+func (self implementation) Initialize(project_path string) (_ bool) { return }
+func (self implementation) SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string) {
 	return
 }
-func (self Implementation) GetModifiedFilesData() (_ gd.Array)                     { return }
-func (self Implementation) StageFile(file_path string)                             { return }
-func (self Implementation) UnstageFile(file_path string)                           { return }
-func (self Implementation) DiscardFile(file_path string)                           { return }
-func (self Implementation) Commit(msg string)                                      { return }
-func (self Implementation) GetDiff(identifier string, area int) (_ gd.Array)       { return }
-func (self Implementation) ShutDown() (_ bool)                                     { return }
-func (self Implementation) GetVcsName() (_ string)                                 { return }
-func (self Implementation) GetPreviousCommits(max_commits int) (_ gd.Array)        { return }
-func (self Implementation) GetBranchList() (_ gd.Array)                            { return }
-func (self Implementation) GetRemotes() (_ gd.Array)                               { return }
-func (self Implementation) CreateBranch(branch_name string)                        { return }
-func (self Implementation) RemoveBranch(branch_name string)                        { return }
-func (self Implementation) CreateRemote(remote_name string, remote_url string)     { return }
-func (self Implementation) RemoveRemote(remote_name string)                        { return }
-func (self Implementation) GetCurrentBranchName() (_ string)                       { return }
-func (self Implementation) CheckoutBranch(branch_name string) (_ bool)             { return }
-func (self Implementation) Pull(remote string)                                     { return }
-func (self Implementation) Push(remote string, force bool)                         { return }
-func (self Implementation) Fetch(remote string)                                    { return }
-func (self Implementation) GetLineDiff(file_path string, text string) (_ gd.Array) { return }
+func (self implementation) GetModifiedFilesData() (_ gd.Array)                     { return }
+func (self implementation) StageFile(file_path string)                             { return }
+func (self implementation) UnstageFile(file_path string)                           { return }
+func (self implementation) DiscardFile(file_path string)                           { return }
+func (self implementation) Commit(msg string)                                      { return }
+func (self implementation) GetDiff(identifier string, area int) (_ gd.Array)       { return }
+func (self implementation) ShutDown() (_ bool)                                     { return }
+func (self implementation) GetVcsName() (_ string)                                 { return }
+func (self implementation) GetPreviousCommits(max_commits int) (_ gd.Array)        { return }
+func (self implementation) GetBranchList() (_ gd.Array)                            { return }
+func (self implementation) GetRemotes() (_ gd.Array)                               { return }
+func (self implementation) CreateBranch(branch_name string)                        { return }
+func (self implementation) RemoveBranch(branch_name string)                        { return }
+func (self implementation) CreateRemote(remote_name string, remote_url string)     { return }
+func (self implementation) RemoveRemote(remote_name string)                        { return }
+func (self implementation) GetCurrentBranchName() (_ string)                       { return }
+func (self implementation) CheckoutBranch(branch_name string) (_ bool)             { return }
+func (self implementation) Pull(remote string)                                     { return }
+func (self implementation) Push(remote string, force bool)                         { return }
+func (self implementation) Fetch(remote string)                                    { return }
+func (self implementation) GetLineDiff(file_path string, text string) (_ gd.Array) { return }
 
 /*
 Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at [param project_path].

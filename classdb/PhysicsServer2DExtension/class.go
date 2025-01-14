@@ -339,242 +339,244 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) WorldBoundaryShapeCreate() (_ Resource.ID)                { return }
-func (self Implementation) SeparationRayShapeCreate() (_ Resource.ID)                { return }
-func (self Implementation) SegmentShapeCreate() (_ Resource.ID)                      { return }
-func (self Implementation) CircleShapeCreate() (_ Resource.ID)                       { return }
-func (self Implementation) RectangleShapeCreate() (_ Resource.ID)                    { return }
-func (self Implementation) CapsuleShapeCreate() (_ Resource.ID)                      { return }
-func (self Implementation) ConvexPolygonShapeCreate() (_ Resource.ID)                { return }
-func (self Implementation) ConcavePolygonShapeCreate() (_ Resource.ID)               { return }
-func (self Implementation) ShapeSetData(shape Resource.ID, data any)                 { return }
-func (self Implementation) ShapeSetCustomSolverBias(shape Resource.ID, bias Float.X) { return }
-func (self Implementation) ShapeGetType(shape Resource.ID) (_ gdclass.PhysicsServer2DShapeType) {
+type implementation struct{}
+
+func (self implementation) WorldBoundaryShapeCreate() (_ Resource.ID)                { return }
+func (self implementation) SeparationRayShapeCreate() (_ Resource.ID)                { return }
+func (self implementation) SegmentShapeCreate() (_ Resource.ID)                      { return }
+func (self implementation) CircleShapeCreate() (_ Resource.ID)                       { return }
+func (self implementation) RectangleShapeCreate() (_ Resource.ID)                    { return }
+func (self implementation) CapsuleShapeCreate() (_ Resource.ID)                      { return }
+func (self implementation) ConvexPolygonShapeCreate() (_ Resource.ID)                { return }
+func (self implementation) ConcavePolygonShapeCreate() (_ Resource.ID)               { return }
+func (self implementation) ShapeSetData(shape Resource.ID, data any)                 { return }
+func (self implementation) ShapeSetCustomSolverBias(shape Resource.ID, bias Float.X) { return }
+func (self implementation) ShapeGetType(shape Resource.ID) (_ gdclass.PhysicsServer2DShapeType) {
 	return
 }
-func (self Implementation) ShapeGetData(shape Resource.ID) (_ any)                 { return }
-func (self Implementation) ShapeGetCustomSolverBias(shape Resource.ID) (_ Float.X) { return }
-func (self Implementation) ShapeCollide(shape_A Resource.ID, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B Resource.ID, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) (_ bool) {
+func (self implementation) ShapeGetData(shape Resource.ID) (_ any)                 { return }
+func (self implementation) ShapeGetCustomSolverBias(shape Resource.ID) (_ Float.X) { return }
+func (self implementation) ShapeCollide(shape_A Resource.ID, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B Resource.ID, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) (_ bool) {
 	return
 }
-func (self Implementation) SpaceCreate() (_ Resource.ID)                  { return }
-func (self Implementation) SpaceSetActive(space Resource.ID, active bool) { return }
-func (self Implementation) SpaceIsActive(space Resource.ID) (_ bool)      { return }
-func (self Implementation) SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter, value Float.X) {
+func (self implementation) SpaceCreate() (_ Resource.ID)                  { return }
+func (self implementation) SpaceSetActive(space Resource.ID, active bool) { return }
+func (self implementation) SpaceIsActive(space Resource.ID) (_ bool)      { return }
+func (self implementation) SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter, value Float.X) {
 	return
 }
-func (self Implementation) SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter) (_ Float.X) {
+func (self implementation) SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer2DSpaceParameter) (_ Float.X) {
 	return
 }
-func (self Implementation) SpaceGetDirectState(space Resource.ID) (_ [1]gdclass.PhysicsDirectSpaceState2D) {
+func (self implementation) SpaceGetDirectState(space Resource.ID) (_ [1]gdclass.PhysicsDirectSpaceState2D) {
 	return
 }
-func (self Implementation) SpaceSetDebugContacts(space Resource.ID, max_contacts int) { return }
-func (self Implementation) SpaceGetContacts(space Resource.ID) (_ []Vector2.XY)       { return }
-func (self Implementation) SpaceGetContactCount(space Resource.ID) (_ int)            { return }
-func (self Implementation) AreaCreate() (_ Resource.ID)                               { return }
-func (self Implementation) AreaSetSpace(area Resource.ID, space Resource.ID)          { return }
-func (self Implementation) AreaGetSpace(area Resource.ID) (_ Resource.ID)             { return }
-func (self Implementation) AreaAddShape(area Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool) {
+func (self implementation) SpaceSetDebugContacts(space Resource.ID, max_contacts int) { return }
+func (self implementation) SpaceGetContacts(space Resource.ID) (_ []Vector2.XY)       { return }
+func (self implementation) SpaceGetContactCount(space Resource.ID) (_ int)            { return }
+func (self implementation) AreaCreate() (_ Resource.ID)                               { return }
+func (self implementation) AreaSetSpace(area Resource.ID, space Resource.ID)          { return }
+func (self implementation) AreaGetSpace(area Resource.ID) (_ Resource.ID)             { return }
+func (self implementation) AreaAddShape(area Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool) {
 	return
 }
-func (self Implementation) AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID) { return }
-func (self Implementation) AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform2D.OriginXY) {
+func (self implementation) AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID) { return }
+func (self implementation) AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform2D.OriginXY) {
 	return
 }
-func (self Implementation) AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool) {
+func (self implementation) AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool) {
 	return
 }
-func (self Implementation) AreaGetShapeCount(area Resource.ID) (_ int)                   { return }
-func (self Implementation) AreaGetShape(area Resource.ID, shape_idx int) (_ Resource.ID) { return }
-func (self Implementation) AreaGetShapeTransform(area Resource.ID, shape_idx int) (_ Transform2D.OriginXY) {
+func (self implementation) AreaGetShapeCount(area Resource.ID) (_ int)                   { return }
+func (self implementation) AreaGetShape(area Resource.ID, shape_idx int) (_ Resource.ID) { return }
+func (self implementation) AreaGetShapeTransform(area Resource.ID, shape_idx int) (_ Transform2D.OriginXY) {
 	return
 }
-func (self Implementation) AreaRemoveShape(area Resource.ID, shape_idx int)     { return }
-func (self Implementation) AreaClearShapes(area Resource.ID)                    { return }
-func (self Implementation) AreaAttachObjectInstanceId(area Resource.ID, id int) { return }
-func (self Implementation) AreaGetObjectInstanceId(area Resource.ID) (_ int)    { return }
-func (self Implementation) AreaAttachCanvasInstanceId(area Resource.ID, id int) { return }
-func (self Implementation) AreaGetCanvasInstanceId(area Resource.ID) (_ int)    { return }
-func (self Implementation) AreaSetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter, value any) {
+func (self implementation) AreaRemoveShape(area Resource.ID, shape_idx int)     { return }
+func (self implementation) AreaClearShapes(area Resource.ID)                    { return }
+func (self implementation) AreaAttachObjectInstanceId(area Resource.ID, id int) { return }
+func (self implementation) AreaGetObjectInstanceId(area Resource.ID) (_ int)    { return }
+func (self implementation) AreaAttachCanvasInstanceId(area Resource.ID, id int) { return }
+func (self implementation) AreaGetCanvasInstanceId(area Resource.ID) (_ int)    { return }
+func (self implementation) AreaSetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter, value any) {
 	return
 }
-func (self Implementation) AreaSetTransform(area Resource.ID, transform Transform2D.OriginXY) { return }
-func (self Implementation) AreaGetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter) (_ any) {
+func (self implementation) AreaSetTransform(area Resource.ID, transform Transform2D.OriginXY) { return }
+func (self implementation) AreaGetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter) (_ any) {
 	return
 }
-func (self Implementation) AreaGetTransform(area Resource.ID) (_ Transform2D.OriginXY)     { return }
-func (self Implementation) AreaSetCollisionLayer(area Resource.ID, layer int)              { return }
-func (self Implementation) AreaGetCollisionLayer(area Resource.ID) (_ int)                 { return }
-func (self Implementation) AreaSetCollisionMask(area Resource.ID, mask int)                { return }
-func (self Implementation) AreaGetCollisionMask(area Resource.ID) (_ int)                  { return }
-func (self Implementation) AreaSetMonitorable(area Resource.ID, monitorable bool)          { return }
-func (self Implementation) AreaSetPickable(area Resource.ID, pickable bool)                { return }
-func (self Implementation) AreaSetMonitorCallback(area Resource.ID, callback Callable.Any) { return }
-func (self Implementation) AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any) {
+func (self implementation) AreaGetTransform(area Resource.ID) (_ Transform2D.OriginXY)     { return }
+func (self implementation) AreaSetCollisionLayer(area Resource.ID, layer int)              { return }
+func (self implementation) AreaGetCollisionLayer(area Resource.ID) (_ int)                 { return }
+func (self implementation) AreaSetCollisionMask(area Resource.ID, mask int)                { return }
+func (self implementation) AreaGetCollisionMask(area Resource.ID) (_ int)                  { return }
+func (self implementation) AreaSetMonitorable(area Resource.ID, monitorable bool)          { return }
+func (self implementation) AreaSetPickable(area Resource.ID, pickable bool)                { return }
+func (self implementation) AreaSetMonitorCallback(area Resource.ID, callback Callable.Any) { return }
+func (self implementation) AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any) {
 	return
 }
-func (self Implementation) BodyCreate() (_ Resource.ID)                      { return }
-func (self Implementation) BodySetSpace(body Resource.ID, space Resource.ID) { return }
-func (self Implementation) BodyGetSpace(body Resource.ID) (_ Resource.ID)    { return }
-func (self Implementation) BodySetMode(body Resource.ID, mode gdclass.PhysicsServer2DBodyMode) {
+func (self implementation) BodyCreate() (_ Resource.ID)                      { return }
+func (self implementation) BodySetSpace(body Resource.ID, space Resource.ID) { return }
+func (self implementation) BodyGetSpace(body Resource.ID) (_ Resource.ID)    { return }
+func (self implementation) BodySetMode(body Resource.ID, mode gdclass.PhysicsServer2DBodyMode) {
 	return
 }
-func (self Implementation) BodyGetMode(body Resource.ID) (_ gdclass.PhysicsServer2DBodyMode) { return }
-func (self Implementation) BodyAddShape(body Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool) {
+func (self implementation) BodyGetMode(body Resource.ID) (_ gdclass.PhysicsServer2DBodyMode) { return }
+func (self implementation) BodyAddShape(body Resource.ID, shape Resource.ID, transform Transform2D.OriginXY, disabled bool) {
 	return
 }
-func (self Implementation) BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID) { return }
-func (self Implementation) BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform2D.OriginXY) {
+func (self implementation) BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID) { return }
+func (self implementation) BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform2D.OriginXY) {
 	return
 }
-func (self Implementation) BodyGetShapeCount(body Resource.ID) (_ int)                   { return }
-func (self Implementation) BodyGetShape(body Resource.ID, shape_idx int) (_ Resource.ID) { return }
-func (self Implementation) BodyGetShapeTransform(body Resource.ID, shape_idx int) (_ Transform2D.OriginXY) {
+func (self implementation) BodyGetShapeCount(body Resource.ID) (_ int)                   { return }
+func (self implementation) BodyGetShape(body Resource.ID, shape_idx int) (_ Resource.ID) { return }
+func (self implementation) BodyGetShapeTransform(body Resource.ID, shape_idx int) (_ Transform2D.OriginXY) {
 	return
 }
-func (self Implementation) BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool) {
+func (self implementation) BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool) {
 	return
 }
-func (self Implementation) BodySetShapeAsOneWayCollision(body Resource.ID, shape_idx int, enable bool, margin Float.X) {
+func (self implementation) BodySetShapeAsOneWayCollision(body Resource.ID, shape_idx int, enable bool, margin Float.X) {
 	return
 }
-func (self Implementation) BodyRemoveShape(body Resource.ID, shape_idx int)     { return }
-func (self Implementation) BodyClearShapes(body Resource.ID)                    { return }
-func (self Implementation) BodyAttachObjectInstanceId(body Resource.ID, id int) { return }
-func (self Implementation) BodyGetObjectInstanceId(body Resource.ID) (_ int)    { return }
-func (self Implementation) BodyAttachCanvasInstanceId(body Resource.ID, id int) { return }
-func (self Implementation) BodyGetCanvasInstanceId(body Resource.ID) (_ int)    { return }
-func (self Implementation) BodySetContinuousCollisionDetectionMode(body Resource.ID, mode gdclass.PhysicsServer2DCCDMode) {
+func (self implementation) BodyRemoveShape(body Resource.ID, shape_idx int)     { return }
+func (self implementation) BodyClearShapes(body Resource.ID)                    { return }
+func (self implementation) BodyAttachObjectInstanceId(body Resource.ID, id int) { return }
+func (self implementation) BodyGetObjectInstanceId(body Resource.ID) (_ int)    { return }
+func (self implementation) BodyAttachCanvasInstanceId(body Resource.ID, id int) { return }
+func (self implementation) BodyGetCanvasInstanceId(body Resource.ID) (_ int)    { return }
+func (self implementation) BodySetContinuousCollisionDetectionMode(body Resource.ID, mode gdclass.PhysicsServer2DCCDMode) {
 	return
 }
-func (self Implementation) BodyGetContinuousCollisionDetectionMode(body Resource.ID) (_ gdclass.PhysicsServer2DCCDMode) {
+func (self implementation) BodyGetContinuousCollisionDetectionMode(body Resource.ID) (_ gdclass.PhysicsServer2DCCDMode) {
 	return
 }
-func (self Implementation) BodySetCollisionLayer(body Resource.ID, layer int)           { return }
-func (self Implementation) BodyGetCollisionLayer(body Resource.ID) (_ int)              { return }
-func (self Implementation) BodySetCollisionMask(body Resource.ID, mask int)             { return }
-func (self Implementation) BodyGetCollisionMask(body Resource.ID) (_ int)               { return }
-func (self Implementation) BodySetCollisionPriority(body Resource.ID, priority Float.X) { return }
-func (self Implementation) BodyGetCollisionPriority(body Resource.ID) (_ Float.X)       { return }
-func (self Implementation) BodySetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter, value any) {
+func (self implementation) BodySetCollisionLayer(body Resource.ID, layer int)           { return }
+func (self implementation) BodyGetCollisionLayer(body Resource.ID) (_ int)              { return }
+func (self implementation) BodySetCollisionMask(body Resource.ID, mask int)             { return }
+func (self implementation) BodyGetCollisionMask(body Resource.ID) (_ int)               { return }
+func (self implementation) BodySetCollisionPriority(body Resource.ID, priority Float.X) { return }
+func (self implementation) BodyGetCollisionPriority(body Resource.ID) (_ Float.X)       { return }
+func (self implementation) BodySetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter, value any) {
 	return
 }
-func (self Implementation) BodyGetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter) (_ any) {
+func (self implementation) BodyGetParam(body Resource.ID, param gdclass.PhysicsServer2DBodyParameter) (_ any) {
 	return
 }
-func (self Implementation) BodyResetMassProperties(body Resource.ID) { return }
-func (self Implementation) BodySetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState, value any) {
+func (self implementation) BodyResetMassProperties(body Resource.ID) { return }
+func (self implementation) BodySetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState, value any) {
 	return
 }
-func (self Implementation) BodyGetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState) (_ any) {
+func (self implementation) BodyGetState(body Resource.ID, state gdclass.PhysicsServer2DBodyState) (_ any) {
 	return
 }
-func (self Implementation) BodyApplyCentralImpulse(body Resource.ID, impulse Vector2.XY) { return }
-func (self Implementation) BodyApplyTorqueImpulse(body Resource.ID, impulse Float.X)     { return }
-func (self Implementation) BodyApplyImpulse(body Resource.ID, impulse Vector2.XY, position Vector2.XY) {
+func (self implementation) BodyApplyCentralImpulse(body Resource.ID, impulse Vector2.XY) { return }
+func (self implementation) BodyApplyTorqueImpulse(body Resource.ID, impulse Float.X)     { return }
+func (self implementation) BodyApplyImpulse(body Resource.ID, impulse Vector2.XY, position Vector2.XY) {
 	return
 }
-func (self Implementation) BodyApplyCentralForce(body Resource.ID, force Vector2.XY) { return }
-func (self Implementation) BodyApplyForce(body Resource.ID, force Vector2.XY, position Vector2.XY) {
+func (self implementation) BodyApplyCentralForce(body Resource.ID, force Vector2.XY) { return }
+func (self implementation) BodyApplyForce(body Resource.ID, force Vector2.XY, position Vector2.XY) {
 	return
 }
-func (self Implementation) BodyApplyTorque(body Resource.ID, torque Float.X)               { return }
-func (self Implementation) BodyAddConstantCentralForce(body Resource.ID, force Vector2.XY) { return }
-func (self Implementation) BodyAddConstantForce(body Resource.ID, force Vector2.XY, position Vector2.XY) {
+func (self implementation) BodyApplyTorque(body Resource.ID, torque Float.X)               { return }
+func (self implementation) BodyAddConstantCentralForce(body Resource.ID, force Vector2.XY) { return }
+func (self implementation) BodyAddConstantForce(body Resource.ID, force Vector2.XY, position Vector2.XY) {
 	return
 }
-func (self Implementation) BodyAddConstantTorque(body Resource.ID, torque Float.X)         { return }
-func (self Implementation) BodySetConstantForce(body Resource.ID, force Vector2.XY)        { return }
-func (self Implementation) BodyGetConstantForce(body Resource.ID) (_ Vector2.XY)           { return }
-func (self Implementation) BodySetConstantTorque(body Resource.ID, torque Float.X)         { return }
-func (self Implementation) BodyGetConstantTorque(body Resource.ID) (_ Float.X)             { return }
-func (self Implementation) BodySetAxisVelocity(body Resource.ID, axis_velocity Vector2.XY) { return }
-func (self Implementation) BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID) {
+func (self implementation) BodyAddConstantTorque(body Resource.ID, torque Float.X)         { return }
+func (self implementation) BodySetConstantForce(body Resource.ID, force Vector2.XY)        { return }
+func (self implementation) BodyGetConstantForce(body Resource.ID) (_ Vector2.XY)           { return }
+func (self implementation) BodySetConstantTorque(body Resource.ID, torque Float.X)         { return }
+func (self implementation) BodyGetConstantTorque(body Resource.ID) (_ Float.X)             { return }
+func (self implementation) BodySetAxisVelocity(body Resource.ID, axis_velocity Vector2.XY) { return }
+func (self implementation) BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID) {
 	return
 }
-func (self Implementation) BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
+func (self implementation) BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
 	return
 }
-func (self Implementation) BodyGetCollisionExceptions(body Resource.ID) (_ gd.Array) { return }
-func (self Implementation) BodySetMaxContactsReported(body Resource.ID, amount int)  { return }
-func (self Implementation) BodyGetMaxContactsReported(body Resource.ID) (_ int)      { return }
-func (self Implementation) BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X) {
+func (self implementation) BodyGetCollisionExceptions(body Resource.ID) (_ gd.Array) { return }
+func (self implementation) BodySetMaxContactsReported(body Resource.ID, amount int)  { return }
+func (self implementation) BodyGetMaxContactsReported(body Resource.ID) (_ int)      { return }
+func (self implementation) BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X) {
 	return
 }
-func (self Implementation) BodyGetContactsReportedDepthThreshold(body Resource.ID) (_ Float.X) {
+func (self implementation) BodyGetContactsReportedDepthThreshold(body Resource.ID) (_ Float.X) {
 	return
 }
-func (self Implementation) BodySetOmitForceIntegration(body Resource.ID, enable bool)        { return }
-func (self Implementation) BodyIsOmittingForceIntegration(body Resource.ID) (_ bool)         { return }
-func (self Implementation) BodySetStateSyncCallback(body Resource.ID, callable Callable.Any) { return }
-func (self Implementation) BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any) {
+func (self implementation) BodySetOmitForceIntegration(body Resource.ID, enable bool)        { return }
+func (self implementation) BodyIsOmittingForceIntegration(body Resource.ID) (_ bool)         { return }
+func (self implementation) BodySetStateSyncCallback(body Resource.ID, callable Callable.Any) { return }
+func (self implementation) BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any) {
 	return
 }
-func (self Implementation) BodyCollideShape(body Resource.ID, body_shape int, shape Resource.ID, shape_xform Transform2D.OriginXY, motion Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) (_ bool) {
+func (self implementation) BodyCollideShape(body Resource.ID, body_shape int, shape Resource.ID, shape_xform Transform2D.OriginXY, motion Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) (_ bool) {
 	return
 }
-func (self Implementation) BodySetPickable(body Resource.ID, pickable bool) { return }
-func (self Implementation) BodyGetDirectState(body Resource.ID) (_ [1]gdclass.PhysicsDirectBodyState2D) {
+func (self implementation) BodySetPickable(body Resource.ID, pickable bool) { return }
+func (self implementation) BodyGetDirectState(body Resource.ID) (_ [1]gdclass.PhysicsDirectBodyState2D) {
 	return
 }
-func (self Implementation) BodyTestMotion(body Resource.ID, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
+func (self implementation) BodyTestMotion(body Resource.ID, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
 	return
 }
-func (self Implementation) JointCreate() (_ Resource.ID) { return }
-func (self Implementation) JointClear(joint Resource.ID) { return }
-func (self Implementation) JointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam, value Float.X) {
+func (self implementation) JointCreate() (_ Resource.ID) { return }
+func (self implementation) JointClear(joint Resource.ID) { return }
+func (self implementation) JointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam, value Float.X) {
 	return
 }
-func (self Implementation) JointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam) (_ Float.X) {
+func (self implementation) JointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DJointParam) (_ Float.X) {
 	return
 }
-func (self Implementation) JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool) {
+func (self implementation) JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool) {
 	return
 }
-func (self Implementation) JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) (_ bool) { return }
-func (self Implementation) JointMakePin(joint Resource.ID, anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID) {
+func (self implementation) JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) (_ bool) { return }
+func (self implementation) JointMakePin(joint Resource.ID, anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID) {
 	return
 }
-func (self Implementation) JointMakeGroove(joint Resource.ID, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID) {
+func (self implementation) JointMakeGroove(joint Resource.ID, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a Resource.ID, body_b Resource.ID) {
 	return
 }
-func (self Implementation) JointMakeDampedSpring(joint Resource.ID, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a Resource.ID, body_b Resource.ID) {
+func (self implementation) JointMakeDampedSpring(joint Resource.ID, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a Resource.ID, body_b Resource.ID) {
 	return
 }
-func (self Implementation) PinJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool) {
+func (self implementation) PinJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool) {
 	return
 }
-func (self Implementation) PinJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag) (_ bool) {
+func (self implementation) PinJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer2DPinJointFlag) (_ bool) {
 	return
 }
-func (self Implementation) PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam, value Float.X) {
+func (self implementation) PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam, value Float.X) {
 	return
 }
-func (self Implementation) PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam) (_ Float.X) {
+func (self implementation) PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DPinJointParam) (_ Float.X) {
 	return
 }
-func (self Implementation) DampedSpringJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam, value Float.X) {
+func (self implementation) DampedSpringJointSetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam, value Float.X) {
 	return
 }
-func (self Implementation) DampedSpringJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam) (_ Float.X) {
+func (self implementation) DampedSpringJointGetParam(joint Resource.ID, param gdclass.PhysicsServer2DDampedSpringParam) (_ Float.X) {
 	return
 }
-func (self Implementation) JointGetType(joint Resource.ID) (_ gdclass.PhysicsServer2DJointType) {
+func (self implementation) JointGetType(joint Resource.ID) (_ gdclass.PhysicsServer2DJointType) {
 	return
 }
-func (self Implementation) FreeRid(rid Resource.ID)     { return }
-func (self Implementation) SetActive(active bool)       { return }
-func (self Implementation) Init()                       { return }
-func (self Implementation) Step(step Float.X)           { return }
-func (self Implementation) Sync()                       { return }
-func (self Implementation) FlushQueries()               { return }
-func (self Implementation) EndSync()                    { return }
-func (self Implementation) Finish()                     { return }
-func (self Implementation) IsFlushingQueries() (_ bool) { return }
-func (self Implementation) GetProcessInfo(process_info gdclass.PhysicsServer2DProcessInfo) (_ int) {
+func (self implementation) FreeRid(rid Resource.ID)     { return }
+func (self implementation) SetActive(active bool)       { return }
+func (self implementation) Init()                       { return }
+func (self implementation) Step(step Float.X)           { return }
+func (self implementation) Sync()                       { return }
+func (self implementation) FlushQueries()               { return }
+func (self implementation) EndSync()                    { return }
+func (self implementation) Finish()                     { return }
+func (self implementation) IsFlushingQueries() (_ bool) { return }
+func (self implementation) GetProcessInfo(process_info gdclass.PhysicsServer2DProcessInfo) (_ int) {
 	return
 }
 

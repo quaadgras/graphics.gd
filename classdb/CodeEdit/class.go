@@ -51,11 +51,13 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) ConfirmCodeCompletion(replace bool)                              { return }
-func (self Implementation) RequestCodeCompletion(force bool)                                { return }
-func (self Implementation) FilterCodeCompletionCandidates(candidates gd.Array) (_ gd.Array) { return }
+type implementation struct{}
+
+func (self implementation) ConfirmCodeCompletion(replace bool)                              { return }
+func (self implementation) RequestCodeCompletion(force bool)                                { return }
+func (self implementation) FilterCodeCompletionCandidates(candidates gd.Array) (_ gd.Array) { return }
 
 /*
 Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.

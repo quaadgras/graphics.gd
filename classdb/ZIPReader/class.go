@@ -103,10 +103,10 @@ func New() Instance {
 Opens the zip archive at the given [param path] and reads its file index.
 */
 //go:nosplit
-func (self class) Open(path gd.String) error {
+func (self class) Open(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -117,9 +117,9 @@ func (self class) Open(path gd.String) error {
 Closes the underlying resources used by this instance.
 */
 //go:nosplit
-func (self class) Close() error {
+func (self class) Close() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -197,7 +197,7 @@ func init() {
 	gdclass.Register("ZIPReader", func(ptr gd.Object) any { return [1]gdclass.ZIPReader{*(*gdclass.ZIPReader)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

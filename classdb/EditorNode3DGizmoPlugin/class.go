@@ -86,48 +86,50 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) HasGizmo(for_node_3d [1]gdclass.Node3D) (_ bool) { return }
-func (self Implementation) CreateGizmo(for_node_3d [1]gdclass.Node3D) (_ [1]gdclass.EditorNode3DGizmo) {
+type implementation struct{}
+
+func (self implementation) HasGizmo(for_node_3d [1]gdclass.Node3D) (_ bool) { return }
+func (self implementation) CreateGizmo(for_node_3d [1]gdclass.Node3D) (_ [1]gdclass.EditorNode3DGizmo) {
 	return
 }
-func (self Implementation) GetGizmoName() (_ string)                  { return }
-func (self Implementation) GetPriority() (_ int)                      { return }
-func (self Implementation) CanBeHidden() (_ bool)                     { return }
-func (self Implementation) IsSelectableWhenHidden() (_ bool)          { return }
-func (self Implementation) Redraw(gizmo [1]gdclass.EditorNode3DGizmo) { return }
-func (self Implementation) GetHandleName(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool) (_ string) {
+func (self implementation) GetGizmoName() (_ string)                  { return }
+func (self implementation) GetPriority() (_ int)                      { return }
+func (self implementation) CanBeHidden() (_ bool)                     { return }
+func (self implementation) IsSelectableWhenHidden() (_ bool)          { return }
+func (self implementation) Redraw(gizmo [1]gdclass.EditorNode3DGizmo) { return }
+func (self implementation) GetHandleName(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool) (_ string) {
 	return
 }
-func (self Implementation) IsHandleHighlighted(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool) (_ bool) {
+func (self implementation) IsHandleHighlighted(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool) (_ bool) {
 	return
 }
-func (self Implementation) GetHandleValue(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool) (_ any) {
+func (self implementation) GetHandleValue(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool) (_ any) {
 	return
 }
-func (self Implementation) BeginHandleAction(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool) {
+func (self implementation) BeginHandleAction(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool) {
 	return
 }
-func (self Implementation) SetHandle(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool, camera [1]gdclass.Camera3D, screen_pos Vector2.XY) {
+func (self implementation) SetHandle(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool, camera [1]gdclass.Camera3D, screen_pos Vector2.XY) {
 	return
 }
-func (self Implementation) CommitHandle(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool, restore any, cancel bool) {
+func (self implementation) CommitHandle(gizmo [1]gdclass.EditorNode3DGizmo, handle_id int, secondary bool, restore any, cancel bool) {
 	return
 }
-func (self Implementation) SubgizmosIntersectRay(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, screen_pos Vector2.XY) (_ int) {
+func (self implementation) SubgizmosIntersectRay(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, screen_pos Vector2.XY) (_ int) {
 	return
 }
-func (self Implementation) SubgizmosIntersectFrustum(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes gd.Array) (_ []int32) {
+func (self implementation) SubgizmosIntersectFrustum(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes gd.Array) (_ []int32) {
 	return
 }
-func (self Implementation) GetSubgizmoTransform(gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int) (_ Transform3D.BasisOrigin) {
+func (self implementation) GetSubgizmoTransform(gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int) (_ Transform3D.BasisOrigin) {
 	return
 }
-func (self Implementation) SetSubgizmoTransform(gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int, transform Transform3D.BasisOrigin) {
+func (self implementation) SetSubgizmoTransform(gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int, transform Transform3D.BasisOrigin) {
 	return
 }
-func (self Implementation) CommitSubgizmos(gizmo [1]gdclass.EditorNode3DGizmo, ids []int32, restores gd.Array, cancel bool) {
+func (self implementation) CommitSubgizmos(gizmo [1]gdclass.EditorNode3DGizmo, ids []int32, restores gd.Array, cancel bool) {
 	return
 }
 

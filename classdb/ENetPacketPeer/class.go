@@ -237,12 +237,12 @@ func (self class) Reset() {
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
 //go:nosplit
-func (self class) Send(channel gd.Int, packet gd.PackedByteArray, flags gd.Int) error {
+func (self class) Send(channel gd.Int, packet gd.PackedByteArray, flags gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
 	callframe.Arg(frame, pointers.Get(packet))
 	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -452,7 +452,7 @@ const (
 	PeerPacketThrottleInterval PeerStatistic = 13
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

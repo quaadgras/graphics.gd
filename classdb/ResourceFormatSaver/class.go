@@ -50,15 +50,17 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Save(resource [1]gdclass.Resource, path string, flags int) (_ error) {
+type implementation struct{}
+
+func (self implementation) Save(resource [1]gdclass.Resource, path string, flags int) (_ error) {
 	return
 }
-func (self Implementation) SetUid(path string, uid int) (_ error)                             { return }
-func (self Implementation) Recognize(resource [1]gdclass.Resource) (_ bool)                   { return }
-func (self Implementation) GetRecognizedExtensions(resource [1]gdclass.Resource) (_ []string) { return }
-func (self Implementation) RecognizePath(resource [1]gdclass.Resource, path string) (_ bool)  { return }
+func (self implementation) SetUid(path string, uid int) (_ error)                             { return }
+func (self implementation) Recognize(resource [1]gdclass.Resource) (_ bool)                   { return }
+func (self implementation) GetRecognizedExtensions(resource [1]gdclass.Resource) (_ []string) { return }
+func (self implementation) RecognizePath(resource [1]gdclass.Resource, path string) (_ bool)  { return }
 
 /*
 Saves the given resource object to a file at the target [param path]. [param flags] is a bitmask composed with [enum ResourceSaver.SaverFlags] constants.
@@ -160,7 +162,7 @@ func New() Instance {
 Saves the given resource object to a file at the target [param path]. [param flags] is a bitmask composed with [enum ResourceSaver.SaverFlags] constants.
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (class) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path gd.String, flags gd.Int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path gd.String, flags gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(resource[0])
@@ -175,7 +177,7 @@ func (class) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, p
 /*
 Sets a new UID for the resource at the given [param path]. Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (class) _set_uid(impl func(ptr unsafe.Pointer, path gd.String, uid gd.Int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_uid(impl func(ptr unsafe.Pointer, path gd.String, uid gd.Int) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var uid = gd.UnsafeGet[gd.Int](p_args, 1)
@@ -278,7 +280,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

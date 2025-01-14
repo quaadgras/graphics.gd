@@ -43,12 +43,14 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Process(src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int) {
+type implementation struct{}
+
+func (self implementation) Process(src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int) {
 	return
 }
-func (self Implementation) ProcessSilence() (_ bool) { return }
+func (self implementation) ProcessSilence() (_ bool) { return }
 
 /*
 Called by the [AudioServer] to process this effect. When [method _process_silence] is not overridden or it returns [code]false[/code], this method is called only when the bus is active.

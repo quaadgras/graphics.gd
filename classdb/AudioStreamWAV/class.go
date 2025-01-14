@@ -254,10 +254,10 @@ Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM o
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
 //go:nosplit
-func (self class) SaveToWav(path gd.String) error {
+func (self class) SaveToWav(path gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_save_to_wav, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -329,7 +329,7 @@ const (
 	LoopBackward LoopMode = 3
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

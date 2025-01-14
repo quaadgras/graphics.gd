@@ -89,13 +89,13 @@ func New() Instance {
 Creates a new PCK file with the name [param pck_name]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_name] (even though it's not required).
 */
 //go:nosplit
-func (self class) PckStart(pck_name gd.String, alignment gd.Int, key gd.String, encrypt_directory bool) error {
+func (self class) PckStart(pck_name gd.String, alignment gd.Int, key gd.String, encrypt_directory bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pck_name))
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, encrypt_directory)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_pck_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -106,12 +106,12 @@ func (self class) PckStart(pck_name gd.String, alignment gd.Int, key gd.String, 
 Adds the [param source_path] file to the current PCK package at the [param pck_path] internal path (should start with [code]res://[/code]).
 */
 //go:nosplit
-func (self class) AddFile(pck_path gd.String, source_path gd.String, encrypt bool) error {
+func (self class) AddFile(pck_path gd.String, source_path gd.String, encrypt bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pck_path))
 	callframe.Arg(frame, pointers.Get(source_path))
 	callframe.Arg(frame, encrypt)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -122,10 +122,10 @@ func (self class) AddFile(pck_path gd.String, source_path gd.String, encrypt boo
 Writes the files specified using all [method add_file] calls since the last flush. If [param verbose] is [code]true[/code], a list of files added will be printed to the console for easier debugging.
 */
 //go:nosplit
-func (self class) Flush(verbose bool) error {
+func (self class) Flush(verbose bool) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, verbose)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_flush, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -157,7 +157,7 @@ func init() {
 	gdclass.Register("PCKPacker", func(ptr gd.Object) any { return [1]gdclass.PCKPacker{*(*gdclass.PCKPacker)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

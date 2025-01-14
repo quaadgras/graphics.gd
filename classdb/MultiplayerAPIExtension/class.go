@@ -137,21 +137,23 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Poll() (_ error)                                                { return }
-func (self Implementation) SetMultiplayerPeer(multiplayer_peer [1]gdclass.MultiplayerPeer) { return }
-func (self Implementation) GetMultiplayerPeer() (_ [1]gdclass.MultiplayerPeer)             { return }
-func (self Implementation) GetUniqueId() (_ int)                                           { return }
-func (self Implementation) GetPeerIds() (_ []int32)                                        { return }
-func (self Implementation) Rpc(peer int, obj Object.Instance, method string, args Array.Any) (_ error) {
+type implementation struct{}
+
+func (self implementation) Poll() (_ error)                                                { return }
+func (self implementation) SetMultiplayerPeer(multiplayer_peer [1]gdclass.MultiplayerPeer) { return }
+func (self implementation) GetMultiplayerPeer() (_ [1]gdclass.MultiplayerPeer)             { return }
+func (self implementation) GetUniqueId() (_ int)                                           { return }
+func (self implementation) GetPeerIds() (_ []int32)                                        { return }
+func (self implementation) Rpc(peer int, obj Object.Instance, method string, args Array.Any) (_ error) {
 	return
 }
-func (self Implementation) GetRemoteSenderId() (_ int) { return }
-func (self Implementation) ObjectConfigurationAdd(obj Object.Instance, configuration any) (_ error) {
+func (self implementation) GetRemoteSenderId() (_ int) { return }
+func (self implementation) ObjectConfigurationAdd(obj Object.Instance, configuration any) (_ error) {
 	return
 }
-func (self Implementation) ObjectConfigurationRemove(obj Object.Instance, configuration any) (_ error) {
+func (self implementation) ObjectConfigurationRemove(obj Object.Instance, configuration any) (_ error) {
 	return
 }
 
@@ -300,7 +302,7 @@ func New() Instance {
 /*
 Callback for [method MultiplayerAPI.poll].
 */
-func (class) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _poll(impl func(ptr unsafe.Pointer) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -364,7 +366,7 @@ func (class) _get_peer_ids(impl func(ptr unsafe.Pointer) gd.PackedInt32Array) (c
 /*
 Callback for [method MultiplayerAPI.rpc].
 */
-func (class) _rpc(impl func(ptr unsafe.Pointer, peer gd.Int, obj [1]gd.Object, method gd.StringName, args gd.Array) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _rpc(impl func(ptr unsafe.Pointer, peer gd.Int, obj [1]gd.Object, method gd.StringName, args gd.Array) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var peer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
@@ -391,7 +393,7 @@ func (class) _get_remote_sender_id(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.
 /*
 Callback for [method MultiplayerAPI.object_configuration_add].
 */
-func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj [1]gd.Object, configuration gd.Variant) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj [1]gd.Object, configuration gd.Variant) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
@@ -405,7 +407,7 @@ func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj [1]gd.O
 /*
 Callback for [method MultiplayerAPI.object_configuration_remove].
 */
-func (class) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj [1]gd.Object, configuration gd.Variant) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj [1]gd.Object, configuration gd.Variant) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
@@ -488,7 +490,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

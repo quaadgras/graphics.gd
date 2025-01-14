@@ -210,9 +210,9 @@ func New() Instance {
 Parses the next node in the file. This method returns an error code.
 */
 //go:nosplit
-func (self class) Read() error {
+func (self class) Read() gd.Error {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_read, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -397,10 +397,10 @@ func (self class) SkipSection() {
 Moves the buffer cursor to a certain offset (since the beginning) and reads the next node there. This method returns an error code.
 */
 //go:nosplit
-func (self class) SeekTo(position gd.Int) error {
+func (self class) SeekTo(position gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_seek, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -411,10 +411,10 @@ func (self class) SeekTo(position gd.Int) error {
 Opens an XML [param file] for parsing. This method returns an error code.
 */
 //go:nosplit
-func (self class) Open(file gd.String) error {
+func (self class) Open(file gd.String) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -425,10 +425,10 @@ func (self class) Open(file gd.String) error {
 Opens an XML raw [param buffer] for parsing. This method returns an error code.
 */
 //go:nosplit
-func (self class) OpenBuffer(buffer gd.PackedByteArray) error {
+func (self class) OpenBuffer(buffer gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_open_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -479,7 +479,7 @@ const (
 	NodeUnknown NodeType = 6
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

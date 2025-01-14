@@ -65,19 +65,21 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetRecognizedExtensions() (_ []string)                            { return }
-func (self Implementation) RecognizePath(path string, atype string) (_ bool)                 { return }
-func (self Implementation) HandlesType(atype string) (_ bool)                                { return }
-func (self Implementation) GetResourceType(path string) (_ string)                           { return }
-func (self Implementation) GetResourceScriptClass(path string) (_ string)                    { return }
-func (self Implementation) GetResourceUid(path string) (_ int)                               { return }
-func (self Implementation) GetDependencies(path string, add_types bool) (_ []string)         { return }
-func (self Implementation) RenameDependencies(path string, renames Dictionary.Any) (_ error) { return }
-func (self Implementation) Exists(path string) (_ bool)                                      { return }
-func (self Implementation) GetClassesUsed(path string) (_ []string)                          { return }
-func (self Implementation) Load(path string, original_path string, use_sub_threads bool, cache_mode int) (_ any) {
+type implementation struct{}
+
+func (self implementation) GetRecognizedExtensions() (_ []string)                            { return }
+func (self implementation) RecognizePath(path string, atype string) (_ bool)                 { return }
+func (self implementation) HandlesType(atype string) (_ bool)                                { return }
+func (self implementation) GetResourceType(path string) (_ string)                           { return }
+func (self implementation) GetResourceScriptClass(path string) (_ string)                    { return }
+func (self implementation) GetResourceUid(path string) (_ int)                               { return }
+func (self implementation) GetDependencies(path string, add_types bool) (_ []string)         { return }
+func (self implementation) RenameDependencies(path string, renames Dictionary.Any) (_ error) { return }
+func (self implementation) Exists(path string) (_ bool)                                      { return }
+func (self implementation) GetClassesUsed(path string) (_ []string)                          { return }
+func (self implementation) Load(path string, original_path string, use_sub_threads bool, cache_mode int) (_ any) {
 	return
 }
 
@@ -374,7 +376,7 @@ func (class) _get_dependencies(impl func(ptr unsafe.Pointer, path gd.String, add
 If implemented, renames dependencies within the given resource and saves it. [param renames] is a dictionary [code]{ String => String }[/code] mapping old dependency paths to new paths.
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (class) _rename_dependencies(impl func(ptr unsafe.Pointer, path gd.String, renames gd.Dictionary) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _rename_dependencies(impl func(ptr unsafe.Pointer, path gd.String, renames gd.Dictionary) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.UnsafeArgs, p_back gd.UnsafeBack) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		var renames = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
@@ -513,7 +515,7 @@ const (
 	CacheModeReplaceDeep CacheMode = 4
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

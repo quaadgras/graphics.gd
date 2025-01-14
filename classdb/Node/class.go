@@ -113,18 +113,20 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Process(delta Float.X)                         { return }
-func (self Implementation) PhysicsProcess(delta Float.X)                  { return }
-func (self Implementation) EnterTree()                                    { return }
-func (self Implementation) ExitTree()                                     { return }
-func (self Implementation) Ready()                                        { return }
-func (self Implementation) GetConfigurationWarnings() (_ []string)        { return }
-func (self Implementation) Input(event [1]gdclass.InputEvent)             { return }
-func (self Implementation) ShortcutInput(event [1]gdclass.InputEvent)     { return }
-func (self Implementation) UnhandledInput(event [1]gdclass.InputEvent)    { return }
-func (self Implementation) UnhandledKeyInput(event [1]gdclass.InputEvent) { return }
+type implementation struct{}
+
+func (self implementation) Process(delta Float.X)                         { return }
+func (self implementation) PhysicsProcess(delta Float.X)                  { return }
+func (self implementation) EnterTree()                                    { return }
+func (self implementation) ExitTree()                                     { return }
+func (self implementation) Ready()                                        { return }
+func (self implementation) GetConfigurationWarnings() (_ []string)        { return }
+func (self implementation) Input(event [1]gdclass.InputEvent)             { return }
+func (self implementation) ShortcutInput(event [1]gdclass.InputEvent)     { return }
+func (self implementation) UnhandledInput(event [1]gdclass.InputEvent)    { return }
+func (self implementation) UnhandledKeyInput(event [1]gdclass.InputEvent) { return }
 
 /*
 Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
@@ -3181,7 +3183,7 @@ const (
 	AutoTranslateModeDisabled AutoTranslateMode = 2
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -108,11 +108,11 @@ func (self class) Poll() {
 Accepts a peer connection as a server using the given [param server_options]. See [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) error {
+func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	callframe.Arg(frame, pointers.Get(server_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTLS.Bind_accept_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -123,12 +123,12 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]g
 Connects to a peer using an underlying [StreamPeer] [param stream] and verifying the remote certificate is correctly signed for the given [param common_name]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name gd.String, client_options [1]gdclass.TLSOptions) error {
+func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name gd.String, client_options [1]gdclass.TLSOptions) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	callframe.Arg(frame, pointers.Get(common_name))
 	callframe.Arg(frame, pointers.Get(client_options[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTLS.Bind_connect_to_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -220,7 +220,7 @@ const (
 	StatusErrorHostnameMismatch Status = 4
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

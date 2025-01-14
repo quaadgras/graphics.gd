@@ -302,10 +302,10 @@ func (self Instance) SetBigEndian(value bool) {
 Sends a chunk of data through the connection, blocking if necessary until the data is done sending. This function returns an [enum Error] code.
 */
 //go:nosplit
-func (self class) PutData(data gd.PackedByteArray) error {
+func (self class) PutData(data gd.PackedByteArray) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_put_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -761,7 +761,7 @@ func init() {
 	gdclass.Register("StreamPeer", func(ptr gd.Object) any { return [1]gdclass.StreamPeer{*(*gdclass.StreamPeer)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

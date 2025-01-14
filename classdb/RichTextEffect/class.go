@@ -52,9 +52,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) ProcessCustomFx(char_fx [1]gdclass.CharFXTransform) (_ bool) { return }
+type implementation struct{}
+
+func (self implementation) ProcessCustomFx(char_fx [1]gdclass.CharFXTransform) (_ bool) { return }
 
 /*
 Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.

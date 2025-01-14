@@ -68,9 +68,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Run() { return }
+type implementation struct{}
+
+func (self implementation) Run() { return }
 
 /*
 This method is executed by the Editor when [b]File > Run[/b] is used.

@@ -116,11 +116,11 @@ The [param priority] of the [Thread] can be changed by passing a value from the 
 Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 */
 //go:nosplit
-func (self class) Start(callable gd.Callable, priority gdclass.ThreadPriority) error {
+func (self class) Start(callable gd.Callable, priority gdclass.ThreadPriority) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callable))
 	callframe.Arg(frame, priority)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Thread.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -236,7 +236,7 @@ const (
 	PriorityHigh Priority = 2
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

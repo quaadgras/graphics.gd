@@ -92,9 +92,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) PostImport(scene [1]gdclass.Node) (_ Object.Instance) { return }
+type implementation struct{}
+
+func (self implementation) PostImport(scene [1]gdclass.Node) (_ Object.Instance) { return }
 
 /*
 Called after the scene was imported. This method must return the modified version of the scene.

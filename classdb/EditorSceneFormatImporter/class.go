@@ -44,15 +44,17 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetImportFlags() (_ int)     { return }
-func (self Implementation) GetExtensions() (_ []string) { return }
-func (self Implementation) ImportScene(path string, flags int, options Dictionary.Any) (_ Object.Instance) {
+type implementation struct{}
+
+func (self implementation) GetImportFlags() (_ int)     { return }
+func (self implementation) GetExtensions() (_ []string) { return }
+func (self implementation) ImportScene(path string, flags int, options Dictionary.Any) (_ Object.Instance) {
 	return
 }
-func (self Implementation) GetImportOptions(path string) { return }
-func (self Implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
+func (self implementation) GetImportOptions(path string) { return }
+func (self implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
 	return
 }
 func (Instance) _get_import_flags(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {

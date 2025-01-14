@@ -120,10 +120,10 @@ Initialize the multiplayer peer as a server (with unique ID of [code]1[/code]). 
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 //go:nosplit
-func (self class) CreateServer(channels_config gd.Array) error {
+func (self class) CreateServer(channels_config gd.Array) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(channels_config))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_create_server, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -135,11 +135,11 @@ Initialize the multiplayer peer as a client with the given [param peer_id] (must
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 //go:nosplit
-func (self class) CreateClient(peer_id gd.Int, channels_config gd.Array) error {
+func (self class) CreateClient(peer_id gd.Int, channels_config gd.Array) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	callframe.Arg(frame, pointers.Get(channels_config))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_create_client, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -150,11 +150,11 @@ func (self class) CreateClient(peer_id gd.Int, channels_config gd.Array) error {
 Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given [param peer_id] (must be between 1 and 2147483647).
 */
 //go:nosplit
-func (self class) CreateMesh(peer_id gd.Int, channels_config gd.Array) error {
+func (self class) CreateMesh(peer_id gd.Int, channels_config gd.Array) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	callframe.Arg(frame, pointers.Get(channels_config))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_create_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -166,12 +166,12 @@ Add a new peer to the mesh with the given [param peer_id]. The [WebRTCPeerConnec
 Three channels will be created for reliable, unreliable, and ordered transport. The value of [param unreliable_lifetime] will be passed to the [code]"maxPacketLifetime"[/code] option when creating unreliable and ordered channels (see [method WebRTCPeerConnection.create_data_channel]).
 */
 //go:nosplit
-func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id gd.Int, unreliable_lifetime gd.Int) error {
+func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id gd.Int, unreliable_lifetime gd.Int) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(peer[0])[0])
 	callframe.Arg(frame, peer_id)
 	callframe.Arg(frame, unreliable_lifetime)
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_add_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -270,7 +270,7 @@ func init() {
 	})
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

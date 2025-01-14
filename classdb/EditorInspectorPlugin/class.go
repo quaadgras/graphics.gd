@@ -55,16 +55,18 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) CanHandle(obj Object.Instance) (_ bool)             { return }
-func (self Implementation) ParseBegin(obj Object.Instance)                     { return }
-func (self Implementation) ParseCategory(obj Object.Instance, category string) { return }
-func (self Implementation) ParseGroup(obj Object.Instance, group string)       { return }
-func (self Implementation) ParseProperty(obj Object.Instance, atype gd.VariantType, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) (_ bool) {
+type implementation struct{}
+
+func (self implementation) CanHandle(obj Object.Instance) (_ bool)             { return }
+func (self implementation) ParseBegin(obj Object.Instance)                     { return }
+func (self implementation) ParseCategory(obj Object.Instance, category string) { return }
+func (self implementation) ParseGroup(obj Object.Instance, group string)       { return }
+func (self implementation) ParseProperty(obj Object.Instance, atype gd.VariantType, name string, hint_type PropertyHint, hint_string string, usage_flags PropertyUsageFlags, wide bool) (_ bool) {
 	return
 }
-func (self Implementation) ParseEnd(obj Object.Instance) { return }
+func (self implementation) ParseEnd(obj Object.Instance) { return }
 
 /*
 Returns [code]true[/code] if this object can be handled by this plugin.

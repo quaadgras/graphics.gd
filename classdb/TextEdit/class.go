@@ -62,14 +62,16 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) HandleUnicodeInput(unicode_char int, caret_index int) { return }
-func (self Implementation) Backspace(caret_index int)                            { return }
-func (self Implementation) Cut(caret_index int)                                  { return }
-func (self Implementation) Copy(caret_index int)                                 { return }
-func (self Implementation) Paste(caret_index int)                                { return }
-func (self Implementation) PastePrimaryClipboard(caret_index int)                { return }
+type implementation struct{}
+
+func (self implementation) HandleUnicodeInput(unicode_char int, caret_index int) { return }
+func (self implementation) Backspace(caret_index int)                            { return }
+func (self implementation) Cut(caret_index int)                                  { return }
+func (self implementation) Copy(caret_index int)                                 { return }
+func (self implementation) Paste(caret_index int)                                { return }
+func (self implementation) PastePrimaryClipboard(caret_index int)                { return }
 
 /*
 Override this method to define what happens when the user types in the provided key [param unicode_char].

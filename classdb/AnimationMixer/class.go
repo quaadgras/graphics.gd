@@ -45,9 +45,11 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) PostProcessKeyValue(animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) (_ any) {
+type implementation struct{}
+
+func (self implementation) PostProcessKeyValue(animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) (_ any) {
 	return
 }
 
@@ -463,11 +465,11 @@ global_library.add_animation("animation_name", animation_resource)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) AddAnimationLibrary(name gd.StringName, library [1]gdclass.AnimationLibrary) error {
+func (self class) AddAnimationLibrary(name gd.StringName, library [1]gdclass.AnimationLibrary) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(library[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_add_animation_library, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1090,7 +1092,7 @@ const (
 	AnimationCallbackModeDiscreteForceContinuous AnimationCallbackModeDiscrete = 2
 )
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -105,12 +105,14 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) Initialize()                           { return }
-func (self Implementation) PhysicsProcess(delta Float.X) (_ bool) { return }
-func (self Implementation) Process(delta Float.X) (_ bool)        { return }
-func (self Implementation) Finalize()                             { return }
+type implementation struct{}
+
+func (self implementation) Initialize()                           { return }
+func (self implementation) PhysicsProcess(delta Float.X) (_ bool) { return }
+func (self implementation) Process(delta Float.X) (_ bool)        { return }
+func (self implementation) Finalize()                             { return }
 
 /*
 Called once during initialization.

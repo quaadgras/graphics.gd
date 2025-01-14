@@ -62,19 +62,21 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetWidth() (_ int)                   { return }
-func (self Implementation) GetHeight() (_ int)                  { return }
-func (self Implementation) IsPixelOpaque(x int, y int) (_ bool) { return }
-func (self Implementation) HasAlpha() (_ bool)                  { return }
-func (self Implementation) Draw(to_canvas_item Resource.ID, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
+type implementation struct{}
+
+func (self implementation) GetWidth() (_ int)                   { return }
+func (self implementation) GetHeight() (_ int)                  { return }
+func (self implementation) IsPixelOpaque(x int, y int) (_ bool) { return }
+func (self implementation) HasAlpha() (_ bool)                  { return }
+func (self implementation) Draw(to_canvas_item Resource.ID, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
 	return
 }
-func (self Implementation) DrawRect(to_canvas_item Resource.ID, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) {
+func (self implementation) DrawRect(to_canvas_item Resource.ID, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) {
 	return
 }
-func (self Implementation) DrawRectRegion(to_canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) {
+func (self implementation) DrawRectRegion(to_canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) {
 	return
 }
 

@@ -50,27 +50,29 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) IntersectRay(from Vector3.XYZ, to Vector3.XYZ, collision_mask int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, pick_ray bool, result *PhysicsServer3DExtensionRayResult) (_ bool) {
+type implementation struct{}
+
+func (self implementation) IntersectRay(from Vector3.XYZ, to Vector3.XYZ, collision_mask int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, pick_ray bool, result *PhysicsServer3DExtensionRayResult) (_ bool) {
 	return
 }
-func (self Implementation) IntersectPoint(position Vector3.XYZ, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer3DExtensionShapeResult, max_results int) (_ int) {
+func (self implementation) IntersectPoint(position Vector3.XYZ, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer3DExtensionShapeResult, max_results int) (_ int) {
 	return
 }
-func (self Implementation) IntersectShape(shape_rid Resource.ID, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, result_count *PhysicsServer3DExtensionShapeResult, max_results int) (_ int) {
+func (self implementation) IntersectShape(shape_rid Resource.ID, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, result_count *PhysicsServer3DExtensionShapeResult, max_results int) (_ int) {
 	return
 }
-func (self Implementation) CastMotion(shape_rid Resource.ID, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64, info *PhysicsServer3DExtensionShapeRestInfo) (_ bool) {
+func (self implementation) CastMotion(shape_rid Resource.ID, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64, info *PhysicsServer3DExtensionShapeRestInfo) (_ bool) {
 	return
 }
-func (self Implementation) CollideShape(shape_rid Resource.ID, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results int, result_count *int32) (_ bool) {
+func (self implementation) CollideShape(shape_rid Resource.ID, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results int, result_count *int32) (_ bool) {
 	return
 }
-func (self Implementation) RestInfo(shape_rid Resource.ID, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer3DExtensionShapeRestInfo) (_ bool) {
+func (self implementation) RestInfo(shape_rid Resource.ID, transform Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer3DExtensionShapeRestInfo) (_ bool) {
 	return
 }
-func (self Implementation) GetClosestPointToObjectVolume(obj Resource.ID, point Vector3.XYZ) (_ Vector3.XYZ) {
+func (self implementation) GetClosestPointToObjectVolume(obj Resource.ID, point Vector3.XYZ) (_ Vector3.XYZ) {
 	return
 }
 func (Instance) _intersect_ray(impl func(ptr unsafe.Pointer, from Vector3.XYZ, to Vector3.XYZ, collision_mask int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, pick_ray bool, result *PhysicsServer3DExtensionRayResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {

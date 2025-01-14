@@ -47,10 +47,12 @@ type Interface interface {
 }
 
 // Implementation implements [Interface] with empty methods.
-type Implementation struct{}
+type Implementation = implementation
 
-func (self Implementation) GetAllowedSizeFlagsHorizontal() (_ []int32) { return }
-func (self Implementation) GetAllowedSizeFlagsVertical() (_ []int32)   { return }
+type implementation struct{}
+
+func (self implementation) GetAllowedSizeFlagsHorizontal() (_ []int32) { return }
+func (self implementation) GetAllowedSizeFlagsVertical() (_ []int32)   { return }
 
 /*
 Implement to return a list of allowed horizontal [enum Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.

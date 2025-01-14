@@ -935,10 +935,10 @@ Returns:
 - [constant ERR_ALREADY_EXISTS] if [code]ScriptServer[/code] already contains a language with similar extension/name/type.
 */
 //go:nosplit
-func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) error {
+func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(language[0].AsObject()[0]))
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_register_script_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -952,10 +952,10 @@ Returns:
 - [constant ERR_DOES_NOT_EXIST] if the language is not registered in [code]ScriptServer[/code].
 */
 //go:nosplit
-func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) error {
+func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language[0])[0])
-	var r_ret = callframe.Ret[error](frame)
+	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_unregister_script_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1059,7 +1059,7 @@ func init() {
 	gdclass.Register("Engine", func(ptr gd.Object) any { return [1]gdclass.Engine{*(*gdclass.Engine)(unsafe.Pointer(&ptr))} })
 }
 
-type Error int
+type Error = gd.Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.
