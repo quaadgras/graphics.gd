@@ -414,6 +414,17 @@ func linkJS(API *gd.API) {
 	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
 	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
 	API.PackedVector4Array = makePackedFunctions[gd.PackedVector4Array, gd.Vector4]("vector4_array")
+	classdb_register_extension_class_property := dlsym("classdb_register_extension_class_property")
+	API.ClassDB.RegisterClassProperty = func(library gd.ExtensionToken, class gd.StringName, info gd.PropertyInfo, getter, setter gd.StringName) {
+		converted := js.Global().Get("Object").New()
+		converted.Set("name", pointers.Get(info.Name)[0])
+		converted.Set("type", uint32(info.Type))
+		converted.Set("hint", uint32(info.Hint))
+		converted.Set("hint_string", pointers.Get(info.HintString)[0])
+		converted.Set("usage", uint32(info.Usage))
+		converted.Set("class_name", pointers.Get(info.ClassName)[0])
+		classdb_register_extension_class_property.Invoke(uint32(library), pointers.Get(class)[0], converted, pointers.Get(getter)[0], pointers.Get(setter)[0])
+	}
 	API.ClassDB.RegisterClassMethod = func(library gd.ExtensionToken, class gd.StringName, info gd.Method) {}
 }
 
