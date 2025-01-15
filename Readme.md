@@ -19,13 +19,14 @@ import (
 )
 
 func main() {
-	startup.Wait() // wait for the graphics/game engine to start up.
+	startup.Loader() // wait for the graphics/game engine to start up.
 	hello := Label.New()
 	hello.AsControl().SetAnchorsPreset(Control.PresetFullRect) // expand the label to take up the whole screen.
 	hello.SetHorizontalAlignment(Label.HorizontalAlignmentCenter)
 	hello.SetVerticalAlignment(Label.VerticalAlignmentCenter)
 	hello.SetText("Hello, World!")
 	SceneTree.Add(hello)
+        startup.Engine()
 }
 ```
 
