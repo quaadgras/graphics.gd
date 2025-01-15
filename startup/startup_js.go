@@ -146,8 +146,9 @@ func linkJS(API *gd.API) {
 				return 1
 			}
 			raw := pointers.Get(result)
-			for i := 0; i < len(raw); i++ {
-				write_params_buffer.Invoke(0, 0, i, raw[i])
+			buf := *(*[6]uint32)(unsafe.Pointer(&raw))
+			for i := 0; i < len(buf); i++ {
+				write_params_buffer.Invoke(0, 0, i, buf[i])
 			}
 			return 0
 		}))
@@ -308,8 +309,9 @@ func linkJS(API *gd.API) {
 				return false
 			}
 			var raw = pointers.Get(variant)
-			for i := 0; i < len(raw); i++ {
-				write_params_buffer.Invoke(0, 0, i, raw[i])
+			buf := *(*[6]uint32)(unsafe.Pointer(&raw))
+			for i := 0; i < len(buf); i++ {
+				write_params_buffer.Invoke(0, 0, i, buf[i])
 			}
 			return true
 		})))
@@ -339,8 +341,9 @@ func linkJS(API *gd.API) {
 				return false
 			}
 			var raw = pointers.Get(variant)
-			for i := 0; i < len(raw); i++ {
-				write_params_buffer.Invoke(0, 0, i, raw[i])
+			buf := *(*[6]uint32)(unsafe.Pointer(&raw))
+			for i := 0; i < len(buf); i++ {
+				write_params_buffer.Invoke(0, 0, i, buf[i])
 			}
 			return true
 		})))
@@ -429,6 +432,31 @@ func linkJS(API *gd.API) {
 	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
 	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
 	API.PackedVector4Array = makePackedFunctions[gd.PackedVector4Array, gd.Vector4]("vector4_array")
+	packed_string_array_operator_index := dlsym("packed_string_array_operator_index")
+	API.PackedStringArray.Index = func(pia gd.PackedStringArray, index gd.Int) gd.String {
+		arr := pointers.Get(pia)
+		raw := *(*[2]uint32)(unsafe.Pointer(&arr))
+		s := packed_string_array_operator_index.Invoke(int(raw[0]), int(raw[1]), uint32(index)).Int()
+		return pointers.Let[gd.String]([1]gd.EnginePointer{gd.EnginePointer(s)})
+	}
+	packed_string_array_operator_index_set := dlsym("packed_string_array_operator_index_set")
+	API.PackedStringArray.SetIndex = func(pia gd.PackedStringArray, index gd.Int, v gd.String) {
+		arr := pointers.Get(pia)
+		raw := *(*[2]uint32)(unsafe.Pointer(&arr))
+		packed_string_array_operator_index_set.Invoke(int(raw[0]), int(raw[1]), uint32(index), pointers.Get(v)[0])
+	}
+	API.PackedStringArray.CopyAsSlice = func(pia gd.PackedStringArray) []gd.String {
+		var slice = make([]gd.String, pia.Size())
+		for i := 0; i < int(pia.Size()); i++ {
+			slice[i] = API.PackedStringArray.Index(pia, gd.Int(i))
+		}
+		return slice
+	}
+	API.PackedStringArray.CopyFromSlice = func(pia gd.PackedStringArray, slice []gd.String) {
+		for i, v := range slice {
+			API.PackedStringArray.SetIndex(pia, gd.Int(i), v)
+		}
+	}
 	classdb_register_extension_class_property := dlsym("classdb_register_extension_class_property")
 	API.ClassDB.RegisterClassProperty = func(library gd.ExtensionToken, class gd.StringName, info gd.PropertyInfo, getter, setter gd.StringName) {
 		converted := js.Global().Get("Object").New()
@@ -537,6 +565,45 @@ func linkJS(API *gd.API) {
 			write_params_buffer.Invoke(0, 0, i, scratch[i])
 		}
 		memory_write.Invoke(uint32(frame), uint32(size))
+	}
+
+	dictionary_operator_index_set := dlsym("dictionary_operator_index_set")
+	API.Dictionary.SetIndex = func(dict gd.Dictionary, k, v gd.Variant) {
+		raw_key := pointers.Get(k)
+		key := *(*[6]uint32)(unsafe.Pointer(&raw_key))
+		raw_val := pointers.Get(v)
+		val := *(*[6]uint32)(unsafe.Pointer(&raw_val))
+		dictionary_operator_index_set.Invoke(pointers.Get(dict)[0], key[0], key[1], key[2], key[3], key[4], key[5], val[0], val[1], val[2], val[3], val[4], val[5])
+	}
+	dictionary_operator_index := dlsym("dictionary_operator_index")
+	API.Dictionary.Index = func(dict gd.Dictionary, k gd.Variant) gd.Variant {
+		raw_key := pointers.Get(k)
+		key := *(*[6]uint32)(unsafe.Pointer(&raw_key))
+		dictionary_operator_index.Invoke(pointers.Get(dict)[0], key[0], key[1], key[2], key[3], key[4], key[5])
+		var buf [6]uint32
+		for i := range buf {
+			buf[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
+		}
+		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf)))
+	}
+	array_set_typed := dlsym("array_set_typed")
+	API.Array.SetTyped = func(self gd.Array, t gd.VariantType, className gd.StringName, script gd.Object) {
+		array_set_typed.Invoke(pointers.Get(self)[0], uint32(t), pointers.Get(className)[0], pointers.Get(script)[0])
+	}
+	array_operator_index_set := dlsym("array_operator_index_set")
+	API.Array.SetIndex = func(self gd.Array, index gd.Int, value gd.Variant) {
+		raw := pointers.Get(value)
+		val := *(*[6]uint32)(unsafe.Pointer(&raw))
+		array_operator_index_set.Invoke(pointers.Get(self)[0], uint32(index), val[0], val[1], val[2], val[3], val[4], val[5])
+	}
+	array_operator_index := dlsym("array_operator_index")
+	API.Array.Index = func(self gd.Array, index gd.Int) gd.Variant {
+		array_operator_index.Invoke(pointers.Get(self)[0], uint32(index))
+		var buf [6]uint32
+		for i := range buf {
+			buf[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
+		}
+		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf)))
 	}
 }
 

@@ -116,9 +116,10 @@ type API struct {
 	PackedInt32Array   PackedFunctionsFor[PackedInt32Array, int32]
 	PackedInt64Array   PackedFunctionsFor[PackedInt64Array, int64]
 	PackedStringArray  struct {
-		Index       func(PackedStringArray, Int) String
-		SetIndex    func(PackedStringArray, Int, String)
-		CopyAsSlice func(PackedStringArray) []String
+		Index         func(PackedStringArray, Int) String
+		SetIndex      func(PackedStringArray, Int, String)
+		CopyAsSlice   func(PackedStringArray) []String
+		CopyFromSlice func(PackedStringArray, []String)
 	}
 	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2]
 	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
