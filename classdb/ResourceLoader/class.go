@@ -38,7 +38,7 @@ The [param cache_mode] property defines whether and how the cache should be used
 */
 func LoadThreadedRequest(path string) error {
 	once.Do(singleton)
-	return error(class(self).LoadThreadedRequest(gd.NewString(path), gd.NewString(""), false, 1))
+	return error(gd.ToError(class(self).LoadThreadedRequest(gd.NewString(path), gd.NewString(""), false, 1)))
 }
 
 /*

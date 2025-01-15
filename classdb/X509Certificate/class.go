@@ -36,14 +36,14 @@ type Any interface {
 Saves a certificate to the given [param path] (should be a "*.crt" file).
 */
 func (self Instance) Save(path string) error {
-	return error(class(self).Save(gd.NewString(path)))
+	return error(gd.ToError(class(self).Save(gd.NewString(path))))
 }
 
 /*
 Loads a certificate from [param path] ("*.crt" file).
 */
 func (self Instance) Load(path string) error {
-	return error(class(self).Load(gd.NewString(path)))
+	return error(gd.ToError(class(self).Load(gd.NewString(path))))
 }
 
 /*
@@ -57,7 +57,7 @@ func (self Instance) SaveToString() string {
 Loads a certificate from the given [param string].
 */
 func (self Instance) LoadFromString(s string) error {
-	return error(class(self).LoadFromString(gd.NewString(s)))
+	return error(gd.ToError(class(self).LoadFromString(gd.NewString(s))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

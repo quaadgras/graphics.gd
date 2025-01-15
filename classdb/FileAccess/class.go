@@ -111,7 +111,7 @@ Returns the result of the last [method open] call in the current thread.
 */
 func GetOpenError() error {
 	self := Instance{}
-	return error(class(self).GetOpenError())
+	return error(gd.ToError(class(self).GetOpenError()))
 }
 
 /*
@@ -136,7 +136,7 @@ func GetFileAsString(path string) string {
 Resizes the file to a specified length. The file must be open in a mode that permits writing. If the file is extended, NUL characters are appended. If the file is truncated, all data from the end file to the original length of the file is lost.
 */
 func (self Instance) Resize(length int) error {
-	return error(class(self).Resize(gd.Int(length)))
+	return error(gd.ToError(class(self).Resize(gd.Int(length))))
 }
 
 /*
@@ -328,7 +328,7 @@ func GetSha256(path string) string {
 Returns the last error that happened when trying to perform operations. Compare with the [code]ERR_FILE_*[/code] constants from [enum Error].
 */
 func (self Instance) GetError() error {
-	return error(class(self).GetError())
+	return error(gd.ToError(class(self).GetError()))
 }
 
 /*
@@ -529,7 +529,7 @@ Sets file UNIX permissions.
 */
 func SetUnixPermissions(file string, permissions gdclass.FileAccessUnixPermissionFlags) error {
 	self := Instance{}
-	return error(class(self).SetUnixPermissions(gd.NewString(file), permissions))
+	return error(gd.ToError(class(self).SetUnixPermissions(gd.NewString(file), permissions)))
 }
 
 /*
@@ -547,7 +547,7 @@ Sets file [b]hidden[/b] attribute.
 */
 func SetHiddenAttribute(file string, hidden bool) error {
 	self := Instance{}
-	return error(class(self).SetHiddenAttribute(gd.NewString(file), hidden))
+	return error(gd.ToError(class(self).SetHiddenAttribute(gd.NewString(file), hidden)))
 }
 
 /*
@@ -556,7 +556,7 @@ Sets file [b]read only[/b] attribute.
 */
 func SetReadOnlyAttribute(file string, ro bool) error {
 	self := Instance{}
-	return error(class(self).SetReadOnlyAttribute(gd.NewString(file), ro))
+	return error(gd.ToError(class(self).SetReadOnlyAttribute(gd.NewString(file), ro)))
 }
 
 /*

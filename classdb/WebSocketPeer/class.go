@@ -67,7 +67,7 @@ Connects to the given URL. TLS certificates will be verified against the hostnam
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
 func (self Instance) ConnectToUrl(url string) error {
-	return error(class(self).ConnectToUrl(gd.NewString(url), [1][1]gdclass.TLSOptions{}[0]))
+	return error(gd.ToError(class(self).ConnectToUrl(gd.NewString(url), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
@@ -75,21 +75,21 @@ Accepts a peer connection performing the HTTP handshake as a WebSocket server. T
 [b]Note:[/b] Not supported in Web exports due to browsers' restrictions.
 */
 func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer) error {
-	return error(class(self).AcceptStream(stream))
+	return error(gd.ToError(class(self).AcceptStream(stream)))
 }
 
 /*
 Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
 */
 func (self Instance) Send(message []byte) error {
-	return error(class(self).Send(gd.NewPackedByteSlice(message), 1))
+	return error(gd.ToError(class(self).Send(gd.NewPackedByteSlice(message), 1)))
 }
 
 /*
 Sends the given [param message] using WebSocket text mode. Prefer this method over [method PacketPeer.put_packet] when interacting with third-party text-based API (e.g. when using [JSON] formatted messages).
 */
 func (self Instance) SendText(message string) error {
-	return error(class(self).SendText(gd.NewString(message)))
+	return error(gd.ToError(class(self).SendText(gd.NewString(message))))
 }
 
 /*

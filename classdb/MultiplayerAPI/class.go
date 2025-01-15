@@ -68,7 +68,7 @@ Method used for polling the MultiplayerAPI. You only need to worry about this if
 [b]Note:[/b] This method results in RPCs being called, so they will be executed in the same context of this function (e.g. [code]_process[/code], [code]physics[/code], [Thread]).
 */
 func (self Instance) Poll() error {
-	return error(class(self).Poll())
+	return error(gd.ToError(class(self).Poll()))
 }
 
 /*
@@ -76,7 +76,7 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 func (self Instance) Rpc(peer int, obj Object.Instance, method string) error {
-	return error(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), [1]Array.Any{}[0]))
+	return error(gd.ToError(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), [1]Array.Any{}[0])))
 }
 
 /*
@@ -84,7 +84,7 @@ Notifies the MultiplayerAPI of a new [param configuration] for the given [param 
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 func (self Instance) ObjectConfigurationAdd(obj Object.Instance, configuration any) error {
-	return error(class(self).ObjectConfigurationAdd(obj, gd.NewVariant(configuration)))
+	return error(gd.ToError(class(self).ObjectConfigurationAdd(obj, gd.NewVariant(configuration))))
 }
 
 /*
@@ -92,7 +92,7 @@ Notifies the MultiplayerAPI to remove a [param configuration] for the given [par
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 func (self Instance) ObjectConfigurationRemove(obj Object.Instance, configuration any) error {
-	return error(class(self).ObjectConfigurationRemove(obj, gd.NewVariant(configuration)))
+	return error(gd.ToError(class(self).ObjectConfigurationRemove(obj, gd.NewVariant(configuration))))
 }
 
 /*

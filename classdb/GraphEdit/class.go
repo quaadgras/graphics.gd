@@ -215,7 +215,7 @@ func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node str
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 */
 func (self Instance) ConnectNode(from_node string, from_port int, to_node string, to_port int) error {
-	return error(class(self).ConnectNode(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port)))
+	return error(gd.ToError(class(self).ConnectNode(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port))))
 }
 
 /*

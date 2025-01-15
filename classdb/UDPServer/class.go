@@ -160,14 +160,14 @@ type Any interface {
 Starts the server by opening a UDP socket listening on the given [param port]. You can optionally specify a [param bind_address] to only listen for packets sent to that address. See also [method PacketPeerUDP.bind].
 */
 func (self Instance) Listen(port int) error {
-	return error(class(self).Listen(gd.Int(port), gd.NewString("*")))
+	return error(gd.ToError(class(self).Listen(gd.Int(port), gd.NewString("*"))))
 }
 
 /*
 Call this method at regular intervals (e.g. inside [method Node._process]) to process new packets. And packet from known address/port pair will be delivered to the appropriate [PacketPeerUDP], any packet received from an unknown address/port pair will be added as a pending connection (see [method is_connection_available], [method take_connection]). The maximum number of pending connection is defined via [member max_pending_connections].
 */
 func (self Instance) Poll() error {
-	return error(class(self).Poll())
+	return error(gd.ToError(class(self).Poll()))
 }
 
 /*

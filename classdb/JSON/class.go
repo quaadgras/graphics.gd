@@ -128,7 +128,7 @@ Non-static variant of [method parse_string], if you want custom error handling.
 The optional [param keep_text] argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [method get_parsed_text] function and is used when saving the resource (instead of generating new text from [member data]).
 */
 func (self Instance) Parse(json_text string) error {
-	return error(class(self).Parse(gd.NewString(json_text), false))
+	return error(gd.ToError(class(self).Parse(gd.NewString(json_text), false)))
 }
 
 /*

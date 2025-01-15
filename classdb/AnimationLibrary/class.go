@@ -35,7 +35,7 @@ type Any interface {
 Adds the [param animation] to the library, accessible by the key [param name].
 */
 func (self Instance) AddAnimation(name string, animation [1]gdclass.Animation) error {
-	return error(class(self).AddAnimation(gd.NewStringName(name), animation))
+	return error(gd.ToError(class(self).AddAnimation(gd.NewStringName(name), animation)))
 }
 
 /*

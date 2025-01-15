@@ -37,7 +37,7 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 func (self Instance) Save(path string) error {
-	return error(class(self).Save(gd.NewString(path), false))
+	return error(gd.ToError(class(self).Save(gd.NewString(path), false)))
 }
 
 /*
@@ -45,7 +45,7 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 func (self Instance) Load(path string) error {
-	return error(class(self).Load(gd.NewString(path), false))
+	return error(gd.ToError(class(self).Load(gd.NewString(path), false)))
 }
 
 /*
@@ -66,7 +66,7 @@ func (self Instance) SaveToString() string {
 Loads a key from the given [param string_key]. If [param public_only] is [code]true[/code], only the public key will be loaded.
 */
 func (self Instance) LoadFromString(string_key string) error {
-	return error(class(self).LoadFromString(gd.NewString(string_key), false))
+	return error(gd.ToError(class(self).LoadFromString(gd.NewString(string_key), false)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

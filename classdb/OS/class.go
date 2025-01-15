@@ -258,7 +258,7 @@ Kill (terminate) the process identified by the given process ID ([param pid]), s
 */
 func Kill(pid int) error {
 	once.Do(singleton)
-	return error(class(self).Kill(gd.Int(pid)))
+	return error(gd.ToError(class(self).Kill(gd.Int(pid))))
 }
 
 /*
@@ -272,7 +272,7 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 */
 func ShellOpen(uri string) error {
 	once.Do(singleton)
-	return error(class(self).ShellOpen(gd.NewString(uri)))
+	return error(gd.ToError(class(self).ShellOpen(gd.NewString(uri))))
 }
 
 /*
@@ -283,7 +283,7 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 */
 func ShellShowInFileManager(file_or_dir_path string) error {
 	once.Do(singleton)
-	return error(class(self).ShellShowInFileManager(gd.NewString(file_or_dir_path), true))
+	return error(gd.ToError(class(self).ShellShowInFileManager(gd.NewString(file_or_dir_path), true)))
 }
 
 /*
@@ -668,7 +668,7 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 */
 func MoveToTrash(path string) error {
 	once.Do(singleton)
-	return error(class(self).MoveToTrash(gd.NewString(path)))
+	return error(gd.ToError(class(self).MoveToTrash(gd.NewString(path))))
 }
 
 /*
@@ -816,7 +816,7 @@ Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE]
 */
 func SetThreadName(name string) error {
 	once.Do(singleton)
-	return error(class(self).SetThreadName(gd.NewString(name)))
+	return error(gd.ToError(class(self).SetThreadName(gd.NewString(name))))
 }
 
 /*

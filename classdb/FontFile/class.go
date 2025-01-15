@@ -64,7 +64,7 @@ Loads an AngelCode BMFont (.fnt, .font) bitmap font from file [param path].
 [b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
 */
 func (self Instance) LoadBitmapFont(path string) error {
-	return error(class(self).LoadBitmapFont(gd.NewString(path)))
+	return error(gd.ToError(class(self).LoadBitmapFont(gd.NewString(path))))
 }
 
 /*
@@ -72,7 +72,7 @@ Loads a TrueType (.ttf), OpenType (.otf), WOFF (.woff), WOFF2 (.woff2) or Type 1
 [b]Warning:[/b] This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the [code]user://[/code] directory.
 */
 func (self Instance) LoadDynamicFont(path string) error {
-	return error(class(self).LoadDynamicFont(gd.NewString(path)))
+	return error(gd.ToError(class(self).LoadDynamicFont(gd.NewString(path))))
 }
 
 /*

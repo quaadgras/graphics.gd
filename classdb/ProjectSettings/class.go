@@ -249,7 +249,7 @@ Saves the configuration to the [code]project.godot[/code] file.
 */
 func Save() error {
 	once.Do(singleton)
-	return error(class(self).Save())
+	return error(gd.ToError(class(self).Save()))
 }
 
 /*
@@ -267,7 +267,7 @@ Saves the configuration to a custom file. The file extension must be [code].godo
 */
 func SaveCustom(file string) error {
 	once.Do(singleton)
-	return error(class(self).SaveCustom(gd.NewString(file)))
+	return error(gd.ToError(class(self).SaveCustom(gd.NewString(file))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

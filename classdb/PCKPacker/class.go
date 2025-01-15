@@ -49,21 +49,21 @@ type Any interface {
 Creates a new PCK file with the name [param pck_name]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_name] (even though it's not required).
 */
 func (self Instance) PckStart(pck_name string) error {
-	return error(class(self).PckStart(gd.NewString(pck_name), gd.Int(32), gd.NewString("0000000000000000000000000000000000000000000000000000000000000000"), false))
+	return error(gd.ToError(class(self).PckStart(gd.NewString(pck_name), gd.Int(32), gd.NewString("0000000000000000000000000000000000000000000000000000000000000000"), false)))
 }
 
 /*
 Adds the [param source_path] file to the current PCK package at the [param pck_path] internal path (should start with [code]res://[/code]).
 */
 func (self Instance) AddFile(pck_path string, source_path string) error {
-	return error(class(self).AddFile(gd.NewString(pck_path), gd.NewString(source_path), false))
+	return error(gd.ToError(class(self).AddFile(gd.NewString(pck_path), gd.NewString(source_path), false)))
 }
 
 /*
 Writes the files specified using all [method add_file] calls since the last flush. If [param verbose] is [code]true[/code], a list of files added will be printed to the console for easier debugging.
 */
 func (self Instance) Flush() error {
-	return error(class(self).Flush(false))
+	return error(gd.ToError(class(self).Flush(false)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

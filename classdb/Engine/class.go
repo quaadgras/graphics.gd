@@ -338,7 +338,7 @@ Returns:
 */
 func RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) error {
 	once.Do(singleton)
-	return error(class(self).RegisterScriptLanguage(language))
+	return error(gd.ToError(class(self).RegisterScriptLanguage(language)))
 }
 
 /*
@@ -349,7 +349,7 @@ Returns:
 */
 func UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) error {
 	once.Do(singleton)
-	return error(class(self).UnregisterScriptLanguage(language))
+	return error(gd.ToError(class(self).UnregisterScriptLanguage(language)))
 }
 
 /*

@@ -50,7 +50,7 @@ Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
 func (self Instance) Open(path string) error {
-	return error(class(self).Open(gd.NewString(path), 0))
+	return error(gd.ToError(class(self).Open(gd.NewString(path), 0)))
 }
 
 /*
@@ -58,7 +58,7 @@ Starts writing to a file within the archive. Only one file can be written at the
 Must be called after [method open].
 */
 func (self Instance) StartFile(path string) error {
-	return error(class(self).StartFile(gd.NewString(path)))
+	return error(gd.ToError(class(self).StartFile(gd.NewString(path))))
 }
 
 /*
@@ -66,7 +66,7 @@ Write the given [param data] to the file.
 Needs to be called after [method start_file].
 */
 func (self Instance) WriteFile(data []byte) error {
-	return error(class(self).WriteFile(gd.NewPackedByteSlice(data)))
+	return error(gd.ToError(class(self).WriteFile(gd.NewPackedByteSlice(data))))
 }
 
 /*
@@ -74,14 +74,14 @@ Stops writing to a file within the archive.
 It will fail if there is no open file.
 */
 func (self Instance) CloseFile() error {
-	return error(class(self).CloseFile())
+	return error(gd.ToError(class(self).CloseFile()))
 }
 
 /*
 Closes the underlying resources used by this instance.
 */
 func (self Instance) Close() error {
-	return error(class(self).Close())
+	return error(gd.ToError(class(self).Close()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

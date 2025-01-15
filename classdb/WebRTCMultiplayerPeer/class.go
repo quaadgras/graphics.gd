@@ -42,7 +42,7 @@ Initialize the multiplayer peer as a server (with unique ID of [code]1[/code]). 
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 func (self Instance) CreateServer() error {
-	return error(class(self).CreateServer([1]Array.Any{}[0]))
+	return error(gd.ToError(class(self).CreateServer([1]Array.Any{}[0])))
 }
 
 /*
@@ -50,14 +50,14 @@ Initialize the multiplayer peer as a client with the given [param peer_id] (must
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 func (self Instance) CreateClient(peer_id int) error {
-	return error(class(self).CreateClient(gd.Int(peer_id), [1]Array.Any{}[0]))
+	return error(gd.ToError(class(self).CreateClient(gd.Int(peer_id), [1]Array.Any{}[0])))
 }
 
 /*
 Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given [param peer_id] (must be between 1 and 2147483647).
 */
 func (self Instance) CreateMesh(peer_id int) error {
-	return error(class(self).CreateMesh(gd.Int(peer_id), [1]Array.Any{}[0]))
+	return error(gd.ToError(class(self).CreateMesh(gd.Int(peer_id), [1]Array.Any{}[0])))
 }
 
 /*
@@ -65,7 +65,7 @@ Add a new peer to the mesh with the given [param peer_id]. The [WebRTCPeerConnec
 Three channels will be created for reliable, unreliable, and ordered transport. The value of [param unreliable_lifetime] will be passed to the [code]"maxPacketLifetime"[/code] option when creating unreliable and ordered channels (see [method WebRTCPeerConnection.create_data_channel]).
 */
 func (self Instance) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int) error {
-	return error(class(self).AddPeer(peer, gd.Int(peer_id), gd.Int(1)))
+	return error(gd.ToError(class(self).AddPeer(peer, gd.Int(peer_id), gd.Int(1))))
 }
 
 /*

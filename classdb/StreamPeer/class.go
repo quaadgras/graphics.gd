@@ -37,7 +37,7 @@ type Any interface {
 Sends a chunk of data through the connection, blocking if necessary until the data is done sending. This function returns an [enum Error] code.
 */
 func (self Instance) PutData(data []byte) error {
-	return error(class(self).PutData(gd.NewPackedByteSlice(data)))
+	return error(gd.ToError(class(self).PutData(gd.NewPackedByteSlice(data))))
 }
 
 /*

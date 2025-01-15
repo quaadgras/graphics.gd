@@ -86,7 +86,7 @@ global_library.add_animation("animation_name", animation_resource)
 [/codeblocks]
 */
 func (self Instance) AddAnimationLibrary(name string, library [1]gdclass.AnimationLibrary) error {
-	return error(class(self).AddAnimationLibrary(gd.NewStringName(name), library))
+	return error(gd.ToError(class(self).AddAnimationLibrary(gd.NewStringName(name), library)))
 }
 
 /*

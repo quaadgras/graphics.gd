@@ -98,7 +98,7 @@ Returns [constant @GlobalScope.ERR_BUSY] if the call is made from another runnin
 */
 func WaitForTaskCompletion(task_id int) error {
 	once.Do(singleton)
-	return error(class(self).WaitForTaskCompletion(gd.Int(task_id)))
+	return error(gd.ToError(class(self).WaitForTaskCompletion(gd.Int(task_id))))
 }
 
 /*

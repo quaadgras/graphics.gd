@@ -97,7 +97,7 @@ func (self Instance) Clear() {
 Compiles and assign the search pattern to use. Returns [constant OK] if the compilation is successful. If an error is encountered, details are printed to standard output and an error is returned.
 */
 func (self Instance) Compile(pattern string) error {
-	return error(class(self).Compile(gd.NewString(pattern)))
+	return error(gd.ToError(class(self).Compile(gd.NewString(pattern))))
 }
 
 /*

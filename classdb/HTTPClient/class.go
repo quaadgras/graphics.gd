@@ -45,7 +45,7 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToHost(host string) error {
-	return error(class(self).ConnectToHost(gd.NewString(host), gd.Int(-1), [1][1]gdclass.TLSOptions{}[0]))
+	return error(gd.ToError(class(self).ConnectToHost(gd.NewString(host), gd.Int(-1), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
@@ -55,7 +55,7 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 func (self Instance) RequestRaw(method gdclass.HTTPClientMethod, url string, headers []string, body []byte) error {
-	return error(class(self).RequestRaw(method, gd.NewString(url), gd.NewPackedStringSlice(headers), gd.NewPackedByteSlice(body)))
+	return error(gd.ToError(class(self).RequestRaw(method, gd.NewString(url), gd.NewPackedStringSlice(headers), gd.NewPackedByteSlice(body))))
 }
 
 /*
@@ -80,7 +80,7 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 func (self Instance) Request(method gdclass.HTTPClientMethod, url string, headers []string) error {
-	return error(class(self).Request(method, gd.NewString(url), gd.NewPackedStringSlice(headers), gd.NewString("")))
+	return error(gd.ToError(class(self).Request(method, gd.NewString(url), gd.NewPackedStringSlice(headers), gd.NewString(""))))
 }
 
 /*
@@ -161,7 +161,7 @@ func (self Instance) GetStatus() gdclass.HTTPClientStatus {
 This needs to be called in order to have any request processed. Check results with [method get_status].
 */
 func (self Instance) Poll() error {
-	return error(class(self).Poll())
+	return error(gd.ToError(class(self).Poll()))
 }
 
 /*

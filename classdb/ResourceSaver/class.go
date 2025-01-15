@@ -38,7 +38,7 @@ Returns [constant OK] on success.
 */
 func Save(resource [1]gdclass.Resource) error {
 	once.Do(singleton)
-	return error(class(self).Save(resource, gd.NewString(""), 0))
+	return error(gd.ToError(class(self).Save(resource, gd.NewString(""), 0)))
 }
 
 /*

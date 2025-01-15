@@ -103,7 +103,7 @@ Returns the result of the last [method open] call in the current thread.
 */
 func GetOpenError() error {
 	self := Instance{}
-	return error(class(self).GetOpenError())
+	return error(gd.ToError(class(self).GetOpenError()))
 }
 
 /*
@@ -112,7 +112,7 @@ Affected by [member include_hidden] and [member include_navigational].
 [b]Note:[/b] The order of files and directories returned by this method is not deterministic, and can vary between operating systems. If you want a list of all files or folders sorted alphabetically, use [method get_files] or [method get_directories].
 */
 func (self Instance) ListDirBegin() error {
-	return error(class(self).ListDirBegin())
+	return error(gd.ToError(class(self).ListDirBegin()))
 }
 
 /*
@@ -207,7 +207,7 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 [b]Note:[/b] The new directory must be within the same scope, e.g. when you had opened a directory inside [code]res://[/code], you can't change it to [code]user://[/code] directory. If you need to open a directory in another access scope, use [method open] to create a new instance instead.
 */
 func (self Instance) ChangeDir(to_dir string) error {
-	return error(class(self).ChangeDir(gd.NewString(to_dir)))
+	return error(gd.ToError(class(self).ChangeDir(gd.NewString(to_dir))))
 }
 
 /*
@@ -222,7 +222,7 @@ Creates a directory. The argument can be relative to the current directory, or a
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) MakeDir(path string) error {
-	return error(class(self).MakeDir(gd.NewString(path)))
+	return error(gd.ToError(class(self).MakeDir(gd.NewString(path))))
 }
 
 /*
@@ -230,7 +230,7 @@ Static version of [method make_dir]. Supports only absolute paths.
 */
 func MakeDirAbsolute(path string) error {
 	self := Instance{}
-	return error(class(self).MakeDirAbsolute(gd.NewString(path)))
+	return error(gd.ToError(class(self).MakeDirAbsolute(gd.NewString(path))))
 }
 
 /*
@@ -238,7 +238,7 @@ Creates a target directory and all necessary intermediate directories in its pat
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) MakeDirRecursive(path string) error {
-	return error(class(self).MakeDirRecursive(gd.NewString(path)))
+	return error(gd.ToError(class(self).MakeDirRecursive(gd.NewString(path))))
 }
 
 /*
@@ -246,7 +246,7 @@ Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
 func MakeDirRecursiveAbsolute(path string) error {
 	self := Instance{}
-	return error(class(self).MakeDirRecursiveAbsolute(gd.NewString(path)))
+	return error(gd.ToError(class(self).MakeDirRecursiveAbsolute(gd.NewString(path))))
 }
 
 /*
@@ -285,7 +285,7 @@ If [param chmod_flags] is different than [code]-1[/code], the Unix permissions f
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) Copy(from string, to string) error {
-	return error(class(self).Copy(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
+	return error(gd.ToError(class(self).Copy(gd.NewString(from), gd.NewString(to), gd.Int(-1))))
 }
 
 /*
@@ -293,7 +293,7 @@ Static version of [method copy]. Supports only absolute paths.
 */
 func CopyAbsolute(from string, to string) error {
 	self := Instance{}
-	return error(class(self).CopyAbsolute(gd.NewString(from), gd.NewString(to), gd.Int(-1)))
+	return error(gd.ToError(class(self).CopyAbsolute(gd.NewString(from), gd.NewString(to), gd.Int(-1))))
 }
 
 /*
@@ -301,7 +301,7 @@ Renames (move) the [param from] file or directory to the [param to] destination.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) Rename(from string, to string) error {
-	return error(class(self).Rename(gd.NewString(from), gd.NewString(to)))
+	return error(gd.ToError(class(self).Rename(gd.NewString(from), gd.NewString(to))))
 }
 
 /*
@@ -309,7 +309,7 @@ Static version of [method rename]. Supports only absolute paths.
 */
 func RenameAbsolute(from string, to string) error {
 	self := Instance{}
-	return error(class(self).RenameAbsolute(gd.NewString(from), gd.NewString(to)))
+	return error(gd.ToError(class(self).RenameAbsolute(gd.NewString(from), gd.NewString(to))))
 }
 
 /*
@@ -318,7 +318,7 @@ If you don't want to delete the file/directory permanently, use [method OS.move_
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) Remove(path string) error {
-	return error(class(self).Remove(gd.NewString(path)))
+	return error(gd.ToError(class(self).Remove(gd.NewString(path))))
 }
 
 /*
@@ -326,7 +326,7 @@ Static version of [method remove]. Supports only absolute paths.
 */
 func RemoveAbsolute(path string) error {
 	self := Instance{}
-	return error(class(self).RemoveAbsolute(gd.NewString(path)))
+	return error(gd.ToError(class(self).RemoveAbsolute(gd.NewString(path))))
 }
 
 /*
@@ -351,7 +351,7 @@ Creates symbolic link between files or folders.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) CreateLink(source string, target string) error {
-	return error(class(self).CreateLink(gd.NewString(source), gd.NewString(target)))
+	return error(gd.ToError(class(self).CreateLink(gd.NewString(source), gd.NewString(target))))
 }
 
 /*

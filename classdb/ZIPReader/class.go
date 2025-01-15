@@ -46,14 +46,14 @@ type Any interface {
 Opens the zip archive at the given [param path] and reads its file index.
 */
 func (self Instance) Open(path string) error {
-	return error(class(self).Open(gd.NewString(path)))
+	return error(gd.ToError(class(self).Open(gd.NewString(path))))
 }
 
 /*
 Closes the underlying resources used by this instance.
 */
 func (self Instance) Close() error {
-	return error(class(self).Close())
+	return error(gd.ToError(class(self).Close()))
 }
 
 /*

@@ -84,7 +84,7 @@ Parses the expression and returns an [enum Error] code.
 You can optionally specify names of variables that may appear in the expression with [param input_names], so that you can bind them when it gets executed.
 */
 func (self Instance) Parse(expression string) error {
-	return error(class(self).Parse(gd.NewString(expression), gd.NewPackedStringSlice([1][]string{}[0])))
+	return error(gd.ToError(class(self).Parse(gd.NewString(expression), gd.NewPackedStringSlice([1][]string{}[0]))))
 }
 
 /*

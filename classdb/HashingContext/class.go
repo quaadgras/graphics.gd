@@ -89,14 +89,14 @@ type Any interface {
 Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA256] to start computation of an SHA-256).
 */
 func (self Instance) Start(atype gdclass.HashingContextHashType) error {
-	return error(class(self).Start(atype))
+	return error(gd.ToError(class(self).Start(atype)))
 }
 
 /*
 Updates the computation with the given [param chunk] of data.
 */
 func (self Instance) Update(chunk []byte) error {
-	return error(class(self).Update(gd.NewPackedByteSlice(chunk)))
+	return error(gd.ToError(class(self).Update(gd.NewPackedByteSlice(chunk))))
 }
 
 /*

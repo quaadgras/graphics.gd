@@ -105,7 +105,7 @@ type Any interface {
 Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [member Node.owner].
 */
 func (self Instance) Pack(path [1]gdclass.Node) error {
-	return error(class(self).Pack(path))
+	return error(gd.ToError(class(self).Pack(path)))
 }
 
 /*

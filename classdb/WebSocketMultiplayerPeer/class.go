@@ -39,14 +39,14 @@ Starts a new multiplayer client connecting to the given [param url]. TLS certifi
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
 func (self Instance) CreateClient(url string) error {
-	return error(class(self).CreateClient(gd.NewString(url), [1][1]gdclass.TLSOptions{}[0]))
+	return error(gd.ToError(class(self).CreateClient(gd.NewString(url), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
 func (self Instance) CreateServer(port int) error {
-	return error(class(self).CreateServer(gd.Int(port), gd.NewString("*"), [1][1]gdclass.TLSOptions{}[0]))
+	return error(gd.ToError(class(self).CreateServer(gd.Int(port), gd.NewString("*"), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*

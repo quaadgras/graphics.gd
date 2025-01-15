@@ -424,7 +424,7 @@ Saves the currently active scene. Returns either [constant OK] or [constant ERR_
 */
 func SaveScene() error {
 	once.Do(singleton)
-	return error(class(self).SaveScene())
+	return error(gd.ToError(class(self).SaveScene()))
 }
 
 /*

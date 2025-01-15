@@ -131,7 +131,7 @@ Sets [param property] value of [param object] to [param value].
 */
 func ClassSetProperty(obj Object.Instance, property string, value any) error {
 	once.Do(singleton)
-	return error(class(self).ClassSetProperty(obj, gd.NewStringName(property), gd.NewVariant(value)))
+	return error(gd.ToError(class(self).ClassSetProperty(obj, gd.NewStringName(property), gd.NewVariant(value))))
 }
 
 /*

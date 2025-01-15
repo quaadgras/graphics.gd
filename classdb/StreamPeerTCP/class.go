@@ -37,21 +37,21 @@ Opens the TCP socket, and binds it to the specified local address.
 This method is generally not needed, and only used to force the subsequent call to [method connect_to_host] to use the specified [param host] and [param port] as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
 */
 func (self Instance) Bind(port int) error {
-	return error(class(self).Bind(gd.Int(port), gd.NewString("*")))
+	return error(gd.ToError(class(self).Bind(gd.Int(port), gd.NewString("*"))))
 }
 
 /*
 Connects to the specified [code]host:port[/code] pair. A hostname will be resolved if valid. Returns [constant OK] on success.
 */
 func (self Instance) ConnectToHost(host string, port int) error {
-	return error(class(self).ConnectToHost(gd.NewString(host), gd.Int(port)))
+	return error(gd.ToError(class(self).ConnectToHost(gd.NewString(host), gd.Int(port))))
 }
 
 /*
 Poll the socket, updating its state. See [method get_status].
 */
 func (self Instance) Poll() error {
-	return error(class(self).Poll())
+	return error(gd.ToError(class(self).Poll()))
 }
 
 /*

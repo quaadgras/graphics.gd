@@ -459,7 +459,7 @@ func (Instance) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.
 This function can only be called during the [method _import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the [param custom_options]. Additionally, in cases where multiple importers can handle a file, the [param custom_importer] can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. [param generator_parameters] defines optional extra metadata which will be stored as [code skip-lint]generator_parameters[/code] in the [code]remap[/code] section of the [code].import[/code] file, for example to store a md5 hash of the source data.
 */
 func (self Instance) AppendImportExternalResource(path string) error {
-	return error(class(self).AppendImportExternalResource(gd.NewString(path), [1]Dictionary.Any{}[0], gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
+	return error(gd.ToError(class(self).AppendImportExternalResource(gd.NewString(path), [1]Dictionary.Any{}[0], gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -32,7 +32,7 @@ type Any interface {
 Reserved, but not used for now.
 */
 func (self Instance) Poll() error {
-	return error(class(self).Poll())
+	return error(gd.ToError(class(self).Poll()))
 }
 
 /*

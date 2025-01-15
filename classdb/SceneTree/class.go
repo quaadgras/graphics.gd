@@ -177,7 +177,7 @@ Returns [constant OK] on success, [constant ERR_CANT_OPEN] if the [param path] c
 [b]Note:[/b] See [method change_scene_to_packed] for details on the order of operations.
 */
 func (self Instance) ChangeSceneToFile(path string) error {
-	return error(class(self).ChangeSceneToFile(gd.NewString(path)))
+	return error(gd.ToError(class(self).ChangeSceneToFile(gd.NewString(path))))
 }
 
 /*
@@ -189,7 +189,7 @@ Returns [constant OK] on success, [constant ERR_CANT_CREATE] if the scene cannot
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [method Node.queue_free].
 */
 func (self Instance) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) error {
-	return error(class(self).ChangeSceneToPacked(packed_scene))
+	return error(gd.ToError(class(self).ChangeSceneToPacked(packed_scene)))
 }
 
 /*
@@ -197,7 +197,7 @@ Reloads the currently active scene, replacing [member current_scene] with a new 
 Returns [constant OK] on success, [constant ERR_UNCONFIGURED] if no [member current_scene] is defined, [constant ERR_CANT_OPEN] if [member current_scene] cannot be loaded into a [PackedScene], or [constant ERR_CANT_CREATE] if the scene cannot be instantiated.
 */
 func (self Instance) ReloadCurrentScene() error {
-	return error(class(self).ReloadCurrentScene())
+	return error(gd.ToError(class(self).ReloadCurrentScene()))
 }
 
 /*

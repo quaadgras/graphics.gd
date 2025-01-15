@@ -108,6 +108,8 @@ func (name Name) ConvertToGo(val string) string {
 	switch name {
 	case "gd.String", "gd.StringName", "gd.NodePath":
 		return fmt.Sprintf("%v.String()", val)
+	case "gd.Error":
+		return fmt.Sprintf("gd.ToError(%v)", val)
 	case "gd.Int":
 		return fmt.Sprintf("int(%v)", val)
 	case "gd.Float":

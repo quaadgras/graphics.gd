@@ -99,7 +99,7 @@ Saves the editor feature profile to a file in JSON format. It can then be import
 [b]Note:[/b] Feature profiles created via the user interface are saved in the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 func (self Instance) SaveToFile(path string) error {
-	return error(class(self).SaveToFile(gd.NewString(path)))
+	return error(gd.ToError(class(self).SaveToFile(gd.NewString(path))))
 }
 
 /*
@@ -107,7 +107,7 @@ Loads an editor feature profile from a file. The file must follow the JSON forma
 [b]Note:[/b] Feature profiles created via the user interface are loaded from the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 func (self Instance) LoadFromFile(path string) error {
-	return error(class(self).LoadFromFile(gd.NewString(path)))
+	return error(gd.ToError(class(self).LoadFromFile(gd.NewString(path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

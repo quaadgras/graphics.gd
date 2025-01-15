@@ -77,7 +77,7 @@ Updates texture data with new data, replacing the previous data in place. The up
 [b]Note:[/b] The existing [param texture] requires the [constant TEXTURE_USAGE_CAN_UPDATE_BIT] to be updatable.
 */
 func (self Instance) TextureUpdate(texture Resource.ID, layer int, data []byte) error {
-	return error(class(self).TextureUpdate(texture, gd.Int(layer), gd.NewPackedByteSlice(data)))
+	return error(gd.ToError(class(self).TextureUpdate(texture, gd.Int(layer), gd.NewPackedByteSlice(data))))
 }
 
 /*
@@ -119,7 +119,7 @@ Copies the [param from_texture] to [param to_texture] with the specified [param 
 [b]Note:[/b] [param from_texture] and [param to_texture] must be of the same type (color or depth).
 */
 func (self Instance) TextureCopy(from_texture Resource.ID, to_texture Resource.ID, from_pos Vector3.XYZ, to_pos Vector3.XYZ, size Vector3.XYZ, src_mipmap int, dst_mipmap int, src_layer int, dst_layer int) error {
-	return error(class(self).TextureCopy(from_texture, to_texture, gd.Vector3(from_pos), gd.Vector3(to_pos), gd.Vector3(size), gd.Int(src_mipmap), gd.Int(dst_mipmap), gd.Int(src_layer), gd.Int(dst_layer)))
+	return error(gd.ToError(class(self).TextureCopy(from_texture, to_texture, gd.Vector3(from_pos), gd.Vector3(to_pos), gd.Vector3(size), gd.Int(src_mipmap), gd.Int(dst_mipmap), gd.Int(src_layer), gd.Int(dst_layer))))
 }
 
 /*
@@ -127,7 +127,7 @@ Clears the specified [param texture] by replacing all of its pixels with the spe
 [b]Note:[/b] [param texture] can't be cleared while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to clear this texture.
 */
 func (self Instance) TextureClear(texture Resource.ID, color Color.RGBA, base_mipmap int, mipmap_count int, base_layer int, layer_count int) error {
-	return error(class(self).TextureClear(texture, gd.Color(color), gd.Int(base_mipmap), gd.Int(mipmap_count), gd.Int(base_layer), gd.Int(layer_count)))
+	return error(gd.ToError(class(self).TextureClear(texture, gd.Color(color), gd.Int(base_mipmap), gd.Int(mipmap_count), gd.Int(base_layer), gd.Int(layer_count))))
 }
 
 /*
@@ -141,7 +141,7 @@ Resolves the [param from_texture] texture onto [param to_texture] with multisamp
 [b]Note:[/b] [param to_texture] texture must [b]not[/b] be multisampled and must also be 2D (or a slice of a 3D/cubemap texture).
 */
 func (self Instance) TextureResolveMultisample(from_texture Resource.ID, to_texture Resource.ID) error {
-	return error(class(self).TextureResolveMultisample(from_texture, to_texture))
+	return error(gd.ToError(class(self).TextureResolveMultisample(from_texture, to_texture)))
 }
 
 /*
@@ -372,7 +372,7 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 func (self Instance) BufferCopy(src_buffer Resource.ID, dst_buffer Resource.ID, src_offset int, dst_offset int, size int) error {
-	return error(class(self).BufferCopy(src_buffer, dst_buffer, gd.Int(src_offset), gd.Int(dst_offset), gd.Int(size)))
+	return error(gd.ToError(class(self).BufferCopy(src_buffer, dst_buffer, gd.Int(src_offset), gd.Int(dst_offset), gd.Int(size))))
 }
 
 /*
@@ -383,7 +383,7 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 func (self Instance) BufferUpdate(buffer Resource.ID, offset int, size_bytes int, data []byte) error {
-	return error(class(self).BufferUpdate(buffer, gd.Int(offset), gd.Int(size_bytes), gd.NewPackedByteSlice(data)))
+	return error(gd.ToError(class(self).BufferUpdate(buffer, gd.Int(offset), gd.Int(size_bytes), gd.NewPackedByteSlice(data))))
 }
 
 /*
@@ -395,7 +395,7 @@ Prints an error if:
 - a compute list is currently active (created by [method compute_list_begin])
 */
 func (self Instance) BufferClear(buffer Resource.ID, offset int, size_bytes int) error {
-	return error(class(self).BufferClear(buffer, gd.Int(offset), gd.Int(size_bytes)))
+	return error(gd.ToError(class(self).BufferClear(buffer, gd.Int(offset), gd.Int(size_bytes))))
 }
 
 /*

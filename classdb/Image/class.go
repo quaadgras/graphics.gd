@@ -155,7 +155,7 @@ Generates mipmaps for the image. Mipmaps are precalculated lower-resolution copi
 It is possible to check if the image has mipmaps by calling [method has_mipmaps] or [method get_mipmap_count]. Calling [method generate_mipmaps] on an image that already has mipmaps will replace existing mipmaps in the image.
 */
 func (self Instance) GenerateMipmaps() error {
-	return error(class(self).GenerateMipmaps(false))
+	return error(gd.ToError(class(self).GenerateMipmaps(false)))
 }
 
 /*
@@ -209,7 +209,7 @@ Loads an image from file [param path]. See [url=$DOCS_URL/tutorials/assets_pipel
 See also [ImageTexture] description for usage examples.
 */
 func (self Instance) Load(path string) error {
-	return error(class(self).Load(gd.NewString(path)))
+	return error(gd.ToError(class(self).Load(gd.NewString(path))))
 }
 
 /*
@@ -224,7 +224,7 @@ func LoadFromFile(path string) [1]gdclass.Image {
 Saves the image as a PNG file to the file at [param path].
 */
 func (self Instance) SavePng(path string) error {
-	return error(class(self).SavePng(gd.NewString(path)))
+	return error(gd.ToError(class(self).SavePng(gd.NewString(path))))
 }
 
 /*
@@ -239,7 +239,7 @@ Saves the image as a JPEG file to [param path] with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting JPEG file won't contain the alpha channel.
 */
 func (self Instance) SaveJpg(path string) error {
-	return error(class(self).SaveJpg(gd.NewString(path), gd.Float(0.75)))
+	return error(gd.ToError(class(self).SaveJpg(gd.NewString(path), gd.Float(0.75))))
 }
 
 /*
@@ -255,7 +255,7 @@ Saves the image as an EXR file to [param path]. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return [constant ERR_UNAVAILABLE] when it is called from an exported project.
 */
 func (self Instance) SaveExr(path string) error {
-	return error(class(self).SaveExr(gd.NewString(path), false))
+	return error(gd.ToError(class(self).SaveExr(gd.NewString(path), false)))
 }
 
 /*
@@ -271,7 +271,7 @@ Saves the image as a WebP (Web Picture) file to the file at [param path]. By def
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self Instance) SaveWebp(path string) error {
-	return error(class(self).SaveWebp(gd.NewString(path), false, gd.Float(0.75)))
+	return error(gd.ToError(class(self).SaveWebp(gd.NewString(path), false, gd.Float(0.75))))
 }
 
 /*
@@ -309,7 +309,7 @@ The [param source] parameter helps to pick the best compression method for DXT a
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 func (self Instance) Compress(mode gdclass.ImageCompressMode) error {
-	return error(class(self).Compress(mode, 0, 0))
+	return error(gd.ToError(class(self).Compress(mode, 0, 0)))
 }
 
 /*
@@ -318,7 +318,7 @@ This is an alternative to [method compress] that lets the user supply the channe
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 func (self Instance) CompressFromChannels(mode gdclass.ImageCompressMode, channels gdclass.ImageUsedChannels) error {
-	return error(class(self).CompressFromChannels(mode, channels, 0))
+	return error(gd.ToError(class(self).CompressFromChannels(mode, channels, 0)))
 }
 
 /*
@@ -326,7 +326,7 @@ Decompresses the image if it is VRAM compressed in a supported format. Returns [
 [b]Note:[/b] The following formats can be decompressed: DXT, RGTC, BPTC. The formats ETC1 and ETC2 are not supported.
 */
 func (self Instance) Decompress() error {
-	return error(class(self).Decompress())
+	return error(gd.ToError(class(self).Decompress()))
 }
 
 /*
@@ -540,21 +540,21 @@ func (self Instance) AdjustBcs(brightness Float.X, contrast Float.X, saturation 
 Loads an image from the binary contents of a PNG file.
 */
 func (self Instance) LoadPngFromBuffer(buffer []byte) error {
-	return error(class(self).LoadPngFromBuffer(gd.NewPackedByteSlice(buffer)))
+	return error(gd.ToError(class(self).LoadPngFromBuffer(gd.NewPackedByteSlice(buffer))))
 }
 
 /*
 Loads an image from the binary contents of a JPEG file.
 */
 func (self Instance) LoadJpgFromBuffer(buffer []byte) error {
-	return error(class(self).LoadJpgFromBuffer(gd.NewPackedByteSlice(buffer)))
+	return error(gd.ToError(class(self).LoadJpgFromBuffer(gd.NewPackedByteSlice(buffer))))
 }
 
 /*
 Loads an image from the binary contents of a WebP file.
 */
 func (self Instance) LoadWebpFromBuffer(buffer []byte) error {
-	return error(class(self).LoadWebpFromBuffer(gd.NewPackedByteSlice(buffer)))
+	return error(gd.ToError(class(self).LoadWebpFromBuffer(gd.NewPackedByteSlice(buffer))))
 }
 
 /*
@@ -562,7 +562,7 @@ Loads an image from the binary contents of a TGA file.
 [b]Note:[/b] This method is only available in engine builds with the TGA module enabled. By default, the TGA module is enabled, but it can be disabled at build-time using the [code]module_tga_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadTgaFromBuffer(buffer []byte) error {
-	return error(class(self).LoadTgaFromBuffer(gd.NewPackedByteSlice(buffer)))
+	return error(gd.ToError(class(self).LoadTgaFromBuffer(gd.NewPackedByteSlice(buffer))))
 }
 
 /*
@@ -571,7 +571,7 @@ Loads an image from the binary contents of a BMP file.
 [b]Note:[/b] This method is only available in engine builds with the BMP module enabled. By default, the BMP module is enabled, but it can be disabled at build-time using the [code]module_bmp_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadBmpFromBuffer(buffer []byte) error {
-	return error(class(self).LoadBmpFromBuffer(gd.NewPackedByteSlice(buffer)))
+	return error(gd.ToError(class(self).LoadBmpFromBuffer(gd.NewPackedByteSlice(buffer))))
 }
 
 /*
@@ -580,7 +580,7 @@ Loads an image from the binary contents of a [url=https://github.com/KhronosGrou
 [b]Note:[/b] This method is only available in engine builds with the KTX module enabled. By default, the KTX module is enabled, but it can be disabled at build-time using the [code]module_ktx_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadKtxFromBuffer(buffer []byte) error {
-	return error(class(self).LoadKtxFromBuffer(gd.NewPackedByteSlice(buffer)))
+	return error(gd.ToError(class(self).LoadKtxFromBuffer(gd.NewPackedByteSlice(buffer))))
 }
 
 /*
@@ -589,7 +589,7 @@ Loads an image from the UTF-8 binary contents of an [b]uncompressed[/b] SVG file
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadSvgFromBuffer(buffer []byte) error {
-	return error(class(self).LoadSvgFromBuffer(gd.NewPackedByteSlice(buffer), gd.Float(1.0)))
+	return error(gd.ToError(class(self).LoadSvgFromBuffer(gd.NewPackedByteSlice(buffer), gd.Float(1.0))))
 }
 
 /*
@@ -597,7 +597,7 @@ Loads an image from the string contents of an SVG file ([b].svg[/b]).
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadSvgFromString(svg_str string) error {
-	return error(class(self).LoadSvgFromString(gd.NewString(svg_str), gd.Float(1.0)))
+	return error(gd.ToError(class(self).LoadSvgFromString(gd.NewString(svg_str), gd.Float(1.0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

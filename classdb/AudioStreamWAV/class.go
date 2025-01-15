@@ -38,7 +38,7 @@ Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM o
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
 func (self Instance) SaveToWav(path string) error {
-	return error(class(self).SaveToWav(gd.NewString(path)))
+	return error(gd.ToError(class(self).SaveToWav(gd.NewString(path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

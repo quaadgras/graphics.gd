@@ -36,21 +36,21 @@ type Any interface {
 Start the stream in compression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
 func (self Instance) StartCompression() error {
-	return error(class(self).StartCompression(false, gd.Int(65535)))
+	return error(gd.ToError(class(self).StartCompression(false, gd.Int(65535))))
 }
 
 /*
 Start the stream in decompression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
 func (self Instance) StartDecompression() error {
-	return error(class(self).StartDecompression(false, gd.Int(65535)))
+	return error(gd.ToError(class(self).StartDecompression(false, gd.Int(65535))))
 }
 
 /*
 Finalizes the stream, compressing or decompressing any buffered chunk left.
 */
 func (self Instance) Finish() error {
-	return error(class(self).Finish())
+	return error(gd.ToError(class(self).Finish()))
 }
 
 /*

@@ -70,7 +70,7 @@ type Any interface {
 Parses the next node in the file. This method returns an error code.
 */
 func (self Instance) Read() error {
-	return error(class(self).Read())
+	return error(gd.ToError(class(self).Read()))
 }
 
 /*
@@ -170,21 +170,21 @@ func (self Instance) SkipSection() {
 Moves the buffer cursor to a certain offset (since the beginning) and reads the next node there. This method returns an error code.
 */
 func (self Instance) SeekTo(position int) error {
-	return error(class(self).SeekTo(gd.Int(position)))
+	return error(gd.ToError(class(self).SeekTo(gd.Int(position))))
 }
 
 /*
 Opens an XML [param file] for parsing. This method returns an error code.
 */
 func (self Instance) Open(file string) error {
-	return error(class(self).Open(gd.NewString(file)))
+	return error(gd.ToError(class(self).Open(gd.NewString(file))))
 }
 
 /*
 Opens an XML raw [param buffer] for parsing. This method returns an error code.
 */
 func (self Instance) OpenBuffer(buffer []byte) error {
-	return error(class(self).OpenBuffer(gd.NewPackedByteSlice(buffer)))
+	return error(gd.ToError(class(self).OpenBuffer(gd.NewPackedByteSlice(buffer))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

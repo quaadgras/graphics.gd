@@ -39,7 +39,7 @@ If [param bind_address] is set to [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the peer will only be bound to the interface with that address (or fail if no interface with the given address exists).
 */
 func (self Instance) Bind(port int) error {
-	return error(class(self).Bind(gd.Int(port), gd.NewString("*"), gd.Int(65536)))
+	return error(gd.ToError(class(self).Bind(gd.Int(port), gd.NewString("*"), gd.Int(65536))))
 }
 
 /*
@@ -88,7 +88,7 @@ while (socket.Wait() == OK)
 [/codeblocks]
 */
 func (self Instance) Wait() error {
-	return error(class(self).Wait())
+	return error(gd.ToError(class(self).Wait()))
 }
 
 /*
@@ -103,7 +103,7 @@ Calling this method connects this UDP peer to the given [param host]/[param port
 [b]Note:[/b] Connecting to the remote peer does not help to protect from malicious attacks like IP spoofing, etc. Think about using an encryption technique like TLS or DTLS if you feel like your application is transferring sensitive information.
 */
 func (self Instance) ConnectToHost(host string, port int) error {
-	return error(class(self).ConnectToHost(gd.NewString(host), gd.Int(port)))
+	return error(gd.ToError(class(self).ConnectToHost(gd.NewString(host), gd.Int(port))))
 }
 
 /*
@@ -139,7 +139,7 @@ Sets the destination address and port for sending packets and variables. A hostn
 [b]Note:[/b] [method set_broadcast_enabled] must be enabled before sending packets to a broadcast address (e.g. [code]255.255.255.255[/code]).
 */
 func (self Instance) SetDestAddress(host string, port int) error {
-	return error(class(self).SetDestAddress(gd.NewString(host), gd.Int(port)))
+	return error(gd.ToError(class(self).SetDestAddress(gd.NewString(host), gd.Int(port))))
 }
 
 /*
@@ -156,14 +156,14 @@ You can join the same multicast group with multiple interfaces. Use [method IP.g
 [b]Note:[/b] Some Android devices might require the [code]CHANGE_WIFI_MULTICAST_STATE[/code] permission for multicast to work.
 */
 func (self Instance) JoinMulticastGroup(multicast_address string, interface_name string) error {
-	return error(class(self).JoinMulticastGroup(gd.NewString(multicast_address), gd.NewString(interface_name)))
+	return error(gd.ToError(class(self).JoinMulticastGroup(gd.NewString(multicast_address), gd.NewString(interface_name))))
 }
 
 /*
 Removes the interface identified by [param interface_name] from the multicast group specified by [param multicast_address].
 */
 func (self Instance) LeaveMulticastGroup(multicast_address string, interface_name string) error {
-	return error(class(self).LeaveMulticastGroup(gd.NewString(multicast_address), gd.NewString(interface_name)))
+	return error(gd.ToError(class(self).LeaveMulticastGroup(gd.NewString(multicast_address), gd.NewString(interface_name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

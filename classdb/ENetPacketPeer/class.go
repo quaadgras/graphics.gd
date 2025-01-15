@@ -80,7 +80,7 @@ func (self Instance) Reset() {
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
 func (self Instance) Send(channel int, packet []byte, flags int) error {
-	return error(class(self).Send(gd.Int(channel), gd.NewPackedByteSlice(packet), gd.Int(flags)))
+	return error(gd.ToError(class(self).Send(gd.Int(channel), gd.NewPackedByteSlice(packet), gd.Int(flags))))
 }
 
 /*

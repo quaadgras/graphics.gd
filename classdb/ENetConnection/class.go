@@ -37,7 +37,7 @@ Creates an ENetHost bound to the given [param bind_address] and [param bind_port
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 func (self Instance) CreateHostBound(bind_address string, bind_port int) error {
-	return error(class(self).CreateHostBound(gd.NewString(bind_address), gd.Int(bind_port), gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0)))
+	return error(gd.ToError(class(self).CreateHostBound(gd.NewString(bind_address), gd.Int(bind_port), gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0))))
 }
 
 /*
@@ -46,7 +46,7 @@ This method binds a random available dynamic UDP port on the host machine at the
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 func (self Instance) CreateHost() error {
-	return error(class(self).CreateHost(gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0)))
+	return error(gd.ToError(class(self).CreateHost(gd.Int(32), gd.Int(0), gd.Int(0), gd.Int(0))))
 }
 
 /*
@@ -114,14 +114,14 @@ func (self Instance) Compress(mode gdclass.ENetConnectionCompressionMode) {
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet servers. Call this right after [method create_host_bound] to have ENet expect peers to connect using DTLS. See [method TLSOptions.server].
 */
 func (self Instance) DtlsServerSetup(server_options [1]gdclass.TLSOptions) error {
-	return error(class(self).DtlsServerSetup(server_options))
+	return error(gd.ToError(class(self).DtlsServerSetup(server_options)))
 }
 
 /*
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) DtlsClientSetup(hostname string) error {
-	return error(class(self).DtlsClientSetup(gd.NewString(hostname), [1][1]gdclass.TLSOptions{}[0]))
+	return error(gd.ToError(class(self).DtlsClientSetup(gd.NewString(hostname), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*

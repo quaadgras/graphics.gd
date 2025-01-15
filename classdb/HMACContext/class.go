@@ -81,14 +81,14 @@ type Any interface {
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [method finish] has been called.
 */
 func (self Instance) Start(hash_type gdclass.HashingContextHashType, key []byte) error {
-	return error(class(self).Start(hash_type, gd.NewPackedByteSlice(key)))
+	return error(gd.ToError(class(self).Start(hash_type, gd.NewPackedByteSlice(key))))
 }
 
 /*
 Updates the message to be HMACed. This can be called multiple times before [method finish] is called to append [param data] to the message, but cannot be called until [method start] has been called.
 */
 func (self Instance) Update(data []byte) error {
-	return error(class(self).Update(gd.NewPackedByteSlice(data)))
+	return error(gd.ToError(class(self).Update(gd.NewPackedByteSlice(data))))
 }
 
 /*

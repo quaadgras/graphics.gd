@@ -180,7 +180,7 @@ Loads the config file specified as a parameter. The file's contents are parsed a
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) Load(path string) error {
-	return error(class(self).Load(gd.NewString(path)))
+	return error(gd.ToError(class(self).Load(gd.NewString(path))))
 }
 
 /*
@@ -188,7 +188,7 @@ Parses the passed string as the contents of a config file. The string is parsed 
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) Parse(data string) error {
-	return error(class(self).Parse(gd.NewString(data)))
+	return error(gd.ToError(class(self).Parse(gd.NewString(data))))
 }
 
 /*
@@ -196,7 +196,7 @@ Saves the contents of the [ConfigFile] object to the file specified as a paramet
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) Save(path string) error {
-	return error(class(self).Save(gd.NewString(path)))
+	return error(gd.ToError(class(self).Save(gd.NewString(path))))
 }
 
 /*
@@ -211,7 +211,7 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) LoadEncrypted(path string, key []byte) error {
-	return error(class(self).LoadEncrypted(gd.NewString(path), gd.NewPackedByteSlice(key)))
+	return error(gd.ToError(class(self).LoadEncrypted(gd.NewString(path), gd.NewPackedByteSlice(key))))
 }
 
 /*
@@ -219,7 +219,7 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) LoadEncryptedPass(path string, password string) error {
-	return error(class(self).LoadEncryptedPass(gd.NewString(path), gd.NewString(password)))
+	return error(gd.ToError(class(self).LoadEncryptedPass(gd.NewString(path), gd.NewString(password))))
 }
 
 /*
@@ -227,7 +227,7 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) SaveEncrypted(path string, key []byte) error {
-	return error(class(self).SaveEncrypted(gd.NewString(path), gd.NewPackedByteSlice(key)))
+	return error(gd.ToError(class(self).SaveEncrypted(gd.NewString(path), gd.NewPackedByteSlice(key))))
 }
 
 /*
@@ -235,7 +235,7 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) SaveEncryptedPass(path string, password string) error {
-	return error(class(self).SaveEncryptedPass(gd.NewString(path), gd.NewString(password)))
+	return error(gd.ToError(class(self).SaveEncryptedPass(gd.NewString(path), gd.NewString(password))))
 }
 
 /*

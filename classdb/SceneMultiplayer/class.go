@@ -63,7 +63,7 @@ func (self Instance) GetAuthenticatingPeers() []int32 {
 Sends the specified [param data] to the remote peer identified by [param id] as part of an authentication message. This can be used to authenticate peers, and control when [signal MultiplayerAPI.peer_connected] is emitted (and the remote peer accepted as one of the connected peers).
 */
 func (self Instance) SendAuth(id int, data []byte) error {
-	return error(class(self).SendAuth(gd.Int(id), gd.NewPackedByteSlice(data)))
+	return error(gd.ToError(class(self).SendAuth(gd.Int(id), gd.NewPackedByteSlice(data))))
 }
 
 /*
@@ -71,14 +71,14 @@ Mark the authentication step as completed for the remote peer identified by [par
 If a peer disconnects before completing authentication, either due to a network issue, the [member auth_timeout] expiring, or manually calling [method disconnect_peer], the [signal peer_authentication_failed] signal will be emitted instead of [signal MultiplayerAPI.peer_disconnected].
 */
 func (self Instance) CompleteAuth(id int) error {
-	return error(class(self).CompleteAuth(gd.Int(id)))
+	return error(gd.ToError(class(self).CompleteAuth(gd.Int(id))))
 }
 
 /*
 Sends the given raw [param bytes] to a specific peer identified by [param id] (see [method MultiplayerPeer.set_target_peer]). Default ID is [code]0[/code], i.e. broadcast to all peers.
 */
 func (self Instance) SendBytes(bytes []byte) error {
-	return error(class(self).SendBytes(gd.NewPackedByteSlice(bytes), gd.Int(0), 2, gd.Int(0)))
+	return error(gd.ToError(class(self).SendBytes(gd.NewPackedByteSlice(bytes), gd.Int(0), 2, gd.Int(0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

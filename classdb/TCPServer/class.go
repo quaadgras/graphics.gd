@@ -38,7 +38,7 @@ If [param bind_address] is set as [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
 */
 func (self Instance) Listen(port int) error {
-	return error(class(self).Listen(gd.Int(port), gd.NewString("*")))
+	return error(gd.ToError(class(self).Listen(gd.Int(port), gd.NewString("*"))))
 }
 
 /*

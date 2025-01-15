@@ -83,7 +83,7 @@ Performs the live update of the progressive web app. Forcing the new version to 
 */
 func PwaUpdate() error {
 	once.Do(singleton)
-	return error(class(self).PwaUpdate())
+	return error(gd.ToError(class(self).PwaUpdate()))
 }
 
 /*

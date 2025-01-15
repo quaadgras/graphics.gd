@@ -43,14 +43,14 @@ func (self Instance) Poll() {
 Accepts a peer connection as a server using the given [param server_options]. See [method TLSOptions.server].
 */
 func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) error {
-	return error(class(self).AcceptStream(stream, server_options))
+	return error(gd.ToError(class(self).AcceptStream(stream, server_options)))
 }
 
 /*
 Connects to a peer using an underlying [StreamPeer] [param stream] and verifying the remote certificate is correctly signed for the given [param common_name]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToStream(stream [1]gdclass.StreamPeer, common_name string) error {
-	return error(class(self).ConnectToStream(stream, gd.NewString(common_name), [1][1]gdclass.TLSOptions{}[0]))
+	return error(gd.ToError(class(self).ConnectToStream(stream, gd.NewString(common_name), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*

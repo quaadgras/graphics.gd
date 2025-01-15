@@ -2,6 +2,13 @@ package gd
 
 type Error int64
 
+func ToError(err Error) error {
+	if err == Ok {
+		return nil
+	}
+	return err
+}
+
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.
 	  Since [constant OK] has value 0, and all other error constants are positive integers, it can also be used in boolean checks.

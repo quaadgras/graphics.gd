@@ -1619,7 +1619,7 @@ Shows a text dialog which uses the operating system's native look-and-feel. [par
 */
 func DialogShow(title string, description string, buttons []string, callback func(button int)) error {
 	once.Do(singleton)
-	return error(class(self).DialogShow(gd.NewString(title), gd.NewString(description), gd.NewPackedStringSlice(buttons), gd.NewCallable(callback)))
+	return error(gd.ToError(class(self).DialogShow(gd.NewString(title), gd.NewString(description), gd.NewPackedStringSlice(buttons), gd.NewCallable(callback))))
 }
 
 /*
@@ -1628,7 +1628,7 @@ Shows a text input dialog which uses the operating system's native look-and-feel
 */
 func DialogInputText(title string, description string, existing_text string, callback func(text string)) error {
 	once.Do(singleton)
-	return error(class(self).DialogInputText(gd.NewString(title), gd.NewString(description), gd.NewString(existing_text), gd.NewCallable(callback)))
+	return error(gd.ToError(class(self).DialogInputText(gd.NewString(title), gd.NewString(description), gd.NewString(existing_text), gd.NewCallable(callback))))
 }
 
 /*
@@ -1643,7 +1643,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 */
 func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error {
 	once.Do(singleton)
-	return error(class(self).FileDialogShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.NewCallable(callback)))
+	return error(gd.ToError(class(self).FileDialogShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.NewCallable(callback))))
 }
 
 /*
@@ -1662,7 +1662,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 */
 func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options gd.Array, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option Dictionary.Any)) error {
 	once.Do(singleton)
-	return error(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), options, gd.NewCallable(callback)))
+	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), options, gd.NewCallable(callback))))
 }
 
 /*

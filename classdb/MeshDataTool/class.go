@@ -92,14 +92,14 @@ Uses specified surface of given [Mesh] to populate data for MeshDataTool.
 Requires [Mesh] with primitive type [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Instance) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface int) error {
-	return error(class(self).CreateFromSurface(mesh, gd.Int(surface)))
+	return error(gd.ToError(class(self).CreateFromSurface(mesh, gd.Int(surface))))
 }
 
 /*
 Adds a new surface to specified [Mesh] with edited data.
 */
 func (self Instance) CommitToSurface(mesh [1]gdclass.ArrayMesh) error {
-	return error(class(self).CommitToSurface(mesh, gd.Int(0)))
+	return error(gd.ToError(class(self).CommitToSurface(mesh, gd.Int(0))))
 }
 
 /*

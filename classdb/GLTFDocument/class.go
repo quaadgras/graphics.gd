@@ -39,7 +39,7 @@ Takes a path to a GLTF file and imports the data at that file path to the given 
 [b]Note:[/b] The [param base_path] tells [method append_from_file] where to find dependencies and can be empty.
 */
 func (self Instance) AppendFromFile(path string, state [1]gdclass.GLTFState) error {
-	return error(class(self).AppendFromFile(gd.NewString(path), state, gd.Int(0), gd.NewString("")))
+	return error(gd.ToError(class(self).AppendFromFile(gd.NewString(path), state, gd.Int(0), gd.NewString(""))))
 }
 
 /*
@@ -47,14 +47,14 @@ Takes a [PackedByteArray] defining a GLTF and imports the data to the given [GLT
 [b]Note:[/b] The [param base_path] tells [method append_from_buffer] where to find dependencies and can be empty.
 */
 func (self Instance) AppendFromBuffer(bytes []byte, base_path string, state [1]gdclass.GLTFState) error {
-	return error(class(self).AppendFromBuffer(gd.NewPackedByteSlice(bytes), gd.NewString(base_path), state, gd.Int(0)))
+	return error(gd.ToError(class(self).AppendFromBuffer(gd.NewPackedByteSlice(bytes), gd.NewString(base_path), state, gd.Int(0))))
 }
 
 /*
 Takes a Godot Engine scene node and exports it and its descendants to the given [GLTFState] object through the [param state] parameter.
 */
 func (self Instance) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFState) error {
-	return error(class(self).AppendFromScene(node, state, gd.Int(0)))
+	return error(gd.ToError(class(self).AppendFromScene(node, state, gd.Int(0))))
 }
 
 /*
@@ -77,7 +77,7 @@ Takes a [GLTFState] object through the [param state] parameter and writes a glTF
 [b]Note:[/b] The extension of the glTF file determines if it is a .glb binary file or a .gltf text file.
 */
 func (self Instance) WriteToFilesystem(state [1]gdclass.GLTFState, path string) error {
-	return error(class(self).WriteToFilesystem(state, gd.NewString(path)))
+	return error(gd.ToError(class(self).WriteToFilesystem(state, gd.NewString(path))))
 }
 
 /*

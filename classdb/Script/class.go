@@ -60,7 +60,7 @@ func (self Instance) HasSourceCode() bool {
 Reloads the script's class implementation. Returns an error code.
 */
 func (self Instance) Reload() error {
-	return error(class(self).Reload(false))
+	return error(gd.ToError(class(self).Reload(false)))
 }
 
 /*

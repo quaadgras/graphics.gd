@@ -45,7 +45,7 @@ Sends a [Variant] as a packet. If [param full_objects] is [code]true[/code], enc
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
 func (self Instance) PutVar(v any) error {
-	return error(class(self).PutVar(gd.NewVariant(v), false))
+	return error(gd.ToError(class(self).PutVar(gd.NewVariant(v), false)))
 }
 
 /*
@@ -59,14 +59,14 @@ func (self Instance) GetPacket() []byte {
 Sends a raw packet.
 */
 func (self Instance) PutPacket(buffer []byte) error {
-	return error(class(self).PutPacket(gd.NewPackedByteSlice(buffer)))
+	return error(gd.ToError(class(self).PutPacket(gd.NewPackedByteSlice(buffer))))
 }
 
 /*
 Returns the error state of the last packet received (via [method get_packet] and [method get_var]).
 */
 func (self Instance) GetPacketError() error {
-	return error(class(self).GetPacketError())
+	return error(gd.ToError(class(self).GetPacketError()))
 }
 
 /*

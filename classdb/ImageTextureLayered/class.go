@@ -38,7 +38,7 @@ Creates an [ImageTextureLayered] from an array of [Image]s. See [method Image.cr
 Each [Image] represents one [code]layer[/code].
 */
 func (self Instance) CreateFromImages(images gd.Array) error {
-	return error(class(self).CreateFromImages(images))
+	return error(gd.ToError(class(self).CreateFromImages(images)))
 }
 
 /*

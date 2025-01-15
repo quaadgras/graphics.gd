@@ -38,7 +38,7 @@ type Any interface {
 Creates the [ImageTexture3D] with specified [param width], [param height], and [param depth]. See [enum Image.Format] for [param format] options. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for the [ImageTexture3D].
 */
 func (self Instance) Create(format gdclass.ImageFormat, width int, height int, depth int, use_mipmaps bool, data gd.Array) error {
-	return error(class(self).Create(format, gd.Int(width), gd.Int(height), gd.Int(depth), use_mipmaps, data))
+	return error(gd.ToError(class(self).Create(format, gd.Int(width), gd.Int(height), gd.Int(depth), use_mipmaps, data)))
 }
 
 /*

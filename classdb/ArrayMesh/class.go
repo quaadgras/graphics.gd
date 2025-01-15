@@ -204,7 +204,7 @@ func (self Instance) RegenNormalMaps() {
 Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 */
 func (self Instance) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size Float.X) error {
-	return error(class(self).LightmapUnwrap(gd.Transform3D(transform), gd.Float(texel_size)))
+	return error(gd.ToError(class(self).LightmapUnwrap(gd.Transform3D(transform), gd.Float(texel_size))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

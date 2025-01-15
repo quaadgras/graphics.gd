@@ -184,7 +184,7 @@ type Any interface {
 Setup the DTLS server to use the given [param server_options]. See [method TLSOptions.server].
 */
 func (self Instance) Setup(server_options [1]gdclass.TLSOptions) error {
-	return error(class(self).Setup(server_options))
+	return error(gd.ToError(class(self).Setup(server_options)))
 }
 
 /*

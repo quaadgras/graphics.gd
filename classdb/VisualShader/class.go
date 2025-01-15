@@ -114,7 +114,7 @@ func (self Instance) CanConnectNodes(atype gdclass.VisualShaderType, from_node i
 Connects the specified nodes and ports.
 */
 func (self Instance) ConnectNodes(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) error {
-	return error(class(self).ConnectNodes(atype, gd.Int(from_node), gd.Int(from_port), gd.Int(to_node), gd.Int(to_port)))
+	return error(gd.ToError(class(self).ConnectNodes(atype, gd.Int(from_node), gd.Int(from_port), gd.Int(to_node), gd.Int(to_port))))
 }
 
 /*

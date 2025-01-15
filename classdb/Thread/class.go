@@ -42,7 +42,7 @@ The [param priority] of the [Thread] can be changed by passing a value from the 
 Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 */
 func (self Instance) Start(callable func()) error {
-	return error(class(self).Start(gd.NewCallable(callable), 1))
+	return error(gd.ToError(class(self).Start(gd.NewCallable(callable), 1)))
 }
 
 /*
