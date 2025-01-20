@@ -341,8 +341,13 @@ func wrap() error {
 			return xray.New(err)
 		}
 		if GOOS == "js" {
+			PORT := os.Getenv("PORT")
+			if PORT == "" {
+				PORT = "8080"
+			}
+			fmt.Println("gd: serving wasm/js on http://localhost:" + PORT)
 			http.Handle("/", WebServer{http.FileServer(http.Dir(filepath.Join(graphics, ".godot/public")))})
-			return xray.New(http.ListenAndServe(":8080", nil))
+			return xray.New(http.ListenAndServe(":"+PORT, nil))
 		}
 		return nil
 	case "test":
