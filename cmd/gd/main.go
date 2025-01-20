@@ -27,6 +27,7 @@ import (
 	_ "embed"
 
 	"graphics.gd/cmd/gd/internal/golang"
+	"runtime.link/api/xray"
 )
 
 const version = "4.3"
@@ -58,7 +59,7 @@ func setupFile(force bool, name, embed string, args ...any) error {
 			embed = fmt.Sprintf(embed, args...)
 		}
 		if err := os.WriteFile(name, []byte(embed), 0644); err != nil {
-			return err
+			return xray.New(err)
 		}
 	}
 	return nil
@@ -88,34 +89,34 @@ func installGodot(gobin string) (string, error) {
 		fmt.Println("gd: downloading Godot v" + version + " stable for linux")
 		resp, err := http.Get("https://github.com/godotengine/godot-builds/releases/download/" + version + "-stable/Godot_v" + version + "-stable_linux.x86_64.zip")
 		if err != nil {
-			return "", err
+			return "", xray.New(err)
 		}
 		defer resp.Body.Close()
 		if resp.StatusCode != 200 {
-			return "", err
+			return "", xray.New(err)
 		}
 		data, err := io.ReadAll(resp.Body)
 		if err != nil {
-			return "", err
+			return "", xray.New(err)
 		}
 		archive, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
 		if err != nil {
-			return "", err
+			return "", xray.New(err)
 		}
 		inZip, err := archive.Open("Godot_v" + version + "-stable_linux.x86_64")
 		if err != nil {
-			return "", err
+			return "", xray.New(err)
 		}
 		defer inZip.Close()
 		//executable
 		binPath := filepath.Join(gobin, "godot-"+version)
 		file, err := os.OpenFile(binPath, os.O_CREATE|os.O_WRONLY, 0755)
 		if err != nil {
-			return "", err
+			return "", xray.New(err)
 		}
 		defer file.Close()
 		if _, err = io.Copy(file, inZip); err != nil {
-			return "", err
+			return "", xray.New(err)
 		}
 		return binPath, nil
 	default:
@@ -158,17 +159,17 @@ func useGodot() (string, error) {
 	info, err := os.Stat(godotBin)
 	if err != nil {
 		if !errors.Is(err, fs.ErrNotExist) {
-			return "", err
+			return "", xray.New(err)
 		}
 		godot, err := installGodot(gobin)
 		if err != nil {
-			return "", err
+			return "", xray.New(err)
 		}
 		return godot, nil
 	}
 	if info.Mode()&0111 == 0 {
 		if err := os.Chmod(godotBin, 0755); err != nil {
-			return "", err
+			return "", xray.New(err)
 		}
 	}
 	return filepath.Join(gobin, "godot-"+version), nil
@@ -191,7 +192,7 @@ func wrap() error {
 	}
 	wd, err := os.Getwd()
 	if err != nil {
-		return err
+		return xray.New(err)
 	}
 	// look for a go.mod file
 	for wd := wd; true; wd = filepath.Dir(wd) {
@@ -204,7 +205,7 @@ func wrap() error {
 		} else if os.IsNotExist(err) {
 			continue
 		} else {
-			return err
+			return xray.New(err)
 		}
 	}
 	graphics := "./graphics"
@@ -214,49 +215,69 @@ func wrap() error {
 	setup := func() error {
 		if GOOS == "js" {
 			if err := os.MkdirAll(graphics+"/.godot/public", 0755); err != nil {
-				return err
+				return xray.New(err)
 			}
 			path := filepath.Join(graphics, ".godot", "public", "wasm_exec.js")
 			if _, err := os.Stat(path); os.IsNotExist(err) {
 				GOROOT := golang.CMD.Env.GOROOT()
 				wasm_exec, err := os.Open(filepath.Join(GOROOT, "lib", "wasm", "wasm_exec.js"))
 				if err != nil {
-					return err
+					return xray.New(err)
 				}
 				defer wasm_exec.Close()
 				out, err := os.Create(path)
 				if err != nil {
-					return err
+					return xray.New(err)
 				}
 				defer out.Close()
 				if _, err := io.Copy(out, wasm_exec); err != nil {
-					return err
+					return xray.New(err)
+				}
+			}
+			template_path := filepath.Join(graphics, ".godot", "godot.web.template_debug.wasm32.zip")
+			if _, err := os.Stat(template_path); os.IsNotExist(err) {
+				fmt.Println("gd: downloading graphics.gd/godot.web.template_debug.wasm32.zip")
+				resp, err := http.Get("https://graphics.gd/godot.web.template_debug.wasm32.zip")
+				if err != nil {
+					return xray.New(err)
+				}
+				defer resp.Body.Close()
+				if resp.StatusCode != 200 {
+					return fmt.Errorf("gd: failed to download godot.web.template_debug.wasm32.zip: %v (is your gd command out of date?)", resp.Status)
+				}
+				data, err := io.ReadAll(resp.Body)
+				if err != nil {
+					return xray.New(err)
+				}
+				if err := os.WriteFile(template_path, data, 0644); err != nil {
+					return xray.New(err)
 				}
 			}
 		}
 		if err := setupFile(false, graphics+"/main.tscn", main_tscn); err != nil {
-			return err
+			return xray.New(err)
 		}
 		if err := setupFile(false, graphics+"/project.godot", project_godot, filepath.Base(wd)); err != nil {
-			return err
+			return xray.New(err)
 		}
-		if err := setupFile(false, graphics+"/export_presets.cfg", export_presets_cfg); err != nil {
-			return err
+		if err := setupFile(false, graphics+"/export_presets.cfg", export_presets_cfg, filepath.Join(
+			".godot", "godot.web.template_debug.wasm32.zip",
+		)); err != nil {
+			return xray.New(err)
 		}
 		if err := setupFile(true, graphics+"/library.gdextension", library_gdextension); err != nil {
-			return err
+			return xray.New(err)
 		}
-		_, err := os.Stat(graphics + "/.godot")
-		if os.IsNotExist(err) {
+		if _, err := os.Stat(graphics + "/.godot"); os.IsNotExist(err) {
 			godot := exec.Command(godot, "--import", "--headless")
 			godot.Dir = graphics
 			godot.Stderr = os.Stderr
 			godot.Stdout = os.Stdout
 			godot.Stdin = os.Stdin
-			return godot.Run()
+			return xray.New(godot.Run())
 		}
 		if err := setupFile(false, graphics+"/.godot/extension_list.cfg", extension_list_cfg); err != nil {
-			return err
+			return xray.New(err)
 		}
 		return nil
 	}
@@ -304,10 +325,10 @@ func wrap() error {
 	golang.Stdout = os.Stdout
 	golang.Stdin = os.Stdin
 	if err := golang.Run(); err != nil {
-		return err
+		return xray.New(err)
 	}
 	if err := setup(); err != nil {
-		return err
+		return xray.New(err)
 	}
 	switch os.Args[1] {
 	case "run":
@@ -317,11 +338,11 @@ func wrap() error {
 		godot.Stdout = os.Stdout
 		godot.Stdin = os.Stdin
 		if err := godot.Run(); err != nil {
-			return err
+			return xray.New(err)
 		}
 		if GOOS == "js" {
 			http.Handle("/", WebServer{http.FileServer(http.Dir(filepath.Join(graphics, ".godot/public")))})
-			return http.ListenAndServe(":8080", nil)
+			return xray.New(http.ListenAndServe(":8080", nil))
 		}
 		return nil
 	case "test":
@@ -346,7 +367,7 @@ func wrap() error {
 		godot.Stderr = os.Stderr
 		godot.Stdout = os.Stdout
 		godot.Stdin = os.Stdin
-		return godot.Run()
+		return xray.New(godot.Run())
 	}
 	return nil
 }

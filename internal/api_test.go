@@ -3,14 +3,12 @@
 package gd_test
 
 import (
-	"fmt"
 	"os"
 	"testing"
 	"unsafe"
 
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/AudioEffectInstance"
-	"graphics.gd/classdb/GDExtension"
 	gd "graphics.gd/internal"
 	"graphics.gd/startup"
 )
@@ -58,8 +56,4 @@ func TestNativeStructSize(t *testing.T) {
 			t.Fatalf("Our size of %v is %v, but Godot's is %v", name, expectation, size)
 		}
 	}
-}
-
-func TestGetLibraryPath(t *testing.T) {
-	fmt.Println(GDExtension.LibraryPath())
 }
