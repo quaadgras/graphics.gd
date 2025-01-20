@@ -26,7 +26,7 @@ func main() {
 	hello.SetVerticalAlignment(Label.VerticalAlignmentCenter)
 	hello.SetText("Hello, World!")
 	SceneTree.Add(hello)
-        startup.Engine()
+	startup.Engine()
 }
 ```
 
@@ -130,13 +130,14 @@ To run the go tests for this module `cd internal && gd test`.
 * Mac     (including Apple Silicon)
 * Android (including MetaQuest)
 * IOS     (should work, untested)
+* Web     (experimental) `GOOS=js GOARCH=wasm gd run`
 
 ## Known Limitations
 
-* No support for calling Engine class methods that take varargs.
-* No support for script extensions.
-* 64bit support only.
-* No Web Export Yet (we have some ideas on how to work towards this)
+* No support for calling classdb methods that accept a variable number of arguments.
+* No support for Go 'scripts'.
+* 64bit only.
+* Web build needs work [read the discussion](https://github.com/grow-graphics/gd/discussions/69).
 * No planned support for proprietary consoles.
 
 ## See Also
