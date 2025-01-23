@@ -23,6 +23,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	_ "embed"
 
@@ -235,16 +236,19 @@ func wrap() error {
 				}
 			}
 			template_path := filepath.Join(graphics, ".godot", "godot.web.template_debug.wasm32.zip")
-			if _, err := os.Stat(template_path); os.IsNotExist(err) {
-				fmt.Println("gd: downloading graphics.gd/godot.web.template_debug.wasm32.zip")
-				resp, err := http.Get("https://graphics.gd/godot.web.template_debug.wasm32.zip")
-				if err != nil {
-					return xray.New(err)
-				}
+			stat, statErr := os.Stat(template_path)
+			resp, err := http.Get("https://graphics.gd/godot.web.template_debug.wasm32.zip")
+			if err != nil && !os.IsNotExist(err) {
+				return xray.New(err)
+			} else {
 				defer resp.Body.Close()
-				if resp.StatusCode != 200 {
-					return fmt.Errorf("gd: failed to download godot.web.template_debug.wasm32.zip: %v (is your gd command out of date?)", resp.Status)
-				}
+			}
+			last_modified, err := time.Parse(http.TimeFormat, resp.Header.Get("Last-Modified"))
+			if err != nil {
+				return xray.New(err)
+			}
+			if (os.IsNotExist(statErr) || (statErr == nil && last_modified.After(stat.ModTime()))) && resp.Body != nil {
+				fmt.Println("gd: downloading graphics.gd/godot.web.template_debug.wasm32.zip")
 				data, err := io.ReadAll(resp.Body)
 				if err != nil {
 					return xray.New(err)
@@ -252,6 +256,8 @@ func wrap() error {
 				if err := os.WriteFile(template_path, data, 0o644); err != nil {
 					return xray.New(err)
 				}
+			} else if resp.Body == nil || resp.StatusCode != 200 {
+				return fmt.Errorf("gd: failed to download godot.web.template_debug.wasm32.zip: %v (is your gd command out of date?)", resp.Status)
 			}
 		}
 		if err := setupFile(false, graphics+"/main.tscn", main_tscn); err != nil {
