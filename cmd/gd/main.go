@@ -248,7 +248,7 @@ func wrap() error {
 				return xray.New(err)
 			}
 			if (os.IsNotExist(statErr) || (statErr == nil && last_modified.After(stat.ModTime()))) && resp.Body != nil {
-				fmt.Println("gd: downloading graphics.gd/godot.web.template_debug.wasm32.zip")
+				fmt.Println("gd: downloading latest graphics.gd/godot.web.template_debug.wasm32.zip")
 				data, err := io.ReadAll(resp.Body)
 				if err != nil {
 					return xray.New(err)
