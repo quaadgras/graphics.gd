@@ -312,7 +312,7 @@ func linkJS(API *gd.API) {
 			for i := 0; i < len(variant); i++ {
 				variant[i] = uint32(args[i+1].Int())
 			}
-			return oi.Set(field, pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&variant))))
+			return oi.Set(field, pointers.Let[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&variant))))
 		})))
 		wrapper.Set("get", cleanup(js.FuncOf(func(_ js.Value, args []js.Value) any {
 			var field = pointers.Let[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
