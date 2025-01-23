@@ -291,6 +291,11 @@ func linkJS(API *gd.API) {
 	API.Object.GetSingleton = func(name gd.StringName) [1]gd.Object {
 		return [1]gd.Object{pointers.Raw[gd.Object]([3]uint64{uint64(global_get_singleton.Invoke(pointers.Get(name)[0]).Int())})}
 	}
+	object_get_instance_from_id := dlsym("object_get_instance_from_id")
+	API.Object.GetInstanceFromID = func(id gd.ObjectID) [1]gd.Object {
+		fid := math.Float64frombits(uint64(id))
+		return [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(object_get_instance_from_id.Invoke(fid).Int())})}
+	}
 	object_set_instance := dlsym("object_set_instance")
 	API.Object.SetInstance = func(o [1]gd.Object, sn gd.StringName, oi gd.ObjectInterface) {
 		wrapper := js.Global().Get("Object").New()
