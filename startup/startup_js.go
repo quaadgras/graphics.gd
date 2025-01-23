@@ -259,10 +259,9 @@ func linkJS(API *gd.API) {
 			return pointers.Get(info_go.CreateInstance()[0])[0]
 		}))
 		info.Set("get_virtual_call_data", js.FuncOf(func(_ js.Value, args []js.Value) any {
-			p_class := args[0].Int()
-			p_name := args[1].Int()
+			p_name := args[0].Int()
 			var name = pointers.Let[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(p_name)})
-			virtual := cgoHandle(p_class).Value().(gd.ClassInterface).GetVirtual(name)
+			virtual := info_go.GetVirtual(name)
 			if virtual == nil {
 				return 0
 			}
