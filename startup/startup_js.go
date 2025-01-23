@@ -122,7 +122,7 @@ func linkJS(API *gd.API) {
 	}
 	get_library_path := dlsym("get_library_path")
 	API.GetLibraryPath = func(token gd.ExtensionToken) gd.String {
-		return pointers.New[gd.String]([1]gd.EnginePointer{gd.EnginePointer(get_library_path.Invoke(uint32(token)).Int())})
+		return pointers.Let[gd.String]([1]gd.EnginePointer{gd.EnginePointer(get_library_path.Invoke(uint32(token)).Int())})
 	}
 	get_class_tag := dlsym("classdb_get_class_tag")
 	API.ClassDB.GetClassTag = func(name gd.StringName) gd.ClassTag {
@@ -139,7 +139,7 @@ func linkJS(API *gd.API) {
 				for j := 0; j < len(raw); j++ {
 					raw[j] = uint32(read_result_buffer.Invoke(0, i, j).Int())
 				}
-				args[i] = pointers.New[gd.Variant](*(*gd.VariantPointers)(unsafe.Pointer(&raw)))
+				args[i] = pointers.Let[gd.Variant](*(*gd.VariantPointers)(unsafe.Pointer(&raw)))
 			}
 			result, err := fn(args...)
 			if err != nil {
@@ -166,6 +166,14 @@ func linkJS(API *gd.API) {
 		return gd.VariantType(variant_get_type.Invoke(
 			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
 		).Int())
+	}
+	variant_destroy := dlsym("variant_destroy")
+	API.Variants.Destroy = func(v gd.Variant) {
+		var raw = pointers.Get(v)
+		var vnt = *(*[6]uint32)(unsafe.Pointer(&raw))
+		variant_destroy.Invoke(
+			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
+		)
 	}
 	variant_get_ptr_constructor := dlsym("variant_get_ptr_constructor")
 	call_variant_get_ptr_constructor := dlsym("call_variant_get_ptr_constructor")
@@ -229,7 +237,7 @@ func linkJS(API *gd.API) {
 	}
 	variant_get_type_name := dlsym("variant_get_type_name")
 	API.Variants.GetTypeName = func(vt gd.VariantType) gd.String {
-		return pointers.New[gd.String]([1]gd.EnginePointer{gd.EnginePointer(variant_get_type_name.Invoke(uint32(vt)).Int())})
+		return pointers.Let[gd.String]([1]gd.EnginePointer{gd.EnginePointer(variant_get_type_name.Invoke(uint32(vt)).Int())})
 	}
 	variant_get_ptr_builtin_method := dlsym("variant_get_ptr_builtin_method")
 	call_variant_get_ptr_builtin_method := dlsym("call_variant_get_ptr_builtin_method")
@@ -281,7 +289,7 @@ func linkJS(API *gd.API) {
 	}
 	global_get_singleton := dlsym("global_get_singleton")
 	API.Object.GetSingleton = func(name gd.StringName) [1]gd.Object {
-		return [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(global_get_singleton.Invoke(pointers.Get(name)[0]).Int())})}
+		return [1]gd.Object{pointers.Raw[gd.Object]([3]uint64{uint64(global_get_singleton.Invoke(pointers.Get(name)[0]).Int())})}
 	}
 	object_set_instance := dlsym("object_set_instance")
 	API.Object.SetInstance = func(o [1]gd.Object, sn gd.StringName, oi gd.ObjectInterface) {
@@ -294,7 +302,7 @@ func linkJS(API *gd.API) {
 		handle := cgoNewHandle(oi)
 		wrapper.Set("ref", uint32(handle))
 		wrapper.Set("set", cleanup(js.FuncOf(func(_ js.Value, args []js.Value) any {
-			var field = pointers.New[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
+			var field = pointers.Let[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
 			var variant [6]uint32
 			for i := 0; i < len(variant); i++ {
 				variant[i] = uint32(args[i+1].Int())
@@ -302,7 +310,7 @@ func linkJS(API *gd.API) {
 			return oi.Set(field, pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&variant))))
 		})))
 		wrapper.Set("get", cleanup(js.FuncOf(func(_ js.Value, args []js.Value) any {
-			var field = pointers.New[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
+			var field = pointers.Let[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
 			variant, ok := oi.Get(field)
 			if !ok {
 				return false
@@ -330,11 +338,11 @@ func linkJS(API *gd.API) {
 			return len(list)
 		})))
 		wrapper.Set("property_can_revert", cleanup(js.FuncOf(func(_ js.Value, args []js.Value) any {
-			var field = pointers.New[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
+			var field = pointers.Let[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
 			return oi.PropertyCanRevert(field)
 		})))
 		wrapper.Set("property_get_revert", cleanup(js.FuncOf(func(_ js.Value, args []js.Value) any {
-			var field = pointers.New[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
+			var field = pointers.Let[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(args[0].Int())})
 			variant, ok := oi.PropertyGetRevert(field)
 			if !ok {
 				return false
@@ -496,7 +504,7 @@ func linkJS(API *gd.API) {
 				for j := range raw {
 					raw[j] = uint32(read_result_buffer.Invoke(0, i, j).Int())
 				}
-				arguments[i] = pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&raw)))
+				arguments[i] = pointers.Let[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&raw)))
 			}
 			result, err := info.Call(instance, arguments...)
 			if err != nil {
@@ -583,7 +591,7 @@ func linkJS(API *gd.API) {
 		for i := range buf {
 			buf[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
 		}
-		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf)))
+		return pointers.Let[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf)))
 	}
 	array_set_typed := dlsym("array_set_typed")
 	API.Array.SetTyped = func(self gd.Array, t gd.VariantType, className gd.StringName, script gd.Object) {
@@ -602,7 +610,7 @@ func linkJS(API *gd.API) {
 		for i := range buf {
 			buf[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
 		}
-		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf)))
+		return pointers.Let[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf)))
 	}
 }
 
