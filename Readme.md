@@ -1,4 +1,4 @@
-# Graphics GD [![Go Reference](https://pkg.go.dev/badge/grow.graphics/gd.svg)](https://pkg.go.dev/grow.graphics/gd)
+# Graphics GD [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
 This module provides a safe performant way to work with graphics and game development in Go via the GDExtension
 interface of a supported graphics/game engine. So far, Godot 4.3 is the only officially supported engine.
