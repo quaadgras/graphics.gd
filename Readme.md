@@ -140,6 +140,11 @@ To run the go tests for this module `cd internal && gd test`.
 * Web build needs work [read the discussion](https://github.com/grow-graphics/gd/discussions/69).
 * No planned support for proprietary consoles.
 
+## Contributing
+
+The best way you can contribute to graphics.gd is to **try it**, we need your help to find out
+what's working and what doesn't, so do please let us know of any trouble that you run into!
+
 ## See Also
 
 * [godot-go](https://github.com/godot-go/godot-go) (Another project aiming to support Go + Godot integration)
