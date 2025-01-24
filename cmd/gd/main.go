@@ -325,22 +325,25 @@ func wrap() error {
 		copy(args, os.Args[1:])
 	}
 	builds = append(builds, args)
-	if runtime.GOOS == "darwin" {
+	arches := []string{GOARCH}
+	if runtime.GOOS == "darwin" && (GOARCH == "amd64" || GOARCH == "arm64") {
 		// GOARCH possible values = "amd64", "arm64"
 		missingArch := "arm64"
 		if GOARCH == "arm64" {
 			missingArch = "amd64"
 		}
 		missingArgs := make([]string, len(os.Args)-1)
-		missingLibraryName := fmt.Sprintf("%v_%v", GOOS, missingArch)
+		missingLibraryName := fmt.Sprintf("%v_%v.dylib", GOOS, missingArch)
 		missingArgs = append(args, "-buildmode=c-shared", "-o", graphics+"/"+missingLibraryName)
 		builds = append(builds, missingArgs)
+		arches = append(arches, missingArch)
 	}
-	for _, commandArgs := range builds {
+	for i, commandArgs := range builds {
 		golang := exec.Command("go", commandArgs...)
 		if GOOS != "js" {
 			golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 		}
+		golang.Env = append(golang.Env, "GOARCH="+arches[i])
 		golang.Stderr = os.Stderr
 		golang.Stdout = os.Stdout
 		golang.Stdin = os.Stdin
@@ -348,13 +351,13 @@ func wrap() error {
 			return err
 		}
 	}
-	if runtime.GOOS == "darwin" {
+	if runtime.GOOS == "darwin" && (GOARCH == "amd64" || GOARCH == "arm64") {
 		// check if command is available in the system
 		_, err := exec.LookPath("lipo")
 		if err != nil {
 			return fmt.Errorf("gd: lipo command not found in the system, please install it!")
 		}
-		lipoCommand := exec.Command("lipo", "-create", graphics+"/darwin_amd64.dylib", graphics+"/darwing_arm64.dylib", "-output", graphics+"/universal.dylib")
+		lipoCommand := exec.Command("lipo", "-create", graphics+"/darwin_amd64.dylib", graphics+"/darwin_arm64.dylib", "-output", graphics+"/darwin_universal.dylib")
 		lipoCommand.Stderr = os.Stderr
 		lipoCommand.Stdout = os.Stdout
 		lipoCommand.Stdin = os.Stdin
