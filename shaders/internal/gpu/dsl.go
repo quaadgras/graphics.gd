@@ -1,4 +1,4 @@
-package dsl
+package gpu
 
 type Expression struct {
 	indirect Evaluator
@@ -71,6 +71,17 @@ type FunctionCall struct {
 func (f FunctionCall) evaluate() Evaluator {
 	return f
 }
+
+type Output struct {
+	Index *int
+	Type  string
+}
+
+func Out(t string) Expression {
+	return New(Output{Index: new(int), Type: t})
+}
+
+func (o Output) evaluate() Evaluator { return o }
 
 func Fn(name string, args ...Evaluator) Expression {
 	return New(FunctionCall{Name: name, Args: args})

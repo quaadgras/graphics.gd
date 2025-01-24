@@ -10,13 +10,10 @@ import (
 	"graphics.gd/classdb/Shader"
 	"graphics.gd/classdb/ShaderMaterial"
 	gd "graphics.gd/internal"
-	"graphics.gd/shaders/internal/dsl"
-	"graphics.gd/shaders/mat2"
-	"graphics.gd/shaders/mat3"
-	"graphics.gd/shaders/mat4"
-	"graphics.gd/shaders/vec1"
+	vec1 "graphics.gd/shaders/float"
+	"graphics.gd/shaders/internal/gpu"
+	dsl "graphics.gd/shaders/internal/gpu"
 	"graphics.gd/shaders/vec2"
-	"graphics.gd/shaders/vec3"
 	"graphics.gd/shaders/vec4"
 	"runtime.link/xyz"
 )
@@ -167,70 +164,94 @@ func compileExpression(w io.Writer, expression dsl.Evaluator) {
 	if expr := dsl.Evaluate(expression); expr != nil {
 		expression = expr
 	}
-	fmt.Println(reflect.TypeOf(expression))
-	switch value := expression.(type) {
-	case vec4.RGBA:
+	rtype := reflect.TypeOf(expression)
+	switch {
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.RGBA]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.RGBA]()).Interface().(gpu.RGBA)
 		compileCall(w, "vec4", value.R, value.G, value.B, value.A)
-	case vec4.XYZW:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec4]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec4]()).Interface().(gpu.Vec4)
 		compileCall(w, "vec4", value.X, value.Y, value.Z, value.W)
-	case vec4.T[int]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec4i]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec4i]()).Interface().(gpu.Vec4i)
 		compileCall(w, "ivec4", value.X, value.Y, value.Z, value.W)
-	case vec4.T[uint]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec4u]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec4u]()).Interface().(gpu.Vec4u)
 		compileCall(w, "uvec4", value.X, value.Y, value.Z, value.W)
-	case vec4.T[bool]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec4b]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec4b]()).Interface().(gpu.Vec4b)
 		compileCall(w, "bvec4", value.X, value.Y, value.Z, value.W)
-	case vec3.XYZ:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec3]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec3]()).Interface().(gpu.Vec3)
 		compileCall(w, "vec3", value.X, value.Y, value.Z)
-	case vec3.RGB:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.RGB]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.RGB]()).Interface().(gpu.RGB)
 		compileCall(w, "vec3", value.R, value.G, value.B)
-	case vec3.T[int]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec3i]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec3i]()).Interface().(gpu.Vec3i)
 		compileCall(w, "ivec3", value.X, value.Y, value.Z)
-	case vec3.T[uint]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec3u]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec3u]()).Interface().(gpu.Vec3u)
 		compileCall(w, "uvec3", value.X, value.Y, value.Z)
-	case vec3.T[bool]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec3b]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec3b]()).Interface().(gpu.Vec3b)
 		compileCall(w, "bvec3", value.X, value.Y, value.Z)
-	case vec2.XY:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec2]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec2]()).Interface().(gpu.Vec2)
 		compileCall(w, "vec2", value.X, value.Y)
-	case vec2.T[int]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec2i]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec2i]()).Interface().(gpu.Vec2i)
 		compileCall(w, "ivec2", value.X, value.Y)
-	case vec2.T[uint]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec2u]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec2u]()).Interface().(gpu.Vec2u)
 		compileCall(w, "uvec2", value.X, value.Y)
-	case vec2.T[bool]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Vec2b]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Vec2b]()).Interface().(gpu.Vec2b)
 		compileCall(w, "bvec2", value.X, value.Y)
-	case vec1.X:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Float]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Float]()).Interface().(gpu.Float)
 		fmt.Fprintf(w, "%f", value.X)
-	case vec1.T[int]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Int]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Int]()).Interface().(gpu.Int)
 		fmt.Fprintf(w, "%d", value.X)
-	case vec1.T[uint]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Uint]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Uint]()).Interface().(gpu.Uint)
 		fmt.Fprintf(w, "%d", value.X)
-	case vec1.T[bool]:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Bool]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Bool]()).Interface().(gpu.Bool)
 		fmt.Fprintf(w, "%t", value.X)
-	case mat2.ColumnMajor:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Mat2]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Mat2]()).Interface().(gpu.Mat2)
 		compileCall(w, "mat2", value.Columns[0][0], value.Columns[0][1], value.Columns[1][0], value.Columns[1][1])
-	case mat3.ColumnMajor:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Mat3]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Mat3]()).Interface().(gpu.Mat3)
 		compileCall(w, "mat3", value.Columns[0][0], value.Columns[0][1], value.Columns[0][2], value.Columns[1][0], value.Columns[1][1], value.Columns[1][2], value.Columns[2][0], value.Columns[2][1], value.Columns[2][2])
-	case mat4.ColumnMajor:
+	case rtype.ConvertibleTo(reflect.TypeFor[gpu.Mat4]()):
+		value := reflect.ValueOf(expression).Convert(reflect.TypeFor[gpu.Mat4]()).Interface().(gpu.Mat4)
 		compileCall(w, "mat4", value.Columns[0][0], value.Columns[0][1], value.Columns[0][2], value.Columns[0][3], value.Columns[1][0], value.Columns[1][1], value.Columns[1][2], value.Columns[1][3], value.Columns[2][0], value.Columns[2][1], value.Columns[2][2], value.Columns[2][3], value.Columns[3][0], value.Columns[3][1], value.Columns[3][2], value.Columns[3][3])
-	case dsl.Operation:
-		fmt.Fprintf(w, "(")
-		compileExpression(w, value.A)
-		fmt.Fprintf(w, " %s ", value.Op)
-		compileExpression(w, value.B)
-		fmt.Fprintf(w, ")")
-	case dsl.Identifier:
-		fmt.Fprintf(w, "%s", value)
-	case dsl.Ternary:
-		fmt.Fprintf(w, "(")
-		compileExpression(w, value.If)
-		fmt.Fprintf(w, " ? ")
-		compileExpression(w, value.A)
-		fmt.Fprintf(w, " : ")
-		compileExpression(w, value.B)
-		fmt.Fprintf(w, ")")
-	case dsl.FunctionCall:
-		compileCall(w, string(value.Name), value.Args...)
 	default:
-		panic(fmt.Sprintf("unsupported expression type %T", expression))
+		switch value := expression.(type) {
+		case dsl.Operation:
+			fmt.Fprintf(w, "(")
+			compileExpression(w, value.A)
+			fmt.Fprintf(w, " %s ", value.Op)
+			compileExpression(w, value.B)
+			fmt.Fprintf(w, ")")
+		case dsl.Identifier:
+			fmt.Fprintf(w, "%s", value)
+		case dsl.Ternary:
+			fmt.Fprintf(w, "(")
+			compileExpression(w, value.If)
+			fmt.Fprintf(w, " ? ")
+			compileExpression(w, value.A)
+			fmt.Fprintf(w, " : ")
+			compileExpression(w, value.B)
+			fmt.Fprintf(w, ")")
+		case dsl.FunctionCall:
+			compileCall(w, string(value.Name), value.Args...)
+		default:
+			panic(fmt.Sprintf("unsupported expression type %T", expression))
+		}
 	}
 }
 

@@ -1,35 +1,30 @@
+// Package mat4 provides GPU operations on 4x4 matrices.
 package mat4
 
 import (
-	"graphics.gd/shaders/internal/dsl"
-	"graphics.gd/shaders/vec1"
+	"graphics.gd/shaders/internal/gpu"
 )
 
-type expression = dsl.Expression
+type ColumnMajor gpu.Mat4
 
-type ColumnMajor struct {
-	expression
-
-	Columns [4][4]vec1.X
+func ComponentMul(a, b ColumnMajor) ColumnMajor { //glsl:matrixCompMult(mat4,mat4)mat4
+	return gpu.NewMat4Expression(gpu.Fn("matrixCompMult", a, b))
 }
 
-func ComponentMul(a, b ColumnMajor) ColumnMajor {
-	return ColumnMajor{expression: dsl.Fn("matrixCompMult", a, b)}
+func OuterProduct(a, b gpu.Vec4) ColumnMajor { //glsl:outerProduct(vec4,vec4)mat4
+	return gpu.NewMat4Expression(gpu.Fn("outerProduct", a, b))
 }
-func OuterProduct(a, b vec1.X) ColumnMajor {
-	return ColumnMajor{expression: dsl.Fn("outerProduct", a, b)}
-}
-func Transpose(a ColumnMajor) ColumnMajor {
-	return ColumnMajor{expression: dsl.Fn("transpose", a)}
+func Transpose(a ColumnMajor) ColumnMajor { //glsl:transpose(mat4)mat4
+	return gpu.NewMat4Expression(gpu.Fn("transpose", a))
 }
 
-func Determinant(a ColumnMajor) vec1.X {
-	return vec1.X{Expression: dsl.Fn("determinant", a)}
+func Determinant(a ColumnMajor) gpu.Float { //glsl:determinant(mat4)float
+	return gpu.NewFloatExpression(gpu.Fn("determinant", a))
 }
-func Inverse(a ColumnMajor) ColumnMajor {
-	return ColumnMajor{expression: dsl.Fn("inverse", a)}
+func Inverse(a ColumnMajor) ColumnMajor { //glsl:inverse(mat4)mat4
+	return gpu.NewMat4Expression(gpu.Fn("inverse", a))
 }
 
-func Mul(a, b ColumnMajor) ColumnMajor {
-	return ColumnMajor{expression: dsl.Op(a, "*", b)}
+func Mul(a, b ColumnMajor) ColumnMajor { //glsl:*(mat4,mat4)
+	return gpu.NewMat4Expression(gpu.Op(a, "*", b))
 }

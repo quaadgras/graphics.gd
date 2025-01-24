@@ -1,216 +1,162 @@
+// Package vec4 provides GPU operations on four-component floating-point vectors.
 package vec4
 
 import (
-	"graphics.gd/shaders/internal/dsl"
-	"graphics.gd/shaders/vec1"
+	"reflect"
+
+	"graphics.gd/shaders/internal/gpu"
 )
 
-type XYZW = T[float64]
+// XYZW is a four-component vector of floating-point values on the GPU.
+type XYZW gpu.Vec4
 
-type T[T bool | int | uint | float64] struct {
-	dsl.Expression
+// RGBA is a four-component vector of floating-point values on the GPU.
+type RGBA gpu.RGBA
 
-	X vec1.T[T]
-	Y vec1.T[T]
-	Z vec1.T[T]
-	W vec1.T[T]
+func New[X, Y, Z, W gpu.AnyFloat](x X, y Y, z Z, w W) XYZW {
+	return gpu.NewVec4(x, y, z, w)
 }
 
-type RGBA struct {
-	dsl.Expression
-
-	R vec1.X
-	G vec1.X
-	B vec1.X
-	A vec1.X
+func Add[T gpu.AnyFloat | XYZW](a XYZW, b T) XYZW { //glsl:+(vec4,vec4)
+	return gpu.NewVec4Expression(gpu.Op(either(a), "+", either(b)))
 }
+func Sub[T gpu.AnyFloat | XYZW](a XYZW, b T) XYZW { //glsl:-(vec4,vec4)
+	return gpu.NewVec4Expression(gpu.Op(either(a), "-", either(b)))
+}
+func Mul[T gpu.AnyFloat | XYZW](a XYZW, b T) XYZW { //glsl:*(vec4,vec4)
+	return gpu.NewVec4Expression(gpu.Op(either(a), "*", either(b)))
+}
+func Div[T gpu.AnyFloat | XYZW](a XYZW, b T) XYZW { //glsl:/(vec4,vec4)
+	return gpu.NewVec4Expression(gpu.Op(either(a), "/", either(b)))
+}
+func Neg(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Op(nil, "-", a)) } //glsl:-(vec4)
 
-func New[X vec1.Any](x, y, z, w X) T[X] {
-	return T[X]{
-		X: vec1.New(x),
-		Y: vec1.New(y),
-		Z: vec1.New(z),
-		W: vec1.New(w),
+func either[T gpu.AnyFloat | XYZW](v T) gpu.Evaluator {
+	rvalue := reflect.ValueOf(v)
+	switch {
+	case rvalue.Type().ConvertibleTo(reflect.TypeOf(XYZW{})):
+		return rvalue.Convert(reflect.TypeOf(XYZW{})).Interface().(XYZW)
+	case rvalue.Type().ConvertibleTo(reflect.TypeOf(gpu.Float{})):
+		return gpu.NewFloat(rvalue.Convert(reflect.TypeOf(gpu.Float{})).Interface().(gpu.Float))
+	default:
+		return gpu.NewFloat(rvalue.Float())
 	}
 }
 
-func Add[X int | uint | float64](a, b T[X]) T[X] { return T[X]{Expression: dsl.Op(a, "+", b)} }
-func Sub[X int | uint | float64](a, b T[X]) T[X] { return T[X]{Expression: dsl.Op(a, "-", b)} }
-func Mul[X int | uint | float64](a, b T[X]) T[X] { return T[X]{Expression: dsl.Op(a, "*", b)} }
-func Div[X int | uint | float64](a, b T[X]) T[X] { return T[X]{Expression: dsl.Op(a, "/", b)} }
-func Mod[X int | uint](a, b T[X]) T[X]           { return T[X]{Expression: dsl.Op(a, "%", b)} }
-
-func Not(a T[bool]) T[bool]                         { return T[bool]{Expression: dsl.Op(nil, "!", a)} }
-func And(a, b T[bool]) T[bool]                      { return T[bool]{Expression: dsl.Op(a, "&&", b)} }
-func Or(a, b T[bool]) T[bool]                       { return T[bool]{Expression: dsl.Op(a, "||", b)} }
-func Eq[X vec1.Any](a, b T[X]) T[bool]              { return T[bool]{Expression: dsl.Op(a, "==", b)} }
-func Neq[X vec1.Any](a, b T[X]) T[bool]             { return T[bool]{Expression: dsl.Op(a, "!=", b)} }
-func Gt[X int | uint | float64](a, b T[X]) T[bool]  { return T[bool]{Expression: dsl.Op(a, ">", b)} }
-func Gte[X int | uint | float64](a, b T[X]) T[bool] { return T[bool]{Expression: dsl.Op(a, ">=", b)} }
-func Lt[X int | uint | float64](a, b T[X]) T[bool]  { return T[bool]{Expression: dsl.Op(a, "<", b)} }
-func Lte[X int | uint | float64](a, b T[X]) T[bool] { return T[bool]{Expression: dsl.Op(a, "<=", b)} }
-
-func Neg[X int | uint | float64](a T[X]) T[X] { return T[X]{Expression: dsl.Op(nil, "-", a)} }
-
-func BitwiseNot[X int | uint](a T[X]) T[X]           { return T[X]{Expression: dsl.Op(nil, "~", a)} }
-func BitwiseAnd[X int | uint](a, b T[X]) T[X]        { return T[X]{Expression: dsl.Op(a, "&", b)} }
-func BitwiseOr[X int | uint](a, b T[X]) T[X]         { return T[X]{Expression: dsl.Op(a, "|", b)} }
-func BitwiseXor[X int | uint](a, b T[X]) T[X]        { return T[X]{Expression: dsl.Op(a, "^", b)} }
-func BitwiseShiftLeft[X int | uint](a, b T[X]) T[X]  { return T[X]{Expression: dsl.Op(a, "<<", b)} }
-func BitwiseShiftRight[X int | uint](a, b T[X]) T[X] { return T[X]{Expression: dsl.Op(a, ">>", b)} }
-
-func AddX[X int | uint | float64](a T[X], b vec1.T[X]) T[X] {
-	return T[X]{Expression: dsl.Op(a, "+", b)}
+func FloatBitsToInt[A gpu.AnyFloat](a A) gpu.Vec4i { //glsl:floatBitsToInt(vec4)ivec
+	return gpu.NewVec4iExpression(gpu.Fn("floatBitsToInt", gpu.NewFloat(a)))
+}
+func FloatBitsToUint[A gpu.AnyFloat](a A) gpu.Vec4u { //glsl:floatBitsToUint(vec4)uvec
+	return gpu.NewVec4uExpression(gpu.Fn("floatBitsToUint", gpu.NewFloat(a)))
 }
 
-func SubX[X int | uint | float64](a T[X], b vec1.T[X]) T[X] {
-	return T[X]{Expression: dsl.Op(a, "-", b)}
+func Abs(a XYZW) XYZW      { return gpu.NewVec4Expression(gpu.Fn("abs", a)) }     //glsl:abs(vec4)vec4
+func Acos(a XYZW) XYZW     { return gpu.NewVec4Expression(gpu.Fn("acos", a)) }    //glsl:acos(vec4)vec4
+func Acosh(a XYZW) XYZW    { return gpu.NewVec4Expression(gpu.Fn("acosh", a)) }   //glsl:acosh(vec4)vec4
+func Asin(a XYZW) XYZW     { return gpu.NewVec4Expression(gpu.Fn("asin", a)) }    //glsl:asin(vec4)vec4
+func Asinh(a XYZW) XYZW    { return gpu.NewVec4Expression(gpu.Fn("asinh", a)) }   //glsl:asinh(vec4)vec4
+func Atan2(a, b XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("atan", a, b)) } //glsl:atan(vec4,vec4)vec4
+func Atan(a XYZW) XYZW     { return gpu.NewVec4Expression(gpu.Fn("atan", a)) }    //glsl:atan(vec4)vec4
+func Atanh(a XYZW) XYZW    { return gpu.NewVec4Expression(gpu.Fn("atanh", a)) }   //glsl:atanh(vec4)vec4
+func Ceil(a XYZW) XYZW     { return gpu.NewVec4Expression(gpu.Fn("ceil", a)) }    //glsl:ceil(vec4)vec4
+func Clamp(a, min, max XYZW) XYZW { //glsl:clamp(vec4,vec4,vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("clamp", a, min, max))
 }
-
-func MulX[X int | uint | float64](a T[X], b vec1.T[X]) T[X] {
-	return T[X]{Expression: dsl.Op(a, "*", b)}
+func ClampX[A, B gpu.AnyFloat](a XYZW, min A, max B) XYZW { //glsl:clamp(vec4,float,float)vec4
+	return gpu.NewVec4Expression(gpu.Fn("clamp", a, gpu.NewFloat(min), gpu.NewFloat(max)))
 }
-
-func DivX[X int | uint | float64](a T[X], b vec1.T[X]) T[X] {
-	return T[X]{Expression: dsl.Op(a, "/", b)}
+func Cos(a XYZW) XYZW  { return gpu.NewVec4Expression(gpu.Fn("cos", a)) }  //glsl:cos(vec4)vec4
+func Cosh(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("cosh", a)) } //glsl:cosh(vec4)vec4
+func DFdx(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("dFdx", a)) } //glsl:dFdx(vec4)vec4
+func DFdy(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("dFdy", a)) } //glsl:dFdy(vec4)vec4
+func Degrees(a XYZW) XYZW { //glsl:degrees(vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("degrees", a))
 }
-
-func ModX[X int | uint](a T[X], b vec1.T[X]) T[X] {
-	return T[X]{Expression: dsl.Op(a, "%", b)}
+func Exp(a XYZW) XYZW  { return gpu.NewVec4Expression(gpu.Fn("exp", a)) }  //glsl:exp(vec4)vec4
+func Exp2(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("exp2", a)) } //glsl:exp2(vec4)vec4
+func FaceForward(a, b, n XYZW) XYZW { //glsl:faceforward(vec4,vec4,vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("faceforward", a, b, n))
 }
-
-func PackUnorm4x8(v XYZW) vec1.X {
-	return vec1.X{Expression: dsl.Fn("packUnorm4x8", v)}
+func Floor(a XYZW) XYZW  { return gpu.NewVec4Expression(gpu.Fn("floor", a)) }  //glsl:floor(vec4)vec4
+func Fract(a XYZW) XYZW  { return gpu.NewVec4Expression(gpu.Fn("fract", a)) }  //glsl:fract(vec4)vec4
+func Fwidth(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("fwidth", a)) } //glsl:fwidth(vec4)vec4
+func InverseSqrt(a XYZW) XYZW { //glsl:inversesqrt(vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("inversesqrt", a))
 }
-func UnpackUnorm4x8(v vec1.X) XYZW {
-	return XYZW{Expression: dsl.Fn("unpackUnorm4x8", v)}
+func Log(a XYZW) XYZW  { return gpu.NewVec4Expression(gpu.Fn("log", a)) }  //glsl:log(vec4)vec4
+func Log2(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("log2", a)) } //glsl:log2(vec4)vec4
+func Max[T gpu.AnyFloat | XYZW](a XYZW, b T) XYZW { //glsl:max(vec4,float)vec4 max(vec4,vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("max", a, either(b)))
 }
-func PackSnorm4x8(v XYZW) vec1.X {
-	return vec1.X{Expression: dsl.Fn("packSnorm4x8", v)}
+func Min[T gpu.AnyFloat | XYZW](a XYZW, b T) XYZW { //glsl:min(vec4,float)vec4 min(vec4,vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("min", a, either(b)))
 }
-func UnpackSnorm4x8(v vec1.X) XYZW {
-	return XYZW{Expression: dsl.Fn("unpackSnorm4x8", v)}
+func Mix[T gpu.AnyFloat | XYZW](a XYZW, b, t T) XYZW { //glsl:mix(vec4,float,float)vec4 mix(vec4,vec4,vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("mix", a, either(b), either(t)))
 }
-
-func Sin(x T[float64]) T[float64]                { return T[float64]{Expression: dsl.Fn("sin", x)} }
-func Cos(x T[float64]) T[float64]                { return T[float64]{Expression: dsl.Fn("cos", x)} }
-func Tan(x T[float64]) T[float64]                { return T[float64]{Expression: dsl.Fn("tan", x)} }
-func Asin(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("asin", x)} }
-func Acos(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("acos", x)} }
-func Atan(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("atan", x)} }
-func Atan2(y, x T[float64]) T[float64]           { return T[float64]{Expression: dsl.Fn("atan", y, x)} }
-func Sinh(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("sinh", x)} }
-func Cosh(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("cosh", x)} }
-func Tanh(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("tanh", x)} }
-func Asinh(x T[float64]) T[float64]              { return T[float64]{Expression: dsl.Fn("asinh", x)} }
-func Acosh(x T[float64]) T[float64]              { return T[float64]{Expression: dsl.Fn("acosh", x)} }
-func Atanh(x T[float64]) T[float64]              { return T[float64]{Expression: dsl.Fn("atanh", x)} }
-func Pow(x, y T[float64]) T[float64]             { return T[float64]{Expression: dsl.Fn("pow", x, y)} }
-func Exp(x T[float64]) T[float64]                { return T[float64]{Expression: dsl.Fn("exp", x)} }
-func Exp2(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("exp2", x)} }
-func Log(x T[float64]) T[float64]                { return T[float64]{Expression: dsl.Fn("log", x)} }
-func Log2(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("log2", x)} }
-func Sqrt(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("sqrt", x)} }
-func Inversesqrt(x T[float64]) T[float64]        { return T[float64]{Expression: dsl.Fn("inversesqrt", x)} }
-func Abs[X int | float64](x T[X]) T[X]           { return T[X]{Expression: dsl.Fn("abs", x)} }
-func Sign[X int | float64](x T[X]) T[X]          { return T[X]{Expression: dsl.Fn("sign", x)} }
-func Floor(x T[float64]) T[float64]              { return T[float64]{Expression: dsl.Fn("floor", x)} }
-func Round(x T[float64]) T[float64]              { return T[float64]{Expression: dsl.Fn("round", x)} }
-func RoundEven(x T[float64]) T[float64]          { return T[float64]{Expression: dsl.Fn("roundEven", x)} }
-func Trunc(x T[float64]) T[float64]              { return T[float64]{Expression: dsl.Fn("trunc", x)} }
-func Ceil(x T[float64]) T[float64]               { return T[float64]{Expression: dsl.Fn("ceil", x)} }
-func Fract(x T[float64]) T[float64]              { return T[float64]{Expression: dsl.Fn("fract", x)} }
-func Min[X uint | int | float64](a, b T[X]) T[X] { return T[X]{Expression: dsl.Fn("min", a, b)} }
-func Max[X uint | int | float64](a, b T[X]) T[X] { return T[X]{Expression: dsl.Fn("max", a, b)} }
-func Clamp[X uint | int | float64](x, min, max T[X]) T[X] {
-	return T[X]{Expression: dsl.Fn("clamp", x, min, max)}
+func Mod[T gpu.AnyFloat | XYZW](a XYZW, b T) XYZW { //glsl:mod(vec4,vec4)vec4 mod(vec4,float)vec4
+	return gpu.NewVec4Expression(gpu.Fn("mod", a, either(b)))
 }
-func Mix[X uint | int | float64](a, b, t T[X]) T[X] { return T[X]{Expression: dsl.Fn("mix", a, b, t)} }
-func FMA[X uint | int | float64](a, b, c T[X]) T[X] { return T[X]{Expression: dsl.Fn("fma", a, b, c)} }
-func Step[X uint | int | float64](edge, x T[X]) T[X] {
-	return T[X]{Expression: dsl.Fn("step", edge, x)}
+func Modf(a XYZW) (XYZW, XYZW) { //glsl:modf(vec4,out[vec4])vec4
+	out := gpu.NewVec4Expression(gpu.Out("vec4"))
+	return out, gpu.NewVec4Expression(gpu.Fn("modf", a, out))
 }
-func Smoothstep[X uint | int | float64](edge0, edge1, x T[X]) T[X] {
-	return T[X]{Expression: dsl.Fn("smoothstep", edge0, edge1, x)}
+func Normalize(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("normalize", a)) } //glsl:normalize(vec4)vec4
+func Pow(a, b XYZW) XYZW    { return gpu.NewVec4Expression(gpu.Fn("pow", a, b)) }    //glsl:pow(vec4,vec4)vec4
+func Radians(a XYZW) XYZW { //glsl:radians(vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("radians", a))
 }
-func IsNaN(x T[float64]) T[bool] { return T[bool]{Expression: dsl.Fn("isnan", x)} }
-func IsInf(x T[float64]) T[bool] { return T[bool]{Expression: dsl.Fn("isinf", x)} }
-func FloatBitsToInt(x T[float64]) T[int] {
-	return T[int]{Expression: dsl.Fn("floatBitsToInt", x)}
+func Reflect(a, b XYZW) XYZW { //glsl:reflect(vec4,vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("reflect", a, b))
 }
-func FloatBitsToUint(x T[float64]) T[uint] {
-	return T[uint]{Expression: dsl.Fn("floatBitsToUint", x)}
+func Refract[T gpu.AnyFloat](a, b XYZW, c T) XYZW { //glsl:refract(vec4,vec4,float)vec4
+	return gpu.NewVec4Expression(gpu.Fn("refract", a, b, gpu.NewFloat(c)))
 }
-func IntBitsToFloat(x T[int]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("intBitsToFloat", x)}
+func Round(a XYZW) XYZW     { return gpu.NewVec4Expression(gpu.Fn("round", a)) }     //glsl:round(vec4)vec4
+func RoundEven(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("roundEven", a)) } //glsl:roundEven(vec4)vec4
+func Sign(a XYZW) XYZW      { return gpu.NewVec4Expression(gpu.Fn("sign", a)) }      //glsl:sign(vec4)vec4
+func Sin(a XYZW) XYZW       { return gpu.NewVec4Expression(gpu.Fn("sin", a)) }       //glsl:sin(vec4)vec4
+func Sinh(a XYZW) XYZW      { return gpu.NewVec4Expression(gpu.Fn("sinh", a)) }      //glsl:sinh(vec4)vec4
+func SmoothStep[T gpu.AnyFloat | XYZW](a, b T, x XYZW) XYZW { //glsl:smoothstep(float,float,vec4)vec4 smoothstep(vec4,vec4,vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("smoothstep", either(a), either(b), x))
 }
-func UintBitsToFloat(x T[uint]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("uintBitsToFloat", x)}
+func Sqrt(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("sqrt", a)) } //glsl:sqrt(vec4)vec4
+func Step[T gpu.AnyFloat | XYZW](a T, x XYZW) XYZW { //glsl:step(float,vec4)vec4 step(vec4,vec4)vec4
+	return gpu.NewVec4Expression(gpu.Fn("step", either(a), x))
 }
-func Length(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("length", x)}
+func Tan(a XYZW) XYZW   { return gpu.NewVec4Expression(gpu.Fn("tan", a)) }   //glsl:tan(vec4)vec4
+func Tanh(a XYZW) XYZW  { return gpu.NewVec4Expression(gpu.Fn("tanh", a)) }  //glsl:tanh(vec4)vec4
+func Trunc(a XYZW) XYZW { return gpu.NewVec4Expression(gpu.Fn("trunc", a)) } //glsl:trunc(vec4)vec4
+func Equal(a, b XYZW) gpu.Vec4b { //glsl:equal(vec4,vec4)bvec
+	return gpu.NewVec4bExpression(gpu.Fn("equal", a, b))
 }
-func Distance(a, b T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("distance", a, b)}
+func GreaterThan(a, b XYZW) gpu.Vec4b { //glsl:greaterThan(vec4,vec4)bvec
+	return gpu.NewVec4bExpression(gpu.Fn("greaterThan", a, b))
 }
-func Normalize(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("normalize", x)}
+func GreaterThanEqual(a, b XYZW) gpu.Vec4b { //glsl:greaterThanEqual(vec4,vec4)bvec
+	return gpu.NewVec4bExpression(gpu.Fn("greaterThanEqual", a, b))
 }
-func Reflect(i, n T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("reflect", i, n)}
+func LessThan(a, b XYZW) gpu.Vec4b { //glsl:lessThan(vec4,vec4)bvec
+	return gpu.NewVec4bExpression(gpu.Fn("lessThan", a, b))
 }
-func Refract(i, n T[float64], eta T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("refract", i, n, eta)}
+func LessThanEqual(a, b XYZW) gpu.Vec4b { //glsl:lessThanEqual(vec4,vec4)bvec
+	return gpu.NewVec4bExpression(gpu.Fn("lessThanEqual", a, b))
 }
-func Faceforward(n, i, nref T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("faceforward", n, i, nref)}
+func NotEqual(a, b XYZW) gpu.Vec4b { //glsl:notEqual(vec4,vec4)bvec
+	return gpu.NewVec4bExpression(gpu.Fn("notEqual", a, b))
 }
-func DFdx(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("dFdx", x)}
+func IsInf(a XYZW) gpu.Vec4b { //glsl:isinf(vec4)bvec
+	return gpu.NewVec4bExpression(gpu.Fn("isinf", a))
 }
-func DFdxCoarse(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("dFdxCoarse", x)}
+func IsNaN(a XYZW) gpu.Vec4b { //glsl:isnan(vec4)bvec
+	return gpu.NewVec4bExpression(gpu.Fn("isnan", a))
 }
-func DFdxFine(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("dFdxFine", x)}
+func Distance(a, b XYZW) gpu.Float { //glsl:distance(vec4,vec4)float
+	return gpu.NewFloatExpression(gpu.Fn("distance", a, b))
 }
-func DFdy(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("dFdy", x)}
+func Dot(a, b XYZW) gpu.Float { //glsl:dot(vec4,vec4)float
+	return gpu.NewFloatExpression(gpu.Fn("dot", a, b))
 }
-func DFdyCoarse(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("dFdyCoarse", x)}
-}
-func DFdyFine(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("dFdyFine", x)}
-}
-func Fwidth(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("fwidth", x)}
-}
-func FwidthCoarse(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("fwidthCoarse", x)}
-}
-func FwidthFine(x T[float64]) T[float64] {
-	return T[float64]{Expression: dsl.Fn("fwidthFine", x)}
-}
-func BitfieldExtract[X int | uint](value T[X], offset, bits vec1.T[X]) T[X] {
-	return T[X]{Expression: dsl.Fn("bitfieldExtract", value, offset, bits)}
-}
-func BitfieldInsert[X int | uint](base, insert T[X], offset, bits vec1.T[X]) T[X] {
-	return T[X]{Expression: dsl.Fn("bitfieldInsert", base, insert, offset, bits)}
-}
-func BitfieldReverse[X int | uint](value T[X]) T[X] {
-	return T[X]{Expression: dsl.Fn("bitfieldReverse", value)}
-}
-func BitCount[X int | uint](value T[X]) T[X] {
-	return T[X]{Expression: dsl.Fn("bitCount", value)}
-}
-func FindLSB[X int | uint](value T[X]) T[X] {
-	return T[X]{Expression: dsl.Fn("findLSB", value)}
-}
-func FindMSB[X int | uint](value T[X]) T[X] {
-	return T[X]{Expression: dsl.Fn("findMSB", value)}
-}
-
-func Dot(a, b XYZW) XYZW {
-	return XYZW{Expression: dsl.Fn("dot", a, b)}
+func Length(a XYZW) gpu.Float { //glsl:length(vec4)float
+	return gpu.NewFloatExpression(gpu.Fn("length", a))
 }

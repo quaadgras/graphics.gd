@@ -1,35 +1,29 @@
+// Package mat3 provides GPU operations on 3x3 matrices.
 package mat3
 
 import (
-	"graphics.gd/shaders/internal/dsl"
-	"graphics.gd/shaders/vec1"
+	"graphics.gd/shaders/internal/gpu"
 )
 
-type expression = dsl.Expression
+type ColumnMajor gpu.Mat3
 
-type ColumnMajor struct {
-	expression
-
-	Columns [3][3]vec1.X
+func ComponentMul(a, b ColumnMajor) ColumnMajor { //glsl:matrixCompMult(mat3,mat3)mat3
+	return gpu.NewMat3Expression(gpu.Fn("matrixCompMult", a, b))
 }
-
-func ComponentMul(a, b ColumnMajor) ColumnMajor {
-	return ColumnMajor{expression: dsl.Fn("matrixCompMult", a, b)}
+func OuterProduct(a, b gpu.Vec3) ColumnMajor { //glsl:outerProduct(vec3,vec3)mat3
+	return gpu.NewMat3Expression(gpu.Fn("outerProduct", a, b))
 }
-func OuterProduct(a, b vec1.X) ColumnMajor {
-	return ColumnMajor{expression: dsl.Fn("outerProduct", a, b)}
-}
-func Transpose(a ColumnMajor) ColumnMajor {
-	return ColumnMajor{expression: dsl.Fn("transpose", a)}
+func Transpose(a ColumnMajor) ColumnMajor { //glsl:transpose(mat3)mat3
+	return gpu.NewMat3Expression(gpu.Fn("transpose", a))
 }
 
-func Determinant(a ColumnMajor) vec1.X {
-	return vec1.X{Expression: dsl.Fn("determinant", a)}
+func Determinant(a ColumnMajor) gpu.Float { //glsl:determinant(mat3)float
+	return gpu.NewFloatExpression(gpu.Fn("determinant", a))
 }
-func Inverse(a ColumnMajor) ColumnMajor {
-	return ColumnMajor{expression: dsl.Fn("inverse", a)}
+func Inverse(a ColumnMajor) ColumnMajor { //glsl:inverse(mat3)mat3
+	return gpu.NewMat3Expression(gpu.Fn("inverse", a))
 }
 
-func Mul(a, b ColumnMajor) ColumnMajor {
-	return ColumnMajor{expression: dsl.Op(a, "*", b)}
+func Mul(a, b ColumnMajor) ColumnMajor { //glsl:*(mat3,mat3)
+	return gpu.NewMat3Expression(gpu.Op(a, "*", b))
 }
