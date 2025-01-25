@@ -1,7 +1,6 @@
 package gd_test
 
 import (
-	"fmt"
 	"testing"
 
 	"graphics.gd/classdb/Engine"
@@ -35,5 +34,14 @@ func TestArrays(t *testing.T) {
 
 func TestArrayConversions(t *testing.T) {
 	info := Engine.GetCopyrightInfo()
-	fmt.Println(info)
+	if len(info) == 0 {
+		t.Error("expected non-empty string")
+	}
+}
+
+func BenchmarkAllocsForArrayReturnedByEngine(t *testing.B) {
+	t.ReportAllocs()
+	for i := 0; i < t.N; i++ {
+		Engine.Advanced().GetCopyrightInfo()
+	}
 }

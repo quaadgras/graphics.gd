@@ -62,10 +62,10 @@ func TestFill(t *testing.T) {
 }
 
 func TestHas(t *testing.T) {
-	gdtests.Print(t, "true", Array.Has(Array.New[any]("inside", 7), "inside"))   // Prints true
-	gdtests.Print(t, "false", Array.Has(Array.New[any]("inside", 7), "outside")) // Prints false
-	gdtests.Print(t, "true", Array.Has(Array.New[any]("inside", 7), 7))          // Prints true
-	gdtests.Print(t, "false", Array.Has(Array.New[any]("inside", 7), "7"))       // Prints false
+	gdtests.Print(t, "true", Array.Has("inside", Array.New[any]("inside", 7)))   // Prints true
+	gdtests.Print(t, "false", Array.Has("outside", Array.New[any]("inside", 7))) // Prints false
+	gdtests.Print(t, "true", Array.Has(7, Array.New[any]("inside", 7)))          // Prints true
+	gdtests.Print(t, "false", Array.Has("7", Array.New[any]("inside", 7)))       // Prints false
 }
 
 func TestIsTyped(t *testing.T) {
