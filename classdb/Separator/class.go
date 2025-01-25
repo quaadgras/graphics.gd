@@ -11,6 +11,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -23,6 +24,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 Abstract base class for separators, used for separating other controls. [Separator]s are purely visual and normally drawn as a [StyleBoxLine].

@@ -11,6 +11,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -24,6 +25,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 A container that arranges its child controls horizontally or vertically and wraps them around at the borders. This is similar to how text in a book wraps around when no more words can fit on a line.

@@ -11,11 +11,11 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Callable"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -25,6 +25,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 This class extends [PhysicsServer2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
@@ -150,9 +151,9 @@ type Interface interface {
 	//Overridable version of [PhysicsServer2D]'s internal [code]area_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
 	AreaSetPickable(area Resource.ID, pickable bool)
 	//Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
-	AreaSetMonitorCallback(area Resource.ID, callback Callable.Any)
+	AreaSetMonitorCallback(area Resource.ID, callback Callable.Function)
 	//Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
-	AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any)
+	AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Function)
 	//Overridable version of [method PhysicsServer2D.body_create].
 	BodyCreate() Resource.ID
 	//Overridable version of [method PhysicsServer2D.body_set_space].
@@ -268,9 +269,9 @@ type Interface interface {
 	BodyIsOmittingForceIntegration(body Resource.ID) bool
 	//Assigns the [param body] to call the given [param callable] during the synchronization phase of the loop, before [method _step] is called. See also [method _sync].
 	//Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
-	BodySetStateSyncCallback(body Resource.ID, callable Callable.Any)
+	BodySetStateSyncCallback(body Resource.ID, callable Callable.Function)
 	//Overridable version of [method PhysicsServer2D.body_set_force_integration_callback].
-	BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any)
+	BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Function, userdata any)
 	//Given a [param body], a [param shape], and their respective parameters, this method should return [code]true[/code] if a collision between the two would occur, with additional details passed in [param results].
 	//Overridable version of [PhysicsServer2D]'s internal [code]shape_collide[/code] method. Corresponds to [method PhysicsDirectSpaceState2D.collide_shape].
 	BodyCollideShape(body Resource.ID, body_shape int, shape Resource.ID, shape_xform Transform2D.OriginXY, motion Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) bool
@@ -411,15 +412,17 @@ func (self implementation) AreaSetTransform(area Resource.ID, transform Transfor
 func (self implementation) AreaGetParam(area Resource.ID, param gdclass.PhysicsServer2DAreaParameter) (_ any) {
 	return
 }
-func (self implementation) AreaGetTransform(area Resource.ID) (_ Transform2D.OriginXY)     { return }
-func (self implementation) AreaSetCollisionLayer(area Resource.ID, layer int)              { return }
-func (self implementation) AreaGetCollisionLayer(area Resource.ID) (_ int)                 { return }
-func (self implementation) AreaSetCollisionMask(area Resource.ID, mask int)                { return }
-func (self implementation) AreaGetCollisionMask(area Resource.ID) (_ int)                  { return }
-func (self implementation) AreaSetMonitorable(area Resource.ID, monitorable bool)          { return }
-func (self implementation) AreaSetPickable(area Resource.ID, pickable bool)                { return }
-func (self implementation) AreaSetMonitorCallback(area Resource.ID, callback Callable.Any) { return }
-func (self implementation) AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Any) {
+func (self implementation) AreaGetTransform(area Resource.ID) (_ Transform2D.OriginXY) { return }
+func (self implementation) AreaSetCollisionLayer(area Resource.ID, layer int)          { return }
+func (self implementation) AreaGetCollisionLayer(area Resource.ID) (_ int)             { return }
+func (self implementation) AreaSetCollisionMask(area Resource.ID, mask int)            { return }
+func (self implementation) AreaGetCollisionMask(area Resource.ID) (_ int)              { return }
+func (self implementation) AreaSetMonitorable(area Resource.ID, monitorable bool)      { return }
+func (self implementation) AreaSetPickable(area Resource.ID, pickable bool)            { return }
+func (self implementation) AreaSetMonitorCallback(area Resource.ID, callback Callable.Function) {
+	return
+}
+func (self implementation) AreaSetAreaMonitorCallback(area Resource.ID, callback Callable.Function) {
 	return
 }
 func (self implementation) BodyCreate() (_ Resource.ID)                      { return }
@@ -513,10 +516,12 @@ func (self implementation) BodySetContactsReportedDepthThreshold(body Resource.I
 func (self implementation) BodyGetContactsReportedDepthThreshold(body Resource.ID) (_ Float.X) {
 	return
 }
-func (self implementation) BodySetOmitForceIntegration(body Resource.ID, enable bool)        { return }
-func (self implementation) BodyIsOmittingForceIntegration(body Resource.ID) (_ bool)         { return }
-func (self implementation) BodySetStateSyncCallback(body Resource.ID, callable Callable.Any) { return }
-func (self implementation) BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Any, userdata any) {
+func (self implementation) BodySetOmitForceIntegration(body Resource.ID, enable bool) { return }
+func (self implementation) BodyIsOmittingForceIntegration(body Resource.ID) (_ bool)  { return }
+func (self implementation) BodySetStateSyncCallback(body Resource.ID, callable Callable.Function) {
+	return
+}
+func (self implementation) BodySetForceIntegrationCallback(body Resource.ID, callable Callable.Function, userdata any) {
 	return
 }
 func (self implementation) BodyCollideShape(body Resource.ID, body_shape int, shape Resource.ID, shape_xform Transform2D.OriginXY, motion Vector2.XY, results unsafe.Pointer, result_max int, result_count *int32) (_ bool) {
@@ -1287,12 +1292,12 @@ func (Instance) _area_set_pickable(impl func(ptr unsafe.Pointer, area Resource.I
 /*
 Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
 */
-func (Instance) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback Callable.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
-		defer pointers.End(callback)
+		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalCallable(callback))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, callback)
 	}
@@ -1301,12 +1306,12 @@ func (Instance) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area Re
 /*
 Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
 */
-func (Instance) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback Callable.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area Resource.ID, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
-		defer pointers.End(callback)
+		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalCallable(callback))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, callback)
 	}
@@ -2110,12 +2115,12 @@ func (Instance) _body_is_omitting_force_integration(impl func(ptr unsafe.Pointer
 Assigns the [param body] to call the given [param callable] during the synchronization phase of the loop, before [method _step] is called. See also [method _sync].
 Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
 */
-func (Instance) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable Callable.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
-		defer pointers.End(callable)
+		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalCallable(callable))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable)
 	}
@@ -2124,12 +2129,12 @@ func (Instance) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body
 /*
 Overridable version of [method PhysicsServer2D.body_set_force_integration_callback].
 */
-func (Instance) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable Callable.Any, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body Resource.ID, callable Callable.Function, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
-		defer pointers.End(callable)
+		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalCallable(callable))
 		var userdata = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		defer pointers.End(userdata)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -3322,12 +3327,12 @@ func (class) _area_set_pickable(impl func(ptr unsafe.Pointer, area gd.RID, picka
 /*
 Overridable version of [method PhysicsServer2D.area_set_monitor_callback].
 */
-func (class) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RID, callback gd.Callable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RID, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
-		defer pointers.End(callback)
+		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalCallable(callback))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, callback)
 	}
@@ -3336,12 +3341,12 @@ func (class) _area_set_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RI
 /*
 Overridable version of [method PhysicsServer2D.area_set_area_monitor_callback].
 */
-func (class) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RID, callback gd.Callable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _area_set_area_monitor_callback(impl func(ptr unsafe.Pointer, area gd.RID, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var area = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var callback = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
-		defer pointers.End(callback)
+		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalCallable(callback))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, area, callback)
 	}
@@ -4145,12 +4150,12 @@ func (class) _body_is_omitting_force_integration(impl func(ptr unsafe.Pointer, b
 Assigns the [param body] to call the given [param callable] during the synchronization phase of the loop, before [method _step] is called. See also [method _sync].
 Overridable version of [method PhysicsServer2D.body_set_state_sync_callback].
 */
-func (class) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body gd.RID, callable gd.Callable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body gd.RID, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
-		defer pointers.End(callable)
+		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalCallable(callable))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, body, callable)
 	}
@@ -4159,12 +4164,12 @@ func (class) _body_set_state_sync_callback(impl func(ptr unsafe.Pointer, body gd
 /*
 Overridable version of [method PhysicsServer2D.body_set_force_integration_callback].
 */
-func (class) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body gd.RID, callable gd.Callable, userdata gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_set_force_integration_callback(impl func(ptr unsafe.Pointer, body gd.RID, callable Callable.Function, userdata gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var callable = pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))
-		defer pointers.End(callable)
+		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[[2]uint64](p_args, 1))))
+		defer pointers.End(gd.InternalCallable(callable))
 		var userdata = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		defer pointers.End(userdata)
 		self := reflect.ValueOf(class).UnsafePointer()

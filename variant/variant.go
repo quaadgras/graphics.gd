@@ -26,25 +26,25 @@ import (
 
 // New returns a new [Any] variant from the given interface value.
 func New(val any) Any {
-	var local [16]byte
+	var local complex128
 	rvalue := reflect.ValueOf(val)
 	rtype := rvalue.Type()
 	switch rtype.Kind() {
 	case reflect.Int16, reflect.Int32, reflect.Int64, reflect.Int:
-		*(*int64)(unsafe.Pointer(&local[0])) = rvalue.Int()
+		*(*int64)(unsafe.Pointer(&local)) = rvalue.Int()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 	case reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uint:
-		*(*uint64)(unsafe.Pointer(&local[0])) = rvalue.Uint()
+		*(*uint64)(unsafe.Pointer(&local)) = rvalue.Uint()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 	case reflect.Float32, reflect.Float64:
-		*(*float64)(unsafe.Pointer(&local[0])) = rvalue.Float()
+		*(*float64)(unsafe.Pointer(&local)) = rvalue.Float()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 	case reflect.Complex64, reflect.Complex128:
-		*(*complex128)(unsafe.Pointer(&local[0])) = rvalue.Complex()
+		*(*complex128)(unsafe.Pointer(&local)) = rvalue.Complex()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 	case reflect.String:
 		s := rvalue.String()
-		*(*int)(unsafe.Pointer(&local[0])) = len(s)
+		*(*int)(unsafe.Pointer(&local)) = len(s)
 		wrapped := isString(unsafe.StringData(s))
 		return Any{value: wrapped, local: local}
 	case reflect.Slice:
@@ -54,77 +54,77 @@ func New(val any) Any {
 		switch rtype.Elem() {
 		case reflect.TypeFor[byte]():
 			b := rvalue.Bytes()
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[byte](unsafe.SliceData(b))
 			return Any{value: wrapped, local: local}
 		case reflect.TypeFor[int32]():
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[int32](unsafe.SliceData(val.([]int32)))
 			return Any{value: wrapped, local: local}
 		case reflect.TypeFor[int64]():
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[int64](unsafe.SliceData(val.([]int64)))
 			return Any{value: wrapped, local: local}
 		case reflect.TypeFor[float32]():
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[float32](unsafe.SliceData(val.([]float32)))
 			return Any{value: wrapped, local: local}
 		case reflect.TypeFor[float64]():
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[float64](unsafe.SliceData(val.([]float64)))
 			return Any{value: wrapped, local: local}
 		case reflect.TypeFor[string]():
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[string](unsafe.SliceData(val.([]string)))
 			return Any{value: wrapped, local: local}
 		case reflect.TypeFor[Vector2.XY]():
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[Vector2.XY](unsafe.SliceData(val.([]Vector2.XY)))
 			return Any{value: wrapped, local: local}
 		case reflect.TypeFor[Vector3.XYZ]():
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[Vector3.XYZ](unsafe.SliceData(val.([]Vector3.XYZ)))
 			return Any{value: wrapped, local: local}
 		case reflect.TypeFor[Color.RGBA]():
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[Color.RGBA](unsafe.SliceData(val.([]Color.RGBA)))
 			return Any{value: wrapped, local: local}
 		case reflect.TypeFor[Vector4.XYZW]():
-			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			*(*lencap)(unsafe.Pointer(&local)) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
 			wrapped := isPacked[Vector4.XYZW](unsafe.SliceData(val.([]Vector4.XYZW)))
 			return Any{value: wrapped, local: local}
 		}
 	case reflect.Struct:
 		switch val.(type) {
 		case Vector2.XY:
-			*(*Vector2.XY)(unsafe.Pointer(&local[0])) = val.(Vector2.XY)
+			*(*Vector2.XY)(unsafe.Pointer(&local)) = val.(Vector2.XY)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		case Vector2i.XY:
-			*(*Vector2i.XY)(unsafe.Pointer(&local[0])) = val.(Vector2i.XY)
+			*(*Vector2i.XY)(unsafe.Pointer(&local)) = val.(Vector2i.XY)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		case Rect2.PositionSize:
-			*(*Rect2.PositionSize)(unsafe.Pointer(&local[0])) = val.(Rect2.PositionSize)
+			*(*Rect2.PositionSize)(unsafe.Pointer(&local)) = val.(Rect2.PositionSize)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		case Rect2i.PositionSize:
-			*(*Rect2i.PositionSize)(unsafe.Pointer(&local[0])) = val.(Rect2i.PositionSize)
+			*(*Rect2i.PositionSize)(unsafe.Pointer(&local)) = val.(Rect2i.PositionSize)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		case Plane.NormalD:
-			*(*Plane.NormalD)(unsafe.Pointer(&local[0])) = val.(Plane.NormalD)
+			*(*Plane.NormalD)(unsafe.Pointer(&local)) = val.(Plane.NormalD)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		case Vector3.XYZ:
-			*(*Vector3.XYZ)(unsafe.Pointer(&local[0])) = val.(Vector3.XYZ)
+			*(*Vector3.XYZ)(unsafe.Pointer(&local)) = val.(Vector3.XYZ)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		case Vector3i.XYZ:
-			*(*Vector3i.XYZ)(unsafe.Pointer(&local[0])) = val.(Vector3i.XYZ)
+			*(*Vector3i.XYZ)(unsafe.Pointer(&local)) = val.(Vector3i.XYZ)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		case Vector4.XYZW:
-			*(*Vector4.XYZW)(unsafe.Pointer(&local[0])) = val.(Vector4.XYZW)
+			*(*Vector4.XYZW)(unsafe.Pointer(&local)) = val.(Vector4.XYZW)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		case Vector4i.XYZW:
-			*(*Vector4i.XYZW)(unsafe.Pointer(&local[0])) = val.(Vector4i.XYZW)
+			*(*Vector4i.XYZW)(unsafe.Pointer(&local)) = val.(Vector4i.XYZW)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		case Color.RGBA:
-			*(*Color.RGBA)(unsafe.Pointer(&local[0])) = val.(Color.RGBA)
+			*(*Color.RGBA)(unsafe.Pointer(&local)) = val.(Color.RGBA)
 			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 		}
 	case reflect.Pointer, reflect.UnsafePointer, reflect.Map, reflect.Func, reflect.Chan, reflect.Interface:
@@ -156,7 +156,7 @@ type lencap = struct {
 //   - [Rect2.PositionSize][Rect2i.PositionSize][Plane.NormalD]
 //   - [Vector2.XY][Vector2i.XY][Vector3.XYZ][Vector3i.XYZ][Vector4.XYZW][Vector4i.XYZW][Color.RGBA]
 type Any struct {
-	local [16]byte
+	local complex128
 	value any
 }
 
@@ -168,14 +168,14 @@ func load[T any](a Any) T {
 	if !ok {
 		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[T]().String())
 	}
-	return *(*T)(unsafe.Pointer(&a.local[0]))
+	return *(*T)(unsafe.Pointer(&a.local))
 }
 func loadPacked[T packable](a Any) []T {
 	ptr, ok := a.value.(isPacked[T])
 	if !ok {
 		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[T]().String())
 	}
-	lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+	lencap := *(*lencap)(unsafe.Pointer(&a.local))
 	return unsafe.Slice(ptr, lencap.cap)[:lencap.len:lencap.cap]
 }
 
@@ -187,15 +187,15 @@ func (a Any) Int() int {
 	}
 	switch rtype.Elem().Kind() {
 	case reflect.Int8:
-		return int(*(*int8)(unsafe.Pointer(&a.local[0])))
+		return int(*(*int8)(unsafe.Pointer(&a.local)))
 	case reflect.Int16:
-		return int(*(*int16)(unsafe.Pointer(&a.local[0])))
+		return int(*(*int16)(unsafe.Pointer(&a.local)))
 	case reflect.Int32:
-		return int(*(*int32)(unsafe.Pointer(&a.local[0])))
+		return int(*(*int32)(unsafe.Pointer(&a.local)))
 	case reflect.Int64:
-		return int(*(*int64)(unsafe.Pointer(&a.local[0])))
+		return int(*(*int64)(unsafe.Pointer(&a.local)))
 	case reflect.Int:
-		return int(*(*int)(unsafe.Pointer(&a.local[0])))
+		return int(*(*int)(unsafe.Pointer(&a.local)))
 	default:
 		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[int]().String())
 	}
@@ -219,7 +219,7 @@ func (a Any) String() string {
 	if !ok {
 		return a.toString()
 	}
-	l := *(*int)(unsafe.Pointer(&a.local[0]))
+	l := *(*int)(unsafe.Pointer(&a.local))
 	return unsafe.String(ptr, l)
 }
 func (a Any) Vector2() Vector2.XY                  { return load[Vector2.XY](a) }
@@ -253,40 +253,40 @@ func (a Any) Interface() interface{} {
 		if rvalue.Pointer() != 0 {
 			switch value := a.value.(type) {
 			case isString:
-				l := *(*int)(unsafe.Pointer(&a.local[0]))
+				l := *(*int)(unsafe.Pointer(&a.local))
 				return unsafe.String(value, l)
 			case isPacked[byte]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			case isPacked[int32]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			case isPacked[int64]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			case isPacked[float32]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			case isPacked[float64]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			case isPacked[string]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			case isPacked[Vector2.XY]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			case isPacked[Vector3.XYZ]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			case isPacked[Color.RGBA]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			case isPacked[Vector4.XYZW]:
-				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				lencap := *(*lencap)(unsafe.Pointer(&a.local))
 				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
 			}
-			lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+			lencap := *(*lencap)(unsafe.Pointer(&a.local))
 			if lencap.len > 0 {
 				return reflect.SliceAt(rtype.Elem(), rvalue.UnsafePointer(), lencap.cap).Slice3(0, lencap.len, lencap.cap).Interface()
 			}

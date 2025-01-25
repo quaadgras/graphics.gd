@@ -11,6 +11,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -28,6 +29,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 Base class for all UI-related nodes. [Control] features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and offsets relative to the anchor. The offsets update automatically when the node, any of its parents, or the screen size change.
@@ -1110,7 +1112,7 @@ For each argument, if not empty, the delegate callable is used, otherwise the lo
 The function format for each callable should be exactly the same as the virtual functions described above.
 */
 func (self Instance) SetDragForwarding(drag_func func(at_position Vector2.XY) any, can_drop_func func(at_position Vector2.XY, data any) bool, drop_func func(at_position Vector2.XY, data any)) {
-	class(self).SetDragForwarding(gd.NewCallable(drag_func), gd.NewCallable(can_drop_func), gd.NewCallable(drop_func))
+	class(self).SetDragForwarding(Callable.New(drag_func), Callable.New(can_drop_func), Callable.New(drop_func))
 }
 
 /*
@@ -3261,11 +3263,11 @@ For each argument, if not empty, the delegate callable is used, otherwise the lo
 The function format for each callable should be exactly the same as the virtual functions described above.
 */
 //go:nosplit
-func (self class) SetDragForwarding(drag_func gd.Callable, can_drop_func gd.Callable, drop_func gd.Callable) {
+func (self class) SetDragForwarding(drag_func Callable.Function, can_drop_func Callable.Function, drop_func Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(drag_func))
-	callframe.Arg(frame, pointers.Get(can_drop_func))
-	callframe.Arg(frame, pointers.Get(drop_func))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(drag_func)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(can_drop_func)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(drop_func)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_set_drag_forwarding, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

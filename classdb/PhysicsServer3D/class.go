@@ -12,6 +12,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
@@ -26,6 +27,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 PhysicsServer3D is the server responsible for all 3D physics. It can directly create and manipulate all physics objects:
@@ -359,7 +361,7 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 func AreaSetMonitorCallback(area Resource.ID, callback func(status int, body_rid Resource.ID, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
 	once.Do(singleton)
-	class(self).AreaSetMonitorCallback(area, gd.NewCallable(callback))
+	class(self).AreaSetMonitorCallback(area, Callable.New(callback))
 }
 
 /*
@@ -373,7 +375,7 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 func AreaSetAreaMonitorCallback(area Resource.ID, callback func(status int, body_rid Resource.ID, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
 	once.Do(singleton)
-	class(self).AreaSetAreaMonitorCallback(area, gd.NewCallable(callback))
+	class(self).AreaSetAreaMonitorCallback(area, Callable.New(callback))
 }
 func AreaSetMonitorable(area Resource.ID, monitorable bool) {
 	once.Do(singleton)
@@ -809,7 +811,7 @@ The function [param callable] must take the following parameters:
 */
 func BodySetStateSyncCallback(body Resource.ID, callable func(state [1]gdclass.PhysicsDirectBodyState3D)) {
 	once.Do(singleton)
-	class(self).BodySetStateSyncCallback(body, gd.NewCallable(callable))
+	class(self).BodySetStateSyncCallback(body, Callable.New(callable))
 }
 
 /*
@@ -822,7 +824,7 @@ If [param userdata] is [code]null[/code], then [param callable] must take only t
 */
 func BodySetForceIntegrationCallback(body Resource.ID, callable func(state [1]gdclass.PhysicsDirectBodyState3D, userdata any)) {
 	once.Do(singleton)
-	class(self).BodySetForceIntegrationCallback(body, gd.NewCallable(callable), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
+	class(self).BodySetForceIntegrationCallback(body, Callable.New(callable), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
 }
 
 /*
@@ -1931,10 +1933,10 @@ Sets the area's body monitor callback. This callback will be called when any oth
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
 //go:nosplit
-func (self class) AreaSetMonitorCallback(area gd.RID, callback gd.Callable) {
+func (self class) AreaSetMonitorCallback(area gd.RID, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_monitor_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1950,10 +1952,10 @@ Sets the area's area monitor callback. This callback will be called when any oth
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
 //go:nosplit
-func (self class) AreaSetAreaMonitorCallback(area gd.RID, callback gd.Callable) {
+func (self class) AreaSetAreaMonitorCallback(area gd.RID, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_area_monitor_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2691,10 +2693,10 @@ The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
 */
 //go:nosplit
-func (self class) BodySetStateSyncCallback(body gd.RID, callable gd.Callable) {
+func (self class) BodySetStateSyncCallback(body gd.RID, callable Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_state_sync_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2709,10 +2711,10 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
 //go:nosplit
-func (self class) BodySetForceIntegrationCallback(body gd.RID, callable gd.Callable, userdata gd.Variant) {
+func (self class) BodySetForceIntegrationCallback(body gd.RID, callable Callable.Function, userdata gd.Variant) {
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	callframe.Arg(frame, pointers.Get(userdata))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_force_integration_callback, self.AsObject(), frame.Array(0), r_ret.Addr())

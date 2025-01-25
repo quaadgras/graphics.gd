@@ -12,6 +12,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Transform3D"
@@ -34,6 +35,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 The rendering server is the API backend for everything visible. The whole scene system mounts on it to display. The rendering server is completely opaque: the internals are entirely implementation-specific and cannot be accessed.
@@ -1724,7 +1726,7 @@ func VisibilityNotifierSetAabb(notifier Resource.ID, aabb AABB.PositionSize) {
 }
 func VisibilityNotifierSetCallbacks(notifier Resource.ID, enter_callable func(), exit_callable func()) {
 	once.Do(singleton)
-	class(self).VisibilityNotifierSetCallbacks(notifier, gd.NewCallable(enter_callable), gd.NewCallable(exit_callable))
+	class(self).VisibilityNotifierSetCallbacks(notifier, Callable.New(enter_callable), Callable.New(exit_callable))
 }
 
 /*
@@ -2347,7 +2349,7 @@ Sets the callback type ([param callback_type]) and callback method([param callba
 */
 func CompositorEffectSetCallback(effect Resource.ID, callback_type gdclass.RenderingServerCompositorEffectCallbackType, callback func()) {
 	once.Do(singleton)
-	class(self).CompositorEffectSetCallback(effect, callback_type, gd.NewCallable(callback))
+	class(self).CompositorEffectSetCallback(effect, callback_type, Callable.New(callback))
 }
 
 /*
@@ -3432,7 +3434,7 @@ This method can be used to manually mimic [VisibleOnScreenNotifier2D].
 */
 func CanvasItemSetVisibilityNotifier(item Resource.ID, enable bool, area Rect2.PositionSize, enter_callable func(), exit_callable func()) {
 	once.Do(singleton)
-	class(self).CanvasItemSetVisibilityNotifier(item, enable, gd.Rect2(area), gd.NewCallable(enter_callable), gd.NewCallable(exit_callable))
+	class(self).CanvasItemSetVisibilityNotifier(item, enable, gd.Rect2(area), Callable.New(enter_callable), Callable.New(exit_callable))
 }
 
 /*
@@ -3828,7 +3830,7 @@ Schedules a callback to the given callable after a frame has been drawn.
 */
 func RequestFrameDrawnCallback(callable func()) {
 	once.Do(singleton)
-	class(self).RequestFrameDrawnCallback(gd.NewCallable(callable))
+	class(self).RequestFrameDrawnCallback(Callable.New(callable))
 }
 
 /*
@@ -4034,7 +4036,7 @@ As the RenderingServer actual logic may run on an separate thread, accessing its
 */
 func CallOnRenderThread(callable func()) {
 	once.Do(singleton)
-	class(self).CallOnRenderThread(gd.NewCallable(callable))
+	class(self).CallOnRenderThread(Callable.New(callable))
 }
 
 /*
@@ -6980,11 +6982,11 @@ func (self class) VisibilityNotifierSetAabb(notifier gd.RID, aabb gd.AABB) {
 }
 
 //go:nosplit
-func (self class) VisibilityNotifierSetCallbacks(notifier gd.RID, enter_callable gd.Callable, exit_callable gd.Callable) {
+func (self class) VisibilityNotifierSetCallbacks(notifier gd.RID, enter_callable Callable.Function, exit_callable Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, notifier)
-	callframe.Arg(frame, pointers.Get(enter_callable))
-	callframe.Arg(frame, pointers.Get(exit_callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(enter_callable)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(exit_callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_set_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -7986,11 +7988,11 @@ func (self class) CompositorEffectSetEnabled(effect gd.RID, enabled bool) {
 Sets the callback type ([param callback_type]) and callback method([param callback]) for this rendering effect.
 */
 //go:nosplit
-func (self class) CompositorEffectSetCallback(effect gd.RID, callback_type gdclass.RenderingServerCompositorEffectCallbackType, callback gd.Callable) {
+func (self class) CompositorEffectSetCallback(effect gd.RID, callback_type gdclass.RenderingServerCompositorEffectCallbackType, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, effect)
 	callframe.Arg(frame, callback_type)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -9899,13 +9901,13 @@ Sets the given [CanvasItem] as visibility notifier. [param area] defines the are
 This method can be used to manually mimic [VisibleOnScreenNotifier2D].
 */
 //go:nosplit
-func (self class) CanvasItemSetVisibilityNotifier(item gd.RID, enable bool, area gd.Rect2, enter_callable gd.Callable, exit_callable gd.Callable) {
+func (self class) CanvasItemSetVisibilityNotifier(item gd.RID, enable bool, area gd.Rect2, enter_callable Callable.Function, exit_callable Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, enable)
 	callframe.Arg(frame, area)
-	callframe.Arg(frame, pointers.Get(enter_callable))
-	callframe.Arg(frame, pointers.Get(exit_callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(enter_callable)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(exit_callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visibility_notifier, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -10545,9 +10547,9 @@ func (self class) FreeRid(rid gd.RID) {
 Schedules a callback to the given callable after a frame has been drawn.
 */
 //go:nosplit
-func (self class) RequestFrameDrawnCallback(callable gd.Callable) {
+func (self class) RequestFrameDrawnCallback(callable Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_request_frame_drawn_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -10880,9 +10882,9 @@ func (self class) IsOnRenderThread() bool {
 As the RenderingServer actual logic may run on an separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
 */
 //go:nosplit
-func (self class) CallOnRenderThread(callable gd.Callable) {
+func (self class) CallOnRenderThread(callable Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_call_on_render_thread, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

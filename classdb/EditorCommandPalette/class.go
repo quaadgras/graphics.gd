@@ -11,6 +11,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
@@ -25,6 +26,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 Object that holds all the available Commands and their shortcuts text. These Commands can be accessed through [b]Editor > Command Palette[/b] menu.
@@ -63,7 +65,7 @@ Adds a custom command to EditorCommandPalette.
 - [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
 */
 func (self Instance) AddCommand(command_name string, key_name string, binded_callable func()) {
-	class(self).AddCommand(gd.NewString(command_name), gd.NewString(key_name), gd.NewCallable(binded_callable), gd.NewString("None"))
+	class(self).AddCommand(gd.NewString(command_name), gd.NewString(key_name), Callable.New(binded_callable), gd.NewString("None"))
 }
 
 /*
@@ -100,11 +102,11 @@ Adds a custom command to EditorCommandPalette.
 - [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
 */
 //go:nosplit
-func (self class) AddCommand(command_name gd.String, key_name gd.String, binded_callable gd.Callable, shortcut_text gd.String) {
+func (self class) AddCommand(command_name gd.String, key_name gd.String, binded_callable Callable.Function, shortcut_text gd.String) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(command_name))
 	callframe.Arg(frame, pointers.Get(key_name))
-	callframe.Arg(frame, pointers.Get(binded_callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(binded_callable)))
 	callframe.Arg(frame, pointers.Get(shortcut_text))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_add_command, self.AsObject(), frame.Array(0), r_ret.Addr())

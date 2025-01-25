@@ -12,6 +12,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 
@@ -23,6 +24,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 [EditorInterface] gives you control over Godot editor's window. It allows customizing the window, saving and (re-)loading scenes, rendering mesh previews, inspecting and editing resources and objects, and provides access to [EditorSettings], [EditorFileSystem], [EditorResourcePreview], [ScriptEditor], the editor viewport, and information about scenes.
@@ -283,7 +285,7 @@ func _on_node_selected(node_path):
 */
 func PopupNodeSelector(callback func(selected NodePath.String)) {
 	once.Do(singleton)
-	class(self).PopupNodeSelector(gd.NewCallable(callback), gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
+	class(self).PopupNodeSelector(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
 }
 
 /*
@@ -306,7 +308,7 @@ func _on_property_selected(property_path):
 */
 func PopupPropertySelector(obj Object.Instance, callback func(selected NodePath.String)) {
 	once.Do(singleton)
-	class(self).PopupPropertySelector(obj, gd.NewCallable(callback), gd.NewPackedInt32Slice([1][]int32{}[0]))
+	class(self).PopupPropertySelector(obj, Callable.New(callback), gd.NewPackedInt32Slice([1][]int32{}[0]))
 }
 
 /*
@@ -909,9 +911,9 @@ func _on_node_selected(node_path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) PopupNodeSelector(callback gd.Callable, valid_types Array.Contains[gd.StringName]) {
+func (self class) PopupNodeSelector(callback Callable.Function, valid_types Array.Contains[gd.StringName]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(valid_types)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_node_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -934,10 +936,10 @@ func _on_property_selected(property_path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) PopupPropertySelector(obj [1]gd.Object, callback gd.Callable, type_filter gd.PackedInt32Array) {
+func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter gd.PackedInt32Array) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, pointers.Get(type_filter))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_property_selector, self.AsObject(), frame.Array(0), r_ret.Addr())

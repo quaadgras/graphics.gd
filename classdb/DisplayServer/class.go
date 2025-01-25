@@ -30,6 +30,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
@@ -68,7 +69,7 @@ Sets native help system search callbacks.
 */
 func HelpSetSearchCallbacks(search_callback func(search_string string, result_limit int) map[any]any, action_callback func(key string)) {
 	once.Do(singleton)
-	class(self).HelpSetSearchCallbacks(gd.NewCallable(search_callback), gd.NewCallable(action_callback))
+	class(self).HelpSetSearchCallbacks(Callable.New(search_callback), Callable.New(action_callback))
 }
 
 /*
@@ -76,7 +77,7 @@ Registers callables to emit when the menu is respectively about to show or close
 */
 func GlobalMenuSetPopupCallbacks(menu_root string, open_callback func(), close_callback func()) {
 	once.Do(singleton)
-	class(self).GlobalMenuSetPopupCallbacks(gd.NewString(menu_root), gd.NewCallable(open_callback), gd.NewCallable(close_callback))
+	class(self).GlobalMenuSetPopupCallbacks(gd.NewString(menu_root), Callable.New(open_callback), Callable.New(close_callback))
 }
 
 /*
@@ -114,7 +115,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddItem(menu_root string, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddItem(gd.NewString(menu_root), gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddItem(gd.NewString(menu_root), gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -134,7 +135,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddCheckItem(menu_root string, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddCheckItem(gd.NewString(menu_root), gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddCheckItem(gd.NewString(menu_root), gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -154,7 +155,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconItem(menu_root string, icon [1]gdclass.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconItem(gd.NewString(menu_root), icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconItem(gd.NewString(menu_root), icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -174,7 +175,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -195,7 +196,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddRadioCheckItem(menu_root string, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddRadioCheckItem(gd.NewString(menu_root), gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddRadioCheckItem(gd.NewString(menu_root), gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -216,7 +217,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddIconRadioCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddIconRadioCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddIconRadioCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -238,7 +239,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func GlobalMenuAddMultistateItem(menu_root string, label string, max_states int, default_state int) int {
 	once.Do(singleton)
-	return int(int(class(self).GlobalMenuAddMultistateItem(gd.NewString(menu_root), gd.NewString(label), gd.Int(max_states), gd.Int(default_state), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).GlobalMenuAddMultistateItem(gd.NewString(menu_root), gd.NewString(label), gd.Int(max_states), gd.Int(default_state), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -309,18 +310,18 @@ func GlobalMenuIsItemRadioCheckable(menu_root string, idx int) bool {
 Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemCallback(menu_root string, idx int) Callable.Any {
+func GlobalMenuGetItemCallback(menu_root string, idx int) Callable.Function {
 	once.Do(singleton)
-	return Callable.Any(class(self).GlobalMenuGetItemCallback(gd.NewString(menu_root), gd.Int(idx)))
+	return Callable.Function(class(self).GlobalMenuGetItemCallback(gd.NewString(menu_root), gd.Int(idx)))
 }
 
 /*
 Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemKeyCallback(menu_root string, idx int) Callable.Any {
+func GlobalMenuGetItemKeyCallback(menu_root string, idx int) Callable.Function {
 	once.Do(singleton)
-	return Callable.Any(class(self).GlobalMenuGetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx)))
+	return Callable.Function(class(self).GlobalMenuGetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx)))
 }
 
 /*
@@ -459,7 +460,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 */
 func GlobalMenuSetItemCallback(menu_root string, idx int, callback func(tag any)) {
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemCallback(gd.NewString(menu_root), gd.Int(idx), gd.NewCallable(callback))
+	class(self).GlobalMenuSetItemCallback(gd.NewString(menu_root), gd.Int(idx), Callable.New(callback))
 }
 
 /*
@@ -469,7 +470,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 */
 func GlobalMenuSetItemHoverCallbacks(menu_root string, idx int, callback func(tag any)) {
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemHoverCallbacks(gd.NewString(menu_root), gd.Int(idx), gd.NewCallable(callback))
+	class(self).GlobalMenuSetItemHoverCallbacks(gd.NewString(menu_root), gd.Int(idx), Callable.New(callback))
 }
 
 /*
@@ -479,7 +480,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 */
 func GlobalMenuSetItemKeyCallback(menu_root string, idx int, key_callback func(tag any)) {
 	once.Do(singleton)
-	class(self).GlobalMenuSetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx), gd.NewCallable(key_callback))
+	class(self).GlobalMenuSetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx), Callable.New(key_callback))
 }
 
 /*
@@ -729,7 +730,7 @@ Adds a callback, which is called when the utterance has started, finished, cance
 */
 func TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, callable func(int, int)) {
 	once.Do(singleton)
-	class(self).TtsSetUtteranceCallback(event, gd.NewCallable(callable))
+	class(self).TtsSetUtteranceCallback(event, Callable.New(callable))
 }
 
 /*
@@ -774,7 +775,7 @@ Sets the [param callable] that should be called when system theme settings are c
 */
 func SetSystemThemeChangeCallback(callable func()) {
 	once.Do(singleton)
-	class(self).SetSystemThemeChangeCallback(gd.NewCallable(callable))
+	class(self).SetSystemThemeChangeCallback(Callable.New(callable))
 }
 
 /*
@@ -1268,7 +1269,7 @@ Sets the [param callback] that will be called when the window specified by [para
 */
 func WindowSetRectChangedCallback(callback func(rect Rect2i.PositionSize)) {
 	once.Do(singleton)
-	class(self).WindowSetRectChangedCallback(gd.NewCallable(callback), gd.Int(0))
+	class(self).WindowSetRectChangedCallback(Callable.New(callback), gd.Int(0))
 }
 
 /*
@@ -1277,7 +1278,7 @@ Sets the [param callback] that will be called when an event occurs in the window
 */
 func WindowSetWindowEventCallback(callback func(event gdclass.DisplayServerWindowEvent)) {
 	once.Do(singleton)
-	class(self).WindowSetWindowEventCallback(gd.NewCallable(callback), gd.Int(0))
+	class(self).WindowSetWindowEventCallback(Callable.New(callback), gd.Int(0))
 }
 
 /*
@@ -1286,7 +1287,7 @@ Sets the [param callback] that should be called when any [InputEvent] is sent to
 */
 func WindowSetInputEventCallback(callback func(event [1]gdclass.InputEvent)) {
 	once.Do(singleton)
-	class(self).WindowSetInputEventCallback(gd.NewCallable(callback), gd.Int(0))
+	class(self).WindowSetInputEventCallback(Callable.New(callback), gd.Int(0))
 }
 
 /*
@@ -1295,7 +1296,7 @@ Sets the [param callback] that should be called when text is entered using the v
 */
 func WindowSetInputTextCallback(callback func(text string)) {
 	once.Do(singleton)
-	class(self).WindowSetInputTextCallback(gd.NewCallable(callback), gd.Int(0))
+	class(self).WindowSetInputTextCallback(Callable.New(callback), gd.Int(0))
 }
 
 /*
@@ -1305,7 +1306,7 @@ Sets the [param callback] that should be called when files are dropped from the 
 */
 func WindowSetDropFilesCallback(callback func(tag any)) {
 	once.Do(singleton)
-	class(self).WindowSetDropFilesCallback(gd.NewCallable(callback), gd.Int(0))
+	class(self).WindowSetDropFilesCallback(Callable.New(callback), gd.Int(0))
 }
 
 /*
@@ -1622,7 +1623,7 @@ Shows a text dialog which uses the operating system's native look-and-feel. [par
 */
 func DialogShow(title string, description string, buttons []string, callback func(button int)) error {
 	once.Do(singleton)
-	return error(gd.ToError(class(self).DialogShow(gd.NewString(title), gd.NewString(description), gd.NewPackedStringSlice(buttons), gd.NewCallable(callback))))
+	return error(gd.ToError(class(self).DialogShow(gd.NewString(title), gd.NewString(description), gd.NewPackedStringSlice(buttons), Callable.New(callback))))
 }
 
 /*
@@ -1631,7 +1632,7 @@ Shows a text input dialog which uses the operating system's native look-and-feel
 */
 func DialogInputText(title string, description string, existing_text string, callback func(text string)) error {
 	once.Do(singleton)
-	return error(gd.ToError(class(self).DialogInputText(gd.NewString(title), gd.NewString(description), gd.NewString(existing_text), gd.NewCallable(callback))))
+	return error(gd.ToError(class(self).DialogInputText(gd.NewString(title), gd.NewString(description), gd.NewString(existing_text), Callable.New(callback))))
 }
 
 /*
@@ -1646,7 +1647,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 */
 func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error {
 	once.Do(singleton)
-	return error(gd.ToError(class(self).FileDialogShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.NewCallable(callback))))
+	return error(gd.ToError(class(self).FileDialogShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), Callable.New(callback))))
 }
 
 /*
@@ -1665,7 +1666,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 */
 func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []map[any]any, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error {
 	once.Do(singleton)
-	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](options), gd.NewCallable(callback))))
+	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](options), Callable.New(callback))))
 }
 
 /*
@@ -1772,7 +1773,7 @@ Creates a new application status indicator with the specified icon, tooltip, and
 */
 func CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip string, callback func(button MouseButton, click_position Vector2i.XY)) int {
 	once.Do(singleton)
-	return int(int(class(self).CreateStatusIndicator(icon, gd.NewString(tooltip), gd.NewCallable(callback))))
+	return int(int(class(self).CreateStatusIndicator(icon, gd.NewString(tooltip), Callable.New(callback))))
 }
 
 /*
@@ -1810,7 +1811,7 @@ Sets the application status indicator activation callback. [param callback] shou
 */
 func StatusIndicatorSetCallback(id int, callback func(button MouseButton, click_position Vector2i.XY)) {
 	once.Do(singleton)
-	class(self).StatusIndicatorSetCallback(gd.Int(id), gd.NewCallable(callback))
+	class(self).StatusIndicatorSetCallback(gd.Int(id), Callable.New(callback))
 }
 
 /*
@@ -1948,10 +1949,10 @@ Sets native help system search callbacks.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) HelpSetSearchCallbacks(search_callback gd.Callable, action_callback gd.Callable) {
+func (self class) HelpSetSearchCallbacks(search_callback Callable.Function, action_callback Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(search_callback))
-	callframe.Arg(frame, pointers.Get(action_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(search_callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(action_callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_help_set_search_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1961,11 +1962,11 @@ func (self class) HelpSetSearchCallbacks(search_callback gd.Callable, action_cal
 Registers callables to emit when the menu is respectively about to show or closed. Callback methods should have zero arguments.
 */
 //go:nosplit
-func (self class) GlobalMenuSetPopupCallbacks(menu_root gd.String, open_callback gd.Callable, close_callback gd.Callable) {
+func (self class) GlobalMenuSetPopupCallbacks(menu_root gd.String, open_callback Callable.Function, close_callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
-	callframe.Arg(frame, pointers.Get(open_callback))
-	callframe.Arg(frame, pointers.Get(close_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(open_callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(close_callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_popup_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2014,12 +2015,12 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddItem(menu_root gd.String, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -2046,12 +2047,12 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddCheckItem(menu_root gd.String, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddCheckItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -2078,13 +2079,13 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddIconItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -2111,13 +2112,13 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddIconCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -2145,12 +2146,12 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddRadioCheckItem(menu_root gd.String, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddRadioCheckItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -2178,13 +2179,13 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconRadioCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddIconRadioCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -2213,14 +2214,14 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddMultistateItem(menu_root gd.String, label gd.String, max_states gd.Int, default_state gd.Int, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddMultistateItem(menu_root gd.String, label gd.String, max_states gd.Int, default_state gd.Int, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(label))
 	callframe.Arg(frame, max_states)
 	callframe.Arg(frame, default_state)
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -2342,13 +2343,13 @@ Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemCallback(menu_root gd.String, idx gd.Int) gd.Callable {
+func (self class) GlobalMenuGetItemCallback(menu_root gd.String, idx gd.Int) Callable.Function {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Callable](r_ret.Get())
+	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2358,13 +2359,13 @@ Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemKeyCallback(menu_root gd.String, idx gd.Int) gd.Callable {
+func (self class) GlobalMenuGetItemKeyCallback(menu_root gd.String, idx gd.Int) Callable.Function {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Callable](r_ret.Get())
+	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2599,11 +2600,11 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemCallback(menu_root gd.String, idx gd.Int, callback gd.Callable) {
+func (self class) GlobalMenuSetItemCallback(menu_root gd.String, idx gd.Int, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2615,11 +2616,11 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemHoverCallbacks(menu_root gd.String, idx gd.Int, callback gd.Callable) {
+func (self class) GlobalMenuSetItemHoverCallbacks(menu_root gd.String, idx gd.Int, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_hover_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2631,11 +2632,11 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemKeyCallback(menu_root gd.String, idx gd.Int, key_callback gd.Callable) {
+func (self class) GlobalMenuSetItemKeyCallback(menu_root gd.String, idx gd.Int, key_callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_set_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3013,10 +3014,10 @@ Adds a callback, which is called when the utterance has started, finished, cance
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, callable gd.Callable) {
+func (self class) TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, callable Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, event)
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_set_utterance_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3083,9 +3084,9 @@ Sets the [param callable] that should be called when system theme settings are c
 [b]Note:[/b] This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
 */
 //go:nosplit
-func (self class) SetSystemThemeChangeCallback(callable gd.Callable) {
+func (self class) SetSystemThemeChangeCallback(callable Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_set_system_theme_change_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3829,9 +3830,9 @@ Sets the [param callback] that will be called when the window specified by [para
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
 //go:nosplit
-func (self class) WindowSetRectChangedCallback(callback gd.Callable, window_id gd.Int) {
+func (self class) WindowSetRectChangedCallback(callback Callable.Function, window_id gd.Int) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_rect_changed_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3843,9 +3844,9 @@ Sets the [param callback] that will be called when an event occurs in the window
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
 //go:nosplit
-func (self class) WindowSetWindowEventCallback(callback gd.Callable, window_id gd.Int) {
+func (self class) WindowSetWindowEventCallback(callback Callable.Function, window_id gd.Int) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_window_event_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3857,9 +3858,9 @@ Sets the [param callback] that should be called when any [InputEvent] is sent to
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
 //go:nosplit
-func (self class) WindowSetInputEventCallback(callback gd.Callable, window_id gd.Int) {
+func (self class) WindowSetInputEventCallback(callback Callable.Function, window_id gd.Int) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_input_event_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3871,9 +3872,9 @@ Sets the [param callback] that should be called when text is entered using the v
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
 //go:nosplit
-func (self class) WindowSetInputTextCallback(callback gd.Callable, window_id gd.Int) {
+func (self class) WindowSetInputTextCallback(callback Callable.Function, window_id gd.Int) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_input_text_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3886,9 +3887,9 @@ Sets the [param callback] that should be called when files are dropped from the 
 [b]Note:[/b] This method is implemented on Windows, macOS, Linux (X11/Wayland), and Web.
 */
 //go:nosplit
-func (self class) WindowSetDropFilesCallback(callback gd.Callable, window_id gd.Int) {
+func (self class) WindowSetDropFilesCallback(callback Callable.Function, window_id gd.Int) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_set_drop_files_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4395,12 +4396,12 @@ Shows a text dialog which uses the operating system's native look-and-feel. [par
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS and Windows.
 */
 //go:nosplit
-func (self class) DialogShow(title gd.String, description gd.String, buttons gd.PackedStringArray, callback gd.Callable) gd.Error {
+func (self class) DialogShow(title gd.String, description gd.String, buttons gd.PackedStringArray, callback Callable.Function) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(description))
 	callframe.Arg(frame, pointers.Get(buttons))
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4413,12 +4414,12 @@ Shows a text input dialog which uses the operating system's native look-and-feel
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS and Windows.
 */
 //go:nosplit
-func (self class) DialogInputText(title gd.String, description gd.String, existing_text gd.String, callback gd.Callable) gd.Error {
+func (self class) DialogInputText(title gd.String, description gd.String, existing_text gd.String, callback Callable.Function) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(description))
 	callframe.Arg(frame, pointers.Get(existing_text))
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_dialog_input_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4437,7 +4438,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogShow(title gd.String, current_directory gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, callback gd.Callable) gd.Error {
+func (self class) FileDialogShow(title gd.String, current_directory gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, callback Callable.Function) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(current_directory))
@@ -4445,7 +4446,7 @@ func (self class) FileDialogShow(title gd.String, current_directory gd.String, f
 	callframe.Arg(frame, show_hidden)
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, pointers.Get(filters))
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_file_dialog_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4468,7 +4469,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogWithOptionsShow(title gd.String, current_directory gd.String, root gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options Array.Contains[gd.Dictionary], callback gd.Callable) gd.Error {
+func (self class) FileDialogWithOptionsShow(title gd.String, current_directory gd.String, root gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options Array.Contains[gd.Dictionary], callback Callable.Function) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(current_directory))
@@ -4478,7 +4479,7 @@ func (self class) FileDialogWithOptionsShow(title gd.String, current_directory g
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, pointers.Get(filters))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(options)))
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_file_dialog_with_options_show, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4641,11 +4642,11 @@ Creates a new application status indicator with the specified icon, tooltip, and
 [param callback] should take two arguments: the pressed mouse button (one of the [enum MouseButton] constants) and the click position in screen coordinates (a [Vector2i]).
 */
 //go:nosplit
-func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip gd.String, callback gd.Callable) gd.Int {
+func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip gd.String, callback Callable.Function) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, pointers.Get(tooltip))
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_create_status_indicator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4702,10 +4703,10 @@ Sets the application status indicator activation callback. [param callback] shou
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) StatusIndicatorSetCallback(id gd.Int, callback gd.Callable) {
+func (self class) StatusIndicatorSetCallback(id gd.Int, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_status_indicator_set_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

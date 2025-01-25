@@ -11,6 +11,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 
@@ -22,6 +23,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 Tweens are mostly useful for animations requiring a numerical property to be interpolated over a range of values. The name [i]tween[/i] comes from [i]in-betweening[/i], an animation technique where you specify [i]keyframes[/i] and the computer interpolates the frames that appear between them. Animating something with a [Tween] is called tweening.
@@ -235,7 +237,7 @@ tween.TweenCallback(Callable.From(() => sprite.Modulate = Colors.Blue)).SetDelay
 [/codeblocks]
 */
 func (self Instance) TweenCallback(callback func()) [1]gdclass.CallbackTweener {
-	return [1]gdclass.CallbackTweener(class(self).TweenCallback(gd.NewCallable(callback)))
+	return [1]gdclass.CallbackTweener(class(self).TweenCallback(Callable.New(callback)))
 }
 
 /*
@@ -284,7 +286,7 @@ private void SetLabelText(int value)
 [/codeblocks]
 */
 func (self Instance) TweenMethod(method func(value any), from any, to any, duration Float.X) [1]gdclass.MethodTweener {
-	return [1]gdclass.MethodTweener(class(self).TweenMethod(gd.NewCallable(method), gd.NewVariant(from), gd.NewVariant(to), gd.Float(duration)))
+	return [1]gdclass.MethodTweener(class(self).TweenMethod(Callable.New(method), gd.NewVariant(from), gd.NewVariant(to), gd.Float(duration)))
 }
 
 /*
@@ -622,9 +624,9 @@ tween.TweenCallback(Callable.From(() => sprite.Modulate = Colors.Blue)).SetDelay
 [/codeblocks]
 */
 //go:nosplit
-func (self class) TweenCallback(callback gd.Callable) [1]gdclass.CallbackTweener {
+func (self class) TweenCallback(callback Callable.Function) [1]gdclass.CallbackTweener {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_tween_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.CallbackTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.CallbackTweener](r_ret.Get())}
@@ -672,9 +674,9 @@ private void SetLabelText(int value)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) TweenMethod(method gd.Callable, from gd.Variant, to gd.Variant, duration gd.Float) [1]gdclass.MethodTweener {
+func (self class) TweenMethod(method Callable.Function, from gd.Variant, to gd.Variant, duration gd.Float) [1]gdclass.MethodTweener {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(method))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(method)))
 	callframe.Arg(frame, pointers.Get(from))
 	callframe.Arg(frame, pointers.Get(to))
 	callframe.Arg(frame, duration)

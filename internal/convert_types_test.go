@@ -97,7 +97,7 @@ func (c Converter) StringName() StringName.Advanced         { return StringName.
 func (c Converter) NodePath() NodePath.String               { return "/" }
 func (c Converter) RID() Resource.ID                        { return 22 }
 func (c Converter) Object() Object.Instance                 { return Object.New() }
-func (c Converter) Callable() Callable.Any {
+func (c Converter) Callable() Callable.Function {
 	return Callable.New(func() string {
 		return "Hello, World!"
 	})
@@ -183,8 +183,8 @@ func (c Converter) ValidRID(r Resource.ID) bool          { return r == c.RID() }
 func (c Converter) ValidObject(o Object.Instance) bool {
 	return o.AsObject()[0].GetClass().String() == "Object"
 }
-func (c Converter) ValidCallable(cc Callable.Any) bool {
-	return cc.Call().Interface().(String.Advanced).String() == c.Callable().Call().Interface().(String.Advanced).String()
+func (c Converter) ValidCallable(cc Callable.Function) bool {
+	return cc.Call().String() == c.Callable().Call().String()
 }
 func (c Converter) ValidSignal(s Signal.Any) bool {
 	return s.GetName().String() == c.Signal().GetName().String()

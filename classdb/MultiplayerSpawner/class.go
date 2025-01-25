@@ -11,9 +11,9 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/NodePath"
-import "graphics.gd/variant/Callable"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -23,6 +23,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 Spawnable scenes can be configured in the editor or through code (see [method add_spawnable_scene]).
@@ -109,12 +110,12 @@ func (self Instance) SetSpawnLimit(value int) {
 	class(self).SetSpawnLimit(gd.Int(value))
 }
 
-func (self Instance) SpawnFunction() Callable.Any {
-	return Callable.Any(class(self).GetSpawnFunction())
+func (self Instance) SpawnFunction() Callable.Function {
+	return Callable.Function(class(self).GetSpawnFunction())
 }
 
-func (self Instance) SetSpawnFunction(value Callable.Any) {
-	class(self).SetSpawnFunction(gd.NewCallable(value))
+func (self Instance) SetSpawnFunction(value Callable.Function) {
+	class(self).SetSpawnFunction(Callable.New(value))
 }
 
 /*
@@ -221,19 +222,19 @@ func (self class) SetSpawnLimit(limit gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSpawnFunction() gd.Callable {
+func (self class) GetSpawnFunction() Callable.Function {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_function, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Callable](r_ret.Get())
+	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSpawnFunction(spawn_function gd.Callable) {
+func (self class) SetSpawnFunction(spawn_function Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(spawn_function))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(spawn_function)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_set_spawn_function, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

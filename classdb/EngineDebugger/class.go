@@ -12,6 +12,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -21,6 +22,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 [EngineDebugger] handles the communication between the editor and the running game. It is active in the running game. Messages can be sent/received through it. It also manages the profilers.
@@ -95,7 +97,7 @@ Callable must accept a message string and a data array as argument. If the messa
 */
 func RegisterMessageCapture(name string, callable func(message string, data []any)) {
 	once.Do(singleton)
-	class(self).RegisterMessageCapture(gd.NewStringName(name), gd.NewCallable(callable))
+	class(self).RegisterMessageCapture(gd.NewStringName(name), Callable.New(callable))
 }
 
 /*
@@ -326,10 +328,10 @@ Registers a message capture with given [param name]. If [param name] is "my_mess
 Callable must accept a message string and a data array as argument. If the message and data are valid then callable must return [code]true[/code] otherwise [code]false[/code].
 */
 //go:nosplit
-func (self class) RegisterMessageCapture(name gd.StringName, callable gd.Callable) {
+func (self class) RegisterMessageCapture(name gd.StringName, callable Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_register_message_capture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

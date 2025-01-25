@@ -11,8 +11,8 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
-import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/classdb/Node"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -22,6 +22,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
@@ -1005,7 +1006,7 @@ func (self Instance) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.
 Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When clicked, the provided [param callable] will be called.
 */
 func (self Instance) AddToolMenuItem(name string, callable func()) {
-	class(self).AddToolMenuItem(gd.NewString(name), gd.NewCallable(callable))
+	class(self).AddToolMenuItem(gd.NewString(name), Callable.New(callable))
 }
 
 /*
@@ -1095,14 +1096,14 @@ Hooks a callback into the undo/redo action creation when a property is modified 
 The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] [code]modified_object[/code], [String] [code]property[/code] and [Variant] [code]new_value[/code]. They are, respectively, the [UndoRedo] object used by the inspector, the currently modified object, the name of the modified property and the new value the property is about to take.
 */
 func (self Instance) AddUndoRedoInspectorHookCallback(callable func(undo_redo Object.Instance, modified_object Object.Instance, property string, new_value any)) {
-	class(self).AddUndoRedoInspectorHookCallback(gd.NewCallable(callable))
+	class(self).AddUndoRedoInspectorHookCallback(Callable.New(callable))
 }
 
 /*
 Removes a callback previously added by [method add_undo_redo_inspector_hook_callback].
 */
-func (self Instance) RemoveUndoRedoInspectorHookCallback(callable Callable.Any) {
-	class(self).RemoveUndoRedoInspectorHookCallback(gd.NewCallable(callable))
+func (self Instance) RemoveUndoRedoInspectorHookCallback(callable Callable.Function) {
+	class(self).RemoveUndoRedoInspectorHookCallback(Callable.New(callable))
 }
 
 /*
@@ -2011,10 +2012,10 @@ func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Tex
 Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When clicked, the provided [param callable] will be called.
 */
 //go:nosplit
-func (self class) AddToolMenuItem(name gd.String, callable gd.Callable) {
+func (self class) AddToolMenuItem(name gd.String, callable Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_tool_menu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2169,9 +2170,9 @@ Hooks a callback into the undo/redo action creation when a property is modified 
 The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] [code]modified_object[/code], [String] [code]property[/code] and [Variant] [code]new_value[/code]. They are, respectively, the [UndoRedo] object used by the inspector, the currently modified object, the name of the modified property and the new value the property is about to take.
 */
 //go:nosplit
-func (self class) AddUndoRedoInspectorHookCallback(callable gd.Callable) {
+func (self class) AddUndoRedoInspectorHookCallback(callable Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_add_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2181,9 +2182,9 @@ func (self class) AddUndoRedoInspectorHookCallback(callable gd.Callable) {
 Removes a callback previously added by [method add_undo_redo_inspector_hook_callback].
 */
 //go:nosplit
-func (self class) RemoveUndoRedoInspectorHookCallback(callable gd.Callable) {
+func (self class) RemoveUndoRedoInspectorHookCallback(callable Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPlugin.Bind_remove_undo_redo_inspector_hook_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

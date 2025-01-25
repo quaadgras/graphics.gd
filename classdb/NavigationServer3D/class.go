@@ -12,6 +12,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
@@ -25,6 +26,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 NavigationServer3D is the server that handles navigation maps, regions and agents. It does not handle A* navigation from [AStar3D].
@@ -886,7 +888,7 @@ Sets the callback [Callable] that gets called after each avoidance processing st
 */
 func AgentSetAvoidanceCallback(agent Resource.ID, callback func(velocity Vector3.XYZ)) {
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceCallback(agent, gd.NewCallable(callback))
+	class(self).AgentSetAvoidanceCallback(agent, Callable.New(callback))
 }
 
 /*
@@ -1121,7 +1123,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 */
 func ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node) {
 	once.Do(singleton)
-	class(self).ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, gd.NewCallable(nil))
+	class(self).ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(Callable.Nil))
 }
 
 /*
@@ -1129,7 +1131,7 @@ Bakes the provided [param navigation_mesh] with the data from the provided [para
 */
 func BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D) {
 	once.Do(singleton)
-	class(self).BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, gd.NewCallable(nil))
+	class(self).BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(Callable.Nil))
 }
 
 /*
@@ -1137,7 +1139,7 @@ Bakes the provided [param navigation_mesh] with the data from the provided [para
 */
 func BakeFromSourceGeometryDataAsync(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D) {
 	once.Do(singleton)
-	class(self).BakeFromSourceGeometryDataAsync(navigation_mesh, source_geometry_data, gd.NewCallable(nil))
+	class(self).BakeFromSourceGeometryDataAsync(navigation_mesh, source_geometry_data, Callable.New(Callable.Nil))
 }
 
 /*
@@ -1164,7 +1166,7 @@ Sets the [param callback] [Callable] for the specific source geometry [param par
 */
 func SourceGeometryParserSetCallback(parser Resource.ID, callback func(navigation_mesh [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, node [1]gdclass.Node)) {
 	once.Do(singleton)
-	class(self).SourceGeometryParserSetCallback(parser, gd.NewCallable(callback))
+	class(self).SourceGeometryParserSetCallback(parser, Callable.New(callback))
 }
 
 /*
@@ -2653,10 +2655,10 @@ Sets the callback [Callable] that gets called after each avoidance processing st
 [b]Note:[/b] Created callbacks are always processed independently of the SceneTree state as long as the agent is on a navigation map and not freed. To disable the dispatch of a callback from an agent use [method agent_set_avoidance_callback] again with an empty [Callable].
 */
 //go:nosplit
-func (self class) AgentSetAvoidanceCallback(agent gd.RID, callback gd.Callable) {
+func (self class) AgentSetAvoidanceCallback(agent gd.RID, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, agent)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_agent_set_avoidance_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3047,12 +3049,12 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
 //go:nosplit
-func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback gd.Callable) {
+func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(source_geometry_data[0])[0])
 	callframe.Arg(frame, pointers.Get(root_node[0])[0])
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_parse_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3062,11 +3064,11 @@ func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationM
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
 //go:nosplit
-func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback gd.Callable) {
+func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(source_geometry_data[0])[0])
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_bake_from_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3076,11 +3078,11 @@ func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.Navigati
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data] as an async task running on a background thread. After the process is finished the optional [param callback] will be called.
 */
 //go:nosplit
-func (self class) BakeFromSourceGeometryDataAsync(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback gd.Callable) {
+func (self class) BakeFromSourceGeometryDataAsync(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(source_geometry_data[0])[0])
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_bake_from_source_geometry_data_async, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3120,10 +3122,10 @@ Sets the [param callback] [Callable] for the specific source geometry [param par
 - [code]node[/code] - The [Node] that is parsed.
 */
 //go:nosplit
-func (self class) SourceGeometryParserSetCallback(parser gd.RID, callback gd.Callable) {
+func (self class) SourceGeometryParserSetCallback(parser gd.RID, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_source_geometry_parser_set_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

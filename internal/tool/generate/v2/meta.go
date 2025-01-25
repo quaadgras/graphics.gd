@@ -121,7 +121,6 @@ func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
 		case "Callable":
 			details := gdjson.Callables[identifier]
 			if len(details) == 0 {
-				yield("graphics.gd/variant/Callable")
 				return
 			}
 			for _, detail := range details {
@@ -170,10 +169,12 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
 		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
 		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath", "RID",
-		"Callable", "Signal", "Dictionary":
+		"Signal", "Dictionary":
 		return maybeInternal(gdType)
 	case "Array":
 		return "Array.Any"
+	case "Callable":
+		return "Callable.Function"
 	case "Variant":
 		return maybeInternal("Variant")
 	case "enum::Variant.Type":
@@ -336,7 +337,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 	case "Callable":
 		details, ok := gdjson.Callables[lookup]
 		if !ok || len(details) == 0 {
-			return "Callable.Any"
+			return "Callable.Function"
 		}
 		var ftype string = "func("
 		for i, arg := range details[1:] {
@@ -443,39 +444,4 @@ func convertName(fnName string) string {
 		}
 	}*/
 	return strings.Join(joins, "")
-}
-
-func (db ClassDB) isPointer(t string) (string, bool) {
-	t = strings.TrimPrefix(t, "[1]")
-	t = strings.TrimPrefix(t, "gd.")
-	t = strings.TrimPrefix(t, "gdclass.")
-	t = strings.TrimPrefix(t, "[1]gdclass.")
-	if strings.HasPrefix(t, "Array.Contains[") {
-		return "[1]gd.EnginePointer", true
-	}
-	switch t {
-	case "String", "StringName", "NodePath",
-		"Dictionary", "Array.Any":
-		return "[1]gd.EnginePointer", true
-	case "Signal":
-		return "[2]uint64", true
-	case "Callable":
-		return "[2]uint64", true
-	case "PackedByteArray", "PackedInt32Array",
-		"PackedInt64Array", "PackedFloat32Array",
-		"PackedFloat64Array", "PackedStringArray",
-		"PackedVector2Array", "PackedVector3Array",
-		"PackedVector4Array",
-		"PackedColorArray":
-		return "gd.PackedPointers", true
-	case "Variant":
-		return "[3]uint64", true
-	case "Object":
-		return "gd.EnginePointer", true
-	default:
-		if entry, ok := db[t]; ok && !entry.IsEnum {
-			return "gd.EnginePointer", true
-		}
-		return "", false
-	}
 }

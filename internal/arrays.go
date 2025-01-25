@@ -81,7 +81,7 @@ func EngineArrayFromSlice(slice []any) ArrayVariant.Any {
 	return array
 }
 
-func NewArrayProxy[T any]() (ArrayProxy[T], ArrayVariant.State) {
+func NewArrayProxy[T any]() (ArrayProxy[T], complex128) {
 	var array = NewArray()
 	var pack = pointers.Pack(array)
 	return ArrayProxy[T]{}, pack
@@ -89,29 +89,29 @@ func NewArrayProxy[T any]() (ArrayProxy[T], ArrayVariant.State) {
 
 type ArrayProxy[T any] struct{}
 
-func (ArrayProxy[T]) Any(state ArrayVariant.State) ArrayVariant.Any {
+func (ArrayProxy[T]) Any(state complex128) ArrayVariant.Any {
 	return ArrayVariant.Through(ArrayProxy[VariantPkg.Any]{}, state)
 }
 
-func (ArrayProxy[T]) Resize(state ArrayVariant.State, i int) {
+func (ArrayProxy[T]) Resize(state complex128, i int) {
 	pointers.Load[Array](state).Resize(Int(i))
 }
-func (ArrayProxy[T]) Index(state ArrayVariant.State, i int) T {
+func (ArrayProxy[T]) Index(state complex128, i int) T {
 	value, err := convertVariantToDesiredGoType(pointers.Load[Array](state).Index(Int(i)), reflect.TypeFor[T]())
 	if err != nil {
 		panic(fmt.Sprintf("could not convert variant to desired go type: %v", err))
 	}
 	return value.Interface().(T)
 }
-func (ArrayProxy[T]) SetIndex(state ArrayVariant.State, i int, val T) {
+func (ArrayProxy[T]) SetIndex(state complex128, i int, val T) {
 	pointers.Load[Array](state).SetIndex(Int(i), NewVariant(val))
 }
-func (ArrayProxy[T]) Len(state ArrayVariant.State) int {
+func (ArrayProxy[T]) Len(state complex128) int {
 	return int(pointers.Load[Array](state).Size())
 }
-func (ArrayProxy[T]) IsReadOnly(state ArrayVariant.State) bool {
+func (ArrayProxy[T]) IsReadOnly(state complex128) bool {
 	return bool(pointers.Load[Array](state).IsReadOnly())
 }
-func (ArrayProxy[T]) MakeReadOnly(state ArrayVariant.State) {
+func (ArrayProxy[T]) MakeReadOnly(state complex128) {
 	pointers.Load[Array](state).MakeReadOnly()
 }

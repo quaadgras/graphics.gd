@@ -11,9 +11,9 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/MultiplayerAPI"
 import "graphics.gd/variant/NodePath"
-import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -24,6 +24,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 This class is the default implementation of [MultiplayerAPI], used to provide multiplayer functionalities in Godot Engine.
@@ -112,12 +113,12 @@ func (self Instance) SetRootPath(value NodePath.String) {
 	class(self).SetRootPath(gd.NewString(string(value)).NodePath())
 }
 
-func (self Instance) AuthCallback() Callable.Any {
-	return Callable.Any(class(self).GetAuthCallback())
+func (self Instance) AuthCallback() Callable.Function {
+	return Callable.Function(class(self).GetAuthCallback())
 }
 
-func (self Instance) SetAuthCallback(value Callable.Any) {
-	class(self).SetAuthCallback(gd.NewCallable(value))
+func (self Instance) SetAuthCallback(value Callable.Function) {
+	class(self).SetAuthCallback(Callable.New(value))
 }
 
 func (self Instance) AuthTimeout() Float.X {
@@ -254,20 +255,20 @@ func (self class) CompleteAuth(id gd.Int) gd.Error {
 }
 
 //go:nosplit
-func (self class) SetAuthCallback(callback gd.Callable) {
+func (self class) SetAuthCallback(callback Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_set_auth_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAuthCallback() gd.Callable {
+func (self class) GetAuthCallback() Callable.Function {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneMultiplayer.Bind_get_auth_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Callable](r_ret.Get())
+	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret.Get())))
 	frame.Free()
 	return ret
 }

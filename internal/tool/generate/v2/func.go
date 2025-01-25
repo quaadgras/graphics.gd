@@ -93,6 +93,8 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			switch arg.Type {
 			case "Array":
 				val = "Array.Nil"
+			case "Callable":
+				val = "Callable.Nil"
 			default:
 				val = *arg.DefaultValue
 				val = strings.TrimPrefix(val, "&")
@@ -138,7 +140,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
 	resultSimple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := classDB.convertType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
-	_, needsLifetime := classDB.isPointer(resultExpert)
+	_, needsLifetime := gdtype.Name(resultExpert).IsPointer()
 	if method.IsStatic {
 		needsLifetime = true
 	}
@@ -203,7 +205,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	if method.ReturnType != "" {
 		result = classDB.convertType(class.Name, "", method.ReturnType)
 	}
-	ptrKind, isPtr := classDB.isPointer(result)
+	ptrKind, isPtr := gdtype.Name(result).IsPointer()
 
 	prefix := ""
 	if pkg != "internal" {

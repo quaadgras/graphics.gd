@@ -22,6 +22,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 The JavaScriptBridge singleton is implemented only in the Web export. It's used to access the browser's JavaScript context. This allows interaction with embedding pages or calling third-party JavaScript APIs.
@@ -55,9 +56,9 @@ func GetInterface(intf string) [1]gdclass.JavaScriptObject {
 /*
 Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 */
-func CreateCallback(callable Callable.Any) [1]gdclass.JavaScriptObject {
+func CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject {
 	once.Do(singleton)
-	return [1]gdclass.JavaScriptObject(class(self).CreateCallback(gd.NewCallable(callable)))
+	return [1]gdclass.JavaScriptObject(class(self).CreateCallback(Callable.New(callable)))
 }
 
 /*
@@ -143,9 +144,9 @@ func (self class) GetInterface(intf gd.String) [1]gdclass.JavaScriptObject {
 Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 */
 //go:nosplit
-func (self class) CreateCallback(callable gd.Callable) [1]gdclass.JavaScriptObject {
+func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_create_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret.Get())}

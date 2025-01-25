@@ -493,7 +493,7 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 	return ptr
 }
 
-func Pack[T Generic[T, P], P Size](ptr T) [16]byte {
+func Pack[T Generic[T, P], P Size](ptr T) complex128 {
 	p := (struct {
 		_ [0]*T
 
@@ -501,10 +501,10 @@ func Pack[T Generic[T, P], P Size](ptr T) [16]byte {
 		revision revision
 		checksum P
 	})(ptr)
-	return *(*[16]byte)(unsafe.Pointer(&p.sentinal))
+	return *(*complex128)(unsafe.Pointer(&p.sentinal))
 }
 
-func Load[T Generic[T, P], P Size](data [16]byte) T {
+func Load[T Generic[T, P], P Size](data complex128) T {
 	var result struct {
 		_ [0]*T
 
@@ -512,7 +512,7 @@ func Load[T Generic[T, P], P Size](data [16]byte) T {
 		revision revision
 		checksum P
 	}
-	*(*[16]byte)(unsafe.Pointer(&result.sentinal)) = data
+	*(*complex128)(unsafe.Pointer(&result.sentinal)) = data
 	return T(result)
 }
 

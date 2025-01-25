@@ -10,6 +10,7 @@ import (
 	"graphics.gd/classdb/ProjectSettings"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
 )
 
@@ -94,6 +95,7 @@ var dt Float.X
 // Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [method Node._process].
 // If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 func (loop goMainLoop) Process(delta Float.X) bool {
+	defer Callable.Cycle()
 	defer pointers.Cycle()
 	if mainloop != nil {
 		return mainloop.Process(delta)

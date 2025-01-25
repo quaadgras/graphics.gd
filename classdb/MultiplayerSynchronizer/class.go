@@ -11,10 +11,10 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Callable"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -24,6 +24,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 By default, [MultiplayerSynchronizer] synchronizes configured properties to all peers.
@@ -54,14 +55,14 @@ Adds a peer visibility filter for this synchronizer.
 [param filter] should take a peer ID [int] and return a [bool].
 */
 func (self Instance) AddVisibilityFilter(filter func(peer_id int) bool) {
-	class(self).AddVisibilityFilter(gd.NewCallable(filter))
+	class(self).AddVisibilityFilter(Callable.New(filter))
 }
 
 /*
 Removes a peer visibility filter from this synchronizer.
 */
-func (self Instance) RemoveVisibilityFilter(filter Callable.Any) {
-	class(self).RemoveVisibilityFilter(gd.NewCallable(filter))
+func (self Instance) RemoveVisibilityFilter(filter Callable.Function) {
+	class(self).RemoveVisibilityFilter(Callable.New(filter))
 }
 
 /*
@@ -275,9 +276,9 @@ Adds a peer visibility filter for this synchronizer.
 [param filter] should take a peer ID [int] and return a [bool].
 */
 //go:nosplit
-func (self class) AddVisibilityFilter(filter gd.Callable) {
+func (self class) AddVisibilityFilter(filter Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(filter))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(filter)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_add_visibility_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -287,9 +288,9 @@ func (self class) AddVisibilityFilter(filter gd.Callable) {
 Removes a peer visibility filter from this synchronizer.
 */
 //go:nosplit
-func (self class) RemoveVisibilityFilter(filter gd.Callable) {
+func (self class) RemoveVisibilityFilter(filter Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(filter))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(filter)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_remove_visibility_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

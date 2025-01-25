@@ -278,12 +278,12 @@ func registerClassInformation(className string, inherits string, rtype reflect.T
 			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, gd.NewStringName(className), ptype, gd.NewStringName(""), gd.NewStringName(""))
 		}
 	}
-	Callable.New(func() {
+	Callable.Defer(Callable.New(func() {
 		if EngineClass.IsEditorHint() {
 			docs, _ := xml.Marshal(class)
 			gd.Global.EditorHelp.Load(docs)
 		}
-	}).CallDeferred()
+	}))
 }
 
 type classImplementation struct {

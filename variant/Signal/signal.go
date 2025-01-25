@@ -17,7 +17,7 @@ type Chan[T any] struct {
 
 	owner any
 	topic string
-	funcs []Callable.Func
+	funcs []Callable.Function
 	proxy *gd.Signal
 }
 
@@ -28,7 +28,7 @@ const ErrInvalidParameter = Engine.ErrInvalidParameter
 // Attach connects this signal to the specified [Callable.Func]
 // A signal can only be connected once to the same [Callable.Func].
 // If the signal is already connected, returns [ErrInvalidParameter]
-func (c *Chan[T]) Attach(fn Callable.Func) error { //gd:Signal.connect
+func (c *Chan[T]) Attach(fn Callable.Function) error { //gd:Signal.connect
 	if c.proxy != nil {
 		//return c.proxy.C(fn)
 	}
@@ -42,7 +42,7 @@ func (c *Chan[T]) Attach(fn Callable.Func) error { //gd:Signal.connect
 }
 
 // Remove disconnects this signal from the specified [Callable.Func].
-func (c *Chan[T]) Remove(fn Callable.Func) { //gd:Signal.disconnect
+func (c *Chan[T]) Remove(fn Callable.Function) { //gd:Signal.disconnect
 	if c.proxy != nil {
 		//if c.proxy.Has(fn) {
 		//	c.proxy.Remove(fn)
@@ -64,12 +64,12 @@ func (c *Chan[T]) Emit(signal T) { //gd:Signal.emit
 		return
 	}
 	for _, f := range c.funcs {
-		f.Call(signal)
+		f.Call()
 	}
 }
 
 // Callables returns a slice of callables for this signal.
-func (c *Chan[T]) Callables() []Callable.Func { //gd:Signal.get_connections
+func (c *Chan[T]) Callables() []Callable.Function { //gd:Signal.get_connections
 	if c.proxy != nil {
 		//return c.proxy.Callables()
 	}
@@ -93,7 +93,7 @@ func (c *Chan[T]) Emitter() any { //gd:Signal.get_object Signal.get_object_id
 }
 
 // Has returns true if the specified callable is connected to this signal.
-func (c *Chan[T]) Has(fn Callable.Func) bool { //gd:Signal.is_connected
+func (c *Chan[T]) Has(fn Callable.Function) bool { //gd:Signal.is_connected
 	if c.proxy != nil {
 		//return c.proxy.Has(fn)
 	}
@@ -157,9 +157,9 @@ type Pair[A, B any] struct {
 
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Pair[A, B]) Emit(a A, b B) {
-	Callable.New(func() {
+	Callable.Defer(Callable.New(func() {
 		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b))
-	}).CallDeferred()
+	}))
 }
 
 // Trio of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -170,9 +170,9 @@ type Trio[A, B, C any] struct {
 
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Trio[A, B, C]) Emit(a A, b B, c C) {
-	Callable.New(func() {
+	Callable.Defer(Callable.New(func() {
 		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c))
-	}).CallDeferred()
+	}))
 }
 
 // Quad of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -183,9 +183,9 @@ type Quad[A, B, C, D any] struct {
 
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Quad[A, B, C, D]) Emit(a A, b B, c C, d D) {
-	Callable.New(func() {
+	Callable.Defer(Callable.New(func() {
 		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c), gd.NewVariant(d))
-	}).CallDeferred()
+	}))
 }
 
 // Quin of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -197,9 +197,9 @@ type Quin[A, B, C, D, E any] struct {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 // This function is safe to call from any goroutine.
 func (signal Quin[A, B, C, D, E]) Emit(a A, b B, c C, d D, e E) {
-	Callable.New(func() {
+	Callable.Defer(Callable.New(func() {
 		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c), gd.NewVariant(d), gd.NewVariant(e))
-	}).CallDeferred()
+	}))
 }
 
 // Hexa of values that can be signaled, add this as a field inside a [classdb.Extension]
@@ -211,7 +211,7 @@ type Hexa[A, B, C, D, E, F any] struct {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 // This function is safe to call from any goroutine.
 func (signal Hexa[A, B, C, D, E, F]) Emit(a A, b B, c C, d D, e E, f F) {
-	Callable.New(func() {
+	Callable.Defer(Callable.New(func() {
 		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c), gd.NewVariant(d), gd.NewVariant(e), gd.NewVariant(f))
-	}).CallDeferred()
+	}))
 }

@@ -11,6 +11,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Tweener"
 import "graphics.gd/variant/Float"
 
@@ -22,6 +23,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 [PropertyTweener] is used to interpolate a property in an object. See [method Tween.tween_property] for more usage information.
@@ -105,7 +107,7 @@ func tween_curve(v):
 [/codeblock]
 */
 func (self Instance) SetCustomInterpolator(interpolator_method func(Float.X) Float.X) [1]gdclass.PropertyTweener {
-	return [1]gdclass.PropertyTweener(class(self).SetCustomInterpolator(gd.NewCallable(interpolator_method)))
+	return [1]gdclass.PropertyTweener(class(self).SetCustomInterpolator(Callable.New(interpolator_method)))
 }
 
 /*
@@ -232,9 +234,9 @@ func tween_curve(v):
 [/codeblock]
 */
 //go:nosplit
-func (self class) SetCustomInterpolator(interpolator_method gd.Callable) [1]gdclass.PropertyTweener {
+func (self class) SetCustomInterpolator(interpolator_method Callable.Function) [1]gdclass.PropertyTweener {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(interpolator_method))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(interpolator_method)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PropertyTweener.Bind_set_custom_interpolator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret.Get())}

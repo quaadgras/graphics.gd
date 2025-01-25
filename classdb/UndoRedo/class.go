@@ -11,6 +11,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -20,6 +21,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 UndoRedo works by registering methods and property changes inside "actions". You can create an action, then provide ways to do and undo this action using function calls and property changes, then commit the action.
@@ -153,14 +155,14 @@ func (self Instance) IsCommittingAction() bool {
 Register a [Callable] that will be called when the action is committed.
 */
 func (self Instance) AddDoMethod(callable func()) {
-	class(self).AddDoMethod(gd.NewCallable(callable))
+	class(self).AddDoMethod(Callable.New(callable))
 }
 
 /*
 Register a [Callable] that will be called when the action is undone.
 */
 func (self Instance) AddUndoMethod(callable func()) {
-	class(self).AddUndoMethod(gd.NewCallable(callable))
+	class(self).AddUndoMethod(Callable.New(callable))
 }
 
 /*
@@ -366,9 +368,9 @@ func (self class) IsCommittingAction() bool {
 Register a [Callable] that will be called when the action is committed.
 */
 //go:nosplit
-func (self class) AddDoMethod(callable gd.Callable) {
+func (self class) AddDoMethod(callable Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_do_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -378,9 +380,9 @@ func (self class) AddDoMethod(callable gd.Callable) {
 Register a [Callable] that will be called when the action is undone.
 */
 //go:nosplit
-func (self class) AddUndoMethod(callable gd.Callable) {
+func (self class) AddUndoMethod(callable Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_add_undo_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

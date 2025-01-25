@@ -5,76 +5,105 @@ import (
 	"math"
 	"reflect"
 	"runtime"
+	"sync"
 
-	gd "graphics.gd/internal"
+	"graphics.gd/variant"
 	"graphics.gd/variant/Array"
 )
 
-// Func representation.
-type Func interface {
-	Name() string
-	Args() (args int, bind Array.Contains[any])
-	Call(arg ...any) any
-	Bind(args ...any) Func
+// Function represents a function. It can either be a method on a named type, or a custom callable used
+// for different purposes
+type Function struct {
+	state complex128
+	proxy Proxy
 }
 
-type Any = gd.Callable
+// Nil represents a nil function.
+var Nil Function
+
+type functionCall struct {
+	function  Function
+	arguments []variant.Any
+}
+
+// queue of functions to call later.
+var queue = Array.New[functionCall]()
+
+// Cycle calls all functions in the defer queue.
+func Cycle() {
+	for _, queued := range queue.Iter() {
+		queued.function.Call(queued.arguments...)
+	}
+	Array.Clear(queue)
+}
 
 // New returns a new [Func] from the given value, if the value is not a Go func
 // then it will be wrapped as if it were a function without any arguments that
 // returns the specified value.
-func New(value any) Any {
-	return gd.NewCallable(value)
+func New(value any) Function {
+	return Function{
+		proxy: &local{
+			value: value,
+		},
+	}
 }
 
 type local struct {
 	value any
-	cache []reflect.Value
-	binds Array.Contains[any]
+	binds Array.Any
+	cache sync.Pool
 	trims int
-	proxy Func
+	proxy Function
 }
 
-func (l *local) Name() string {
+func (l *local) Name(complex128) string {
 	if reflect.TypeOf(l.value).Kind() == reflect.Func {
 		return runtime.FuncForPC(reflect.ValueOf(l.value).Pointer()).Name()
 	}
 	return "<unknown callable>"
 }
 
-func (l *local) Args() (int, Array.Contains[any]) {
+func (l *local) Args(complex128) (int, Array.Any) {
 	if reflect.TypeOf(l.value).Kind() == reflect.Func {
 		return reflect.TypeOf(l.value).NumIn(), l.binds
 	}
 	return 0, l.binds
 }
 
-func (l *local) Call(args ...any) any {
-	argc, binds := l.Args()
+func (l *local) Call(_ complex128, args ...variant.Any) variant.Any {
+	argc, binds := l.Args(0)
 	if len(args)-binds.Len() != argc {
 		panic("invalid number of arguments")
 	}
 	if reflect.TypeOf(l.value).Kind() == reflect.Func {
+		values, ok := l.cache.Get().(Array.Contains[reflect.Value])
+		if !ok {
+			values = Array.New[reflect.Value]()
+		}
+		defer l.cache.Put(values)
+		values.Resize(len(args) + binds.Len())
 		for i := range args {
-			l.cache[i] = reflect.ValueOf(args[i])
+			values.SetIndex(i, reflect.ValueOf(args[i].Interface()))
 		}
 		for i, v := range binds.Iter() {
-			l.cache[i+len(args)] = reflect.ValueOf(v)
+			values.SetIndex(i+len(args), reflect.ValueOf(v.Interface()))
 		}
-		result := reflect.ValueOf(l.value).Call(l.cache)
+		result := reflect.ValueOf(l.value).Call(values.Slice())
 		if len(result) == 0 {
-			return nil
+			return variant.Nil
 		}
-		return result[0].Interface()
+		return variant.New(result[0].Interface())
 	}
-	return l.value
+	return variant.New(l.value)
 }
 
-func (l local) Bind(args ...any) Func {
+func (l *local) Bind(_ complex128, args ...variant.Any) (Proxy, complex128) {
+	result := local{}
+	result.binds = Array.Duplicate(l.binds)
 	for _, arg := range args {
-		l.cache = append(l.cache, reflect.ValueOf(arg))
+		result.binds.Append(arg)
 	}
-	return &l
+	return &result, 0
 }
 
 // Bind returns a copy of this Callable with one or more arguments bound. When called,
@@ -82,50 +111,62 @@ func (l local) Bind(args ...any) Func {
 //
 // Note: When this method is chained with other similar methods, the order in which the
 // argument list is modified is read from right to left.
-func Bind(fn Func, args ...any) Func { //gd:Callable.bind Callable.bindv
-	if fn == nil {
-		return nil
+func Bind(fn Function, args ...variant.Any) Function { //gd:Callable.bind Callable.bindv
+	if fn == Nil {
+		return Nil
 	}
-	return fn.Bind(args...)
+	return Through(fn.proxy.Bind(fn.state, args...))
 }
 
 // Call calls the method represented by this Callable. Arguments can be passed and should
 // match the method's signature.
-func Call(fn Func, args ...any) any { //gd:Callable.call Callable.call_deferred Callable.callv Callable.rpc Callable.rpc_id
-	if fn == nil {
-		return nil
+func (fn Function) Call(args ...variant.Any) variant.Any { //gd:Callable.call Callable.call_deferred Callable.callv Callable.rpc Callable.rpc_id
+	if fn == Nil {
+		return variant.Nil
 	}
-	return fn.Call(args...)
+	return fn.proxy.Call(fn.state, args...)
+}
+
+// Defer calls the function represented by this callable at the end of the current frame.
+// Arguments can be passed and should match the method's signature.
+func Defer(fn Function, args ...variant.Any) { //gd:Callable.call_deferred
+	if fn == Nil {
+		return
+	}
+	queue.Append(functionCall{
+		function:  fn,
+		arguments: args,
+	})
 }
 
 // Create creates a new Callable for the method named method in the specified value.
-func Create(value any, method string) Any { //gd:Callable.create
+func Create(value any, method string) Function { //gd:Callable.create
 	if value == nil {
-		return Any{}
+		return Nil
 	}
 	return New(reflect.ValueOf(value).MethodByName(method).Interface())
 }
 
 // ArgumentCount returns the total number of arguments this Callable should take.
-func ArgumentCount(fn Func) int { //gd:Callable.get_argument_count
-	if fn == nil {
+func ArgumentCount(fn Function) int { //gd:Callable.get_argument_count
+	if fn == Nil {
 		return 0
 	}
-	argc, _ := fn.Args()
+	argc, _ := fn.proxy.Args(fn.state)
 	return argc
 }
 
 // BoundArguments returns the arguments that have been bound to this Callable.
-func BoundArguments(fn Func) Array.Contains[any] { //gd:Callable.get_bound_arguments
-	_, binds := fn.Args()
+func BoundArguments(fn Function) Array.Any { //gd:Callable.get_bound_arguments
+	_, binds := fn.proxy.Args(fn.state)
 	return binds
 }
 
 // BoundArgumentsCount returns the total amount of arguments bound (or unbound)
 // via successive bind or unbind calls. If the amount of arguments unbound is
 // greater than the ones bound, this function returns a value less than zero.
-func BoundArgumentsCount(fn Func) int { //gd:Callable.get_bound_arguments_count
-	if fn == nil {
+func BoundArgumentsCount(fn Function) int { //gd:Callable.get_bound_arguments_count
+	if fn == Nil {
 		return 0
 	}
 	bound := BoundArguments(fn)
@@ -134,16 +175,16 @@ func BoundArgumentsCount(fn Func) int { //gd:Callable.get_bound_arguments_count
 
 // Method returns the name of the function represented by this Callable or
 // an empty string if a name is not available.
-func Method(fn Func) string { //gd:Callable.get_method
-	if fn == nil {
+func Method(fn Function) string { //gd:Callable.get_method
+	if fn == Nil {
 		return ""
 	}
-	return fn.Name()
+	return fn.proxy.Name(fn.state)
 }
 
 // IsProxy returns true if the given value is not backed by a Go function.
-func IsProxy(fn Func) bool { //gd:Callable.is_custom
-	if fn == nil {
+func IsProxy(fn Function) bool { //gd:Callable.is_custom
+	if fn == Nil {
 		return true
 	}
 	return reflect.TypeOf(fn).Kind() != reflect.Func
@@ -155,39 +196,39 @@ func IsProxy(fn Func) bool { //gd:Callable.is_custom
 // the reverse is not true. Returning identical hash values does not imply the
 // callables are equal, because different callables can have identical hash values due
 // to hash collisions. The engine uses a 32-bit hash algorithm for hash.
-func Hash(fn Func) uint32 { //gd:Callable.hash
+func Hash(fn Function) uint32 { //gd:Callable.hash
 	return uint32(reflect.ValueOf(reflect.TypeOf(fn)).Pointer() % math.MaxUint32)
 }
 
 // Receiver returns the receiver of the method represented by this Callable.
 // If no receiver is available, this function returns nil.
-func Receiver(fn Func) any { //gd:Callable.get_object Callable.get_object_id
-	if fn == nil {
+func Receiver(fn Function) any { //gd:Callable.get_object Callable.get_object_id
+	if fn == Nil {
 		return nil
 	}
-	l, ok := fn.(*local)
+	l, ok := fn.proxy.(*local)
 	if !ok {
 		return nil
 	}
 	return l.value
 }
 
-// IsNull returns true if the given value is nil.
-func IsNull(fn Func) bool { //gd:Callable.is_null
-	return fn == nil
+// IsNil returns true if the given value is nil.
+func IsNil(fn Function) bool { //gd:Callable.is_null
+	return fn == Nil
 }
 
 // IsStandard returns true if the given value is backed by a Go function.
-func IsStandard(fn Func) bool { //gd:Callable.is_standard
-	if fn == nil {
+func IsStandard(fn Function) bool { //gd:Callable.is_standard
+	if fn == Nil {
 		return false
 	}
 	return reflect.TypeOf(fn).Kind() == reflect.Func
 }
 
 // IsValid returns true if the given value is not nil.
-func IsValid(fn Func) bool { //gd:Callable.is_valid
-	return fn != nil
+func IsValid(fn Function) bool { //gd:Callable.is_valid
+	return fn != Nil
 }
 
 // Unbind returns a copy of this Callable with a number of arguments unbound. In other
@@ -199,24 +240,26 @@ func IsValid(fn Func) bool { //gd:Callable.is_valid
 //
 // Note: When this method is chained with other similar methods, the order in which the
 // argument list is modified is read from right to left.
-func Unbind(fn Func, argcount int) Func { //gd:Callable.unbind
-	if fn == nil {
-		return nil
+func Unbind(fn Function, argcount int) Function { //gd:Callable.unbind
+	if fn == Nil {
+		return Nil
 	}
-	return &unbind{Func: fn, count: argcount}
+	return Function{
+		proxy: &unbind{Proxy: fn.proxy, count: argcount},
+	}
 }
 
 type unbind struct {
-	Func
+	Proxy
 	count int
 }
 
-func (u *unbind) Call(args ...any) any {
-	if u.Func == nil {
-		return nil
+func (u *unbind) Call(state complex128, args ...variant.Any) variant.Any {
+	if u.Proxy == nil {
+		return variant.Nil
 	}
 	if len(args) >= u.count {
 		args = args[:len(args)-u.count]
 	}
-	return u.Func.Call(args...)
+	return u.Proxy.Call(state, args...)
 }

@@ -111,8 +111,8 @@ func (name Name) ConvertToSimple(val string) string {
 		return fmt.Sprintf("gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&%v)))", val)
 	case "gd.Variant":
 		return fmt.Sprintf("gd.NewVariant(%v)", val)
-	case "gd.Callable":
-		return fmt.Sprintf("gd.NewCallable(%v)", val)
+	case "Callable.Function":
+		return fmt.Sprintf("Callable.New(%v)", val)
 	default:
 		return val
 	}
@@ -160,6 +160,8 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 		return fmt.Sprintf("Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](%s)))", val)
 	case "[1]gd.Object":
 		return fmt.Sprintf("[1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(%s)})}", val)
+	case "Callable.Function":
+		return fmt.Sprintf("Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](%s)))", val)
 	default:
 		_, argIsPtr := name.IsPointer()
 		if name == "Object" {
@@ -185,6 +187,8 @@ func (name Name) EndPointer(val string) string {
 	switch name {
 	case "Array.Any":
 		return fmt.Sprintf("pointers.End(gd.InternalArray(%v))", val)
+	case "Callable.Function":
+		return fmt.Sprintf("pointers.End(gd.InternalCallable(%v))", val)
 	default:
 		name := strings.TrimPrefix(string(name), "classdb.")
 		name = strings.TrimPrefix(name, "[1]gdclass.")
@@ -203,6 +207,8 @@ func (name Name) LoadOntoCallFrame(val string) string {
 	switch name {
 	case "Array.Any":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalArray(%v)))\n", val)
+	case "Callable.Function":
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalCallable(%v)))\n", val)
 	}
 	_, argIsPtr := name.IsPointer()
 	if argIsPtr {
@@ -228,6 +234,8 @@ func (name Name) IsPointer() (string, bool) {
 	case "Signal":
 		return "[2]uint64", true
 	case "Callable":
+		return "[2]uint64", true
+	case "Callable.Function":
 		return "[2]uint64", true
 	case "PackedByteArray", "PackedInt32Array",
 		"PackedInt64Array", "PackedFloat32Array",

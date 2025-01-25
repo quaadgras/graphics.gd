@@ -12,6 +12,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -21,6 +22,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 [PhysicsServer2DManager] is the API for registering [PhysicsServer2D] implementations and for setting the default implementation.
@@ -39,7 +41,7 @@ Register a [PhysicsServer2D] implementation by passing a [param name] and a [Cal
 */
 func RegisterServer(name string, create_callback func() [1]gdclass.PhysicsServer2D) {
 	once.Do(singleton)
-	class(self).RegisterServer(gd.NewString(name), gd.NewCallable(create_callback))
+	class(self).RegisterServer(gd.NewString(name), Callable.New(create_callback))
 }
 
 /*
@@ -64,10 +66,10 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Register a [PhysicsServer2D] implementation by passing a [param name] and a [Callable] that returns a [PhysicsServer2D] object.
 */
 //go:nosplit
-func (self class) RegisterServer(name gd.String, create_callback gd.Callable) {
+func (self class) RegisterServer(name gd.String, create_callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(create_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(create_callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2DManager.Bind_register_server, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

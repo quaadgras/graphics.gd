@@ -12,10 +12,10 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
-import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -26,6 +26,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 [NativeMenu] handles low-level access to the OS native global menu bar and popup menus.
@@ -168,16 +169,16 @@ Registers callable to emit after the menu is closed.
 */
 func SetPopupOpenCallback(rid Resource.ID, callback func()) {
 	once.Do(singleton)
-	class(self).SetPopupOpenCallback(rid, gd.NewCallable(callback))
+	class(self).SetPopupOpenCallback(rid, Callable.New(callback))
 }
 
 /*
 Returns global menu open callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
-func GetPopupOpenCallback(rid Resource.ID) Callable.Any {
+func GetPopupOpenCallback(rid Resource.ID) Callable.Function {
 	once.Do(singleton)
-	return Callable.Any(class(self).GetPopupOpenCallback(rid))
+	return Callable.Function(class(self).GetPopupOpenCallback(rid))
 }
 
 /*
@@ -187,16 +188,16 @@ Registers callable to emit when the menu is about to show.
 */
 func SetPopupCloseCallback(rid Resource.ID, callback func()) {
 	once.Do(singleton)
-	class(self).SetPopupCloseCallback(rid, gd.NewCallable(callback))
+	class(self).SetPopupCloseCallback(rid, Callable.New(callback))
 }
 
 /*
 Returns global menu close callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
-func GetPopupCloseCallback(rid Resource.ID) Callable.Any {
+func GetPopupCloseCallback(rid Resource.ID) Callable.Function {
 	once.Do(singleton)
-	return Callable.Any(class(self).GetPopupCloseCallback(rid))
+	return Callable.Function(class(self).GetPopupCloseCallback(rid))
 }
 
 /*
@@ -246,7 +247,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddItem(rid Resource.ID, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddItem(rid, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddItem(rid, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -259,7 +260,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddCheckItem(rid Resource.ID, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddCheckItem(rid, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddCheckItem(rid, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -272,7 +273,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddIconItem(rid Resource.ID, icon [1]gdclass.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddIconItem(rid, icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddIconItem(rid, icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -285,7 +286,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddIconCheckItem(rid Resource.ID, icon [1]gdclass.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddIconCheckItem(rid, icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddIconCheckItem(rid, icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -299,7 +300,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddRadioCheckItem(rid Resource.ID, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddRadioCheckItem(rid, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddRadioCheckItem(rid, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -313,7 +314,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddIconRadioCheckItem(rid Resource.ID, icon [1]gdclass.Texture2D, label string) int {
 	once.Do(singleton)
-	return int(int(class(self).AddIconRadioCheckItem(rid, icon, gd.NewString(label), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddIconRadioCheckItem(rid, icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -328,7 +329,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 func AddMultistateItem(rid Resource.ID, label string, max_states int, default_state int) int {
 	once.Do(singleton)
-	return int(int(class(self).AddMultistateItem(rid, gd.NewString(label), gd.Int(max_states), gd.Int(default_state), gd.NewCallable(nil), gd.NewCallable(nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
+	return int(int(class(self).AddMultistateItem(rid, gd.NewString(label), gd.Int(max_states), gd.Int(default_state), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
 
 /*
@@ -400,18 +401,18 @@ func IsItemRadioCheckable(rid Resource.ID, idx int) bool {
 Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemCallback(rid Resource.ID, idx int) Callable.Any {
+func GetItemCallback(rid Resource.ID, idx int) Callable.Function {
 	once.Do(singleton)
-	return Callable.Any(class(self).GetItemCallback(rid, gd.Int(idx)))
+	return Callable.Function(class(self).GetItemCallback(rid, gd.Int(idx)))
 }
 
 /*
 Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemKeyCallback(rid Resource.ID, idx int) Callable.Any {
+func GetItemKeyCallback(rid Resource.ID, idx int) Callable.Function {
 	once.Do(singleton)
-	return Callable.Any(class(self).GetItemKeyCallback(rid, gd.Int(idx)))
+	return Callable.Function(class(self).GetItemKeyCallback(rid, gd.Int(idx)))
 }
 
 /*
@@ -550,7 +551,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 */
 func SetItemCallback(rid Resource.ID, idx int, callback func(tag any)) {
 	once.Do(singleton)
-	class(self).SetItemCallback(rid, gd.Int(idx), gd.NewCallable(callback))
+	class(self).SetItemCallback(rid, gd.Int(idx), Callable.New(callback))
 }
 
 /*
@@ -560,7 +561,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 */
 func SetItemHoverCallbacks(rid Resource.ID, idx int, callback func(tag any)) {
 	once.Do(singleton)
-	class(self).SetItemHoverCallbacks(rid, gd.Int(idx), gd.NewCallable(callback))
+	class(self).SetItemHoverCallbacks(rid, gd.Int(idx), Callable.New(callback))
 }
 
 /*
@@ -570,7 +571,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 */
 func SetItemKeyCallback(rid Resource.ID, idx int, key_callback func(tag any)) {
 	once.Do(singleton)
-	class(self).SetItemKeyCallback(rid, gd.Int(idx), gd.NewCallable(key_callback))
+	class(self).SetItemKeyCallback(rid, gd.Int(idx), Callable.New(key_callback))
 }
 
 /*
@@ -870,10 +871,10 @@ Registers callable to emit after the menu is closed.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetPopupOpenCallback(rid gd.RID, callback gd.Callable) {
+func (self class) SetPopupOpenCallback(rid gd.RID, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_popup_open_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -884,12 +885,12 @@ Returns global menu open callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetPopupOpenCallback(rid gd.RID) gd.Callable {
+func (self class) GetPopupOpenCallback(rid gd.RID) Callable.Function {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_popup_open_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Callable](r_ret.Get())
+	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -900,10 +901,10 @@ Registers callable to emit when the menu is about to show.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetPopupCloseCallback(rid gd.RID, callback gd.Callable) {
+func (self class) SetPopupCloseCallback(rid gd.RID, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_popup_close_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -914,12 +915,12 @@ Returns global menu close callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetPopupCloseCallback(rid gd.RID) gd.Callable {
+func (self class) GetPopupCloseCallback(rid gd.RID) Callable.Function {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_popup_close_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Callable](r_ret.Get())
+	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -997,12 +998,12 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddItem(rid gd.RID, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddItem(rid gd.RID, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -1022,12 +1023,12 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddCheckItem(rid gd.RID, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddCheckItem(rid gd.RID, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -1047,13 +1048,13 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddIconItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddIconItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -1073,13 +1074,13 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddIconCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddIconCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -1100,12 +1101,12 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddRadioCheckItem(rid gd.RID, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddRadioCheckItem(rid gd.RID, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -1126,13 +1127,13 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddIconRadioCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddIconRadioCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -1154,14 +1155,14 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddMultistateItem(rid gd.RID, label gd.String, max_states gd.Int, default_state gd.Int, callback gd.Callable, key_callback gd.Callable, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddMultistateItem(rid gd.RID, label gd.String, max_states gd.Int, default_state gd.Int, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(label))
 	callframe.Arg(frame, max_states)
 	callframe.Arg(frame, default_state)
-	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	callframe.Arg(frame, pointers.Get(tag))
 	callframe.Arg(frame, accelerator)
 	callframe.Arg(frame, index)
@@ -1291,13 +1292,13 @@ Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetItemCallback(rid gd.RID, idx gd.Int) gd.Callable {
+func (self class) GetItemCallback(rid gd.RID, idx gd.Int) Callable.Function {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Callable](r_ret.Get())
+	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1307,13 +1308,13 @@ Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetItemKeyCallback(rid gd.RID, idx gd.Int) gd.Callable {
+func (self class) GetItemKeyCallback(rid gd.RID, idx gd.Int) Callable.Function {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_get_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Callable](r_ret.Get())
+	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1548,11 +1549,11 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemCallback(rid gd.RID, idx gd.Int, callback gd.Callable) {
+func (self class) SetItemCallback(rid gd.RID, idx gd.Int, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1564,11 +1565,11 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetItemHoverCallbacks(rid gd.RID, idx gd.Int, callback gd.Callable) {
+func (self class) SetItemHoverCallbacks(rid gd.RID, idx gd.Int, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_hover_callbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1580,11 +1581,11 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetItemKeyCallback(rid gd.RID, idx gd.Int, key_callback gd.Callable) {
+func (self class) SetItemKeyCallback(rid gd.RID, idx gd.Int, key_callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
-	callframe.Arg(frame, pointers.Get(key_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(key_callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_set_item_key_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

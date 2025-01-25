@@ -12,8 +12,8 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Float"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -23,6 +23,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 This class provides access to a number of different monitors related to performance, such as memory usage, draw calls, and FPS. These are the same as the values displayed in the [b]Monitor[/b] tab in the editor's [b]Debugger[/b] panel. By using the [method get_monitor] method of this class, you can access this data from your code.
@@ -114,9 +115,9 @@ public int GetMonitorValue()
 The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.
 Callables are called with arguments supplied in argument array.
 */
-func AddCustomMonitor(id string, callable Callable.Any) {
+func AddCustomMonitor(id string, callable Callable.Function) {
 	once.Do(singleton)
-	class(self).AddCustomMonitor(gd.NewStringName(id), gd.NewCallable(callable), Array.Nil)
+	class(self).AddCustomMonitor(gd.NewStringName(id), Callable.New(callable), Array.Nil)
 }
 
 /*
@@ -245,10 +246,10 @@ The debugger calls the callable to get the value of custom monitor. The callable
 Callables are called with arguments supplied in argument array.
 */
 //go:nosplit
-func (self class) AddCustomMonitor(id gd.StringName, callable gd.Callable, arguments Array.Any) {
+func (self class) AddCustomMonitor(id gd.StringName, callable Callable.Function, arguments Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(id))
-	callframe.Arg(frame, pointers.Get(callable))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arguments)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_add_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())

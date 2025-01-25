@@ -11,6 +11,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -29,6 +30,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [CodeEdit].
@@ -492,7 +494,7 @@ func (self Instance) Search(text string, flags int, from_line int, from_column i
 Provide custom tooltip text. The callback method must take the following args: [code]hovered_word: String[/code].
 */
 func (self Instance) SetTooltipRequestFunc(callback func(hovered_word string) string) {
-	class(self).SetTooltipRequestFunc(gd.NewCallable(callback))
+	class(self).SetTooltipRequestFunc(Callable.New(callback))
 }
 
 /*
@@ -1130,7 +1132,7 @@ func (self Instance) MergeGutters(from_line int, to_line int) {
 Set a custom draw method for the gutter. The callback method must take the following args: [code]line: int, gutter: int, Area: Rect2[/code]. This only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
 */
 func (self Instance) SetGutterCustomDraw(column int, draw_callback func(line int, gutter int, area Rect2.PositionSize)) {
-	class(self).SetGutterCustomDraw(gd.Int(column), gd.NewCallable(draw_callback))
+	class(self).SetGutterCustomDraw(gd.Int(column), Callable.New(draw_callback))
 }
 
 /*
@@ -2558,9 +2560,9 @@ func (self class) Search(text gd.String, flags gd.Int, from_line gd.Int, from_co
 Provide custom tooltip text. The callback method must take the following args: [code]hovered_word: String[/code].
 */
 //go:nosplit
-func (self class) SetTooltipRequestFunc(callback gd.Callable) {
+func (self class) SetTooltipRequestFunc(callback Callable.Function) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_tooltip_request_func, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4184,10 +4186,10 @@ func (self class) MergeGutters(from_line gd.Int, to_line gd.Int) {
 Set a custom draw method for the gutter. The callback method must take the following args: [code]line: int, gutter: int, Area: Rect2[/code]. This only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
 */
 //go:nosplit
-func (self class) SetGutterCustomDraw(column gd.Int, draw_callback gd.Callable) {
+func (self class) SetGutterCustomDraw(column gd.Int, draw_callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(draw_callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(draw_callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_custom_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

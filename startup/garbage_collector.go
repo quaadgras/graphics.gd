@@ -23,7 +23,8 @@ func (goRuntime) Ready() {
 func (gr goRuntime) AsNode() NodeClass.Instance { return gr.Super().AsNode() }
 
 func (goRuntime) Process(delta Float.X) {
-	Callable.New(func() {
+	gd.NewCallable(func() {
+		Callable.Cycle()
 		pointers.Cycle()
 	}).CallDeferred()
 }
@@ -33,7 +34,7 @@ func init() {
 		classdb.Register[goRuntime]()
 	})
 	gd.PostStartupFunctions = append(gd.PostStartupFunctions, func() {
-		Callable.New(func() {
+		gd.NewCallable(func() {
 			SceneTreeClass.Add(new(goRuntime))
 		}).CallDeferred()
 	})

@@ -11,10 +11,10 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Callable"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -24,6 +24,7 @@ var _ callframe.Frame
 var _ = pointers.Cycle
 var _ = Array.Nil
 var _ variant.Any
+var _ Callable.Function
 
 /*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
@@ -329,14 +330,14 @@ Sets the given column's custom draw callback. Use an empty [Callable] ([code ski
 The [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 func (self Instance) SetCustomDrawCallback(column int, callback func(item [1]gdclass.TreeItem, rect Rect2.PositionSize)) {
-	class(self).SetCustomDrawCallback(gd.Int(column), gd.NewCallable(callback))
+	class(self).SetCustomDrawCallback(gd.Int(column), Callable.New(callback))
 }
 
 /*
 Returns the custom callback of column [param column].
 */
-func (self Instance) GetCustomDrawCallback(column int) Callable.Any {
-	return Callable.Any(class(self).GetCustomDrawCallback(gd.Int(column)))
+func (self Instance) GetCustomDrawCallback(column int) Callable.Function {
+	return Callable.Function(class(self).GetCustomDrawCallback(gd.Int(column)))
 }
 
 /*
@@ -1371,10 +1372,10 @@ Sets the given column's custom draw callback. Use an empty [Callable] ([code ski
 The [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 //go:nosplit
-func (self class) SetCustomDrawCallback(column gd.Int, callback gd.Callable) {
+func (self class) SetCustomDrawCallback(column gd.Int, callback Callable.Function) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(callback))
+	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_custom_draw_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1384,12 +1385,12 @@ func (self class) SetCustomDrawCallback(column gd.Int, callback gd.Callable) {
 Returns the custom callback of column [param column].
 */
 //go:nosplit
-func (self class) GetCustomDrawCallback(column gd.Int) gd.Callable {
+func (self class) GetCustomDrawCallback(column gd.Int) Callable.Function {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_custom_draw_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Callable](r_ret.Get())
+	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret.Get())))
 	frame.Free()
 	return ret
 }

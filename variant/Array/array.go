@@ -19,7 +19,7 @@ import (
 // Note: Arrays are always passed by reference. To get a copy of an array that can be modified
 // independently of the original array, use duplicate.
 type Contains[T any] struct {
-	state State
+	state complex128
 	proxy Proxy[T]
 }
 
@@ -48,6 +48,21 @@ func New[T any](elements ...T) Contains[T] {
 			slice: elements,
 		},
 	}
+}
+
+// Slice returns the array as a slice.
+func (a Contains[T]) Slice() []T {
+	switch val := a.proxy.(type) {
+	case *localFirst[T]:
+		if val.proxy == nil {
+			return val.slice
+		}
+	}
+	var copy = make([]T, 0, a.Len())
+	for i := range a.Len() {
+		copy = append(copy, a.Index(i))
+	}
+	return copy
 }
 
 // Any returns an [Any] array with a shared view on the elements in the array.

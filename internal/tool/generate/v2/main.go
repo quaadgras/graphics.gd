@@ -144,6 +144,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "graphics.gd/variant/Object"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/RefCounted"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/Array"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant/Callable"`)
 	var imported = make(map[string]bool)
 	if class.Name == "TextEdit" {
 		imported["graphics.gd/variant/Rect2"] = true
@@ -205,6 +206,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ = pointers.Cycle")
 	fmt.Fprintln(file, "var _ = Array.Nil")
 	fmt.Fprintln(file, "var _ variant.Any")
+	fmt.Fprintln(file, "var _ Callable.Function")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
 	var hasVirtual bool

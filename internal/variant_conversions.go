@@ -10,6 +10,7 @@ import (
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
+	CallableType "graphics.gd/variant/Callable"
 	FloatType "graphics.gd/variant/Float"
 	NodePathType "graphics.gd/variant/NodePath"
 )
@@ -139,6 +140,9 @@ func NewVariant(v any) Variant {
 		case ArrayType.Interface:
 			var arg = callframe.Arg(frame, pointers.Get(InternalArray(val.Any())))
 			Global.variant.FromType[TypeArray](ret, arg.Addr())
+		case CallableType.Function:
+			var arg = callframe.Arg(frame, pointers.Get(InternalCallable(val)))
+			Global.variant.FromType[TypeCallable](ret, arg.Addr())
 		case Variant:
 			return val
 		case VariantPkg.Any:
@@ -394,7 +398,8 @@ func (variant Variant) Interface() any {
 		var obj = variantAsPointerType[Object](variant, vtype)
 		return ObjectAs(obj.GetClass().String(), obj)
 	case TypeCallable:
-		return variantAsPointerType[Callable](variant, vtype)
+		callable := variantAsPointerType[Callable](variant, vtype)
+		return CallableType.Through(CallableProxy{}, pointers.Pack(callable))
 	case TypeSignal:
 		return variantAsPointerType[Signal](variant, vtype)
 	case TypeDictionary:
