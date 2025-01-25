@@ -14,7 +14,6 @@ import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -105,8 +104,8 @@ func (self Instance) AddOption(name string, values []string, default_value_index
 /*
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
-func (self Instance) GetSelectedOptions() Dictionary.Any {
-	return Dictionary.Any(class(self).GetSelectedOptions())
+func (self Instance) GetSelectedOptions() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetSelectedOptions()))
 }
 
 /*

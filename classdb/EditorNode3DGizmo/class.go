@@ -11,6 +11,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node3DGizmo"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Plane"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
@@ -60,14 +61,14 @@ type Interface interface {
 	//Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param point] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 	SubgizmosIntersectRay(camera [1]gdclass.Camera3D, point Vector2.XY) int
 	//Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
-	SubgizmosIntersectFrustum(camera [1]gdclass.Camera3D, frustum gd.Array) []int32
+	SubgizmosIntersectFrustum(camera [1]gdclass.Camera3D, frustum []Plane.NormalD) []int32
 	//Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the [Node3D]'s local coordinate system.
 	SetSubgizmoTransform(id int, transform Transform3D.BasisOrigin)
 	//Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
 	GetSubgizmoTransform(id int) Transform3D.BasisOrigin
 	//Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 	//If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
-	CommitSubgizmos(ids []int32, restores gd.Array, cancel bool)
+	CommitSubgizmos(ids []int32, restores []Transform3D.BasisOrigin, cancel bool)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -87,12 +88,14 @@ func (self implementation) CommitHandle(id int, secondary bool, restore any, can
 func (self implementation) SubgizmosIntersectRay(camera [1]gdclass.Camera3D, point Vector2.XY) (_ int) {
 	return
 }
-func (self implementation) SubgizmosIntersectFrustum(camera [1]gdclass.Camera3D, frustum gd.Array) (_ []int32) {
+func (self implementation) SubgizmosIntersectFrustum(camera [1]gdclass.Camera3D, frustum []Plane.NormalD) (_ []int32) {
 	return
 }
 func (self implementation) SetSubgizmoTransform(id int, transform Transform3D.BasisOrigin) { return }
 func (self implementation) GetSubgizmoTransform(id int) (_ Transform3D.BasisOrigin)        { return }
-func (self implementation) CommitSubgizmos(ids []int32, restores gd.Array, cancel bool)    { return }
+func (self implementation) CommitSubgizmos(ids []int32, restores []Transform3D.BasisOrigin, cancel bool) {
+	return
+}
 
 /*
 Override this method to add all the gizmo elements whenever a gizmo update is requested. It's common to call [method clear] at the beginning of this method and then add visual elements depending on the node's properties.
@@ -212,14 +215,14 @@ func (Instance) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera [1
 /*
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
-func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, frustum gd.Array) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, frustum []Plane.NormalD) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(camera[0])
 		var frustum = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(frustum)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, camera, frustum)
+		ret := impl(self, camera, gd.ArrayAs[[]Plane.NormalD](frustum))
 		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
 		if !ok {
 			return
@@ -256,7 +259,7 @@ func (Instance) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id int) Tr
 Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
 */
-func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, restores gd.Array, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, restores []Transform3D.BasisOrigin, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var ids = pointers.New[gd.PackedInt32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
 		defer pointers.End(ids)
@@ -264,7 +267,7 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, res
 		defer pointers.End(restores)
 		var cancel = gd.UnsafeGet[bool](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, ids.AsSlice(), restores, cancel)
+		impl(self, ids.AsSlice(), gd.ArrayAs[[]Transform3D.BasisOrigin](restores), cancel)
 	}
 }
 

@@ -11,8 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/AABB"
@@ -124,8 +122,8 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise or of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Instance) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays Array.Any) {
-	class(self).AddSurfaceFromArrays(primitive, arrays, [1]gd.Array{}[0], [1]Dictionary.Any{}[0], 0)
+func (self Instance) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays []any) {
+	class(self).AddSurfaceFromArrays(primitive, gd.NewVariant(arrays).Interface().(gd.Array), gd.NewVariant([1][][]any{}[0]).Interface().(gd.Array), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
 }
 
 /*

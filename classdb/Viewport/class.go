@@ -223,8 +223,8 @@ func (self Instance) IsInputHandled() bool {
 Returns a list of the visible embedded [Window]s inside the viewport.
 [b]Note:[/b] [Window]s inside other viewports will not be listed.
 */
-func (self Instance) GetEmbeddedSubwindows() gd.Array {
-	return gd.Array(class(self).GetEmbeddedSubwindows())
+func (self Instance) GetEmbeddedSubwindows() [][1]gdclass.Window {
+	return [][1]gdclass.Window(gd.ArrayAs[[][1]gdclass.Window](class(self).GetEmbeddedSubwindows()))
 }
 
 /*

@@ -84,8 +84,8 @@ func (self Instance) CreateTween() [1]gdclass.Tween {
 /*
 Returns an [Array] of currently existing [Tween]s in the tree, including paused tweens.
 */
-func (self Instance) GetProcessedTweens() gd.Array {
-	return gd.Array(class(self).GetProcessedTweens())
+func (self Instance) GetProcessedTweens() [][1]gdclass.Tween {
+	return [][1]gdclass.Tween(gd.ArrayAs[[][1]gdclass.Tween](class(self).GetProcessedTweens()))
 }
 
 /*
@@ -153,8 +153,8 @@ func (self Instance) SetGroup(group string, property string, value any) {
 /*
 Returns an [Array] containing all nodes inside this tree, that have been added to the given [param group], in scene hierarchy order.
 */
-func (self Instance) GetNodesInGroup(group string) gd.Array {
-	return gd.Array(class(self).GetNodesInGroup(gd.NewStringName(group)))
+func (self Instance) GetNodesInGroup(group string) [][1]gdclass.Node {
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).GetNodesInGroup(gd.NewStringName(group))))
 }
 
 /*

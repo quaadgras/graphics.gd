@@ -91,16 +91,16 @@ func (self Instance) GetSeamlessImage(width int, height int) [1]gdclass.Image {
 Returns an [Array] of [Image]s containing 3D noise values for use with [method ImageTexture3D.create].
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetImage3d(width int, height int, depth int) gd.Array {
-	return gd.Array(class(self).GetImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, true))
+func (self Instance) GetImage3d(width int, height int, depth int) [][1]gdclass.Image {
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).GetImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, true)))
 }
 
 /*
 Returns an [Array] of [Image]s containing seamless 3D noise values for use with [method ImageTexture3D.create].
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetSeamlessImage3d(width int, height int, depth int) gd.Array {
-	return gd.Array(class(self).GetSeamlessImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, gd.Float(0.1), true))
+func (self Instance) GetSeamlessImage3d(width int, height int, depth int) [][1]gdclass.Image {
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).GetSeamlessImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, gd.Float(0.1), true)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

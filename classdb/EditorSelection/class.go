@@ -56,15 +56,15 @@ func (self Instance) RemoveNode(node [1]gdclass.Node) {
 /*
 Returns the list of selected nodes.
 */
-func (self Instance) GetSelectedNodes() gd.Array {
-	return gd.Array(class(self).GetSelectedNodes())
+func (self Instance) GetSelectedNodes() [][1]gdclass.Node {
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).GetSelectedNodes()))
 }
 
 /*
 Returns the list of selected nodes, optimized for transform operations (i.e. moving them, rotating, etc.). This list can be used to avoid situations where a node is selected and is also a child/grandchild.
 */
-func (self Instance) GetTransformableSelectedNodes() gd.Array {
-	return gd.Array(class(self).GetTransformableSelectedNodes())
+func (self Instance) GetTransformableSelectedNodes() [][1]gdclass.Node {
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).GetTransformableSelectedNodes()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

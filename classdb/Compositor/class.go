@@ -50,12 +50,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) CompositorEffects() gd.Array {
-	return gd.Array(class(self).GetCompositorEffects())
+func (self Instance) CompositorEffects() [][1]gdclass.CompositorEffect {
+	return [][1]gdclass.CompositorEffect(gd.ArrayAs[[][1]gdclass.CompositorEffect](class(self).GetCompositorEffects()))
 }
 
-func (self Instance) SetCompositorEffects(value gd.Array) {
-	class(self).SetCompositorEffects(value)
+func (self Instance) SetCompositorEffects(value [][1]gdclass.CompositorEffect) {
+	class(self).SetCompositorEffects(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

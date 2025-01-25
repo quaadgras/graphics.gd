@@ -15,8 +15,6 @@ import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Rect2"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -303,8 +301,8 @@ func (self Instance) PushBgcolor(bgcolor Color.RGBA) {
 /*
 Adds a custom effect tag to the tag stack. The effect does not need to be in [member custom_effects]. The environment is directly passed to the effect.
 */
-func (self Instance) PushCustomfx(effect [1]gdclass.RichTextEffect, env Dictionary.Any) {
-	class(self).PushCustomfx(effect, env)
+func (self Instance) PushCustomfx(effect [1]gdclass.RichTextEffect, env map[any]any) {
+	class(self).PushCustomfx(effect, gd.NewVariant(env).Interface().(gd.Dictionary))
 }
 
 /*
@@ -519,8 +517,8 @@ func (self Instance) GetParagraphOffset(paragraph int) Float.X {
 /*
 Parses BBCode parameter [param expressions] into a dictionary.
 */
-func (self Instance) ParseExpressionsForValues(expressions []string) Dictionary.Any {
-	return Dictionary.Any(class(self).ParseExpressionsForValues(gd.NewPackedStringSlice(expressions)))
+func (self Instance) ParseExpressionsForValues(expressions []string) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).ParseExpressionsForValues(gd.NewPackedStringSlice(expressions))))
 }
 
 /*
@@ -710,12 +708,12 @@ func (self Instance) SetShortcutKeysEnabled(value bool) {
 	class(self).SetShortcutKeysEnabled(value)
 }
 
-func (self Instance) CustomEffects() Array.Any {
-	return Array.Any(class(self).GetEffects())
+func (self Instance) CustomEffects() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetEffects()))
 }
 
-func (self Instance) SetCustomEffects(value Array.Any) {
-	class(self).SetEffects(value)
+func (self Instance) SetCustomEffects(value []any) {
+	class(self).SetEffects(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) MetaUnderlined() bool {
@@ -822,12 +820,12 @@ func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
-	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetStructuredTextBidiOverrideOptions()))
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
-	class(self).SetStructuredTextBidiOverrideOptions(value)
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
+	class(self).SetStructuredTextBidiOverrideOptions(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 /*

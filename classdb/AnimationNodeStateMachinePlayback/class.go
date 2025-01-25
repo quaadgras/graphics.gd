@@ -114,8 +114,8 @@ func (self Instance) GetFadingFromNode() string {
 /*
 Returns the current travel path as computed internally by the A* algorithm.
 */
-func (self Instance) GetTravelPath() gd.Array {
-	return gd.Array(class(self).GetTravelPath())
+func (self Instance) GetTravelPath() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetTravelPath()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

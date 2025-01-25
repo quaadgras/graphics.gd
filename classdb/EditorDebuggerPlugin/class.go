@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -81,7 +80,7 @@ type Interface interface {
 	//Override this method to enable receiving messages from the debugger. If [param capture] is "my_message" then messages starting with "my_message:" will be passes to the [method _capture] method.
 	HasCapture(capture string) bool
 	//Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
-	Capture(message string, data Array.Any, session_id int) bool
+	Capture(message string, data []any, session_id int) bool
 	//Override this method to be notified when a breakpoint line has been clicked in the debugger breakpoint panel.
 	GotoScriptLine(script [1]gdclass.Script, line int)
 	//Override this method to be notified when all breakpoints are cleared in the editor.
@@ -95,11 +94,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) SetupSession(session_id int)                                     { return }
-func (self implementation) HasCapture(capture string) (_ bool)                              { return }
-func (self implementation) Capture(message string, data Array.Any, session_id int) (_ bool) { return }
-func (self implementation) GotoScriptLine(script [1]gdclass.Script, line int)               { return }
-func (self implementation) BreakpointsClearedInTree()                                       { return }
+func (self implementation) SetupSession(session_id int)                                 { return }
+func (self implementation) HasCapture(capture string) (_ bool)                          { return }
+func (self implementation) Capture(message string, data []any, session_id int) (_ bool) { return }
+func (self implementation) GotoScriptLine(script [1]gdclass.Script, line int)           { return }
+func (self implementation) BreakpointsClearedInTree()                                   { return }
 func (self implementation) BreakpointSetInTree(script [1]gdclass.Script, line int, enabled bool) {
 	return
 }
@@ -131,7 +130,7 @@ func (Instance) _has_capture(impl func(ptr unsafe.Pointer, capture string) bool)
 /*
 Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the message (which you can retrieve via [method get_session]).
 */
-func (Instance) _capture(impl func(ptr unsafe.Pointer, message string, data Array.Any, session_id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _capture(impl func(ptr unsafe.Pointer, message string, data []any, session_id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var message = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(message)
@@ -139,7 +138,7 @@ func (Instance) _capture(impl func(ptr unsafe.Pointer, message string, data Arra
 		defer pointers.End(data)
 		var session_id = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, message.String(), data, int(session_id))
+		ret := impl(self, message.String(), gd.ArrayAs[[]any](data), int(session_id))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -192,8 +191,8 @@ func (self Instance) GetSession(id int) [1]gdclass.EditorDebuggerSession {
 Returns an array of [EditorDebuggerSession] currently available to this debugger plugin.
 [b]Note:[/b] Sessions in the array may be inactive, check their state via [method EditorDebuggerSession.is_active].
 */
-func (self Instance) GetSessions() Array.Any {
-	return Array.Any(class(self).GetSessions())
+func (self Instance) GetSessions() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetSessions()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

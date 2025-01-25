@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -50,7 +49,7 @@ type Interface interface {
 	//    base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
 	//    return base
 	//[/codeblock]
-	MakeTooltipForPath(path string, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control
+	MakeTooltipForPath(path string, metadata map[any]any, base [1]gdclass.Control) [1]gdclass.Control
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -59,7 +58,7 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) Handles(atype string) (_ bool) { return }
-func (self implementation) MakeTooltipForPath(path string, metadata Dictionary.Any, base [1]gdclass.Control) (_ [1]gdclass.Control) {
+func (self implementation) MakeTooltipForPath(path string, metadata map[any]any, base [1]gdclass.Control) (_ [1]gdclass.Control) {
 	return
 }
 
@@ -92,7 +91,7 @@ func _make_tooltip_for_path(path, metadata, base):
 
 [/codeblock]
 */
-func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata map[any]any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
@@ -101,7 +100,7 @@ func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string
 		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 2))})}
 		defer pointers.End(base[0])
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, path.String(), metadata, base)
+		ret := impl(self, path.String(), gd.DictionaryAs[any, any](metadata), base)
 		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return

@@ -10,7 +10,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -73,9 +72,9 @@ func HasProfiler(name string) bool {
 /*
 Calls the [code]add[/code] callable of the profiler with given [param name] and [param data].
 */
-func ProfilerAddFrameData(name string, data Array.Any) {
+func ProfilerAddFrameData(name string, data []any) {
 	once.Do(singleton)
-	class(self).ProfilerAddFrameData(gd.NewStringName(name), data)
+	class(self).ProfilerAddFrameData(gd.NewStringName(name), gd.NewVariant(data).Interface().(gd.Array))
 }
 
 /*
@@ -83,14 +82,14 @@ Calls the [code]toggle[/code] callable of the profiler with given [param name] a
 */
 func ProfilerEnable(name string, enable bool) {
 	once.Do(singleton)
-	class(self).ProfilerEnable(gd.NewStringName(name), enable, [1]Array.Any{}[0])
+	class(self).ProfilerEnable(gd.NewStringName(name), enable, gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))
 }
 
 /*
 Registers a message capture with given [param name]. If [param name] is "my_message" then messages starting with "my_message:" will be called with the given callable.
 Callable must accept a message string and a data array as argument. If the message and data are valid then callable must return [code]true[/code] otherwise [code]false[/code].
 */
-func RegisterMessageCapture(name string, callable func(message string, data Array.Any)) {
+func RegisterMessageCapture(name string, callable func(message string, data []any)) {
 	once.Do(singleton)
 	class(self).RegisterMessageCapture(gd.NewStringName(name), gd.NewCallable(callable))
 }
@@ -122,9 +121,9 @@ func LinePoll() {
 /*
 Sends a message with given [param message] and [param data] array.
 */
-func SendMessage(message string, data Array.Any) {
+func SendMessage(message string, data []any) {
 	once.Do(singleton)
-	class(self).SendMessage(gd.NewString(message), data)
+	class(self).SendMessage(gd.NewString(message), gd.NewVariant(data).Interface().(gd.Array))
 }
 
 /*

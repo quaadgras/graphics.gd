@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
@@ -37,15 +36,15 @@ type Any interface {
 /*
 Returns [TextServer] RID of the font cache for specific variation.
 */
-func (self Instance) FindVariation(variation_coordinates Dictionary.Any) Resource.ID {
-	return Resource.ID(class(self).FindVariation(variation_coordinates, gd.Int(0), gd.Float(0.0), gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), gd.Int(0), gd.Int(0), gd.Int(0), gd.Int(0), gd.Float(0.0)))
+func (self Instance) FindVariation(variation_coordinates map[any]any) Resource.ID {
+	return Resource.ID(class(self).FindVariation(gd.NewVariant(variation_coordinates).Interface().(gd.Dictionary), gd.Int(0), gd.Float(0.0), gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), gd.Int(0), gd.Int(0), gd.Int(0), gd.Int(0), gd.Float(0.0)))
 }
 
 /*
 Returns [Array] of valid [Font] [RID]s, which can be passed to the [TextServer] methods.
 */
-func (self Instance) GetRids() gd.Array {
-	return gd.Array(class(self).GetRids())
+func (self Instance) GetRids() []Resource.ID {
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetRids()))
 }
 
 /*
@@ -105,8 +104,8 @@ func (self Instance) GetFontStyleName() string {
 /*
 Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 */
-func (self Instance) GetOtNameStrings() Dictionary.Any {
-	return Dictionary.Any(class(self).GetOtNameStrings())
+func (self Instance) GetOtNameStrings() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetOtNameStrings()))
 }
 
 /*
@@ -140,8 +139,8 @@ func (self Instance) GetSpacing(spacing gdclass.TextServerSpacingType) int {
 /*
 Returns a set of OpenType feature tags. More info: [url=https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags]OpenType feature tags[/url].
 */
-func (self Instance) GetOpentypeFeatures() Dictionary.Any {
-	return Dictionary.Any(class(self).GetOpentypeFeatures())
+func (self Instance) GetOpentypeFeatures() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetOpentypeFeatures()))
 }
 
 /*
@@ -266,8 +265,8 @@ func (self Instance) IsScriptSupported(script string) bool {
 /*
 Returns list of OpenType features supported by font.
 */
-func (self Instance) GetSupportedFeatureList() Dictionary.Any {
-	return Dictionary.Any(class(self).GetSupportedFeatureList())
+func (self Instance) GetSupportedFeatureList() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetSupportedFeatureList()))
 }
 
 /*
@@ -287,8 +286,8 @@ for tag in variation_list:
 [/codeblock]
 [b]Note:[/b] To set and get variation coordinates of a [FontVariation], use [member FontVariation.variation_opentype].
 */
-func (self Instance) GetSupportedVariationList() Dictionary.Any {
-	return Dictionary.Any(class(self).GetSupportedVariationList())
+func (self Instance) GetSupportedVariationList() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetSupportedVariationList()))
 }
 
 /*
@@ -317,12 +316,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Fallbacks() gd.Array {
-	return gd.Array(class(self).GetFallbacks())
+func (self Instance) Fallbacks() [][1]gdclass.Font {
+	return [][1]gdclass.Font(gd.ArrayAs[[][1]gdclass.Font](class(self).GetFallbacks()))
 }
 
-func (self Instance) SetFallbacks(value gd.Array) {
-	class(self).SetFallbacks(value)
+func (self Instance) SetFallbacks(value [][1]gdclass.Font) {
+	class(self).SetFallbacks(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

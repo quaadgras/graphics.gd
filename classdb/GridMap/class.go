@@ -16,7 +16,6 @@ import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Vector3i"
 import "graphics.gd/variant/Basis"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -160,29 +159,29 @@ func (self Instance) Clear() {
 /*
 Returns an array of [Vector3] with the non-empty cell coordinates in the grid map.
 */
-func (self Instance) GetUsedCells() gd.Array {
-	return gd.Array(class(self).GetUsedCells())
+func (self Instance) GetUsedCells() []Vector3i.XYZ {
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](class(self).GetUsedCells()))
 }
 
 /*
 Returns an array of all cells with the given item index specified in [param item].
 */
-func (self Instance) GetUsedCellsByItem(item int) gd.Array {
-	return gd.Array(class(self).GetUsedCellsByItem(gd.Int(item)))
+func (self Instance) GetUsedCellsByItem(item int) []Vector3i.XYZ {
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](class(self).GetUsedCellsByItem(gd.Int(item))))
 }
 
 /*
 Returns an array of [Transform3D] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
 */
-func (self Instance) GetMeshes() Array.Any {
-	return Array.Any(class(self).GetMeshes())
+func (self Instance) GetMeshes() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetMeshes()))
 }
 
 /*
 Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshes that exist within the current GridMap.
 */
-func (self Instance) GetBakeMeshes() Array.Any {
-	return Array.Any(class(self).GetBakeMeshes())
+func (self Instance) GetBakeMeshes() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetBakeMeshes()))
 }
 
 /*

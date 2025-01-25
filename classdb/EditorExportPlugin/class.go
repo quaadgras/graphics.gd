@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -68,7 +67,7 @@ type Interface interface {
 	//- [code]option[/code]: A dictionary with the structure documented by [method Object.get_property_list], but all keys are optional.
 	//- [code]default_value[/code]: The default value for this option.
 	//- [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
-	GetExportOptions(platform [1]gdclass.EditorExportPlatform) gd.Array
+	GetExportOptions(platform [1]gdclass.EditorExportPlatform) []map[any]any
 	//Return a [Dictionary] of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
 	//[codeblock]
 	//class MyExportPlugin extends EditorExportPlugin:
@@ -87,7 +86,7 @@ type Interface interface {
 	//            "binary_format/embed_pck": true,
 	//        }
 	//[/codeblock]
-	GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) Dictionary.Any
+	GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) map[any]any
 	//Return [code]true[/code], if the result of [method _get_export_options] has changed and the export options of preset corresponding to [param platform] should be updated.
 	ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) bool
 	//Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
@@ -149,10 +148,10 @@ func (self implementation) CustomizeScene(scene [1]gdclass.Node, path string) (_
 func (self implementation) GetCustomizationConfigurationHash() (_ int) { return }
 func (self implementation) EndCustomizeScenes()                        { return }
 func (self implementation) EndCustomizeResources()                     { return }
-func (self implementation) GetExportOptions(platform [1]gdclass.EditorExportPlatform) (_ gd.Array) {
+func (self implementation) GetExportOptions(platform [1]gdclass.EditorExportPlatform) (_ []map[any]any) {
 	return
 }
-func (self implementation) GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) (_ Dictionary.Any) {
+func (self implementation) GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) (_ map[any]any) {
 	return
 }
 func (self implementation) ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) (_ bool) {
@@ -342,13 +341,13 @@ Each element in the return value is a [Dictionary] with the following keys:
 - [code]default_value[/code]: The default value for this option.
 - [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
 */
-func (Instance) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -378,13 +377,13 @@ class MyExportPlugin extends EditorExportPlugin:
 
 [/codeblock]
 */
-func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}

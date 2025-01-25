@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Callable"
 
 var _ Object.ID
@@ -251,7 +250,7 @@ type Interface interface {
 	//    var state = {"zoom": zoom, "preferred_color": my_color}
 	//    return state
 	//[/codeblock]
-	GetState() Dictionary.Any
+	GetState() map[any]any
 	//Restore the state saved by [method _get_state]. This method is called when the current scene tab is changed in the editor.
 	//[b]Note:[/b] Your plugin must implement [method _get_plugin_name], otherwise it will not be recognized and this method will not be called.
 	//[codeblock]
@@ -259,7 +258,7 @@ type Interface interface {
 	//    zoom = data.get("zoom", 1.0)
 	//    preferred_color = data.get("my_color", Color.WHITE)
 	//[/codeblock]
-	SetState(state Dictionary.Any)
+	SetState(state map[any]any)
 	//Clear all the state and reset the object being edited to zero. This ensures your plugin does not keep editing a currently existing node, or a node from the wrong scene.
 	Clear()
 	//Override this method to provide a custom message that lists unsaved changes. The editor will call this method when exiting or when closing a scene, and display the returned string in a confirmation dialog. Return empty string if the plugin has no unsaved changes.
@@ -339,8 +338,8 @@ func (self implementation) HasMainScreen() (_ bool)                             
 func (self implementation) MakeVisible(visible bool)                            { return }
 func (self implementation) Edit(obj Object.Instance)                            { return }
 func (self implementation) Handles(obj Object.Instance) (_ bool)                { return }
-func (self implementation) GetState() (_ Dictionary.Any)                        { return }
-func (self implementation) SetState(state Dictionary.Any)                       { return }
+func (self implementation) GetState() (_ map[any]any)                           { return }
+func (self implementation) SetState(state map[any]any)                          { return }
 func (self implementation) Clear()                                              { return }
 func (self implementation) GetUnsavedStatus(for_scene string) (_ string)        { return }
 func (self implementation) SaveExternalData()                                   { return }
@@ -736,11 +735,11 @@ func _get_state():
 
 [/codeblock]
 */
-func (Instance) _get_state(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_state(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -759,12 +758,12 @@ func _set_state(data):
 
 [/codeblock]
 */
-func (Instance) _set_state(impl func(ptr unsafe.Pointer, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_state(impl func(ptr unsafe.Pointer, state map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(state)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, state)
+		impl(self, gd.DictionaryAs[any, any](state))
 	}
 }
 

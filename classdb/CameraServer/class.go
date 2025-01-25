@@ -50,9 +50,9 @@ func GetFeedCount() int {
 /*
 Returns an array of [CameraFeed]s.
 */
-func Feeds() gd.Array {
+func Feeds() [][1]gdclass.CameraFeed {
 	once.Do(singleton)
-	return gd.Array(class(self).Feeds())
+	return [][1]gdclass.CameraFeed(gd.ArrayAs[[][1]gdclass.CameraFeed](class(self).Feeds()))
 }
 
 /*

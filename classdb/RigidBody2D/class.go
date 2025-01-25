@@ -162,8 +162,8 @@ func (self Instance) AddConstantTorque(torque Float.X) {
 Returns a list of the bodies colliding with this one. Requires [member contact_monitor] to be set to [code]true[/code] and [member max_contacts_reported] to be set high enough to detect all the collisions.
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, list of collisions is updated once per frame and before the physics step. Consider using signals instead.
 */
-func (self Instance) GetCollidingBodies() gd.Array {
-	return gd.Array(class(self).GetCollidingBodies())
+func (self Instance) GetCollidingBodies() [][1]gdclass.Node2D {
+	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](class(self).GetCollidingBodies()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

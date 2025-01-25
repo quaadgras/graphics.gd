@@ -69,8 +69,8 @@ func (self Instance) GetAnimation(name string) [1]gdclass.Animation {
 /*
 Returns the keys for the [Animation]s stored in the library.
 */
-func (self Instance) GetAnimationList() gd.Array {
-	return gd.Array(class(self).GetAnimationList())
+func (self Instance) GetAnimationList() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetAnimationList()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

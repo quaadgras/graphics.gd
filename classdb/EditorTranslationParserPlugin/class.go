@@ -137,7 +137,7 @@ type Any interface {
 }
 type Interface interface {
 	//Override this method to define a custom parsing logic to extract the translatable strings.
-	ParseFile(path string, msgids gd.Array, msgids_context_plural gd.Array)
+	ParseFile(path string, msgids []string, msgids_context_plural [][]any)
 	//Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
 	GetRecognizedExtensions() []string
 }
@@ -147,7 +147,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ParseFile(path string, msgids gd.Array, msgids_context_plural gd.Array) {
+func (self implementation) ParseFile(path string, msgids []string, msgids_context_plural [][]any) {
 	return
 }
 func (self implementation) GetRecognizedExtensions() (_ []string) { return }
@@ -155,7 +155,7 @@ func (self implementation) GetRecognizedExtensions() (_ []string) { return }
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
-func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids gd.Array, msgids_context_plural gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids []string, msgids_context_plural [][]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
@@ -164,7 +164,7 @@ func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids gd
 		var msgids_context_plural = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(msgids_context_plural)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, path.String(), msgids, msgids_context_plural)
+		impl(self, path.String(), gd.ArrayAs[[]string](msgids), gd.ArrayAs[[][]any](msgids_context_plural))
 	}
 }
 

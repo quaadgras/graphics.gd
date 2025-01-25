@@ -10,8 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 
@@ -48,9 +46,9 @@ type Any interface {
 }
 type Interface interface {
 	//When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
-	GetChildNodes() Dictionary.Any
+	GetChildNodes() map[any]any
 	//When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
-	GetParameterList() Array.Any
+	GetParameterList() []any
 	//When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
 	GetChildByName(name string) [1]gdclass.AnimationNode
 	//When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
@@ -72,8 +70,8 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetChildNodes() (_ Dictionary.Any)                       { return }
-func (self implementation) GetParameterList() (_ Array.Any)                         { return }
+func (self implementation) GetChildNodes() (_ map[any]any)                          { return }
+func (self implementation) GetParameterList() (_ []any)                             { return }
 func (self implementation) GetChildByName(name string) (_ [1]gdclass.AnimationNode) { return }
 func (self implementation) GetParameterDefaultValue(parameter string) (_ any)       { return }
 func (self implementation) IsParameterReadOnly(parameter string) (_ bool)           { return }
@@ -86,11 +84,11 @@ func (self implementation) HasFilter() (_ bool)    { return }
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
 */
-func (Instance) _get_child_nodes(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_child_nodes(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -101,11 +99,11 @@ func (Instance) _get_child_nodes(impl func(ptr unsafe.Pointer) Dictionary.Any) (
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
 */
-func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) []any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}

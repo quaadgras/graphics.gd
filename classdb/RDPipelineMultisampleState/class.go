@@ -90,12 +90,12 @@ func (self Instance) SetEnableAlphaToOne(value bool) {
 	class(self).SetEnableAlphaToOne(value)
 }
 
-func (self Instance) SampleMasks() gd.Array {
-	return gd.Array(class(self).GetSampleMasks())
+func (self Instance) SampleMasks() []int {
+	return []int(gd.ArrayAs[[]int](class(self).GetSampleMasks()))
 }
 
-func (self Instance) SetSampleMasks(value gd.Array) {
-	class(self).SetSampleMasks(value)
+func (self Instance) SetSampleMasks(value []int) {
+	class(self).SetSampleMasks(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

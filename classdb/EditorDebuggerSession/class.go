@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -36,14 +35,14 @@ type Any interface {
 Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
 */
 func (self Instance) SendMessage(message string) {
-	class(self).SendMessage(gd.NewString(message), [1]Array.Any{}[0])
+	class(self).SendMessage(gd.NewString(message), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))
 }
 
 /*
 Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
 */
 func (self Instance) ToggleProfiler(profiler string, enable bool) {
-	class(self).ToggleProfiler(gd.NewString(profiler), enable, [1]Array.Any{}[0])
+	class(self).ToggleProfiler(gd.NewString(profiler), enable, gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))
 }
 
 /*

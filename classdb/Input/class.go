@@ -12,7 +12,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
@@ -215,9 +214,9 @@ On Linux:
 [code]product_id[/code]: The USB product ID of the device.
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 */
-func GetJoyInfo(device int) Dictionary.Any {
+func GetJoyInfo(device int) map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetJoyInfo(gd.Int(device)))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetJoyInfo(gd.Int(device))))
 }
 
 /*
@@ -232,9 +231,9 @@ func ShouldIgnoreDevice(vendor_id int, product_id int) bool {
 /*
 Returns an [Array] containing the device IDs of all currently connected joypads.
 */
-func GetConnectedJoypads() gd.Array {
+func GetConnectedJoypads() []int {
 	once.Do(singleton)
-	return gd.Array(class(self).GetConnectedJoypads())
+	return []int(gd.ArrayAs[[]int](class(self).GetConnectedJoypads()))
 }
 
 /*

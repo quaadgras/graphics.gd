@@ -204,8 +204,8 @@ func (self Instance) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vect
 Returns an array with the IDs of the points that form the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 */
-func (self Instance) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY) gd.Array {
-	return gd.Array(class(self).GetIdPath(gd.Vector2i(from_id), gd.Vector2i(to_id), false))
+func (self Instance) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetIdPath(gd.Vector2i(from_id), gd.Vector2i(to_id), false)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -32,8 +32,8 @@ type Any interface {
 /*
 Returns a list of synchronized property [NodePath]s.
 */
-func (self Instance) GetProperties() gd.Array {
-	return gd.Array(class(self).GetProperties())
+func (self Instance) GetProperties() []NodePath.String {
+	return []NodePath.String(gd.ArrayAs[[]NodePath.String](class(self).GetProperties()))
 }
 
 /*

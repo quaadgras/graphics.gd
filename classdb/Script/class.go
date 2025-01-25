@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -109,29 +108,29 @@ func (self Instance) HasScriptSignal(signal_name string) bool {
 /*
 Returns the list of properties in this [Script].
 */
-func (self Instance) GetScriptPropertyList() gd.Array {
-	return gd.Array(class(self).GetScriptPropertyList())
+func (self Instance) GetScriptPropertyList() []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetScriptPropertyList()))
 }
 
 /*
 Returns the list of methods in this [Script].
 */
-func (self Instance) GetScriptMethodList() gd.Array {
-	return gd.Array(class(self).GetScriptMethodList())
+func (self Instance) GetScriptMethodList() []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetScriptMethodList()))
 }
 
 /*
 Returns the list of user signals defined in this [Script].
 */
-func (self Instance) GetScriptSignalList() gd.Array {
-	return gd.Array(class(self).GetScriptSignalList())
+func (self Instance) GetScriptSignalList() []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetScriptSignalList()))
 }
 
 /*
 Returns a dictionary containing constant names and their values.
 */
-func (self Instance) GetScriptConstantMap() Dictionary.Any {
-	return Dictionary.Any(class(self).GetScriptConstantMap())
+func (self Instance) GetScriptConstantMap() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetScriptConstantMap()))
 }
 
 /*

@@ -12,7 +12,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -104,9 +103,9 @@ func GetInterface(idx int) [1]gdclass.XRInterface {
 /*
 Returns a list of available interfaces the ID and name of each interface.
 */
-func GetInterfaces() gd.Array {
+func GetInterfaces() []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).GetInterfaces())
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetInterfaces()))
 }
 
 /*
@@ -136,9 +135,9 @@ func RemoveTracker(tracker [1]gdclass.XRTracker) {
 /*
 Returns a dictionary of trackers for [param tracker_types].
 */
-func GetTrackers(tracker_types int) Dictionary.Any {
+func GetTrackers(tracker_types int) map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetTrackers(gd.Int(tracker_types)))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetTrackers(gd.Int(tracker_types))))
 }
 
 /*

@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -69,8 +68,8 @@ Waits for events on this connection and shuttles packets between the host and it
 Call this function regularly to handle connections, disconnections, and to receive new packets.
 [b]Note:[/b] This method must be called on both ends involved in the event (sending and receiving hosts).
 */
-func (self Instance) Service() Array.Any {
-	return Array.Any(class(self).Service(gd.Int(0)))
+func (self Instance) Service() []any {
+	return []any(gd.ArrayAs[[]any](class(self).Service(gd.Int(0))))
 }
 
 /*
@@ -157,8 +156,8 @@ func (self Instance) GetLocalPort() int {
 Returns the list of peers associated with this host.
 [b]Note:[/b] This list might include some peers that are not fully connected or are still being disconnected.
 */
-func (self Instance) GetPeers() gd.Array {
-	return gd.Array(class(self).GetPeers())
+func (self Instance) GetPeers() [][1]gdclass.ENetPacketPeer {
+	return [][1]gdclass.ENetPacketPeer(gd.ArrayAs[[][1]gdclass.ENetPacketPeer](class(self).GetPeers()))
 }
 
 /*

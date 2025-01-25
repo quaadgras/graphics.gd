@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -89,12 +88,12 @@ func (self Instance) SetPriority(value int) {
 	class(self).SetPriority(gd.Int(value))
 }
 
-func (self Instance) Actions() Array.Any {
-	return Array.Any(class(self).GetActions())
+func (self Instance) Actions() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetActions()))
 }
 
-func (self Instance) SetActions(value Array.Any) {
-	class(self).SetActions(value)
+func (self Instance) SetActions(value []any) {
+	class(self).SetActions(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,7 +39,7 @@ type Interface interface {
 	//Set user credentials in the underlying VCS. [param username] and [param password] are used only during HTTPS authentication unless not already mentioned in the remote URL. [param ssh_public_key_path], [param ssh_private_key_path], and [param ssh_passphrase] are only used during SSH authentication.
 	SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string)
 	//Returns an [Array] of [Dictionary] items (see [method create_status_file]), each containing the status data of every modified file in the project folder.
-	GetModifiedFilesData() gd.Array
+	GetModifiedFilesData() []map[any]any
 	//Stages the file present at [param file_path] to the staged area.
 	StageFile(file_path string)
 	//Unstages the file present at [param file_path] from the staged area to the unstaged area.
@@ -50,17 +49,17 @@ type Interface interface {
 	//Commits the currently staged changes and applies the commit [param msg] to the resulting commit.
 	Commit(msg string)
 	//Returns an array of [Dictionary] items (see [method create_diff_file], [method create_diff_hunk], [method create_diff_line], [method add_line_diffs_into_diff_hunk] and [method add_diff_hunks_into_diff_file]), each containing information about a diff. If [param identifier] is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
-	GetDiff(identifier string, area int) gd.Array
+	GetDiff(identifier string, area int) []map[any]any
 	//Shuts down VCS plugin instance. Called when the user either closes the editor or shuts down the VCS plugin through the editor UI.
 	ShutDown() bool
 	//Returns the name of the underlying VCS provider.
 	GetVcsName() string
 	//Returns an [Array] of [Dictionary] items (see [method create_commit]), each containing the data for a past commit.
-	GetPreviousCommits(max_commits int) gd.Array
+	GetPreviousCommits(max_commits int) []map[any]any
 	//Gets an instance of an [Array] of [String]s containing available branch names in the VCS.
-	GetBranchList() gd.Array
+	GetBranchList() []string
 	//Returns an [Array] of [String]s, each containing the name of a remote configured in the VCS.
-	GetRemotes() gd.Array
+	GetRemotes() []string
 	//Creates a new branch named [param branch_name] in the VCS.
 	CreateBranch(branch_name string)
 	//Remove a branch from the local VCS.
@@ -80,7 +79,7 @@ type Interface interface {
 	//Fetches new changes from the [param remote], but doesn't write changes to the current working directory. Equivalent to [code]git fetch[/code].
 	Fetch(remote string)
 	//Returns an [Array] of [Dictionary] items (see [method create_diff_hunk]), each containing a line diff between a file at [param file_path] and the [param text] which is passed in.
-	GetLineDiff(file_path string, text string) gd.Array
+	GetLineDiff(file_path string, text string) []map[any]any
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -92,27 +91,27 @@ func (self implementation) Initialize(project_path string) (_ bool) { return }
 func (self implementation) SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string) {
 	return
 }
-func (self implementation) GetModifiedFilesData() (_ gd.Array)                     { return }
-func (self implementation) StageFile(file_path string)                             { return }
-func (self implementation) UnstageFile(file_path string)                           { return }
-func (self implementation) DiscardFile(file_path string)                           { return }
-func (self implementation) Commit(msg string)                                      { return }
-func (self implementation) GetDiff(identifier string, area int) (_ gd.Array)       { return }
-func (self implementation) ShutDown() (_ bool)                                     { return }
-func (self implementation) GetVcsName() (_ string)                                 { return }
-func (self implementation) GetPreviousCommits(max_commits int) (_ gd.Array)        { return }
-func (self implementation) GetBranchList() (_ gd.Array)                            { return }
-func (self implementation) GetRemotes() (_ gd.Array)                               { return }
-func (self implementation) CreateBranch(branch_name string)                        { return }
-func (self implementation) RemoveBranch(branch_name string)                        { return }
-func (self implementation) CreateRemote(remote_name string, remote_url string)     { return }
-func (self implementation) RemoveRemote(remote_name string)                        { return }
-func (self implementation) GetCurrentBranchName() (_ string)                       { return }
-func (self implementation) CheckoutBranch(branch_name string) (_ bool)             { return }
-func (self implementation) Pull(remote string)                                     { return }
-func (self implementation) Push(remote string, force bool)                         { return }
-func (self implementation) Fetch(remote string)                                    { return }
-func (self implementation) GetLineDiff(file_path string, text string) (_ gd.Array) { return }
+func (self implementation) GetModifiedFilesData() (_ []map[any]any)                     { return }
+func (self implementation) StageFile(file_path string)                                  { return }
+func (self implementation) UnstageFile(file_path string)                                { return }
+func (self implementation) DiscardFile(file_path string)                                { return }
+func (self implementation) Commit(msg string)                                           { return }
+func (self implementation) GetDiff(identifier string, area int) (_ []map[any]any)       { return }
+func (self implementation) ShutDown() (_ bool)                                          { return }
+func (self implementation) GetVcsName() (_ string)                                      { return }
+func (self implementation) GetPreviousCommits(max_commits int) (_ []map[any]any)        { return }
+func (self implementation) GetBranchList() (_ []string)                                 { return }
+func (self implementation) GetRemotes() (_ []string)                                    { return }
+func (self implementation) CreateBranch(branch_name string)                             { return }
+func (self implementation) RemoveBranch(branch_name string)                             { return }
+func (self implementation) CreateRemote(remote_name string, remote_url string)          { return }
+func (self implementation) RemoveRemote(remote_name string)                             { return }
+func (self implementation) GetCurrentBranchName() (_ string)                            { return }
+func (self implementation) CheckoutBranch(branch_name string) (_ bool)                  { return }
+func (self implementation) Pull(remote string)                                          { return }
+func (self implementation) Push(remote string, force bool)                              { return }
+func (self implementation) Fetch(remote string)                                         { return }
+func (self implementation) GetLineDiff(file_path string, text string) (_ []map[any]any) { return }
 
 /*
 Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at [param project_path].
@@ -150,11 +149,11 @@ func (Instance) _set_credentials(impl func(ptr unsafe.Pointer, username string, 
 /*
 Returns an [Array] of [Dictionary] items (see [method create_status_file]), each containing the status data of every modified file in the project folder.
 */
-func (Instance) _get_modified_files_data(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_modified_files_data(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -213,14 +212,14 @@ func (Instance) _commit(impl func(ptr unsafe.Pointer, msg string)) (cb gd.Extens
 /*
 Returns an array of [Dictionary] items (see [method create_diff_file], [method create_diff_hunk], [method create_diff_line], [method add_line_diffs_into_diff_hunk] and [method add_diff_hunks_into_diff_file]), each containing information about a diff. If [param identifier] is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
 */
-func (Instance) _get_diff(impl func(ptr unsafe.Pointer, identifier string, area int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_diff(impl func(ptr unsafe.Pointer, identifier string, area int) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var identifier = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(identifier)
 		var area = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, identifier.String(), int(area))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -257,12 +256,12 @@ func (Instance) _get_vcs_name(impl func(ptr unsafe.Pointer) string) (cb gd.Exten
 /*
 Returns an [Array] of [Dictionary] items (see [method create_commit]), each containing the data for a past commit.
 */
-func (Instance) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits int) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_commits = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(max_commits))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -273,11 +272,11 @@ func (Instance) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits 
 /*
 Gets an instance of an [Array] of [String]s containing available branch names in the VCS.
 */
-func (Instance) _get_branch_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_branch_list(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -288,11 +287,11 @@ func (Instance) _get_branch_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.
 /*
 Returns an [Array] of [String]s, each containing the name of a remote configured in the VCS.
 */
-func (Instance) _get_remotes(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_remotes(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -418,7 +417,7 @@ func (Instance) _fetch(impl func(ptr unsafe.Pointer, remote string)) (cb gd.Exte
 /*
 Returns an [Array] of [Dictionary] items (see [method create_diff_hunk]), each containing a line diff between a file at [param file_path] and the [param text] which is passed in.
 */
-func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, text string) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, text string) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(file_path)
@@ -426,7 +425,7 @@ func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, t
 		defer pointers.End(text)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, file_path.String(), text.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -437,50 +436,50 @@ func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, t
 /*
 Helper function to create a [Dictionary] for storing a line diff. [param new_line_no] is the line number in the new file (can be [code]-1[/code] if the line is deleted). [param old_line_no] is the line number in the old file (can be [code]-1[/code] if the line is added). [param content] is the diff text. [param status] is a single character string which stores the line origin.
 */
-func (self Instance) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) Dictionary.Any {
-	return Dictionary.Any(class(self).CreateDiffLine(gd.Int(new_line_no), gd.Int(old_line_no), gd.NewString(content), gd.NewString(status)))
+func (self Instance) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateDiffLine(gd.Int(new_line_no), gd.Int(old_line_no), gd.NewString(content), gd.NewString(status))))
 }
 
 /*
 Helper function to create a [Dictionary] for storing diff hunk data. [param old_start] is the starting line number in old file. [param new_start] is the starting line number in new file. [param old_lines] is the number of lines in the old file. [param new_lines] is the number of lines in the new file.
 */
-func (self Instance) CreateDiffHunk(old_start int, new_start int, old_lines int, new_lines int) Dictionary.Any {
-	return Dictionary.Any(class(self).CreateDiffHunk(gd.Int(old_start), gd.Int(new_start), gd.Int(old_lines), gd.Int(new_lines)))
+func (self Instance) CreateDiffHunk(old_start int, new_start int, old_lines int, new_lines int) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateDiffHunk(gd.Int(old_start), gd.Int(new_start), gd.Int(old_lines), gd.Int(new_lines))))
 }
 
 /*
 Helper function to create a [Dictionary] for storing old and new diff file paths.
 */
-func (self Instance) CreateDiffFile(new_file string, old_file string) Dictionary.Any {
-	return Dictionary.Any(class(self).CreateDiffFile(gd.NewString(new_file), gd.NewString(old_file)))
+func (self Instance) CreateDiffFile(new_file string, old_file string) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateDiffFile(gd.NewString(new_file), gd.NewString(old_file))))
 }
 
 /*
 Helper function to create a commit [Dictionary] item. [param msg] is the commit message of the commit. [param author] is a single human-readable string containing all the author's details, e.g. the email and name configured in the VCS. [param id] is the identifier of the commit, in whichever format your VCS may provide an identifier to commits. [param unix_timestamp] is the UTC Unix timestamp of when the commit was created. [param offset_minutes] is the timezone offset in minutes, recorded from the system timezone where the commit was created.
 */
-func (self Instance) CreateCommit(msg string, author string, id string, unix_timestamp int, offset_minutes int) Dictionary.Any {
-	return Dictionary.Any(class(self).CreateCommit(gd.NewString(msg), gd.NewString(author), gd.NewString(id), gd.Int(unix_timestamp), gd.Int(offset_minutes)))
+func (self Instance) CreateCommit(msg string, author string, id string, unix_timestamp int, offset_minutes int) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateCommit(gd.NewString(msg), gd.NewString(author), gd.NewString(id), gd.Int(unix_timestamp), gd.Int(offset_minutes))))
 }
 
 /*
 Helper function to create a [Dictionary] used by editor to read the status of a file.
 */
-func (self Instance) CreateStatusFile(file_path string, change_type gdclass.EditorVCSInterfaceChangeType, area gdclass.EditorVCSInterfaceTreeArea) Dictionary.Any {
-	return Dictionary.Any(class(self).CreateStatusFile(gd.NewString(file_path), change_type, area))
+func (self Instance) CreateStatusFile(file_path string, change_type gdclass.EditorVCSInterfaceChangeType, area gdclass.EditorVCSInterfaceTreeArea) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateStatusFile(gd.NewString(file_path), change_type, area)))
 }
 
 /*
 Helper function to add an array of [param diff_hunks] into a [param diff_file].
 */
-func (self Instance) AddDiffHunksIntoDiffFile(diff_file Dictionary.Any, diff_hunks gd.Array) Dictionary.Any {
-	return Dictionary.Any(class(self).AddDiffHunksIntoDiffFile(diff_file, diff_hunks))
+func (self Instance) AddDiffHunksIntoDiffFile(diff_file map[any]any, diff_hunks []map[any]any) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).AddDiffHunksIntoDiffFile(gd.NewVariant(diff_file).Interface().(gd.Dictionary), gd.NewVariant(diff_hunks).Interface().(gd.Array))))
 }
 
 /*
 Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 */
-func (self Instance) AddLineDiffsIntoDiffHunk(diff_hunk Dictionary.Any, line_diffs gd.Array) Dictionary.Any {
-	return Dictionary.Any(class(self).AddLineDiffsIntoDiffHunk(diff_hunk, line_diffs))
+func (self Instance) AddLineDiffsIntoDiffHunk(diff_hunk map[any]any, line_diffs []map[any]any) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).AddLineDiffsIntoDiffHunk(gd.NewVariant(diff_hunk).Interface().(gd.Dictionary), gd.NewVariant(line_diffs).Interface().(gd.Array))))
 }
 
 /*

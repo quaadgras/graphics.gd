@@ -11,7 +11,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -167,17 +166,17 @@ else
 [/csharp]
 [/codeblocks]
 */
-func GetVersionInfo() Dictionary.Any {
+func GetVersionInfo() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetVersionInfo())
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetVersionInfo()))
 }
 
 /*
 Returns the engine author information as a [Dictionary], where each entry is an [Array] of strings with the names of notable contributors to the Godot Engine: [code]lead_developers[/code], [code]founders[/code], [code]project_managers[/code], and [code]developers[/code].
 */
-func GetAuthorInfo() Dictionary.Any {
+func GetAuthorInfo() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetAuthorInfo())
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetAuthorInfo()))
 }
 
 /*
@@ -187,26 +186,26 @@ Every [Dictionary] contains a [code]name[/code] identifier, and a [code]parts[/c
 - [code]copyright[/code] - [Array] of owners of this component;
 - [code]license[/code] - The license applied to this component (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]" or "[url=https://creativecommons.org/licenses/by/4.0/]CC-BY-4.0[/url]").
 */
-func GetCopyrightInfo() gd.Array {
+func GetCopyrightInfo() []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).GetCopyrightInfo())
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetCopyrightInfo()))
 }
 
 /*
 Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of strings:
 {[code]platinum_sponsors[/code], [code]gold_sponsors[/code], [code]silver_sponsors[/code], [code]bronze_sponsors[/code], [code]mini_sponsors[/code], [code]gold_donors[/code], [code]silver_donors[/code], [code]bronze_donors[/code]}
 */
-func GetDonorInfo() Dictionary.Any {
+func GetDonorInfo() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetDonorInfo())
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetDonorInfo()))
 }
 
 /*
 Returns a [Dictionary] of licenses used by Godot and included third party components. Each entry is a license name (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]") and its associated text.
 */
-func GetLicenseInfo() Dictionary.Any {
+func GetLicenseInfo() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetLicenseInfo())
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetLicenseInfo()))
 }
 
 /*

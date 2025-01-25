@@ -10,7 +10,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -97,25 +96,25 @@ func ClassHasSignal(class_ string, signal string) bool {
 /*
 Returns the [param signal] data of [param class] or its ancestry. The returned value is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 */
-func ClassGetSignal(class_ string, signal string) Dictionary.Any {
+func ClassGetSignal(class_ string, signal string) map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).ClassGetSignal(gd.NewStringName(class_), gd.NewStringName(signal)))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).ClassGetSignal(gd.NewStringName(class_), gd.NewStringName(signal))))
 }
 
 /*
 Returns an array with all the signals of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] as described in [method class_get_signal].
 */
-func ClassGetSignalList(class_ string) gd.Array {
+func ClassGetSignalList(class_ string) []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).ClassGetSignalList(gd.NewStringName(class_), false))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ClassGetSignalList(gd.NewStringName(class_), false)))
 }
 
 /*
 Returns an array with all the properties of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
-func ClassGetPropertyList(class_ string) gd.Array {
+func ClassGetPropertyList(class_ string) []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).ClassGetPropertyList(gd.NewStringName(class_), false))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ClassGetPropertyList(gd.NewStringName(class_), false)))
 }
 
 /*
@@ -162,9 +161,9 @@ func ClassGetMethodArgumentCount(class_ string, method string) int {
 Returns an array with all the methods of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 [b]Note:[/b] In exported release builds the debug info is not available, so the returned dictionaries will contain only method names.
 */
-func ClassGetMethodList(class_ string) gd.Array {
+func ClassGetMethodList(class_ string) []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).ClassGetMethodList(gd.NewStringName(class_), false))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ClassGetMethodList(gd.NewStringName(class_), false)))
 }
 
 /*

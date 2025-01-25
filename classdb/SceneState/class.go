@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/NodePath"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -173,8 +172,8 @@ func (self Instance) GetConnectionFlags(idx int) int {
 /*
 Returns the list of bound parameters for the signal at [param idx].
 */
-func (self Instance) GetConnectionBinds(idx int) Array.Any {
-	return Array.Any(class(self).GetConnectionBinds(gd.Int(idx)))
+func (self Instance) GetConnectionBinds(idx int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetConnectionBinds(gd.Int(idx))))
 }
 
 /*

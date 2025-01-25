@@ -12,7 +12,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Vector3i"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
@@ -57,7 +57,7 @@ type Interface interface {
 	HasPoint(point Vector2.XY) bool
 	//User defined BiDi algorithm override function.
 	//Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
-	StructuredTextParser(args Array.Any, text string) gd.Array
+	StructuredTextParser(args []any, text string) []Vector3i.XYZ
 	//Virtual method to be implemented by the user. Returns the minimum size for this control. Alternative to [member custom_minimum_size] for controlling minimum size via code. The actual minimum size will be the max value of these two (in each axis separately).
 	//If not overridden, defaults to [constant Vector2.ZERO].
 	//[b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
@@ -202,15 +202,15 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) HasPoint(point Vector2.XY) (_ bool)                            { return }
-func (self implementation) StructuredTextParser(args Array.Any, text string) (_ gd.Array) { return }
-func (self implementation) GetMinimumSize() (_ Vector2.XY)                                { return }
-func (self implementation) GetTooltip(at_position Vector2.XY) (_ string)                  { return }
-func (self implementation) GetDragData(at_position Vector2.XY) (_ any)                    { return }
-func (self implementation) CanDropData(at_position Vector2.XY, data any) (_ bool)         { return }
-func (self implementation) DropData(at_position Vector2.XY, data any)                     { return }
-func (self implementation) MakeCustomTooltip(for_text string) (_ Object.Instance)         { return }
-func (self implementation) GuiInput(event [1]gdclass.InputEvent)                          { return }
+func (self implementation) HasPoint(point Vector2.XY) (_ bool)                              { return }
+func (self implementation) StructuredTextParser(args []any, text string) (_ []Vector3i.XYZ) { return }
+func (self implementation) GetMinimumSize() (_ Vector2.XY)                                  { return }
+func (self implementation) GetTooltip(at_position Vector2.XY) (_ string)                    { return }
+func (self implementation) GetDragData(at_position Vector2.XY) (_ any)                      { return }
+func (self implementation) CanDropData(at_position Vector2.XY, data any) (_ bool)           { return }
+func (self implementation) DropData(at_position Vector2.XY, data any)                       { return }
+func (self implementation) MakeCustomTooltip(for_text string) (_ Object.Instance)           { return }
+func (self implementation) GuiInput(event [1]gdclass.InputEvent)                            { return }
 
 /*
 Virtual method to be implemented by the user. Returns whether the given [param point] is inside this control.
@@ -230,15 +230,15 @@ func (Instance) _has_point(impl func(ptr unsafe.Pointer, point Vector2.XY) bool)
 User defined BiDi algorithm override function.
 Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (Instance) _structured_text_parser(impl func(ptr unsafe.Pointer, args Array.Any, text string) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _structured_text_parser(impl func(ptr unsafe.Pointer, args []any, text string) []Vector3i.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(args)
 		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(text)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, args, text.String())
-		ptr, ok := pointers.End(ret)
+		ret := impl(self, gd.ArrayAs[[]any](args), text.String())
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}

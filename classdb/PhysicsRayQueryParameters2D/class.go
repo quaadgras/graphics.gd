@@ -10,6 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,7 +41,7 @@ var collision = get_world_2d().direct_space_state.intersect_ray(query)
 */
 func Create(from Vector2.XY, to Vector2.XY) [1]gdclass.PhysicsRayQueryParameters2D {
 	self := Instance{}
-	return [1]gdclass.PhysicsRayQueryParameters2D(class(self).Create(gd.Vector2(from), gd.Vector2(to), gd.Int(4294967295), [1]gd.Array{}[0]))
+	return [1]gdclass.PhysicsRayQueryParameters2D(class(self).Create(gd.Vector2(from), gd.Vector2(to), gd.Int(4294967295), gd.NewVariant([1][]Resource.ID{}[0]).Interface().(gd.Array)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -86,12 +87,12 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) Exclude() gd.Array {
-	return gd.Array(class(self).GetExclude())
+func (self Instance) Exclude() []Resource.ID {
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetExclude()))
 }
 
-func (self Instance) SetExclude(value gd.Array) {
-	class(self).SetExclude(value)
+func (self Instance) SetExclude(value []Resource.ID) {
+	class(self).SetExclude(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) CollideWithBodies() bool {

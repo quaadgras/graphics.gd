@@ -68,8 +68,8 @@ func (self Instance) GetGravity() Vector2.XY {
 /*
 Returns an array of nodes that were added as collision exceptions for this body.
 */
-func (self Instance) GetCollisionExceptions() gd.Array {
-	return gd.Array(class(self).GetCollisionExceptions())
+func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody2D {
+	return [][1]gdclass.PhysicsBody2D(gd.ArrayAs[[][1]gdclass.PhysicsBody2D](class(self).GetCollisionExceptions()))
 }
 
 /*

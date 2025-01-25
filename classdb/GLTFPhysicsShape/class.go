@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 
@@ -67,16 +66,16 @@ func (self Instance) ToResource() [1]gdclass.Shape3D {
 /*
 Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsShape {
+func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFPhysicsShape {
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsShape(class(self).FromDictionary(dictionary))
+	return [1]gdclass.GLTFPhysicsShape(class(self).FromDictionary(gd.NewVariant(dictionary).Interface().(gd.Dictionary)))
 }
 
 /*
 Serializes this GLTFPhysicsShape instance into a [Dictionary] in the format defined by [code]OMI_physics_shape[/code].
 */
-func (self Instance) ToDictionary() Dictionary.Any {
-	return Dictionary.Any(class(self).ToDictionary())
+func (self Instance) ToDictionary() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).ToDictionary()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

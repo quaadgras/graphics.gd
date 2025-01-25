@@ -12,7 +12,6 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/SyntaxHighlighter"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -187,28 +186,28 @@ func (self Instance) SetMemberVariableColor(value Color.RGBA) {
 	class(self).SetMemberVariableColor(gd.Color(value))
 }
 
-func (self Instance) KeywordColors() Dictionary.Any {
-	return Dictionary.Any(class(self).GetKeywordColors())
+func (self Instance) KeywordColors() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetKeywordColors()))
 }
 
-func (self Instance) SetKeywordColors(value Dictionary.Any) {
-	class(self).SetKeywordColors(value)
+func (self Instance) SetKeywordColors(value map[any]any) {
+	class(self).SetKeywordColors(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
-func (self Instance) MemberKeywordColors() Dictionary.Any {
-	return Dictionary.Any(class(self).GetMemberKeywordColors())
+func (self Instance) MemberKeywordColors() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetMemberKeywordColors()))
 }
 
-func (self Instance) SetMemberKeywordColors(value Dictionary.Any) {
-	class(self).SetMemberKeywordColors(value)
+func (self Instance) SetMemberKeywordColors(value map[any]any) {
+	class(self).SetMemberKeywordColors(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
-func (self Instance) ColorRegions() Dictionary.Any {
-	return Dictionary.Any(class(self).GetColorRegions())
+func (self Instance) ColorRegions() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetColorRegions()))
 }
 
-func (self Instance) SetColorRegions(value Dictionary.Any) {
-	class(self).SetColorRegions(value)
+func (self Instance) SetColorRegions(value map[any]any) {
+	class(self).SetColorRegions(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
 /*

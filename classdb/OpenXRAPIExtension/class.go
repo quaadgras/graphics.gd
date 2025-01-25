@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Transform3D"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -64,8 +63,8 @@ func (self Instance) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOri
 /*
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
-func (self Instance) XrResult(result int, format string, args Array.Any) bool {
-	return bool(class(self).XrResult(gd.Int(result), gd.NewString(format), args))
+func (self Instance) XrResult(result int, format string, args []any) bool {
+	return bool(class(self).XrResult(gd.Int(result), gd.NewString(format), gd.NewVariant(args).Interface().(gd.Array)))
 }
 
 /*

@@ -30,6 +30,17 @@ func Sprint(value any) string {
 		printed += "]"
 		return printed
 	}
+	if collection, ok := value.(interface{ Len() int }); ok {
+		printed := "["
+		for i := 0; i < collection.Len(); i++ {
+			if i > 0 {
+				printed += ", "
+			}
+			printed += Sprint(rvalue.MethodByName("Index").Call([]reflect.Value{reflect.ValueOf(i)})[0].Interface())
+		}
+		printed += "]"
+		return printed
+	}
 	for rvalue.Kind() == reflect.Ptr && !rvalue.IsNil() {
 		rvalue = rvalue.Elem()
 	}

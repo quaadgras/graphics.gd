@@ -41,9 +41,9 @@ func HasAction(action string) bool {
 /*
 Returns an array of all actions in the [InputMap].
 */
-func GetActions() gd.Array {
+func GetActions() []string {
 	once.Do(singleton)
-	return gd.Array(class(self).GetActions())
+	return []string(gd.ArrayAs[[]string](class(self).GetActions()))
 }
 
 /*
@@ -115,9 +115,9 @@ func ActionEraseEvents(action string) {
 Returns an array of [InputEvent]s associated with a given action.
 [b]Note:[/b] When used in the editor (e.g. a tool script or [EditorPlugin]), this method will return events for the editor action. If you want to access your project's input binds from the editor, read the [code]input/*[/code] settings from [ProjectSettings].
 */
-func ActionGetEvents(action string) gd.Array {
+func ActionGetEvents(action string) [][1]gdclass.InputEvent {
 	once.Do(singleton)
-	return gd.Array(class(self).ActionGetEvents(gd.NewStringName(action)))
+	return [][1]gdclass.InputEvent(gd.ArrayAs[[][1]gdclass.InputEvent](class(self).ActionGetEvents(gd.NewStringName(action))))
 }
 
 /*

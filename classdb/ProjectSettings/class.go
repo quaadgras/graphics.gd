@@ -10,7 +10,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -107,9 +106,9 @@ Returns an [Array] of registered global classes. Each global class is represente
 - [code]path[/code] is a path to a file containing the global class.
 [b]Note:[/b] Both the script and the icon paths are local to the project filesystem, i.e. they start with [code]res://[/code].
 */
-func GetGlobalClassList() gd.Array {
+func GetGlobalClassList() []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).GetGlobalClassList())
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetGlobalClassList()))
 }
 
 /*
@@ -187,9 +186,9 @@ ProjectSettings.AddPropertyInfo(propertyInfo);
 [/csharp]
 [/codeblocks]
 */
-func AddPropertyInfo(hint Dictionary.Any) {
+func AddPropertyInfo(hint map[any]any) {
 	once.Do(singleton)
-	class(self).AddPropertyInfo(hint)
+	class(self).AddPropertyInfo(gd.NewVariant(hint).Interface().(gd.Dictionary))
 }
 
 /*

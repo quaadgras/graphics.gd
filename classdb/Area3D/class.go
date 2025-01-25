@@ -44,16 +44,16 @@ type Any interface {
 Returns a list of intersecting [PhysicsBody3D]s and [GridMap]s. The overlapping body's [member CollisionObject3D.collision_layer] must be part of this area's [member CollisionObject3D.collision_mask] in order to be detected.
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
-func (self Instance) GetOverlappingBodies() gd.Array {
-	return gd.Array(class(self).GetOverlappingBodies())
+func (self Instance) GetOverlappingBodies() [][1]gdclass.Node3D {
+	return [][1]gdclass.Node3D(gd.ArrayAs[[][1]gdclass.Node3D](class(self).GetOverlappingBodies()))
 }
 
 /*
 Returns a list of intersecting [Area3D]s. The overlapping area's [member CollisionObject3D.collision_layer] must be part of this area's [member CollisionObject3D.collision_mask] in order to be detected.
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
-func (self Instance) GetOverlappingAreas() gd.Array {
-	return gd.Array(class(self).GetOverlappingAreas())
+func (self Instance) GetOverlappingAreas() [][1]gdclass.Area3D {
+	return [][1]gdclass.Area3D(gd.ArrayAs[[][1]gdclass.Area3D](class(self).GetOverlappingAreas()))
 }
 
 /*

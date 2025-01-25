@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -130,20 +129,20 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) ActionSets() Array.Any {
-	return Array.Any(class(self).GetActionSets())
+func (self Instance) ActionSets() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetActionSets()))
 }
 
-func (self Instance) SetActionSets(value Array.Any) {
-	class(self).SetActionSets(value)
+func (self Instance) SetActionSets(value []any) {
+	class(self).SetActionSets(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) InteractionProfiles() Array.Any {
-	return Array.Any(class(self).GetInteractionProfiles())
+func (self Instance) InteractionProfiles() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetInteractionProfiles()))
 }
 
-func (self Instance) SetInteractionProfiles(value Array.Any) {
-	class(self).SetInteractionProfiles(value)
+func (self Instance) SetInteractionProfiles(value []any) {
+	class(self).SetInteractionProfiles(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

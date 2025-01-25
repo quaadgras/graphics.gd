@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -51,16 +50,16 @@ func (self Instance) ToNode() [1]gdclass.Camera3D {
 /*
 Creates a new GLTFCamera instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFCamera {
+func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFCamera {
 	self := Instance{}
-	return [1]gdclass.GLTFCamera(class(self).FromDictionary(dictionary))
+	return [1]gdclass.GLTFCamera(class(self).FromDictionary(gd.NewVariant(dictionary).Interface().(gd.Dictionary)))
 }
 
 /*
 Serializes this GLTFCamera instance into a [Dictionary].
 */
-func (self Instance) ToDictionary() Dictionary.Any {
-	return Dictionary.Any(class(self).ToDictionary())
+func (self Instance) ToDictionary() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).ToDictionary()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

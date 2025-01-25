@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -130,8 +129,8 @@ Returns all response headers as a Dictionary of structure [code]{ "key": "value1
 
 [/codeblock]
 */
-func (self Instance) GetResponseHeadersAsDictionary() Dictionary.Any {
-	return Dictionary.Any(class(self).GetResponseHeadersAsDictionary())
+func (self Instance) GetResponseHeadersAsDictionary() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetResponseHeadersAsDictionary()))
 }
 
 /*
@@ -215,8 +214,8 @@ string queryString = httpClient.QueryStringFromDict(fields);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) QueryStringFromDict(fields Dictionary.Any) string {
-	return string(class(self).QueryStringFromDict(fields).String())
+func (self Instance) QueryStringFromDict(fields map[any]any) string {
+	return string(class(self).QueryStringFromDict(gd.NewVariant(fields).Interface().(gd.Dictionary)).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

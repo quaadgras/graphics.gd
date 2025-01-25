@@ -49,7 +49,7 @@ type Interface interface {
 	//Called when the presence of mipmaps in the [Texture3D] is queried.
 	HasMipmaps() bool
 	//Called when the [Texture3D]'s data is queried.
-	GetData() gd.Array
+	GetData() [][1]gdclass.Image
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -62,7 +62,7 @@ func (self implementation) GetWidth() (_ int)                  { return }
 func (self implementation) GetHeight() (_ int)                 { return }
 func (self implementation) GetDepth() (_ int)                  { return }
 func (self implementation) HasMipmaps() (_ bool)               { return }
-func (self implementation) GetData() (_ gd.Array)              { return }
+func (self implementation) GetData() (_ [][1]gdclass.Image)    { return }
 
 /*
 Called when the [Texture3D]'s format is queried.
@@ -122,11 +122,11 @@ func (Instance) _has_mipmaps(impl func(ptr unsafe.Pointer) bool) (cb gd.Extensio
 /*
 Called when the [Texture3D]'s data is queried.
 */
-func (Instance) _get_data(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_data(impl func(ptr unsafe.Pointer) [][1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -172,8 +172,8 @@ func (self Instance) HasMipmaps() bool {
 /*
 Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a [i]slice[/i] of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
 */
-func (self Instance) GetData() gd.Array {
-	return gd.Array(class(self).GetData())
+func (self Instance) GetData() [][1]gdclass.Image {
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).GetData()))
 }
 
 /*

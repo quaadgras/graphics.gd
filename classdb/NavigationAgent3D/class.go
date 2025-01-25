@@ -14,7 +14,6 @@ import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -1229,11 +1228,11 @@ func (self Instance) OnTargetReached(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("target_reached"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnWaypointReached(cb func(details Dictionary.Any)) {
+func (self Instance) OnWaypointReached(cb func(details map[any]any)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("waypoint_reached"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnLinkReached(cb func(details Dictionary.Any)) {
+func (self Instance) OnLinkReached(cb func(details map[any]any)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("link_reached"), gd.NewCallable(cb), 0)
 }
 

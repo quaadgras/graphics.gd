@@ -12,6 +12,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
+import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -84,20 +85,20 @@ func (self Instance) SetCollideSeparationRay(value bool) {
 	class(self).SetCollideSeparationRayEnabled(value)
 }
 
-func (self Instance) ExcludeBodies() gd.Array {
-	return gd.Array(class(self).GetExcludeBodies())
+func (self Instance) ExcludeBodies() []Resource.ID {
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetExcludeBodies()))
 }
 
-func (self Instance) SetExcludeBodies(value gd.Array) {
-	class(self).SetExcludeBodies(value)
+func (self Instance) SetExcludeBodies(value []Resource.ID) {
+	class(self).SetExcludeBodies(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) ExcludeObjects() gd.Array {
-	return gd.Array(class(self).GetExcludeObjects())
+func (self Instance) ExcludeObjects() []int {
+	return []int(gd.ArrayAs[[]int](class(self).GetExcludeObjects()))
 }
 
-func (self Instance) SetExcludeObjects(value gd.Array) {
-	class(self).SetExcludeObjects(value)
+func (self Instance) SetExcludeObjects(value []int) {
+	class(self).SetExcludeObjects(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) RecoveryAsCollision() bool {

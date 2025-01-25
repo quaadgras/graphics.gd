@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -37,8 +36,8 @@ type Any interface {
 Returns the list of properties that will be applied to the node when [method create_instance] is called.
 If [param with_order] is [code]true[/code], a key named [code].order[/code] (note the leading period) is added to the dictionary. This [code].order[/code] key is an [Array] of [String] property names specifying the order in which properties will be applied (with index 0 being the first).
 */
-func (self Instance) GetStoredValues() Dictionary.Any {
-	return Dictionary.Any(class(self).GetStoredValues(false))
+func (self Instance) GetStoredValues() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetStoredValues(false)))
 }
 
 /*

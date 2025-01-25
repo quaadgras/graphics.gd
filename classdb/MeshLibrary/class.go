@@ -11,7 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -88,8 +87,8 @@ func (self Instance) SetItemNavigationLayers(id int, navigation_layers int) {
 Sets an item's collision shapes.
 The array should consist of [Shape3D] objects, each followed by a [Transform3D] that will be applied to it. For shapes that should not have a transform, use [constant Transform3D.IDENTITY].
 */
-func (self Instance) SetItemShapes(id int, shapes Array.Any) {
-	class(self).SetItemShapes(gd.Int(id), shapes)
+func (self Instance) SetItemShapes(id int, shapes []any) {
+	class(self).SetItemShapes(gd.Int(id), gd.NewVariant(shapes).Interface().(gd.Array))
 }
 
 /*
@@ -145,8 +144,8 @@ func (self Instance) GetItemNavigationLayers(id int) int {
 Returns an item's collision shapes.
 The array consists of each [Shape3D] followed by its [Transform3D].
 */
-func (self Instance) GetItemShapes(id int) Array.Any {
-	return Array.Any(class(self).GetItemShapes(gd.Int(id)))
+func (self Instance) GetItemShapes(id int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetItemShapes(gd.Int(id))))
 }
 
 /*

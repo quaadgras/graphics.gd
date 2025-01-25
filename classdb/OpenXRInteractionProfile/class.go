@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -74,12 +73,12 @@ func (self Instance) SetInteractionProfilePath(value string) {
 	class(self).SetInteractionProfilePath(gd.NewString(value))
 }
 
-func (self Instance) Bindings() Array.Any {
-	return Array.Any(class(self).GetBindings())
+func (self Instance) Bindings() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetBindings()))
 }
 
-func (self Instance) SetBindings(value Array.Any) {
-	class(self).SetBindings(value)
+func (self Instance) SetBindings(value []any) {
+	class(self).SetBindings(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

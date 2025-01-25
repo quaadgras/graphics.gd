@@ -12,7 +12,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -113,7 +112,7 @@ Callables are called with arguments supplied in argument array.
 */
 func AddCustomMonitor(id string, callable Callable.Any) {
 	once.Do(singleton)
-	class(self).AddCustomMonitor(gd.NewStringName(id), gd.NewCallable(callable), [1]Array.Any{}[0])
+	class(self).AddCustomMonitor(gd.NewStringName(id), gd.NewCallable(callable), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))
 }
 
 /*
@@ -151,9 +150,9 @@ func GetMonitorModificationTime() int {
 /*
 Returns the names of active custom monitors in an [Array].
 */
-func GetCustomMonitorNames() gd.Array {
+func GetCustomMonitorNames() []string {
 	once.Do(singleton)
-	return gd.Array(class(self).GetCustomMonitorNames())
+	return []string(gd.ArrayAs[[]string](class(self).GetCustomMonitorNames()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

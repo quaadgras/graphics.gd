@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -92,7 +91,7 @@ Executes the expression that was previously parsed by [method parse] and returns
 If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
 */
 func (self Instance) Execute() any {
-	return any(class(self).Execute([1]Array.Any{}[0], [1]Object.Instance{}[0], true, false).Interface())
+	return any(class(self).Execute(gd.NewVariant([1][]any{}[0]).Interface().(gd.Array), [1]Object.Instance{}[0], true, false).Interface())
 }
 
 /*

@@ -61,12 +61,12 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(gd.Int(value))
 }
 
-func (self Instance) Exclude() gd.Array {
-	return gd.Array(class(self).GetExclude())
+func (self Instance) Exclude() []Resource.ID {
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetExclude()))
 }
 
-func (self Instance) SetExclude(value gd.Array) {
-	class(self).SetExclude(value)
+func (self Instance) SetExclude(value []Resource.ID) {
+	class(self).SetExclude(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) Margin() Float.X {

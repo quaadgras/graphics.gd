@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,7 +37,7 @@ type Interface interface {
 	//Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dictionary] should contain the name of the extension, mapped to a [code]bool *[/code] cast to an integer:
 	//- If the [code]bool *[/code] is a [code]nullptr[/code] this extension is mandatory.
 	//- If the [code]bool *[/code] points to a boolean, the boolean will be updated to [code]true[/code] if the extension is enabled.
-	GetRequestedExtensions() Dictionary.Any
+	GetRequestedExtensions() map[any]any
 	//Adds additional data structures when interogating OpenXR system abilities.
 	SetSystemPropertiesAndGetNextPointer(next_pointer unsafe.Pointer) int
 	//Adds additional data structures when the OpenXR instance is created.
@@ -100,11 +99,11 @@ type Interface interface {
 	//Adds additional data structures to composition layers created by [OpenXRCompositionLayer].
 	//[param property_values] contains the values of the properties returned by [method _get_viewport_composition_layer_extension_properties].
 	//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
-	SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) int
+	SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values map[any]any, next_pointer unsafe.Pointer) int
 	//Gets an array of [Dictionary]s that represent properties, just like [method Object._get_property_list], that will be added to [OpenXRCompositionLayer] nodes.
-	GetViewportCompositionLayerExtensionProperties() gd.Array
+	GetViewportCompositionLayerExtensionProperties() []map[any]any
 	//Gets a [Dictionary] containing the default values for the properties returned by [method _get_viewport_composition_layer_extension_properties].
-	GetViewportCompositionLayerExtensionPropertyDefaults() Dictionary.Any
+	GetViewportCompositionLayerExtensionPropertyDefaults() map[any]any
 	//Called when a composition layer created via [OpenXRCompositionLayer] is destroyed.
 	//[param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
 	OnViewportCompositionLayerDestroyed(layer unsafe.Pointer)
@@ -115,7 +114,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetRequestedExtensions() (_ Dictionary.Any) { return }
+func (self implementation) GetRequestedExtensions() (_ map[any]any) { return }
 func (self implementation) SetSystemPropertiesAndGetNextPointer(next_pointer unsafe.Pointer) (_ int) {
 	return
 }
@@ -153,11 +152,11 @@ func (self implementation) OnStateStopping()                            { return
 func (self implementation) OnStateLossPending()                         { return }
 func (self implementation) OnStateExiting()                             { return }
 func (self implementation) OnEventPolled(event unsafe.Pointer) (_ bool) { return }
-func (self implementation) SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) (_ int) {
+func (self implementation) SetViewportCompositionLayerAndGetNextPointer(layer unsafe.Pointer, property_values map[any]any, next_pointer unsafe.Pointer) (_ int) {
 	return
 }
-func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ gd.Array) { return }
-func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ Dictionary.Any) {
+func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ []map[any]any) { return }
+func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ map[any]any) {
 	return
 }
 func (self implementation) OnViewportCompositionLayerDestroyed(layer unsafe.Pointer) { return }
@@ -167,11 +166,11 @@ Returns a [Dictionary] of OpenXR extensions related to this extension. The [Dict
 - If the [code]bool *[/code] is a [code]nullptr[/code] this extension is mandatory.
 - If the [code]bool *[/code] points to a boolean, the boolean will be updated to [code]true[/code] if the extension is enabled.
 */
-func (Instance) _get_requested_extensions(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_requested_extensions(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -483,14 +482,14 @@ Adds additional data structures to composition layers created by [OpenXRComposit
 [param property_values] contains the values of the properties returned by [method _get_viewport_composition_layer_extension_properties].
 [param layer] is a pointer to an [code]XrCompositionLayerBaseHeader[/code] struct.
 */
-func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values map[any]any, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 		var property_values = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(property_values)
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, layer, property_values, next_pointer)
+		ret := impl(self, layer, gd.DictionaryAs[any, any](property_values), next_pointer)
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
@@ -498,11 +497,11 @@ func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(p
 /*
 Gets an array of [Dictionary]s that represent properties, just like [method Object._get_property_list], that will be added to [OpenXRCompositionLayer] nodes.
 */
-func (Instance) _get_viewport_composition_layer_extension_properties(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_viewport_composition_layer_extension_properties(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -513,11 +512,11 @@ func (Instance) _get_viewport_composition_layer_extension_properties(impl func(p
 /*
 Gets a [Dictionary] containing the default values for the properties returned by [method _get_viewport_composition_layer_extension_properties].
 */
-func (Instance) _get_viewport_composition_layer_extension_property_defaults(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_viewport_composition_layer_extension_property_defaults(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}

@@ -14,7 +14,6 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 
@@ -216,12 +215,12 @@ func (self Instance) SetVertexColors(value []Color.RGBA) {
 	class(self).SetVertexColors(gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&value))))
 }
 
-func (self Instance) Polygons() Array.Any {
-	return Array.Any(class(self).GetPolygons())
+func (self Instance) Polygons() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetPolygons()))
 }
 
-func (self Instance) SetPolygons(value Array.Any) {
-	class(self).SetPolygons(value)
+func (self Instance) SetPolygons(value []any) {
+	class(self).SetPolygons(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) InternalVertexCount() int {

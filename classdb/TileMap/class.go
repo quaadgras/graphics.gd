@@ -363,8 +363,8 @@ func (self Instance) GetLayerForBodyRid(body Resource.ID) int {
 Creates a new [TileMapPattern] from the given layer and set of cells.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetPattern(layer int, coords_array gd.Array) [1]gdclass.TileMapPattern {
-	return [1]gdclass.TileMapPattern(class(self).GetPattern(gd.Int(layer), coords_array))
+func (self Instance) GetPattern(layer int, coords_array []Vector2i.XY) [1]gdclass.TileMapPattern {
+	return [1]gdclass.TileMapPattern(class(self).GetPattern(gd.Int(layer), gd.NewVariant(coords_array).Interface().(gd.Array)))
 }
 
 /*
@@ -388,8 +388,8 @@ If [param ignore_empty_terrains] is true, empty terrains will be ignored when tr
 If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
-func (self Instance) SetCellsTerrainConnect(layer int, cells gd.Array, terrain_set int, terrain int) {
-	class(self).SetCellsTerrainConnect(gd.Int(layer), cells, gd.Int(terrain_set), gd.Int(terrain), true)
+func (self Instance) SetCellsTerrainConnect(layer int, cells []Vector2i.XY, terrain_set int, terrain int) {
+	class(self).SetCellsTerrainConnect(gd.Int(layer), gd.NewVariant(cells).Interface().(gd.Array), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
 /*
@@ -398,8 +398,8 @@ If [param ignore_empty_terrains] is true, empty terrains will be ignored when tr
 If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
-func (self Instance) SetCellsTerrainPath(layer int, path gd.Array, terrain_set int, terrain int) {
-	class(self).SetCellsTerrainPath(gd.Int(layer), path, gd.Int(terrain_set), gd.Int(terrain), true)
+func (self Instance) SetCellsTerrainPath(layer int, path []Vector2i.XY, terrain_set int, terrain int) {
+	class(self).SetCellsTerrainPath(gd.Int(layer), gd.NewVariant(path).Interface().(gd.Array), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
 /*
@@ -446,16 +446,16 @@ func (self Instance) NotifyRuntimeTileDataUpdate() {
 /*
 Returns the list of all neighbourings cells to the one at [param coords].
 */
-func (self Instance) GetSurroundingCells(coords Vector2i.XY) gd.Array {
-	return gd.Array(class(self).GetSurroundingCells(gd.Vector2i(coords)))
+func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetSurroundingCells(gd.Vector2i(coords))))
 }
 
 /*
 Returns a [Vector2i] array with the positions of all cells containing a tile in the given layer. A cell is considered empty if its source identifier equals -1, its atlas coordinates identifiers is [code]Vector2(-1, -1)[/code] and its alternative identifier is -1.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetUsedCells(layer int) gd.Array {
-	return gd.Array(class(self).GetUsedCells(gd.Int(layer)))
+func (self Instance) GetUsedCells(layer int) []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetUsedCells(gd.Int(layer))))
 }
 
 /*
@@ -464,8 +464,8 @@ If a parameter has its value set to the default one, this parameter is not used 
 A cell is considered empty if its source identifier equals -1, its atlas coordinates identifiers is [code]Vector2(-1, -1)[/code] and its alternative identifier is -1.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetUsedCellsById(layer int) gd.Array {
-	return gd.Array(class(self).GetUsedCellsById(gd.Int(layer), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1)))
+func (self Instance) GetUsedCellsById(layer int) []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetUsedCellsById(gd.Int(layer), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1))))
 }
 
 /*

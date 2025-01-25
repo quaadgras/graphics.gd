@@ -74,12 +74,12 @@ func (self Instance) SetBlendConstant(value Color.RGBA) {
 	class(self).SetBlendConstant(gd.Color(value))
 }
 
-func (self Instance) Attachments() gd.Array {
-	return gd.Array(class(self).GetAttachments())
+func (self Instance) Attachments() [][1]gdclass.RDPipelineColorBlendStateAttachment {
+	return [][1]gdclass.RDPipelineColorBlendStateAttachment(gd.ArrayAs[[][1]gdclass.RDPipelineColorBlendStateAttachment](class(self).GetAttachments()))
 }
 
-func (self Instance) SetAttachments(value gd.Array) {
-	class(self).SetAttachments(value)
+func (self Instance) SetAttachments(value [][1]gdclass.RDPipelineColorBlendStateAttachment) {
+	class(self).SetAttachments(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

@@ -11,7 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -367,8 +366,8 @@ func (self Instance) GetChildCount() int {
 Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Instance) GetChildren() gd.Array {
-	return gd.Array(class(self).GetChildren(false))
+func (self Instance) GetChildren() [][1]gdclass.Node {
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).GetChildren(false)))
 }
 
 /*
@@ -467,8 +466,8 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] This method can be very slow. Consider storing references to the found nodes in a variable.
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
-func (self Instance) FindChildren(pattern string) gd.Array {
-	return gd.Array(class(self).FindChildren(gd.NewString(pattern), gd.NewString(""), true, true))
+func (self Instance) FindChildren(pattern string) [][1]gdclass.Node {
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).FindChildren(gd.NewString(pattern), gd.NewString(""), true, true)))
 }
 
 /*
@@ -527,8 +526,8 @@ GD.Print(c[2]);             // Prints ^":region"
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNodeAndResource(path NodePath.String) Array.Any {
-	return Array.Any(class(self).GetNodeAndResource(gd.NewString(string(path)).NodePath()))
+func (self Instance) GetNodeAndResource(path NodePath.String) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetNodeAndResource(gd.NewString(string(path)).NodePath())))
 }
 
 /*
@@ -634,8 +633,8 @@ foreach (string group in GetGroups())
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetGroups() gd.Array {
-	return gd.Array(class(self).GetGroups())
+func (self Instance) GetGroups() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetGroups()))
 }
 
 /*
@@ -726,7 +725,7 @@ Calls the given [param method] name, passing [param args] as arguments, on this 
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
 func (self Instance) PropagateCall(method string) {
-	class(self).PropagateCall(gd.NewStringName(method), [1]Array.Any{}[0], false)
+	class(self).PropagateCall(gd.NewStringName(method), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array), false)
 }
 
 /*

@@ -247,7 +247,7 @@ type Interface interface {
 	BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID)
 	//Returns the [RID]s of all bodies added as collision exceptions for the given [param body]. See also [method _body_add_collision_exception] and [method _body_remove_collision_exception].
 	//Overridable version of [PhysicsServer2D]'s internal [code]body_get_collision_exceptions[/code] method. Corresponds to [method PhysicsBody2D.get_collision_exceptions].
-	BodyGetCollisionExceptions(body Resource.ID) gd.Array
+	BodyGetCollisionExceptions(body Resource.ID) []Resource.ID
 	//Overridable version of [method PhysicsServer2D.body_set_max_contacts_reported].
 	BodySetMaxContactsReported(body Resource.ID, amount int)
 	//Overridable version of [method PhysicsServer2D.body_get_max_contacts_reported].
@@ -500,9 +500,9 @@ func (self implementation) BodyAddCollisionException(body Resource.ID, excepted_
 func (self implementation) BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
 	return
 }
-func (self implementation) BodyGetCollisionExceptions(body Resource.ID) (_ gd.Array) { return }
-func (self implementation) BodySetMaxContactsReported(body Resource.ID, amount int)  { return }
-func (self implementation) BodyGetMaxContactsReported(body Resource.ID) (_ int)      { return }
+func (self implementation) BodyGetCollisionExceptions(body Resource.ID) (_ []Resource.ID) { return }
+func (self implementation) BodySetMaxContactsReported(body Resource.ID, amount int)       { return }
+func (self implementation) BodyGetMaxContactsReported(body Resource.ID) (_ int)           { return }
 func (self implementation) BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X) {
 	return
 }
@@ -1830,12 +1830,12 @@ func (Instance) _body_remove_collision_exception(impl func(ptr unsafe.Pointer, b
 Returns the [RID]s of all bodies added as collision exceptions for the given [param body]. See also [method _body_add_collision_exception] and [method _body_remove_collision_exception].
 Overridable version of [PhysicsServer2D]'s internal [code]body_get_collision_exceptions[/code] method. Corresponds to [method PhysicsBody2D.get_collision_exceptions].
 */
-func (Instance) _body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body Resource.ID) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body Resource.ID) []Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}

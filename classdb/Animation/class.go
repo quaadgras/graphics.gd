@@ -14,7 +14,6 @@ import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Quaternion"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -370,8 +369,8 @@ func (self Instance) MethodTrackGetName(track_idx int, key_idx int) string {
 /*
 Returns the arguments values to be called on a method track for a given key in a given track.
 */
-func (self Instance) MethodTrackGetParams(track_idx int, key_idx int) Array.Any {
-	return Array.Any(class(self).MethodTrackGetParams(gd.Int(track_idx), gd.Int(key_idx)))
+func (self Instance) MethodTrackGetParams(track_idx int, key_idx int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).MethodTrackGetParams(gd.Int(track_idx), gd.Int(key_idx))))
 }
 
 /*

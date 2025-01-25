@@ -9,11 +9,9 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Callable"
 
 var _ Object.ID
@@ -176,15 +174,15 @@ func (self Instance) GetStructuredTextBidiOverride(column int) gdclass.TextServe
 /*
 Set additional options for BiDi override. Has effect for cells that display text.
 */
-func (self Instance) SetStructuredTextBidiOverrideOptions(column int, args Array.Any) {
-	class(self).SetStructuredTextBidiOverrideOptions(gd.Int(column), args)
+func (self Instance) SetStructuredTextBidiOverrideOptions(column int, args []any) {
+	class(self).SetStructuredTextBidiOverrideOptions(gd.Int(column), gd.NewVariant(args).Interface().(gd.Array))
 }
 
 /*
 Returns the additional BiDi options set for this cell.
 */
-func (self Instance) GetStructuredTextBidiOverrideOptions(column int) Array.Any {
-	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions(gd.Int(column)))
+func (self Instance) GetStructuredTextBidiOverrideOptions(column int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetStructuredTextBidiOverrideOptions(gd.Int(column))))
 }
 
 /*
@@ -296,8 +294,8 @@ func (self Instance) SetRangeConfig(column int, min Float.X, max Float.X, step F
 /*
 Returns a dictionary containing the range parameters for a given column. The keys are "min", "max", "step", and "expr".
 */
-func (self Instance) GetRangeConfig(column int) Dictionary.Any {
-	return Dictionary.Any(class(self).GetRangeConfig(gd.Int(column)))
+func (self Instance) GetRangeConfig(column int) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetRangeConfig(gd.Int(column))))
 }
 
 /*
@@ -740,8 +738,8 @@ func (self Instance) GetChildCount() int {
 /*
 Returns an array of references to the item's children.
 */
-func (self Instance) GetChildren() gd.Array {
-	return gd.Array(class(self).GetChildren())
+func (self Instance) GetChildren() [][1]gdclass.TreeItem {
+	return [][1]gdclass.TreeItem(gd.ArrayAs[[][1]gdclass.TreeItem](class(self).GetChildren()))
 }
 
 /*

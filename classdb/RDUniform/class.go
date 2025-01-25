@@ -48,8 +48,8 @@ func (self Instance) ClearIds() {
 /*
 Returns an array of all ids currently bound to the uniform.
 */
-func (self Instance) GetIds() gd.Array {
-	return gd.Array(class(self).GetIds())
+func (self Instance) GetIds() []Resource.ID {
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetIds()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

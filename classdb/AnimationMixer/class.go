@@ -121,8 +121,8 @@ func (self Instance) GetAnimationLibrary(name string) [1]gdclass.AnimationLibrar
 /*
 Returns the list of stored library keys.
 */
-func (self Instance) GetAnimationLibraryList() gd.Array {
-	return gd.Array(class(self).GetAnimationLibraryList())
+func (self Instance) GetAnimationLibraryList() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetAnimationLibraryList()))
 }
 
 /*

@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -85,8 +84,8 @@ func (self Instance) Subject() string {
 	return string(class(self).GetSubject().String())
 }
 
-func (self Instance) Names() Dictionary.Any {
-	return Dictionary.Any(class(self).GetNames())
+func (self Instance) Names() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetNames()))
 }
 
 func (self Instance) Strings() []string {

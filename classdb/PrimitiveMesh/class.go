@@ -11,7 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Float"
 
@@ -40,7 +39,7 @@ type Any interface {
 }
 type Interface interface {
 	//Override this method to customize how this primitive mesh should be generated. Should return an [Array] where each element is another Array of values required for the mesh (see the [enum Mesh.ArrayType] constants).
-	CreateMeshArray() Array.Any
+	CreateMeshArray() []any
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -48,16 +47,16 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) CreateMeshArray() (_ Array.Any) { return }
+func (self implementation) CreateMeshArray() (_ []any) { return }
 
 /*
 Override this method to customize how this primitive mesh should be generated. Should return an [Array] where each element is another Array of values required for the mesh (see the [enum Mesh.ArrayType] constants).
 */
-func (Instance) _create_mesh_array(impl func(ptr unsafe.Pointer) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_mesh_array(impl func(ptr unsafe.Pointer) []any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -80,8 +79,8 @@ arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, c.GetMeshArrays());
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetMeshArrays() Array.Any {
-	return Array.Any(class(self).GetMeshArrays())
+func (self Instance) GetMeshArrays() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetMeshArrays()))
 }
 
 /*

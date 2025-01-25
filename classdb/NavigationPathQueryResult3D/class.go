@@ -10,6 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Vector3"
+import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -73,12 +74,12 @@ func (self Instance) SetPathTypes(value []int32) {
 	class(self).SetPathTypes(gd.NewPackedInt32Slice(value))
 }
 
-func (self Instance) PathRids() gd.Array {
-	return gd.Array(class(self).GetPathRids())
+func (self Instance) PathRids() []Resource.ID {
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetPathRids()))
 }
 
-func (self Instance) SetPathRids(value gd.Array) {
-	class(self).SetPathRids(value)
+func (self Instance) SetPathRids(value []Resource.ID) {
+	class(self).SetPathRids(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) PathOwnerIds() []int64 {

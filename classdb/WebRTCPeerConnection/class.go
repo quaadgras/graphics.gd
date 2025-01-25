@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -65,7 +64,7 @@ Valid [param configuration] options are:
 [/codeblock]
 */
 func (self Instance) Initialize() error {
-	return error(gd.ToError(class(self).Initialize([1]Dictionary.Any{}[0])))
+	return error(gd.ToError(class(self).Initialize(gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary))))
 }
 
 /*
@@ -90,7 +89,7 @@ Valid [param options] are:
 [b]Note:[/b] You must keep a reference to channels created this way, or it will be closed.
 */
 func (self Instance) CreateDataChannel(label string) [1]gdclass.WebRTCDataChannel {
-	return [1]gdclass.WebRTCDataChannel(class(self).CreateDataChannel(gd.NewString(label), [1]Dictionary.Any{}[0]))
+	return [1]gdclass.WebRTCDataChannel(class(self).CreateDataChannel(gd.NewString(label), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary)))
 }
 
 /*

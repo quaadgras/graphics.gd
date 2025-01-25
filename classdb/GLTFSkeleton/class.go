@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -74,20 +73,20 @@ func (self Instance) SetRoots(value []int32) {
 	class(self).SetRoots(gd.NewPackedInt32Slice(value))
 }
 
-func (self Instance) UniqueNames() gd.Array {
-	return gd.Array(class(self).GetUniqueNames())
+func (self Instance) UniqueNames() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetUniqueNames()))
 }
 
-func (self Instance) SetUniqueNames(value gd.Array) {
-	class(self).SetUniqueNames(value)
+func (self Instance) SetUniqueNames(value []string) {
+	class(self).SetUniqueNames(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) GodotBoneNode() Dictionary.Any {
-	return Dictionary.Any(class(self).GetGodotBoneNode())
+func (self Instance) GodotBoneNode() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetGodotBoneNode()))
 }
 
-func (self Instance) SetGodotBoneNode(value Dictionary.Any) {
-	class(self).SetGodotBoneNode(value)
+func (self Instance) SetGodotBoneNode(value map[any]any) {
+	class(self).SetGodotBoneNode(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
 //go:nosplit

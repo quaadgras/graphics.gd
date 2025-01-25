@@ -13,7 +13,6 @@ import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -419,7 +418,7 @@ func (self Instance) OnPropertyChanged(cb func(property string, value any, field
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value Array.Any)) {
+func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value []any)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("multiple_properties_changed"), gd.NewCallable(cb), 0)
 }
 

@@ -15,7 +15,6 @@ import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -113,7 +112,7 @@ func (self Instance) OnRequestSaveHistory(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnRequestSavePreviousState(cb func(state Dictionary.Any)) {
+func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), 0)
 }
 

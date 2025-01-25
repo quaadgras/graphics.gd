@@ -101,9 +101,9 @@ func GetEditorSettings() [1]gdclass.EditorSettings {
 /*
 Returns mesh previews rendered at the given size as an [Array] of [Texture2D]s.
 */
-func MakeMeshPreviews(meshes gd.Array, preview_size int) gd.Array {
+func MakeMeshPreviews(meshes [][1]gdclass.Mesh, preview_size int) [][1]gdclass.Texture2D {
 	once.Do(singleton)
-	return gd.Array(class(self).MakeMeshPreviews(meshes, gd.Int(preview_size)))
+	return [][1]gdclass.Texture2D(gd.ArrayAs[[][1]gdclass.Texture2D](class(self).MakeMeshPreviews(gd.NewVariant(meshes).Interface().(gd.Array), gd.Int(preview_size))))
 }
 
 /*
@@ -279,7 +279,7 @@ func _on_node_selected(node_path):
 */
 func PopupNodeSelector(callback func(selected NodePath.String)) {
 	once.Do(singleton)
-	class(self).PopupNodeSelector(gd.NewCallable(callback), [1]gd.Array{}[0])
+	class(self).PopupNodeSelector(gd.NewCallable(callback), gd.NewVariant([1][]string{}[0]).Interface().(gd.Array))
 }
 
 /*

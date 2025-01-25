@@ -95,7 +95,7 @@ type Interface interface {
 	//The output ports can be assigned values in the shader code. For example, [code]return output_vars[0] + " = " + input_vars[0] + ";"[/code].
 	//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
 	//Defining this method is [b]required[/b].
-	GetCode(input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string
+	GetCode(input_vars []string, output_vars []string, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string
 	//Override this method to add a shader code to the beginning of each shader function (once). The shader code should be returned as a string, which can have multiple lines (the [code]"""[/code] multiline string construct can be used for convenience).
 	//If there are multiple custom nodes of different types which use this feature the order of each insertion is undefined.
 	//You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
@@ -137,7 +137,7 @@ func (self implementation) GetPropertyCount() (_ int)                           
 func (self implementation) GetPropertyName(index int) (_ string)                            { return }
 func (self implementation) GetPropertyDefaultIndex(index int) (_ int)                       { return }
 func (self implementation) GetPropertyOptions(index int) (_ []string)                       { return }
-func (self implementation) GetCode(input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ string) {
+func (self implementation) GetCode(input_vars []string, output_vars []string, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ string) {
 	return
 }
 func (self implementation) GetFuncCode(mode gdclass.ShaderMode, atype gdclass.VisualShaderType) (_ string) {
@@ -389,7 +389,7 @@ The output ports can be assigned values in the shader code. For example, [code]r
 You can customize the generated code based on the shader [param mode] (see [enum Shader.Mode]) and/or [param type] (see [enum VisualShader.Type]).
 Defining this method is [b]required[/b].
 */
-func (Instance) _get_code(impl func(ptr unsafe.Pointer, input_vars gd.Array, output_vars gd.Array, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_code(impl func(ptr unsafe.Pointer, input_vars []string, output_vars []string, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var input_vars = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(input_vars)
@@ -398,7 +398,7 @@ func (Instance) _get_code(impl func(ptr unsafe.Pointer, input_vars gd.Array, out
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 2)
 		var atype = gd.UnsafeGet[gdclass.VisualShaderType](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, input_vars, output_vars, mode, atype)
+		ret := impl(self, gd.ArrayAs[[]string](input_vars), gd.ArrayAs[[]string](output_vars), mode, atype)
 		ptr, ok := pointers.End(gd.NewString(ret))
 		if !ok {
 			return

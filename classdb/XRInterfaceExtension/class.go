@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/XRInterface"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Transform3D"
@@ -54,7 +53,7 @@ type Interface interface {
 	//Uninitialize the interface.
 	Uninitialize()
 	//Returns a [Dictionary] with system information related to this interface.
-	GetSystemInfo() Dictionary.Any
+	GetSystemInfo() map[any]any
 	//Returns [code]true[/code] if this interface supports this play area mode.
 	SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool
 	//Returns the play area mode that sets up our play area.
@@ -111,12 +110,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetName() (_ string)               { return }
-func (self implementation) GetCapabilities() (_ int)          { return }
-func (self implementation) IsInitialized() (_ bool)           { return }
-func (self implementation) Initialize() (_ bool)              { return }
-func (self implementation) Uninitialize()                     { return }
-func (self implementation) GetSystemInfo() (_ Dictionary.Any) { return }
+func (self implementation) GetName() (_ string)            { return }
+func (self implementation) GetCapabilities() (_ int)       { return }
+func (self implementation) IsInitialized() (_ bool)        { return }
+func (self implementation) Initialize() (_ bool)           { return }
+func (self implementation) Uninitialize()                  { return }
+func (self implementation) GetSystemInfo() (_ map[any]any) { return }
 func (self implementation) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) (_ bool) {
 	return
 }
@@ -214,11 +213,11 @@ func (Instance) _uninitialize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionCla
 /*
 Returns a [Dictionary] with system information related to this interface.
 */
-func (Instance) _get_system_info(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_system_info(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}

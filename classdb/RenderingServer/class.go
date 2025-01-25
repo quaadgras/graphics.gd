@@ -11,8 +11,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Transform2D"
@@ -24,6 +22,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Basis"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/Plane"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -67,17 +66,17 @@ Creates a 2-dimensional layered texture and adds it to the RenderingServer. It c
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [TextureLayered].
 */
-func Texture2dLayeredCreate(layers gd.Array, layered_type gdclass.RenderingServerTextureLayeredType) Resource.ID {
+func Texture2dLayeredCreate(layers [][1]gdclass.Image, layered_type gdclass.RenderingServerTextureLayeredType) Resource.ID {
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture2dLayeredCreate(layers, layered_type))
+	return Resource.ID(class(self).Texture2dLayeredCreate(gd.NewVariant(layers).Interface().(gd.Array), layered_type))
 }
 
 /*
 [b]Note:[/b] The equivalent resource is [Texture3D].
 */
-func Texture3dCreate(format gdclass.ImageFormat, width int, height int, depth int, mipmaps bool, data gd.Array) Resource.ID {
+func Texture3dCreate(format gdclass.ImageFormat, width int, height int, depth int, mipmaps bool, data [][1]gdclass.Image) Resource.ID {
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture3dCreate(format, gd.Int(width), gd.Int(height), gd.Int(depth), mipmaps, data))
+	return Resource.ID(class(self).Texture3dCreate(format, gd.Int(width), gd.Int(height), gd.Int(depth), mipmaps, gd.NewVariant(data).Interface().(gd.Array)))
 }
 
 /*
@@ -101,9 +100,9 @@ func Texture2dUpdate(texture Resource.ID, image [1]gdclass.Image, layer int) {
 Updates the texture specified by the [param texture] [RID]'s data with the data in [param data]. All the texture's layers must be replaced at once.
 [b]Note:[/b] The [param texture] must have the same width, height, depth and format as the current texture data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height, depth or format, use [method texture_replace] instead.
 */
-func Texture3dUpdate(texture Resource.ID, data gd.Array) {
+func Texture3dUpdate(texture Resource.ID, data [][1]gdclass.Image) {
 	once.Do(singleton)
-	class(self).Texture3dUpdate(texture, data)
+	class(self).Texture3dUpdate(texture, gd.NewVariant(data).Interface().(gd.Array))
 }
 
 /*
@@ -168,9 +167,9 @@ func Texture2dLayerGet(texture Resource.ID, layer int) [1]gdclass.Image {
 /*
 Returns 3D texture data as an array of [Image]s for the specified texture [RID].
 */
-func Texture3dGet(texture Resource.ID) gd.Array {
+func Texture3dGet(texture Resource.ID) [][1]gdclass.Image {
 	once.Do(singleton)
-	return gd.Array(class(self).Texture3dGet(texture))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).Texture3dGet(texture)))
 }
 
 /*
@@ -267,9 +266,9 @@ func ShaderGetCode(shader Resource.ID) string {
 /*
 Returns the parameters of a shader.
 */
-func GetShaderParameterList(shader Resource.ID) gd.Array {
+func GetShaderParameterList(shader Resource.ID) []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).GetShaderParameterList(shader))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetShaderParameterList(shader)))
 }
 
 /*
@@ -347,9 +346,9 @@ func MaterialSetNextPass(material Resource.ID, next_material Resource.ID) {
 	once.Do(singleton)
 	class(self).MaterialSetNextPass(material, next_material)
 }
-func MeshCreateFromSurfaces(surfaces gd.Array) Resource.ID {
+func MeshCreateFromSurfaces(surfaces []map[any]any) Resource.ID {
 	once.Do(singleton)
-	return Resource.ID(class(self).MeshCreateFromSurfaces(surfaces, gd.Int(0)))
+	return Resource.ID(class(self).MeshCreateFromSurfaces(gd.NewVariant(surfaces).Interface().(gd.Array), gd.Int(0)))
 }
 
 /*
@@ -402,13 +401,13 @@ func MeshSurfaceGetFormatSkinStride(format gdclass.RenderingServerArrayFormat, v
 	once.Do(singleton)
 	return int(int(class(self).MeshSurfaceGetFormatSkinStride(format, gd.Int(vertex_count))))
 }
-func MeshAddSurface(mesh Resource.ID, surface Dictionary.Any) {
+func MeshAddSurface(mesh Resource.ID, surface map[any]any) {
 	once.Do(singleton)
-	class(self).MeshAddSurface(mesh, surface)
+	class(self).MeshAddSurface(mesh, gd.NewVariant(surface).Interface().(gd.Dictionary))
 }
-func MeshAddSurfaceFromArrays(mesh Resource.ID, primitive gdclass.RenderingServerPrimitiveType, arrays Array.Any) {
+func MeshAddSurfaceFromArrays(mesh Resource.ID, primitive gdclass.RenderingServerPrimitiveType, arrays []any) {
 	once.Do(singleton)
-	class(self).MeshAddSurfaceFromArrays(mesh, primitive, arrays, [1]Array.Any{}[0], [1]Dictionary.Any{}[0], 0)
+	class(self).MeshAddSurfaceFromArrays(mesh, primitive, gd.NewVariant(arrays).Interface().(gd.Array), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
 }
 
 /*
@@ -450,25 +449,25 @@ func MeshSurfaceGetMaterial(mesh Resource.ID, surface int) Resource.ID {
 	once.Do(singleton)
 	return Resource.ID(class(self).MeshSurfaceGetMaterial(mesh, gd.Int(surface)))
 }
-func MeshGetSurface(mesh Resource.ID, surface int) Dictionary.Any {
+func MeshGetSurface(mesh Resource.ID, surface int) map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).MeshGetSurface(mesh, gd.Int(surface)))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).MeshGetSurface(mesh, gd.Int(surface))))
 }
 
 /*
 Returns a mesh's surface's buffer arrays.
 */
-func MeshSurfaceGetArrays(mesh Resource.ID, surface int) Array.Any {
+func MeshSurfaceGetArrays(mesh Resource.ID, surface int) []any {
 	once.Do(singleton)
-	return Array.Any(class(self).MeshSurfaceGetArrays(mesh, gd.Int(surface)))
+	return []any(gd.ArrayAs[[]any](class(self).MeshSurfaceGetArrays(mesh, gd.Int(surface))))
 }
 
 /*
 Returns a mesh's surface's arrays for blend shapes.
 */
-func MeshSurfaceGetBlendShapeArrays(mesh Resource.ID, surface int) gd.Array {
+func MeshSurfaceGetBlendShapeArrays(mesh Resource.ID, surface int) [][]any {
 	once.Do(singleton)
-	return gd.Array(class(self).MeshSurfaceGetBlendShapeArrays(mesh, gd.Int(surface)))
+	return [][]any(gd.ArrayAs[[][]any](class(self).MeshSurfaceGetBlendShapeArrays(mesh, gd.Int(surface))))
 }
 
 /*
@@ -1501,9 +1500,9 @@ func ParticlesSetTrails(particles Resource.ID, enable bool, length_sec Float.X) 
 	once.Do(singleton)
 	class(self).ParticlesSetTrails(particles, enable, gd.Float(length_sec))
 }
-func ParticlesSetTrailBindPoses(particles Resource.ID, bind_poses gd.Array) {
+func ParticlesSetTrailBindPoses(particles Resource.ID, bind_poses []Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).ParticlesSetTrailBindPoses(particles, bind_poses)
+	class(self).ParticlesSetTrailBindPoses(particles, gd.NewVariant(bind_poses).Interface().(gd.Array))
 }
 
 /*
@@ -2367,9 +2366,9 @@ func CompositorCreate() Resource.ID {
 /*
 Sets the compositor effects for the specified compositor RID. [param effects] should be an array containing RIDs created with [method compositor_effect_create].
 */
-func CompositorSetCompositorEffects(compositor Resource.ID, effects gd.Array) {
+func CompositorSetCompositorEffects(compositor Resource.ID, effects []Resource.ID) {
 	once.Do(singleton)
-	class(self).CompositorSetCompositorEffects(compositor, effects)
+	class(self).CompositorSetCompositorEffects(compositor, gd.NewVariant(effects).Interface().(gd.Array))
 }
 
 /*
@@ -2945,9 +2944,9 @@ func InstanceGeometryGetShaderParameterDefaultValue(instance Resource.ID, parame
 /*
 Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys [code]name[/code], [code]class_name[/code], [code]type[/code], [code]hint[/code], [code]hint_string[/code] and [code]usage[/code]. Equivalent to [method GeometryInstance3D.get_instance_shader_parameter].
 */
-func InstanceGeometryGetShaderParameterList(instance Resource.ID) gd.Array {
+func InstanceGeometryGetShaderParameterList(instance Resource.ID) []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).InstanceGeometryGetShaderParameterList(instance))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).InstanceGeometryGetShaderParameterList(instance)))
 }
 
 /*
@@ -2972,17 +2971,17 @@ func InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ) []int64 {
 Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [method @GlobalScope.instance_from_id] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 [b]Warning:[/b] This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
 */
-func InstancesCullConvex(convex gd.Array) []int64 {
+func InstancesCullConvex(convex []Plane.NormalD) []int64 {
 	once.Do(singleton)
-	return []int64(class(self).InstancesCullConvex(convex, [1]Resource.ID{}[0]).AsSlice())
+	return []int64(class(self).InstancesCullConvex(gd.NewVariant(convex).Interface().(gd.Array), [1]Resource.ID{}[0]).AsSlice())
 }
 
 /*
 Bakes the material data of the Mesh passed in the [param base] parameter with optional [param material_overrides] to a set of [Image]s of size [param image_size]. Returns an array of [Image]s containing material properties as specified in [enum BakeChannels].
 */
-func BakeRenderUv2(base Resource.ID, material_overrides gd.Array, image_size Vector2i.XY) gd.Array {
+func BakeRenderUv2(base Resource.ID, material_overrides []Resource.ID, image_size Vector2i.XY) [][1]gdclass.Image {
 	once.Do(singleton)
-	return gd.Array(class(self).BakeRenderUv2(base, material_overrides, gd.Vector2i(image_size)))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).BakeRenderUv2(base, gd.NewVariant(material_overrides).Interface().(gd.Array), gd.Vector2i(image_size))))
 }
 
 /*
@@ -3773,9 +3772,9 @@ func GlobalShaderParameterRemove(name string) {
 Returns the list of global shader uniform names.
 [b]Note:[/b] [method global_shader_parameter_get] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
 */
-func GlobalShaderParameterGetList() gd.Array {
+func GlobalShaderParameterGetList() []string {
 	once.Do(singleton)
-	return gd.Array(class(self).GlobalShaderParameterGetList())
+	return []string(gd.ArrayAs[[]string](class(self).GlobalShaderParameterGetList()))
 }
 
 /*

@@ -9,13 +9,11 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Projection"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -81,8 +79,8 @@ func (self Instance) Uninitialize() {
 Returns a [Dictionary] with extra system info. Interfaces are expected to return [code]XRRuntimeName[/code] and [code]XRRuntimeVersion[/code] providing info about the used XR runtime. Additional entries may be provided specific to an interface.
 [b]Note:[/b]This information may only be available after [method initialize] was successfully called.
 */
-func (self Instance) GetSystemInfo() Dictionary.Any {
-	return Dictionary.Any(class(self).GetSystemInfo())
+func (self Instance) GetSystemInfo() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetSystemInfo()))
 }
 
 /*
@@ -188,8 +186,8 @@ func (self Instance) GetProjectionForView(view int, aspect Float.X, near Float.X
 /*
 Returns the an array of supported environment blend modes, see [enum XRInterface.EnvironmentBlendMode].
 */
-func (self Instance) GetSupportedEnvironmentBlendModes() Array.Any {
-	return Array.Any(class(self).GetSupportedEnvironmentBlendModes())
+func (self Instance) GetSupportedEnvironmentBlendModes() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetSupportedEnvironmentBlendModes()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

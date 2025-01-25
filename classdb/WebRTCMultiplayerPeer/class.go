@@ -11,8 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -42,7 +40,7 @@ Initialize the multiplayer peer as a server (with unique ID of [code]1[/code]). 
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 func (self Instance) CreateServer() error {
-	return error(gd.ToError(class(self).CreateServer([1]Array.Any{}[0])))
+	return error(gd.ToError(class(self).CreateServer(gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))))
 }
 
 /*
@@ -50,14 +48,14 @@ Initialize the multiplayer peer as a client with the given [param peer_id] (must
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 func (self Instance) CreateClient(peer_id int) error {
-	return error(gd.ToError(class(self).CreateClient(gd.Int(peer_id), [1]Array.Any{}[0])))
+	return error(gd.ToError(class(self).CreateClient(gd.Int(peer_id), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))))
 }
 
 /*
 Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given [param peer_id] (must be between 1 and 2147483647).
 */
 func (self Instance) CreateMesh(peer_id int) error {
-	return error(gd.ToError(class(self).CreateMesh(gd.Int(peer_id), [1]Array.Any{}[0])))
+	return error(gd.ToError(class(self).CreateMesh(gd.Int(peer_id), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))))
 }
 
 /*
@@ -85,15 +83,15 @@ func (self Instance) HasPeer(peer_id int) bool {
 /*
 Returns a dictionary representation of the peer with given [param peer_id] with three keys. [code]"connection"[/code] containing the [WebRTCPeerConnection] to this peer, [code]"channels"[/code] an array of three [WebRTCDataChannel], and [code]"connected"[/code] a boolean representing if the peer connection is currently connected (all three channels are open).
 */
-func (self Instance) GetPeer(peer_id int) Dictionary.Any {
-	return Dictionary.Any(class(self).GetPeer(gd.Int(peer_id)))
+func (self Instance) GetPeer(peer_id int) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetPeer(gd.Int(peer_id))))
 }
 
 /*
 Returns a dictionary which keys are the peer ids and values the peer representation as in [method get_peer].
 */
-func (self Instance) GetPeers() Dictionary.Any {
-	return Dictionary.Any(class(self).GetPeers())
+func (self Instance) GetPeers() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetPeers()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

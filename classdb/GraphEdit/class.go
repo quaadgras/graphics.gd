@@ -14,9 +14,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Rect2"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -242,8 +240,8 @@ func (self Instance) SetConnectionActivity(from_node string, from_port int, to_n
 /*
 Returns an [Array] containing the list of connections. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
-func (self Instance) GetConnectionList() gd.Array {
-	return gd.Array(class(self).GetConnectionList())
+func (self Instance) GetConnectionList() []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetConnectionList()))
 }
 
 /*
@@ -256,15 +254,15 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) Dictionary.Any {
-	return Dictionary.Any(class(self).GetClosestConnectionAtPoint(gd.Vector2(point), gd.Float(4.0)))
+func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetClosestConnectionAtPoint(gd.Vector2(point), gd.Float(4.0))))
 }
 
 /*
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
-func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) gd.Array {
-	return gd.Array(class(self).GetConnectionsIntersectingWithRect(gd.Rect2(rect)))
+func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetConnectionsIntersectingWithRect(gd.Rect2(rect))))
 }
 
 /*
@@ -366,8 +364,8 @@ func (self Instance) GetElementFrame(element string) [1]gdclass.GraphFrame {
 /*
 Returns an array of node names that are attached to the [GraphFrame] with the given name.
 */
-func (self Instance) GetAttachedNodesOfFrame(frame_ string) gd.Array {
-	return gd.Array(class(self).GetAttachedNodesOfFrame(gd.NewStringName(frame_)))
+func (self Instance) GetAttachedNodesOfFrame(frame_ string) []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetAttachedNodesOfFrame(gd.NewStringName(frame_))))
 }
 
 /*
@@ -1504,7 +1502,7 @@ func (self Instance) OnDuplicateNodesRequest(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("duplicate_nodes_request"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnDeleteNodesRequest(cb func(nodes gd.Array)) {
+func (self Instance) OnDeleteNodesRequest(cb func(nodes []string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("delete_nodes_request"), gd.NewCallable(cb), 0)
 }
 
@@ -1532,7 +1530,7 @@ func (self Instance) OnEndNodeMove(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("end_node_move"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements Array.Any, frame_ string)) {
+func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements []any, frame_ string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("graph_elements_linked_to_frame_request"), gd.NewCallable(cb), 0)
 }
 

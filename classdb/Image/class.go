@@ -11,7 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -396,8 +395,8 @@ func (self Instance) BumpMapToNormalMap() {
 Compute image metrics on the current image and the compared image.
 The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[/code], [code]root_mean_squared[/code] and [code]peak_snr[/code].
 */
-func (self Instance) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) Dictionary.Any {
-	return Dictionary.Any(class(self).ComputeImageMetrics(compared_image, use_luma))
+func (self Instance) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).ComputeImageMetrics(compared_image, use_luma)))
 }
 
 /*

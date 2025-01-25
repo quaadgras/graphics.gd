@@ -90,12 +90,12 @@ func (self Instance) SetBlendWeights(value []float32) {
 	class(self).SetBlendWeights(gd.NewPackedFloat32Slice(value))
 }
 
-func (self Instance) InstanceMaterials() gd.Array {
-	return gd.Array(class(self).GetInstanceMaterials())
+func (self Instance) InstanceMaterials() [][1]gdclass.Material {
+	return [][1]gdclass.Material(gd.ArrayAs[[][1]gdclass.Material](class(self).GetInstanceMaterials()))
 }
 
-func (self Instance) SetInstanceMaterials(value gd.Array) {
-	class(self).SetInstanceMaterials(value)
+func (self Instance) SetInstanceMaterials(value [][1]gdclass.Material) {
+	class(self).SetInstanceMaterials(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

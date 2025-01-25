@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
 
@@ -52,16 +51,16 @@ func (self Instance) ToNode() [1]gdclass.Light3D {
 /*
 Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFLight {
+func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFLight {
 	self := Instance{}
-	return [1]gdclass.GLTFLight(class(self).FromDictionary(dictionary))
+	return [1]gdclass.GLTFLight(class(self).FromDictionary(gd.NewVariant(dictionary).Interface().(gd.Dictionary)))
 }
 
 /*
 Serializes this GLTFLight instance into a [Dictionary].
 */
-func (self Instance) ToDictionary() Dictionary.Any {
-	return Dictionary.Any(class(self).ToDictionary())
+func (self Instance) ToDictionary() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).ToDictionary()))
 }
 func (self Instance) GetAdditionalData(extension_name string) any {
 	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())

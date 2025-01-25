@@ -1,8 +1,10 @@
 package gd_test
 
 import (
+	"fmt"
 	"testing"
 
+	"graphics.gd/classdb/Engine"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Packed"
 	"graphics.gd/variant/Vector3"
@@ -29,4 +31,9 @@ func TestArrays(t *testing.T) {
 	if float32s.Index(1) != 2 {
 		t.Error("expected 2")
 	}
+}
+
+func TestArrayConversions(t *testing.T) {
+	info := Engine.GetCopyrightInfo()
+	fmt.Println(info)
 }

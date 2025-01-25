@@ -280,6 +280,13 @@ func (a Any) Interface() interface{} {
 	}
 }
 
+type Packer interface {
+	PackVariant() (Loader, [16]byte)
+}
+type Loader interface {
+	LoadVariant([16]byte) any
+}
+
 type Setter interface {
 	SetVariant(Any)
 }

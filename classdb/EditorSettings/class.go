@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -125,8 +124,8 @@ settings.AddPropertyInfo(propertyInfo);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) AddPropertyInfo(info Dictionary.Any) {
-	class(self).AddPropertyInfo(info)
+func (self Instance) AddPropertyInfo(info map[any]any) {
+	class(self).AddPropertyInfo(gd.NewVariant(info).Interface().(gd.Dictionary))
 }
 
 /*
@@ -174,8 +173,8 @@ func (self Instance) GetRecentDirs() []string {
 /*
 Overrides the built-in editor action [param name] with the input actions defined in [param actions_list].
 */
-func (self Instance) SetBuiltinActionOverride(name string, actions_list gd.Array) {
-	class(self).SetBuiltinActionOverride(gd.NewString(name), actions_list)
+func (self Instance) SetBuiltinActionOverride(name string, actions_list [][1]gdclass.InputEvent) {
+	class(self).SetBuiltinActionOverride(gd.NewString(name), gd.NewVariant(actions_list).Interface().(gd.Array))
 }
 
 /*

@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -43,22 +42,22 @@ func (self Instance) PutData(data []byte) error {
 /*
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [enum Error] code and an integer, describing how much data was actually sent.
 */
-func (self Instance) PutPartialData(data []byte) Array.Any {
-	return Array.Any(class(self).PutPartialData(gd.NewPackedByteSlice(data)))
+func (self Instance) PutPartialData(data []byte) []any {
+	return []any(gd.ArrayAs[[]any](class(self).PutPartialData(gd.NewPackedByteSlice(data))))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the [param bytes] argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [enum Error] code and a data array.
 */
-func (self Instance) GetData(bytes int) Array.Any {
-	return Array.Any(class(self).GetData(gd.Int(bytes)))
+func (self Instance) GetData(bytes int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetData(gd.Int(bytes))))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [enum Error] code, and a data array.
 */
-func (self Instance) GetPartialData(bytes int) Array.Any {
-	return Array.Any(class(self).GetPartialData(gd.Int(bytes)))
+func (self Instance) GetPartialData(bytes int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetPartialData(gd.Int(bytes))))
 }
 
 /*

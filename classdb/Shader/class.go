@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -62,8 +61,8 @@ func (self Instance) GetDefaultTextureParameter(name string) [1]gdclass.Texture2
 Get the list of shader uniforms that can be assigned to a [ShaderMaterial], for use with [method ShaderMaterial.set_shader_parameter] and [method ShaderMaterial.get_shader_parameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [method Object.get_property_list].
 If argument [param get_groups] is true, parameter grouping hints will be provided.
 */
-func (self Instance) GetShaderUniformList() Array.Any {
-	return Array.Any(class(self).GetShaderUniformList(false))
+func (self Instance) GetShaderUniformList() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetShaderUniformList(false)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

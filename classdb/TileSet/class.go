@@ -12,7 +12,6 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -488,8 +487,8 @@ func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from Vect
 Returns the coordinate-level proxy for the given identifiers. The returned array contains the two target identifiers of the proxy (source ID and atlas coordinates ID).
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
-func (self Instance) GetCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) Array.Any {
-	return Array.Any(class(self).GetCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from)))
+func (self Instance) GetCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from))))
 }
 
 /*
@@ -519,8 +518,8 @@ func (self Instance) SetAlternativeLevelTileProxy(source_from int, coords_from V
 Returns the alternative-level proxy for the given identifiers. The returned array contains the three proxie's target identifiers (source ID, atlas coords ID and alternative tile ID).
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
-func (self Instance) GetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) Array.Any {
-	return Array.Any(class(self).GetAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))
+func (self Instance) GetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from))))
 }
 
 /*
@@ -542,8 +541,8 @@ According to the configured proxies, maps the provided identifiers to a new set 
 This function first look for matching alternative-level proxies, then coordinates-level proxies, then source-level proxies.
 If no proxy corresponding to provided identifiers are found, returns the same values the ones used as arguments.
 */
-func (self Instance) MapTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) Array.Any {
-	return Array.Any(class(self).MapTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))
+func (self Instance) MapTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).MapTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from))))
 }
 
 /*

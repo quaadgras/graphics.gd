@@ -14,7 +14,6 @@ import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
@@ -311,12 +310,12 @@ func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
-	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetStructuredTextBidiOverrideOptions()))
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
-	class(self).SetStructuredTextBidiOverrideOptions(value)
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
+	class(self).SetStructuredTextBidiOverrideOptions(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

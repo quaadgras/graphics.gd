@@ -42,8 +42,8 @@ func (self Instance) GetPressedButton() [1]gdclass.BaseButton {
 /*
 Returns an [Array] of [Button]s who have this as their [ButtonGroup] (see [member BaseButton.button_group]).
 */
-func (self Instance) GetButtons() gd.Array {
-	return gd.Array(class(self).GetButtons())
+func (self Instance) GetButtons() [][1]gdclass.BaseButton {
+	return [][1]gdclass.BaseButton(gd.ArrayAs[[][1]gdclass.BaseButton](class(self).GetButtons()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

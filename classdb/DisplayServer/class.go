@@ -10,12 +10,11 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2i"
-import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3i"
@@ -63,7 +62,7 @@ Sets native help system search callbacks.
 [param action_callback] has the following arguments: [code]String key[/code]. Called when the user selects a search result in the [code]Help[/code] menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func HelpSetSearchCallbacks(search_callback func(search_string string, result_limit int) Dictionary.Any, action_callback func(key string)) {
+func HelpSetSearchCallbacks(search_callback func(search_string string, result_limit int) map[any]any, action_callback func(key string)) {
 	once.Do(singleton)
 	class(self).HelpSetSearchCallbacks(gd.NewCallable(search_callback), gd.NewCallable(action_callback))
 }
@@ -619,9 +618,9 @@ func GlobalMenuClear(menu_root string) {
 Returns Dictionary of supported system menu IDs and names.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetSystemMenuRoots() Dictionary.Any {
+func GlobalMenuGetSystemMenuRoots() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GlobalMenuGetSystemMenuRoots())
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GlobalMenuGetSystemMenuRoots()))
 }
 
 /*
@@ -654,9 +653,9 @@ Note that Godot depends on system libraries for text-to-speech functionality. Th
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsGetVoices() gd.Array {
+func TtsGetVoices() []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).TtsGetVoices())
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).TtsGetVoices()))
 }
 
 /*
@@ -878,9 +877,9 @@ func ClipboardGetPrimary() string {
 Returns an [Array] of [Rect2], each of which is the bounding rectangle for a display cutout or notch. These are non-functional areas on edge-to-edge screens used by cameras and sensors. Returns an empty array if the device does not have cutouts. See also [method get_display_safe_area].
 [b]Note:[/b] Currently only implemented on Android. Other platforms will return an empty array even if they do have display cutouts or notches.
 */
-func GetDisplayCutouts() gd.Array {
+func GetDisplayCutouts() []Rect2.PositionSize {
 	once.Do(singleton)
-	return gd.Array(class(self).GetDisplayCutouts())
+	return []Rect2.PositionSize(gd.ArrayAs[[]Rect2.PositionSize](class(self).GetDisplayCutouts()))
 }
 
 /*
@@ -1660,9 +1659,9 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
-func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options gd.Array, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option Dictionary.Any)) error {
+func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []map[any]any, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error {
 	once.Do(singleton)
-	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), options, gd.NewCallable(callback))))
+	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.NewVariant(options).Interface().(gd.Array), gd.NewCallable(callback))))
 }
 
 /*

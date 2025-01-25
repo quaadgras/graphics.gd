@@ -63,6 +63,10 @@ func (name Name) ConvertToSimple(val string) string {
 		"gd.AABB", "gd.Color", "gd.Plane", "gd.Basis", "gd.Transform3D",
 		"gd.Vector4", "gd.Vector4i":
 		return fmt.Sprintf("%s(%v)", name, val)
+	case "gd.Array":
+		return fmt.Sprintf("gd.NewVariant(%v).Interface().(gd.Array)", val)
+	case "gd.Dictionary":
+		return fmt.Sprintf("gd.NewVariant(%v).Interface().(gd.Dictionary)", val)
 	case "gd.PackedByteArray":
 		return fmt.Sprintf("gd.NewPackedByteSlice(%v)", val)
 	case "gd.PackedStringArray":
@@ -104,7 +108,7 @@ func (name Name) ConvertToSimple(val string) string {
 	}
 }
 
-func (name Name) ConvertToGo(val string) string {
+func (name Name) ConvertToGo(val string, simple string) string {
 	switch name {
 	case "gd.String", "gd.StringName", "gd.NodePath":
 		return fmt.Sprintf("%v.String()", val)
@@ -123,6 +127,10 @@ func (name Name) ConvertToGo(val string) string {
 		return fmt.Sprintf("%v.AsSlice()", val)
 	case "gd.Variant":
 		return fmt.Sprintf("%v.Interface()", val)
+	case "gd.Array":
+		return fmt.Sprintf("gd.ArrayAs[%s](%s)", simple, val)
+	case "gd.Dictionary":
+		return fmt.Sprintf("gd.DictionaryAs[any, any](%s)", val)
 	default:
 		return val
 	}

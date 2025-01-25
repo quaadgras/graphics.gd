@@ -58,12 +58,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) PacketData() gd.Array {
-	return gd.Array(class(self).GetPacketData())
+func (self Instance) PacketData() [][]any {
+	return [][]any(gd.ArrayAs[[][]any](class(self).GetPacketData()))
 }
 
-func (self Instance) SetPacketData(value gd.Array) {
-	class(self).SetPacketData(value)
+func (self Instance) SetPacketData(value [][]any) {
+	class(self).SetPacketData(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) GranulePositions() []int64 {

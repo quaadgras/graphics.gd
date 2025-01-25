@@ -11,7 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Script"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -44,28 +43,28 @@ type Interface interface {
 	GetSourceCode() string
 	SetSourceCode(code string)
 	Reload(keep_state bool) error
-	GetDocumentation() gd.Array
+	GetDocumentation() []map[any]any
 	GetClassIconPath() string
 	HasMethod(method string) bool
 	HasStaticMethod(method string) bool
 	//Return the expected argument count for the given [param method], or [code]null[/code] if it can't be determined (which will then fall back to the default behavior).
 	GetScriptMethodArgumentCount(method string) any
-	GetMethodInfo(method string) Dictionary.Any
+	GetMethodInfo(method string) map[any]any
 	IsTool() bool
 	IsValid() bool
 	//Returns [code]true[/code] if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
 	IsAbstract() bool
 	GetLanguage() [1]gdclass.ScriptLanguage
 	HasScriptSignal(signal string) bool
-	GetScriptSignalList() gd.Array
+	GetScriptSignalList() []map[any]any
 	HasPropertyDefaultValue(property string) bool
 	GetPropertyDefaultValue(property string) any
 	UpdateExports()
-	GetScriptMethodList() gd.Array
-	GetScriptPropertyList() gd.Array
+	GetScriptMethodList() []map[any]any
+	GetScriptPropertyList() []map[any]any
 	GetMemberLine(member string) int
-	GetConstants() Dictionary.Any
-	GetMembers() gd.Array
+	GetConstants() map[any]any
+	GetMembers() []string
 	IsPlaceholderFallbackEnabled() bool
 	GetRpcConfig() any
 }
@@ -91,26 +90,26 @@ func (self implementation) HasSourceCode() (_ bool)                            {
 func (self implementation) GetSourceCode() (_ string)                          { return }
 func (self implementation) SetSourceCode(code string)                          { return }
 func (self implementation) Reload(keep_state bool) (_ error)                   { return }
-func (self implementation) GetDocumentation() (_ gd.Array)                     { return }
+func (self implementation) GetDocumentation() (_ []map[any]any)                { return }
 func (self implementation) GetClassIconPath() (_ string)                       { return }
 func (self implementation) HasMethod(method string) (_ bool)                   { return }
 func (self implementation) HasStaticMethod(method string) (_ bool)             { return }
 func (self implementation) GetScriptMethodArgumentCount(method string) (_ any) { return }
-func (self implementation) GetMethodInfo(method string) (_ Dictionary.Any)     { return }
+func (self implementation) GetMethodInfo(method string) (_ map[any]any)        { return }
 func (self implementation) IsTool() (_ bool)                                   { return }
 func (self implementation) IsValid() (_ bool)                                  { return }
 func (self implementation) IsAbstract() (_ bool)                               { return }
 func (self implementation) GetLanguage() (_ [1]gdclass.ScriptLanguage)         { return }
 func (self implementation) HasScriptSignal(signal string) (_ bool)             { return }
-func (self implementation) GetScriptSignalList() (_ gd.Array)                  { return }
+func (self implementation) GetScriptSignalList() (_ []map[any]any)             { return }
 func (self implementation) HasPropertyDefaultValue(property string) (_ bool)   { return }
 func (self implementation) GetPropertyDefaultValue(property string) (_ any)    { return }
 func (self implementation) UpdateExports()                                     { return }
-func (self implementation) GetScriptMethodList() (_ gd.Array)                  { return }
-func (self implementation) GetScriptPropertyList() (_ gd.Array)                { return }
+func (self implementation) GetScriptMethodList() (_ []map[any]any)             { return }
+func (self implementation) GetScriptPropertyList() (_ []map[any]any)           { return }
 func (self implementation) GetMemberLine(member string) (_ int)                { return }
-func (self implementation) GetConstants() (_ Dictionary.Any)                   { return }
-func (self implementation) GetMembers() (_ gd.Array)                           { return }
+func (self implementation) GetConstants() (_ map[any]any)                      { return }
+func (self implementation) GetMembers() (_ []string)                           { return }
 func (self implementation) IsPlaceholderFallbackEnabled() (_ bool)             { return }
 func (self implementation) GetRpcConfig() (_ any)                              { return }
 func (Instance) _editor_can_reload_from_file(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -237,11 +236,11 @@ func (Instance) _reload(impl func(ptr unsafe.Pointer, keep_state bool) error) (c
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_documentation(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_documentation(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -294,13 +293,13 @@ func (Instance) _get_script_method_argument_count(impl func(ptr unsafe.Pointer, 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_method_info(impl func(ptr unsafe.Pointer, method string) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_method_info(impl func(ptr unsafe.Pointer, method string) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var method = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(method)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, method.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -352,11 +351,11 @@ func (Instance) _has_script_signal(impl func(ptr unsafe.Pointer, signal string) 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_script_signal_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_signal_list(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -391,22 +390,22 @@ func (Instance) _update_exports(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionC
 		impl(self)
 	}
 }
-func (Instance) _get_script_method_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_method_list(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_script_property_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_property_list(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -422,22 +421,22 @@ func (Instance) _get_member_line(impl func(ptr unsafe.Pointer, member string) in
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
-func (Instance) _get_constants(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_constants(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_members(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_members(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}

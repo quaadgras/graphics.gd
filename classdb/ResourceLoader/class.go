@@ -10,7 +10,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -48,7 +47,7 @@ An array variable can optionally be passed via [param progress], and will return
 */
 func LoadThreadedGetStatus(path string) gdclass.ResourceLoaderThreadLoadStatus {
 	once.Do(singleton)
-	return gdclass.ResourceLoaderThreadLoadStatus(class(self).LoadThreadedGetStatus(gd.NewString(path), [1]Array.Any{}[0]))
+	return gdclass.ResourceLoaderThreadLoadStatus(class(self).LoadThreadedGetStatus(gd.NewString(path), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array)))
 }
 
 /*

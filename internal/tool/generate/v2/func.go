@@ -123,7 +123,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		fmt.Fprint(&call, gdtype.Name(classDB.convertType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val))
 	}
 	fmt.Fprint(&call, ")")
-	fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String()))
+	fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String(), resultSimple))
 	if method.ReturnValue.Type != "" {
 		fmt.Fprint(w, ")")
 	}
@@ -173,8 +173,9 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	}
 	fmt.Fprintf(w, "impl(self")
 	for _, arg := range method.Arguments {
+		simple := classDB.convertTypeSimple(class, "", arg.Meta, arg.Type)
 		fmt.Fprint(w, ", ")
-		fmt.Fprintf(w, "%v", gdtype.Name(classDB.convertType(class.Name, arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name)))
+		fmt.Fprintf(w, "%v", gdtype.Name(classDB.convertType(class.Name, arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name), simple))
 	}
 	fmt.Fprintf(w, ")\n")
 	if resultSimple != "" {

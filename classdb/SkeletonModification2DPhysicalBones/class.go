@@ -60,7 +60,7 @@ Tell the [PhysicalBone2D] nodes to start simulating and interacting with the phy
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to start simulating.
 */
 func (self Instance) StartSimulation() {
-	class(self).StartSimulation([1]gd.Array{}[0])
+	class(self).StartSimulation(gd.NewVariant([1][]string{}[0]).Interface().(gd.Array))
 }
 
 /*
@@ -68,7 +68,7 @@ Tell the [PhysicalBone2D] nodes to stop simulating and interacting with the phys
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to stop simulating.
 */
 func (self Instance) StopSimulation() {
-	class(self).StopSimulation([1]gd.Array{}[0])
+	class(self).StopSimulation(gd.NewVariant([1][]string{}[0]).Interface().(gd.Array))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

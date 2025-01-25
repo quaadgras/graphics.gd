@@ -13,7 +13,7 @@ import (
 // Func representation.
 type Func interface {
 	Name() string
-	Args() (args int, bind Array.Of[any])
+	Args() (args int, bind Array.Contains[any])
 	Call(arg ...any) any
 	Bind(args ...any) Func
 }
@@ -30,7 +30,7 @@ func New(value any) Any {
 type local struct {
 	value any
 	cache []reflect.Value
-	binds Array.Of[any]
+	binds Array.Contains[any]
 	trims int
 	proxy Func
 }
@@ -42,7 +42,7 @@ func (l *local) Name() string {
 	return "<unknown callable>"
 }
 
-func (l *local) Args() (int, Array.Of[any]) {
+func (l *local) Args() (int, Array.Contains[any]) {
 	if reflect.TypeOf(l.value).Kind() == reflect.Func {
 		return reflect.TypeOf(l.value).NumIn(), l.binds
 	}
@@ -51,7 +51,7 @@ func (l *local) Args() (int, Array.Of[any]) {
 
 func (l *local) Call(args ...any) any {
 	argc, binds := l.Args()
-	if len(args)-binds.Size() != argc {
+	if len(args)-binds.Len() != argc {
 		panic("invalid number of arguments")
 	}
 	if reflect.TypeOf(l.value).Kind() == reflect.Func {
@@ -116,7 +116,7 @@ func ArgumentCount(fn Func) int { //gd:Callable.get_argument_count
 }
 
 // BoundArguments returns the arguments that have been bound to this Callable.
-func BoundArguments(fn Func) Array.Of[any] { //gd:Callable.get_bound_arguments
+func BoundArguments(fn Func) Array.Contains[any] { //gd:Callable.get_bound_arguments
 	_, binds := fn.Args()
 	return binds
 }
@@ -129,7 +129,7 @@ func BoundArgumentsCount(fn Func) int { //gd:Callable.get_bound_arguments_count
 		return 0
 	}
 	bound := BoundArguments(fn)
-	return bound.Size()
+	return bound.Len()
 }
 
 // Method returns the name of the function represented by this Callable or

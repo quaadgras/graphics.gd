@@ -12,6 +12,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2i"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -125,8 +126,8 @@ Rect2(Vector2(), get_size())
 [/codeblock]
 [param epsilon] is passed to RDP to control how accurately the polygons cover the bitmap: a lower [param epsilon] corresponds to more points in the polygons.
 */
-func (self Instance) OpaqueToPolygons(rect Rect2i.PositionSize) gd.Array {
-	return gd.Array(class(self).OpaqueToPolygons(gd.Rect2i(rect), gd.Float(2.0)))
+func (self Instance) OpaqueToPolygons(rect Rect2i.PositionSize) [][]Vector2.XY {
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).OpaqueToPolygons(gd.Rect2i(rect), gd.Float(2.0))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

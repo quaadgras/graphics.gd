@@ -53,7 +53,7 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reactin
 Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
 */
 func (self Instance) PhysicalBonesStartSimulation() {
-	class(self).PhysicalBonesStartSimulation([1]gd.Array{}[0])
+	class(self).PhysicalBonesStartSimulation(gd.NewVariant([1][]string{}[0]).Interface().(gd.Array))
 }
 
 /*

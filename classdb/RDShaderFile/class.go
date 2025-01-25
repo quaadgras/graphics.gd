@@ -49,8 +49,8 @@ func (self Instance) GetSpirv() [1]gdclass.RDShaderSPIRV {
 /*
 Returns the list of compiled versions for this shader.
 */
-func (self Instance) GetVersionList() gd.Array {
-	return gd.Array(class(self).GetVersionList())
+func (self Instance) GetVersionList() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetVersionList()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

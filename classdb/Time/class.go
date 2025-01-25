@@ -10,7 +10,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -39,25 +38,25 @@ func singleton() {
 Converts the given Unix timestamp to a dictionary of keys: [code]year[/code], [code]month[/code], [code]day[/code], [code]weekday[/code], [code]hour[/code], [code]minute[/code], and [code]second[/code].
 The returned Dictionary's values will be the same as the [method get_datetime_dict_from_system] if the Unix timestamp is the current time, with the exception of Daylight Savings Time as it cannot be determined from the epoch.
 */
-func GetDatetimeDictFromUnixTime(unix_time_val int) Dictionary.Any {
+func GetDatetimeDictFromUnixTime(unix_time_val int) map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetDatetimeDictFromUnixTime(gd.Int(unix_time_val)))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetDatetimeDictFromUnixTime(gd.Int(unix_time_val))))
 }
 
 /*
 Converts the given Unix timestamp to a dictionary of keys: [code]year[/code], [code]month[/code], [code]day[/code], and [code]weekday[/code].
 */
-func GetDateDictFromUnixTime(unix_time_val int) Dictionary.Any {
+func GetDateDictFromUnixTime(unix_time_val int) map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetDateDictFromUnixTime(gd.Int(unix_time_val)))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetDateDictFromUnixTime(gd.Int(unix_time_val))))
 }
 
 /*
 Converts the given time to a dictionary of keys: [code]hour[/code], [code]minute[/code], and [code]second[/code].
 */
-func GetTimeDictFromUnixTime(unix_time_val int) Dictionary.Any {
+func GetTimeDictFromUnixTime(unix_time_val int) map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetTimeDictFromUnixTime(gd.Int(unix_time_val)))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetTimeDictFromUnixTime(gd.Int(unix_time_val))))
 }
 
 /*
@@ -90,9 +89,9 @@ Converts the given ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS) to a dict
 If [param weekday] is [code]false[/code], then the [code skip-lint]weekday[/code] entry is excluded (the calculation is relatively expensive).
 [b]Note:[/b] Any decimal fraction in the time string will be ignored silently.
 */
-func GetDatetimeDictFromDatetimeString(datetime string, weekday bool) Dictionary.Any {
+func GetDatetimeDictFromDatetimeString(datetime string, weekday bool) map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetDatetimeDictFromDatetimeString(gd.NewString(datetime), weekday))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetDatetimeDictFromDatetimeString(gd.NewString(datetime), weekday)))
 }
 
 /*
@@ -101,9 +100,9 @@ The given dictionary can be populated with the following keys: [code]year[/code]
 If the dictionary is empty, [code]0[/code] is returned. If some keys are omitted, they default to the equivalent values for the Unix epoch timestamp 0 (1970-01-01 at 00:00:00).
 If [param use_space] is [code]true[/code], the date and time bits are separated by an empty space character instead of the letter T.
 */
-func GetDatetimeStringFromDatetimeDict(datetime Dictionary.Any, use_space bool) string {
+func GetDatetimeStringFromDatetimeDict(datetime map[any]any, use_space bool) string {
 	once.Do(singleton)
-	return string(class(self).GetDatetimeStringFromDatetimeDict(datetime, use_space).String())
+	return string(class(self).GetDatetimeStringFromDatetimeDict(gd.NewVariant(datetime).Interface().(gd.Dictionary), use_space).String())
 }
 
 /*
@@ -113,9 +112,9 @@ If the dictionary is empty, [code]0[/code] is returned. If some keys are omitted
 You can pass the output from [method get_datetime_dict_from_unix_time] directly into this function and get the same as what was put in.
 [b]Note:[/b] Unix timestamps are often in UTC. This method does not do any timezone conversion, so the timestamp will be in the same timezone as the given datetime dictionary.
 */
-func GetUnixTimeFromDatetimeDict(datetime Dictionary.Any) int {
+func GetUnixTimeFromDatetimeDict(datetime map[any]any) int {
 	once.Do(singleton)
-	return int(int(class(self).GetUnixTimeFromDatetimeDict(datetime)))
+	return int(int(class(self).GetUnixTimeFromDatetimeDict(gd.NewVariant(datetime).Interface().(gd.Dictionary))))
 }
 
 /*
@@ -139,27 +138,27 @@ func GetOffsetStringFromOffsetMinutes(offset_minutes int) string {
 /*
 Returns the current date as a dictionary of keys: [code]year[/code], [code]month[/code], [code]day[/code], [code]weekday[/code], [code]hour[/code], [code]minute[/code], [code]second[/code], and [code]dst[/code] (Daylight Savings Time).
 */
-func GetDatetimeDictFromSystem() Dictionary.Any {
+func GetDatetimeDictFromSystem() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetDatetimeDictFromSystem(false))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetDatetimeDictFromSystem(false)))
 }
 
 /*
 Returns the current date as a dictionary of keys: [code]year[/code], [code]month[/code], [code]day[/code], and [code]weekday[/code].
 The returned values are in the system's local time when [param utc] is [code]false[/code], otherwise they are in UTC.
 */
-func GetDateDictFromSystem() Dictionary.Any {
+func GetDateDictFromSystem() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetDateDictFromSystem(false))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetDateDictFromSystem(false)))
 }
 
 /*
 Returns the current time as a dictionary of keys: [code]hour[/code], [code]minute[/code], and [code]second[/code].
 The returned values are in the system's local time when [param utc] is [code]false[/code], otherwise they are in UTC.
 */
-func GetTimeDictFromSystem() Dictionary.Any {
+func GetTimeDictFromSystem() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetTimeDictFromSystem(false))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetTimeDictFromSystem(false)))
 }
 
 /*
@@ -195,9 +194,9 @@ Returns the current time zone as a dictionary of keys: [code]bias[/code] and [co
 - [code]bias[/code] is the offset from UTC in minutes, since not all time zones are multiples of an hour from UTC.
 - [code]name[/code] is the localized name of the time zone, according to the OS locale settings of the current user.
 */
-func GetTimeZoneFromSystem() Dictionary.Any {
+func GetTimeZoneFromSystem() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetTimeZoneFromSystem())
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetTimeZoneFromSystem()))
 }
 
 /*

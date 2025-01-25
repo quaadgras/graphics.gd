@@ -43,9 +43,9 @@ func singleton() {
 /*
 Returns all created navigation map [RID]s on the NavigationServer. This returns both 2D and 3D created navigation maps as there is technically no distinction between them.
 */
-func GetMaps() gd.Array {
+func GetMaps() []Resource.ID {
 	once.Do(singleton)
-	return gd.Array(class(self).GetMaps())
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetMaps()))
 }
 
 /*
@@ -227,33 +227,33 @@ func MapGetClosestPointOwner(mapping Resource.ID, to_point Vector3.XYZ) Resource
 /*
 Returns all navigation link [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetLinks(mapping Resource.ID) gd.Array {
+func MapGetLinks(mapping Resource.ID) []Resource.ID {
 	once.Do(singleton)
-	return gd.Array(class(self).MapGetLinks(mapping))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).MapGetLinks(mapping)))
 }
 
 /*
 Returns all navigation regions [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetRegions(mapping Resource.ID) gd.Array {
+func MapGetRegions(mapping Resource.ID) []Resource.ID {
 	once.Do(singleton)
-	return gd.Array(class(self).MapGetRegions(mapping))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).MapGetRegions(mapping)))
 }
 
 /*
 Returns all navigation agents [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetAgents(mapping Resource.ID) gd.Array {
+func MapGetAgents(mapping Resource.ID) []Resource.ID {
 	once.Do(singleton)
-	return gd.Array(class(self).MapGetAgents(mapping))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).MapGetAgents(mapping)))
 }
 
 /*
 Returns all navigation obstacle [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetObstacles(mapping Resource.ID) gd.Array {
+func MapGetObstacles(mapping Resource.ID) []Resource.ID {
 	once.Do(singleton)
-	return gd.Array(class(self).MapGetObstacles(mapping))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).MapGetObstacles(mapping)))
 }
 
 /*

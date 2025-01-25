@@ -37,8 +37,8 @@ type Any interface {
 Creates an [ImageTextureLayered] from an array of [Image]s. See [method Image.create] for the expected data format. The first image decides the width, height, image format and mipmapping setting. The other images [i]must[/i] have the same width, height, image format and mipmapping setting.
 Each [Image] represents one [code]layer[/code].
 */
-func (self Instance) CreateFromImages(images gd.Array) error {
-	return error(gd.ToError(class(self).CreateFromImages(images)))
+func (self Instance) CreateFromImages(images [][1]gdclass.Image) error {
+	return error(gd.ToError(class(self).CreateFromImages(gd.NewVariant(images).Interface().(gd.Array))))
 }
 
 /*

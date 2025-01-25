@@ -112,8 +112,8 @@ func (self Instance) Search(subject string) [1]gdclass.RegExMatch {
 Searches the text for the compiled pattern. Returns an array of [RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
-func (self Instance) SearchAll(subject string) gd.Array {
-	return gd.Array(class(self).SearchAll(gd.NewString(subject), gd.Int(0), gd.Int(-1)))
+func (self Instance) SearchAll(subject string) [][1]gdclass.RegExMatch {
+	return [][1]gdclass.RegExMatch(gd.ArrayAs[[][1]gdclass.RegExMatch](class(self).SearchAll(gd.NewString(subject), gd.Int(0), gd.Int(-1))))
 }
 
 /*

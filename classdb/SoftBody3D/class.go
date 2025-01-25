@@ -79,8 +79,8 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool {
 /*
 Returns an array of nodes that were added as collision exceptions for this body.
 */
-func (self Instance) GetCollisionExceptions() gd.Array {
-	return gd.Array(class(self).GetCollisionExceptions())
+func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody3D {
+	return [][1]gdclass.PhysicsBody3D(gd.ArrayAs[[][1]gdclass.PhysicsBody3D](class(self).GetCollisionExceptions()))
 }
 
 /*

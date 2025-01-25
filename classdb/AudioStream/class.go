@@ -51,7 +51,7 @@ type Interface interface {
 	//Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 	GetBeatCount() int
 	//Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
-	GetParameterList() gd.Array
+	GetParameterList() []map[any]any
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -65,7 +65,7 @@ func (self implementation) GetLength() (_ Float.X)                              
 func (self implementation) IsMonophonic() (_ bool)                                  { return }
 func (self implementation) GetBpm() (_ Float.X)                                     { return }
 func (self implementation) GetBeatCount() (_ int)                                   { return }
-func (self implementation) GetParameterList() (_ gd.Array)                          { return }
+func (self implementation) GetParameterList() (_ []map[any]any)                     { return }
 
 /*
 Override this method to customize the returned value of [method instantiate_playback]. Should returned a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer])..
@@ -146,11 +146,11 @@ func (Instance) _get_beat_count(impl func(ptr unsafe.Pointer) int) (cb gd.Extens
 /*
 Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 */
-func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}

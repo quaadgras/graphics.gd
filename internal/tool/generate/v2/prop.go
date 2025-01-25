@@ -65,7 +65,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 			if prop.Index != nil {
 				val = fmt.Sprintf("class(self).%s(%d)", convertName(prop.Getter), *prop.Index)
 			}
-			fmt.Fprintf(file, "\t\treturn %s(%s)\n", ptype, gdtype.Name(expert).ConvertToGo(val))
+			fmt.Fprintf(file, "\t\treturn %s(%s)\n", ptype, gdtype.Name(expert).ConvertToGo(val, ptype))
 			fmt.Fprintf(file, "}\n")
 		}
 

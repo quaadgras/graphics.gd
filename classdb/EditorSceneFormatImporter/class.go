@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -38,7 +37,7 @@ type Any interface {
 type Interface interface {
 	GetImportFlags() int
 	GetExtensions() []string
-	ImportScene(path string, flags int, options Dictionary.Any) Object.Instance
+	ImportScene(path string, flags int, options map[any]any) Object.Instance
 	GetImportOptions(path string)
 	GetOptionVisibility(path string, for_animation bool, option string) any
 }
@@ -50,7 +49,7 @@ type implementation struct{}
 
 func (self implementation) GetImportFlags() (_ int)     { return }
 func (self implementation) GetExtensions() (_ []string) { return }
-func (self implementation) ImportScene(path string, flags int, options Dictionary.Any) (_ Object.Instance) {
+func (self implementation) ImportScene(path string, flags int, options map[any]any) (_ Object.Instance) {
 	return
 }
 func (self implementation) GetImportOptions(path string) { return }
@@ -75,7 +74,7 @@ func (Instance) _get_extensions(impl func(ptr unsafe.Pointer) []string) (cb gd.E
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags int, options Dictionary.Any) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags int, options map[any]any) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
@@ -83,7 +82,7 @@ func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags i
 		var options = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(options)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, path.String(), int(flags), options)
+		ret := impl(self, path.String(), int(flags), gd.DictionaryAs[any, any](options))
 		ptr, ok := pointers.End(ret[0])
 		if !ok {
 			return

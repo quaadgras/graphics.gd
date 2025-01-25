@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -73,12 +72,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Events() Array.Any {
-	return Array.Any(class(self).GetEvents())
+func (self Instance) Events() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetEvents()))
 }
 
-func (self Instance) SetEvents(value Array.Any) {
-	class(self).SetEvents(value)
+func (self Instance) SetEvents(value []any) {
+	class(self).SetEvents(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 //go:nosplit

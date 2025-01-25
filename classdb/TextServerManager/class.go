@@ -65,9 +65,9 @@ func GetInterface(idx int) [1]gdclass.TextServer {
 /*
 Returns a list of available interfaces, with the index and name of each interface.
 */
-func GetInterfaces() gd.Array {
+func GetInterfaces() []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).GetInterfaces())
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetInterfaces()))
 }
 
 /*

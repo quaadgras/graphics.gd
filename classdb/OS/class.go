@@ -10,8 +10,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -198,7 +196,7 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 */
 func Execute(path string, arguments []string) int {
 	once.Do(singleton)
-	return int(int(class(self).Execute(gd.NewString(path), gd.NewPackedStringSlice(arguments), [1]Array.Any{}[0], false, false)))
+	return int(int(class(self).Execute(gd.NewString(path), gd.NewPackedStringSlice(arguments), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array), false, false)))
 }
 
 /*
@@ -213,9 +211,9 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] To execute a Unix shell built-in command, specify shell executable name in [param path], [code]-c[/code] as the first argument, and the desired command as the second argument.
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
-func ExecuteWithPipe(path string, arguments []string) Dictionary.Any {
+func ExecuteWithPipe(path string, arguments []string) map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments)))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments))))
 }
 
 /*
@@ -644,9 +642,9 @@ Returns a [Dictionary] containing information about the current memory with the 
 - [code]"stack"[/code] - size of the current thread stack in bytes.
 [b]Note:[/b] Each entry's value may be [code]-1[/code] if it is unknown.
 */
-func GetMemoryInfo() Dictionary.Any {
+func GetMemoryInfo() map[any]any {
 	once.Do(singleton)
-	return Dictionary.Any(class(self).GetMemoryInfo())
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetMemoryInfo()))
 }
 
 /*

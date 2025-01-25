@@ -10,7 +10,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -73,9 +72,9 @@ func GetResolveItemAddress(id int) string {
 /*
 Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [method get_resolve_item_status]).
 */
-func GetResolveItemAddresses(id int) Array.Any {
+func GetResolveItemAddresses(id int) []any {
 	once.Do(singleton)
-	return Array.Any(class(self).GetResolveItemAddresses(gd.Int(id)))
+	return []any(gd.ArrayAs[[]any](class(self).GetResolveItemAddresses(gd.Int(id))))
 }
 
 /*
@@ -108,9 +107,9 @@ Each adapter is a dictionary of the form:
 
 [/codeblock]
 */
-func GetLocalInterfaces() gd.Array {
+func GetLocalInterfaces() []map[any]any {
 	once.Do(singleton)
-	return gd.Array(class(self).GetLocalInterfaces())
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetLocalInterfaces()))
 }
 
 /*

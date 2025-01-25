@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/ScriptLanguage"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -40,9 +39,9 @@ type Interface interface {
 	GetDocCommentDelimiters() []string
 	GetStringDelimiters() []string
 	MakeTemplate(template string, class_name string, base_class_name string) [1]gdclass.Script
-	GetBuiltInTemplates(obj string) gd.Array
+	GetBuiltInTemplates(obj string) []map[any]any
 	IsUsingTemplates() bool
-	Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Dictionary.Any
+	Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) map[any]any
 	ValidatePath(path string) string
 	CreateScript() Object.Instance
 	HasNamedClasses() bool
@@ -56,8 +55,8 @@ type Interface interface {
 	OpenInExternalEditor(script [1]gdclass.Script, line int, column int) error
 	OverridesExternalEditor() bool
 	PreferredFileNameCasing() gdclass.ScriptLanguageScriptNameCasing
-	CompleteCode(code string, path string, owner Object.Instance) Dictionary.Any
-	LookupCode(code string, symbol string, path string, owner Object.Instance) Dictionary.Any
+	CompleteCode(code string, path string, owner Object.Instance) map[any]any
+	LookupCode(code string, symbol string, path string, owner Object.Instance) map[any]any
 	AutoIndentCode(code string, from_line int, to_line int) string
 	AddGlobalConstant(name string, value any)
 	AddNamedGlobalConstant(name string, value any)
@@ -70,18 +69,18 @@ type Interface interface {
 	DebugGetStackLevelFunction(level int) string
 	//Returns the source associated with a given debug stack position.
 	DebugGetStackLevelSource(level int) string
-	DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) Dictionary.Any
-	DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) Dictionary.Any
+	DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) map[any]any
+	DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) map[any]any
 	DebugGetStackLevelInstance(level int) unsafe.Pointer
-	DebugGetGlobals(max_subitems int, max_depth int) Dictionary.Any
+	DebugGetGlobals(max_subitems int, max_depth int) map[any]any
 	DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) string
-	DebugGetCurrentStackInfo() gd.Array
+	DebugGetCurrentStackInfo() []map[any]any
 	ReloadAllScripts()
 	ReloadToolScript(script [1]gdclass.Script, soft_reload bool)
 	GetRecognizedExtensions() []string
-	GetPublicFunctions() gd.Array
-	GetPublicConstants() Dictionary.Any
-	GetPublicAnnotations() gd.Array
+	GetPublicFunctions() []map[any]any
+	GetPublicConstants() map[any]any
+	GetPublicAnnotations() []map[any]any
 	ProfilingStart()
 	ProfilingStop()
 	ProfilingSetSaveNativeCalls(enable bool)
@@ -89,7 +88,7 @@ type Interface interface {
 	ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) int
 	Frame()
 	HandlesGlobalClassType(atype string) bool
-	GetGlobalClassName(path string) Dictionary.Any
+	GetGlobalClassName(path string) map[any]any
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -110,9 +109,9 @@ func (self implementation) GetStringDelimiters() (_ []string)            { retur
 func (self implementation) MakeTemplate(template string, class_name string, base_class_name string) (_ [1]gdclass.Script) {
 	return
 }
-func (self implementation) GetBuiltInTemplates(obj string) (_ gd.Array) { return }
-func (self implementation) IsUsingTemplates() (_ bool)                  { return }
-func (self implementation) Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) (_ Dictionary.Any) {
+func (self implementation) GetBuiltInTemplates(obj string) (_ []map[any]any) { return }
+func (self implementation) IsUsingTemplates() (_ bool)                       { return }
+func (self implementation) Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) (_ map[any]any) {
 	return
 }
 func (self implementation) ValidatePath(path string) (_ string)               { return }
@@ -133,10 +132,10 @@ func (self implementation) OverridesExternalEditor() (_ bool) { return }
 func (self implementation) PreferredFileNameCasing() (_ gdclass.ScriptLanguageScriptNameCasing) {
 	return
 }
-func (self implementation) CompleteCode(code string, path string, owner Object.Instance) (_ Dictionary.Any) {
+func (self implementation) CompleteCode(code string, path string, owner Object.Instance) (_ map[any]any) {
 	return
 }
-func (self implementation) LookupCode(code string, symbol string, path string, owner Object.Instance) (_ Dictionary.Any) {
+func (self implementation) LookupCode(code string, symbol string, path string, owner Object.Instance) (_ map[any]any) {
 	return
 }
 func (self implementation) AutoIndentCode(code string, from_line int, to_line int) (_ string) { return }
@@ -150,26 +149,24 @@ func (self implementation) DebugGetStackLevelCount() (_ int)                    
 func (self implementation) DebugGetStackLevelLine(level int) (_ int)                          { return }
 func (self implementation) DebugGetStackLevelFunction(level int) (_ string)                   { return }
 func (self implementation) DebugGetStackLevelSource(level int) (_ string)                     { return }
-func (self implementation) DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) (_ Dictionary.Any) {
+func (self implementation) DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) (_ map[any]any) {
 	return
 }
-func (self implementation) DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) (_ Dictionary.Any) {
+func (self implementation) DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) (_ map[any]any) {
 	return
 }
-func (self implementation) DebugGetStackLevelInstance(level int) (_ unsafe.Pointer) { return }
-func (self implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ Dictionary.Any) {
-	return
-}
+func (self implementation) DebugGetStackLevelInstance(level int) (_ unsafe.Pointer)         { return }
+func (self implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ map[any]any) { return }
 func (self implementation) DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) (_ string) {
 	return
 }
-func (self implementation) DebugGetCurrentStackInfo() (_ gd.Array)                      { return }
+func (self implementation) DebugGetCurrentStackInfo() (_ []map[any]any)                 { return }
 func (self implementation) ReloadAllScripts()                                           { return }
 func (self implementation) ReloadToolScript(script [1]gdclass.Script, soft_reload bool) { return }
 func (self implementation) GetRecognizedExtensions() (_ []string)                       { return }
-func (self implementation) GetPublicFunctions() (_ gd.Array)                            { return }
-func (self implementation) GetPublicConstants() (_ Dictionary.Any)                      { return }
-func (self implementation) GetPublicAnnotations() (_ gd.Array)                          { return }
+func (self implementation) GetPublicFunctions() (_ []map[any]any)                       { return }
+func (self implementation) GetPublicConstants() (_ map[any]any)                         { return }
+func (self implementation) GetPublicAnnotations() (_ []map[any]any)                     { return }
 func (self implementation) ProfilingStart()                                             { return }
 func (self implementation) ProfilingStop()                                              { return }
 func (self implementation) ProfilingSetSaveNativeCalls(enable bool)                     { return }
@@ -179,9 +176,9 @@ func (self implementation) ProfilingGetAccumulatedData(info_array *ProfilingInfo
 func (self implementation) ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) (_ int) {
 	return
 }
-func (self implementation) Frame()                                            { return }
-func (self implementation) HandlesGlobalClassType(atype string) (_ bool)      { return }
-func (self implementation) GetGlobalClassName(path string) (_ Dictionary.Any) { return }
+func (self implementation) Frame()                                         { return }
+func (self implementation) HandlesGlobalClassType(atype string) (_ bool)   { return }
+func (self implementation) GetGlobalClassName(path string) (_ map[any]any) { return }
 func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -297,13 +294,13 @@ func (Instance) _make_template(impl func(ptr unsafe.Pointer, template string, cl
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_built_in_templates(impl func(ptr unsafe.Pointer, obj string) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_built_in_templates(impl func(ptr unsafe.Pointer, obj string) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(obj)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -317,7 +314,7 @@ func (Instance) _is_using_templates(impl func(ptr unsafe.Pointer) bool) (cb gd.E
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _validate(impl func(ptr unsafe.Pointer, script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _validate(impl func(ptr unsafe.Pointer, script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var script = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(script)
@@ -329,7 +326,7 @@ func (Instance) _validate(impl func(ptr unsafe.Pointer, script string, path stri
 		var validate_safe_lines = gd.UnsafeGet[bool](p_args, 5)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, script.String(), path.String(), validate_functions, validate_errors, validate_warnings, validate_safe_lines)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -452,7 +449,7 @@ func (Instance) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) gdclas
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _complete_code(impl func(ptr unsafe.Pointer, code string, path string, owner Object.Instance) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _complete_code(impl func(ptr unsafe.Pointer, code string, path string, owner Object.Instance) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(code)
@@ -462,14 +459,14 @@ func (Instance) _complete_code(impl func(ptr unsafe.Pointer, code string, path s
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code.String(), path.String(), owner)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol string, path string, owner Object.Instance) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol string, path string, owner Object.Instance) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var code = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(code)
@@ -481,7 +478,7 @@ func (Instance) _lookup_code(impl func(ptr unsafe.Pointer, code string, symbol s
 		defer pointers.End(owner[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code.String(), symbol.String(), path.String(), owner)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -597,28 +594,28 @@ func (Instance) _debug_get_stack_level_source(impl func(ptr unsafe.Pointer, leve
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, level int, max_subitems int, max_depth int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, level int, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[gd.Int](p_args, 0)
 		var max_subitems = gd.UnsafeGet[gd.Int](p_args, 1)
 		var max_depth = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level), int(max_subitems), int(max_depth))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, level int, max_subitems int, max_depth int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, level int, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[gd.Int](p_args, 0)
 		var max_subitems = gd.UnsafeGet[gd.Int](p_args, 1)
 		var max_depth = gd.UnsafeGet[gd.Int](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level), int(max_subitems), int(max_depth))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -633,13 +630,13 @@ func (Instance) _debug_get_stack_level_instance(impl func(ptr unsafe.Pointer, le
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems int, max_depth int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_subitems = gd.UnsafeGet[gd.Int](p_args, 0)
 		var max_depth = gd.UnsafeGet[gd.Int](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(max_subitems), int(max_depth))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -662,11 +659,11 @@ func (Instance) _debug_parse_stack_level_expression(impl func(ptr unsafe.Pointer
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _debug_get_current_stack_info(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _debug_get_current_stack_info(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -699,33 +696,33 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []strin
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_public_functions(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_functions(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_public_constants(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_constants(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_public_annotations(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_annotations(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -784,13 +781,13 @@ func (Instance) _handles_global_class_type(impl func(ptr unsafe.Pointer, atype s
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_global_class_name(impl func(ptr unsafe.Pointer, path string) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_global_class_name(impl func(ptr unsafe.Pointer, path string) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String())
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}

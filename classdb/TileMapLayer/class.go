@@ -168,8 +168,8 @@ func (self Instance) GetCellTileData(coords Vector2i.XY) [1]gdclass.TileData {
 /*
 Returns a [Vector2i] array with the positions of all cells containing a tile. A cell is considered empty if its source identifier equals [code]-1[/code], its atlas coordinate identifier is [code]Vector2(-1, -1)[/code] and its alternative identifier is [code]-1[/code].
 */
-func (self Instance) GetUsedCells() gd.Array {
-	return gd.Array(class(self).GetUsedCells())
+func (self Instance) GetUsedCells() []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetUsedCells()))
 }
 
 /*
@@ -177,8 +177,8 @@ Returns a [Vector2i] array with the positions of all cells containing a tile. Ti
 If a parameter has its value set to the default one, this parameter is not used to filter a cell. Thus, if all parameters have their respective default values, this method returns the same result as [method get_used_cells].
 A cell is considered empty if its source identifier equals [code]-1[/code], its atlas coordinate identifier is [code]Vector2(-1, -1)[/code] and its alternative identifier is [code]-1[/code].
 */
-func (self Instance) GetUsedCellsById() gd.Array {
-	return gd.Array(class(self).GetUsedCellsById(gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1)))
+func (self Instance) GetUsedCellsById() []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetUsedCellsById(gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1))))
 }
 
 /*
@@ -191,8 +191,8 @@ func (self Instance) GetUsedRect() Rect2i.PositionSize {
 /*
 Creates and returns a new [TileMapPattern] from the given array of cells. See also [method set_pattern].
 */
-func (self Instance) GetPattern(coords_array gd.Array) [1]gdclass.TileMapPattern {
-	return [1]gdclass.TileMapPattern(class(self).GetPattern(coords_array))
+func (self Instance) GetPattern(coords_array []Vector2i.XY) [1]gdclass.TileMapPattern {
+	return [1]gdclass.TileMapPattern(class(self).GetPattern(gd.NewVariant(coords_array).Interface().(gd.Array)))
 }
 
 /*
@@ -207,8 +207,8 @@ Update all the cells in the [param cells] coordinates array so that they use the
 If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
-func (self Instance) SetCellsTerrainConnect(cells gd.Array, terrain_set int, terrain int) {
-	class(self).SetCellsTerrainConnect(cells, gd.Int(terrain_set), gd.Int(terrain), true)
+func (self Instance) SetCellsTerrainConnect(cells []Vector2i.XY, terrain_set int, terrain int) {
+	class(self).SetCellsTerrainConnect(gd.NewVariant(cells).Interface().(gd.Array), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
 /*
@@ -216,8 +216,8 @@ Update all the cells in the [param path] coordinates array so that they use the 
 If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
-func (self Instance) SetCellsTerrainPath(path gd.Array, terrain_set int, terrain int) {
-	class(self).SetCellsTerrainPath(path, gd.Int(terrain_set), gd.Int(terrain), true)
+func (self Instance) SetCellsTerrainPath(path []Vector2i.XY, terrain_set int, terrain int) {
+	class(self).SetCellsTerrainPath(gd.NewVariant(path).Interface().(gd.Array), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
 /*
@@ -262,8 +262,8 @@ func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_patte
 /*
 Returns the list of all neighboring cells to the one at [param coords].
 */
-func (self Instance) GetSurroundingCells(coords Vector2i.XY) gd.Array {
-	return gd.Array(class(self).GetSurroundingCells(gd.Vector2i(coords)))
+func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetSurroundingCells(gd.Vector2i(coords))))
 }
 
 /*

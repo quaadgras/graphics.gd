@@ -13,7 +13,6 @@ import "graphics.gd/classdb/TextEdit"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -47,7 +46,7 @@ type Interface interface {
 	RequestCodeCompletion(force bool)
 	//Override this method to define what items in [param candidates] should be displayed.
 	//Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
-	FilterCodeCompletionCandidates(candidates gd.Array) gd.Array
+	FilterCodeCompletionCandidates(candidates []map[any]any) []map[any]any
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -55,9 +54,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ConfirmCodeCompletion(replace bool)                              { return }
-func (self implementation) RequestCodeCompletion(force bool)                                { return }
-func (self implementation) FilterCodeCompletionCandidates(candidates gd.Array) (_ gd.Array) { return }
+func (self implementation) ConfirmCodeCompletion(replace bool) { return }
+func (self implementation) RequestCodeCompletion(force bool)   { return }
+func (self implementation) FilterCodeCompletionCandidates(candidates []map[any]any) (_ []map[any]any) {
+	return
+}
 
 /*
 Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.
@@ -85,13 +86,13 @@ func (Instance) _request_code_completion(impl func(ptr unsafe.Pointer, force boo
 Override this method to define what items in [param candidates] should be displayed.
 Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
 */
-func (Instance) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates gd.Array) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates []map[any]any) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var candidates = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(candidates)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, candidates)
-		ptr, ok := pointers.End(ret)
+		ret := impl(self, gd.ArrayAs[[]map[any]any](candidates))
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -300,8 +301,8 @@ func (self Instance) IsLineFolded(line int) bool {
 /*
 Returns all lines that are current folded.
 */
-func (self Instance) GetFoldedLines() gd.Array {
-	return gd.Array(class(self).GetFoldedLines())
+func (self Instance) GetFoldedLines() []int {
+	return []int(gd.ArrayAs[[]int](class(self).GetFoldedLines()))
 }
 
 /*
@@ -497,8 +498,8 @@ func (self Instance) UpdateCodeCompletionOptions(force bool) {
 /*
 Gets all completion options, see [method get_code_completion_option] for return content.
 */
-func (self Instance) GetCodeCompletionOptions() gd.Array {
-	return gd.Array(class(self).GetCodeCompletionOptions())
+func (self Instance) GetCodeCompletionOptions() []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetCodeCompletionOptions()))
 }
 
 /*
@@ -510,8 +511,8 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 [code]icon[/code]: Icon to draw on the autocomplete menu.
 [code]default_value[/code]: Value of the symbol.
 */
-func (self Instance) GetCodeCompletionOption(index int) Dictionary.Any {
-	return Dictionary.Any(class(self).GetCodeCompletionOption(gd.Int(index)))
+func (self Instance) GetCodeCompletionOption(index int) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetCodeCompletionOption(gd.Int(index))))
 }
 
 /*
@@ -632,12 +633,12 @@ func (self Instance) SetLineFolding(value bool) {
 	class(self).SetLineFoldingEnabled(value)
 }
 
-func (self Instance) LineLengthGuidelines() gd.Array {
-	return gd.Array(class(self).GetLineLengthGuidelines())
+func (self Instance) LineLengthGuidelines() []int {
+	return []int(gd.ArrayAs[[]int](class(self).GetLineLengthGuidelines()))
 }
 
-func (self Instance) SetLineLengthGuidelines(value gd.Array) {
-	class(self).SetLineLengthGuidelines(value)
+func (self Instance) SetLineLengthGuidelines(value []int) {
+	class(self).SetLineLengthGuidelines(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) GuttersDrawBreakpointsGutter() bool {
@@ -688,20 +689,20 @@ func (self Instance) SetGuttersDrawFoldGutter(value bool) {
 	class(self).SetDrawFoldGutter(value)
 }
 
-func (self Instance) DelimiterStrings() gd.Array {
-	return gd.Array(class(self).GetStringDelimiters())
+func (self Instance) DelimiterStrings() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetStringDelimiters()))
 }
 
-func (self Instance) SetDelimiterStrings(value gd.Array) {
-	class(self).SetStringDelimiters(value)
+func (self Instance) SetDelimiterStrings(value []string) {
+	class(self).SetStringDelimiters(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) DelimiterComments() gd.Array {
-	return gd.Array(class(self).GetCommentDelimiters())
+func (self Instance) DelimiterComments() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetCommentDelimiters()))
 }
 
-func (self Instance) SetDelimiterComments(value gd.Array) {
-	class(self).SetCommentDelimiters(value)
+func (self Instance) SetDelimiterComments(value []string) {
+	class(self).SetCommentDelimiters(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) CodeCompletionEnabled() bool {
@@ -712,12 +713,12 @@ func (self Instance) SetCodeCompletionEnabled(value bool) {
 	class(self).SetCodeCompletionEnabled(value)
 }
 
-func (self Instance) CodeCompletionPrefixes() gd.Array {
-	return gd.Array(class(self).GetCodeCompletionPrefixes())
+func (self Instance) CodeCompletionPrefixes() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetCodeCompletionPrefixes()))
 }
 
-func (self Instance) SetCodeCompletionPrefixes(value gd.Array) {
-	class(self).SetCodeCompletionPrefixes(value)
+func (self Instance) SetCodeCompletionPrefixes(value []string) {
+	class(self).SetCodeCompletionPrefixes(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) IndentSize() int {
@@ -744,12 +745,12 @@ func (self Instance) SetIndentAutomatic(value bool) {
 	class(self).SetAutoIndentEnabled(value)
 }
 
-func (self Instance) IndentAutomaticPrefixes() gd.Array {
-	return gd.Array(class(self).GetAutoIndentPrefixes())
+func (self Instance) IndentAutomaticPrefixes() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetAutoIndentPrefixes()))
 }
 
-func (self Instance) SetIndentAutomaticPrefixes(value gd.Array) {
-	class(self).SetAutoIndentPrefixes(value)
+func (self Instance) SetIndentAutomaticPrefixes(value []string) {
+	class(self).SetAutoIndentPrefixes(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) AutoBraceCompletionEnabled() bool {
@@ -768,12 +769,12 @@ func (self Instance) SetAutoBraceCompletionHighlightMatching(value bool) {
 	class(self).SetHighlightMatchingBracesEnabled(value)
 }
 
-func (self Instance) AutoBraceCompletionPairs() Dictionary.Any {
-	return Dictionary.Any(class(self).GetAutoBraceCompletionPairs())
+func (self Instance) AutoBraceCompletionPairs() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetAutoBraceCompletionPairs()))
 }
 
-func (self Instance) SetAutoBraceCompletionPairs(value Dictionary.Any) {
-	class(self).SetAutoBraceCompletionPairs(value)
+func (self Instance) SetAutoBraceCompletionPairs(value map[any]any) {
+	class(self).SetAutoBraceCompletionPairs(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
 /*

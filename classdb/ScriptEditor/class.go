@@ -46,8 +46,8 @@ func (self Instance) GetCurrentEditor() [1]gdclass.ScriptEditorBase {
 /*
 Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
 */
-func (self Instance) GetOpenScriptEditors() gd.Array {
-	return gd.Array(class(self).GetOpenScriptEditors())
+func (self Instance) GetOpenScriptEditors() [][1]gdclass.ScriptEditorBase {
+	return [][1]gdclass.ScriptEditorBase(gd.ArrayAs[[][1]gdclass.ScriptEditorBase](class(self).GetOpenScriptEditors()))
 }
 
 /*
@@ -83,8 +83,8 @@ func (self Instance) GetCurrentScript() [1]gdclass.Script {
 /*
 Returns an array with all [Script] objects which are currently open in editor.
 */
-func (self Instance) GetOpenScripts() gd.Array {
-	return gd.Array(class(self).GetOpenScripts())
+func (self Instance) GetOpenScripts() [][1]gdclass.Script {
+	return [][1]gdclass.Script(gd.ArrayAs[[][1]gdclass.Script](class(self).GetOpenScripts()))
 }
 
 /*

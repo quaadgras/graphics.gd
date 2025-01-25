@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -39,7 +38,7 @@ type Any interface {
 type Interface interface {
 	//Virtual method which can be overridden to return syntax highlighting data.
 	//See [method get_line_syntax_highlighting] for more details.
-	GetLineSyntaxHighlighting(line int) Dictionary.Any
+	GetLineSyntaxHighlighting(line int) map[any]any
 	//Virtual method which can be overridden to clear any local caches.
 	ClearHighlightingCache()
 	//Virtual method which can be overridden to update any local caches.
@@ -51,20 +50,20 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetLineSyntaxHighlighting(line int) (_ Dictionary.Any) { return }
-func (self implementation) ClearHighlightingCache()                               { return }
-func (self implementation) UpdateCache()                                          { return }
+func (self implementation) GetLineSyntaxHighlighting(line int) (_ map[any]any) { return }
+func (self implementation) ClearHighlightingCache()                            { return }
+func (self implementation) UpdateCache()                                       { return }
 
 /*
 Virtual method which can be overridden to return syntax highlighting data.
 See [method get_line_syntax_highlighting] for more details.
 */
-func (Instance) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var line = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(line))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -110,8 +109,8 @@ The return [Dictionary] is column number to [Dictionary]. The column number note
 [/codeblock]
 This will color columns 0-4 red, and columns 5-eol in green.
 */
-func (self Instance) GetLineSyntaxHighlighting(line int) Dictionary.Any {
-	return Dictionary.Any(class(self).GetLineSyntaxHighlighting(gd.Int(line)))
+func (self Instance) GetLineSyntaxHighlighting(line int) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetLineSyntaxHighlighting(gd.Int(line))))
 }
 
 /*

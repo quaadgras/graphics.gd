@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -94,12 +93,12 @@ func (self Instance) SetOutputPortForPreview(value int) {
 	class(self).SetOutputPortForPreview(gd.Int(value))
 }
 
-func (self Instance) DefaultInputValues() Array.Any {
-	return Array.Any(class(self).GetDefaultInputValues())
+func (self Instance) DefaultInputValues() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetDefaultInputValues()))
 }
 
-func (self Instance) SetDefaultInputValues(value Array.Any) {
-	class(self).SetDefaultInputValues(value)
+func (self Instance) SetDefaultInputValues(value []any) {
+	class(self).SetDefaultInputValues(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) LinkedParentGraphFrame() int {

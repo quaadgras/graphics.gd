@@ -15,7 +15,6 @@ import "graphics.gd/variant/Plane"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -177,7 +176,7 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Instance) AddTriangleFan(vertices []Vector3.XYZ) {
-	class(self).AddTriangleFan(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedVector2Slice(nil), gd.NewPackedColorSlice(nil), gd.NewPackedVector2Slice(nil), gd.NewPackedVector3Slice(nil), [1]gd.Array{}[0])
+	class(self).AddTriangleFan(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedVector2Slice(nil), gd.NewPackedColorSlice(nil), gd.NewPackedVector2Slice(nil), gd.NewPackedVector3Slice(nil), gd.NewVariant([1][]Plane.NormalD{}[0]).Interface().(gd.Array))
 }
 
 /*
@@ -269,8 +268,8 @@ func (self Instance) CreateFrom(existing [1]gdclass.Mesh, surface int) {
 /*
 Creates this SurfaceTool from existing vertex arrays such as returned by [method commit_to_arrays], [method Mesh.surface_get_arrays], [method Mesh.surface_get_blend_shape_arrays], [method ImporterMesh.get_surface_arrays], and [method ImporterMesh.get_surface_blend_shape_arrays]. [param primitive_type] controls the type of mesh data, defaulting to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Instance) CreateFromArrays(arrays Array.Any) {
-	class(self).CreateFromArrays(arrays, 3)
+func (self Instance) CreateFromArrays(arrays []any) {
+	class(self).CreateFromArrays(gd.NewVariant(arrays).Interface().(gd.Array), 3)
 }
 
 /*
@@ -298,8 +297,8 @@ func (self Instance) Commit() [1]gdclass.ArrayMesh {
 /*
 Commits the data to the same format used by [method ArrayMesh.add_surface_from_arrays], [method ImporterMesh.add_surface], and [method create_from_arrays]. This way you can further process the mesh data using the [ArrayMesh] or [ImporterMesh] APIs.
 */
-func (self Instance) CommitToArrays() Array.Any {
-	return Array.Any(class(self).CommitToArrays())
+func (self Instance) CommitToArrays() []any {
+	return []any(gd.ArrayAs[[]any](class(self).CommitToArrays()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

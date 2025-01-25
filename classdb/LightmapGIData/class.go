@@ -80,12 +80,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) LightmapTextures() gd.Array {
-	return gd.Array(class(self).GetLightmapTextures())
+func (self Instance) LightmapTextures() [][1]gdclass.TextureLayered {
+	return [][1]gdclass.TextureLayered(gd.ArrayAs[[][1]gdclass.TextureLayered](class(self).GetLightmapTextures()))
 }
 
-func (self Instance) SetLightmapTextures(value gd.Array) {
-	class(self).SetLightmapTextures(value)
+func (self Instance) SetLightmapTextures(value [][1]gdclass.TextureLayered) {
+	class(self).SetLightmapTextures(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) UsesSphericalHarmonics() bool {

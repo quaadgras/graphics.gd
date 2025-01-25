@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -113,12 +112,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Json() Dictionary.Any {
-	return Dictionary.Any(class(self).GetJson())
+func (self Instance) Json() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetJson()))
 }
 
-func (self Instance) SetJson(value Dictionary.Any) {
-	class(self).SetJson(value)
+func (self Instance) SetJson(value map[any]any) {
+	class(self).SetJson(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
 func (self Instance) MajorVersion() int {
@@ -161,52 +160,52 @@ func (self Instance) SetUseNamedSkinBinds(value bool) {
 	class(self).SetUseNamedSkinBinds(value)
 }
 
-func (self Instance) Nodes() gd.Array {
-	return gd.Array(class(self).GetNodes())
+func (self Instance) Nodes() [][1]gdclass.GLTFNode {
+	return [][1]gdclass.GLTFNode(gd.ArrayAs[[][1]gdclass.GLTFNode](class(self).GetNodes()))
 }
 
-func (self Instance) SetNodes(value gd.Array) {
-	class(self).SetNodes(value)
+func (self Instance) SetNodes(value [][1]gdclass.GLTFNode) {
+	class(self).SetNodes(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) Buffers() gd.Array {
-	return gd.Array(class(self).GetBuffers())
+func (self Instance) Buffers() [][]byte {
+	return [][]byte(gd.ArrayAs[[][]byte](class(self).GetBuffers()))
 }
 
-func (self Instance) SetBuffers(value gd.Array) {
-	class(self).SetBuffers(value)
+func (self Instance) SetBuffers(value [][]byte) {
+	class(self).SetBuffers(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) BufferViews() gd.Array {
-	return gd.Array(class(self).GetBufferViews())
+func (self Instance) BufferViews() [][1]gdclass.GLTFBufferView {
+	return [][1]gdclass.GLTFBufferView(gd.ArrayAs[[][1]gdclass.GLTFBufferView](class(self).GetBufferViews()))
 }
 
-func (self Instance) SetBufferViews(value gd.Array) {
-	class(self).SetBufferViews(value)
+func (self Instance) SetBufferViews(value [][1]gdclass.GLTFBufferView) {
+	class(self).SetBufferViews(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) Accessors() gd.Array {
-	return gd.Array(class(self).GetAccessors())
+func (self Instance) Accessors() [][1]gdclass.GLTFAccessor {
+	return [][1]gdclass.GLTFAccessor(gd.ArrayAs[[][1]gdclass.GLTFAccessor](class(self).GetAccessors()))
 }
 
-func (self Instance) SetAccessors(value gd.Array) {
-	class(self).SetAccessors(value)
+func (self Instance) SetAccessors(value [][1]gdclass.GLTFAccessor) {
+	class(self).SetAccessors(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) Meshes() gd.Array {
-	return gd.Array(class(self).GetMeshes())
+func (self Instance) Meshes() [][1]gdclass.GLTFMesh {
+	return [][1]gdclass.GLTFMesh(gd.ArrayAs[[][1]gdclass.GLTFMesh](class(self).GetMeshes()))
 }
 
-func (self Instance) SetMeshes(value gd.Array) {
-	class(self).SetMeshes(value)
+func (self Instance) SetMeshes(value [][1]gdclass.GLTFMesh) {
+	class(self).SetMeshes(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) Materials() gd.Array {
-	return gd.Array(class(self).GetMaterials())
+func (self Instance) Materials() [][1]gdclass.Material {
+	return [][1]gdclass.Material(gd.ArrayAs[[][1]gdclass.Material](class(self).GetMaterials()))
 }
 
-func (self Instance) SetMaterials(value gd.Array) {
-	class(self).SetMaterials(value)
+func (self Instance) SetMaterials(value [][1]gdclass.Material) {
+	class(self).SetMaterials(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) SceneName() string {
@@ -241,76 +240,76 @@ func (self Instance) SetRootNodes(value []int32) {
 	class(self).SetRootNodes(gd.NewPackedInt32Slice(value))
 }
 
-func (self Instance) Textures() gd.Array {
-	return gd.Array(class(self).GetTextures())
+func (self Instance) Textures() [][1]gdclass.GLTFTexture {
+	return [][1]gdclass.GLTFTexture(gd.ArrayAs[[][1]gdclass.GLTFTexture](class(self).GetTextures()))
 }
 
-func (self Instance) SetTextures(value gd.Array) {
-	class(self).SetTextures(value)
+func (self Instance) SetTextures(value [][1]gdclass.GLTFTexture) {
+	class(self).SetTextures(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) TextureSamplers() gd.Array {
-	return gd.Array(class(self).GetTextureSamplers())
+func (self Instance) TextureSamplers() [][1]gdclass.GLTFTextureSampler {
+	return [][1]gdclass.GLTFTextureSampler(gd.ArrayAs[[][1]gdclass.GLTFTextureSampler](class(self).GetTextureSamplers()))
 }
 
-func (self Instance) SetTextureSamplers(value gd.Array) {
-	class(self).SetTextureSamplers(value)
+func (self Instance) SetTextureSamplers(value [][1]gdclass.GLTFTextureSampler) {
+	class(self).SetTextureSamplers(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) Images() gd.Array {
-	return gd.Array(class(self).GetImages())
+func (self Instance) Images() [][1]gdclass.Texture2D {
+	return [][1]gdclass.Texture2D(gd.ArrayAs[[][1]gdclass.Texture2D](class(self).GetImages()))
 }
 
-func (self Instance) SetImages(value gd.Array) {
-	class(self).SetImages(value)
+func (self Instance) SetImages(value [][1]gdclass.Texture2D) {
+	class(self).SetImages(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) Skins() gd.Array {
-	return gd.Array(class(self).GetSkins())
+func (self Instance) Skins() [][1]gdclass.GLTFSkin {
+	return [][1]gdclass.GLTFSkin(gd.ArrayAs[[][1]gdclass.GLTFSkin](class(self).GetSkins()))
 }
 
-func (self Instance) SetSkins(value gd.Array) {
-	class(self).SetSkins(value)
+func (self Instance) SetSkins(value [][1]gdclass.GLTFSkin) {
+	class(self).SetSkins(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) Cameras() gd.Array {
-	return gd.Array(class(self).GetCameras())
+func (self Instance) Cameras() [][1]gdclass.GLTFCamera {
+	return [][1]gdclass.GLTFCamera(gd.ArrayAs[[][1]gdclass.GLTFCamera](class(self).GetCameras()))
 }
 
-func (self Instance) SetCameras(value gd.Array) {
-	class(self).SetCameras(value)
+func (self Instance) SetCameras(value [][1]gdclass.GLTFCamera) {
+	class(self).SetCameras(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) Lights() gd.Array {
-	return gd.Array(class(self).GetLights())
+func (self Instance) Lights() [][1]gdclass.GLTFLight {
+	return [][1]gdclass.GLTFLight(gd.ArrayAs[[][1]gdclass.GLTFLight](class(self).GetLights()))
 }
 
-func (self Instance) SetLights(value gd.Array) {
-	class(self).SetLights(value)
+func (self Instance) SetLights(value [][1]gdclass.GLTFLight) {
+	class(self).SetLights(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) UniqueNames() gd.Array {
-	return gd.Array(class(self).GetUniqueNames())
+func (self Instance) UniqueNames() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetUniqueNames()))
 }
 
-func (self Instance) SetUniqueNames(value gd.Array) {
-	class(self).SetUniqueNames(value)
+func (self Instance) SetUniqueNames(value []string) {
+	class(self).SetUniqueNames(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) UniqueAnimationNames() gd.Array {
-	return gd.Array(class(self).GetUniqueAnimationNames())
+func (self Instance) UniqueAnimationNames() []string {
+	return []string(gd.ArrayAs[[]string](class(self).GetUniqueAnimationNames()))
 }
 
-func (self Instance) SetUniqueAnimationNames(value gd.Array) {
-	class(self).SetUniqueAnimationNames(value)
+func (self Instance) SetUniqueAnimationNames(value []string) {
+	class(self).SetUniqueAnimationNames(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) Skeletons() gd.Array {
-	return gd.Array(class(self).GetSkeletons())
+func (self Instance) Skeletons() [][1]gdclass.GLTFSkeleton {
+	return [][1]gdclass.GLTFSkeleton(gd.ArrayAs[[][1]gdclass.GLTFSkeleton](class(self).GetSkeletons()))
 }
 
-func (self Instance) SetSkeletons(value gd.Array) {
-	class(self).SetSkeletons(value)
+func (self Instance) SetSkeletons(value [][1]gdclass.GLTFSkeleton) {
+	class(self).SetSkeletons(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) CreateAnimations() bool {
@@ -329,12 +328,12 @@ func (self Instance) SetImportAsSkeletonBones(value bool) {
 	class(self).SetImportAsSkeletonBones(value)
 }
 
-func (self Instance) Animations() gd.Array {
-	return gd.Array(class(self).GetAnimations())
+func (self Instance) Animations() [][1]gdclass.GLTFAnimation {
+	return [][1]gdclass.GLTFAnimation(gd.ArrayAs[[][1]gdclass.GLTFAnimation](class(self).GetAnimations()))
 }
 
-func (self Instance) SetAnimations(value gd.Array) {
-	class(self).SetAnimations(value)
+func (self Instance) SetAnimations(value [][1]gdclass.GLTFAnimation) {
+	class(self).SetAnimations(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) HandleBinaryImage() int {

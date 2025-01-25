@@ -11,7 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 
@@ -66,8 +65,8 @@ func (self Instance) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin
 /*
 Adds an [Array] the size of [constant Mesh.ARRAY_MAX] and with vertices at index [constant Mesh.ARRAY_VERTEX] and indices at index [constant Mesh.ARRAY_INDEX] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
-func (self Instance) AddMeshArray(mesh_array Array.Any, xform Transform3D.BasisOrigin) {
-	class(self).AddMeshArray(mesh_array, gd.Transform3D(xform))
+func (self Instance) AddMeshArray(mesh_array []any, xform Transform3D.BasisOrigin) {
+	class(self).AddMeshArray(gd.NewVariant(mesh_array).Interface().(gd.Array), gd.Transform3D(xform))
 }
 
 /*
@@ -133,12 +132,12 @@ func (self Instance) SetIndices(value []int32) {
 	class(self).SetIndices(gd.NewPackedInt32Slice(value))
 }
 
-func (self Instance) ProjectedObstructions() Array.Any {
-	return Array.Any(class(self).GetProjectedObstructions())
+func (self Instance) ProjectedObstructions() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetProjectedObstructions()))
 }
 
-func (self Instance) SetProjectedObstructions(value Array.Any) {
-	class(self).SetProjectedObstructions(value)
+func (self Instance) SetProjectedObstructions(value []any) {
+	class(self).SetProjectedObstructions(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 /*

@@ -11,7 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -50,15 +49,15 @@ func (self Instance) HasData() bool {
 /*
 Appends another array of [param traversable_outlines] at the end of the existing traversable outlines array.
 */
-func (self Instance) AppendTraversableOutlines(traversable_outlines gd.Array) {
-	class(self).AppendTraversableOutlines(traversable_outlines)
+func (self Instance) AppendTraversableOutlines(traversable_outlines [][]Vector2.XY) {
+	class(self).AppendTraversableOutlines(gd.NewVariant(traversable_outlines).Interface().(gd.Array))
 }
 
 /*
 Appends another array of [param obstruction_outlines] at the end of the existing obstruction outlines array.
 */
-func (self Instance) AppendObstructionOutlines(obstruction_outlines gd.Array) {
-	class(self).AppendObstructionOutlines(obstruction_outlines)
+func (self Instance) AppendObstructionOutlines(obstruction_outlines [][]Vector2.XY) {
+	class(self).AppendObstructionOutlines(gd.NewVariant(obstruction_outlines).Interface().(gd.Array))
 }
 
 /*
@@ -115,28 +114,28 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TraversableOutlines() gd.Array {
-	return gd.Array(class(self).GetTraversableOutlines())
+func (self Instance) TraversableOutlines() [][]Vector2.XY {
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).GetTraversableOutlines()))
 }
 
-func (self Instance) SetTraversableOutlines(value gd.Array) {
-	class(self).SetTraversableOutlines(value)
+func (self Instance) SetTraversableOutlines(value [][]Vector2.XY) {
+	class(self).SetTraversableOutlines(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) ObstructionOutlines() gd.Array {
-	return gd.Array(class(self).GetObstructionOutlines())
+func (self Instance) ObstructionOutlines() [][]Vector2.XY {
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).GetObstructionOutlines()))
 }
 
-func (self Instance) SetObstructionOutlines(value gd.Array) {
-	class(self).SetObstructionOutlines(value)
+func (self Instance) SetObstructionOutlines(value [][]Vector2.XY) {
+	class(self).SetObstructionOutlines(gd.NewVariant(value).Interface().(gd.Array))
 }
 
-func (self Instance) ProjectedObstructions() Array.Any {
-	return Array.Any(class(self).GetProjectedObstructions())
+func (self Instance) ProjectedObstructions() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetProjectedObstructions()))
 }
 
-func (self Instance) SetProjectedObstructions(value Array.Any) {
-	class(self).SetProjectedObstructions(value)
+func (self Instance) SetProjectedObstructions(value []any) {
+	class(self).SetProjectedObstructions(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 /*

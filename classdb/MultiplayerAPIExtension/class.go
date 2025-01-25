@@ -10,7 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/MultiplayerAPI"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -127,7 +126,7 @@ type Interface interface {
 	//Callback for [method MultiplayerAPI.get_peers].
 	GetPeerIds() []int32
 	//Callback for [method MultiplayerAPI.rpc].
-	Rpc(peer int, obj Object.Instance, method string, args Array.Any) error
+	Rpc(peer int, obj Object.Instance, method string, args []any) error
 	//Callback for [method MultiplayerAPI.get_remote_sender_id].
 	GetRemoteSenderId() int
 	//Callback for [method MultiplayerAPI.object_configuration_add].
@@ -146,7 +145,7 @@ func (self implementation) SetMultiplayerPeer(multiplayer_peer [1]gdclass.Multip
 func (self implementation) GetMultiplayerPeer() (_ [1]gdclass.MultiplayerPeer)             { return }
 func (self implementation) GetUniqueId() (_ int)                                           { return }
 func (self implementation) GetPeerIds() (_ []int32)                                        { return }
-func (self implementation) Rpc(peer int, obj Object.Instance, method string, args Array.Any) (_ error) {
+func (self implementation) Rpc(peer int, obj Object.Instance, method string, args []any) (_ error) {
 	return
 }
 func (self implementation) GetRemoteSenderId() (_ int) { return }
@@ -224,7 +223,7 @@ func (Instance) _get_peer_ids(impl func(ptr unsafe.Pointer) []int32) (cb gd.Exte
 /*
 Callback for [method MultiplayerAPI.rpc].
 */
-func (Instance) _rpc(impl func(ptr unsafe.Pointer, peer int, obj Object.Instance, method string, args Array.Any) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _rpc(impl func(ptr unsafe.Pointer, peer int, obj Object.Instance, method string, args []any) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var peer = gd.UnsafeGet[gd.Int](p_args, 0)
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
@@ -234,7 +233,7 @@ func (Instance) _rpc(impl func(ptr unsafe.Pointer, peer int, obj Object.Instance
 		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
 		defer pointers.End(args)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, int(peer), obj, method.String(), args)
+		ret := impl(self, int(peer), obj, method.String(), gd.ArrayAs[[]any](args))
 		gd.UnsafeSet(p_back, ret)
 	}
 }

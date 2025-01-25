@@ -13,7 +13,6 @@ import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2i"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Rect2"
@@ -99,8 +98,8 @@ func (self Instance) RemoveCache(cache_index int) {
 /*
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
-func (self Instance) GetSizeCacheList(cache_index int) gd.Array {
-	return gd.Array(class(self).GetSizeCacheList(gd.Int(cache_index)))
+func (self Instance) GetSizeCacheList(cache_index int) []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetSizeCacheList(gd.Int(cache_index))))
 }
 
 /*
@@ -120,15 +119,15 @@ func (self Instance) RemoveSizeCache(cache_index int, size Vector2i.XY) {
 /*
 Sets variation coordinates for the specified font cache entry. See [method Font.get_supported_variation_list] for more info.
 */
-func (self Instance) SetVariationCoordinates(cache_index int, variation_coordinates Dictionary.Any) {
-	class(self).SetVariationCoordinates(gd.Int(cache_index), variation_coordinates)
+func (self Instance) SetVariationCoordinates(cache_index int, variation_coordinates map[any]any) {
+	class(self).SetVariationCoordinates(gd.Int(cache_index), gd.NewVariant(variation_coordinates).Interface().(gd.Dictionary))
 }
 
 /*
 Returns variation coordinates for the specified font cache entry. See [method Font.get_supported_variation_list] for more info.
 */
-func (self Instance) GetVariationCoordinates(cache_index int) Dictionary.Any {
-	return Dictionary.Any(class(self).GetVariationCoordinates(gd.Int(cache_index)))
+func (self Instance) GetVariationCoordinates(cache_index int) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetVariationCoordinates(gd.Int(cache_index))))
 }
 
 /*
@@ -420,8 +419,8 @@ func (self Instance) GetGlyphTextureIdx(cache_index int, size Vector2i.XY, glyph
 /*
 Returns list of the kerning overrides.
 */
-func (self Instance) GetKerningList(cache_index int, size int) gd.Array {
-	return gd.Array(class(self).GetKerningList(gd.Int(cache_index), gd.Int(size)))
+func (self Instance) GetKerningList(cache_index int, size int) []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetKerningList(gd.Int(cache_index), gd.Int(size))))
 }
 
 /*
@@ -687,12 +686,12 @@ func (self Instance) SetFixedSizeScaleMode(value gdclass.TextServerFixedSizeScal
 	class(self).SetFixedSizeScaleMode(value)
 }
 
-func (self Instance) OpentypeFeatureOverrides() Dictionary.Any {
-	return Dictionary.Any(class(self).GetOpentypeFeatureOverrides())
+func (self Instance) OpentypeFeatureOverrides() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetOpentypeFeatureOverrides()))
 }
 
-func (self Instance) SetOpentypeFeatureOverrides(value Dictionary.Any) {
-	class(self).SetOpentypeFeatureOverrides(value)
+func (self Instance) SetOpentypeFeatureOverrides(value map[any]any) {
+	class(self).SetOpentypeFeatureOverrides(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
 /*

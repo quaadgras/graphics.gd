@@ -142,7 +142,7 @@ type Interface interface {
 	BodyIsAxisLocked(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis) bool
 	BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID)
 	BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID)
-	BodyGetCollisionExceptions(body Resource.ID) gd.Array
+	BodyGetCollisionExceptions(body Resource.ID) []Resource.ID
 	BodySetMaxContactsReported(body Resource.ID, amount int)
 	BodyGetMaxContactsReported(body Resource.ID) int
 	BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X)
@@ -165,7 +165,7 @@ type Interface interface {
 	SoftBodyGetCollisionMask(body Resource.ID) int
 	SoftBodyAddCollisionException(body Resource.ID, body_b Resource.ID)
 	SoftBodyRemoveCollisionException(body Resource.ID, body_b Resource.ID)
-	SoftBodyGetCollisionExceptions(body Resource.ID) gd.Array
+	SoftBodyGetCollisionExceptions(body Resource.ID) []Resource.ID
 	SoftBodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, variant any)
 	SoftBodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) any
 	SoftBodySetTransform(body Resource.ID, transform Transform3D.BasisOrigin)
@@ -397,9 +397,9 @@ func (self implementation) BodyAddCollisionException(body Resource.ID, excepted_
 func (self implementation) BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
 	return
 }
-func (self implementation) BodyGetCollisionExceptions(body Resource.ID) (_ gd.Array) { return }
-func (self implementation) BodySetMaxContactsReported(body Resource.ID, amount int)  { return }
-func (self implementation) BodyGetMaxContactsReported(body Resource.ID) (_ int)      { return }
+func (self implementation) BodyGetCollisionExceptions(body Resource.ID) (_ []Resource.ID) { return }
+func (self implementation) BodySetMaxContactsReported(body Resource.ID, amount int)       { return }
+func (self implementation) BodyGetMaxContactsReported(body Resource.ID) (_ int)           { return }
 func (self implementation) BodySetContactsReportedDepthThreshold(body Resource.ID, threshold Float.X) {
 	return
 }
@@ -436,7 +436,7 @@ func (self implementation) SoftBodyAddCollisionException(body Resource.ID, body_
 func (self implementation) SoftBodyRemoveCollisionException(body Resource.ID, body_b Resource.ID) {
 	return
 }
-func (self implementation) SoftBodyGetCollisionExceptions(body Resource.ID) (_ gd.Array) { return }
+func (self implementation) SoftBodyGetCollisionExceptions(body Resource.ID) (_ []Resource.ID) { return }
 func (self implementation) SoftBodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, variant any) {
 	return
 }
@@ -1415,12 +1415,12 @@ func (Instance) _body_remove_collision_exception(impl func(ptr unsafe.Pointer, b
 		impl(self, body, excepted_body)
 	}
 }
-func (Instance) _body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body Resource.ID) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body Resource.ID) []Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -1618,12 +1618,12 @@ func (Instance) _soft_body_remove_collision_exception(impl func(ptr unsafe.Point
 		impl(self, body, body_b)
 	}
 }
-func (Instance) _soft_body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body Resource.ID) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _soft_body_get_collision_exceptions(impl func(ptr unsafe.Pointer, body Resource.ID) []Resource.ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[gd.RID](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, body)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}

@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2"
@@ -46,8 +45,8 @@ func (self Instance) Clear() {
 Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (self Instance) SetBidiOverride(override Array.Any) {
-	class(self).SetBidiOverride(override)
+func (self Instance) SetBidiOverride(override []any) {
+	class(self).SetBidiOverride(gd.NewVariant(override).Interface().(gd.Array))
 }
 
 /*
@@ -81,8 +80,8 @@ func (self Instance) TabAlign(tab_stops []float32) {
 /*
 Returns array of inline objects.
 */
-func (self Instance) GetObjects() Array.Any {
-	return Array.Any(class(self).GetObjects())
+func (self Instance) GetObjects() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetObjects()))
 }
 
 /*

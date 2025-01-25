@@ -14,7 +14,6 @@ import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -75,8 +74,8 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool {
 /*
 Returns an [Array] with two elements, the first is the [Transform3D] of this node and the second is the root [Mesh] of this node. Only works when this node is the root shape.
 */
-func (self Instance) GetMeshes() Array.Any {
-	return Array.Any(class(self).GetMeshes())
+func (self Instance) GetMeshes() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetMeshes()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

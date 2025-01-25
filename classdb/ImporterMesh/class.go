@@ -10,8 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2i"
 
@@ -80,8 +78,8 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise or of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.Any) {
-	class(self).AddSurface(primitive, arrays, [1]gd.Array{}[0], [1]Dictionary.Any{}[0], [1][1]gdclass.Material{}[0], gd.NewString(""), gd.Int(0))
+func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any) {
+	class(self).AddSurface(primitive, gd.NewVariant(arrays).Interface().(gd.Array), gd.NewVariant([1][][]any{}[0]).Interface().(gd.Array), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), [1][1]gdclass.Material{}[0], gd.NewString(""), gd.Int(0))
 }
 
 /*
@@ -108,15 +106,15 @@ func (self Instance) GetSurfaceName(surface_idx int) string {
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [method add_surface].
 */
-func (self Instance) GetSurfaceArrays(surface_idx int) Array.Any {
-	return Array.Any(class(self).GetSurfaceArrays(gd.Int(surface_idx)))
+func (self Instance) GetSurfaceArrays(surface_idx int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetSurfaceArrays(gd.Int(surface_idx))))
 }
 
 /*
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
-func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) Array.Any {
-	return Array.Any(class(self).GetSurfaceBlendShapeArrays(gd.Int(surface_idx), gd.Int(blend_shape_idx)))
+func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetSurfaceBlendShapeArrays(gd.Int(surface_idx), gd.Int(blend_shape_idx))))
 }
 
 /*
@@ -174,8 +172,8 @@ Generates all lods for this ImporterMesh.
 The number of generated lods can be accessed using [method get_surface_lod_count], and each LOD is available in [method get_surface_lod_size] and [method get_surface_lod_indices].
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
-func (self Instance) GenerateLods(normal_merge_angle Float.X, normal_split_angle Float.X, bone_transform_array Array.Any) {
-	class(self).GenerateLods(gd.Float(normal_merge_angle), gd.Float(normal_split_angle), bone_transform_array)
+func (self Instance) GenerateLods(normal_merge_angle Float.X, normal_split_angle Float.X, bone_transform_array []any) {
+	class(self).GenerateLods(gd.Float(normal_merge_angle), gd.Float(normal_split_angle), gd.NewVariant(bone_transform_array).Interface().(gd.Array))
 }
 
 /*

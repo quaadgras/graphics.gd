@@ -8,6 +8,9 @@ import (
 )
 
 func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
+	if rtype == reflect.TypeFor[any]() {
+		return reflect.ValueOf(value.Interface()), nil
+	}
 	switch rtype.Kind() {
 	case reflect.Bool:
 		return reflect.ValueOf(Global.Variants.Booleanize(value)).Convert(rtype), nil
@@ -26,6 +29,30 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	default:
 		return ConvertToDesiredGoType(value.Interface(), rtype)
 	}
+}
+
+func VariantAs[T any](value Variant) T {
+	result, err := ConvertToDesiredGoType(value, reflect.TypeFor[T]())
+	if err != nil {
+		panic(fmt.Sprintf("cannot convert %T to %s: %v", value, reflect.TypeFor[T](), err))
+	}
+	return result.Interface().(T)
+}
+
+func ArrayAs[S []T, T any](array Array) []T {
+	var result = make([]T, array.Size())
+	for i := 0; i < int(array.Size()); i++ {
+		result[i] = VariantAs[T](array.Index(Int(i)))
+	}
+	return result
+}
+
+func DictionaryAs[K comparable, V any](dictionary Dictionary) map[K]V {
+	var result = make(map[K]V)
+	for _, key := range dictionary.Keys().Iter() {
+		result[VariantAs[K](key)] = VariantAs[V](dictionary.Index(key))
+	}
+	return result
 }
 
 func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error) {

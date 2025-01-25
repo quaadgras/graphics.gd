@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Dictionary"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -56,7 +55,7 @@ type Interface interface {
 	GetDependencies(path string, add_types bool) []string
 	//If implemented, renames dependencies within the given resource and saves it. [param renames] is a dictionary [code]{ String => String }[/code] mapping old dependency paths to new paths.
 	//Returns [constant OK] on success, or an [enum Error] constant in case of failure.
-	RenameDependencies(path string, renames Dictionary.Any) error
+	RenameDependencies(path string, renames map[any]any) error
 	Exists(path string) bool
 	GetClassesUsed(path string) []string
 	//Loads a resource when the engine finds this loader to be compatible. If the loaded resource is the result of an import, [param original_path] will target the source file. Returns a [Resource] object on success, or an [enum Error] constant in case of failure.
@@ -69,16 +68,16 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetRecognizedExtensions() (_ []string)                            { return }
-func (self implementation) RecognizePath(path string, atype string) (_ bool)                 { return }
-func (self implementation) HandlesType(atype string) (_ bool)                                { return }
-func (self implementation) GetResourceType(path string) (_ string)                           { return }
-func (self implementation) GetResourceScriptClass(path string) (_ string)                    { return }
-func (self implementation) GetResourceUid(path string) (_ int)                               { return }
-func (self implementation) GetDependencies(path string, add_types bool) (_ []string)         { return }
-func (self implementation) RenameDependencies(path string, renames Dictionary.Any) (_ error) { return }
-func (self implementation) Exists(path string) (_ bool)                                      { return }
-func (self implementation) GetClassesUsed(path string) (_ []string)                          { return }
+func (self implementation) GetRecognizedExtensions() (_ []string)                         { return }
+func (self implementation) RecognizePath(path string, atype string) (_ bool)              { return }
+func (self implementation) HandlesType(atype string) (_ bool)                             { return }
+func (self implementation) GetResourceType(path string) (_ string)                        { return }
+func (self implementation) GetResourceScriptClass(path string) (_ string)                 { return }
+func (self implementation) GetResourceUid(path string) (_ int)                            { return }
+func (self implementation) GetDependencies(path string, add_types bool) (_ []string)      { return }
+func (self implementation) RenameDependencies(path string, renames map[any]any) (_ error) { return }
+func (self implementation) Exists(path string) (_ bool)                                   { return }
+func (self implementation) GetClassesUsed(path string) (_ []string)                       { return }
 func (self implementation) Load(path string, original_path string, use_sub_threads bool, cache_mode int) (_ any) {
 	return
 }
@@ -195,14 +194,14 @@ func (Instance) _get_dependencies(impl func(ptr unsafe.Pointer, path string, add
 If implemented, renames dependencies within the given resource and saves it. [param renames] is a dictionary [code]{ String => String }[/code] mapping old dependency paths to new paths.
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (Instance) _rename_dependencies(impl func(ptr unsafe.Pointer, path string, renames Dictionary.Any) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _rename_dependencies(impl func(ptr unsafe.Pointer, path string, renames map[any]any) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
 		var renames = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(renames)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, path.String(), renames)
+		ret := impl(self, path.String(), gd.DictionaryAs[any, any](renames))
 		gd.UnsafeSet(p_back, ret)
 	}
 }

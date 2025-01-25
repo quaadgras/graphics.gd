@@ -11,7 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -183,8 +182,8 @@ func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) {
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the web browser and after the interface has been initialized.
 */
-func (self Instance) GetAvailableDisplayRefreshRates() Array.Any {
-	return Array.Any(class(self).GetAvailableDisplayRefreshRates())
+func (self Instance) GetAvailableDisplayRefreshRates() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetAvailableDisplayRefreshRates()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

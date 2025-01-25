@@ -16,6 +16,7 @@ import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Projection"
+import "graphics.gd/variant/Plane"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -140,8 +141,8 @@ func (self Instance) GetCameraProjection() Projection.XYZW {
 /*
 Returns the camera's frustum planes in world space units as an array of [Plane]s in the following order: near, far, left, top, right, bottom. Not to be confused with [member frustum_offset].
 */
-func (self Instance) GetFrustum() gd.Array {
-	return gd.Array(class(self).GetFrustum())
+func (self Instance) GetFrustum() []Plane.NormalD {
+	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](class(self).GetFrustum()))
 }
 
 /*

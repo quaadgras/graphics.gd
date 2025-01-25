@@ -101,8 +101,8 @@ func (self Instance) AddGizmo(gizmo [1]gdclass.Node3DGizmo) {
 /*
 Returns all the gizmos attached to this [Node3D].
 */
-func (self Instance) GetGizmos() gd.Array {
-	return gd.Array(class(self).GetGizmos())
+func (self Instance) GetGizmos() [][1]gdclass.Node3DGizmo {
+	return [][1]gdclass.Node3DGizmo(gd.ArrayAs[[][1]gdclass.Node3DGizmo](class(self).GetGizmos()))
 }
 
 /*

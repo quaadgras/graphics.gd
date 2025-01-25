@@ -13,7 +13,6 @@ import "graphics.gd/variant/Rect2"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
-import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Rect2i"
@@ -788,8 +787,8 @@ func (self Instance) GetSelectionAtLineColumn(line int, column int) int {
 Returns an [Array] of line ranges where [code]x[/code] is the first line and [code]y[/code] is the last line. All lines within these ranges will have a caret on them or be part of a selection. Each line will only be part of one line range, even if it has multiple carets on it.
 If a selection's end column ([method get_selection_to_column]) is at column [code]0[/code], that line will not be included. If a selection begins on the line after another selection ends and [param merge_adjacent] is [code]true[/code], or they begin and end on the same line, one line range will include both selections.
 */
-func (self Instance) GetLineRangesFromCarets() gd.Array {
-	return gd.Array(class(self).GetLineRangesFromCarets(false, true))
+func (self Instance) GetLineRangesFromCarets() []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetLineRangesFromCarets(false, true)))
 }
 
 /*
@@ -1647,12 +1646,12 @@ func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStruc
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
-func (self Instance) StructuredTextBidiOverrideOptions() Array.Any {
-	return Array.Any(class(self).GetStructuredTextBidiOverrideOptions())
+func (self Instance) StructuredTextBidiOverrideOptions() []any {
+	return []any(gd.ArrayAs[[]any](class(self).GetStructuredTextBidiOverrideOptions()))
 }
 
-func (self Instance) SetStructuredTextBidiOverrideOptions(value Array.Any) {
-	class(self).SetStructuredTextBidiOverrideOptions(value)
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
+	class(self).SetStructuredTextBidiOverrideOptions(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 /*

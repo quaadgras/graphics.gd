@@ -10,14 +10,13 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Vector3i"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -209,8 +208,8 @@ func (self Instance) FontGetName(font_rid Resource.ID) string {
 /*
 Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 */
-func (self Instance) FontGetOtNameStrings(font_rid Resource.ID) Dictionary.Any {
-	return Dictionary.Any(class(self).FontGetOtNameStrings(font_rid))
+func (self Instance) FontGetOtNameStrings(font_rid Resource.ID) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).FontGetOtNameStrings(font_rid)))
 }
 
 /*
@@ -486,15 +485,15 @@ func (self Instance) FontGetTransform(font_rid Resource.ID) Transform2D.OriginXY
 /*
 Sets variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
-func (self Instance) FontSetVariationCoordinates(font_rid Resource.ID, variation_coordinates Dictionary.Any) {
-	class(self).FontSetVariationCoordinates(font_rid, variation_coordinates)
+func (self Instance) FontSetVariationCoordinates(font_rid Resource.ID, variation_coordinates map[any]any) {
+	class(self).FontSetVariationCoordinates(font_rid, gd.NewVariant(variation_coordinates).Interface().(gd.Dictionary))
 }
 
 /*
 Returns variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
-func (self Instance) FontGetVariationCoordinates(font_rid Resource.ID) Dictionary.Any {
-	return Dictionary.Any(class(self).FontGetVariationCoordinates(font_rid))
+func (self Instance) FontGetVariationCoordinates(font_rid Resource.ID) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).FontGetVariationCoordinates(font_rid)))
 }
 
 /*
@@ -514,8 +513,8 @@ func (self Instance) FontGetOversampling(font_rid Resource.ID) Float.X {
 /*
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
-func (self Instance) FontGetSizeCacheList(font_rid Resource.ID) gd.Array {
-	return gd.Array(class(self).FontGetSizeCacheList(font_rid))
+func (self Instance) FontGetSizeCacheList(font_rid Resource.ID) []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).FontGetSizeCacheList(font_rid)))
 }
 
 /*
@@ -770,15 +769,15 @@ Returns outline contours of the glyph as a [Dictionary] with the following conte
 [code]contours[/code]       - [PackedInt32Array], containing indices the end points of each contour.
 [code]orientation[/code]    - [bool], contour orientation. If [code]true[/code], clockwise contours must be filled.
 */
-func (self Instance) FontGetGlyphContours(font Resource.ID, size int, index int) Dictionary.Any {
-	return Dictionary.Any(class(self).FontGetGlyphContours(font, gd.Int(size), gd.Int(index)))
+func (self Instance) FontGetGlyphContours(font Resource.ID, size int, index int) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).FontGetGlyphContours(font, gd.Int(size), gd.Int(index))))
 }
 
 /*
 Returns list of the kerning overrides.
 */
-func (self Instance) FontGetKerningList(font_rid Resource.ID, size int) gd.Array {
-	return gd.Array(class(self).FontGetKerningList(font_rid, gd.Int(size)))
+func (self Instance) FontGetKerningList(font_rid Resource.ID, size int) []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).FontGetKerningList(font_rid, gd.Int(size))))
 }
 
 /*
@@ -942,29 +941,29 @@ func (self Instance) FontGetScriptSupportOverrides(font_rid Resource.ID) []strin
 /*
 Sets font OpenType feature set override.
 */
-func (self Instance) FontSetOpentypeFeatureOverrides(font_rid Resource.ID, overrides Dictionary.Any) {
-	class(self).FontSetOpentypeFeatureOverrides(font_rid, overrides)
+func (self Instance) FontSetOpentypeFeatureOverrides(font_rid Resource.ID, overrides map[any]any) {
+	class(self).FontSetOpentypeFeatureOverrides(font_rid, gd.NewVariant(overrides).Interface().(gd.Dictionary))
 }
 
 /*
 Returns font OpenType feature set override.
 */
-func (self Instance) FontGetOpentypeFeatureOverrides(font_rid Resource.ID) Dictionary.Any {
-	return Dictionary.Any(class(self).FontGetOpentypeFeatureOverrides(font_rid))
+func (self Instance) FontGetOpentypeFeatureOverrides(font_rid Resource.ID) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).FontGetOpentypeFeatureOverrides(font_rid)))
 }
 
 /*
 Returns the dictionary of the supported OpenType features.
 */
-func (self Instance) FontSupportedFeatureList(font_rid Resource.ID) Dictionary.Any {
-	return Dictionary.Any(class(self).FontSupportedFeatureList(font_rid))
+func (self Instance) FontSupportedFeatureList(font_rid Resource.ID) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).FontSupportedFeatureList(font_rid)))
 }
 
 /*
 Returns the dictionary of the supported OpenType variation coordinates.
 */
-func (self Instance) FontSupportedVariationList(font_rid Resource.ID) Dictionary.Any {
-	return Dictionary.Any(class(self).FontSupportedVariationList(font_rid))
+func (self Instance) FontSupportedVariationList(font_rid Resource.ID) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).FontSupportedVariationList(font_rid)))
 }
 
 /*
@@ -1038,8 +1037,8 @@ func (self Instance) ShapedTextGetInferredDirection(shaped Resource.ID) gdclass.
 Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (self Instance) ShapedTextSetBidiOverride(shaped Resource.ID, override Array.Any) {
-	class(self).ShapedTextSetBidiOverride(shaped, override)
+func (self Instance) ShapedTextSetBidiOverride(shaped Resource.ID, override []any) {
+	class(self).ShapedTextSetBidiOverride(shaped, gd.NewVariant(override).Interface().(gd.Array))
 }
 
 /*
@@ -1131,8 +1130,8 @@ func (self Instance) ShapedTextGetSpacing(shaped Resource.ID, spacing gdclass.Te
 /*
 Adds text span and font to draw it to the text buffer.
 */
-func (self Instance) ShapedTextAddString(shaped Resource.ID, text string, fonts gd.Array, size int) bool {
-	return bool(class(self).ShapedTextAddString(shaped, gd.NewString(text), fonts, gd.Int(size), [1]Dictionary.Any{}[0], gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
+func (self Instance) ShapedTextAddString(shaped Resource.ID, text string, fonts []Resource.ID, size int) bool {
+	return bool(class(self).ShapedTextAddString(shaped, gd.NewString(text), gd.NewVariant(fonts).Interface().(gd.Array), gd.Int(size), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 /*
@@ -1166,8 +1165,8 @@ func (self Instance) ShapedGetSpanMeta(shaped Resource.ID, index int) any {
 /*
 Changes text span font, font size, and OpenType features, without changing the text.
 */
-func (self Instance) ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts gd.Array, size int) {
-	class(self).ShapedSetSpanUpdateFont(shaped, gd.Int(index), fonts, gd.Int(size), [1]Dictionary.Any{}[0])
+func (self Instance) ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts []Resource.ID, size int) {
+	class(self).ShapedSetSpanUpdateFont(shaped, gd.Int(index), gd.NewVariant(fonts).Interface().(gd.Array), gd.Int(size), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary))
 }
 
 /*
@@ -1223,15 +1222,15 @@ func (self Instance) ShapedTextHasVisibleChars(shaped Resource.ID) bool {
 /*
 Returns an array of glyphs in the visual order.
 */
-func (self Instance) ShapedTextGetGlyphs(shaped Resource.ID) gd.Array {
-	return gd.Array(class(self).ShapedTextGetGlyphs(shaped))
+func (self Instance) ShapedTextGetGlyphs(shaped Resource.ID) []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ShapedTextGetGlyphs(shaped)))
 }
 
 /*
 Returns text glyphs in the logical order.
 */
-func (self Instance) ShapedTextSortLogical(shaped Resource.ID) gd.Array {
-	return gd.Array(class(self).ShapedTextSortLogical(shaped))
+func (self Instance) ShapedTextSortLogical(shaped Resource.ID) []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ShapedTextSortLogical(shaped)))
 }
 
 /*
@@ -1286,8 +1285,8 @@ func (self Instance) ShapedTextGetEllipsisPos(shaped Resource.ID) int {
 /*
 Returns array of the glyphs in the ellipsis.
 */
-func (self Instance) ShapedTextGetEllipsisGlyphs(shaped Resource.ID) gd.Array {
-	return gd.Array(class(self).ShapedTextGetEllipsisGlyphs(shaped))
+func (self Instance) ShapedTextGetEllipsisGlyphs(shaped Resource.ID) []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ShapedTextGetEllipsisGlyphs(shaped)))
 }
 
 /*
@@ -1307,8 +1306,8 @@ func (self Instance) ShapedTextOverrunTrimToWidth(shaped Resource.ID) {
 /*
 Returns array of inline objects.
 */
-func (self Instance) ShapedTextGetObjects(shaped Resource.ID) Array.Any {
-	return Array.Any(class(self).ShapedTextGetObjects(shaped))
+func (self Instance) ShapedTextGetObjects(shaped Resource.ID) []any {
+	return []any(gd.ArrayAs[[]any](class(self).ShapedTextGetObjects(shaped)))
 }
 
 /*
@@ -1379,8 +1378,8 @@ func (self Instance) ShapedTextGetUnderlineThickness(shaped Resource.ID) Float.X
 /*
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (self Instance) ShapedTextGetCarets(shaped Resource.ID, position int) Dictionary.Any {
-	return Dictionary.Any(class(self).ShapedTextGetCarets(shaped, gd.Int(position)))
+func (self Instance) ShapedTextGetCarets(shaped Resource.ID, position int) map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).ShapedTextGetCarets(shaped, gd.Int(position))))
 }
 
 /*
@@ -1598,8 +1597,8 @@ func (self Instance) StringToTitle(s string) string {
 /*
 Default implementation of the BiDi algorithm override function. See [enum StructuredTextParser] for more info.
 */
-func (self Instance) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text string) gd.Array {
-	return gd.Array(class(self).ParseStructuredText(parser_type, args, gd.NewString(text)))
+func (self Instance) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args []any, text string) []Vector3i.XYZ {
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](class(self).ParseStructuredText(parser_type, gd.NewVariant(args).Interface().(gd.Array), gd.NewString(text))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

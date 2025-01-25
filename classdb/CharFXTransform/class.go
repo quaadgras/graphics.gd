@@ -14,7 +14,6 @@ import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -112,12 +111,12 @@ func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(gd.Color(value))
 }
 
-func (self Instance) Env() Dictionary.Any {
-	return Dictionary.Any(class(self).GetEnvironment())
+func (self Instance) Env() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetEnvironment()))
 }
 
-func (self Instance) SetEnv(value Dictionary.Any) {
-	class(self).SetEnvironment(value)
+func (self Instance) SetEnv(value map[any]any) {
+	class(self).SetEnvironment(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
 func (self Instance) GlyphIndex() int {

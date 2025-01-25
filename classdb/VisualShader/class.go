@@ -134,8 +134,8 @@ func (self Instance) ConnectNodesForced(atype gdclass.VisualShaderType, from_nod
 /*
 Returns the list of connected nodes with the specified type.
 */
-func (self Instance) GetNodeConnections(atype gdclass.VisualShaderType) gd.Array {
-	return gd.Array(class(self).GetNodeConnections(atype))
+func (self Instance) GetNodeConnections(atype gdclass.VisualShaderType) []map[any]any {
+	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetNodeConnections(atype)))
 }
 
 /*

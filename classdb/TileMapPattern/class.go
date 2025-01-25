@@ -78,8 +78,8 @@ func (self Instance) GetCellAlternativeTile(coords Vector2i.XY) int {
 /*
 Returns the list of used cell coordinates in the pattern.
 */
-func (self Instance) GetUsedCells() gd.Array {
-	return gd.Array(class(self).GetUsedCells())
+func (self Instance) GetUsedCells() []Vector2i.XY {
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetUsedCells()))
 }
 
 /*

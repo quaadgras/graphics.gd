@@ -85,6 +85,10 @@ func isBuiltin(s string) bool {
 }
 
 func importsVariant(class gdjson.Class, identifier, s string) string {
+	if strings.HasPrefix(s, "typedarray::") {
+		s = strings.TrimPrefix(s, "typedarray::")
+		return importsVariant(class, identifier, s)
+	}
 	switch s {
 	case "Float", "float":
 		return "graphics.gd/variant/Float"
@@ -97,7 +101,8 @@ func importsVariant(class gdjson.Class, identifier, s string) string {
 		}
 		return "graphics.gd/classdb/Resource"
 	case "Array", "Dictionary", "Signal":
-		return "graphics.gd/variant/" + s
+		//return "graphics.gd/variant/" + s
+		return ""
 	case "PackedVector2Array":
 		return "graphics.gd/variant/Vector2"
 	case "PackedVector3Array":
@@ -228,7 +233,7 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string, gdType string) string {
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
-		return "gd.Array" // Of[+ classDB.convertType("", meta, gdType) + "]"
+		return "[]" + classDB.convertTypeSimple(class, lookup, meta, gdType)
 	}
 	switch gdType {
 	case "int", "Int":
@@ -303,11 +308,11 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 	case "ObjectID":
 		return "Object.ID"
 	case "Signal":
-		return "Signal.Any"
+		return "chan []any"
 	case "Dictionary":
-		return "Dictionary.Any"
+		return "map[any]any"
 	case "Array":
-		return "Array.Any"
+		return "[]any"
 	case "Variant":
 		return "any"
 	case "Object":

@@ -9,7 +9,6 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -76,7 +75,7 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 func (self Instance) Rpc(peer int, obj Object.Instance, method string) error {
-	return error(gd.ToError(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), [1]Array.Any{}[0])))
+	return error(gd.ToError(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))))
 }
 
 /*

@@ -10,8 +10,6 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Vector3"
@@ -48,11 +46,11 @@ type Interface interface {
 	//Virtual method to override the surface array index length for a custom class extending [Mesh].
 	SurfaceGetArrayIndexLen(index int) int
 	//Virtual method to override the surface arrays for a custom class extending [Mesh].
-	SurfaceGetArrays(index int) Array.Any
+	SurfaceGetArrays(index int) []any
 	//Virtual method to override the blend shape arrays for a custom class extending [Mesh].
-	SurfaceGetBlendShapeArrays(index int) gd.Array
+	SurfaceGetBlendShapeArrays(index int) [][]any
 	//Virtual method to override the surface LODs for a custom class extending [Mesh].
-	SurfaceGetLods(index int) Dictionary.Any
+	SurfaceGetLods(index int) map[any]any
 	//Virtual method to override the surface format for a custom class extending [Mesh].
 	SurfaceGetFormat(index int) int
 	//Virtual method to override the surface primitive type for a custom class extending [Mesh].
@@ -79,9 +77,9 @@ type implementation struct{}
 func (self implementation) GetSurfaceCount() (_ int)                                   { return }
 func (self implementation) SurfaceGetArrayLen(index int) (_ int)                       { return }
 func (self implementation) SurfaceGetArrayIndexLen(index int) (_ int)                  { return }
-func (self implementation) SurfaceGetArrays(index int) (_ Array.Any)                   { return }
-func (self implementation) SurfaceGetBlendShapeArrays(index int) (_ gd.Array)          { return }
-func (self implementation) SurfaceGetLods(index int) (_ Dictionary.Any)                { return }
+func (self implementation) SurfaceGetArrays(index int) (_ []any)                       { return }
+func (self implementation) SurfaceGetBlendShapeArrays(index int) (_ [][]any)           { return }
+func (self implementation) SurfaceGetLods(index int) (_ map[any]any)                   { return }
 func (self implementation) SurfaceGetFormat(index int) (_ int)                         { return }
 func (self implementation) SurfaceGetPrimitiveType(index int) (_ int)                  { return }
 func (self implementation) SurfaceSetMaterial(index int, material [1]gdclass.Material) { return }
@@ -129,12 +127,12 @@ func (Instance) _surface_get_array_index_len(impl func(ptr unsafe.Pointer, index
 /*
 Virtual method to override the surface arrays for a custom class extending [Mesh].
 */
-func (Instance) _surface_get_arrays(impl func(ptr unsafe.Pointer, index int) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _surface_get_arrays(impl func(ptr unsafe.Pointer, index int) []any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -145,12 +143,12 @@ func (Instance) _surface_get_arrays(impl func(ptr unsafe.Pointer, index int) Arr
 /*
 Virtual method to override the blend shape arrays for a custom class extending [Mesh].
 */
-func (Instance) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, index int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, index int) [][]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
 		if !ok {
 			return
 		}
@@ -161,12 +159,12 @@ func (Instance) _surface_get_blend_shape_arrays(impl func(ptr unsafe.Pointer, in
 /*
 Virtual method to override the surface LODs for a custom class extending [Mesh].
 */
-func (Instance) _surface_get_lods(impl func(ptr unsafe.Pointer, index int) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _surface_get_lods(impl func(ptr unsafe.Pointer, index int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[gd.Int](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
 		if !ok {
 			return
 		}
@@ -303,15 +301,15 @@ func (self Instance) GetSurfaceCount() int {
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface (see [method ArrayMesh.add_surface_from_arrays]).
 */
-func (self Instance) SurfaceGetArrays(surf_idx int) Array.Any {
-	return Array.Any(class(self).SurfaceGetArrays(gd.Int(surf_idx)))
+func (self Instance) SurfaceGetArrays(surf_idx int) []any {
+	return []any(gd.ArrayAs[[]any](class(self).SurfaceGetArrays(gd.Int(surf_idx))))
 }
 
 /*
 Returns the blend shape arrays for the requested surface.
 */
-func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) gd.Array {
-	return gd.Array(class(self).SurfaceGetBlendShapeArrays(gd.Int(surf_idx)))
+func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][]any {
+	return [][]any(gd.ArrayAs[[][]any](class(self).SurfaceGetBlendShapeArrays(gd.Int(surf_idx))))
 }
 
 /*

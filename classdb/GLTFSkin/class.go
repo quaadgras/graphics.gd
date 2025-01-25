@@ -10,7 +10,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -64,12 +64,12 @@ func (self Instance) SetJointsOriginal(value []int32) {
 	class(self).SetJointsOriginal(gd.NewPackedInt32Slice(value))
 }
 
-func (self Instance) InverseBinds() gd.Array {
-	return gd.Array(class(self).GetInverseBinds())
+func (self Instance) InverseBinds() []Transform3D.BasisOrigin {
+	return []Transform3D.BasisOrigin(gd.ArrayAs[[]Transform3D.BasisOrigin](class(self).GetInverseBinds()))
 }
 
-func (self Instance) SetInverseBinds(value gd.Array) {
-	class(self).SetInverseBinds(value)
+func (self Instance) SetInverseBinds(value []Transform3D.BasisOrigin) {
+	class(self).SetInverseBinds(gd.NewVariant(value).Interface().(gd.Array))
 }
 
 func (self Instance) Joints() []int32 {
@@ -104,20 +104,20 @@ func (self Instance) SetSkeleton(value int) {
 	class(self).SetSkeleton(gd.Int(value))
 }
 
-func (self Instance) JointIToBoneI() Dictionary.Any {
-	return Dictionary.Any(class(self).GetJointIToBoneI())
+func (self Instance) JointIToBoneI() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetJointIToBoneI()))
 }
 
-func (self Instance) SetJointIToBoneI(value Dictionary.Any) {
-	class(self).SetJointIToBoneI(value)
+func (self Instance) SetJointIToBoneI(value map[any]any) {
+	class(self).SetJointIToBoneI(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
-func (self Instance) JointIToName() Dictionary.Any {
-	return Dictionary.Any(class(self).GetJointIToName())
+func (self Instance) JointIToName() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetJointIToName()))
 }
 
-func (self Instance) SetJointIToName(value Dictionary.Any) {
-	class(self).SetJointIToName(value)
+func (self Instance) SetJointIToName(value map[any]any) {
+	class(self).SetJointIToName(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
 func (self Instance) GodotSkin() [1]gdclass.Skin {

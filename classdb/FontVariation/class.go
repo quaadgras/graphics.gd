@@ -11,7 +11,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 
@@ -86,12 +85,12 @@ func (self Instance) SetBaseFont(value [1]gdclass.Font) {
 	class(self).SetBaseFont(value)
 }
 
-func (self Instance) VariationOpentype() Dictionary.Any {
-	return Dictionary.Any(class(self).GetVariationOpentype())
+func (self Instance) VariationOpentype() map[any]any {
+	return map[any]any(gd.DictionaryAs[any, any](class(self).GetVariationOpentype()))
 }
 
-func (self Instance) SetVariationOpentype(value Dictionary.Any) {
-	class(self).SetVariationOpentype(value)
+func (self Instance) SetVariationOpentype(value map[any]any) {
+	class(self).SetVariationOpentype(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
 func (self Instance) VariationFaceIndex() int {
@@ -118,8 +117,8 @@ func (self Instance) SetVariationTransform(value Transform2D.OriginXY) {
 	class(self).SetVariationTransform(gd.Transform2D(value))
 }
 
-func (self Instance) SetOpentypeFeatures(value Dictionary.Any) {
-	class(self).SetOpentypeFeatures(value)
+func (self Instance) SetOpentypeFeatures(value map[any]any) {
+	class(self).SetOpentypeFeatures(gd.NewVariant(value).Interface().(gd.Dictionary))
 }
 
 func (self Instance) SetSpacingGlyph(value int) {

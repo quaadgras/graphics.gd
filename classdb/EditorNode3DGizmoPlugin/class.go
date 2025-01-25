@@ -11,6 +11,7 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Plane"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Color"
 
@@ -75,14 +76,14 @@ type Interface interface {
 	//Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param screen_pos] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos]. Called for this plugin's active gizmos.
 	SubgizmosIntersectRay(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, screen_pos Vector2.XY) int
 	//Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and [param frustum_planes], this method should return which subgizmos are contained within the frustums. The [param frustum_planes] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, these identifiers can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos]. Called for this plugin's active gizmos.
-	SubgizmosIntersectFrustum(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes gd.Array) []int32
+	SubgizmosIntersectFrustum(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes []Plane.NormalD) []int32
 	//Override this method to return the current transform of a subgizmo. As with all subgizmo methods, the transform should be in local space respect to the gizmo's Node3D. This transform will be requested at the start of an edit and used in the [code]restore[/code] argument in [method _commit_subgizmos]. Called for this plugin's active gizmos.
 	GetSubgizmoTransform(gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int) Transform3D.BasisOrigin
 	//Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the Node3D's local coordinate system. Called for this plugin's active gizmos.
 	SetSubgizmoTransform(gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int, transform Transform3D.BasisOrigin)
 	//Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 	//If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action. As with all subgizmo methods, transforms are given in local space respect to the gizmo's Node3D. Called for this plugin's active gizmos.
-	CommitSubgizmos(gizmo [1]gdclass.EditorNode3DGizmo, ids []int32, restores gd.Array, cancel bool)
+	CommitSubgizmos(gizmo [1]gdclass.EditorNode3DGizmo, ids []int32, restores []Transform3D.BasisOrigin, cancel bool)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -120,7 +121,7 @@ func (self implementation) CommitHandle(gizmo [1]gdclass.EditorNode3DGizmo, hand
 func (self implementation) SubgizmosIntersectRay(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, screen_pos Vector2.XY) (_ int) {
 	return
 }
-func (self implementation) SubgizmosIntersectFrustum(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes gd.Array) (_ []int32) {
+func (self implementation) SubgizmosIntersectFrustum(gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes []Plane.NormalD) (_ []int32) {
 	return
 }
 func (self implementation) GetSubgizmoTransform(gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int) (_ Transform3D.BasisOrigin) {
@@ -129,7 +130,7 @@ func (self implementation) GetSubgizmoTransform(gizmo [1]gdclass.EditorNode3DGiz
 func (self implementation) SetSubgizmoTransform(gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int, transform Transform3D.BasisOrigin) {
 	return
 }
-func (self implementation) CommitSubgizmos(gizmo [1]gdclass.EditorNode3DGizmo, ids []int32, restores gd.Array, cancel bool) {
+func (self implementation) CommitSubgizmos(gizmo [1]gdclass.EditorNode3DGizmo, ids []int32, restores []Transform3D.BasisOrigin, cancel bool) {
 	return
 }
 
@@ -347,7 +348,7 @@ func (Instance) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, gizmo [1]
 /*
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and [param frustum_planes], this method should return which subgizmos are contained within the frustums. The [param frustum_planes] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, these identifiers can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos]. Called for this plugin's active gizmos.
 */
-func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes gd.Array) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes []Plane.NormalD) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(gizmo[0])
@@ -356,7 +357,7 @@ func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, gizmo
 		var frustum_planes = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(frustum_planes)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, gizmo, camera, frustum_planes)
+		ret := impl(self, gizmo, camera, gd.ArrayAs[[]Plane.NormalD](frustum_planes))
 		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
 		if !ok {
 			return
@@ -397,7 +398,7 @@ func (Instance) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, gizmo [1]g
 Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action. As with all subgizmo methods, transforms are given in local space respect to the gizmo's Node3D. Called for this plugin's active gizmos.
 */
-func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.EditorNode3DGizmo, ids []int32, restores gd.Array, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.EditorNode3DGizmo, ids []int32, restores []Transform3D.BasisOrigin, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
 		defer pointers.End(gizmo[0])
@@ -407,7 +408,7 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass
 		defer pointers.End(restores)
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, gizmo, ids.AsSlice(), restores, cancel)
+		impl(self, gizmo, ids.AsSlice(), gd.ArrayAs[[]Transform3D.BasisOrigin](restores), cancel)
 	}
 }
 
