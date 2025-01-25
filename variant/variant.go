@@ -9,7 +9,6 @@ import (
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Color"
-	"graphics.gd/variant/NodePath"
 	"graphics.gd/variant/Plane"
 	"graphics.gd/variant/Projection"
 	"graphics.gd/variant/Quaternion"
@@ -165,7 +164,7 @@ type Any struct {
 var Nil Any
 
 func load[T any](a Any) T {
-	_, ok := a.value.(T)
+	_, ok := a.value.(*T)
 	if !ok {
 		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[T]().String())
 	}
@@ -366,85 +365,84 @@ func (a Any) Type() Type { //gd:typeof
 		return TypeNil
 	}
 	rtype := reflect.TypeOf(a.value)
-	switch rtype.Kind() {
-	case reflect.Bool:
+	switch a.value.(type) {
+	case bool:
 		return TypeBool
-	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+	case int8, *int16, *int32, *int64, *uint8, *uint16, *uint32:
 		return TypeInt
-	case reflect.Float32, reflect.Float64:
+	case *uint, *uint64, *uintptr:
+		return TypeRID
+	case *float32, *float64:
 		return TypeFloat
-	case reflect.String:
-		if rtype == reflect.TypeFor[NodePath.String]() {
-			return TypeNodePath
-		}
+	case isString:
 		return TypeString
-	case reflect.Map:
-		return TypeDictionary
-	case reflect.Slice:
-		switch rtype.Elem().Kind() {
-		case reflect.Uint8:
-			return TypePackedByteArray
-		case reflect.Int32:
-			return TypePackedInt32Array
-		case reflect.Int64:
-			return TypePackedInt64Array
-		case reflect.Float32:
-			return TypePackedFloat32Array
-		case reflect.Float64:
-			return TypePackedFloat64Array
-		case reflect.String:
-			return TypePackedStringArray
+	case isPacked[byte]:
+		return TypePackedByteArray
+	case isPacked[int32]:
+		return TypePackedInt32Array
+	case isPacked[int64]:
+		return TypePackedInt64Array
+	case isPacked[float32]:
+		return TypePackedFloat32Array
+	case isPacked[float64]:
+		return TypePackedFloat64Array
+	case isPacked[string]:
+		return TypePackedStringArray
+	case isPacked[Vector2.XY]:
+		return TypePackedVector2Array
+	case isPacked[Vector3.XYZ]:
+		return TypePackedVector3Array
+	case isPacked[Color.RGBA]:
+		return TypePackedColorArray
+	case isPacked[Vector4.XYZW]:
+		return TypePackedVector4Array
+	case *Vector2.XY:
+		return TypeVector2
+	case *Vector2i.XY:
+		return TypeVector2i
+	case *Rect2.PositionSize:
+		return TypeRect2
+	case *Rect2i.PositionSize:
+		return TypeRect2i
+	case *Plane.NormalD:
+		return TypePlane
+	case *Vector3.XYZ:
+		return TypeVector3
+	case *Vector3i.XYZ:
+		return TypeVector3i
+	case *Vector4.XYZW:
+		return TypeVector4
+	case *Vector4i.XYZW:
+		return TypeVector4i
+	case Transform2D.OriginXY:
+		return TypeTransform2D
+	case Basis.XYZ:
+		return TypeBasis
+	case Transform3D.BasisOrigin:
+		return TypeTransform3D
+	case Projection.XYZW:
+		return TypeProjection
+	case Color.RGBA:
+		return TypeColor
+	case Quaternion.IJKX:
+		return TypeQuaternion
+	case AABB.PositionSize:
+		return TypeAABB
+	default:
+		switch rtype.Kind() {
+		case reflect.Slice:
+			return TypeArray
+		case reflect.Map:
+			return TypeDictionary
 		case reflect.Struct:
-			switch {
-			case rtype.Elem().ConvertibleTo(reflect.TypeFor[Vector2.XY]()):
-				return TypePackedVector2Array
-			case rtype.Elem().ConvertibleTo(reflect.TypeFor[Vector3.XYZ]()):
-				return TypePackedVector3Array
-			case rtype.Elem().ConvertibleTo(reflect.TypeFor[Color.RGBA]()):
-				return TypePackedColorArray
-			case rtype.Elem().ConvertibleTo(reflect.TypeFor[Vector4.XYZW]()):
-				return TypePackedVector4Array
-			}
+			return TypeDictionary
+		case reflect.Func:
+			return TypeCallable
+		case reflect.Chan:
+			return TypeSignal
 		}
-		return TypeArray
-	case reflect.Struct:
-		switch {
-		case rtype.ConvertibleTo(reflect.TypeFor[Vector2.XY]()):
-			return TypeVector2
-		case rtype.ConvertibleTo(reflect.TypeFor[Vector2i.XY]()):
-			return TypeVector2i
-		case rtype.ConvertibleTo(reflect.TypeFor[Rect2.PositionSize]()):
-			return TypeRect2
-		case rtype.ConvertibleTo(reflect.TypeFor[Rect2i.PositionSize]()):
-			return TypeRect2i
-		case rtype.ConvertibleTo(reflect.TypeFor[Vector3.XYZ]()):
-			return TypeVector3
-		case rtype.ConvertibleTo(reflect.TypeFor[Vector3i.XYZ]()):
-			return TypeVector3i
-		case rtype.ConvertibleTo(reflect.TypeFor[Transform2D.OriginXY]()):
-			return TypeTransform2D
-		case rtype.ConvertibleTo(reflect.TypeFor[Vector4.XYZW]()):
-			return TypeVector4
-		case rtype.ConvertibleTo(reflect.TypeFor[Vector4i.XYZW]()):
-			return TypeVector4i
-		case rtype.ConvertibleTo(reflect.TypeFor[Plane.NormalD]()):
-			return TypePlane
-		case rtype.ConvertibleTo(reflect.TypeFor[Quaternion.IJKX]()):
-			return TypeQuaternion
-		case rtype.ConvertibleTo(reflect.TypeFor[AABB.PositionSize]()):
-			return TypeAABB
-		case rtype.ConvertibleTo(reflect.TypeFor[Basis.XYZ]()):
-			return TypeBasis
-		case rtype.ConvertibleTo(reflect.TypeFor[Transform3D.BasisOrigin]()):
-			return TypeTransform3D
-		case rtype.ConvertibleTo(reflect.TypeFor[Projection.XYZW]()):
-			return TypeProjection
-		case rtype.ConvertibleTo(reflect.TypeFor[Color.RGBA]()):
-			return TypeColor
-		}
-		return TypeDictionary
+		return TypeObject
 	}
-	return TypeObject
 }
 
 // ConvertTo converts the given variant to the given type, using the Type values. This method is generous
