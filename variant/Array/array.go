@@ -9,7 +9,6 @@ import (
 	"sort"
 
 	gd "graphics.gd/internal"
-	"graphics.gd/variant"
 	"graphics.gd/variant/Int"
 )
 
@@ -39,7 +38,7 @@ func (a Of[T]) Any() Any {
 	converted := gd.NewArray()
 	converted.Resize(gd.Int(a.Size()))
 	for i, v := range a.Iter() {
-		converted.SetIndex(gd.Int(i), variant.New(v))
+		converted.SetIndex(gd.Int(i), gd.NewVariant(v))
 	}
 	return converted
 }
@@ -68,7 +67,7 @@ func (a Of[T]) Index(i int) T { //gd:Array[]
 // it counts from the end of the array.
 func (a *Of[T]) SetIndex(i int, value T) { //gd:Array[]=
 	if a.array != (gd.Array{}) {
-		a.array.SetIndex(gd.Int(i), variant.New(value))
+		a.array.SetIndex(gd.Int(i), gd.NewVariant(value))
 		return
 	}
 	if i < 0 {
@@ -107,7 +106,7 @@ func (a *Of[T]) IfAny(fn func(T) bool) bool { //gd:Array.any
 // Append appends value at the end of the array (alias of PushBack).
 func (a *Of[T]) Append(value T) { //gd:Array.append
 	if a.array != (gd.Array{}) {
-		a.array.Append(variant.New(value))
+		a.array.Append(gd.NewVariant(value))
 		return
 	}
 	if a.fixed {

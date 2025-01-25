@@ -358,7 +358,7 @@ func (array ByteArray) EncodeUint64(offset uintptr, value uint64) { //gd:PackedB
 // depending on the encoded variant's size
 func (array ByteArray) Encode(offset uintptr, value any) { //gd:PackedByteArray.encode_var
 	if array.proxy != (gd.PackedByteArray{}) {
-		array.proxy.EncodeVar(gd.Int(offset), variant.New(value), false)
+		array.proxy.EncodeVar(gd.Int(offset), gd.NewVariant(value), false)
 		return
 	}
 	buf, _ := variant.Marshal(value)

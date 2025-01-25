@@ -6,7 +6,6 @@ import (
 
 	"graphics.gd/classdb/Engine"
 	gd "graphics.gd/internal"
-	"graphics.gd/variant"
 	"graphics.gd/variant/Callable"
 )
 
@@ -146,7 +145,7 @@ type Solo[A any] struct {
 // Emit the value to all connected signal handlers. Safe to call from any goroutine.
 func (signal Solo[A]) Emit(a A) {
 	Callable.New(func() {
-		signal.Any.Emit(variant.New(a))
+		signal.Any.Emit(gd.NewVariant(a))
 	})
 }
 
@@ -159,7 +158,7 @@ type Pair[A, B any] struct {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Pair[A, B]) Emit(a A, b B) {
 	Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b))
+		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b))
 	}).CallDeferred()
 }
 
@@ -172,7 +171,7 @@ type Trio[A, B, C any] struct {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Trio[A, B, C]) Emit(a A, b B, c C) {
 	Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c))
+		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c))
 	}).CallDeferred()
 }
 
@@ -185,7 +184,7 @@ type Quad[A, B, C, D any] struct {
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Quad[A, B, C, D]) Emit(a A, b B, c C, d D) {
 	Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d))
+		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c), gd.NewVariant(d))
 	}).CallDeferred()
 }
 
@@ -199,7 +198,7 @@ type Quin[A, B, C, D, E any] struct {
 // This function is safe to call from any goroutine.
 func (signal Quin[A, B, C, D, E]) Emit(a A, b B, c C, d D, e E) {
 	Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d), variant.New(e))
+		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c), gd.NewVariant(d), gd.NewVariant(e))
 	}).CallDeferred()
 }
 
@@ -213,6 +212,6 @@ type Hexa[A, B, C, D, E, F any] struct {
 // This function is safe to call from any goroutine.
 func (signal Hexa[A, B, C, D, E, F]) Emit(a A, b B, c C, d D, e E, f F) {
 	Callable.New(func() {
-		signal.Any.Emit(variant.New(a), variant.New(b), variant.New(c), variant.New(d), variant.New(e), variant.New(f))
+		signal.Any.Emit(gd.NewVariant(a), gd.NewVariant(b), gd.NewVariant(c), gd.NewVariant(d), gd.NewVariant(e), gd.NewVariant(f))
 	}).CallDeferred()
 }

@@ -1,12 +1,14 @@
 package variant
 
 import (
+	"fmt"
 	"reflect"
+	"unsafe"
 
-	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Basis"
+	"graphics.gd/variant/Color"
 	"graphics.gd/variant/NodePath"
 	"graphics.gd/variant/Plane"
 	"graphics.gd/variant/Projection"
@@ -23,123 +25,347 @@ import (
 	"graphics.gd/variant/Vector4i"
 )
 
-func New(val any) gd.Variant {
-	return gd.NewVariant(val)
+// New returns a new [Any] variant from the given interface value.
+func New(val any) Any {
+	var local [16]byte
+	rvalue := reflect.ValueOf(val)
+	rtype := rvalue.Type()
+	switch rtype.Kind() {
+	case reflect.Int16, reflect.Int32, reflect.Int64:
+		*(*int64)(unsafe.Pointer(&local[0])) = rvalue.Int()
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		*(*uint64)(unsafe.Pointer(&local[0])) = rvalue.Uint()
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Float32, reflect.Float64:
+		*(*float64)(unsafe.Pointer(&local[0])) = rvalue.Float()
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Complex64, reflect.Complex128:
+		*(*complex128)(unsafe.Pointer(&local[0])) = rvalue.Complex()
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.String:
+		s := rvalue.String()
+		*(*int)(unsafe.Pointer(&local[0])) = len(s)
+		wrapped := isString(unsafe.StringData(s))
+		return Any{value: wrapped, local: local}
+	case reflect.Slice:
+		if rvalue.IsNil() {
+			return Any{}
+		}
+		switch rtype.Elem() {
+		case reflect.TypeFor[byte]():
+			b := rvalue.Bytes()
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[byte](unsafe.SliceData(b))
+			return Any{value: wrapped, local: local}
+		case reflect.TypeFor[int32]():
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[int32](unsafe.SliceData(val.([]int32)))
+			return Any{value: wrapped, local: local}
+		case reflect.TypeFor[int64]():
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[int64](unsafe.SliceData(val.([]int64)))
+			return Any{value: wrapped, local: local}
+		case reflect.TypeFor[float32]():
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[float32](unsafe.SliceData(val.([]float32)))
+			return Any{value: wrapped, local: local}
+		case reflect.TypeFor[float64]():
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[float64](unsafe.SliceData(val.([]float64)))
+			return Any{value: wrapped, local: local}
+		case reflect.TypeFor[string]():
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[string](unsafe.SliceData(val.([]string)))
+			return Any{value: wrapped, local: local}
+		case reflect.TypeFor[Vector2.XY]():
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[Vector2.XY](unsafe.SliceData(val.([]Vector2.XY)))
+			return Any{value: wrapped, local: local}
+		case reflect.TypeFor[Vector3.XYZ]():
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[Vector3.XYZ](unsafe.SliceData(val.([]Vector3.XYZ)))
+			return Any{value: wrapped, local: local}
+		case reflect.TypeFor[Color.RGBA]():
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[Color.RGBA](unsafe.SliceData(val.([]Color.RGBA)))
+			return Any{value: wrapped, local: local}
+		case reflect.TypeFor[Vector4.XYZW]():
+			*(*lencap)(unsafe.Pointer(&local[0])) = lencap{len: rvalue.Len(), cap: rvalue.Cap()}
+			wrapped := isPacked[Vector4.XYZW](unsafe.SliceData(val.([]Vector4.XYZW)))
+			return Any{value: wrapped, local: local}
+		}
+	case reflect.Struct:
+		switch val.(type) {
+		case Vector2.XY:
+			*(*Vector2.XY)(unsafe.Pointer(&local[0])) = val.(Vector2.XY)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		case Vector2i.XY:
+			*(*Vector2i.XY)(unsafe.Pointer(&local[0])) = val.(Vector2i.XY)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		case Rect2.PositionSize:
+			*(*Rect2.PositionSize)(unsafe.Pointer(&local[0])) = val.(Rect2.PositionSize)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		case Rect2i.PositionSize:
+			*(*Rect2i.PositionSize)(unsafe.Pointer(&local[0])) = val.(Rect2i.PositionSize)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		case Plane.NormalD:
+			*(*Plane.NormalD)(unsafe.Pointer(&local[0])) = val.(Plane.NormalD)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		case Vector3.XYZ:
+			*(*Vector3.XYZ)(unsafe.Pointer(&local[0])) = val.(Vector3.XYZ)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		case Vector3i.XYZ:
+			*(*Vector3i.XYZ)(unsafe.Pointer(&local[0])) = val.(Vector3i.XYZ)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		case Vector4.XYZW:
+			*(*Vector4.XYZW)(unsafe.Pointer(&local[0])) = val.(Vector4.XYZW)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		case Vector4i.XYZW:
+			*(*Vector4i.XYZW)(unsafe.Pointer(&local[0])) = val.(Vector4i.XYZW)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		case Color.RGBA:
+			*(*Color.RGBA)(unsafe.Pointer(&local[0])) = val.(Color.RGBA)
+			return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+		}
+	case reflect.Pointer, reflect.UnsafePointer, reflect.Map, reflect.Func, reflect.Chan, reflect.Interface:
+		if rvalue.IsNil() {
+			return Any{}
+		}
+	}
+	return Any{value: val, local: local}
+}
+
+type packable interface {
+	byte | int32 | int64 | float32 | float64 | string | Vector2.XY | Vector3.XYZ | Color.RGBA | Vector4.XYZW
+}
+
+type isString *byte
+type isPacked[T packable] *T
+
+type lencap = struct {
+	len int
+	cap int
+}
+
+// Any is like the standard [any] type except it can store the following types without allocating them on the heap:
+//   - [bool]
+//   - [int][int8][int16][int32][int64][uint][uint8][uint16][uint32][uint64][uintptr]
+//   - [Float.X][float32][float64][complex64][complex128]
+//   - [string][String][[]byte][[]int32][[]int64][[]float32][[]float64][[]string]
+//   - [[]Vector2.XY][[]Vector3.XYZ][[]Color.RGBA][[]Vector4.XYZW]
+//   - [Rect2.PositionSize][Rect2i.PositionSize][Plane.NormalD]
+//   - [Vector2.XY][Vector2i.XY][Vector3.XYZ][Vector3i.XYZ][Vector4.XYZW][Vector4i.XYZW][Color.RGBA]
+type Any struct {
+	local [16]byte
+	value any
+}
+
+// Nil reference value.
+var Nil Any
+
+func load[T any](a Any) T {
+	_, ok := a.value.(T)
+	if !ok {
+		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[T]().String())
+	}
+	return *(*T)(unsafe.Pointer(&a.local[0]))
+}
+func loadPacked[T packable](a Any) []T {
+	ptr, ok := a.value.(isPacked[T])
+	if !ok {
+		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[T]().String())
+	}
+	lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+	return unsafe.Slice(ptr, lencap.cap)[:lencap.len:lencap.cap]
+}
+
+func (a Any) Bool() bool             { return load[bool](a) }
+func (a Any) Int() int               { return int(load[int](a)) }
+func (a Any) Int8() int8             { return load[int8](a) }
+func (a Any) Int16() int16           { return load[int16](a) }
+func (a Any) Int32() int32           { return load[int32](a) }
+func (a Any) Int64() int64           { return load[int64](a) }
+func (a Any) Uint() uint             { return uint(load[uint](a)) }
+func (a Any) Uint8() uint8           { return load[uint8](a) }
+func (a Any) Uint16() uint16         { return load[uint16](a) }
+func (a Any) Uint32() uint32         { return load[uint32](a) }
+func (a Any) Uint64() uint64         { return load[uint64](a) }
+func (a Any) Float32() float32       { return load[float32](a) }
+func (a Any) Float64() float64       { return load[float64](a) }
+func (a Any) Uintptr() uintptr       { return uintptr(load[uintptr](a)) }
+func (a Any) Complex64() complex64   { return load[complex64](a) }
+func (a Any) Complex128() complex128 { return load[complex128](a) }
+func (a Any) String() string {
+	ptr, ok := a.value.(isString)
+	if !ok {
+		return a.toString()
+	}
+	l := *(*int)(unsafe.Pointer(&a.local[0]))
+	return unsafe.String(ptr, l)
+}
+func (a Any) Vector2() Vector2.XY                  { return load[Vector2.XY](a) }
+func (a Any) Vector2i() Vector2i.XY                { return load[Vector2i.XY](a) }
+func (a Any) Rect2() Rect2.PositionSize            { return load[Rect2.PositionSize](a) }
+func (a Any) Rect2i() Rect2i.PositionSize          { return load[Rect2i.PositionSize](a) }
+func (a Any) Vector3() Vector3.XYZ                 { return load[Vector3.XYZ](a) }
+func (a Any) Vector3i() Vector3i.XYZ               { return load[Vector3i.XYZ](a) }
+func (a Any) Transform2D() Transform2D.OriginXY    { return load[Transform2D.OriginXY](a) }
+func (a Any) Vector4() Vector4.XYZW                { return load[Vector4.XYZW](a) }
+func (a Any) Vector4i() Vector4i.XYZW              { return load[Vector4i.XYZW](a) }
+func (a Any) Plane() Plane.NormalD                 { return load[Plane.NormalD](a) }
+func (a Any) Quaternion() Quaternion.IJKX          { return a.value.(Quaternion.IJKX) }
+func (a Any) AABB() AABB.PositionSize              { return a.value.(AABB.PositionSize) }
+func (a Any) Basis() Basis.XYZ                     { return a.value.(Basis.XYZ) }
+func (a Any) Transform3D() Transform3D.BasisOrigin { return a.value.(Transform3D.BasisOrigin) }
+func (a Any) Projection() Projection.XYZW          { return a.value.(Projection.XYZW) }
+func (a Any) Color() Color.RGBA                    { return load[Color.RGBA](a) }
+func (a Any) Bytes() []byte                        { return loadPacked[byte](a) }
+
+func (a Any) toString() string {
+	return fmt.Sprint(a.Interface())
+}
+
+// Interface returns the value of the variant as an interface{}.
+func (a Any) Interface() interface{} {
+	rtype := reflect.TypeOf(a.value)
+	rvalue := reflect.ValueOf(a.value)
+	switch rtype.Kind() {
+	case reflect.Pointer:
+		if rvalue.Pointer() != 0 {
+			switch value := a.value.(type) {
+			case isString:
+				l := *(*int)(unsafe.Pointer(&a.local[0]))
+				return unsafe.String(value, l)
+			case isPacked[byte]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			case isPacked[int32]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			case isPacked[int64]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			case isPacked[float32]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			case isPacked[float64]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			case isPacked[string]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			case isPacked[Vector2.XY]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			case isPacked[Vector3.XYZ]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			case isPacked[Color.RGBA]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			case isPacked[Vector4.XYZW]:
+				lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+				return unsafe.Slice(value, lencap.cap)[:lencap.len:lencap.cap]
+			}
+			lencap := *(*lencap)(unsafe.Pointer(&a.local[0]))
+			if lencap.len > 0 {
+				return reflect.SliceAt(rtype.Elem(), rvalue.UnsafePointer(), lencap.cap).Slice3(0, lencap.len, lencap.cap).Interface()
+			}
+			return a.value
+		}
+		var heap = a.local
+		return reflect.NewAt(rtype.Elem(), unsafe.Pointer(&heap)).Elem().Interface()
+	default:
+		return a.value
+	}
+}
+
+type Setter interface {
+	SetVariant(Any)
+}
+
+type Getter interface {
+	Variant() Any
 }
 
 // Get attempts to convert the given variant value to the given type.
-func Get[T any](val gd.Variant) T {
+/*func Get[T any](val gd.Variant) T {
 	converted, err := gd.ConvertToDesiredGoType(val, reflect.TypeFor[T]())
 	if err != nil {
 		panic(err)
 	}
 	return converted.Interface().(T)
-}
+}*/
 
 // Call attempts to call the given method on the given variant value with the given arguments.
-func Call(val any, name string, args ...any) any {
-	arguments := make([]gd.Variant, len(args))
+func (a Any) Call(name string, args ...Any) Any {
+	rvalue := reflect.ValueOf(a.value)
+	method := rvalue.MethodByName(name)
+	if !method.IsValid() {
+		panic("method not found: " + name)
+	}
+	arguments := make([]reflect.Value, len(args))
 	for i, arg := range args {
-		arguments[i] = gd.NewVariant(arg)
+		arguments[i] = reflect.ValueOf(arg.Interface())
 	}
-	result, err := gd.NewVariant(val).Call(gd.NewStringName(name), arguments...)
-	if err != nil {
-		panic(err)
+	results := method.Call(arguments)
+	if len(results) == 0 {
+		return Nil
 	}
-	return result.Interface()
+	return New(results[0].Interface())
 }
 
 type Type int
 
 const (
-	/*Variable is [code]null[/code].*/
-	TypeNil Type = 0
-	/*Variable is of type [bool].*/
-	TypeBool Type = 1
-	/*Variable is of type [int].*/
-	TypeInt Type = 2
-	/*Variable is of type [float].*/
-	TypeFloat Type = 3
-	/*Variable is of type [String].*/
-	TypeString Type = 4
-	/*Variable is of type [Vector2].*/
-	TypeVector2 Type = 5
-	/*Variable is of type [Vector2i].*/
-	TypeVector2i Type = 6
-	/*Variable is of type [Rect2].*/
-	TypeRect2 Type = 7
-	/*Variable is of type [Rect2i].*/
-	TypeRect2i Type = 8
-	/*Variable is of type [Vector3].*/
-	TypeVector3 Type = 9
-	/*Variable is of type [Vector3i].*/
-	TypeVector3i Type = 10
-	/*Variable is of type [Transform2D].*/
-	TypeTransform2D Type = 11
-	/*Variable is of type [Vector4].*/
-	TypeVector4 Type = 12
-	/*Variable is of type [Vector4i].*/
-	TypeVector4i Type = 13
-	/*Variable is of type [Plane].*/
-	TypePlane Type = 14
-	/*Variable is of type [Quaternion].*/
-	TypeQuaternion Type = 15
-	/*Variable is of type [AABB].*/
-	TypeAABB Type = 16
-	/*Variable is of type [Basis].*/
-	TypeBasis Type = 17
-	/*Variable is of type [Transform3D].*/
-	TypeTransform3D Type = 18
-	/*Variable is of type [Projection].*/
-	TypeProjection Type = 19
-	/*Variable is of type [Color].*/
-	TypeColor Type = 20
-	/*Variable is of type [StringName].*/
-	TypeStringName Type = 21
-	/*Variable is of type [NodePath].*/
-	TypeNodePath Type = 22
-	/*Variable is of type [RID].*/
-	TypeRID Type = 23
-	/*Variable is of type [Object].*/
-	TypeObject Type = 24
-	/*Variable is of type [Callable].*/
-	TypeCallable Type = 25
-	/*Variable is of type [Signal].*/
-	TypeSignal Type = 26
-	/*Variable is of type [Dictionary].*/
-	TypeDictionary Type = 27
-	/*Variable is of type [Array].*/
-	TypeArray Type = 28
-	/*Variable is of type [PackedByteArray].*/
-	TypePackedByteArray Type = 29
-	/*Variable is of type [PackedInt32Array].*/
-	TypePackedInt32Array Type = 30
-	/*Variable is of type [PackedInt64Array].*/
-	TypePackedInt64Array Type = 31
-	/*Variable is of type [PackedFloat32Array].*/
+	TypeNil                Type = 0
+	TypeBool               Type = 1
+	TypeInt                Type = 2
+	TypeFloat              Type = 3
+	TypeString             Type = 4
+	TypeVector2            Type = 5
+	TypeVector2i           Type = 6
+	TypeRect2              Type = 7
+	TypeRect2i             Type = 8
+	TypeVector3            Type = 9
+	TypeVector3i           Type = 10
+	TypeTransform2D        Type = 11
+	TypeVector4            Type = 12
+	TypeVector4i           Type = 13
+	TypePlane              Type = 14
+	TypeQuaternion         Type = 15
+	TypeAABB               Type = 16
+	TypeBasis              Type = 17
+	TypeTransform3D        Type = 18
+	TypeProjection         Type = 19
+	TypeColor              Type = 20
+	TypeStringName         Type = 21
+	TypeNodePath           Type = 22
+	TypeRID                Type = 23
+	TypeObject             Type = 24
+	TypeCallable           Type = 25
+	TypeSignal             Type = 26
+	TypeDictionary         Type = 27
+	TypeArray              Type = 28
+	TypePackedByteArray    Type = 29
+	TypePackedInt32Array   Type = 30
+	TypePackedInt64Array   Type = 31
 	TypePackedFloat32Array Type = 32
-	/*Variable is of type [PackedFloat64Array].*/
 	TypePackedFloat64Array Type = 33
-	/*Variable is of type [PackedStringArray].*/
-	TypePackedStringArray Type = 34
-	/*Variable is of type [PackedVector2Array].*/
+	TypePackedStringArray  Type = 34
 	TypePackedVector2Array Type = 35
-	/*Variable is of type [PackedVector3Array].*/
 	TypePackedVector3Array Type = 36
-	/*Variable is of type [PackedColorArray].*/
-	TypePackedColorArray Type = 37
-	/*Variable is of type [PackedVector4Array].*/
+	TypePackedColorArray   Type = 37
 	TypePackedVector4Array Type = 38
-	/*Represents the size of the [enum Variant.Type] enum.*/
-	TypeMax Type = 39
 )
 
-// TypeOf returns the type of the given value.
-func TypeOf(val any) Type { //gd:typeof
-	if val == nil {
+// Type returns the type of the given value.
+func (a Any) Type() Type { //gd:typeof
+	if a.value == nil {
 		return TypeNil
 	}
-	rtype := reflect.TypeOf(val)
+	rtype := reflect.TypeOf(a.value)
 	switch rtype.Kind() {
 	case reflect.Bool:
 		return TypeBool
@@ -174,7 +400,7 @@ func TypeOf(val any) Type { //gd:typeof
 				return TypePackedVector2Array
 			case rtype.Elem().ConvertibleTo(reflect.TypeFor[Vector3.XYZ]()):
 				return TypePackedVector3Array
-			case rtype.Elem().ConvertibleTo(reflect.TypeFor[gd.Color]()):
+			case rtype.Elem().ConvertibleTo(reflect.TypeFor[Color.RGBA]()):
 				return TypePackedColorArray
 			case rtype.Elem().ConvertibleTo(reflect.TypeFor[Vector4.XYZW]()):
 				return TypePackedVector4Array
@@ -213,7 +439,7 @@ func TypeOf(val any) Type { //gd:typeof
 			return TypeTransform3D
 		case rtype.ConvertibleTo(reflect.TypeFor[Projection.XYZW]()):
 			return TypeProjection
-		case rtype.ConvertibleTo(reflect.TypeFor[gd.Color]()):
+		case rtype.ConvertibleTo(reflect.TypeFor[Color.RGBA]()):
 			return TypeColor
 		}
 		return TypeDictionary
@@ -314,7 +540,7 @@ func (t Type) String() string { //gd:type_string
 }
 
 // UnmarshalText converts a formatted string that was returned by [MarshalText] to the original value.
-func UnmarshalText(s []byte) (any, error) { //gd:str_to_var
+/*func UnmarshalText(s []byte) (any, error) { //gd:str_to_var
 	return gd.StrToVar(gd.NewString(string(s))), nil
 }
 
@@ -332,7 +558,7 @@ func Hash(v any) uint32 { //gd:hash
 // Equal compares two Variants and returns true if they are equal.
 func Equal(a, b any) bool { //gd:is_same
 	return bool(gd.IsSame(gd.NewVariant(a), gd.NewVariant(b)))
-}
+}*/
 
 type Operator int
 

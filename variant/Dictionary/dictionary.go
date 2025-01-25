@@ -7,7 +7,6 @@ import (
 	"reflect"
 
 	gd "graphics.gd/internal"
-	"graphics.gd/variant"
 )
 
 // Map is an associative container that contain values referenced by unique keys.
@@ -36,7 +35,7 @@ func New[K comparable, V any]() Map[K, V] {
 // Index returns the value at the given index in the dictionary.
 func (m *Map[K, V]) Index(index K) V { //gd:Dictionary.get Dictionary[]
 	if m.proxy != (gd.Dictionary{}) {
-		return m.proxy.Index(variant.New(index)).Interface().(V)
+		return m.proxy.Index(gd.NewVariant(index)).Interface().(V)
 	}
 	if v, ok := m.value[index]; ok {
 		return v
@@ -48,7 +47,7 @@ func (m *Map[K, V]) Index(index K) V { //gd:Dictionary.get Dictionary[]
 // SetIndex sets the value at the given index in the dictionary.
 func (m *Map[K, V]) SetIndex(index K, value V) {
 	if m.proxy != (gd.Dictionary{}) {
-		m.proxy.SetIndex(variant.New(index), variant.New(value))
+		m.proxy.SetIndex(gd.NewVariant(index), gd.NewVariant(value))
 		return
 	}
 	if _, ok := m.value[index]; ok {
@@ -89,7 +88,7 @@ func Duplicate[K comparable, V any](m *Map[K, V]) Map[K, V] { //gd:Dictionary.du
 // iterate over the keys array instead.
 func (m *Map[K, V]) Erase(key K) bool { //gd:Dictionary.erase
 	if m.proxy != (gd.Dictionary{}) {
-		return bool(m.proxy.Erase(variant.New(key)))
+		return bool(m.proxy.Erase(gd.NewVariant(key)))
 	}
 	if _, ok := m.value[key]; !ok {
 		return false
@@ -108,7 +107,7 @@ func (m *Map[K, V]) Erase(key K) bool { //gd:Dictionary.erase
 // equal to value, or false if it is not found.
 func FindKey[K, V comparable](m *Map[K, V], value V) (K, bool) { //gd:Dictionary.find_key
 	if m.proxy != (gd.Dictionary{}) {
-		return m.proxy.FindKey(variant.New(value)).Interface().(K), true
+		return m.proxy.FindKey(gd.NewVariant(value)).Interface().(K), true
 	}
 	for k, v := range m.value {
 		if v == value {
@@ -123,7 +122,7 @@ func FindKey[K, V comparable](m *Map[K, V], value V) (K, bool) { //gd:Dictionary
 // If the key does not exist, it will be added with the default value.
 func (m *Map[K, V]) GetOrAdd(key K, value V) V { //gd:Dictionary.get_or_add
 	if m.proxy != (gd.Dictionary{}) {
-		return m.proxy.GetOrAdd(variant.New(key), variant.New(value)).Interface().(V)
+		return m.proxy.GetOrAdd(gd.NewVariant(key), gd.NewVariant(value)).Interface().(V)
 	}
 	if v, ok := m.value[key]; ok {
 		return v
@@ -136,7 +135,7 @@ func (m *Map[K, V]) GetOrAdd(key K, value V) V { //gd:Dictionary.get_or_add
 // Has returns true if the dictionary contains an entry with the given key.
 func (m *Map[K, V]) Has(key K) bool { //gd:Dictionary.has
 	if m.proxy != (gd.Dictionary{}) {
-		return bool(m.proxy.Has(variant.New(key)))
+		return bool(m.proxy.Has(gd.NewVariant(key)))
 	}
 	_, ok := m.value[key]
 	return ok

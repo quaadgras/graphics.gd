@@ -7,7 +7,6 @@ import (
 	ResourceClass "graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
-	"graphics.gd/variant"
 )
 
 func propertyOf(field reflect.StructField) (gd.PropertyInfo, bool) {
@@ -124,7 +123,7 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	if impl, ok := instance.Value.(interface {
 		Get(string) any
 	}); ok {
-		return variant.New(impl.Get(name.String())), true
+		return gd.NewVariant(impl.Get(name.String())), true
 	}
 	sname := name.String()
 	rvalue := reflect.ValueOf(instance.Value).Elem()
@@ -185,7 +184,7 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 		PropertyGetRevert(string) (any, bool)
 	}); ok {
 		val, ok := impl.PropertyGetRevert(name.String())
-		return variant.New(val), ok
+		return gd.NewVariant(val), ok
 	}
 	sname := name.String()
 	rtype := reflect.TypeOf(instance.Value).Elem()
