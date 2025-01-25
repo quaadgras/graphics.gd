@@ -42,7 +42,7 @@ Gets a Variant. If [param allow_objects] is [code]true[/code], decoding objects 
 Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
-func (self Instance) GetVar() any {
+func (self Instance) GetVar() any { //gd:PacketPeer.get_var
 	return any(class(self).GetVar(false).Interface())
 }
 
@@ -50,35 +50,35 @@ func (self Instance) GetVar() any {
 Sends a [Variant] as a packet. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
-func (self Instance) PutVar(v any) error {
+func (self Instance) PutVar(v any) error { //gd:PacketPeer.put_var
 	return error(gd.ToError(class(self).PutVar(gd.NewVariant(v), false)))
 }
 
 /*
 Gets a raw packet.
 */
-func (self Instance) GetPacket() []byte {
+func (self Instance) GetPacket() []byte { //gd:PacketPeer.get_packet
 	return []byte(class(self).GetPacket().Bytes())
 }
 
 /*
 Sends a raw packet.
 */
-func (self Instance) PutPacket(buffer []byte) error {
+func (self Instance) PutPacket(buffer []byte) error { //gd:PacketPeer.put_packet
 	return error(gd.ToError(class(self).PutPacket(gd.NewPackedByteSlice(buffer))))
 }
 
 /*
 Returns the error state of the last packet received (via [method get_packet] and [method get_var]).
 */
-func (self Instance) GetPacketError() error {
+func (self Instance) GetPacketError() error { //gd:PacketPeer.get_packet_error
 	return error(gd.ToError(class(self).GetPacketError()))
 }
 
 /*
 Returns the number of packets currently available in the ring-buffer.
 */
-func (self Instance) GetAvailablePacketCount() int {
+func (self Instance) GetAvailablePacketCount() int { //gd:PacketPeer.get_available_packet_count
 	return int(int(class(self).GetAvailablePacketCount()))
 }
 
@@ -115,7 +115,7 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit
-func (self class) GetVar(allow_objects bool) gd.Variant {
+func (self class) GetVar(allow_objects bool) gd.Variant { //gd:PacketPeer.get_var
 	var frame = callframe.New()
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -130,7 +130,7 @@ Sends a [Variant] as a packet. If [param full_objects] is [code]true[/code], enc
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
 //go:nosplit
-func (self class) PutVar(v gd.Variant, full_objects bool) gd.Error {
+func (self class) PutVar(v gd.Variant, full_objects bool) gd.Error { //gd:PacketPeer.put_var
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(v))
 	callframe.Arg(frame, full_objects)
@@ -145,7 +145,7 @@ func (self class) PutVar(v gd.Variant, full_objects bool) gd.Error {
 Gets a raw packet.
 */
 //go:nosplit
-func (self class) GetPacket() gd.PackedByteArray {
+func (self class) GetPacket() gd.PackedByteArray { //gd:PacketPeer.get_packet
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_packet, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -158,7 +158,7 @@ func (self class) GetPacket() gd.PackedByteArray {
 Sends a raw packet.
 */
 //go:nosplit
-func (self class) PutPacket(buffer gd.PackedByteArray) gd.Error {
+func (self class) PutPacket(buffer gd.PackedByteArray) gd.Error { //gd:PacketPeer.put_packet
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -172,7 +172,7 @@ func (self class) PutPacket(buffer gd.PackedByteArray) gd.Error {
 Returns the error state of the last packet received (via [method get_packet] and [method get_var]).
 */
 //go:nosplit
-func (self class) GetPacketError() gd.Error {
+func (self class) GetPacketError() gd.Error { //gd:PacketPeer.get_packet_error
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_packet_error, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -185,7 +185,7 @@ func (self class) GetPacketError() gd.Error {
 Returns the number of packets currently available in the ring-buffer.
 */
 //go:nosplit
-func (self class) GetAvailablePacketCount() gd.Int {
+func (self class) GetAvailablePacketCount() gd.Int { //gd:PacketPeer.get_available_packet_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_available_packet_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -195,7 +195,7 @@ func (self class) GetAvailablePacketCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) GetEncodeBufferMaxSize() gd.Int {
+func (self class) GetEncodeBufferMaxSize() gd.Int { //gd:PacketPeer.get_encode_buffer_max_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_encode_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -205,7 +205,7 @@ func (self class) GetEncodeBufferMaxSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetEncodeBufferMaxSize(max_size gd.Int) {
+func (self class) SetEncodeBufferMaxSize(max_size gd.Int) { //gd:PacketPeer.set_encode_buffer_max_size
 	var frame = callframe.New()
 	callframe.Arg(frame, max_size)
 	var r_ret = callframe.Nil
@@ -238,7 +238,7 @@ func init() {
 	gdclass.Register("PacketPeer", func(ptr gd.Object) any { return [1]gdclass.PacketPeer{*(*gdclass.PacketPeer)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

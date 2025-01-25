@@ -40,35 +40,35 @@ type Any interface {
 /*
 Returns the input port which should be connected by default when this node is created as a result of dragging a connection from an existing node to the empty space on the graph.
 */
-func (self Instance) GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) int {
+func (self Instance) GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) int { //gd:VisualShaderNode.get_default_input_port
 	return int(int(class(self).GetDefaultInputPort(atype)))
 }
 
 /*
 Sets the default [param value] for the selected input [param port].
 */
-func (self Instance) SetInputPortDefaultValue(port int, value any) {
+func (self Instance) SetInputPortDefaultValue(port int, value any) { //gd:VisualShaderNode.set_input_port_default_value
 	class(self).SetInputPortDefaultValue(gd.Int(port), gd.NewVariant(value), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
 }
 
 /*
 Returns the default value of the input [param port].
 */
-func (self Instance) GetInputPortDefaultValue(port int) any {
+func (self Instance) GetInputPortDefaultValue(port int) any { //gd:VisualShaderNode.get_input_port_default_value
 	return any(class(self).GetInputPortDefaultValue(gd.Int(port)).Interface())
 }
 
 /*
 Removes the default value of the input [param port].
 */
-func (self Instance) RemoveInputPortDefaultValue(port int) {
+func (self Instance) RemoveInputPortDefaultValue(port int) { //gd:VisualShaderNode.remove_input_port_default_value
 	class(self).RemoveInputPortDefaultValue(gd.Int(port))
 }
 
 /*
 Clears the default input ports value.
 */
-func (self Instance) ClearDefaultInputValues() {
+func (self Instance) ClearDefaultInputValues() { //gd:VisualShaderNode.clear_default_input_values
 	class(self).ClearDefaultInputValues()
 }
 
@@ -119,7 +119,7 @@ func (self Instance) SetLinkedParentGraphFrame(value int) {
 Returns the input port which should be connected by default when this node is created as a result of dragging a connection from an existing node to the empty space on the graph.
 */
 //go:nosplit
-func (self class) GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) gd.Int {
+func (self class) GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) gd.Int { //gd:VisualShaderNode.get_default_input_port
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -130,7 +130,7 @@ func (self class) GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) gd
 }
 
 //go:nosplit
-func (self class) SetOutputPortForPreview(port gd.Int) {
+func (self class) SetOutputPortForPreview(port gd.Int) { //gd:VisualShaderNode.set_output_port_for_preview
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Nil
@@ -139,7 +139,7 @@ func (self class) SetOutputPortForPreview(port gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetOutputPortForPreview() gd.Int {
+func (self class) GetOutputPortForPreview() gd.Int { //gd:VisualShaderNode.get_output_port_for_preview
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_get_output_port_for_preview, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -152,7 +152,7 @@ func (self class) GetOutputPortForPreview() gd.Int {
 Sets the default [param value] for the selected input [param port].
 */
 //go:nosplit
-func (self class) SetInputPortDefaultValue(port gd.Int, value gd.Variant, prev_value gd.Variant) {
+func (self class) SetInputPortDefaultValue(port gd.Int, value gd.Variant, prev_value gd.Variant) { //gd:VisualShaderNode.set_input_port_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(value))
@@ -166,7 +166,7 @@ func (self class) SetInputPortDefaultValue(port gd.Int, value gd.Variant, prev_v
 Returns the default value of the input [param port].
 */
 //go:nosplit
-func (self class) GetInputPortDefaultValue(port gd.Int) gd.Variant {
+func (self class) GetInputPortDefaultValue(port gd.Int) gd.Variant { //gd:VisualShaderNode.get_input_port_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -180,7 +180,7 @@ func (self class) GetInputPortDefaultValue(port gd.Int) gd.Variant {
 Removes the default value of the input [param port].
 */
 //go:nosplit
-func (self class) RemoveInputPortDefaultValue(port gd.Int) {
+func (self class) RemoveInputPortDefaultValue(port gd.Int) { //gd:VisualShaderNode.remove_input_port_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	var r_ret = callframe.Nil
@@ -192,7 +192,7 @@ func (self class) RemoveInputPortDefaultValue(port gd.Int) {
 Clears the default input ports value.
 */
 //go:nosplit
-func (self class) ClearDefaultInputValues() {
+func (self class) ClearDefaultInputValues() { //gd:VisualShaderNode.clear_default_input_values
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_clear_default_input_values, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -203,7 +203,7 @@ func (self class) ClearDefaultInputValues() {
 Sets the default input ports values using an [Array] of the form [code][index0, value0, index1, value1, ...][/code]. For example: [code][0, Vector3(0, 0, 0), 1, Vector3(0, 0, 0)][/code].
 */
 //go:nosplit
-func (self class) SetDefaultInputValues(values Array.Any) {
+func (self class) SetDefaultInputValues(values Array.Any) { //gd:VisualShaderNode.set_default_input_values
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(values)))
 	var r_ret = callframe.Nil
@@ -215,7 +215,7 @@ func (self class) SetDefaultInputValues(values Array.Any) {
 Returns an [Array] containing default values for all of the input ports of the node in the form [code][index0, value0, index1, value1, ...][/code].
 */
 //go:nosplit
-func (self class) GetDefaultInputValues() Array.Any {
+func (self class) GetDefaultInputValues() Array.Any { //gd:VisualShaderNode.get_default_input_values
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_get_default_input_values, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -225,7 +225,7 @@ func (self class) GetDefaultInputValues() Array.Any {
 }
 
 //go:nosplit
-func (self class) SetFrame(frame_ gd.Int) {
+func (self class) SetFrame(frame_ gd.Int) { //gd:VisualShaderNode.set_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Nil
@@ -234,7 +234,7 @@ func (self class) SetFrame(frame_ gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFrame() gd.Int {
+func (self class) GetFrame() gd.Int { //gd:VisualShaderNode.get_frame
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -276,7 +276,7 @@ func init() {
 	})
 }
 
-type PortType = gdclass.VisualShaderNodePortType
+type PortType = gdclass.VisualShaderNodePortType //gd:VisualShaderNode.PortType
 
 const (
 	/*Floating-point scalar. Translated to [code skip-lint]float[/code] type in shader code.*/

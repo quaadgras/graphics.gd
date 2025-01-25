@@ -40,14 +40,14 @@ type Any interface {
 /*
 Switch to a clip (by name).
 */
-func (self Instance) SwitchToClipByName(clip_name string) {
+func (self Instance) SwitchToClipByName(clip_name string) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
 	class(self).SwitchToClipByName(gd.NewStringName(clip_name))
 }
 
 /*
 Switch to a clip (by index).
 */
-func (self Instance) SwitchToClip(clip_index int) {
+func (self Instance) SwitchToClip(clip_index int) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
 	class(self).SwitchToClip(gd.Int(clip_index))
 }
 
@@ -74,7 +74,7 @@ func New() Instance {
 Switch to a clip (by name).
 */
 //go:nosplit
-func (self class) SwitchToClipByName(clip_name gd.StringName) {
+func (self class) SwitchToClipByName(clip_name gd.StringName) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(clip_name))
 	var r_ret = callframe.Nil
@@ -86,7 +86,7 @@ func (self class) SwitchToClipByName(clip_name gd.StringName) {
 Switch to a clip (by index).
 */
 //go:nosplit
-func (self class) SwitchToClip(clip_index gd.Int) {
+func (self class) SwitchToClip(clip_index gd.Int) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	var r_ret = callframe.Nil

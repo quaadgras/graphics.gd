@@ -218,21 +218,21 @@ func (Instance) _post_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Nod
 /*
 Query the value of an option. This function can only be called from those querying visibility, or processing.
 */
-func (self Instance) GetOptionValue(name string) any {
+func (self Instance) GetOptionValue(name string) any { //gd:EditorScenePostImportPlugin.get_option_value
 	return any(class(self).GetOptionValue(gd.NewStringName(name)).Interface())
 }
 
 /*
 Add a specific import option (name and default value only). This function can only be called from [method _get_import_options] and [method _get_internal_import_options].
 */
-func (self Instance) AddImportOption(name string, value any) {
+func (self Instance) AddImportOption(name string, value any) { //gd:EditorScenePostImportPlugin.add_import_option
 	class(self).AddImportOption(gd.NewString(name), gd.NewVariant(value))
 }
 
 /*
 Add a specific import option. This function can only be called from [method _get_import_options] and [method _get_internal_import_options].
 */
-func (self Instance) AddImportOptionAdvanced(atype gd.VariantType, name string, default_value any) {
+func (self Instance) AddImportOptionAdvanced(atype gd.VariantType, name string, default_value any) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
 	class(self).AddImportOptionAdvanced(atype, gd.NewString(name), gd.NewVariant(default_value), 0, gd.NewString(""), gd.Int(6))
 }
 
@@ -394,7 +394,7 @@ func (class) _post_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node))
 Query the value of an option. This function can only be called from those querying visibility, or processing.
 */
 //go:nosplit
-func (self class) GetOptionValue(name gd.StringName) gd.Variant {
+func (self class) GetOptionValue(name gd.StringName) gd.Variant { //gd:EditorScenePostImportPlugin.get_option_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -408,7 +408,7 @@ func (self class) GetOptionValue(name gd.StringName) gd.Variant {
 Add a specific import option (name and default value only). This function can only be called from [method _get_import_options] and [method _get_internal_import_options].
 */
 //go:nosplit
-func (self class) AddImportOption(name gd.String, value gd.Variant) {
+func (self class) AddImportOption(name gd.String, value gd.Variant) { //gd:EditorScenePostImportPlugin.add_import_option
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(value))
@@ -421,7 +421,7 @@ func (self class) AddImportOption(name gd.String, value gd.Variant) {
 Add a specific import option. This function can only be called from [method _get_import_options] and [method _get_internal_import_options].
 */
 //go:nosplit
-func (self class) AddImportOptionAdvanced(atype gd.VariantType, name gd.String, default_value gd.Variant, hint PropertyHint, hint_string gd.String, usage_flags gd.Int) {
+func (self class) AddImportOptionAdvanced(atype gd.VariantType, name gd.String, default_value gd.Variant, hint PropertyHint, hint_string gd.String, usage_flags gd.Int) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, pointers.Get(name))
@@ -497,7 +497,7 @@ func init() {
 	})
 }
 
-type InternalImportCategory = gdclass.EditorScenePostImportPluginInternalImportCategory
+type InternalImportCategory = gdclass.EditorScenePostImportPluginInternalImportCategory //gd:EditorScenePostImportPlugin.InternalImportCategory
 
 const (
 	InternalImportCategoryNode           InternalImportCategory = 0

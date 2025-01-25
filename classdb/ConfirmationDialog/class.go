@@ -53,7 +53,7 @@ type Any interface {
 Returns the cancel button.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetCancelButton() [1]gdclass.Button {
+func (self Instance) GetCancelButton() [1]gdclass.Button { //gd:ConfirmationDialog.get_cancel_button
 	return [1]gdclass.Button(class(self).GetCancelButton())
 }
 
@@ -88,7 +88,7 @@ Returns the cancel button.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 //go:nosplit
-func (self class) GetCancelButton() [1]gdclass.Button {
+func (self class) GetCancelButton() [1]gdclass.Button { //gd:ConfirmationDialog.get_cancel_button
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfirmationDialog.Bind_get_cancel_button, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -98,7 +98,7 @@ func (self class) GetCancelButton() [1]gdclass.Button {
 }
 
 //go:nosplit
-func (self class) SetCancelButtonText(text gd.String) {
+func (self class) SetCancelButtonText(text gd.String) { //gd:ConfirmationDialog.set_cancel_button_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetCancelButtonText(text gd.String) {
 }
 
 //go:nosplit
-func (self class) GetCancelButtonText() gd.String {
+func (self class) GetCancelButtonText() gd.String { //gd:ConfirmationDialog.get_cancel_button_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfirmationDialog.Bind_get_cancel_button_text, self.AsObject(), frame.Array(0), r_ret.Addr())

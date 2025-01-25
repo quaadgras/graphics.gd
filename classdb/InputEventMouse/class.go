@@ -85,7 +85,7 @@ func (self Instance) SetGlobalPosition(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetButtonMask(button_mask MouseButtonMask) {
+func (self class) SetButtonMask(button_mask MouseButtonMask) { //gd:InputEventMouse.set_button_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, button_mask)
 	var r_ret = callframe.Nil
@@ -94,7 +94,7 @@ func (self class) SetButtonMask(button_mask MouseButtonMask) {
 }
 
 //go:nosplit
-func (self class) GetButtonMask() MouseButtonMask {
+func (self class) GetButtonMask() MouseButtonMask { //gd:InputEventMouse.get_button_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[MouseButtonMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_get_button_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -104,7 +104,7 @@ func (self class) GetButtonMask() MouseButtonMask {
 }
 
 //go:nosplit
-func (self class) SetPosition(position gd.Vector2) {
+func (self class) SetPosition(position gd.Vector2) { //gd:InputEventMouse.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -113,7 +113,7 @@ func (self class) SetPosition(position gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector2 {
+func (self class) GetPosition() gd.Vector2 { //gd:InputEventMouse.get_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,7 +123,7 @@ func (self class) GetPosition() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetGlobalPosition(global_position gd.Vector2) {
+func (self class) SetGlobalPosition(global_position gd.Vector2) { //gd:InputEventMouse.set_global_position
 	var frame = callframe.New()
 	callframe.Arg(frame, global_position)
 	var r_ret = callframe.Nil
@@ -132,7 +132,7 @@ func (self class) SetGlobalPosition(global_position gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetGlobalPosition() gd.Vector2 {
+func (self class) GetGlobalPosition() gd.Vector2 { //gd:InputEventMouse.get_global_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_get_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())

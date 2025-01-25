@@ -102,7 +102,7 @@ func (self Instance) SetOrientation(value gdclass.PlaneMeshOrientation) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector2) {
+func (self class) SetSize(size gd.Vector2) { //gd:PlaneMesh.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -111,7 +111,7 @@ func (self class) SetSize(size gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector2 {
+func (self class) GetSize() gd.Vector2 { //gd:PlaneMesh.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -121,7 +121,7 @@ func (self class) GetSize() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetSubdivideWidth(subdivide gd.Int) {
+func (self class) SetSubdivideWidth(subdivide gd.Int) { //gd:PlaneMesh.set_subdivide_width
 	var frame = callframe.New()
 	callframe.Arg(frame, subdivide)
 	var r_ret = callframe.Nil
@@ -130,7 +130,7 @@ func (self class) SetSubdivideWidth(subdivide gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSubdivideWidth() gd.Int {
+func (self class) GetSubdivideWidth() gd.Int { //gd:PlaneMesh.get_subdivide_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_subdivide_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -140,7 +140,7 @@ func (self class) GetSubdivideWidth() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSubdivideDepth(subdivide gd.Int) {
+func (self class) SetSubdivideDepth(subdivide gd.Int) { //gd:PlaneMesh.set_subdivide_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, subdivide)
 	var r_ret = callframe.Nil
@@ -149,7 +149,7 @@ func (self class) SetSubdivideDepth(subdivide gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSubdivideDepth() gd.Int {
+func (self class) GetSubdivideDepth() gd.Int { //gd:PlaneMesh.get_subdivide_depth
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_subdivide_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -159,7 +159,7 @@ func (self class) GetSubdivideDepth() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCenterOffset(offset gd.Vector3) {
+func (self class) SetCenterOffset(offset gd.Vector3) { //gd:PlaneMesh.set_center_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -168,7 +168,7 @@ func (self class) SetCenterOffset(offset gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetCenterOffset() gd.Vector3 {
+func (self class) GetCenterOffset() gd.Vector3 { //gd:PlaneMesh.get_center_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_center_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -178,7 +178,7 @@ func (self class) GetCenterOffset() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetOrientation(orientation gdclass.PlaneMeshOrientation) {
+func (self class) SetOrientation(orientation gdclass.PlaneMeshOrientation) { //gd:PlaneMesh.set_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, orientation)
 	var r_ret = callframe.Nil
@@ -187,7 +187,7 @@ func (self class) SetOrientation(orientation gdclass.PlaneMeshOrientation) {
 }
 
 //go:nosplit
-func (self class) GetOrientation() gdclass.PlaneMeshOrientation {
+func (self class) GetOrientation() gdclass.PlaneMeshOrientation { //gd:PlaneMesh.get_orientation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.PlaneMeshOrientation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -235,7 +235,7 @@ func init() {
 	gdclass.Register("PlaneMesh", func(ptr gd.Object) any { return [1]gdclass.PlaneMesh{*(*gdclass.PlaneMesh)(unsafe.Pointer(&ptr))} })
 }
 
-type Orientation = gdclass.PlaneMeshOrientation
+type Orientation = gdclass.PlaneMeshOrientation //gd:PlaneMesh.Orientation
 
 const (
 	/*[PlaneMesh] will face the positive X-axis.*/

@@ -41,21 +41,21 @@ type Any interface {
 /*
 Sets the SPIR-V [param bytecode] that will be compiled for the specified [param version].
 */
-func (self Instance) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV) {
+func (self Instance) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV) { //gd:RDShaderFile.set_bytecode
 	class(self).SetBytecode(bytecode, gd.NewStringName(""))
 }
 
 /*
 Returns the SPIR-V intermediate representation for the specified shader [param version].
 */
-func (self Instance) GetSpirv() [1]gdclass.RDShaderSPIRV {
+func (self Instance) GetSpirv() [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
 	return [1]gdclass.RDShaderSPIRV(class(self).GetSpirv(gd.NewStringName("")))
 }
 
 /*
 Returns the list of compiled versions for this shader.
 */
-func (self Instance) GetVersionList() []string {
+func (self Instance) GetVersionList() []string { //gd:RDShaderFile.get_version_list
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetVersionList())))
 }
 
@@ -90,7 +90,7 @@ func (self Instance) SetBaseError(value string) {
 Sets the SPIR-V [param bytecode] that will be compiled for the specified [param version].
 */
 //go:nosplit
-func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version gd.StringName) {
+func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version gd.StringName) { //gd:RDShaderFile.set_bytecode
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bytecode[0])[0])
 	callframe.Arg(frame, pointers.Get(version))
@@ -103,7 +103,7 @@ func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version gd.Stri
 Returns the SPIR-V intermediate representation for the specified shader [param version].
 */
 //go:nosplit
-func (self class) GetSpirv(version gd.StringName) [1]gdclass.RDShaderSPIRV {
+func (self class) GetSpirv(version gd.StringName) [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(version))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -117,7 +117,7 @@ func (self class) GetSpirv(version gd.StringName) [1]gdclass.RDShaderSPIRV {
 Returns the list of compiled versions for this shader.
 */
 //go:nosplit
-func (self class) GetVersionList() Array.Contains[gd.StringName] {
+func (self class) GetVersionList() Array.Contains[gd.StringName] { //gd:RDShaderFile.get_version_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_version_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func (self class) GetVersionList() Array.Contains[gd.StringName] {
 }
 
 //go:nosplit
-func (self class) SetBaseError(error gd.String) {
+func (self class) SetBaseError(error gd.String) { //gd:RDShaderFile.set_base_error
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(error))
 	var r_ret = callframe.Nil
@@ -136,7 +136,7 @@ func (self class) SetBaseError(error gd.String) {
 }
 
 //go:nosplit
-func (self class) GetBaseError() gd.String {
+func (self class) GetBaseError() gd.String { //gd:RDShaderFile.get_base_error
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_base_error, self.AsObject(), frame.Array(0), r_ret.Addr())

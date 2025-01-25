@@ -103,7 +103,7 @@ func (self Instance) SetMaterial(value [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) SetRadius(radius gd.Float) {
+func (self class) SetRadius(radius gd.Float) { //gd:CSGSphere3D.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -112,7 +112,7 @@ func (self class) SetRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float {
+func (self class) GetRadius() gd.Float { //gd:CSGSphere3D.get_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGSphere3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -122,7 +122,7 @@ func (self class) GetRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRadialSegments(radial_segments gd.Int) {
+func (self class) SetRadialSegments(radial_segments gd.Int) { //gd:CSGSphere3D.set_radial_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, radial_segments)
 	var r_ret = callframe.Nil
@@ -131,7 +131,7 @@ func (self class) SetRadialSegments(radial_segments gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRadialSegments() gd.Int {
+func (self class) GetRadialSegments() gd.Int { //gd:CSGSphere3D.get_radial_segments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGSphere3D.Bind_get_radial_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -141,7 +141,7 @@ func (self class) GetRadialSegments() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetRings(rings gd.Int) {
+func (self class) SetRings(rings gd.Int) { //gd:CSGSphere3D.set_rings
 	var frame = callframe.New()
 	callframe.Arg(frame, rings)
 	var r_ret = callframe.Nil
@@ -150,7 +150,7 @@ func (self class) SetRings(rings gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRings() gd.Int {
+func (self class) GetRings() gd.Int { //gd:CSGSphere3D.get_rings
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGSphere3D.Bind_get_rings, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -160,7 +160,7 @@ func (self class) GetRings() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSmoothFaces(smooth_faces bool) {
+func (self class) SetSmoothFaces(smooth_faces bool) { //gd:CSGSphere3D.set_smooth_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, smooth_faces)
 	var r_ret = callframe.Nil
@@ -169,7 +169,7 @@ func (self class) SetSmoothFaces(smooth_faces bool) {
 }
 
 //go:nosplit
-func (self class) GetSmoothFaces() bool {
+func (self class) GetSmoothFaces() bool { //gd:CSGSphere3D.get_smooth_faces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGSphere3D.Bind_get_smooth_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -179,7 +179,7 @@ func (self class) GetSmoothFaces() bool {
 }
 
 //go:nosplit
-func (self class) SetMaterial(material [1]gdclass.Material) {
+func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGSphere3D.set_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	var r_ret = callframe.Nil
@@ -188,7 +188,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) GetMaterial() [1]gdclass.Material {
+func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGSphere3D.get_material
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGSphere3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -38,7 +38,7 @@ type Any interface {
 Gets additional arbitrary data in this [GLTFAnimation] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
-func (self Instance) GetAdditionalData(extension_name string) any {
+func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFAnimation.get_additional_data
 	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
 }
 
@@ -46,7 +46,7 @@ func (self Instance) GetAdditionalData(extension_name string) any {
 Sets additional arbitrary data in this [GLTFAnimation] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
-func (self Instance) SetAdditionalData(extension_name string, additional_data any) {
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFAnimation.set_additional_data
 	class(self).SetAdditionalData(gd.NewStringName(extension_name), gd.NewVariant(additional_data))
 }
 
@@ -86,7 +86,7 @@ func (self Instance) SetLoop(value bool) {
 }
 
 //go:nosplit
-func (self class) GetOriginalName() gd.String {
+func (self class) GetOriginalName() gd.String { //gd:GLTFAnimation.get_original_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAnimation.Bind_get_original_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -96,7 +96,7 @@ func (self class) GetOriginalName() gd.String {
 }
 
 //go:nosplit
-func (self class) SetOriginalName(original_name gd.String) {
+func (self class) SetOriginalName(original_name gd.String) { //gd:GLTFAnimation.set_original_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(original_name))
 	var r_ret = callframe.Nil
@@ -105,7 +105,7 @@ func (self class) SetOriginalName(original_name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLoop() bool {
+func (self class) GetLoop() bool { //gd:GLTFAnimation.get_loop
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAnimation.Bind_get_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -115,7 +115,7 @@ func (self class) GetLoop() bool {
 }
 
 //go:nosplit
-func (self class) SetLoop(loop bool) {
+func (self class) SetLoop(loop bool) { //gd:GLTFAnimation.set_loop
 	var frame = callframe.New()
 	callframe.Arg(frame, loop)
 	var r_ret = callframe.Nil
@@ -128,7 +128,7 @@ Gets additional arbitrary data in this [GLTFAnimation] instance. This can be use
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
 //go:nosplit
-func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
+func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant { //gd:GLTFAnimation.get_additional_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -143,7 +143,7 @@ Sets additional arbitrary data in this [GLTFAnimation] instance. This can be use
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
 //go:nosplit
-func (self class) SetAdditionalData(extension_name gd.StringName, additional_data gd.Variant) {
+func (self class) SetAdditionalData(extension_name gd.StringName, additional_data gd.Variant) { //gd:GLTFAnimation.set_additional_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	callframe.Arg(frame, pointers.Get(additional_data))

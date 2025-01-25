@@ -76,7 +76,7 @@ func (self Instance) SetHeight(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetRadius(radius gd.Float) {
+func (self class) SetRadius(radius gd.Float) { //gd:CapsuleShape3D.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -85,7 +85,7 @@ func (self class) SetRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float {
+func (self class) GetRadius() gd.Float { //gd:CapsuleShape3D.get_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CapsuleShape3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) GetRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Float) {
+func (self class) SetHeight(height gd.Float) { //gd:CapsuleShape3D.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetHeight(height gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetHeight() gd.Float {
+func (self class) GetHeight() gd.Float { //gd:CapsuleShape3D.get_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CapsuleShape3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())

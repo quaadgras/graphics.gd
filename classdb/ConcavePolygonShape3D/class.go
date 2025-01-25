@@ -82,7 +82,7 @@ func (self Instance) SetBackfaceCollision(value bool) {
 Sets the faces of the trimesh shape from an array of vertices. The [param faces] array should be composed of triples such that each triple of vertices defines a triangle.
 */
 //go:nosplit
-func (self class) SetFaces(faces gd.PackedVector3Array) {
+func (self class) SetFaces(faces gd.PackedVector3Array) { //gd:ConcavePolygonShape3D.set_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(faces))
 	var r_ret = callframe.Nil
@@ -94,7 +94,7 @@ func (self class) SetFaces(faces gd.PackedVector3Array) {
 Returns the faces of the trimesh shape as an array of vertices. The array (of length divisible by three) is naturally divided into triples; each triple of vertices defines a triangle.
 */
 //go:nosplit
-func (self class) GetFaces() gd.PackedVector3Array {
+func (self class) GetFaces() gd.PackedVector3Array { //gd:ConcavePolygonShape3D.get_faces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape3D.Bind_get_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -104,7 +104,7 @@ func (self class) GetFaces() gd.PackedVector3Array {
 }
 
 //go:nosplit
-func (self class) SetBackfaceCollisionEnabled(enabled bool) {
+func (self class) SetBackfaceCollisionEnabled(enabled bool) { //gd:ConcavePolygonShape3D.set_backface_collision_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -113,7 +113,7 @@ func (self class) SetBackfaceCollisionEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsBackfaceCollisionEnabled() bool {
+func (self class) IsBackfaceCollisionEnabled() bool { //gd:ConcavePolygonShape3D.is_backface_collision_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape3D.Bind_is_backface_collision_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -44,21 +44,21 @@ type Any interface {
 Makes the [AudioListener2D] active, setting it as the hearing point for the sounds. If there is already another active [AudioListener2D], it will be disabled.
 This method will have no effect if the [AudioListener2D] is not added to [SceneTree].
 */
-func (self Instance) MakeCurrent() {
+func (self Instance) MakeCurrent() { //gd:AudioListener2D.make_current
 	class(self).MakeCurrent()
 }
 
 /*
 Disables the [AudioListener2D]. If it's not set as current, this method will have no effect.
 */
-func (self Instance) ClearCurrent() {
+func (self Instance) ClearCurrent() { //gd:AudioListener2D.clear_current
 	class(self).ClearCurrent()
 }
 
 /*
 Returns [code]true[/code] if this [AudioListener2D] is currently active.
 */
-func (self Instance) IsCurrent() bool {
+func (self Instance) IsCurrent() bool { //gd:AudioListener2D.is_current
 	return bool(class(self).IsCurrent())
 }
 
@@ -85,7 +85,7 @@ Makes the [AudioListener2D] active, setting it as the hearing point for the soun
 This method will have no effect if the [AudioListener2D] is not added to [SceneTree].
 */
 //go:nosplit
-func (self class) MakeCurrent() {
+func (self class) MakeCurrent() { //gd:AudioListener2D.make_current
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioListener2D.Bind_make_current, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -96,7 +96,7 @@ func (self class) MakeCurrent() {
 Disables the [AudioListener2D]. If it's not set as current, this method will have no effect.
 */
 //go:nosplit
-func (self class) ClearCurrent() {
+func (self class) ClearCurrent() { //gd:AudioListener2D.clear_current
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioListener2D.Bind_clear_current, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -107,7 +107,7 @@ func (self class) ClearCurrent() {
 Returns [code]true[/code] if this [AudioListener2D] is currently active.
 */
 //go:nosplit
-func (self class) IsCurrent() bool {
+func (self class) IsCurrent() bool { //gd:AudioListener2D.is_current
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioListener2D.Bind_is_current, self.AsObject(), frame.Array(0), r_ret.Addr())

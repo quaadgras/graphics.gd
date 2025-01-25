@@ -66,7 +66,7 @@ func (self Instance) SetShortcut(value [1]gdclass.Shortcut) {
 }
 
 //go:nosplit
-func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) {
+func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:InputEventShortcut.set_shortcut
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) {
 }
 
 //go:nosplit
-func (self class) GetShortcut() [1]gdclass.Shortcut {
+func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:InputEventShortcut.get_shortcut
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventShortcut.Bind_get_shortcut, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -49,35 +49,35 @@ type Any interface {
 /*
 Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.
 */
-func (self Instance) FindWorld2d() [1]gdclass.World2D {
+func (self Instance) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world_2d
 	return [1]gdclass.World2D(class(self).FindWorld2d())
 }
 
 /*
 Returns the transform from the viewport's coordinate system to the embedder's coordinate system.
 */
-func (self Instance) GetFinalTransform() Transform2D.OriginXY {
+func (self Instance) GetFinalTransform() Transform2D.OriginXY { //gd:Viewport.get_final_transform
 	return Transform2D.OriginXY(class(self).GetFinalTransform())
 }
 
 /*
 Returns the transform from the Viewport's coordinates to the screen coordinates of the containing window manager window.
 */
-func (self Instance) GetScreenTransform() Transform2D.OriginXY {
+func (self Instance) GetScreenTransform() Transform2D.OriginXY { //gd:Viewport.get_screen_transform
 	return Transform2D.OriginXY(class(self).GetScreenTransform())
 }
 
 /*
 Returns the visible rectangle in global screen coordinates.
 */
-func (self Instance) GetVisibleRect() Rect2.PositionSize {
+func (self Instance) GetVisibleRect() Rect2.PositionSize { //gd:Viewport.get_visible_rect
 	return Rect2.PositionSize(class(self).GetVisibleRect())
 }
 
 /*
 Returns rendering statistics of the given type. See [enum RenderInfoType] and [enum RenderInfo] for options.
 */
-func (self Instance) GetRenderInfo(atype gdclass.ViewportRenderInfoType, info gdclass.ViewportRenderInfo) int {
+func (self Instance) GetRenderInfo(atype gdclass.ViewportRenderInfoType, info gdclass.ViewportRenderInfo) int { //gd:Viewport.get_render_info
 	return int(int(class(self).GetRenderInfo(atype, info)))
 }
 
@@ -92,21 +92,21 @@ func _ready():
 
 [/codeblock]
 */
-func (self Instance) GetTexture() [1]gdclass.ViewportTexture {
+func (self Instance) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
 	return [1]gdclass.ViewportTexture(class(self).GetTexture())
 }
 
 /*
 Returns the viewport's RID from the [RenderingServer].
 */
-func (self Instance) GetViewportRid() Resource.ID {
+func (self Instance) GetViewportRid() Resource.ID { //gd:Viewport.get_viewport_rid
 	return Resource.ID(class(self).GetViewportRid())
 }
 
 /*
 Helper method which calls the [code]set_text()[/code] method on the currently focused [Control], provided that it is defined (e.g. if the focused Control is [Button] or [LineEdit]).
 */
-func (self Instance) PushTextInput(text string) {
+func (self Instance) PushTextInput(text string) { //gd:Viewport.push_text_input
 	class(self).PushTextInput(gd.NewString(text))
 }
 
@@ -123,7 +123,7 @@ Calling this method will propagate calls to child nodes for following methods in
 If an earlier method marks the input as handled via [method set_input_as_handled], any later method in this list will not be called.
 If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
 */
-func (self Instance) PushInput(event [1]gdclass.InputEvent) {
+func (self Instance) PushInput(event [1]gdclass.InputEvent) { //gd:Viewport.push_input
 	class(self).PushInput(event, false)
 }
 
@@ -138,14 +138,14 @@ If an earlier method marks the input as handled via [method set_input_as_handled
 If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
 [b]Note:[/b] This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
 */
-func (self Instance) PushUnhandledInput(event [1]gdclass.InputEvent) {
+func (self Instance) PushUnhandledInput(event [1]gdclass.InputEvent) { //gd:Viewport.push_unhandled_input
 	class(self).PushUnhandledInput(event, false)
 }
 
 /*
 Returns the mouse's position in this [Viewport] using the coordinate system of this [Viewport].
 */
-func (self Instance) GetMousePosition() Vector2.XY {
+func (self Instance) GetMousePosition() Vector2.XY { //gd:Viewport.get_mouse_position
 	return Vector2.XY(class(self).GetMousePosition())
 }
 
@@ -153,21 +153,21 @@ func (self Instance) GetMousePosition() Vector2.XY {
 Moves the mouse pointer to the specified position in this [Viewport] using the coordinate system of this [Viewport].
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
-func (self Instance) WarpMouse(position Vector2.XY) {
+func (self Instance) WarpMouse(position Vector2.XY) { //gd:Viewport.warp_mouse
 	class(self).WarpMouse(gd.Vector2(position))
 }
 
 /*
 Force instantly updating the display based on the current mouse cursor position. This includes updating the mouse cursor shape and sending necessary [signal Control.mouse_entered], [signal CollisionObject2D.mouse_entered], [signal CollisionObject3D.mouse_entered] and [signal Window.mouse_entered] signals and their respective [code]mouse_exited[/code] counterparts.
 */
-func (self Instance) UpdateMouseCursorState() {
+func (self Instance) UpdateMouseCursorState() { //gd:Viewport.update_mouse_cursor_state
 	class(self).UpdateMouseCursorState()
 }
 
 /*
 Returns the drag data from the GUI, that was previously returned by [method Control._get_drag_data].
 */
-func (self Instance) GuiGetDragData() any {
+func (self Instance) GuiGetDragData() any { //gd:Viewport.gui_get_drag_data
 	return any(class(self).GuiGetDragData().Interface())
 }
 
@@ -175,28 +175,28 @@ func (self Instance) GuiGetDragData() any {
 Returns [code]true[/code] if the viewport is currently performing a drag operation.
 Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFICATION_DRAG_END] when you prefer polling the value.
 */
-func (self Instance) GuiIsDragging() bool {
+func (self Instance) GuiIsDragging() bool { //gd:Viewport.gui_is_dragging
 	return bool(class(self).GuiIsDragging())
 }
 
 /*
 Returns [code]true[/code] if the drag operation is successful.
 */
-func (self Instance) GuiIsDragSuccessful() bool {
+func (self Instance) GuiIsDragSuccessful() bool { //gd:Viewport.gui_is_drag_successful
 	return bool(class(self).GuiIsDragSuccessful())
 }
 
 /*
 Removes the focus from the currently focused [Control] within this viewport. If no [Control] has the focus, does nothing.
 */
-func (self Instance) GuiReleaseFocus() {
+func (self Instance) GuiReleaseFocus() { //gd:Viewport.gui_release_focus
 	class(self).GuiReleaseFocus()
 }
 
 /*
 Returns the [Control] having the focus within this viewport. If no [Control] has the focus, returns null.
 */
-func (self Instance) GuiGetFocusOwner() [1]gdclass.Control {
+func (self Instance) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
 	return [1]gdclass.Control(class(self).GuiGetFocusOwner())
 }
 
@@ -204,7 +204,7 @@ func (self Instance) GuiGetFocusOwner() [1]gdclass.Control {
 Returns the [Control] that the mouse is currently hovering over in this viewport. If no [Control] has the cursor, returns null.
 Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [method Node.is_ancestor_of] to find if the mouse is within a control tree.
 */
-func (self Instance) GuiGetHoveredControl() [1]gdclass.Control {
+func (self Instance) GuiGetHoveredControl() [1]gdclass.Control { //gd:Viewport.gui_get_hovered_control
 	return [1]gdclass.Control(class(self).GuiGetHoveredControl())
 }
 
@@ -212,7 +212,7 @@ func (self Instance) GuiGetHoveredControl() [1]gdclass.Control {
 Stops the input from propagating further down the [SceneTree].
 [b]Note:[/b] This does not affect the methods in [Input], only the way events are propagated.
 */
-func (self Instance) SetInputAsHandled() {
+func (self Instance) SetInputAsHandled() { //gd:Viewport.set_input_as_handled
 	class(self).SetInputAsHandled()
 }
 
@@ -221,7 +221,7 @@ Returns whether the current [InputEvent] has been handled. Input events are not 
 This is usually done as part of input handling methods like [method Node._input], [method Control._gui_input] or others, as well as in corresponding signal handlers.
 If [member handle_input_locally] is set to [code]false[/code], this method will try finding the first parent viewport that is set to handle input locally, and return its value for [method is_input_handled] instead.
 */
-func (self Instance) IsInputHandled() bool {
+func (self Instance) IsInputHandled() bool { //gd:Viewport.is_input_handled
 	return bool(class(self).IsInputHandled())
 }
 
@@ -229,42 +229,42 @@ func (self Instance) IsInputHandled() bool {
 Returns a list of the visible embedded [Window]s inside the viewport.
 [b]Note:[/b] [Window]s inside other viewports will not be listed.
 */
-func (self Instance) GetEmbeddedSubwindows() [][1]gdclass.Window {
+func (self Instance) GetEmbeddedSubwindows() [][1]gdclass.Window { //gd:Viewport.get_embedded_subwindows
 	return [][1]gdclass.Window(gd.ArrayAs[[][1]gdclass.Window](gd.InternalArray(class(self).GetEmbeddedSubwindows())))
 }
 
 /*
 Set/clear individual bits on the rendering layer mask. This simplifies editing this [Viewport]'s layers.
 */
-func (self Instance) SetCanvasCullMaskBit(layer int, enable bool) {
+func (self Instance) SetCanvasCullMaskBit(layer int, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
 	class(self).SetCanvasCullMaskBit(gd.Int(layer), enable)
 }
 
 /*
 Returns an individual bit on the rendering layer mask.
 */
-func (self Instance) GetCanvasCullMaskBit(layer int) bool {
+func (self Instance) GetCanvasCullMaskBit(layer int) bool { //gd:Viewport.get_canvas_cull_mask_bit
 	return bool(class(self).GetCanvasCullMaskBit(gd.Int(layer)))
 }
 
 /*
 Returns the currently active 2D camera. Returns null if there are no active cameras.
 */
-func (self Instance) GetCamera2d() [1]gdclass.Camera2D {
+func (self Instance) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
 	return [1]gdclass.Camera2D(class(self).GetCamera2d())
 }
 
 /*
 Returns the first valid [World3D] for this viewport, searching the [member world_3d] property of itself and any Viewport ancestor.
 */
-func (self Instance) FindWorld3d() [1]gdclass.World3D {
+func (self Instance) FindWorld3d() [1]gdclass.World3D { //gd:Viewport.find_world_3d
 	return [1]gdclass.World3D(class(self).FindWorld3d())
 }
 
 /*
 Returns the currently active 3D camera.
 */
-func (self Instance) GetCamera3d() [1]gdclass.Camera3D {
+func (self Instance) GetCamera3d() [1]gdclass.Camera3D { //gd:Viewport.get_camera_3d
 	return [1]gdclass.Camera3D(class(self).GetCamera3d())
 }
 
@@ -655,7 +655,7 @@ func (self Instance) SetCanvasCullMask(value int) {
 }
 
 //go:nosplit
-func (self class) SetWorld2d(world_2d [1]gdclass.World2D) {
+func (self class) SetWorld2d(world_2d [1]gdclass.World2D) { //gd:Viewport.set_world_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(world_2d[0])[0])
 	var r_ret = callframe.Nil
@@ -664,7 +664,7 @@ func (self class) SetWorld2d(world_2d [1]gdclass.World2D) {
 }
 
 //go:nosplit
-func (self class) GetWorld2d() [1]gdclass.World2D {
+func (self class) GetWorld2d() [1]gdclass.World2D { //gd:Viewport.get_world_2d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -677,7 +677,7 @@ func (self class) GetWorld2d() [1]gdclass.World2D {
 Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.
 */
 //go:nosplit
-func (self class) FindWorld2d() [1]gdclass.World2D {
+func (self class) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world_2d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_find_world_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -687,7 +687,7 @@ func (self class) FindWorld2d() [1]gdclass.World2D {
 }
 
 //go:nosplit
-func (self class) SetCanvasTransform(xform gd.Transform2D) {
+func (self class) SetCanvasTransform(xform gd.Transform2D) { //gd:Viewport.set_canvas_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	var r_ret = callframe.Nil
@@ -696,7 +696,7 @@ func (self class) SetCanvasTransform(xform gd.Transform2D) {
 }
 
 //go:nosplit
-func (self class) GetCanvasTransform() gd.Transform2D {
+func (self class) GetCanvasTransform() gd.Transform2D { //gd:Viewport.get_canvas_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -706,7 +706,7 @@ func (self class) GetCanvasTransform() gd.Transform2D {
 }
 
 //go:nosplit
-func (self class) SetGlobalCanvasTransform(xform gd.Transform2D) {
+func (self class) SetGlobalCanvasTransform(xform gd.Transform2D) { //gd:Viewport.set_global_canvas_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	var r_ret = callframe.Nil
@@ -715,7 +715,7 @@ func (self class) SetGlobalCanvasTransform(xform gd.Transform2D) {
 }
 
 //go:nosplit
-func (self class) GetGlobalCanvasTransform() gd.Transform2D {
+func (self class) GetGlobalCanvasTransform() gd.Transform2D { //gd:Viewport.get_global_canvas_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_global_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -728,7 +728,7 @@ func (self class) GetGlobalCanvasTransform() gd.Transform2D {
 Returns the transform from the viewport's coordinate system to the embedder's coordinate system.
 */
 //go:nosplit
-func (self class) GetFinalTransform() gd.Transform2D {
+func (self class) GetFinalTransform() gd.Transform2D { //gd:Viewport.get_final_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_final_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -741,7 +741,7 @@ func (self class) GetFinalTransform() gd.Transform2D {
 Returns the transform from the Viewport's coordinates to the screen coordinates of the containing window manager window.
 */
 //go:nosplit
-func (self class) GetScreenTransform() gd.Transform2D {
+func (self class) GetScreenTransform() gd.Transform2D { //gd:Viewport.get_screen_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_screen_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -754,7 +754,7 @@ func (self class) GetScreenTransform() gd.Transform2D {
 Returns the visible rectangle in global screen coordinates.
 */
 //go:nosplit
-func (self class) GetVisibleRect() gd.Rect2 {
+func (self class) GetVisibleRect() gd.Rect2 { //gd:Viewport.get_visible_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_visible_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -764,7 +764,7 @@ func (self class) GetVisibleRect() gd.Rect2 {
 }
 
 //go:nosplit
-func (self class) SetTransparentBackground(enable bool) {
+func (self class) SetTransparentBackground(enable bool) { //gd:Viewport.set_transparent_background
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -773,7 +773,7 @@ func (self class) SetTransparentBackground(enable bool) {
 }
 
 //go:nosplit
-func (self class) HasTransparentBackground() bool {
+func (self class) HasTransparentBackground() bool { //gd:Viewport.has_transparent_background
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_has_transparent_background, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -783,7 +783,7 @@ func (self class) HasTransparentBackground() bool {
 }
 
 //go:nosplit
-func (self class) SetUseHdr2d(enable bool) {
+func (self class) SetUseHdr2d(enable bool) { //gd:Viewport.set_use_hdr_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -792,7 +792,7 @@ func (self class) SetUseHdr2d(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingHdr2d() bool {
+func (self class) IsUsingHdr2d() bool { //gd:Viewport.is_using_hdr_2d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_hdr_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -802,7 +802,7 @@ func (self class) IsUsingHdr2d() bool {
 }
 
 //go:nosplit
-func (self class) SetMsaa2d(msaa gdclass.ViewportMSAA) {
+func (self class) SetMsaa2d(msaa gdclass.ViewportMSAA) { //gd:Viewport.set_msaa_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, msaa)
 	var r_ret = callframe.Nil
@@ -811,7 +811,7 @@ func (self class) SetMsaa2d(msaa gdclass.ViewportMSAA) {
 }
 
 //go:nosplit
-func (self class) GetMsaa2d() gdclass.ViewportMSAA {
+func (self class) GetMsaa2d() gdclass.ViewportMSAA { //gd:Viewport.get_msaa_2d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportMSAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_msaa_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -821,7 +821,7 @@ func (self class) GetMsaa2d() gdclass.ViewportMSAA {
 }
 
 //go:nosplit
-func (self class) SetMsaa3d(msaa gdclass.ViewportMSAA) {
+func (self class) SetMsaa3d(msaa gdclass.ViewportMSAA) { //gd:Viewport.set_msaa_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, msaa)
 	var r_ret = callframe.Nil
@@ -830,7 +830,7 @@ func (self class) SetMsaa3d(msaa gdclass.ViewportMSAA) {
 }
 
 //go:nosplit
-func (self class) GetMsaa3d() gdclass.ViewportMSAA {
+func (self class) GetMsaa3d() gdclass.ViewportMSAA { //gd:Viewport.get_msaa_3d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportMSAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -840,7 +840,7 @@ func (self class) GetMsaa3d() gdclass.ViewportMSAA {
 }
 
 //go:nosplit
-func (self class) SetScreenSpaceAa(screen_space_aa gdclass.ViewportScreenSpaceAA) {
+func (self class) SetScreenSpaceAa(screen_space_aa gdclass.ViewportScreenSpaceAA) { //gd:Viewport.set_screen_space_aa
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_space_aa)
 	var r_ret = callframe.Nil
@@ -849,7 +849,7 @@ func (self class) SetScreenSpaceAa(screen_space_aa gdclass.ViewportScreenSpaceAA
 }
 
 //go:nosplit
-func (self class) GetScreenSpaceAa() gdclass.ViewportScreenSpaceAA {
+func (self class) GetScreenSpaceAa() gdclass.ViewportScreenSpaceAA { //gd:Viewport.get_screen_space_aa
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportScreenSpaceAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -859,7 +859,7 @@ func (self class) GetScreenSpaceAa() gdclass.ViewportScreenSpaceAA {
 }
 
 //go:nosplit
-func (self class) SetUseTaa(enable bool) {
+func (self class) SetUseTaa(enable bool) { //gd:Viewport.set_use_taa
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -868,7 +868,7 @@ func (self class) SetUseTaa(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingTaa() bool {
+func (self class) IsUsingTaa() bool { //gd:Viewport.is_using_taa
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_taa, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -878,7 +878,7 @@ func (self class) IsUsingTaa() bool {
 }
 
 //go:nosplit
-func (self class) SetUseDebanding(enable bool) {
+func (self class) SetUseDebanding(enable bool) { //gd:Viewport.set_use_debanding
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -887,7 +887,7 @@ func (self class) SetUseDebanding(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingDebanding() bool {
+func (self class) IsUsingDebanding() bool { //gd:Viewport.is_using_debanding
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_debanding, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -897,7 +897,7 @@ func (self class) IsUsingDebanding() bool {
 }
 
 //go:nosplit
-func (self class) SetUseOcclusionCulling(enable bool) {
+func (self class) SetUseOcclusionCulling(enable bool) { //gd:Viewport.set_use_occlusion_culling
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -906,7 +906,7 @@ func (self class) SetUseOcclusionCulling(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingOcclusionCulling() bool {
+func (self class) IsUsingOcclusionCulling() bool { //gd:Viewport.is_using_occlusion_culling
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_occlusion_culling, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -916,7 +916,7 @@ func (self class) IsUsingOcclusionCulling() bool {
 }
 
 //go:nosplit
-func (self class) SetDebugDraw(debug_draw gdclass.ViewportDebugDraw) {
+func (self class) SetDebugDraw(debug_draw gdclass.ViewportDebugDraw) { //gd:Viewport.set_debug_draw
 	var frame = callframe.New()
 	callframe.Arg(frame, debug_draw)
 	var r_ret = callframe.Nil
@@ -925,7 +925,7 @@ func (self class) SetDebugDraw(debug_draw gdclass.ViewportDebugDraw) {
 }
 
 //go:nosplit
-func (self class) GetDebugDraw() gdclass.ViewportDebugDraw {
+func (self class) GetDebugDraw() gdclass.ViewportDebugDraw { //gd:Viewport.get_debug_draw
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportDebugDraw](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_debug_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -938,7 +938,7 @@ func (self class) GetDebugDraw() gdclass.ViewportDebugDraw {
 Returns rendering statistics of the given type. See [enum RenderInfoType] and [enum RenderInfo] for options.
 */
 //go:nosplit
-func (self class) GetRenderInfo(atype gdclass.ViewportRenderInfoType, info gdclass.ViewportRenderInfo) gd.Int {
+func (self class) GetRenderInfo(atype gdclass.ViewportRenderInfoType, info gdclass.ViewportRenderInfo) gd.Int { //gd:Viewport.get_render_info
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, info)
@@ -959,7 +959,7 @@ func _ready():
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.ViewportTexture {
+func (self class) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -969,7 +969,7 @@ func (self class) GetTexture() [1]gdclass.ViewportTexture {
 }
 
 //go:nosplit
-func (self class) SetPhysicsObjectPicking(enable bool) {
+func (self class) SetPhysicsObjectPicking(enable bool) { //gd:Viewport.set_physics_object_picking
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -978,7 +978,7 @@ func (self class) SetPhysicsObjectPicking(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetPhysicsObjectPicking() bool {
+func (self class) GetPhysicsObjectPicking() bool { //gd:Viewport.get_physics_object_picking
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_physics_object_picking, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -988,7 +988,7 @@ func (self class) GetPhysicsObjectPicking() bool {
 }
 
 //go:nosplit
-func (self class) SetPhysicsObjectPickingSort(enable bool) {
+func (self class) SetPhysicsObjectPickingSort(enable bool) { //gd:Viewport.set_physics_object_picking_sort
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -997,7 +997,7 @@ func (self class) SetPhysicsObjectPickingSort(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetPhysicsObjectPickingSort() bool {
+func (self class) GetPhysicsObjectPickingSort() bool { //gd:Viewport.get_physics_object_picking_sort
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_physics_object_picking_sort, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1007,7 +1007,7 @@ func (self class) GetPhysicsObjectPickingSort() bool {
 }
 
 //go:nosplit
-func (self class) SetPhysicsObjectPickingFirstOnly(enable bool) {
+func (self class) SetPhysicsObjectPickingFirstOnly(enable bool) { //gd:Viewport.set_physics_object_picking_first_only
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1016,7 +1016,7 @@ func (self class) SetPhysicsObjectPickingFirstOnly(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetPhysicsObjectPickingFirstOnly() bool {
+func (self class) GetPhysicsObjectPickingFirstOnly() bool { //gd:Viewport.get_physics_object_picking_first_only
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_physics_object_picking_first_only, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1029,7 +1029,7 @@ func (self class) GetPhysicsObjectPickingFirstOnly() bool {
 Returns the viewport's RID from the [RenderingServer].
 */
 //go:nosplit
-func (self class) GetViewportRid() gd.RID {
+func (self class) GetViewportRid() gd.RID { //gd:Viewport.get_viewport_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_viewport_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1042,7 +1042,7 @@ func (self class) GetViewportRid() gd.RID {
 Helper method which calls the [code]set_text()[/code] method on the currently focused [Control], provided that it is defined (e.g. if the focused Control is [Button] or [LineEdit]).
 */
 //go:nosplit
-func (self class) PushTextInput(text gd.String) {
+func (self class) PushTextInput(text gd.String) { //gd:Viewport.push_text_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Nil
@@ -1064,7 +1064,7 @@ If an earlier method marks the input as handled via [method set_input_as_handled
 If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
 */
 //go:nosplit
-func (self class) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) {
+func (self class) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(event[0])[0])
 	callframe.Arg(frame, in_local_coords)
@@ -1085,7 +1085,7 @@ If none of the methods handle the event and [member physics_object_picking] is [
 [b]Note:[/b] This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
 */
 //go:nosplit
-func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coords bool) {
+func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_unhandled_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(event[0])[0])
 	callframe.Arg(frame, in_local_coords)
@@ -1098,7 +1098,7 @@ func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coord
 Returns the mouse's position in this [Viewport] using the coordinate system of this [Viewport].
 */
 //go:nosplit
-func (self class) GetMousePosition() gd.Vector2 {
+func (self class) GetMousePosition() gd.Vector2 { //gd:Viewport.get_mouse_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_mouse_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1112,7 +1112,7 @@ Moves the mouse pointer to the specified position in this [Viewport] using the c
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 //go:nosplit
-func (self class) WarpMouse(position gd.Vector2) {
+func (self class) WarpMouse(position gd.Vector2) { //gd:Viewport.warp_mouse
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -1124,7 +1124,7 @@ func (self class) WarpMouse(position gd.Vector2) {
 Force instantly updating the display based on the current mouse cursor position. This includes updating the mouse cursor shape and sending necessary [signal Control.mouse_entered], [signal CollisionObject2D.mouse_entered], [signal CollisionObject3D.mouse_entered] and [signal Window.mouse_entered] signals and their respective [code]mouse_exited[/code] counterparts.
 */
 //go:nosplit
-func (self class) UpdateMouseCursorState() {
+func (self class) UpdateMouseCursorState() { //gd:Viewport.update_mouse_cursor_state
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_update_mouse_cursor_state, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1135,7 +1135,7 @@ func (self class) UpdateMouseCursorState() {
 Returns the drag data from the GUI, that was previously returned by [method Control._get_drag_data].
 */
 //go:nosplit
-func (self class) GuiGetDragData() gd.Variant {
+func (self class) GuiGetDragData() gd.Variant { //gd:Viewport.gui_get_drag_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_drag_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1149,7 +1149,7 @@ Returns [code]true[/code] if the viewport is currently performing a drag operati
 Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFICATION_DRAG_END] when you prefer polling the value.
 */
 //go:nosplit
-func (self class) GuiIsDragging() bool {
+func (self class) GuiIsDragging() bool { //gd:Viewport.gui_is_dragging
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_is_dragging, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1162,7 +1162,7 @@ func (self class) GuiIsDragging() bool {
 Returns [code]true[/code] if the drag operation is successful.
 */
 //go:nosplit
-func (self class) GuiIsDragSuccessful() bool {
+func (self class) GuiIsDragSuccessful() bool { //gd:Viewport.gui_is_drag_successful
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_is_drag_successful, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1175,7 +1175,7 @@ func (self class) GuiIsDragSuccessful() bool {
 Removes the focus from the currently focused [Control] within this viewport. If no [Control] has the focus, does nothing.
 */
 //go:nosplit
-func (self class) GuiReleaseFocus() {
+func (self class) GuiReleaseFocus() { //gd:Viewport.gui_release_focus
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_release_focus, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1186,7 +1186,7 @@ func (self class) GuiReleaseFocus() {
 Returns the [Control] having the focus within this viewport. If no [Control] has the focus, returns null.
 */
 //go:nosplit
-func (self class) GuiGetFocusOwner() [1]gdclass.Control {
+func (self class) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_focus_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1200,7 +1200,7 @@ Returns the [Control] that the mouse is currently hovering over in this viewport
 Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [method Node.is_ancestor_of] to find if the mouse is within a control tree.
 */
 //go:nosplit
-func (self class) GuiGetHoveredControl() [1]gdclass.Control {
+func (self class) GuiGetHoveredControl() [1]gdclass.Control { //gd:Viewport.gui_get_hovered_control
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_gui_get_hovered_control, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1210,7 +1210,7 @@ func (self class) GuiGetHoveredControl() [1]gdclass.Control {
 }
 
 //go:nosplit
-func (self class) SetDisableInput(disable bool) {
+func (self class) SetDisableInput(disable bool) { //gd:Viewport.set_disable_input
 	var frame = callframe.New()
 	callframe.Arg(frame, disable)
 	var r_ret = callframe.Nil
@@ -1219,7 +1219,7 @@ func (self class) SetDisableInput(disable bool) {
 }
 
 //go:nosplit
-func (self class) IsInputDisabled() bool {
+func (self class) IsInputDisabled() bool { //gd:Viewport.is_input_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_input_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1229,7 +1229,7 @@ func (self class) IsInputDisabled() bool {
 }
 
 //go:nosplit
-func (self class) SetPositionalShadowAtlasSize(size gd.Int) {
+func (self class) SetPositionalShadowAtlasSize(size gd.Int) { //gd:Viewport.set_positional_shadow_atlas_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -1238,7 +1238,7 @@ func (self class) SetPositionalShadowAtlasSize(size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPositionalShadowAtlasSize() gd.Int {
+func (self class) GetPositionalShadowAtlasSize() gd.Int { //gd:Viewport.get_positional_shadow_atlas_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1248,7 +1248,7 @@ func (self class) GetPositionalShadowAtlasSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetPositionalShadowAtlas16Bits(enable bool) {
+func (self class) SetPositionalShadowAtlas16Bits(enable bool) { //gd:Viewport.set_positional_shadow_atlas_16_bits
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1257,7 +1257,7 @@ func (self class) SetPositionalShadowAtlas16Bits(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetPositionalShadowAtlas16Bits() bool {
+func (self class) GetPositionalShadowAtlas16Bits() bool { //gd:Viewport.get_positional_shadow_atlas_16_bits
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_16_bits, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1267,7 +1267,7 @@ func (self class) GetPositionalShadowAtlas16Bits() bool {
 }
 
 //go:nosplit
-func (self class) SetSnapControlsToPixels(enabled bool) {
+func (self class) SetSnapControlsToPixels(enabled bool) { //gd:Viewport.set_snap_controls_to_pixels
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1276,7 +1276,7 @@ func (self class) SetSnapControlsToPixels(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsSnapControlsToPixelsEnabled() bool {
+func (self class) IsSnapControlsToPixelsEnabled() bool { //gd:Viewport.is_snap_controls_to_pixels_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_snap_controls_to_pixels_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1286,7 +1286,7 @@ func (self class) IsSnapControlsToPixelsEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetSnap2dTransformsToPixel(enabled bool) {
+func (self class) SetSnap2dTransformsToPixel(enabled bool) { //gd:Viewport.set_snap_2d_transforms_to_pixel
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1295,7 +1295,7 @@ func (self class) SetSnap2dTransformsToPixel(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsSnap2dTransformsToPixelEnabled() bool {
+func (self class) IsSnap2dTransformsToPixelEnabled() bool { //gd:Viewport.is_snap_2d_transforms_to_pixel_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_snap_2d_transforms_to_pixel_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1305,7 +1305,7 @@ func (self class) IsSnap2dTransformsToPixelEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetSnap2dVerticesToPixel(enabled bool) {
+func (self class) SetSnap2dVerticesToPixel(enabled bool) { //gd:Viewport.set_snap_2d_vertices_to_pixel
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1314,7 +1314,7 @@ func (self class) SetSnap2dVerticesToPixel(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsSnap2dVerticesToPixelEnabled() bool {
+func (self class) IsSnap2dVerticesToPixelEnabled() bool { //gd:Viewport.is_snap_2d_vertices_to_pixel_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_snap_2d_vertices_to_pixel_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1327,7 +1327,7 @@ func (self class) IsSnap2dVerticesToPixelEnabled() bool {
 Sets the number of subdivisions to use in the specified quadrant. A higher number of subdivisions allows you to have more shadows in the scene at once, but reduces the quality of the shadows. A good practice is to have quadrants with a varying number of subdivisions and to have as few subdivisions as possible.
 */
 //go:nosplit
-func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int, subdiv gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv) {
+func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int, subdiv gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv) { //gd:Viewport.set_positional_shadow_atlas_quadrant_subdiv
 	var frame = callframe.New()
 	callframe.Arg(frame, quadrant)
 	callframe.Arg(frame, subdiv)
@@ -1340,7 +1340,7 @@ func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int, subdiv
 Returns the positional shadow atlas quadrant subdivision of the specified quadrant.
 */
 //go:nosplit
-func (self class) GetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int) gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv {
+func (self class) GetPositionalShadowAtlasQuadrantSubdiv(quadrant gd.Int) gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.get_positional_shadow_atlas_quadrant_subdiv
 	var frame = callframe.New()
 	callframe.Arg(frame, quadrant)
 	var r_ret = callframe.Ret[gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv](frame)
@@ -1355,7 +1355,7 @@ Stops the input from propagating further down the [SceneTree].
 [b]Note:[/b] This does not affect the methods in [Input], only the way events are propagated.
 */
 //go:nosplit
-func (self class) SetInputAsHandled() {
+func (self class) SetInputAsHandled() { //gd:Viewport.set_input_as_handled
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_set_input_as_handled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1368,7 +1368,7 @@ This is usually done as part of input handling methods like [method Node._input]
 If [member handle_input_locally] is set to [code]false[/code], this method will try finding the first parent viewport that is set to handle input locally, and return its value for [method is_input_handled] instead.
 */
 //go:nosplit
-func (self class) IsInputHandled() bool {
+func (self class) IsInputHandled() bool { //gd:Viewport.is_input_handled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_input_handled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1378,7 +1378,7 @@ func (self class) IsInputHandled() bool {
 }
 
 //go:nosplit
-func (self class) SetHandleInputLocally(enable bool) {
+func (self class) SetHandleInputLocally(enable bool) { //gd:Viewport.set_handle_input_locally
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1387,7 +1387,7 @@ func (self class) SetHandleInputLocally(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsHandlingInputLocally() bool {
+func (self class) IsHandlingInputLocally() bool { //gd:Viewport.is_handling_input_locally
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_handling_input_locally, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1397,7 +1397,7 @@ func (self class) IsHandlingInputLocally() bool {
 }
 
 //go:nosplit
-func (self class) SetDefaultCanvasItemTextureFilter(mode gdclass.ViewportDefaultCanvasItemTextureFilter) {
+func (self class) SetDefaultCanvasItemTextureFilter(mode gdclass.ViewportDefaultCanvasItemTextureFilter) { //gd:Viewport.set_default_canvas_item_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1406,7 +1406,7 @@ func (self class) SetDefaultCanvasItemTextureFilter(mode gdclass.ViewportDefault
 }
 
 //go:nosplit
-func (self class) GetDefaultCanvasItemTextureFilter() gdclass.ViewportDefaultCanvasItemTextureFilter {
+func (self class) GetDefaultCanvasItemTextureFilter() gdclass.ViewportDefaultCanvasItemTextureFilter { //gd:Viewport.get_default_canvas_item_texture_filter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportDefaultCanvasItemTextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1416,7 +1416,7 @@ func (self class) GetDefaultCanvasItemTextureFilter() gdclass.ViewportDefaultCan
 }
 
 //go:nosplit
-func (self class) SetEmbeddingSubwindows(enable bool) {
+func (self class) SetEmbeddingSubwindows(enable bool) { //gd:Viewport.set_embedding_subwindows
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1425,7 +1425,7 @@ func (self class) SetEmbeddingSubwindows(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsEmbeddingSubwindows() bool {
+func (self class) IsEmbeddingSubwindows() bool { //gd:Viewport.is_embedding_subwindows
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_embedding_subwindows, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1439,7 +1439,7 @@ Returns a list of the visible embedded [Window]s inside the viewport.
 [b]Note:[/b] [Window]s inside other viewports will not be listed.
 */
 //go:nosplit
-func (self class) GetEmbeddedSubwindows() Array.Contains[[1]gdclass.Window] {
+func (self class) GetEmbeddedSubwindows() Array.Contains[[1]gdclass.Window] { //gd:Viewport.get_embedded_subwindows
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_embedded_subwindows, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1449,7 +1449,7 @@ func (self class) GetEmbeddedSubwindows() Array.Contains[[1]gdclass.Window] {
 }
 
 //go:nosplit
-func (self class) SetCanvasCullMask(mask gd.Int) {
+func (self class) SetCanvasCullMask(mask gd.Int) { //gd:Viewport.set_canvas_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -1458,7 +1458,7 @@ func (self class) SetCanvasCullMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCanvasCullMask() gd.Int {
+func (self class) GetCanvasCullMask() gd.Int { //gd:Viewport.get_canvas_cull_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_canvas_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1471,7 +1471,7 @@ func (self class) GetCanvasCullMask() gd.Int {
 Set/clear individual bits on the rendering layer mask. This simplifies editing this [Viewport]'s layers.
 */
 //go:nosplit
-func (self class) SetCanvasCullMaskBit(layer gd.Int, enable bool) {
+func (self class) SetCanvasCullMaskBit(layer gd.Int, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, enable)
@@ -1484,7 +1484,7 @@ func (self class) SetCanvasCullMaskBit(layer gd.Int, enable bool) {
 Returns an individual bit on the rendering layer mask.
 */
 //go:nosplit
-func (self class) GetCanvasCullMaskBit(layer gd.Int) bool {
+func (self class) GetCanvasCullMaskBit(layer gd.Int) bool { //gd:Viewport.get_canvas_cull_mask_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1495,7 +1495,7 @@ func (self class) GetCanvasCullMaskBit(layer gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) SetDefaultCanvasItemTextureRepeat(mode gdclass.ViewportDefaultCanvasItemTextureRepeat) {
+func (self class) SetDefaultCanvasItemTextureRepeat(mode gdclass.ViewportDefaultCanvasItemTextureRepeat) { //gd:Viewport.set_default_canvas_item_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1504,7 +1504,7 @@ func (self class) SetDefaultCanvasItemTextureRepeat(mode gdclass.ViewportDefault
 }
 
 //go:nosplit
-func (self class) GetDefaultCanvasItemTextureRepeat() gdclass.ViewportDefaultCanvasItemTextureRepeat {
+func (self class) GetDefaultCanvasItemTextureRepeat() gdclass.ViewportDefaultCanvasItemTextureRepeat { //gd:Viewport.get_default_canvas_item_texture_repeat
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportDefaultCanvasItemTextureRepeat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1514,7 +1514,7 @@ func (self class) GetDefaultCanvasItemTextureRepeat() gdclass.ViewportDefaultCan
 }
 
 //go:nosplit
-func (self class) SetSdfOversize(oversize gdclass.ViewportSDFOversize) {
+func (self class) SetSdfOversize(oversize gdclass.ViewportSDFOversize) { //gd:Viewport.set_sdf_oversize
 	var frame = callframe.New()
 	callframe.Arg(frame, oversize)
 	var r_ret = callframe.Nil
@@ -1523,7 +1523,7 @@ func (self class) SetSdfOversize(oversize gdclass.ViewportSDFOversize) {
 }
 
 //go:nosplit
-func (self class) GetSdfOversize() gdclass.ViewportSDFOversize {
+func (self class) GetSdfOversize() gdclass.ViewportSDFOversize { //gd:Viewport.get_sdf_oversize
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportSDFOversize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_sdf_oversize, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1533,7 +1533,7 @@ func (self class) GetSdfOversize() gdclass.ViewportSDFOversize {
 }
 
 //go:nosplit
-func (self class) SetSdfScale(scale gdclass.ViewportSDFScale) {
+func (self class) SetSdfScale(scale gdclass.ViewportSDFScale) { //gd:Viewport.set_sdf_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1542,7 +1542,7 @@ func (self class) SetSdfScale(scale gdclass.ViewportSDFScale) {
 }
 
 //go:nosplit
-func (self class) GetSdfScale() gdclass.ViewportSDFScale {
+func (self class) GetSdfScale() gdclass.ViewportSDFScale { //gd:Viewport.get_sdf_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportSDFScale](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_sdf_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1552,7 +1552,7 @@ func (self class) GetSdfScale() gdclass.ViewportSDFScale {
 }
 
 //go:nosplit
-func (self class) SetMeshLodThreshold(pixels gd.Float) {
+func (self class) SetMeshLodThreshold(pixels gd.Float) { //gd:Viewport.set_mesh_lod_threshold
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -1561,7 +1561,7 @@ func (self class) SetMeshLodThreshold(pixels gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMeshLodThreshold() gd.Float {
+func (self class) GetMeshLodThreshold() gd.Float { //gd:Viewport.get_mesh_lod_threshold
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1571,7 +1571,7 @@ func (self class) GetMeshLodThreshold() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAsAudioListener2d(enable bool) {
+func (self class) SetAsAudioListener2d(enable bool) { //gd:Viewport.set_as_audio_listener_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1580,7 +1580,7 @@ func (self class) SetAsAudioListener2d(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsAudioListener2d() bool {
+func (self class) IsAudioListener2d() bool { //gd:Viewport.is_audio_listener_2d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_audio_listener_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1593,7 +1593,7 @@ func (self class) IsAudioListener2d() bool {
 Returns the currently active 2D camera. Returns null if there are no active cameras.
 */
 //go:nosplit
-func (self class) GetCamera2d() [1]gdclass.Camera2D {
+func (self class) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_camera_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1603,7 +1603,7 @@ func (self class) GetCamera2d() [1]gdclass.Camera2D {
 }
 
 //go:nosplit
-func (self class) SetWorld3d(world_3d [1]gdclass.World3D) {
+func (self class) SetWorld3d(world_3d [1]gdclass.World3D) { //gd:Viewport.set_world_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(world_3d[0])[0])
 	var r_ret = callframe.Nil
@@ -1612,7 +1612,7 @@ func (self class) SetWorld3d(world_3d [1]gdclass.World3D) {
 }
 
 //go:nosplit
-func (self class) GetWorld3d() [1]gdclass.World3D {
+func (self class) GetWorld3d() [1]gdclass.World3D { //gd:Viewport.get_world_3d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1625,7 +1625,7 @@ func (self class) GetWorld3d() [1]gdclass.World3D {
 Returns the first valid [World3D] for this viewport, searching the [member world_3d] property of itself and any Viewport ancestor.
 */
 //go:nosplit
-func (self class) FindWorld3d() [1]gdclass.World3D {
+func (self class) FindWorld3d() [1]gdclass.World3D { //gd:Viewport.find_world_3d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_find_world_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1635,7 +1635,7 @@ func (self class) FindWorld3d() [1]gdclass.World3D {
 }
 
 //go:nosplit
-func (self class) SetUseOwnWorld3d(enable bool) {
+func (self class) SetUseOwnWorld3d(enable bool) { //gd:Viewport.set_use_own_world_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1644,7 +1644,7 @@ func (self class) SetUseOwnWorld3d(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingOwnWorld3d() bool {
+func (self class) IsUsingOwnWorld3d() bool { //gd:Viewport.is_using_own_world_3d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_own_world_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1657,7 +1657,7 @@ func (self class) IsUsingOwnWorld3d() bool {
 Returns the currently active 3D camera.
 */
 //go:nosplit
-func (self class) GetCamera3d() [1]gdclass.Camera3D {
+func (self class) GetCamera3d() [1]gdclass.Camera3D { //gd:Viewport.get_camera_3d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_camera_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1667,7 +1667,7 @@ func (self class) GetCamera3d() [1]gdclass.Camera3D {
 }
 
 //go:nosplit
-func (self class) SetAsAudioListener3d(enable bool) {
+func (self class) SetAsAudioListener3d(enable bool) { //gd:Viewport.set_as_audio_listener_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1676,7 +1676,7 @@ func (self class) SetAsAudioListener3d(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsAudioListener3d() bool {
+func (self class) IsAudioListener3d() bool { //gd:Viewport.is_audio_listener_3d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_audio_listener_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1686,7 +1686,7 @@ func (self class) IsAudioListener3d() bool {
 }
 
 //go:nosplit
-func (self class) SetDisable3d(disable bool) {
+func (self class) SetDisable3d(disable bool) { //gd:Viewport.set_disable_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, disable)
 	var r_ret = callframe.Nil
@@ -1695,7 +1695,7 @@ func (self class) SetDisable3d(disable bool) {
 }
 
 //go:nosplit
-func (self class) Is3dDisabled() bool {
+func (self class) Is3dDisabled() bool { //gd:Viewport.is_3d_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_3d_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1705,7 +1705,7 @@ func (self class) Is3dDisabled() bool {
 }
 
 //go:nosplit
-func (self class) SetUseXr(use bool) {
+func (self class) SetUseXr(use bool) { //gd:Viewport.set_use_xr
 	var frame = callframe.New()
 	callframe.Arg(frame, use)
 	var r_ret = callframe.Nil
@@ -1714,7 +1714,7 @@ func (self class) SetUseXr(use bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingXr() bool {
+func (self class) IsUsingXr() bool { //gd:Viewport.is_using_xr
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_is_using_xr, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1724,7 +1724,7 @@ func (self class) IsUsingXr() bool {
 }
 
 //go:nosplit
-func (self class) SetScaling3dMode(scaling_3d_mode gdclass.ViewportScaling3DMode) {
+func (self class) SetScaling3dMode(scaling_3d_mode gdclass.ViewportScaling3DMode) { //gd:Viewport.set_scaling_3d_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, scaling_3d_mode)
 	var r_ret = callframe.Nil
@@ -1733,7 +1733,7 @@ func (self class) SetScaling3dMode(scaling_3d_mode gdclass.ViewportScaling3DMode
 }
 
 //go:nosplit
-func (self class) GetScaling3dMode() gdclass.ViewportScaling3DMode {
+func (self class) GetScaling3dMode() gdclass.ViewportScaling3DMode { //gd:Viewport.get_scaling_3d_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportScaling3DMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1743,7 +1743,7 @@ func (self class) GetScaling3dMode() gdclass.ViewportScaling3DMode {
 }
 
 //go:nosplit
-func (self class) SetScaling3dScale(scale gd.Float) {
+func (self class) SetScaling3dScale(scale gd.Float) { //gd:Viewport.set_scaling_3d_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1752,7 +1752,7 @@ func (self class) SetScaling3dScale(scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetScaling3dScale() gd.Float {
+func (self class) GetScaling3dScale() gd.Float { //gd:Viewport.get_scaling_3d_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_scaling_3d_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1762,7 +1762,7 @@ func (self class) GetScaling3dScale() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFsrSharpness(fsr_sharpness gd.Float) {
+func (self class) SetFsrSharpness(fsr_sharpness gd.Float) { //gd:Viewport.set_fsr_sharpness
 	var frame = callframe.New()
 	callframe.Arg(frame, fsr_sharpness)
 	var r_ret = callframe.Nil
@@ -1771,7 +1771,7 @@ func (self class) SetFsrSharpness(fsr_sharpness gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFsrSharpness() gd.Float {
+func (self class) GetFsrSharpness() gd.Float { //gd:Viewport.get_fsr_sharpness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1781,7 +1781,7 @@ func (self class) GetFsrSharpness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTextureMipmapBias(texture_mipmap_bias gd.Float) {
+func (self class) SetTextureMipmapBias(texture_mipmap_bias gd.Float) { //gd:Viewport.set_texture_mipmap_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_mipmap_bias)
 	var r_ret = callframe.Nil
@@ -1790,7 +1790,7 @@ func (self class) SetTextureMipmapBias(texture_mipmap_bias gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTextureMipmapBias() gd.Float {
+func (self class) GetTextureMipmapBias() gd.Float { //gd:Viewport.get_texture_mipmap_bias
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1800,7 +1800,7 @@ func (self class) GetTextureMipmapBias() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVrsMode(mode gdclass.ViewportVRSMode) {
+func (self class) SetVrsMode(mode gdclass.ViewportVRSMode) { //gd:Viewport.set_vrs_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1809,7 +1809,7 @@ func (self class) SetVrsMode(mode gdclass.ViewportVRSMode) {
 }
 
 //go:nosplit
-func (self class) GetVrsMode() gdclass.ViewportVRSMode {
+func (self class) GetVrsMode() gdclass.ViewportVRSMode { //gd:Viewport.get_vrs_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportVRSMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1819,7 +1819,7 @@ func (self class) GetVrsMode() gdclass.ViewportVRSMode {
 }
 
 //go:nosplit
-func (self class) SetVrsUpdateMode(mode gdclass.ViewportVRSUpdateMode) {
+func (self class) SetVrsUpdateMode(mode gdclass.ViewportVRSUpdateMode) { //gd:Viewport.set_vrs_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1828,7 +1828,7 @@ func (self class) SetVrsUpdateMode(mode gdclass.ViewportVRSUpdateMode) {
 }
 
 //go:nosplit
-func (self class) GetVrsUpdateMode() gdclass.ViewportVRSUpdateMode {
+func (self class) GetVrsUpdateMode() gdclass.ViewportVRSUpdateMode { //gd:Viewport.get_vrs_update_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ViewportVRSUpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1838,7 +1838,7 @@ func (self class) GetVrsUpdateMode() gdclass.ViewportVRSUpdateMode {
 }
 
 //go:nosplit
-func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) { //gd:Viewport.set_vrs_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -1847,7 +1847,7 @@ func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetVrsTexture() [1]gdclass.Texture2D {
+func (self class) GetVrsTexture() [1]gdclass.Texture2D { //gd:Viewport.get_vrs_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1885,7 +1885,7 @@ func init() {
 	gdclass.Register("Viewport", func(ptr gd.Object) any { return [1]gdclass.Viewport{*(*gdclass.Viewport)(unsafe.Pointer(&ptr))} })
 }
 
-type PositionalShadowAtlasQuadrantSubdiv = gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv
+type PositionalShadowAtlasQuadrantSubdiv = gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv //gd:Viewport.PositionalShadowAtlasQuadrantSubdiv
 
 const (
 	/*This quadrant will not be used.*/
@@ -1906,7 +1906,7 @@ const (
 	ShadowAtlasQuadrantSubdivMax PositionalShadowAtlasQuadrantSubdiv = 7
 )
 
-type Scaling3DMode = gdclass.ViewportScaling3DMode
+type Scaling3DMode = gdclass.ViewportScaling3DMode //gd:Viewport.Scaling3DMode
 
 const (
 	/*Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [member scaling_3d_scale]. Values less than [code]1.0[/code] will result in undersampling while values greater than [code]1.0[/code] will result in supersampling. A value of [code]1.0[/code] disables scaling.*/
@@ -1919,7 +1919,7 @@ const (
 	Scaling3dModeMax Scaling3DMode = 3
 )
 
-type MSAA = gdclass.ViewportMSAA
+type MSAA = gdclass.ViewportMSAA //gd:Viewport.MSAA
 
 const (
 	/*Multisample antialiasing mode disabled. This is the default value, and is also the fastest setting.*/
@@ -1934,7 +1934,7 @@ const (
 	MsaaMax MSAA = 4
 )
 
-type ScreenSpaceAA = gdclass.ViewportScreenSpaceAA
+type ScreenSpaceAA = gdclass.ViewportScreenSpaceAA //gd:Viewport.ScreenSpaceAA
 
 const (
 	/*Do not perform any antialiasing in the full screen post-process.*/
@@ -1945,7 +1945,7 @@ const (
 	ScreenSpaceAaMax ScreenSpaceAA = 2
 )
 
-type RenderInfo = gdclass.ViewportRenderInfo
+type RenderInfo = gdclass.ViewportRenderInfo //gd:Viewport.RenderInfo
 
 const (
 	/*Amount of objects in frame.*/
@@ -1958,7 +1958,7 @@ const (
 	RenderInfoMax RenderInfo = 3
 )
 
-type RenderInfoType = gdclass.ViewportRenderInfoType
+type RenderInfoType = gdclass.ViewportRenderInfoType //gd:Viewport.RenderInfoType
 
 const (
 	/*Visible render pass (excluding shadows).*/
@@ -1971,7 +1971,7 @@ const (
 	RenderInfoTypeMax RenderInfoType = 3
 )
 
-type DebugDraw = gdclass.ViewportDebugDraw
+type DebugDraw = gdclass.ViewportDebugDraw //gd:Viewport.DebugDraw
 
 const (
 	/*Objects are displayed normally.*/
@@ -2032,7 +2032,7 @@ const (
 	DebugDrawInternalBuffer DebugDraw = 26
 )
 
-type DefaultCanvasItemTextureFilter = gdclass.ViewportDefaultCanvasItemTextureFilter
+type DefaultCanvasItemTextureFilter = gdclass.ViewportDefaultCanvasItemTextureFilter //gd:Viewport.DefaultCanvasItemTextureFilter
 
 const (
 	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
@@ -2049,7 +2049,7 @@ const (
 	DefaultCanvasItemTextureFilterMax DefaultCanvasItemTextureFilter = 4
 )
 
-type DefaultCanvasItemTextureRepeat = gdclass.ViewportDefaultCanvasItemTextureRepeat
+type DefaultCanvasItemTextureRepeat = gdclass.ViewportDefaultCanvasItemTextureRepeat //gd:Viewport.DefaultCanvasItemTextureRepeat
 
 const (
 	/*Disables textures repeating. Instead, when reading UVs outside the 0-1 range, the value will be clamped to the edge of the texture, resulting in a stretched out look at the borders of the texture.*/
@@ -2062,7 +2062,7 @@ const (
 	DefaultCanvasItemTextureRepeatMax DefaultCanvasItemTextureRepeat = 3
 )
 
-type SDFOversize = gdclass.ViewportSDFOversize
+type SDFOversize = gdclass.ViewportSDFOversize //gd:Viewport.SDFOversize
 
 const (
 	/*The signed distance field only covers the viewport's own rectangle.*/
@@ -2077,7 +2077,7 @@ const (
 	SdfOversizeMax SDFOversize = 4
 )
 
-type SDFScale = gdclass.ViewportSDFScale
+type SDFScale = gdclass.ViewportSDFScale //gd:Viewport.SDFScale
 
 const (
 	/*The signed distance field is rendered at full resolution.*/
@@ -2090,7 +2090,7 @@ const (
 	SdfScaleMax SDFScale = 3
 )
 
-type VRSMode = gdclass.ViewportVRSMode
+type VRSMode = gdclass.ViewportVRSMode //gd:Viewport.VRSMode
 
 const (
 	/*Variable Rate Shading is disabled.*/
@@ -2103,7 +2103,7 @@ const (
 	VrsMax VRSMode = 3
 )
 
-type VRSUpdateMode = gdclass.ViewportVRSUpdateMode
+type VRSUpdateMode = gdclass.ViewportVRSUpdateMode //gd:Viewport.VRSUpdateMode
 
 const (
 	/*The input texture for variable rate shading will not be processed.*/

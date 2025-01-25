@@ -42,7 +42,7 @@ type Any interface {
 /*
 Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] node.
 */
-func FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape {
+func FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_node
 	self := Instance{}
 	return [1]gdclass.GLTFPhysicsShape(class(self).FromNode(shape_node))
 }
@@ -50,14 +50,14 @@ func FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShap
 /*
 Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
 */
-func (self Instance) ToNode() [1]gdclass.CollisionShape3D {
+func (self Instance) ToNode() [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
 	return [1]gdclass.CollisionShape3D(class(self).ToNode(false))
 }
 
 /*
 Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
-func FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape {
+func FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
 	self := Instance{}
 	return [1]gdclass.GLTFPhysicsShape(class(self).FromResource(shape_resource))
 }
@@ -65,14 +65,14 @@ func FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape
 /*
 Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
 */
-func (self Instance) ToResource() [1]gdclass.Shape3D {
+func (self Instance) ToResource() [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource
 	return [1]gdclass.Shape3D(class(self).ToResource(false))
 }
 
 /*
 Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFPhysicsShape {
+func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
 	self := Instance{}
 	return [1]gdclass.GLTFPhysicsShape(class(self).FromDictionary(gd.NewVariant(dictionary).Interface().(gd.Dictionary)))
 }
@@ -80,7 +80,7 @@ func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFPhysicsShape {
 /*
 Serializes this GLTFPhysicsShape instance into a [Dictionary] in the format defined by [code]OMI_physics_shape[/code].
 */
-func (self Instance) ToDictionary() map[any]any {
+func (self Instance) ToDictionary() map[any]any { //gd:GLTFPhysicsShape.to_dictionary
 	return map[any]any(gd.DictionaryAs[any, any](class(self).ToDictionary()))
 }
 
@@ -163,7 +163,7 @@ func (self Instance) SetImporterMesh(value [1]gdclass.ImporterMesh) {
 Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] node.
 */
 //go:nosplit
-func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape {
+func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape_node[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -177,7 +177,7 @@ func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GL
 Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
 */
 //go:nosplit
-func (self class) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D {
+func (self class) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_shapes)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -191,7 +191,7 @@ func (self class) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D {
 Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
 //go:nosplit
-func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape {
+func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape_resource[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -205,7 +205,7 @@ func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLT
 Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
 */
 //go:nosplit
-func (self class) ToResource(cache_shapes bool) [1]gdclass.Shape3D {
+func (self class) ToResource(cache_shapes bool) [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_shapes)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -219,7 +219,7 @@ func (self class) ToResource(cache_shapes bool) [1]gdclass.Shape3D {
 Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
 //go:nosplit
-func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFPhysicsShape {
+func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -233,7 +233,7 @@ func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFPhysic
 Serializes this GLTFPhysicsShape instance into a [Dictionary] in the format defined by [code]OMI_physics_shape[/code].
 */
 //go:nosplit
-func (self class) ToDictionary() gd.Dictionary {
+func (self class) ToDictionary() gd.Dictionary { //gd:GLTFPhysicsShape.to_dictionary
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_to_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -243,7 +243,7 @@ func (self class) ToDictionary() gd.Dictionary {
 }
 
 //go:nosplit
-func (self class) GetShapeType() gd.String {
+func (self class) GetShapeType() gd.String { //gd:GLTFPhysicsShape.get_shape_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_get_shape_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -253,7 +253,7 @@ func (self class) GetShapeType() gd.String {
 }
 
 //go:nosplit
-func (self class) SetShapeType(shape_type gd.String) {
+func (self class) SetShapeType(shape_type gd.String) { //gd:GLTFPhysicsShape.set_shape_type
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape_type))
 	var r_ret = callframe.Nil
@@ -262,7 +262,7 @@ func (self class) SetShapeType(shape_type gd.String) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 {
+func (self class) GetSize() gd.Vector3 { //gd:GLTFPhysicsShape.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -272,7 +272,7 @@ func (self class) GetSize() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) {
+func (self class) SetSize(size gd.Vector3) { //gd:GLTFPhysicsShape.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -281,7 +281,7 @@ func (self class) SetSize(size gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float {
+func (self class) GetRadius() gd.Float { //gd:GLTFPhysicsShape.get_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -291,7 +291,7 @@ func (self class) GetRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRadius(radius gd.Float) {
+func (self class) SetRadius(radius gd.Float) { //gd:GLTFPhysicsShape.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -300,7 +300,7 @@ func (self class) SetRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetHeight() gd.Float {
+func (self class) GetHeight() gd.Float { //gd:GLTFPhysicsShape.get_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -310,7 +310,7 @@ func (self class) GetHeight() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Float) {
+func (self class) SetHeight(height gd.Float) { //gd:GLTFPhysicsShape.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -319,7 +319,7 @@ func (self class) SetHeight(height gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetIsTrigger() bool {
+func (self class) GetIsTrigger() bool { //gd:GLTFPhysicsShape.get_is_trigger
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_get_is_trigger, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -329,7 +329,7 @@ func (self class) GetIsTrigger() bool {
 }
 
 //go:nosplit
-func (self class) SetIsTrigger(is_trigger bool) {
+func (self class) SetIsTrigger(is_trigger bool) { //gd:GLTFPhysicsShape.set_is_trigger
 	var frame = callframe.New()
 	callframe.Arg(frame, is_trigger)
 	var r_ret = callframe.Nil
@@ -338,7 +338,7 @@ func (self class) SetIsTrigger(is_trigger bool) {
 }
 
 //go:nosplit
-func (self class) GetMeshIndex() gd.Int {
+func (self class) GetMeshIndex() gd.Int { //gd:GLTFPhysicsShape.get_mesh_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_get_mesh_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -348,7 +348,7 @@ func (self class) GetMeshIndex() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMeshIndex(mesh_index gd.Int) {
+func (self class) SetMeshIndex(mesh_index gd.Int) { //gd:GLTFPhysicsShape.set_mesh_index
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh_index)
 	var r_ret = callframe.Nil
@@ -357,7 +357,7 @@ func (self class) SetMeshIndex(mesh_index gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetImporterMesh() [1]gdclass.ImporterMesh {
+func (self class) GetImporterMesh() [1]gdclass.ImporterMesh { //gd:GLTFPhysicsShape.get_importer_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_get_importer_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -367,7 +367,7 @@ func (self class) GetImporterMesh() [1]gdclass.ImporterMesh {
 }
 
 //go:nosplit
-func (self class) SetImporterMesh(importer_mesh [1]gdclass.ImporterMesh) {
+func (self class) SetImporterMesh(importer_mesh [1]gdclass.ImporterMesh) { //gd:GLTFPhysicsShape.set_importer_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(importer_mesh[0])[0])
 	var r_ret = callframe.Nil

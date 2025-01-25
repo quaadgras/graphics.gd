@@ -563,14 +563,14 @@ func (Instance) _on_viewport_composition_layer_destroyed(impl func(ptr unsafe.Po
 /*
 Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
 */
-func (self Instance) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension {
+func (self Instance) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension { //gd:OpenXRExtensionWrapperExtension.get_openxr_api
 	return [1]gdclass.OpenXRAPIExtension(class(self).GetOpenxrApi())
 }
 
 /*
 Registers the extension. This should happen at core module initialization level.
 */
-func (self Instance) RegisterExtensionWrapper() {
+func (self Instance) RegisterExtensionWrapper() { //gd:OpenXRExtensionWrapperExtension.register_extension_wrapper
 	class(self).RegisterExtensionWrapper()
 }
 
@@ -989,7 +989,7 @@ func (class) _on_viewport_composition_layer_destroyed(impl func(ptr unsafe.Point
 Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
 */
 //go:nosplit
-func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension {
+func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension { //gd:OpenXRExtensionWrapperExtension.get_openxr_api
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1002,7 +1002,7 @@ func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension {
 Registers the extension. This should happen at core module initialization level.
 */
 //go:nosplit
-func (self class) RegisterExtensionWrapper() {
+func (self class) RegisterExtensionWrapper() { //gd:OpenXRExtensionWrapperExtension.register_extension_wrapper
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_register_extension_wrapper, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -46,7 +46,7 @@ type Any interface {
 /*
 Creates a placeholder version of this resource ([PlaceholderCubemapArray]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource {
+func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:CubemapArray.create_placeholder
 	return [1]gdclass.Resource(class(self).CreatePlaceholder())
 }
 
@@ -73,7 +73,7 @@ func New() Instance {
 Creates a placeholder version of this resource ([PlaceholderCubemapArray]).
 */
 //go:nosplit
-func (self class) CreatePlaceholder() [1]gdclass.Resource {
+func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:CubemapArray.create_placeholder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CubemapArray.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -47,7 +47,7 @@ type Any interface {
 Returns [code]true[/code] if this shape is colliding with another.
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
-func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) bool {
+func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) bool { //gd:Shape2D.collide
 	return bool(class(self).Collide(gd.Transform2D(local_xform), with_shape, gd.Transform2D(shape_xform)))
 }
 
@@ -55,7 +55,7 @@ func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdc
 Returns whether this shape would collide with another, if a given movement was applied.
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
-func (self Instance) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool {
+func (self Instance) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool { //gd:Shape2D.collide_with_motion
 	return bool(class(self).CollideWithMotion(gd.Transform2D(local_xform), gd.Vector2(local_motion), with_shape, gd.Transform2D(shape_xform), gd.Vector2(shape_motion)))
 }
 
@@ -65,7 +65,7 @@ If there are no collisions, the returned list is empty. Otherwise, the returned 
 A collision pair A, B can be used to calculate the collision normal with [code](B - A).normalized()[/code], and the collision depth with [code](B - A).length()[/code]. This information is typically used to separate shapes, particularly in collision solvers.
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
-func (self Instance) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) []Vector2.XY {
+func (self Instance) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) []Vector2.XY { //gd:Shape2D.collide_and_get_contacts
 	return []Vector2.XY(class(self).CollideAndGetContacts(gd.Transform2D(local_xform), with_shape, gd.Transform2D(shape_xform)).AsSlice())
 }
 
@@ -75,21 +75,21 @@ If there would be no collisions, the returned list is empty. Otherwise, the retu
 A collision pair A, B can be used to calculate the collision normal with [code](B - A).normalized()[/code], and the collision depth with [code](B - A).length()[/code]. This information is typically used to separate shapes, particularly in collision solvers.
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
-func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) []Vector2.XY {
+func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) []Vector2.XY { //gd:Shape2D.collide_with_motion_and_get_contacts
 	return []Vector2.XY(class(self).CollideWithMotionAndGetContacts(gd.Transform2D(local_xform), gd.Vector2(local_motion), with_shape, gd.Transform2D(shape_xform), gd.Vector2(shape_motion)).AsSlice())
 }
 
 /*
 Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified [param color]. The exact drawing method is specific for each shape and cannot be configured.
 */
-func (self Instance) Draw(canvas_item Resource.ID, color Color.RGBA) {
+func (self Instance) Draw(canvas_item Resource.ID, color Color.RGBA) { //gd:Shape2D.draw
 	class(self).Draw(canvas_item, gd.Color(color))
 }
 
 /*
 Returns a [Rect2] representing the shapes boundary.
 */
-func (self Instance) GetRect() Rect2.PositionSize {
+func (self Instance) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect
 	return Rect2.PositionSize(class(self).GetRect())
 }
 
@@ -121,7 +121,7 @@ func (self Instance) SetCustomSolverBias(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetCustomSolverBias(bias gd.Float) {
+func (self class) SetCustomSolverBias(bias gd.Float) { //gd:Shape2D.set_custom_solver_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -130,7 +130,7 @@ func (self class) SetCustomSolverBias(bias gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCustomSolverBias() gd.Float {
+func (self class) GetCustomSolverBias() gd.Float { //gd:Shape2D.get_custom_solver_bias
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_get_custom_solver_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -144,7 +144,7 @@ Returns [code]true[/code] if this shape is colliding with another.
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
 //go:nosplit
-func (self class) Collide(local_xform gd.Transform2D, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D) bool {
+func (self class) Collide(local_xform gd.Transform2D, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D) bool { //gd:Shape2D.collide
 	var frame = callframe.New()
 	callframe.Arg(frame, local_xform)
 	callframe.Arg(frame, pointers.Get(with_shape[0])[0])
@@ -161,7 +161,7 @@ Returns whether this shape would collide with another, if a given movement was a
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
 //go:nosplit
-func (self class) CollideWithMotion(local_xform gd.Transform2D, local_motion gd.Vector2, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D, shape_motion gd.Vector2) bool {
+func (self class) CollideWithMotion(local_xform gd.Transform2D, local_motion gd.Vector2, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D, shape_motion gd.Vector2) bool { //gd:Shape2D.collide_with_motion
 	var frame = callframe.New()
 	callframe.Arg(frame, local_xform)
 	callframe.Arg(frame, local_motion)
@@ -182,7 +182,7 @@ A collision pair A, B can be used to calculate the collision normal with [code](
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
 //go:nosplit
-func (self class) CollideAndGetContacts(local_xform gd.Transform2D, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D) gd.PackedVector2Array {
+func (self class) CollideAndGetContacts(local_xform gd.Transform2D, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D) gd.PackedVector2Array { //gd:Shape2D.collide_and_get_contacts
 	var frame = callframe.New()
 	callframe.Arg(frame, local_xform)
 	callframe.Arg(frame, pointers.Get(with_shape[0])[0])
@@ -201,7 +201,7 @@ A collision pair A, B can be used to calculate the collision normal with [code](
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
 //go:nosplit
-func (self class) CollideWithMotionAndGetContacts(local_xform gd.Transform2D, local_motion gd.Vector2, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D, shape_motion gd.Vector2) gd.PackedVector2Array {
+func (self class) CollideWithMotionAndGetContacts(local_xform gd.Transform2D, local_motion gd.Vector2, with_shape [1]gdclass.Shape2D, shape_xform gd.Transform2D, shape_motion gd.Vector2) gd.PackedVector2Array { //gd:Shape2D.collide_with_motion_and_get_contacts
 	var frame = callframe.New()
 	callframe.Arg(frame, local_xform)
 	callframe.Arg(frame, local_motion)
@@ -219,7 +219,7 @@ func (self class) CollideWithMotionAndGetContacts(local_xform gd.Transform2D, lo
 Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified [param color]. The exact drawing method is specific for each shape and cannot be configured.
 */
 //go:nosplit
-func (self class) Draw(canvas_item gd.RID, color gd.Color) {
+func (self class) Draw(canvas_item gd.RID, color gd.Color) { //gd:Shape2D.draw
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, color)
@@ -232,7 +232,7 @@ func (self class) Draw(canvas_item gd.RID, color gd.Color) {
 Returns a [Rect2] representing the shapes boundary.
 */
 //go:nosplit
-func (self class) GetRect() gd.Rect2 {
+func (self class) GetRect() gd.Rect2 { //gd:Shape2D.get_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape2D.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -83,7 +83,7 @@ func (self Instance) SetSurfaceIndex(value int) {
 }
 
 //go:nosplit
-func (self class) SetMesh(mesh [1]gdclass.Mesh) {
+func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:VisualShaderNodeParticleMeshEmitter.set_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -92,7 +92,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 }
 
 //go:nosplit
-func (self class) GetMesh() [1]gdclass.Mesh {
+func (self class) GetMesh() [1]gdclass.Mesh { //gd:VisualShaderNodeParticleMeshEmitter.get_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -102,7 +102,7 @@ func (self class) GetMesh() [1]gdclass.Mesh {
 }
 
 //go:nosplit
-func (self class) SetUseAllSurfaces(enabled bool) {
+func (self class) SetUseAllSurfaces(enabled bool) { //gd:VisualShaderNodeParticleMeshEmitter.set_use_all_surfaces
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -111,7 +111,7 @@ func (self class) SetUseAllSurfaces(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsUseAllSurfaces() bool {
+func (self class) IsUseAllSurfaces() bool { //gd:VisualShaderNodeParticleMeshEmitter.is_use_all_surfaces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_is_use_all_surfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -121,7 +121,7 @@ func (self class) IsUseAllSurfaces() bool {
 }
 
 //go:nosplit
-func (self class) SetSurfaceIndex(surface_index gd.Int) {
+func (self class) SetSurfaceIndex(surface_index gd.Int) { //gd:VisualShaderNodeParticleMeshEmitter.set_surface_index
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_index)
 	var r_ret = callframe.Nil
@@ -130,7 +130,7 @@ func (self class) SetSurfaceIndex(surface_index gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSurfaceIndex() gd.Int {
+func (self class) GetSurfaceIndex() gd.Int { //gd:VisualShaderNodeParticleMeshEmitter.get_surface_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_get_surface_index, self.AsObject(), frame.Array(0), r_ret.Addr())

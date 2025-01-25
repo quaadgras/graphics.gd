@@ -93,21 +93,21 @@ func (Instance) _run(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVir
 /*
 Makes [param node] root of the currently opened scene. Only works if the scene is empty. If the [param node] is a scene instance, an inheriting scene will be created.
 */
-func (self Instance) AddRootNode(node [1]gdclass.Node) {
+func (self Instance) AddRootNode(node [1]gdclass.Node) { //gd:EditorScript.add_root_node
 	class(self).AddRootNode(node)
 }
 
 /*
 Returns the edited (current) scene's root [Node]. Equivalent of [method EditorInterface.get_edited_scene_root].
 */
-func (self Instance) GetScene() [1]gdclass.Node {
+func (self Instance) GetScene() [1]gdclass.Node { //gd:EditorScript.get_scene
 	return [1]gdclass.Node(class(self).GetScene())
 }
 
 /*
 Returns the [EditorInterface] singleton instance.
 */
-func (self Instance) GetEditorInterface() [1]gdclass.EditorInterface {
+func (self Instance) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorScript.get_editor_interface
 	return [1]gdclass.EditorInterface(class(self).GetEditorInterface())
 }
 
@@ -144,7 +144,7 @@ func (class) _run(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtua
 Makes [param node] root of the currently opened scene. Only works if the scene is empty. If the [param node] is a scene instance, an inheriting scene will be created.
 */
 //go:nosplit
-func (self class) AddRootNode(node [1]gdclass.Node) {
+func (self class) AddRootNode(node [1]gdclass.Node) { //gd:EditorScript.add_root_node
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -156,7 +156,7 @@ func (self class) AddRootNode(node [1]gdclass.Node) {
 Returns the edited (current) scene's root [Node]. Equivalent of [method EditorInterface.get_edited_scene_root].
 */
 //go:nosplit
-func (self class) GetScene() [1]gdclass.Node {
+func (self class) GetScene() [1]gdclass.Node { //gd:EditorScript.get_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -169,7 +169,7 @@ func (self class) GetScene() [1]gdclass.Node {
 Returns the [EditorInterface] singleton instance.
 */
 //go:nosplit
-func (self class) GetEditorInterface() [1]gdclass.EditorInterface {
+func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorScript.get_editor_interface
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScript.Bind_get_editor_interface, self.AsObject(), frame.Array(0), r_ret.Addr())

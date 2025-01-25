@@ -69,7 +69,7 @@ func (self Instance) SetMaxDistance(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetMaxDistance(pixels gd.Float) {
+func (self class) SetMaxDistance(pixels gd.Float) { //gd:DirectionalLight2D.set_max_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -78,7 +78,7 @@ func (self class) SetMaxDistance(pixels gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMaxDistance() gd.Float {
+func (self class) GetMaxDistance() gd.Float { //gd:DirectionalLight2D.get_max_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight2D.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())

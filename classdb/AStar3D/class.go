@@ -127,7 +127,7 @@ func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id int, to_id i
 /*
 Returns the next available point ID with no point associated to it.
 */
-func (self Instance) GetAvailablePointId() int {
+func (self Instance) GetAvailablePointId() int { //gd:AStar3D.get_available_point_id
 	return int(int(class(self).GetAvailablePointId()))
 }
 
@@ -146,49 +146,49 @@ astar.AddPoint(1, new Vector3(1, 0, 0), 4); // Adds the point (1, 0, 0) with wei
 [/codeblocks]
 If there already exists a point for the given [param id], its position and weight scale are updated to the given values.
 */
-func (self Instance) AddPoint(id int, position Vector3.XYZ) {
+func (self Instance) AddPoint(id int, position Vector3.XYZ) { //gd:AStar3D.add_point
 	class(self).AddPoint(gd.Int(id), gd.Vector3(position), gd.Float(1.0))
 }
 
 /*
 Returns the position of the point associated with the given [param id].
 */
-func (self Instance) GetPointPosition(id int) Vector3.XYZ {
+func (self Instance) GetPointPosition(id int) Vector3.XYZ { //gd:AStar3D.get_point_position
 	return Vector3.XYZ(class(self).GetPointPosition(gd.Int(id)))
 }
 
 /*
 Sets the [param position] for the point with the given [param id].
 */
-func (self Instance) SetPointPosition(id int, position Vector3.XYZ) {
+func (self Instance) SetPointPosition(id int, position Vector3.XYZ) { //gd:AStar3D.set_point_position
 	class(self).SetPointPosition(gd.Int(id), gd.Vector3(position))
 }
 
 /*
 Returns the weight scale of the point associated with the given [param id].
 */
-func (self Instance) GetPointWeightScale(id int) Float.X {
+func (self Instance) GetPointWeightScale(id int) Float.X { //gd:AStar3D.get_point_weight_scale
 	return Float.X(Float.X(class(self).GetPointWeightScale(gd.Int(id))))
 }
 
 /*
 Sets the [param weight_scale] for the point with the given [param id]. The [param weight_scale] is multiplied by the result of [method _compute_cost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 */
-func (self Instance) SetPointWeightScale(id int, weight_scale Float.X) {
+func (self Instance) SetPointWeightScale(id int, weight_scale Float.X) { //gd:AStar3D.set_point_weight_scale
 	class(self).SetPointWeightScale(gd.Int(id), gd.Float(weight_scale))
 }
 
 /*
 Removes the point associated with the given [param id] from the points pool.
 */
-func (self Instance) RemovePoint(id int) {
+func (self Instance) RemovePoint(id int) { //gd:AStar3D.remove_point
 	class(self).RemovePoint(gd.Int(id))
 }
 
 /*
 Returns whether a point associated with the given [param id] exists.
 */
-func (self Instance) HasPoint(id int) bool {
+func (self Instance) HasPoint(id int) bool { //gd:AStar3D.has_point
 	return bool(class(self).HasPoint(gd.Int(id)))
 }
 
@@ -220,28 +220,28 @@ int[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetPointConnections(id int) []int64 {
+func (self Instance) GetPointConnections(id int) []int64 { //gd:AStar3D.get_point_connections
 	return []int64(class(self).GetPointConnections(gd.Int(id)).AsSlice())
 }
 
 /*
 Returns an array of all point IDs.
 */
-func (self Instance) GetPointIds() []int64 {
+func (self Instance) GetPointIds() []int64 { //gd:AStar3D.get_point_ids
 	return []int64(class(self).GetPointIds().AsSlice())
 }
 
 /*
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
 */
-func (self Instance) SetPointDisabled(id int) {
+func (self Instance) SetPointDisabled(id int) { //gd:AStar3D.set_point_disabled
 	class(self).SetPointDisabled(gd.Int(id), true)
 }
 
 /*
 Returns whether a point is disabled or not for pathfinding. By default, all points are enabled.
 */
-func (self Instance) IsPointDisabled(id int) bool {
+func (self Instance) IsPointDisabled(id int) bool { //gd:AStar3D.is_point_disabled
 	return bool(class(self).IsPointDisabled(gd.Int(id)))
 }
 
@@ -262,49 +262,49 @@ astar.ConnectPoints(1, 2, false);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) ConnectPoints(id int, to_id int) {
+func (self Instance) ConnectPoints(id int, to_id int) { //gd:AStar3D.connect_points
 	class(self).ConnectPoints(gd.Int(id), gd.Int(to_id), true)
 }
 
 /*
 Deletes the segment between the given points. If [param bidirectional] is [code]false[/code], only movement from [param id] to [param to_id] is prevented, and a unidirectional segment possibly remains.
 */
-func (self Instance) DisconnectPoints(id int, to_id int) {
+func (self Instance) DisconnectPoints(id int, to_id int) { //gd:AStar3D.disconnect_points
 	class(self).DisconnectPoints(gd.Int(id), gd.Int(to_id), true)
 }
 
 /*
 Returns whether the two given points are directly connected by a segment. If [param bidirectional] is [code]false[/code], returns whether movement from [param id] to [param to_id] is possible through this segment.
 */
-func (self Instance) ArePointsConnected(id int, to_id int) bool {
+func (self Instance) ArePointsConnected(id int, to_id int) bool { //gd:AStar3D.are_points_connected
 	return bool(class(self).ArePointsConnected(gd.Int(id), gd.Int(to_id), true))
 }
 
 /*
 Returns the number of points currently in the points pool.
 */
-func (self Instance) GetPointCount() int {
+func (self Instance) GetPointCount() int { //gd:AStar3D.get_point_count
 	return int(int(class(self).GetPointCount()))
 }
 
 /*
 Returns the capacity of the structure backing the points, useful in conjunction with [method reserve_space].
 */
-func (self Instance) GetPointCapacity() int {
+func (self Instance) GetPointCapacity() int { //gd:AStar3D.get_point_capacity
 	return int(int(class(self).GetPointCapacity()))
 }
 
 /*
 Reserves space internally for [param num_nodes] points. Useful if you're adding a known large number of points at once, such as points on a grid. New capacity must be greater or equals to old capacity.
 */
-func (self Instance) ReserveSpace(num_nodes int) {
+func (self Instance) ReserveSpace(num_nodes int) { //gd:AStar3D.reserve_space
 	class(self).ReserveSpace(gd.Int(num_nodes))
 }
 
 /*
 Clears all the points and segments.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:AStar3D.clear
 	class(self).Clear()
 }
 
@@ -312,7 +312,7 @@ func (self Instance) Clear() {
 Returns the ID of the closest point to [param to_position], optionally taking disabled points into account. Returns [code]-1[/code] if there are no points in the points pool.
 [b]Note:[/b] If several points are the closest to [param to_position], the one with the smallest ID will be returned, ensuring a deterministic result.
 */
-func (self Instance) GetClosestPoint(to_position Vector3.XYZ) int {
+func (self Instance) GetClosestPoint(to_position Vector3.XYZ) int { //gd:AStar3D.get_closest_point
 	return int(int(class(self).GetClosestPoint(gd.Vector3(to_position), false)))
 }
 
@@ -336,7 +336,7 @@ Vector3 res = astar.GetClosestPositionInSegment(new Vector3(3, 3, 0)); // Return
 [/codeblocks]
 The result is in the segment that goes from [code]y = 0[/code] to [code]y = 5[/code]. It's the closest position in the segment to the given point.
 */
-func (self Instance) GetClosestPositionInSegment(to_position Vector3.XYZ) Vector3.XYZ {
+func (self Instance) GetClosestPositionInSegment(to_position Vector3.XYZ) Vector3.XYZ { //gd:AStar3D.get_closest_position_in_segment
 	return Vector3.XYZ(class(self).GetClosestPositionInSegment(gd.Vector3(to_position)))
 }
 
@@ -345,7 +345,7 @@ Returns an array with the points that are in the path found by AStar3D between t
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
-func (self Instance) GetPointPath(from_id int, to_id int) []Vector3.XYZ {
+func (self Instance) GetPointPath(from_id int, to_id int) []Vector3.XYZ { //gd:AStar3D.get_point_path
 	return []Vector3.XYZ(class(self).GetPointPath(gd.Int(from_id), gd.Int(to_id), false).AsSlice())
 }
 
@@ -382,7 +382,7 @@ int[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 [/codeblocks]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
-func (self Instance) GetIdPath(from_id int, to_id int) []int64 {
+func (self Instance) GetIdPath(from_id int, to_id int) []int64 { //gd:AStar3D.get_id_path
 	return []int64(class(self).GetIdPath(gd.Int(from_id), gd.Int(to_id), false).AsSlice())
 }
 
@@ -441,7 +441,7 @@ func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id gd.Int, to_id g
 Returns the next available point ID with no point associated to it.
 */
 //go:nosplit
-func (self class) GetAvailablePointId() gd.Int {
+func (self class) GetAvailablePointId() gd.Int { //gd:AStar3D.get_available_point_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_available_point_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -466,7 +466,7 @@ astar.AddPoint(1, new Vector3(1, 0, 0), 4); // Adds the point (1, 0, 0) with wei
 If there already exists a point for the given [param id], its position and weight scale are updated to the given values.
 */
 //go:nosplit
-func (self class) AddPoint(id gd.Int, position gd.Vector3, weight_scale gd.Float) {
+func (self class) AddPoint(id gd.Int, position gd.Vector3, weight_scale gd.Float) { //gd:AStar3D.add_point
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, position)
@@ -480,7 +480,7 @@ func (self class) AddPoint(id gd.Int, position gd.Vector3, weight_scale gd.Float
 Returns the position of the point associated with the given [param id].
 */
 //go:nosplit
-func (self class) GetPointPosition(id gd.Int) gd.Vector3 {
+func (self class) GetPointPosition(id gd.Int) gd.Vector3 { //gd:AStar3D.get_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -494,7 +494,7 @@ func (self class) GetPointPosition(id gd.Int) gd.Vector3 {
 Sets the [param position] for the point with the given [param id].
 */
 //go:nosplit
-func (self class) SetPointPosition(id gd.Int, position gd.Vector3) {
+func (self class) SetPointPosition(id gd.Int, position gd.Vector3) { //gd:AStar3D.set_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, position)
@@ -507,7 +507,7 @@ func (self class) SetPointPosition(id gd.Int, position gd.Vector3) {
 Returns the weight scale of the point associated with the given [param id].
 */
 //go:nosplit
-func (self class) GetPointWeightScale(id gd.Int) gd.Float {
+func (self class) GetPointWeightScale(id gd.Int) gd.Float { //gd:AStar3D.get_point_weight_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -521,7 +521,7 @@ func (self class) GetPointWeightScale(id gd.Int) gd.Float {
 Sets the [param weight_scale] for the point with the given [param id]. The [param weight_scale] is multiplied by the result of [method _compute_cost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 */
 //go:nosplit
-func (self class) SetPointWeightScale(id gd.Int, weight_scale gd.Float) {
+func (self class) SetPointWeightScale(id gd.Int, weight_scale gd.Float) { //gd:AStar3D.set_point_weight_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, weight_scale)
@@ -534,7 +534,7 @@ func (self class) SetPointWeightScale(id gd.Int, weight_scale gd.Float) {
 Removes the point associated with the given [param id] from the points pool.
 */
 //go:nosplit
-func (self class) RemovePoint(id gd.Int) {
+func (self class) RemovePoint(id gd.Int) { //gd:AStar3D.remove_point
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -546,7 +546,7 @@ func (self class) RemovePoint(id gd.Int) {
 Returns whether a point associated with the given [param id] exists.
 */
 //go:nosplit
-func (self class) HasPoint(id gd.Int) bool {
+func (self class) HasPoint(id gd.Int) bool { //gd:AStar3D.has_point
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -585,7 +585,7 @@ int[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetPointConnections(id gd.Int) gd.PackedInt64Array {
+func (self class) GetPointConnections(id gd.Int) gd.PackedInt64Array { //gd:AStar3D.get_point_connections
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -599,7 +599,7 @@ func (self class) GetPointConnections(id gd.Int) gd.PackedInt64Array {
 Returns an array of all point IDs.
 */
 //go:nosplit
-func (self class) GetPointIds() gd.PackedInt64Array {
+func (self class) GetPointIds() gd.PackedInt64Array { //gd:AStar3D.get_point_ids
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -612,7 +612,7 @@ func (self class) GetPointIds() gd.PackedInt64Array {
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
 */
 //go:nosplit
-func (self class) SetPointDisabled(id gd.Int, disabled bool) {
+func (self class) SetPointDisabled(id gd.Int, disabled bool) { //gd:AStar3D.set_point_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, disabled)
@@ -625,7 +625,7 @@ func (self class) SetPointDisabled(id gd.Int, disabled bool) {
 Returns whether a point is disabled or not for pathfinding. By default, all points are enabled.
 */
 //go:nosplit
-func (self class) IsPointDisabled(id gd.Int) bool {
+func (self class) IsPointDisabled(id gd.Int) bool { //gd:AStar3D.is_point_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -653,7 +653,7 @@ astar.ConnectPoints(1, 2, false);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) ConnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) {
+func (self class) ConnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) { //gd:AStar3D.connect_points
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, to_id)
@@ -667,7 +667,7 @@ func (self class) ConnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) {
 Deletes the segment between the given points. If [param bidirectional] is [code]false[/code], only movement from [param id] to [param to_id] is prevented, and a unidirectional segment possibly remains.
 */
 //go:nosplit
-func (self class) DisconnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) {
+func (self class) DisconnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) { //gd:AStar3D.disconnect_points
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, to_id)
@@ -681,7 +681,7 @@ func (self class) DisconnectPoints(id gd.Int, to_id gd.Int, bidirectional bool) 
 Returns whether the two given points are directly connected by a segment. If [param bidirectional] is [code]false[/code], returns whether movement from [param id] to [param to_id] is possible through this segment.
 */
 //go:nosplit
-func (self class) ArePointsConnected(id gd.Int, to_id gd.Int, bidirectional bool) bool {
+func (self class) ArePointsConnected(id gd.Int, to_id gd.Int, bidirectional bool) bool { //gd:AStar3D.are_points_connected
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, to_id)
@@ -697,7 +697,7 @@ func (self class) ArePointsConnected(id gd.Int, to_id gd.Int, bidirectional bool
 Returns the number of points currently in the points pool.
 */
 //go:nosplit
-func (self class) GetPointCount() gd.Int {
+func (self class) GetPointCount() gd.Int { //gd:AStar3D.get_point_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -710,7 +710,7 @@ func (self class) GetPointCount() gd.Int {
 Returns the capacity of the structure backing the points, useful in conjunction with [method reserve_space].
 */
 //go:nosplit
-func (self class) GetPointCapacity() gd.Int {
+func (self class) GetPointCapacity() gd.Int { //gd:AStar3D.get_point_capacity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_get_point_capacity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -723,7 +723,7 @@ func (self class) GetPointCapacity() gd.Int {
 Reserves space internally for [param num_nodes] points. Useful if you're adding a known large number of points at once, such as points on a grid. New capacity must be greater or equals to old capacity.
 */
 //go:nosplit
-func (self class) ReserveSpace(num_nodes gd.Int) {
+func (self class) ReserveSpace(num_nodes gd.Int) { //gd:AStar3D.reserve_space
 	var frame = callframe.New()
 	callframe.Arg(frame, num_nodes)
 	var r_ret = callframe.Nil
@@ -735,7 +735,7 @@ func (self class) ReserveSpace(num_nodes gd.Int) {
 Clears all the points and segments.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:AStar3D.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStar3D.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -747,7 +747,7 @@ Returns the ID of the closest point to [param to_position], optionally taking di
 [b]Note:[/b] If several points are the closest to [param to_position], the one with the smallest ID will be returned, ensuring a deterministic result.
 */
 //go:nosplit
-func (self class) GetClosestPoint(to_position gd.Vector3, include_disabled bool) gd.Int {
+func (self class) GetClosestPoint(to_position gd.Vector3, include_disabled bool) gd.Int { //gd:AStar3D.get_closest_point
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	callframe.Arg(frame, include_disabled)
@@ -779,7 +779,7 @@ Vector3 res = astar.GetClosestPositionInSegment(new Vector3(3, 3, 0)); // Return
 The result is in the segment that goes from [code]y = 0[/code] to [code]y = 5[/code]. It's the closest position in the segment to the given point.
 */
 //go:nosplit
-func (self class) GetClosestPositionInSegment(to_position gd.Vector3) gd.Vector3 {
+func (self class) GetClosestPositionInSegment(to_position gd.Vector3) gd.Vector3 { //gd:AStar3D.get_closest_position_in_segment
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -795,7 +795,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
 //go:nosplit
-func (self class) GetPointPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) gd.PackedVector3Array {
+func (self class) GetPointPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) gd.PackedVector3Array { //gd:AStar3D.get_point_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)
@@ -841,7 +841,7 @@ int[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
 //go:nosplit
-func (self class) GetIdPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) gd.PackedInt64Array {
+func (self class) GetIdPath(from_id gd.Int, to_id gd.Int, allow_partial_path bool) gd.PackedInt64Array { //gd:AStar3D.get_id_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)

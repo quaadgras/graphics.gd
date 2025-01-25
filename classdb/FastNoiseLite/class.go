@@ -229,7 +229,7 @@ func (self Instance) SetDomainWarpFractalGain(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetNoiseType(atype gdclass.FastNoiseLiteNoiseType) {
+func (self class) SetNoiseType(atype gdclass.FastNoiseLiteNoiseType) { //gd:FastNoiseLite.set_noise_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -238,7 +238,7 @@ func (self class) SetNoiseType(atype gdclass.FastNoiseLiteNoiseType) {
 }
 
 //go:nosplit
-func (self class) GetNoiseType() gdclass.FastNoiseLiteNoiseType {
+func (self class) GetNoiseType() gdclass.FastNoiseLiteNoiseType { //gd:FastNoiseLite.get_noise_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FastNoiseLiteNoiseType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_noise_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -248,7 +248,7 @@ func (self class) GetNoiseType() gdclass.FastNoiseLiteNoiseType {
 }
 
 //go:nosplit
-func (self class) SetSeed(seed gd.Int) {
+func (self class) SetSeed(seed gd.Int) { //gd:FastNoiseLite.set_seed
 	var frame = callframe.New()
 	callframe.Arg(frame, seed)
 	var r_ret = callframe.Nil
@@ -257,7 +257,7 @@ func (self class) SetSeed(seed gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSeed() gd.Int {
+func (self class) GetSeed() gd.Int { //gd:FastNoiseLite.get_seed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -267,7 +267,7 @@ func (self class) GetSeed() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFrequency(freq gd.Float) {
+func (self class) SetFrequency(freq gd.Float) { //gd:FastNoiseLite.set_frequency
 	var frame = callframe.New()
 	callframe.Arg(frame, freq)
 	var r_ret = callframe.Nil
@@ -276,7 +276,7 @@ func (self class) SetFrequency(freq gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFrequency() gd.Float {
+func (self class) GetFrequency() gd.Float { //gd:FastNoiseLite.get_frequency
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_frequency, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -286,7 +286,7 @@ func (self class) GetFrequency() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector3) {
+func (self class) SetOffset(offset gd.Vector3) { //gd:FastNoiseLite.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -295,7 +295,7 @@ func (self class) SetOffset(offset gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector3 {
+func (self class) GetOffset() gd.Vector3 { //gd:FastNoiseLite.get_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -305,7 +305,7 @@ func (self class) GetOffset() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetFractalType(atype gdclass.FastNoiseLiteFractalType) {
+func (self class) SetFractalType(atype gdclass.FastNoiseLiteFractalType) { //gd:FastNoiseLite.set_fractal_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -314,7 +314,7 @@ func (self class) SetFractalType(atype gdclass.FastNoiseLiteFractalType) {
 }
 
 //go:nosplit
-func (self class) GetFractalType() gdclass.FastNoiseLiteFractalType {
+func (self class) GetFractalType() gdclass.FastNoiseLiteFractalType { //gd:FastNoiseLite.get_fractal_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FastNoiseLiteFractalType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -324,7 +324,7 @@ func (self class) GetFractalType() gdclass.FastNoiseLiteFractalType {
 }
 
 //go:nosplit
-func (self class) SetFractalOctaves(octave_count gd.Int) {
+func (self class) SetFractalOctaves(octave_count gd.Int) { //gd:FastNoiseLite.set_fractal_octaves
 	var frame = callframe.New()
 	callframe.Arg(frame, octave_count)
 	var r_ret = callframe.Nil
@@ -333,7 +333,7 @@ func (self class) SetFractalOctaves(octave_count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFractalOctaves() gd.Int {
+func (self class) GetFractalOctaves() gd.Int { //gd:FastNoiseLite.get_fractal_octaves
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_octaves, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -343,7 +343,7 @@ func (self class) GetFractalOctaves() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFractalLacunarity(lacunarity gd.Float) {
+func (self class) SetFractalLacunarity(lacunarity gd.Float) { //gd:FastNoiseLite.set_fractal_lacunarity
 	var frame = callframe.New()
 	callframe.Arg(frame, lacunarity)
 	var r_ret = callframe.Nil
@@ -352,7 +352,7 @@ func (self class) SetFractalLacunarity(lacunarity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFractalLacunarity() gd.Float {
+func (self class) GetFractalLacunarity() gd.Float { //gd:FastNoiseLite.get_fractal_lacunarity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_lacunarity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -362,7 +362,7 @@ func (self class) GetFractalLacunarity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFractalGain(gain gd.Float) {
+func (self class) SetFractalGain(gain gd.Float) { //gd:FastNoiseLite.set_fractal_gain
 	var frame = callframe.New()
 	callframe.Arg(frame, gain)
 	var r_ret = callframe.Nil
@@ -371,7 +371,7 @@ func (self class) SetFractalGain(gain gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFractalGain() gd.Float {
+func (self class) GetFractalGain() gd.Float { //gd:FastNoiseLite.get_fractal_gain
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -381,7 +381,7 @@ func (self class) GetFractalGain() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFractalWeightedStrength(weighted_strength gd.Float) {
+func (self class) SetFractalWeightedStrength(weighted_strength gd.Float) { //gd:FastNoiseLite.set_fractal_weighted_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, weighted_strength)
 	var r_ret = callframe.Nil
@@ -390,7 +390,7 @@ func (self class) SetFractalWeightedStrength(weighted_strength gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFractalWeightedStrength() gd.Float {
+func (self class) GetFractalWeightedStrength() gd.Float { //gd:FastNoiseLite.get_fractal_weighted_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_weighted_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -400,7 +400,7 @@ func (self class) GetFractalWeightedStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFractalPingPongStrength(ping_pong_strength gd.Float) {
+func (self class) SetFractalPingPongStrength(ping_pong_strength gd.Float) { //gd:FastNoiseLite.set_fractal_ping_pong_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, ping_pong_strength)
 	var r_ret = callframe.Nil
@@ -409,7 +409,7 @@ func (self class) SetFractalPingPongStrength(ping_pong_strength gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFractalPingPongStrength() gd.Float {
+func (self class) GetFractalPingPongStrength() gd.Float { //gd:FastNoiseLite.get_fractal_ping_pong_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_ping_pong_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -419,7 +419,7 @@ func (self class) GetFractalPingPongStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCellularDistanceFunction(fn gdclass.FastNoiseLiteCellularDistanceFunction) {
+func (self class) SetCellularDistanceFunction(fn gdclass.FastNoiseLiteCellularDistanceFunction) { //gd:FastNoiseLite.set_cellular_distance_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -428,7 +428,7 @@ func (self class) SetCellularDistanceFunction(fn gdclass.FastNoiseLiteCellularDi
 }
 
 //go:nosplit
-func (self class) GetCellularDistanceFunction() gdclass.FastNoiseLiteCellularDistanceFunction {
+func (self class) GetCellularDistanceFunction() gdclass.FastNoiseLiteCellularDistanceFunction { //gd:FastNoiseLite.get_cellular_distance_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FastNoiseLiteCellularDistanceFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_cellular_distance_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -438,7 +438,7 @@ func (self class) GetCellularDistanceFunction() gdclass.FastNoiseLiteCellularDis
 }
 
 //go:nosplit
-func (self class) SetCellularJitter(jitter gd.Float) {
+func (self class) SetCellularJitter(jitter gd.Float) { //gd:FastNoiseLite.set_cellular_jitter
 	var frame = callframe.New()
 	callframe.Arg(frame, jitter)
 	var r_ret = callframe.Nil
@@ -447,7 +447,7 @@ func (self class) SetCellularJitter(jitter gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCellularJitter() gd.Float {
+func (self class) GetCellularJitter() gd.Float { //gd:FastNoiseLite.get_cellular_jitter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_cellular_jitter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -457,7 +457,7 @@ func (self class) GetCellularJitter() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCellularReturnType(ret gdclass.FastNoiseLiteCellularReturnType) {
+func (self class) SetCellularReturnType(ret gdclass.FastNoiseLiteCellularReturnType) { //gd:FastNoiseLite.set_cellular_return_type
 	var frame = callframe.New()
 	callframe.Arg(frame, ret)
 	var r_ret = callframe.Nil
@@ -466,7 +466,7 @@ func (self class) SetCellularReturnType(ret gdclass.FastNoiseLiteCellularReturnT
 }
 
 //go:nosplit
-func (self class) GetCellularReturnType() gdclass.FastNoiseLiteCellularReturnType {
+func (self class) GetCellularReturnType() gdclass.FastNoiseLiteCellularReturnType { //gd:FastNoiseLite.get_cellular_return_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FastNoiseLiteCellularReturnType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_cellular_return_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -476,7 +476,7 @@ func (self class) GetCellularReturnType() gdclass.FastNoiseLiteCellularReturnTyp
 }
 
 //go:nosplit
-func (self class) SetDomainWarpEnabled(domain_warp_enabled bool) {
+func (self class) SetDomainWarpEnabled(domain_warp_enabled bool) { //gd:FastNoiseLite.set_domain_warp_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, domain_warp_enabled)
 	var r_ret = callframe.Nil
@@ -485,7 +485,7 @@ func (self class) SetDomainWarpEnabled(domain_warp_enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDomainWarpEnabled() bool {
+func (self class) IsDomainWarpEnabled() bool { //gd:FastNoiseLite.is_domain_warp_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_is_domain_warp_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -495,7 +495,7 @@ func (self class) IsDomainWarpEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDomainWarpType(domain_warp_type gdclass.FastNoiseLiteDomainWarpType) {
+func (self class) SetDomainWarpType(domain_warp_type gdclass.FastNoiseLiteDomainWarpType) { //gd:FastNoiseLite.set_domain_warp_type
 	var frame = callframe.New()
 	callframe.Arg(frame, domain_warp_type)
 	var r_ret = callframe.Nil
@@ -504,7 +504,7 @@ func (self class) SetDomainWarpType(domain_warp_type gdclass.FastNoiseLiteDomain
 }
 
 //go:nosplit
-func (self class) GetDomainWarpType() gdclass.FastNoiseLiteDomainWarpType {
+func (self class) GetDomainWarpType() gdclass.FastNoiseLiteDomainWarpType { //gd:FastNoiseLite.get_domain_warp_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FastNoiseLiteDomainWarpType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -514,7 +514,7 @@ func (self class) GetDomainWarpType() gdclass.FastNoiseLiteDomainWarpType {
 }
 
 //go:nosplit
-func (self class) SetDomainWarpAmplitude(domain_warp_amplitude gd.Float) {
+func (self class) SetDomainWarpAmplitude(domain_warp_amplitude gd.Float) { //gd:FastNoiseLite.set_domain_warp_amplitude
 	var frame = callframe.New()
 	callframe.Arg(frame, domain_warp_amplitude)
 	var r_ret = callframe.Nil
@@ -523,7 +523,7 @@ func (self class) SetDomainWarpAmplitude(domain_warp_amplitude gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDomainWarpAmplitude() gd.Float {
+func (self class) GetDomainWarpAmplitude() gd.Float { //gd:FastNoiseLite.get_domain_warp_amplitude
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_amplitude, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -533,7 +533,7 @@ func (self class) GetDomainWarpAmplitude() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDomainWarpFrequency(domain_warp_frequency gd.Float) {
+func (self class) SetDomainWarpFrequency(domain_warp_frequency gd.Float) { //gd:FastNoiseLite.set_domain_warp_frequency
 	var frame = callframe.New()
 	callframe.Arg(frame, domain_warp_frequency)
 	var r_ret = callframe.Nil
@@ -542,7 +542,7 @@ func (self class) SetDomainWarpFrequency(domain_warp_frequency gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDomainWarpFrequency() gd.Float {
+func (self class) GetDomainWarpFrequency() gd.Float { //gd:FastNoiseLite.get_domain_warp_frequency
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_frequency, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -552,7 +552,7 @@ func (self class) GetDomainWarpFrequency() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDomainWarpFractalType(domain_warp_fractal_type gdclass.FastNoiseLiteDomainWarpFractalType) {
+func (self class) SetDomainWarpFractalType(domain_warp_fractal_type gdclass.FastNoiseLiteDomainWarpFractalType) { //gd:FastNoiseLite.set_domain_warp_fractal_type
 	var frame = callframe.New()
 	callframe.Arg(frame, domain_warp_fractal_type)
 	var r_ret = callframe.Nil
@@ -561,7 +561,7 @@ func (self class) SetDomainWarpFractalType(domain_warp_fractal_type gdclass.Fast
 }
 
 //go:nosplit
-func (self class) GetDomainWarpFractalType() gdclass.FastNoiseLiteDomainWarpFractalType {
+func (self class) GetDomainWarpFractalType() gdclass.FastNoiseLiteDomainWarpFractalType { //gd:FastNoiseLite.get_domain_warp_fractal_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FastNoiseLiteDomainWarpFractalType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -571,7 +571,7 @@ func (self class) GetDomainWarpFractalType() gdclass.FastNoiseLiteDomainWarpFrac
 }
 
 //go:nosplit
-func (self class) SetDomainWarpFractalOctaves(domain_warp_octave_count gd.Int) {
+func (self class) SetDomainWarpFractalOctaves(domain_warp_octave_count gd.Int) { //gd:FastNoiseLite.set_domain_warp_fractal_octaves
 	var frame = callframe.New()
 	callframe.Arg(frame, domain_warp_octave_count)
 	var r_ret = callframe.Nil
@@ -580,7 +580,7 @@ func (self class) SetDomainWarpFractalOctaves(domain_warp_octave_count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetDomainWarpFractalOctaves() gd.Int {
+func (self class) GetDomainWarpFractalOctaves() gd.Int { //gd:FastNoiseLite.get_domain_warp_fractal_octaves
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_octaves, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -590,7 +590,7 @@ func (self class) GetDomainWarpFractalOctaves() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetDomainWarpFractalLacunarity(domain_warp_lacunarity gd.Float) {
+func (self class) SetDomainWarpFractalLacunarity(domain_warp_lacunarity gd.Float) { //gd:FastNoiseLite.set_domain_warp_fractal_lacunarity
 	var frame = callframe.New()
 	callframe.Arg(frame, domain_warp_lacunarity)
 	var r_ret = callframe.Nil
@@ -599,7 +599,7 @@ func (self class) SetDomainWarpFractalLacunarity(domain_warp_lacunarity gd.Float
 }
 
 //go:nosplit
-func (self class) GetDomainWarpFractalLacunarity() gd.Float {
+func (self class) GetDomainWarpFractalLacunarity() gd.Float { //gd:FastNoiseLite.get_domain_warp_fractal_lacunarity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_lacunarity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -609,7 +609,7 @@ func (self class) GetDomainWarpFractalLacunarity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDomainWarpFractalGain(domain_warp_gain gd.Float) {
+func (self class) SetDomainWarpFractalGain(domain_warp_gain gd.Float) { //gd:FastNoiseLite.set_domain_warp_fractal_gain
 	var frame = callframe.New()
 	callframe.Arg(frame, domain_warp_gain)
 	var r_ret = callframe.Nil
@@ -618,7 +618,7 @@ func (self class) SetDomainWarpFractalGain(domain_warp_gain gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDomainWarpFractalGain() gd.Float {
+func (self class) GetDomainWarpFractalGain() gd.Float { //gd:FastNoiseLite.get_domain_warp_fractal_gain
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -662,7 +662,7 @@ func init() {
 	})
 }
 
-type NoiseType = gdclass.FastNoiseLiteNoiseType
+type NoiseType = gdclass.FastNoiseLiteNoiseType //gd:FastNoiseLite.NoiseType
 
 const (
 	/*A lattice of points are assigned random values then interpolated based on neighboring values.*/
@@ -680,7 +680,7 @@ const (
 	TypeSimplexSmooth NoiseType = 1
 )
 
-type FractalType = gdclass.FastNoiseLiteFractalType
+type FractalType = gdclass.FastNoiseLiteFractalType //gd:FastNoiseLite.FractalType
 
 const (
 	/*No fractal noise.*/
@@ -693,7 +693,7 @@ const (
 	FractalPingPong FractalType = 3
 )
 
-type CellularDistanceFunction = gdclass.FastNoiseLiteCellularDistanceFunction
+type CellularDistanceFunction = gdclass.FastNoiseLiteCellularDistanceFunction //gd:FastNoiseLite.CellularDistanceFunction
 
 const (
 	/*Euclidean distance to the nearest point.*/
@@ -706,7 +706,7 @@ const (
 	DistanceHybrid CellularDistanceFunction = 3
 )
 
-type CellularReturnType = gdclass.FastNoiseLiteCellularReturnType
+type CellularReturnType = gdclass.FastNoiseLiteCellularReturnType //gd:FastNoiseLite.CellularReturnType
 
 const (
 	/*The cellular distance function will return the same value for all points within a cell.*/
@@ -725,7 +725,7 @@ const (
 	ReturnDistance2Div CellularReturnType = 6
 )
 
-type DomainWarpType = gdclass.FastNoiseLiteDomainWarpType
+type DomainWarpType = gdclass.FastNoiseLiteDomainWarpType //gd:FastNoiseLite.DomainWarpType
 
 const (
 	/*The domain is warped using the simplex noise algorithm.*/
@@ -736,7 +736,7 @@ const (
 	DomainWarpBasicGrid DomainWarpType = 2
 )
 
-type DomainWarpFractalType = gdclass.FastNoiseLiteDomainWarpFractalType
+type DomainWarpFractalType = gdclass.FastNoiseLiteDomainWarpFractalType //gd:FastNoiseLite.DomainWarpFractalType
 
 const (
 	/*No fractal noise for warping the space.*/

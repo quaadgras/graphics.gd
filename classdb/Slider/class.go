@@ -91,7 +91,7 @@ func (self Instance) SetTicksOnBorders(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTicks(count gd.Int) {
+func (self class) SetTicks(count gd.Int) { //gd:Slider.set_ticks
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -100,7 +100,7 @@ func (self class) SetTicks(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetTicks() gd.Int {
+func (self class) GetTicks() gd.Int { //gd:Slider.get_ticks
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Slider.Bind_get_ticks, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -110,7 +110,7 @@ func (self class) GetTicks() gd.Int {
 }
 
 //go:nosplit
-func (self class) GetTicksOnBorders() bool {
+func (self class) GetTicksOnBorders() bool { //gd:Slider.get_ticks_on_borders
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Slider.Bind_get_ticks_on_borders, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func (self class) GetTicksOnBorders() bool {
 }
 
 //go:nosplit
-func (self class) SetTicksOnBorders(ticks_on_border bool) {
+func (self class) SetTicksOnBorders(ticks_on_border bool) { //gd:Slider.set_ticks_on_borders
 	var frame = callframe.New()
 	callframe.Arg(frame, ticks_on_border)
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetTicksOnBorders(ticks_on_border bool) {
 }
 
 //go:nosplit
-func (self class) SetEditable(editable bool) {
+func (self class) SetEditable(editable bool) { //gd:Slider.set_editable
 	var frame = callframe.New()
 	callframe.Arg(frame, editable)
 	var r_ret = callframe.Nil
@@ -138,7 +138,7 @@ func (self class) SetEditable(editable bool) {
 }
 
 //go:nosplit
-func (self class) IsEditable() bool {
+func (self class) IsEditable() bool { //gd:Slider.is_editable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Slider.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -148,7 +148,7 @@ func (self class) IsEditable() bool {
 }
 
 //go:nosplit
-func (self class) SetScrollable(scrollable bool) {
+func (self class) SetScrollable(scrollable bool) { //gd:Slider.set_scrollable
 	var frame = callframe.New()
 	callframe.Arg(frame, scrollable)
 	var r_ret = callframe.Nil
@@ -157,7 +157,7 @@ func (self class) SetScrollable(scrollable bool) {
 }
 
 //go:nosplit
-func (self class) IsScrollable() bool {
+func (self class) IsScrollable() bool { //gd:Slider.is_scrollable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Slider.Bind_is_scrollable, self.AsObject(), frame.Array(0), r_ret.Addr())

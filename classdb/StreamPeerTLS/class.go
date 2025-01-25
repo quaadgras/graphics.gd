@@ -41,42 +41,42 @@ type Any interface {
 /*
 Poll the connection to check for incoming bytes. Call this right before [method StreamPeer.get_available_bytes] for it to work properly.
 */
-func (self Instance) Poll() {
+func (self Instance) Poll() { //gd:StreamPeerTLS.poll
 	class(self).Poll()
 }
 
 /*
 Accepts a peer connection as a server using the given [param server_options]. See [method TLSOptions.server].
 */
-func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) error {
+func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) error { //gd:StreamPeerTLS.accept_stream
 	return error(gd.ToError(class(self).AcceptStream(stream, server_options)))
 }
 
 /*
 Connects to a peer using an underlying [StreamPeer] [param stream] and verifying the remote certificate is correctly signed for the given [param common_name]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
-func (self Instance) ConnectToStream(stream [1]gdclass.StreamPeer, common_name string) error {
+func (self Instance) ConnectToStream(stream [1]gdclass.StreamPeer, common_name string) error { //gd:StreamPeerTLS.connect_to_stream
 	return error(gd.ToError(class(self).ConnectToStream(stream, gd.NewString(common_name), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
 Returns the status of the connection. See [enum Status] for values.
 */
-func (self Instance) GetStatus() gdclass.StreamPeerTLSStatus {
+func (self Instance) GetStatus() gdclass.StreamPeerTLSStatus { //gd:StreamPeerTLS.get_status
 	return gdclass.StreamPeerTLSStatus(class(self).GetStatus())
 }
 
 /*
 Returns the underlying [StreamPeer] connection, used in [method accept_stream] or [method connect_to_stream].
 */
-func (self Instance) GetStream() [1]gdclass.StreamPeer {
+func (self Instance) GetStream() [1]gdclass.StreamPeer { //gd:StreamPeerTLS.get_stream
 	return [1]gdclass.StreamPeer(class(self).GetStream())
 }
 
 /*
 Disconnects from host.
 */
-func (self Instance) DisconnectFromStream() {
+func (self Instance) DisconnectFromStream() { //gd:StreamPeerTLS.disconnect_from_stream
 	class(self).DisconnectFromStream()
 }
 
@@ -103,7 +103,7 @@ func New() Instance {
 Poll the connection to check for incoming bytes. Call this right before [method StreamPeer.get_available_bytes] for it to work properly.
 */
 //go:nosplit
-func (self class) Poll() {
+func (self class) Poll() { //gd:StreamPeerTLS.poll
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTLS.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -114,7 +114,7 @@ func (self class) Poll() {
 Accepts a peer connection as a server using the given [param server_options]. See [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) gd.Error {
+func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) gd.Error { //gd:StreamPeerTLS.accept_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	callframe.Arg(frame, pointers.Get(server_options[0])[0])
@@ -129,7 +129,7 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]g
 Connects to a peer using an underlying [StreamPeer] [param stream] and verifying the remote certificate is correctly signed for the given [param common_name]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name gd.String, client_options [1]gdclass.TLSOptions) gd.Error {
+func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name gd.String, client_options [1]gdclass.TLSOptions) gd.Error { //gd:StreamPeerTLS.connect_to_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	callframe.Arg(frame, pointers.Get(common_name))
@@ -145,7 +145,7 @@ func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name gd.S
 Returns the status of the connection. See [enum Status] for values.
 */
 //go:nosplit
-func (self class) GetStatus() gdclass.StreamPeerTLSStatus {
+func (self class) GetStatus() gdclass.StreamPeerTLSStatus { //gd:StreamPeerTLS.get_status
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.StreamPeerTLSStatus](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTLS.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -158,7 +158,7 @@ func (self class) GetStatus() gdclass.StreamPeerTLSStatus {
 Returns the underlying [StreamPeer] connection, used in [method accept_stream] or [method connect_to_stream].
 */
 //go:nosplit
-func (self class) GetStream() [1]gdclass.StreamPeer {
+func (self class) GetStream() [1]gdclass.StreamPeer { //gd:StreamPeerTLS.get_stream
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTLS.Bind_get_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -171,7 +171,7 @@ func (self class) GetStream() [1]gdclass.StreamPeer {
 Disconnects from host.
 */
 //go:nosplit
-func (self class) DisconnectFromStream() {
+func (self class) DisconnectFromStream() { //gd:StreamPeerTLS.disconnect_from_stream
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTLS.Bind_disconnect_from_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func init() {
 	})
 }
 
-type Status = gdclass.StreamPeerTLSStatus
+type Status = gdclass.StreamPeerTLSStatus //gd:StreamPeerTLS.Status
 
 const (
 	/*A status representing a [StreamPeerTLS] that is disconnected.*/
@@ -226,7 +226,7 @@ const (
 	StatusErrorHostnameMismatch Status = 4
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

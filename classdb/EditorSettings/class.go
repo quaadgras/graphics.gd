@@ -61,35 +61,35 @@ type Any interface {
 /*
 Returns [code]true[/code] if the setting specified by [param name] exists, [code]false[/code] otherwise.
 */
-func (self Instance) HasSetting(name string) bool {
+func (self Instance) HasSetting(name string) bool { //gd:EditorSettings.has_setting
 	return bool(class(self).HasSetting(gd.NewString(name)))
 }
 
 /*
 Sets the [param value] of the setting specified by [param name]. This is equivalent to using [method Object.set] on the EditorSettings instance.
 */
-func (self Instance) SetSetting(name string, value any) {
+func (self Instance) SetSetting(name string, value any) { //gd:EditorSettings.set_setting
 	class(self).SetSetting(gd.NewString(name), gd.NewVariant(value))
 }
 
 /*
 Returns the value of the setting specified by [param name]. This is equivalent to using [method Object.get] on the EditorSettings instance.
 */
-func (self Instance) GetSetting(name string) any {
+func (self Instance) GetSetting(name string) any { //gd:EditorSettings.get_setting
 	return any(class(self).GetSetting(gd.NewString(name)).Interface())
 }
 
 /*
 Erases the setting whose name is specified by [param property].
 */
-func (self Instance) Erase(property string) {
+func (self Instance) Erase(property string) { //gd:EditorSettings.erase
 	class(self).Erase(gd.NewString(property))
 }
 
 /*
 Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is true, the current value of the setting will be set to [param value] as well.
 */
-func (self Instance) SetInitialValue(name string, value any, update_current bool) {
+func (self Instance) SetInitialValue(name string, value any, update_current bool) { //gd:EditorSettings.set_initial_value
 	class(self).SetInitialValue(gd.NewStringName(name), gd.NewVariant(value), update_current)
 }
 
@@ -130,77 +130,77 @@ settings.AddPropertyInfo(propertyInfo);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) AddPropertyInfo(info map[any]any) {
+func (self Instance) AddPropertyInfo(info map[any]any) { //gd:EditorSettings.add_property_info
 	class(self).AddPropertyInfo(gd.NewVariant(info).Interface().(gd.Dictionary))
 }
 
 /*
 Sets project-specific metadata with the [param section], [param key] and [param data] specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [method get_project_metadata].
 */
-func (self Instance) SetProjectMetadata(section string, key string, data any) {
+func (self Instance) SetProjectMetadata(section string, key string, data any) { //gd:EditorSettings.set_project_metadata
 	class(self).SetProjectMetadata(gd.NewString(section), gd.NewString(key), gd.NewVariant(data))
 }
 
 /*
 Returns project-specific metadata for the [param section] and [param key] specified. If the metadata doesn't exist, [param default] will be returned instead. See also [method set_project_metadata].
 */
-func (self Instance) GetProjectMetadata(section string, key string) any {
+func (self Instance) GetProjectMetadata(section string, key string) any { //gd:EditorSettings.get_project_metadata
 	return any(class(self).GetProjectMetadata(gd.NewString(section), gd.NewString(key), gd.NewVariant(gd.NewVariant(([1]any{}[0])))).Interface())
 }
 
 /*
 Sets the list of favorite files and directories for this project.
 */
-func (self Instance) SetFavorites(dirs []string) {
+func (self Instance) SetFavorites(dirs []string) { //gd:EditorSettings.set_favorites
 	class(self).SetFavorites(gd.NewPackedStringSlice(dirs))
 }
 
 /*
 Returns the list of favorite files and directories for this project.
 */
-func (self Instance) GetFavorites() []string {
+func (self Instance) GetFavorites() []string { //gd:EditorSettings.get_favorites
 	return []string(class(self).GetFavorites().Strings())
 }
 
 /*
 Sets the list of recently visited folders in the file dialog for this project.
 */
-func (self Instance) SetRecentDirs(dirs []string) {
+func (self Instance) SetRecentDirs(dirs []string) { //gd:EditorSettings.set_recent_dirs
 	class(self).SetRecentDirs(gd.NewPackedStringSlice(dirs))
 }
 
 /*
 Returns the list of recently visited folders in the file dialog for this project.
 */
-func (self Instance) GetRecentDirs() []string {
+func (self Instance) GetRecentDirs() []string { //gd:EditorSettings.get_recent_dirs
 	return []string(class(self).GetRecentDirs().Strings())
 }
 
 /*
 Overrides the built-in editor action [param name] with the input actions defined in [param actions_list].
 */
-func (self Instance) SetBuiltinActionOverride(name string, actions_list [][1]gdclass.InputEvent) {
+func (self Instance) SetBuiltinActionOverride(name string, actions_list [][1]gdclass.InputEvent) { //gd:EditorSettings.set_builtin_action_override
 	class(self).SetBuiltinActionOverride(gd.NewString(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
 }
 
 /*
 Checks if any settings with the prefix [param setting_prefix] exist in the set of changed settings. See also [method get_changed_settings].
 */
-func (self Instance) CheckChangedSettingsInGroup(setting_prefix string) bool {
+func (self Instance) CheckChangedSettingsInGroup(setting_prefix string) bool { //gd:EditorSettings.check_changed_settings_in_group
 	return bool(class(self).CheckChangedSettingsInGroup(gd.NewString(setting_prefix)))
 }
 
 /*
 Gets an array of the settings which have been changed since the last save. Note that internally [code]changed_settings[/code] is cleared after a successful save, so generally the most appropriate place to use this method is when processing [constant NOTIFICATION_EDITOR_SETTINGS_CHANGED].
 */
-func (self Instance) GetChangedSettings() []string {
+func (self Instance) GetChangedSettings() []string { //gd:EditorSettings.get_changed_settings
 	return []string(class(self).GetChangedSettings().Strings())
 }
 
 /*
 Marks the passed editor setting as being changed, see [method get_changed_settings]. Only settings which exist (see [method has_setting]) will be accepted.
 */
-func (self Instance) MarkSettingChanged(setting string) {
+func (self Instance) MarkSettingChanged(setting string) { //gd:EditorSettings.mark_setting_changed
 	class(self).MarkSettingChanged(gd.NewString(setting))
 }
 
@@ -227,7 +227,7 @@ func New() Instance {
 Returns [code]true[/code] if the setting specified by [param name] exists, [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self class) HasSetting(name gd.String) bool {
+func (self class) HasSetting(name gd.String) bool { //gd:EditorSettings.has_setting
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -241,7 +241,7 @@ func (self class) HasSetting(name gd.String) bool {
 Sets the [param value] of the setting specified by [param name]. This is equivalent to using [method Object.set] on the EditorSettings instance.
 */
 //go:nosplit
-func (self class) SetSetting(name gd.String, value gd.Variant) {
+func (self class) SetSetting(name gd.String, value gd.Variant) { //gd:EditorSettings.set_setting
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(value))
@@ -254,7 +254,7 @@ func (self class) SetSetting(name gd.String, value gd.Variant) {
 Returns the value of the setting specified by [param name]. This is equivalent to using [method Object.get] on the EditorSettings instance.
 */
 //go:nosplit
-func (self class) GetSetting(name gd.String) gd.Variant {
+func (self class) GetSetting(name gd.String) gd.Variant { //gd:EditorSettings.get_setting
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -268,7 +268,7 @@ func (self class) GetSetting(name gd.String) gd.Variant {
 Erases the setting whose name is specified by [param property].
 */
 //go:nosplit
-func (self class) Erase(property gd.String) {
+func (self class) Erase(property gd.String) { //gd:EditorSettings.erase
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	var r_ret = callframe.Nil
@@ -280,7 +280,7 @@ func (self class) Erase(property gd.String) {
 Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is true, the current value of the setting will be set to [param value] as well.
 */
 //go:nosplit
-func (self class) SetInitialValue(name gd.StringName, value gd.Variant, update_current bool) {
+func (self class) SetInitialValue(name gd.StringName, value gd.Variant, update_current bool) { //gd:EditorSettings.set_initial_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(value))
@@ -327,7 +327,7 @@ settings.AddPropertyInfo(propertyInfo);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) AddPropertyInfo(info gd.Dictionary) {
+func (self class) AddPropertyInfo(info gd.Dictionary) { //gd:EditorSettings.add_property_info
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(info))
 	var r_ret = callframe.Nil
@@ -339,7 +339,7 @@ func (self class) AddPropertyInfo(info gd.Dictionary) {
 Sets project-specific metadata with the [param section], [param key] and [param data] specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [method get_project_metadata].
 */
 //go:nosplit
-func (self class) SetProjectMetadata(section gd.String, key gd.String, data gd.Variant) {
+func (self class) SetProjectMetadata(section gd.String, key gd.String, data gd.Variant) { //gd:EditorSettings.set_project_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(section))
 	callframe.Arg(frame, pointers.Get(key))
@@ -353,7 +353,7 @@ func (self class) SetProjectMetadata(section gd.String, key gd.String, data gd.V
 Returns project-specific metadata for the [param section] and [param key] specified. If the metadata doesn't exist, [param default] will be returned instead. See also [method set_project_metadata].
 */
 //go:nosplit
-func (self class) GetProjectMetadata(section gd.String, key gd.String, def gd.Variant) gd.Variant {
+func (self class) GetProjectMetadata(section gd.String, key gd.String, def gd.Variant) gd.Variant { //gd:EditorSettings.get_project_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(section))
 	callframe.Arg(frame, pointers.Get(key))
@@ -369,7 +369,7 @@ func (self class) GetProjectMetadata(section gd.String, key gd.String, def gd.Va
 Sets the list of favorite files and directories for this project.
 */
 //go:nosplit
-func (self class) SetFavorites(dirs gd.PackedStringArray) {
+func (self class) SetFavorites(dirs gd.PackedStringArray) { //gd:EditorSettings.set_favorites
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dirs))
 	var r_ret = callframe.Nil
@@ -381,7 +381,7 @@ func (self class) SetFavorites(dirs gd.PackedStringArray) {
 Returns the list of favorite files and directories for this project.
 */
 //go:nosplit
-func (self class) GetFavorites() gd.PackedStringArray {
+func (self class) GetFavorites() gd.PackedStringArray { //gd:EditorSettings.get_favorites
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_favorites, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -394,7 +394,7 @@ func (self class) GetFavorites() gd.PackedStringArray {
 Sets the list of recently visited folders in the file dialog for this project.
 */
 //go:nosplit
-func (self class) SetRecentDirs(dirs gd.PackedStringArray) {
+func (self class) SetRecentDirs(dirs gd.PackedStringArray) { //gd:EditorSettings.set_recent_dirs
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dirs))
 	var r_ret = callframe.Nil
@@ -406,7 +406,7 @@ func (self class) SetRecentDirs(dirs gd.PackedStringArray) {
 Returns the list of recently visited folders in the file dialog for this project.
 */
 //go:nosplit
-func (self class) GetRecentDirs() gd.PackedStringArray {
+func (self class) GetRecentDirs() gd.PackedStringArray { //gd:EditorSettings.get_recent_dirs
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_recent_dirs, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -419,7 +419,7 @@ func (self class) GetRecentDirs() gd.PackedStringArray {
 Overrides the built-in editor action [param name] with the input actions defined in [param actions_list].
 */
 //go:nosplit
-func (self class) SetBuiltinActionOverride(name gd.String, actions_list Array.Contains[[1]gdclass.InputEvent]) {
+func (self class) SetBuiltinActionOverride(name gd.String, actions_list Array.Contains[[1]gdclass.InputEvent]) { //gd:EditorSettings.set_builtin_action_override
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(actions_list)))
@@ -432,7 +432,7 @@ func (self class) SetBuiltinActionOverride(name gd.String, actions_list Array.Co
 Checks if any settings with the prefix [param setting_prefix] exist in the set of changed settings. See also [method get_changed_settings].
 */
 //go:nosplit
-func (self class) CheckChangedSettingsInGroup(setting_prefix gd.String) bool {
+func (self class) CheckChangedSettingsInGroup(setting_prefix gd.String) bool { //gd:EditorSettings.check_changed_settings_in_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(setting_prefix))
 	var r_ret = callframe.Ret[bool](frame)
@@ -446,7 +446,7 @@ func (self class) CheckChangedSettingsInGroup(setting_prefix gd.String) bool {
 Gets an array of the settings which have been changed since the last save. Note that internally [code]changed_settings[/code] is cleared after a successful save, so generally the most appropriate place to use this method is when processing [constant NOTIFICATION_EDITOR_SETTINGS_CHANGED].
 */
 //go:nosplit
-func (self class) GetChangedSettings() gd.PackedStringArray {
+func (self class) GetChangedSettings() gd.PackedStringArray { //gd:EditorSettings.get_changed_settings
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_get_changed_settings, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -459,7 +459,7 @@ func (self class) GetChangedSettings() gd.PackedStringArray {
 Marks the passed editor setting as being changed, see [method get_changed_settings]. Only settings which exist (see [method has_setting]) will be accepted.
 */
 //go:nosplit
-func (self class) MarkSettingChanged(setting gd.String) {
+func (self class) MarkSettingChanged(setting gd.String) { //gd:EditorSettings.mark_setting_changed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(setting))
 	var r_ret = callframe.Nil

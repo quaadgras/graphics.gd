@@ -47,7 +47,7 @@ func singleton() {
 /*
 Returns [code]true[/code] if the specified [param feature] is supported by the current [DisplayServer], [code]false[/code] otherwise.
 */
-func HasFeature(feature gdclass.DisplayServerFeature) bool {
+func HasFeature(feature gdclass.DisplayServerFeature) bool { //gd:DisplayServer.has_feature
 	once.Do(singleton)
 	return bool(class(self).HasFeature(feature))
 }
@@ -56,7 +56,7 @@ func HasFeature(feature gdclass.DisplayServerFeature) bool {
 Returns the name of the [DisplayServer] currently in use. Most operating systems only have a single [DisplayServer], but Linux has access to more than one [DisplayServer] (currently X11 and Wayland).
 The names of built-in display servers are [code]Windows[/code], [code]macOS[/code], [code]X11[/code] (Linux), [code]Wayland[/code] (Linux), [code]Android[/code], [code]iOS[/code], [code]web[/code] (HTML5), and [code]headless[/code] (when started with the [code]--headless[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url]).
 */
-func GetName() string {
+func GetName() string { //gd:DisplayServer.get_name
 	once.Do(singleton)
 	return string(class(self).GetName().String())
 }
@@ -67,7 +67,7 @@ Sets native help system search callbacks.
 [param action_callback] has the following arguments: [code]String key[/code]. Called when the user selects a search result in the [code]Help[/code] menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func HelpSetSearchCallbacks(search_callback func(search_string string, result_limit int) map[any]any, action_callback func(key string)) {
+func HelpSetSearchCallbacks(search_callback func(search_string string, result_limit int) map[any]any, action_callback func(key string)) { //gd:DisplayServer.help_set_search_callbacks
 	once.Do(singleton)
 	class(self).HelpSetSearchCallbacks(Callable.New(search_callback), Callable.New(action_callback))
 }
@@ -75,7 +75,7 @@ func HelpSetSearchCallbacks(search_callback func(search_string string, result_li
 /*
 Registers callables to emit when the menu is respectively about to show or closed. Callback methods should have zero arguments.
 */
-func GlobalMenuSetPopupCallbacks(menu_root string, open_callback func(), close_callback func()) {
+func GlobalMenuSetPopupCallbacks(menu_root string, open_callback func(), close_callback func()) { //gd:DisplayServer.global_menu_set_popup_callbacks
 	once.Do(singleton)
 	class(self).GlobalMenuSetPopupCallbacks(gd.NewString(menu_root), Callable.New(open_callback), Callable.New(close_callback))
 }
@@ -93,7 +93,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddSubmenuItem(menu_root string, label string, submenu string) int {
+func GlobalMenuAddSubmenuItem(menu_root string, label string, submenu string) int { //gd:DisplayServer.global_menu_add_submenu_item
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuAddSubmenuItem(gd.NewString(menu_root), gd.NewString(label), gd.NewString(submenu), gd.Int(-1))))
 }
@@ -113,7 +113,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddItem(menu_root string, label string) int {
+func GlobalMenuAddItem(menu_root string, label string) int { //gd:DisplayServer.global_menu_add_item
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuAddItem(gd.NewString(menu_root), gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -133,7 +133,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddCheckItem(menu_root string, label string) int {
+func GlobalMenuAddCheckItem(menu_root string, label string) int { //gd:DisplayServer.global_menu_add_check_item
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuAddCheckItem(gd.NewString(menu_root), gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -153,7 +153,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconItem(menu_root string, icon [1]gdclass.Texture2D, label string) int {
+func GlobalMenuAddIconItem(menu_root string, icon [1]gdclass.Texture2D, label string) int { //gd:DisplayServer.global_menu_add_icon_item
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuAddIconItem(gd.NewString(menu_root), icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -173,7 +173,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string) int {
+func GlobalMenuAddIconCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string) int { //gd:DisplayServer.global_menu_add_icon_check_item
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuAddIconCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -194,7 +194,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddRadioCheckItem(menu_root string, label string) int {
+func GlobalMenuAddRadioCheckItem(menu_root string, label string) int { //gd:DisplayServer.global_menu_add_radio_check_item
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuAddRadioCheckItem(gd.NewString(menu_root), gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -215,7 +215,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconRadioCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string) int {
+func GlobalMenuAddIconRadioCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuAddIconRadioCheckItem(gd.NewString(menu_root), icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -237,7 +237,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddMultistateItem(menu_root string, label string, max_states int, default_state int) int {
+func GlobalMenuAddMultistateItem(menu_root string, label string, max_states int, default_state int) int { //gd:DisplayServer.global_menu_add_multistate_item
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuAddMultistateItem(gd.NewString(menu_root), gd.NewString(label), gd.Int(max_states), gd.Int(default_state), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -255,7 +255,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddSeparator(menu_root string) int {
+func GlobalMenuAddSeparator(menu_root string) int { //gd:DisplayServer.global_menu_add_separator
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuAddSeparator(gd.NewString(menu_root), gd.Int(-1))))
 }
@@ -264,7 +264,7 @@ func GlobalMenuAddSeparator(menu_root string) int {
 Returns the index of the item with the specified [param text]. Indices are automatically assigned to each item by the engine, and cannot be set manually.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemIndexFromText(menu_root string, text string) int {
+func GlobalMenuGetItemIndexFromText(menu_root string, text string) int { //gd:DisplayServer.global_menu_get_item_index_from_text
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuGetItemIndexFromText(gd.NewString(menu_root), gd.NewString(text))))
 }
@@ -273,7 +273,7 @@ func GlobalMenuGetItemIndexFromText(menu_root string, text string) int {
 Returns the index of the item with the specified [param tag]. Indices are automatically assigned to each item by the engine, and cannot be set manually.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemIndexFromTag(menu_root string, tag any) int {
+func GlobalMenuGetItemIndexFromTag(menu_root string, tag any) int { //gd:DisplayServer.global_menu_get_item_index_from_tag
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuGetItemIndexFromTag(gd.NewString(menu_root), gd.NewVariant(tag))))
 }
@@ -282,7 +282,7 @@ func GlobalMenuGetItemIndexFromTag(menu_root string, tag any) int {
 Returns [code]true[/code] if the item at index [param idx] is checked.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuIsItemChecked(menu_root string, idx int) bool {
+func GlobalMenuIsItemChecked(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_checked
 	once.Do(singleton)
 	return bool(class(self).GlobalMenuIsItemChecked(gd.NewString(menu_root), gd.Int(idx)))
 }
@@ -291,7 +291,7 @@ func GlobalMenuIsItemChecked(menu_root string, idx int) bool {
 Returns [code]true[/code] if the item at index [param idx] is checkable in some way, i.e. if it has a checkbox or radio button.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuIsItemCheckable(menu_root string, idx int) bool {
+func GlobalMenuIsItemCheckable(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_checkable
 	once.Do(singleton)
 	return bool(class(self).GlobalMenuIsItemCheckable(gd.NewString(menu_root), gd.Int(idx)))
 }
@@ -301,7 +301,7 @@ Returns [code]true[/code] if the item at index [param idx] has radio button-styl
 [b]Note:[/b] This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuIsItemRadioCheckable(menu_root string, idx int) bool {
+func GlobalMenuIsItemRadioCheckable(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_radio_checkable
 	once.Do(singleton)
 	return bool(class(self).GlobalMenuIsItemRadioCheckable(gd.NewString(menu_root), gd.Int(idx)))
 }
@@ -310,7 +310,7 @@ func GlobalMenuIsItemRadioCheckable(menu_root string, idx int) bool {
 Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemCallback(menu_root string, idx int) Callable.Function {
+func GlobalMenuGetItemCallback(menu_root string, idx int) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
 	once.Do(singleton)
 	return Callable.Function(class(self).GlobalMenuGetItemCallback(gd.NewString(menu_root), gd.Int(idx)))
 }
@@ -319,7 +319,7 @@ func GlobalMenuGetItemCallback(menu_root string, idx int) Callable.Function {
 Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemKeyCallback(menu_root string, idx int) Callable.Function {
+func GlobalMenuGetItemKeyCallback(menu_root string, idx int) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
 	once.Do(singleton)
 	return Callable.Function(class(self).GlobalMenuGetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx)))
 }
@@ -328,7 +328,7 @@ func GlobalMenuGetItemKeyCallback(menu_root string, idx int) Callable.Function {
 Returns the metadata of the specified item, which might be of any type. You can set it with [method global_menu_set_item_tag], which provides a simple way of assigning context data to items.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemTag(menu_root string, idx int) any {
+func GlobalMenuGetItemTag(menu_root string, idx int) any { //gd:DisplayServer.global_menu_get_item_tag
 	once.Do(singleton)
 	return any(class(self).GlobalMenuGetItemTag(gd.NewString(menu_root), gd.Int(idx)).Interface())
 }
@@ -337,7 +337,7 @@ func GlobalMenuGetItemTag(menu_root string, idx int) any {
 Returns the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemText(menu_root string, idx int) string {
+func GlobalMenuGetItemText(menu_root string, idx int) string { //gd:DisplayServer.global_menu_get_item_text
 	once.Do(singleton)
 	return string(class(self).GlobalMenuGetItemText(gd.NewString(menu_root), gd.Int(idx)).String())
 }
@@ -346,7 +346,7 @@ func GlobalMenuGetItemText(menu_root string, idx int) string {
 Returns the submenu ID of the item at index [param idx]. See [method global_menu_add_submenu_item] for more info on how to add a submenu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemSubmenu(menu_root string, idx int) string {
+func GlobalMenuGetItemSubmenu(menu_root string, idx int) string { //gd:DisplayServer.global_menu_get_item_submenu
 	once.Do(singleton)
 	return string(class(self).GlobalMenuGetItemSubmenu(gd.NewString(menu_root), gd.Int(idx)).String())
 }
@@ -355,7 +355,7 @@ func GlobalMenuGetItemSubmenu(menu_root string, idx int) string {
 Returns the accelerator of the item at index [param idx]. Accelerators are special combinations of keys that activate the item, no matter which control is focused.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemAccelerator(menu_root string, idx int) Key {
+func GlobalMenuGetItemAccelerator(menu_root string, idx int) Key { //gd:DisplayServer.global_menu_get_item_accelerator
 	once.Do(singleton)
 	return Key(class(self).GlobalMenuGetItemAccelerator(gd.NewString(menu_root), gd.Int(idx)))
 }
@@ -365,7 +365,7 @@ Returns [code]true[/code] if the item at index [param idx] is disabled. When it 
 See [method global_menu_set_item_disabled] for more info on how to disable an item.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuIsItemDisabled(menu_root string, idx int) bool {
+func GlobalMenuIsItemDisabled(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_disabled
 	once.Do(singleton)
 	return bool(class(self).GlobalMenuIsItemDisabled(gd.NewString(menu_root), gd.Int(idx)))
 }
@@ -375,7 +375,7 @@ Returns [code]true[/code] if the item at index [param idx] is hidden.
 See [method global_menu_set_item_hidden] for more info on how to hide an item.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuIsItemHidden(menu_root string, idx int) bool {
+func GlobalMenuIsItemHidden(menu_root string, idx int) bool { //gd:DisplayServer.global_menu_is_item_hidden
 	once.Do(singleton)
 	return bool(class(self).GlobalMenuIsItemHidden(gd.NewString(menu_root), gd.Int(idx)))
 }
@@ -384,7 +384,7 @@ func GlobalMenuIsItemHidden(menu_root string, idx int) bool {
 Returns the tooltip associated with the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemTooltip(menu_root string, idx int) string {
+func GlobalMenuGetItemTooltip(menu_root string, idx int) string { //gd:DisplayServer.global_menu_get_item_tooltip
 	once.Do(singleton)
 	return string(class(self).GlobalMenuGetItemTooltip(gd.NewString(menu_root), gd.Int(idx)).String())
 }
@@ -393,7 +393,7 @@ func GlobalMenuGetItemTooltip(menu_root string, idx int) string {
 Returns the state of a multistate item. See [method global_menu_add_multistate_item] for details.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemState(menu_root string, idx int) int {
+func GlobalMenuGetItemState(menu_root string, idx int) int { //gd:DisplayServer.global_menu_get_item_state
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuGetItemState(gd.NewString(menu_root), gd.Int(idx))))
 }
@@ -402,7 +402,7 @@ func GlobalMenuGetItemState(menu_root string, idx int) int {
 Returns number of states of a multistate item. See [method global_menu_add_multistate_item] for details.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemMaxStates(menu_root string, idx int) int {
+func GlobalMenuGetItemMaxStates(menu_root string, idx int) int { //gd:DisplayServer.global_menu_get_item_max_states
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuGetItemMaxStates(gd.NewString(menu_root), gd.Int(idx))))
 }
@@ -411,7 +411,7 @@ func GlobalMenuGetItemMaxStates(menu_root string, idx int) int {
 Returns the icon of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemIcon(menu_root string, idx int) [1]gdclass.Texture2D {
+func GlobalMenuGetItemIcon(menu_root string, idx int) [1]gdclass.Texture2D { //gd:DisplayServer.global_menu_get_item_icon
 	once.Do(singleton)
 	return [1]gdclass.Texture2D(class(self).GlobalMenuGetItemIcon(gd.NewString(menu_root), gd.Int(idx)))
 }
@@ -420,7 +420,7 @@ func GlobalMenuGetItemIcon(menu_root string, idx int) [1]gdclass.Texture2D {
 Returns the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemIndentationLevel(menu_root string, idx int) int {
+func GlobalMenuGetItemIndentationLevel(menu_root string, idx int) int { //gd:DisplayServer.global_menu_get_item_indentation_level
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuGetItemIndentationLevel(gd.NewString(menu_root), gd.Int(idx))))
 }
@@ -429,7 +429,7 @@ func GlobalMenuGetItemIndentationLevel(menu_root string, idx int) int {
 Sets the checkstate status of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemChecked(menu_root string, idx int, checked bool) {
+func GlobalMenuSetItemChecked(menu_root string, idx int, checked bool) { //gd:DisplayServer.global_menu_set_item_checked
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemChecked(gd.NewString(menu_root), gd.Int(idx), checked)
 }
@@ -438,7 +438,7 @@ func GlobalMenuSetItemChecked(menu_root string, idx int, checked bool) {
 Sets whether the item at index [param idx] has a checkbox. If [code]false[/code], sets the type of the item to plain text.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemCheckable(menu_root string, idx int, checkable bool) {
+func GlobalMenuSetItemCheckable(menu_root string, idx int, checkable bool) { //gd:DisplayServer.global_menu_set_item_checkable
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemCheckable(gd.NewString(menu_root), gd.Int(idx), checkable)
 }
@@ -448,7 +448,7 @@ Sets the type of the item at the specified index [param idx] to radio button. If
 [b]Note:[/b] This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemRadioCheckable(menu_root string, idx int, checkable bool) {
+func GlobalMenuSetItemRadioCheckable(menu_root string, idx int, checkable bool) { //gd:DisplayServer.global_menu_set_item_radio_checkable
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemRadioCheckable(gd.NewString(menu_root), gd.Int(idx), checkable)
 }
@@ -458,7 +458,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemCallback(menu_root string, idx int, callback func(tag any)) {
+func GlobalMenuSetItemCallback(menu_root string, idx int, callback func(tag any)) { //gd:DisplayServer.global_menu_set_item_callback
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemCallback(gd.NewString(menu_root), gd.Int(idx), Callable.New(callback))
 }
@@ -468,7 +468,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemHoverCallbacks(menu_root string, idx int, callback func(tag any)) {
+func GlobalMenuSetItemHoverCallbacks(menu_root string, idx int, callback func(tag any)) { //gd:DisplayServer.global_menu_set_item_hover_callbacks
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemHoverCallbacks(gd.NewString(menu_root), gd.Int(idx), Callable.New(callback))
 }
@@ -478,7 +478,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] The [param key_callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemKeyCallback(menu_root string, idx int, key_callback func(tag any)) {
+func GlobalMenuSetItemKeyCallback(menu_root string, idx int, key_callback func(tag any)) { //gd:DisplayServer.global_menu_set_item_key_callback
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemKeyCallback(gd.NewString(menu_root), gd.Int(idx), Callable.New(key_callback))
 }
@@ -487,7 +487,7 @@ func GlobalMenuSetItemKeyCallback(menu_root string, idx int, key_callback func(t
 Sets the metadata of an item, which may be of any type. You can later get it with [method global_menu_get_item_tag], which provides a simple way of assigning context data to items.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemTag(menu_root string, idx int, tag any) {
+func GlobalMenuSetItemTag(menu_root string, idx int, tag any) { //gd:DisplayServer.global_menu_set_item_tag
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemTag(gd.NewString(menu_root), gd.Int(idx), gd.NewVariant(tag))
 }
@@ -496,7 +496,7 @@ func GlobalMenuSetItemTag(menu_root string, idx int, tag any) {
 Sets the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemText(menu_root string, idx int, text string) {
+func GlobalMenuSetItemText(menu_root string, idx int, text string) { //gd:DisplayServer.global_menu_set_item_text
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemText(gd.NewString(menu_root), gd.Int(idx), gd.NewString(text))
 }
@@ -505,7 +505,7 @@ func GlobalMenuSetItemText(menu_root string, idx int, text string) {
 Sets the submenu of the item at index [param idx]. The submenu is the ID of a global menu root that would be shown when the item is clicked.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemSubmenu(menu_root string, idx int, submenu string) {
+func GlobalMenuSetItemSubmenu(menu_root string, idx int, submenu string) { //gd:DisplayServer.global_menu_set_item_submenu
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemSubmenu(gd.NewString(menu_root), gd.Int(idx), gd.NewString(submenu))
 }
@@ -514,7 +514,7 @@ func GlobalMenuSetItemSubmenu(menu_root string, idx int, submenu string) {
 Sets the accelerator of the item at index [param idx]. [param keycode] can be a single [enum Key], or a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemAccelerator(menu_root string, idx int, keycode Key) {
+func GlobalMenuSetItemAccelerator(menu_root string, idx int, keycode Key) { //gd:DisplayServer.global_menu_set_item_accelerator
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemAccelerator(gd.NewString(menu_root), gd.Int(idx), keycode)
 }
@@ -523,7 +523,7 @@ func GlobalMenuSetItemAccelerator(menu_root string, idx int, keycode Key) {
 Enables/disables the item at index [param idx]. When it is disabled, it can't be selected and its action can't be invoked.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemDisabled(menu_root string, idx int, disabled bool) {
+func GlobalMenuSetItemDisabled(menu_root string, idx int, disabled bool) { //gd:DisplayServer.global_menu_set_item_disabled
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemDisabled(gd.NewString(menu_root), gd.Int(idx), disabled)
 }
@@ -532,7 +532,7 @@ func GlobalMenuSetItemDisabled(menu_root string, idx int, disabled bool) {
 Hides/shows the item at index [param idx]. When it is hidden, an item does not appear in a menu and its action cannot be invoked.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemHidden(menu_root string, idx int, hidden bool) {
+func GlobalMenuSetItemHidden(menu_root string, idx int, hidden bool) { //gd:DisplayServer.global_menu_set_item_hidden
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemHidden(gd.NewString(menu_root), gd.Int(idx), hidden)
 }
@@ -541,7 +541,7 @@ func GlobalMenuSetItemHidden(menu_root string, idx int, hidden bool) {
 Sets the [String] tooltip of the item at the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemTooltip(menu_root string, idx int, tooltip string) {
+func GlobalMenuSetItemTooltip(menu_root string, idx int, tooltip string) { //gd:DisplayServer.global_menu_set_item_tooltip
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemTooltip(gd.NewString(menu_root), gd.Int(idx), gd.NewString(tooltip))
 }
@@ -550,7 +550,7 @@ func GlobalMenuSetItemTooltip(menu_root string, idx int, tooltip string) {
 Sets the state of a multistate item. See [method global_menu_add_multistate_item] for details.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemState(menu_root string, idx int, state int) {
+func GlobalMenuSetItemState(menu_root string, idx int, state int) { //gd:DisplayServer.global_menu_set_item_state
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemState(gd.NewString(menu_root), gd.Int(idx), gd.Int(state))
 }
@@ -559,7 +559,7 @@ func GlobalMenuSetItemState(menu_root string, idx int, state int) {
 Sets number of state of a multistate item. See [method global_menu_add_multistate_item] for details.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemMaxStates(menu_root string, idx int, max_states int) {
+func GlobalMenuSetItemMaxStates(menu_root string, idx int, max_states int) { //gd:DisplayServer.global_menu_set_item_max_states
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemMaxStates(gd.NewString(menu_root), gd.Int(idx), gd.Int(max_states))
 }
@@ -569,7 +569,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 [b]Note:[/b] This method is not supported by macOS "_dock" menu items.
 */
-func GlobalMenuSetItemIcon(menu_root string, idx int, icon [1]gdclass.Texture2D) {
+func GlobalMenuSetItemIcon(menu_root string, idx int, icon [1]gdclass.Texture2D) { //gd:DisplayServer.global_menu_set_item_icon
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemIcon(gd.NewString(menu_root), gd.Int(idx), icon)
 }
@@ -578,7 +578,7 @@ func GlobalMenuSetItemIcon(menu_root string, idx int, icon [1]gdclass.Texture2D)
 Sets the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemIndentationLevel(menu_root string, idx int, level int) {
+func GlobalMenuSetItemIndentationLevel(menu_root string, idx int, level int) { //gd:DisplayServer.global_menu_set_item_indentation_level
 	once.Do(singleton)
 	class(self).GlobalMenuSetItemIndentationLevel(gd.NewString(menu_root), gd.Int(idx), gd.Int(level))
 }
@@ -587,7 +587,7 @@ func GlobalMenuSetItemIndentationLevel(menu_root string, idx int, level int) {
 Returns number of items in the global menu with ID [param menu_root].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemCount(menu_root string) int {
+func GlobalMenuGetItemCount(menu_root string) int { //gd:DisplayServer.global_menu_get_item_count
 	once.Do(singleton)
 	return int(int(class(self).GlobalMenuGetItemCount(gd.NewString(menu_root))))
 }
@@ -597,7 +597,7 @@ Removes the item at index [param idx] from the global menu [param menu_root].
 [b]Note:[/b] The indices of items after the removed item will be shifted by one.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuRemoveItem(menu_root string, idx int) {
+func GlobalMenuRemoveItem(menu_root string, idx int) { //gd:DisplayServer.global_menu_remove_item
 	once.Do(singleton)
 	class(self).GlobalMenuRemoveItem(gd.NewString(menu_root), gd.Int(idx))
 }
@@ -614,7 +614,7 @@ Removes all items from the global menu with ID [param menu_root].
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuClear(menu_root string) {
+func GlobalMenuClear(menu_root string) { //gd:DisplayServer.global_menu_clear
 	once.Do(singleton)
 	class(self).GlobalMenuClear(gd.NewString(menu_root))
 }
@@ -623,7 +623,7 @@ func GlobalMenuClear(menu_root string) {
 Returns Dictionary of supported system menu IDs and names.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetSystemMenuRoots() map[any]any {
+func GlobalMenuGetSystemMenuRoots() map[any]any { //gd:DisplayServer.global_menu_get_system_menu_roots
 	once.Do(singleton)
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GlobalMenuGetSystemMenuRoots()))
 }
@@ -633,7 +633,7 @@ Returns [code]true[/code] if the synthesizer is generating speech, or have utter
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsIsSpeaking() bool {
+func TtsIsSpeaking() bool { //gd:DisplayServer.tts_is_speaking
 	once.Do(singleton)
 	return bool(class(self).TtsIsSpeaking())
 }
@@ -643,7 +643,7 @@ Returns [code]true[/code] if the synthesizer is in a paused state.
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsIsPaused() bool {
+func TtsIsPaused() bool { //gd:DisplayServer.tts_is_paused
 	once.Do(singleton)
 	return bool(class(self).TtsIsPaused())
 }
@@ -658,7 +658,7 @@ Note that Godot depends on system libraries for text-to-speech functionality. Th
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsGetVoices() []map[any]any {
+func TtsGetVoices() []map[any]any { //gd:DisplayServer.tts_get_voices
 	once.Do(singleton)
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).TtsGetVoices())))
 }
@@ -668,7 +668,7 @@ Returns an [PackedStringArray] of voice identifiers for the [param language].
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsGetVoicesForLanguage(language string) []string {
+func TtsGetVoicesForLanguage(language string) []string { //gd:DisplayServer.tts_get_voices_for_language
 	once.Do(singleton)
 	return []string(class(self).TtsGetVoicesForLanguage(gd.NewString(language)).Strings())
 }
@@ -685,7 +685,7 @@ Adds an utterance to the queue. If [param interrupt] is [code]true[/code], the q
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsSpeak(text string, voice string) {
+func TtsSpeak(text string, voice string) { //gd:DisplayServer.tts_speak
 	once.Do(singleton)
 	class(self).TtsSpeak(gd.NewString(text), gd.NewString(voice), gd.Int(50), gd.Float(1.0), gd.Float(1.0), gd.Int(0), false)
 }
@@ -695,7 +695,7 @@ Puts the synthesizer into a paused state.
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsPause() {
+func TtsPause() { //gd:DisplayServer.tts_pause
 	once.Do(singleton)
 	class(self).TtsPause()
 }
@@ -705,7 +705,7 @@ Resumes the synthesizer if it was paused.
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsResume() {
+func TtsResume() { //gd:DisplayServer.tts_resume
 	once.Do(singleton)
 	class(self).TtsResume()
 }
@@ -715,7 +715,7 @@ Stops synthesis in progress and removes all utterances from the queue.
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Linux), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsStop() {
+func TtsStop() { //gd:DisplayServer.tts_stop
 	once.Do(singleton)
 	class(self).TtsStop()
 }
@@ -728,7 +728,7 @@ Adds a callback, which is called when the utterance has started, finished, cance
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, callable func(int, int)) {
+func TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, callable func(int, int)) { //gd:DisplayServer.tts_set_utterance_callback
 	once.Do(singleton)
 	class(self).TtsSetUtteranceCallback(event, Callable.New(callable))
 }
@@ -737,7 +737,7 @@ func TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, calla
 Returns [code]true[/code] if OS supports dark mode.
 [b]Note:[/b] This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
 */
-func IsDarkModeSupported() bool {
+func IsDarkModeSupported() bool { //gd:DisplayServer.is_dark_mode_supported
 	once.Do(singleton)
 	return bool(class(self).IsDarkModeSupported())
 }
@@ -746,7 +746,7 @@ func IsDarkModeSupported() bool {
 Returns [code]true[/code] if OS is using dark mode.
 [b]Note:[/b] This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
 */
-func IsDarkMode() bool {
+func IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
 	once.Do(singleton)
 	return bool(class(self).IsDarkMode())
 }
@@ -755,7 +755,7 @@ func IsDarkMode() bool {
 Returns OS theme accent color. Returns [code]Color(0, 0, 0, 0)[/code], if accent color is unknown.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetAccentColor() Color.RGBA {
+func GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
 	once.Do(singleton)
 	return Color.RGBA(class(self).GetAccentColor())
 }
@@ -764,7 +764,7 @@ func GetAccentColor() Color.RGBA {
 Returns the OS theme base color (default control background). Returns [code]Color(0, 0, 0, 0)[/code] if the base color is unknown.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetBaseColor() Color.RGBA {
+func GetBaseColor() Color.RGBA { //gd:DisplayServer.get_base_color
 	once.Do(singleton)
 	return Color.RGBA(class(self).GetBaseColor())
 }
@@ -773,7 +773,7 @@ func GetBaseColor() Color.RGBA {
 Sets the [param callable] that should be called when system theme settings are changed. Callback method should have zero arguments.
 [b]Note:[/b] This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
 */
-func SetSystemThemeChangeCallback(callable func()) {
+func SetSystemThemeChangeCallback(callable func()) { //gd:DisplayServer.set_system_theme_change_callback
 	once.Do(singleton)
 	class(self).SetSystemThemeChangeCallback(Callable.New(callable))
 }
@@ -781,7 +781,7 @@ func SetSystemThemeChangeCallback(callable func()) {
 /*
 Sets the current mouse mode. See also [method mouse_get_mode].
 */
-func MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) {
+func MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) { //gd:DisplayServer.mouse_set_mode
 	once.Do(singleton)
 	class(self).MouseSetMode(mouse_mode)
 }
@@ -789,7 +789,7 @@ func MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) {
 /*
 Returns the current mouse mode. See also [method mouse_set_mode].
 */
-func MouseGetMode() gdclass.DisplayServerMouseMode {
+func MouseGetMode() gdclass.DisplayServerMouseMode { //gd:DisplayServer.mouse_get_mode
 	once.Do(singleton)
 	return gdclass.DisplayServerMouseMode(class(self).MouseGetMode())
 }
@@ -798,7 +798,7 @@ func MouseGetMode() gdclass.DisplayServerMouseMode {
 Sets the mouse cursor position to the given [param position] relative to an origin at the upper left corner of the currently focused game Window Manager window.
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS, and Linux (X11/Wayland). It has no effect on Android, iOS, and Web.
 */
-func WarpMouse(position Vector2i.XY) {
+func WarpMouse(position Vector2i.XY) { //gd:DisplayServer.warp_mouse
 	once.Do(singleton)
 	class(self).WarpMouse(gd.Vector2i(position))
 }
@@ -806,7 +806,7 @@ func WarpMouse(position Vector2i.XY) {
 /*
 Returns the mouse cursor's current position in screen coordinates.
 */
-func MouseGetPosition() Vector2i.XY {
+func MouseGetPosition() Vector2i.XY { //gd:DisplayServer.mouse_get_position
 	once.Do(singleton)
 	return Vector2i.XY(class(self).MouseGetPosition())
 }
@@ -814,7 +814,7 @@ func MouseGetPosition() Vector2i.XY {
 /*
 Returns the current state of mouse buttons (whether each button is pressed) as a bitmask. If multiple mouse buttons are pressed at the same time, the bits are added together. Equivalent to [method Input.get_mouse_button_mask].
 */
-func MouseGetButtonState() MouseButtonMask {
+func MouseGetButtonState() MouseButtonMask { //gd:DisplayServer.mouse_get_button_state
 	once.Do(singleton)
 	return MouseButtonMask(class(self).MouseGetButtonState())
 }
@@ -822,7 +822,7 @@ func MouseGetButtonState() MouseButtonMask {
 /*
 Sets the user's clipboard content to the given string.
 */
-func ClipboardSet(clipboard string) {
+func ClipboardSet(clipboard string) { //gd:DisplayServer.clipboard_set
 	once.Do(singleton)
 	class(self).ClipboardSet(gd.NewString(clipboard))
 }
@@ -830,7 +830,7 @@ func ClipboardSet(clipboard string) {
 /*
 Returns the user's clipboard as a string if possible.
 */
-func ClipboardGet() string {
+func ClipboardGet() string { //gd:DisplayServer.clipboard_get
 	once.Do(singleton)
 	return string(class(self).ClipboardGet().String())
 }
@@ -839,7 +839,7 @@ func ClipboardGet() string {
 Returns the user's clipboard as an image if possible.
 [b]Note:[/b] This method uses the copied pixel data, e.g. from a image editing software or a web browser, not an image file copied from file explorer.
 */
-func ClipboardGetImage() [1]gdclass.Image {
+func ClipboardGetImage() [1]gdclass.Image { //gd:DisplayServer.clipboard_get_image
 	once.Do(singleton)
 	return [1]gdclass.Image(class(self).ClipboardGetImage())
 }
@@ -847,7 +847,7 @@ func ClipboardGetImage() [1]gdclass.Image {
 /*
 Returns [code]true[/code] if there is a text content on the user's clipboard.
 */
-func ClipboardHas() bool {
+func ClipboardHas() bool { //gd:DisplayServer.clipboard_has
 	once.Do(singleton)
 	return bool(class(self).ClipboardHas())
 }
@@ -855,7 +855,7 @@ func ClipboardHas() bool {
 /*
 Returns [code]true[/code] if there is an image content on the user's clipboard.
 */
-func ClipboardHasImage() bool {
+func ClipboardHasImage() bool { //gd:DisplayServer.clipboard_has_image
 	once.Do(singleton)
 	return bool(class(self).ClipboardHasImage())
 }
@@ -864,7 +864,7 @@ func ClipboardHasImage() bool {
 Sets the user's [url=https://unix.stackexchange.com/questions/139191/whats-the-difference-between-primary-selection-and-clipboard-buffer]primary[/url] clipboard content to the given string. This is the clipboard that is set when the user selects text in any application, rather than when pressing [kbd]Ctrl + C[/kbd]. The clipboard data can then be pasted by clicking the middle mouse button in any application that supports the primary clipboard mechanism.
 [b]Note:[/b] This method is only implemented on Linux (X11/Wayland).
 */
-func ClipboardSetPrimary(clipboard_primary string) {
+func ClipboardSetPrimary(clipboard_primary string) { //gd:DisplayServer.clipboard_set_primary
 	once.Do(singleton)
 	class(self).ClipboardSetPrimary(gd.NewString(clipboard_primary))
 }
@@ -873,7 +873,7 @@ func ClipboardSetPrimary(clipboard_primary string) {
 Returns the user's [url=https://unix.stackexchange.com/questions/139191/whats-the-difference-between-primary-selection-and-clipboard-buffer]primary[/url] clipboard as a string if possible. This is the clipboard that is set when the user selects text in any application, rather than when pressing [kbd]Ctrl + C[/kbd]. The clipboard data can then be pasted by clicking the middle mouse button in any application that supports the primary clipboard mechanism.
 [b]Note:[/b] This method is only implemented on Linux (X11/Wayland).
 */
-func ClipboardGetPrimary() string {
+func ClipboardGetPrimary() string { //gd:DisplayServer.clipboard_get_primary
 	once.Do(singleton)
 	return string(class(self).ClipboardGetPrimary().String())
 }
@@ -882,7 +882,7 @@ func ClipboardGetPrimary() string {
 Returns an [Array] of [Rect2], each of which is the bounding rectangle for a display cutout or notch. These are non-functional areas on edge-to-edge screens used by cameras and sensors. Returns an empty array if the device does not have cutouts. See also [method get_display_safe_area].
 [b]Note:[/b] Currently only implemented on Android. Other platforms will return an empty array even if they do have display cutouts or notches.
 */
-func GetDisplayCutouts() []Rect2.PositionSize {
+func GetDisplayCutouts() []Rect2.PositionSize { //gd:DisplayServer.get_display_cutouts
 	once.Do(singleton)
 	return []Rect2.PositionSize(gd.ArrayAs[[]Rect2.PositionSize](gd.InternalArray(class(self).GetDisplayCutouts())))
 }
@@ -890,7 +890,7 @@ func GetDisplayCutouts() []Rect2.PositionSize {
 /*
 Returns the unobscured area of the display where interactive controls should be rendered. See also [method get_display_cutouts].
 */
-func GetDisplaySafeArea() Rect2i.PositionSize {
+func GetDisplaySafeArea() Rect2i.PositionSize { //gd:DisplayServer.get_display_safe_area
 	once.Do(singleton)
 	return Rect2i.PositionSize(class(self).GetDisplaySafeArea())
 }
@@ -898,7 +898,7 @@ func GetDisplaySafeArea() Rect2i.PositionSize {
 /*
 Returns the number of displays available.
 */
-func GetScreenCount() int {
+func GetScreenCount() int { //gd:DisplayServer.get_screen_count
 	once.Do(singleton)
 	return int(int(class(self).GetScreenCount()))
 }
@@ -906,7 +906,7 @@ func GetScreenCount() int {
 /*
 Returns index of the primary screen.
 */
-func GetPrimaryScreen() int {
+func GetPrimaryScreen() int { //gd:DisplayServer.get_primary_screen
 	once.Do(singleton)
 	return int(int(class(self).GetPrimaryScreen()))
 }
@@ -914,7 +914,7 @@ func GetPrimaryScreen() int {
 /*
 Returns the index of the screen containing the window with the keyboard focus, or the primary screen if there's no focused window.
 */
-func GetKeyboardFocusScreen() int {
+func GetKeyboardFocusScreen() int { //gd:DisplayServer.get_keyboard_focus_screen
 	once.Do(singleton)
 	return int(int(class(self).GetKeyboardFocusScreen()))
 }
@@ -922,7 +922,7 @@ func GetKeyboardFocusScreen() int {
 /*
 Returns index of the screen which contains specified rectangle.
 */
-func GetScreenFromRect(rect Rect2.PositionSize) int {
+func GetScreenFromRect(rect Rect2.PositionSize) int { //gd:DisplayServer.get_screen_from_rect
 	once.Do(singleton)
 	return int(int(class(self).GetScreenFromRect(gd.Rect2(rect))))
 }
@@ -941,7 +941,7 @@ Returns the screen's top-left corner position in pixels. On multi-monitor setups
 See also [method screen_get_size].
 [b]Note:[/b] On Linux (Wayland) this method always returns [code](0, 0)[/code].
 */
-func ScreenGetPosition() Vector2i.XY {
+func ScreenGetPosition() Vector2i.XY { //gd:DisplayServer.screen_get_position
 	once.Do(singleton)
 	return Vector2i.XY(class(self).ScreenGetPosition(gd.Int(-1)))
 }
@@ -949,7 +949,7 @@ func ScreenGetPosition() Vector2i.XY {
 /*
 Returns the screen's size in pixels. See also [method screen_get_position] and [method screen_get_usable_rect].
 */
-func ScreenGetSize() Vector2i.XY {
+func ScreenGetSize() Vector2i.XY { //gd:DisplayServer.screen_get_size
 	once.Do(singleton)
 	return Vector2i.XY(class(self).ScreenGetSize(gd.Int(-1)))
 }
@@ -957,7 +957,7 @@ func ScreenGetSize() Vector2i.XY {
 /*
 Returns the portion of the screen that is not obstructed by a status bar in pixels. See also [method screen_get_size].
 */
-func ScreenGetUsableRect() Rect2i.PositionSize {
+func ScreenGetUsableRect() Rect2i.PositionSize { //gd:DisplayServer.screen_get_usable_rect
 	once.Do(singleton)
 	return Rect2i.PositionSize(class(self).ScreenGetUsableRect(gd.Int(-1)))
 }
@@ -978,7 +978,7 @@ xxxhdpi - 640 dpi
 [/codeblock]
 [b]Note:[/b] This method is implemented on Android, Linux (X11/Wayland), macOS and Windows. Returns [code]72[/code] on unsupported platforms.
 */
-func ScreenGetDpi() int {
+func ScreenGetDpi() int { //gd:DisplayServer.screen_get_dpi
 	once.Do(singleton)
 	return int(int(class(self).ScreenGetDpi(gd.Int(-1))))
 }
@@ -989,7 +989,7 @@ Returns the scale factor of the specified screen by index.
 [b]Note:[/b] On Linux (Wayland), the returned value is accurate only when [param screen] is [constant SCREEN_OF_MAIN_WINDOW]. Due to API limitations, passing a direct index will return a rounded-up integer, if the screen has a fractional scale (e.g. [code]1.25[/code] would get rounded up to [code]2.0[/code]).
 [b]Note:[/b] This method is implemented only on macOS and Linux (Wayland).
 */
-func ScreenGetScale() Float.X {
+func ScreenGetScale() Float.X { //gd:DisplayServer.screen_get_scale
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).ScreenGetScale(gd.Int(-1))))
 }
@@ -997,7 +997,7 @@ func ScreenGetScale() Float.X {
 /*
 Returns [code]true[/code] if touch events are available (Android or iOS), the capability is detected on the Web platform or if [member ProjectSettings.input_devices/pointing/emulate_touch_from_mouse] is [code]true[/code].
 */
-func IsTouchscreenAvailable() bool {
+func IsTouchscreenAvailable() bool { //gd:DisplayServer.is_touchscreen_available
 	once.Do(singleton)
 	return bool(class(self).IsTouchscreenAvailable())
 }
@@ -1007,7 +1007,7 @@ Returns the greatest scale factor of all screens.
 [b]Note:[/b] On macOS returned value is [code]2.0[/code] if there is at least one hiDPI (Retina) screen in the system, and [code]1.0[/code] in all other cases.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func ScreenGetMaxScale() Float.X {
+func ScreenGetMaxScale() Float.X { //gd:DisplayServer.screen_get_max_scale
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).ScreenGetMaxScale()))
 }
@@ -1024,7 +1024,7 @@ if refresh_rate < 0:
 
 [/codeblock]
 */
-func ScreenGetRefreshRate() Float.X {
+func ScreenGetRefreshRate() Float.X { //gd:DisplayServer.screen_get_refresh_rate
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).ScreenGetRefreshRate(gd.Int(-1))))
 }
@@ -1034,7 +1034,7 @@ Returns color of the display pixel at the [param position].
 [b]Note:[/b] This method is implemented on Linux (X11), macOS, and Windows.
 [b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
 */
-func ScreenGetPixel(position Vector2i.XY) Color.RGBA {
+func ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:DisplayServer.screen_get_pixel
 	once.Do(singleton)
 	return Color.RGBA(class(self).ScreenGetPixel(gd.Vector2i(position)))
 }
@@ -1044,7 +1044,7 @@ Returns screenshot of the [param screen].
 [b]Note:[/b] This method is implemented on Linux (X11), macOS, and Windows.
 [b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
 */
-func ScreenGetImage() [1]gdclass.Image {
+func ScreenGetImage() [1]gdclass.Image { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
 	return [1]gdclass.Image(class(self).ScreenGetImage(gd.Int(-1)))
 }
@@ -1053,7 +1053,7 @@ func ScreenGetImage() [1]gdclass.Image {
 Sets the [param screen]'s [param orientation]. See also [method screen_get_orientation].
 [b]Note:[/b] On iOS, this method has no effect if [member ProjectSettings.display/window/handheld/orientation] is not set to [constant SCREEN_SENSOR].
 */
-func ScreenSetOrientation(orientation gdclass.DisplayServerScreenOrientation) {
+func ScreenSetOrientation(orientation gdclass.DisplayServerScreenOrientation) { //gd:DisplayServer.screen_set_orientation
 	once.Do(singleton)
 	class(self).ScreenSetOrientation(orientation, gd.Int(-1))
 }
@@ -1062,7 +1062,7 @@ func ScreenSetOrientation(orientation gdclass.DisplayServerScreenOrientation) {
 Returns the [param screen]'s current orientation. See also [method screen_set_orientation].
 [b]Note:[/b] This method is implemented on Android and iOS.
 */
-func ScreenGetOrientation() gdclass.DisplayServerScreenOrientation {
+func ScreenGetOrientation() gdclass.DisplayServerScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	once.Do(singleton)
 	return gdclass.DisplayServerScreenOrientation(class(self).ScreenGetOrientation(gd.Int(-1)))
 }
@@ -1070,7 +1070,7 @@ func ScreenGetOrientation() gdclass.DisplayServerScreenOrientation {
 /*
 Sets whether the screen should never be turned off by the operating system's power-saving measures. See also [method screen_is_kept_on].
 */
-func ScreenSetKeepOn(enable bool) {
+func ScreenSetKeepOn(enable bool) { //gd:DisplayServer.screen_set_keep_on
 	once.Do(singleton)
 	class(self).ScreenSetKeepOn(enable)
 }
@@ -1078,7 +1078,7 @@ func ScreenSetKeepOn(enable bool) {
 /*
 Returns [code]true[/code] if the screen should never be turned off by the operating system's power-saving measures. See also [method screen_set_keep_on].
 */
-func ScreenIsKeptOn() bool {
+func ScreenIsKeptOn() bool { //gd:DisplayServer.screen_is_kept_on
 	once.Do(singleton)
 	return bool(class(self).ScreenIsKeptOn())
 }
@@ -1087,7 +1087,7 @@ func ScreenIsKeptOn() bool {
 Returns the list of Godot window IDs belonging to this process.
 [b]Note:[/b] Native dialogs are not included in this list.
 */
-func GetWindowList() []int32 {
+func GetWindowList() []int32 { //gd:DisplayServer.get_window_list
 	once.Do(singleton)
 	return []int32(class(self).GetWindowList().AsSlice())
 }
@@ -1104,7 +1104,7 @@ Returns the ID of the window at the specified screen [param position] (in pixels
 +-------------+ +-------+
 [/codeblock]
 */
-func GetWindowAtScreenPosition(position Vector2i.XY) int {
+func GetWindowAtScreenPosition(position Vector2i.XY) int { //gd:DisplayServer.get_window_at_screen_position
 	once.Do(singleton)
 	return int(int(class(self).GetWindowAtScreenPosition(gd.Vector2i(position))))
 }
@@ -1113,7 +1113,7 @@ func GetWindowAtScreenPosition(position Vector2i.XY) int {
 Returns internal structure pointers for use in plugins.
 [b]Note:[/b] This method is implemented on Android, Linux (X11/Wayland), macOS, and Windows.
 */
-func WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleType) int {
+func WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleType) int { //gd:DisplayServer.window_get_native_handle
 	once.Do(singleton)
 	return int(int(class(self).WindowGetNativeHandle(handle_type, gd.Int(0))))
 }
@@ -1121,7 +1121,7 @@ func WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleType) int {
 /*
 Returns ID of the active popup window, or [constant INVALID_WINDOW_ID] if there is none.
 */
-func WindowGetActivePopup() int {
+func WindowGetActivePopup() int { //gd:DisplayServer.window_get_active_popup
 	once.Do(singleton)
 	return int(int(class(self).WindowGetActivePopup()))
 }
@@ -1129,7 +1129,7 @@ func WindowGetActivePopup() int {
 /*
 Sets the bounding box of control, or menu item that was used to open the popup window, in the screen coordinate system. Clicking this area will not auto-close this popup.
 */
-func WindowSetPopupSafeRect(window int, rect Rect2i.PositionSize) {
+func WindowSetPopupSafeRect(window int, rect Rect2i.PositionSize) { //gd:DisplayServer.window_set_popup_safe_rect
 	once.Do(singleton)
 	class(self).WindowSetPopupSafeRect(gd.Int(window), gd.Rect2i(rect))
 }
@@ -1137,7 +1137,7 @@ func WindowSetPopupSafeRect(window int, rect Rect2i.PositionSize) {
 /*
 Returns the bounding box of control, or menu item that was used to open the popup window, in the screen coordinate system.
 */
-func WindowGetPopupSafeRect(window int) Rect2i.PositionSize {
+func WindowGetPopupSafeRect(window int) Rect2i.PositionSize { //gd:DisplayServer.window_get_popup_safe_rect
 	once.Do(singleton)
 	return Rect2i.PositionSize(class(self).WindowGetPopupSafeRect(gd.Int(window)))
 }
@@ -1147,7 +1147,7 @@ Sets the title of the given window to [param title].
 [b]Note:[/b] It's recommended to change this value using [member Window.title] instead.
 [b]Note:[/b] Avoid changing the window title every frame, as this can cause performance issues on certain window managers. Try to change the window title only a few times per second at most.
 */
-func WindowSetTitle(title string) {
+func WindowSetTitle(title string) { //gd:DisplayServer.window_set_title
 	once.Do(singleton)
 	class(self).WindowSetTitle(gd.NewString(title), gd.Int(0))
 }
@@ -1156,7 +1156,7 @@ func WindowSetTitle(title string) {
 Returns the estimated window title bar size (including text and window buttons) for the window specified by [param window_id] (in pixels). This method does not change the window title.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func WindowGetTitleSize(title string) Vector2i.XY {
+func WindowGetTitleSize(title string) Vector2i.XY { //gd:DisplayServer.window_get_title_size
 	once.Do(singleton)
 	return Vector2i.XY(class(self).WindowGetTitleSize(gd.NewString(title), gd.Int(0)))
 }
@@ -1189,7 +1189,7 @@ DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
 [b]Note:[/b] On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
 [b]Note:[/b] This method is implemented on Linux (X11), macOS and Windows.
 */
-func WindowSetMousePassthrough(region []Vector2.XY) {
+func WindowSetMousePassthrough(region []Vector2.XY) { //gd:DisplayServer.window_set_mouse_passthrough
 	once.Do(singleton)
 	class(self).WindowSetMousePassthrough(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&region))), gd.Int(0))
 }
@@ -1197,7 +1197,7 @@ func WindowSetMousePassthrough(region []Vector2.XY) {
 /*
 Returns the screen the window specified by [param window_id] is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [method window_set_current_screen].
 */
-func WindowGetCurrentScreen() int {
+func WindowGetCurrentScreen() int { //gd:DisplayServer.window_get_current_screen
 	once.Do(singleton)
 	return int(int(class(self).WindowGetCurrentScreen(gd.Int(0))))
 }
@@ -1205,7 +1205,7 @@ func WindowGetCurrentScreen() int {
 /*
 Moves the window specified by [param window_id] to the specified [param screen]. See also [method window_get_current_screen].
 */
-func WindowSetCurrentScreen(screen int) {
+func WindowSetCurrentScreen(screen int) { //gd:DisplayServer.window_set_current_screen
 	once.Do(singleton)
 	class(self).WindowSetCurrentScreen(gd.Int(screen), gd.Int(0))
 }
@@ -1213,7 +1213,7 @@ func WindowSetCurrentScreen(screen int) {
 /*
 Returns the position of the client area of the given window on the screen.
 */
-func WindowGetPosition() Vector2i.XY {
+func WindowGetPosition() Vector2i.XY { //gd:DisplayServer.window_get_position
 	once.Do(singleton)
 	return Vector2i.XY(class(self).WindowGetPosition(gd.Int(0)))
 }
@@ -1221,7 +1221,7 @@ func WindowGetPosition() Vector2i.XY {
 /*
 Returns the position of the given window on the screen including the borders drawn by the operating system. See also [method window_get_position].
 */
-func WindowGetPositionWithDecorations() Vector2i.XY {
+func WindowGetPositionWithDecorations() Vector2i.XY { //gd:DisplayServer.window_get_position_with_decorations
 	once.Do(singleton)
 	return Vector2i.XY(class(self).WindowGetPositionWithDecorations(gd.Int(0)))
 }
@@ -1241,7 +1241,7 @@ See also [method window_get_position] and [method window_set_size].
 [b]Note:[/b] It's recommended to change this value using [member Window.position] instead.
 [b]Note:[/b] On Linux (Wayland): this method is a no-op.
 */
-func WindowSetPosition(position Vector2i.XY) {
+func WindowSetPosition(position Vector2i.XY) { //gd:DisplayServer.window_set_position
 	once.Do(singleton)
 	class(self).WindowSetPosition(gd.Vector2i(position), gd.Int(0))
 }
@@ -1249,7 +1249,7 @@ func WindowSetPosition(position Vector2i.XY) {
 /*
 Returns the size of the window specified by [param window_id] (in pixels), excluding the borders drawn by the operating system. This is also called the "client area". See also [method window_get_size_with_decorations], [method window_set_size] and [method window_get_position].
 */
-func WindowGetSize() Vector2i.XY {
+func WindowGetSize() Vector2i.XY { //gd:DisplayServer.window_get_size
 	once.Do(singleton)
 	return Vector2i.XY(class(self).WindowGetSize(gd.Int(0)))
 }
@@ -1258,7 +1258,7 @@ func WindowGetSize() Vector2i.XY {
 Sets the size of the given window to [param size] (in pixels). See also [method window_get_size] and [method window_get_position].
 [b]Note:[/b] It's recommended to change this value using [member Window.size] instead.
 */
-func WindowSetSize(size Vector2i.XY) {
+func WindowSetSize(size Vector2i.XY) { //gd:DisplayServer.window_set_size
 	once.Do(singleton)
 	class(self).WindowSetSize(gd.Vector2i(size), gd.Int(0))
 }
@@ -1267,7 +1267,7 @@ func WindowSetSize(size Vector2i.XY) {
 Sets the [param callback] that will be called when the window specified by [param window_id] is moved or resized.
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetRectChangedCallback(callback func(rect Rect2i.PositionSize)) {
+func WindowSetRectChangedCallback(callback func(rect Rect2i.PositionSize)) { //gd:DisplayServer.window_set_rect_changed_callback
 	once.Do(singleton)
 	class(self).WindowSetRectChangedCallback(Callable.New(callback), gd.Int(0))
 }
@@ -1276,7 +1276,7 @@ func WindowSetRectChangedCallback(callback func(rect Rect2i.PositionSize)) {
 Sets the [param callback] that will be called when an event occurs in the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetWindowEventCallback(callback func(event gdclass.DisplayServerWindowEvent)) {
+func WindowSetWindowEventCallback(callback func(event gdclass.DisplayServerWindowEvent)) { //gd:DisplayServer.window_set_window_event_callback
 	once.Do(singleton)
 	class(self).WindowSetWindowEventCallback(Callable.New(callback), gd.Int(0))
 }
@@ -1285,7 +1285,7 @@ func WindowSetWindowEventCallback(callback func(event gdclass.DisplayServerWindo
 Sets the [param callback] that should be called when any [InputEvent] is sent to the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetInputEventCallback(callback func(event [1]gdclass.InputEvent)) {
+func WindowSetInputEventCallback(callback func(event [1]gdclass.InputEvent)) { //gd:DisplayServer.window_set_input_event_callback
 	once.Do(singleton)
 	class(self).WindowSetInputEventCallback(Callable.New(callback), gd.Int(0))
 }
@@ -1294,7 +1294,7 @@ func WindowSetInputEventCallback(callback func(event [1]gdclass.InputEvent)) {
 Sets the [param callback] that should be called when text is entered using the virtual keyboard to the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetInputTextCallback(callback func(text string)) {
+func WindowSetInputTextCallback(callback func(text string)) { //gd:DisplayServer.window_set_input_text_callback
 	once.Do(singleton)
 	class(self).WindowSetInputTextCallback(Callable.New(callback), gd.Int(0))
 }
@@ -1304,7 +1304,7 @@ Sets the [param callback] that should be called when files are dropped from the 
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 [b]Note:[/b] This method is implemented on Windows, macOS, Linux (X11/Wayland), and Web.
 */
-func WindowSetDropFilesCallback(callback func(tag any)) {
+func WindowSetDropFilesCallback(callback func(tag any)) { //gd:DisplayServer.window_set_drop_files_callback
 	once.Do(singleton)
 	class(self).WindowSetDropFilesCallback(Callable.New(callback), gd.Int(0))
 }
@@ -1312,7 +1312,7 @@ func WindowSetDropFilesCallback(callback func(tag any)) {
 /*
 Returns the [method Object.get_instance_id] of the [Window] the [param window_id] is attached to.
 */
-func WindowGetAttachedInstanceId() int {
+func WindowGetAttachedInstanceId() int { //gd:DisplayServer.window_get_attached_instance_id
 	once.Do(singleton)
 	return int(int(class(self).WindowGetAttachedInstanceId(gd.Int(0))))
 }
@@ -1320,7 +1320,7 @@ func WindowGetAttachedInstanceId() int {
 /*
 Returns the window's maximum size (in pixels). See also [method window_set_max_size].
 */
-func WindowGetMaxSize() Vector2i.XY {
+func WindowGetMaxSize() Vector2i.XY { //gd:DisplayServer.window_get_max_size
 	once.Do(singleton)
 	return Vector2i.XY(class(self).WindowGetMaxSize(gd.Int(0)))
 }
@@ -1330,7 +1330,7 @@ Sets the maximum size of the window specified by [param window_id] in pixels. No
 [b]Note:[/b] It's recommended to change this value using [member Window.max_size] instead.
 [b]Note:[/b] Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
 */
-func WindowSetMaxSize(max_size Vector2i.XY) {
+func WindowSetMaxSize(max_size Vector2i.XY) { //gd:DisplayServer.window_set_max_size
 	once.Do(singleton)
 	class(self).WindowSetMaxSize(gd.Vector2i(max_size), gd.Int(0))
 }
@@ -1338,7 +1338,7 @@ func WindowSetMaxSize(max_size Vector2i.XY) {
 /*
 Returns the window's minimum size (in pixels). See also [method window_set_min_size].
 */
-func WindowGetMinSize() Vector2i.XY {
+func WindowGetMinSize() Vector2i.XY { //gd:DisplayServer.window_get_min_size
 	once.Do(singleton)
 	return Vector2i.XY(class(self).WindowGetMinSize(gd.Int(0)))
 }
@@ -1349,7 +1349,7 @@ Sets the minimum size for the given window to [param min_size] in pixels. Normal
 [b]Note:[/b] By default, the main window has a minimum size of [code]Vector2i(64, 64)[/code]. This prevents issues that can arise when the window is resized to a near-zero size.
 [b]Note:[/b] Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
 */
-func WindowSetMinSize(min_size Vector2i.XY) {
+func WindowSetMinSize(min_size Vector2i.XY) { //gd:DisplayServer.window_set_min_size
 	once.Do(singleton)
 	class(self).WindowSetMinSize(gd.Vector2i(min_size), gd.Int(0))
 }
@@ -1357,7 +1357,7 @@ func WindowSetMinSize(min_size Vector2i.XY) {
 /*
 Returns the size of the window specified by [param window_id] (in pixels), including the borders drawn by the operating system. See also [method window_get_size].
 */
-func WindowGetSizeWithDecorations() Vector2i.XY {
+func WindowGetSizeWithDecorations() Vector2i.XY { //gd:DisplayServer.window_get_size_with_decorations
 	once.Do(singleton)
 	return Vector2i.XY(class(self).WindowGetSizeWithDecorations(gd.Int(0)))
 }
@@ -1365,7 +1365,7 @@ func WindowGetSizeWithDecorations() Vector2i.XY {
 /*
 Returns the mode of the given window.
 */
-func WindowGetMode() gdclass.DisplayServerWindowMode {
+func WindowGetMode() gdclass.DisplayServerWindowMode { //gd:DisplayServer.window_get_mode
 	once.Do(singleton)
 	return gdclass.DisplayServerWindowMode(class(self).WindowGetMode(gd.Int(0)))
 }
@@ -1374,7 +1374,7 @@ func WindowGetMode() gdclass.DisplayServerWindowMode {
 Sets window mode for the given window to [param mode]. See [enum WindowMode] for possible values and how each mode behaves.
 [b]Note:[/b] Setting the window to full screen forcibly sets the borderless flag to [code]true[/code], so make sure to set it back to [code]false[/code] when not wanted.
 */
-func WindowSetMode(mode gdclass.DisplayServerWindowMode) {
+func WindowSetMode(mode gdclass.DisplayServerWindowMode) { //gd:DisplayServer.window_set_mode
 	once.Do(singleton)
 	class(self).WindowSetMode(mode, gd.Int(0))
 }
@@ -1382,7 +1382,7 @@ func WindowSetMode(mode gdclass.DisplayServerWindowMode) {
 /*
 Enables or disables the given window's given [param flag]. See [enum WindowFlags] for possible values and their behavior.
 */
-func WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled bool) {
+func WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled bool) { //gd:DisplayServer.window_set_flag
 	once.Do(singleton)
 	class(self).WindowSetFlag(flag, enabled, gd.Int(0))
 }
@@ -1390,7 +1390,7 @@ func WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled bool) {
 /*
 Returns the current value of the given window's [param flag].
 */
-func WindowGetFlag(flag gdclass.DisplayServerWindowFlags) bool {
+func WindowGetFlag(flag gdclass.DisplayServerWindowFlags) bool { //gd:DisplayServer.window_get_flag
 	once.Do(singleton)
 	return bool(class(self).WindowGetFlag(flag, gd.Int(0)))
 }
@@ -1399,7 +1399,7 @@ func WindowGetFlag(flag gdclass.DisplayServerWindowFlags) bool {
 When [constant WINDOW_FLAG_EXTEND_TO_TITLE] flag is set, set offset to the center of the first titlebar button.
 [b]Note:[/b] This flag is implemented only on macOS.
 */
-func WindowSetWindowButtonsOffset(offset Vector2i.XY) {
+func WindowSetWindowButtonsOffset(offset Vector2i.XY) { //gd:DisplayServer.window_set_window_buttons_offset
 	once.Do(singleton)
 	class(self).WindowSetWindowButtonsOffset(gd.Vector2i(offset), gd.Int(0))
 }
@@ -1407,7 +1407,7 @@ func WindowSetWindowButtonsOffset(offset Vector2i.XY) {
 /*
 Returns left margins ([code]x[/code]), right margins ([code]y[/code]) and height ([code]z[/code]) of the title that are safe to use (contains no buttons or other elements) when [constant WINDOW_FLAG_EXTEND_TO_TITLE] flag is set.
 */
-func WindowGetSafeTitleMargins() Vector3i.XYZ {
+func WindowGetSafeTitleMargins() Vector3i.XYZ { //gd:DisplayServer.window_get_safe_title_margins
 	once.Do(singleton)
 	return Vector3i.XYZ(class(self).WindowGetSafeTitleMargins(gd.Int(0)))
 }
@@ -1415,7 +1415,7 @@ func WindowGetSafeTitleMargins() Vector3i.XYZ {
 /*
 Makes the window specified by [param window_id] request attention, which is materialized by the window title and taskbar entry blinking until the window is focused. This usually has no visible effect if the window is currently focused. The exact behavior varies depending on the operating system.
 */
-func WindowRequestAttention() {
+func WindowRequestAttention() { //gd:DisplayServer.window_request_attention
 	once.Do(singleton)
 	class(self).WindowRequestAttention(gd.Int(0))
 }
@@ -1423,7 +1423,7 @@ func WindowRequestAttention() {
 /*
 Moves the window specified by [param window_id] to the foreground, so that it is visible over other windows.
 */
-func WindowMoveToForeground() {
+func WindowMoveToForeground() { //gd:DisplayServer.window_move_to_foreground
 	once.Do(singleton)
 	class(self).WindowMoveToForeground(gd.Int(0))
 }
@@ -1431,7 +1431,7 @@ func WindowMoveToForeground() {
 /*
 Returns [code]true[/code] if the window specified by [param window_id] is focused.
 */
-func WindowIsFocused() bool {
+func WindowIsFocused() bool { //gd:DisplayServer.window_is_focused
 	once.Do(singleton)
 	return bool(class(self).WindowIsFocused(gd.Int(0)))
 }
@@ -1439,7 +1439,7 @@ func WindowIsFocused() bool {
 /*
 Returns [code]true[/code] if anything can be drawn in the window specified by [param window_id], [code]false[/code] otherwise. Using the [code]--disable-render-loop[/code] command line argument or a headless build will return [code]false[/code].
 */
-func WindowCanDraw() bool {
+func WindowCanDraw() bool { //gd:DisplayServer.window_can_draw
 	once.Do(singleton)
 	return bool(class(self).WindowCanDraw(gd.Int(0)))
 }
@@ -1449,7 +1449,7 @@ Sets window transient parent. Transient window is will be destroyed with its tra
 [b]Note:[/b] It's recommended to change this value using [member Window.transient] instead.
 [b]Note:[/b] The behavior might be different depending on the platform.
 */
-func WindowSetTransient(window_id int, parent_window_id int) {
+func WindowSetTransient(window_id int, parent_window_id int) { //gd:DisplayServer.window_set_transient
 	once.Do(singleton)
 	class(self).WindowSetTransient(gd.Int(window_id), gd.Int(parent_window_id))
 }
@@ -1459,7 +1459,7 @@ If set to [code]true[/code], this window will always stay on top of its parent w
 [b]Note:[/b] On macOS, exclusive windows are confined to the same space (virtual desktop or screen) as the parent window.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func WindowSetExclusive(window_id int, exclusive bool) {
+func WindowSetExclusive(window_id int, exclusive bool) { //gd:DisplayServer.window_set_exclusive
 	once.Do(singleton)
 	class(self).WindowSetExclusive(gd.Int(window_id), exclusive)
 }
@@ -1467,7 +1467,7 @@ func WindowSetExclusive(window_id int, exclusive bool) {
 /*
 Sets whether [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] should be enabled for the window specified by [param window_id]. See also [method window_set_ime_position].
 */
-func WindowSetImeActive(active bool) {
+func WindowSetImeActive(active bool) { //gd:DisplayServer.window_set_ime_active
 	once.Do(singleton)
 	class(self).WindowSetImeActive(active, gd.Int(0))
 }
@@ -1475,7 +1475,7 @@ func WindowSetImeActive(active bool) {
 /*
 Sets the position of the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] popup for the specified [param window_id]. Only effective if [method window_set_ime_active] was set to [code]true[/code] for the specified [param window_id].
 */
-func WindowSetImePosition(position Vector2i.XY) {
+func WindowSetImePosition(position Vector2i.XY) { //gd:DisplayServer.window_set_ime_position
 	once.Do(singleton)
 	class(self).WindowSetImePosition(gd.Vector2i(position), gd.Int(0))
 }
@@ -1486,7 +1486,7 @@ See [enum DisplayServer.VSyncMode] for possible values and how they affect the b
 Depending on the platform and used renderer, the engine will fall back to [constant VSYNC_ENABLED] if the desired mode is not supported.
 [b]Note:[/b] V-Sync modes other than [constant VSYNC_ENABLED] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 */
-func WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode) {
+func WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode) { //gd:DisplayServer.window_set_vsync_mode
 	once.Do(singleton)
 	class(self).WindowSetVsyncMode(vsync_mode, gd.Int(0))
 }
@@ -1494,7 +1494,7 @@ func WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode) {
 /*
 Returns the V-Sync mode of the given window.
 */
-func WindowGetVsyncMode() gdclass.DisplayServerVSyncMode {
+func WindowGetVsyncMode() gdclass.DisplayServerVSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	once.Do(singleton)
 	return gdclass.DisplayServerVSyncMode(class(self).WindowGetVsyncMode(gd.Int(0)))
 }
@@ -1502,7 +1502,7 @@ func WindowGetVsyncMode() gdclass.DisplayServerVSyncMode {
 /*
 Returns [code]true[/code] if the given window can be maximized (the maximize button is enabled).
 */
-func WindowIsMaximizeAllowed() bool {
+func WindowIsMaximizeAllowed() bool { //gd:DisplayServer.window_is_maximize_allowed
 	once.Do(singleton)
 	return bool(class(self).WindowIsMaximizeAllowed(gd.Int(0)))
 }
@@ -1511,7 +1511,7 @@ func WindowIsMaximizeAllowed() bool {
 Returns [code]true[/code], if double-click on a window title should maximize it.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func WindowMaximizeOnTitleDblClick() bool {
+func WindowMaximizeOnTitleDblClick() bool { //gd:DisplayServer.window_maximize_on_title_dbl_click
 	once.Do(singleton)
 	return bool(class(self).WindowMaximizeOnTitleDblClick())
 }
@@ -1520,7 +1520,7 @@ func WindowMaximizeOnTitleDblClick() bool {
 Returns [code]true[/code], if double-click on a window title should minimize it.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func WindowMinimizeOnTitleDblClick() bool {
+func WindowMinimizeOnTitleDblClick() bool { //gd:DisplayServer.window_minimize_on_title_dbl_click
 	once.Do(singleton)
 	return bool(class(self).WindowMinimizeOnTitleDblClick())
 }
@@ -1529,7 +1529,7 @@ func WindowMinimizeOnTitleDblClick() bool {
 Returns the text selection in the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] composition string, with the [Vector2i]'s [code]x[/code] component being the caret position and [code]y[/code] being the length of the selection.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func ImeGetSelection() Vector2i.XY {
+func ImeGetSelection() Vector2i.XY { //gd:DisplayServer.ime_get_selection
 	once.Do(singleton)
 	return Vector2i.XY(class(self).ImeGetSelection())
 }
@@ -1538,7 +1538,7 @@ func ImeGetSelection() Vector2i.XY {
 Returns the composition string contained within the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] window.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func ImeGetText() string {
+func ImeGetText() string { //gd:DisplayServer.ime_get_text
 	once.Do(singleton)
 	return string(class(self).ImeGetText().String())
 }
@@ -1553,7 +1553,7 @@ Shows the virtual keyboard if the platform has one.
 [param cursor_start] and [param cursor_end] can optionally define the current text selection.
 [b]Note:[/b] This method is implemented on Android, iOS and Web.
 */
-func VirtualKeyboardShow(existing_text string) {
+func VirtualKeyboardShow(existing_text string) { //gd:DisplayServer.virtual_keyboard_show
 	once.Do(singleton)
 	class(self).VirtualKeyboardShow(gd.NewString(existing_text), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), 0, gd.Int(-1), gd.Int(-1), gd.Int(-1))
 }
@@ -1561,7 +1561,7 @@ func VirtualKeyboardShow(existing_text string) {
 /*
 Hides the virtual keyboard if it is shown, does nothing otherwise.
 */
-func VirtualKeyboardHide() {
+func VirtualKeyboardHide() { //gd:DisplayServer.virtual_keyboard_hide
 	once.Do(singleton)
 	class(self).VirtualKeyboardHide()
 }
@@ -1569,7 +1569,7 @@ func VirtualKeyboardHide() {
 /*
 Returns the on-screen keyboard's height in pixels. Returns 0 if there is no keyboard or if it is currently hidden.
 */
-func VirtualKeyboardGetHeight() int {
+func VirtualKeyboardGetHeight() int { //gd:DisplayServer.virtual_keyboard_get_height
 	once.Do(singleton)
 	return int(int(class(self).VirtualKeyboardGetHeight()))
 }
@@ -1577,7 +1577,7 @@ func VirtualKeyboardGetHeight() int {
 /*
 Sets the default mouse cursor shape. The cursor's appearance will vary depending on the user's operating system and mouse cursor theme. See also [method cursor_get_shape] and [method cursor_set_custom_image].
 */
-func CursorSetShape(shape gdclass.DisplayServerCursorShape) {
+func CursorSetShape(shape gdclass.DisplayServerCursorShape) { //gd:DisplayServer.cursor_set_shape
 	once.Do(singleton)
 	class(self).CursorSetShape(shape)
 }
@@ -1585,7 +1585,7 @@ func CursorSetShape(shape gdclass.DisplayServerCursorShape) {
 /*
 Returns the default mouse cursor shape set by [method cursor_set_shape].
 */
-func CursorGetShape() gdclass.DisplayServerCursorShape {
+func CursorGetShape() gdclass.DisplayServerCursorShape { //gd:DisplayServer.cursor_get_shape
 	once.Do(singleton)
 	return gdclass.DisplayServerCursorShape(class(self).CursorGetShape())
 }
@@ -1594,7 +1594,7 @@ func CursorGetShape() gdclass.DisplayServerCursorShape {
 Sets a custom mouse cursor image for the given [param shape]. This means the user's operating system and mouse cursor theme will no longer influence the mouse cursor's appearance.
 [param cursor] can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, [param hotspot] can be set to offset the image's position relative to the click point. By default, [param hotspot] is set to the top-left corner of the image. See also [method cursor_set_shape].
 */
-func CursorSetCustomImage(cursor [1]gdclass.Resource) {
+func CursorSetCustomImage(cursor [1]gdclass.Resource) { //gd:DisplayServer.cursor_set_custom_image
 	once.Do(singleton)
 	class(self).CursorSetCustomImage(cursor, 0, gd.Vector2(gd.Vector2{0, 0}))
 }
@@ -1603,7 +1603,7 @@ func CursorSetCustomImage(cursor [1]gdclass.Resource) {
 Returns [code]true[/code] if positions of [b]OK[/b] and [b]Cancel[/b] buttons are swapped in dialogs. This is enabled by default on Windows to follow interface conventions, and be toggled by changing [member ProjectSettings.gui/common/swap_cancel_ok].
 [b]Note:[/b] This doesn't affect native dialogs such as the ones spawned by [method DisplayServer.dialog_show].
 */
-func GetSwapCancelOk() bool {
+func GetSwapCancelOk() bool { //gd:DisplayServer.get_swap_cancel_ok
 	once.Do(singleton)
 	return bool(class(self).GetSwapCancelOk())
 }
@@ -1612,7 +1612,7 @@ func GetSwapCancelOk() bool {
 Allows the [param process_id] PID to steal focus from this window. In other words, this disables the operating system's focus stealing protection for the specified PID.
 [b]Note:[/b] This method is implemented only on Windows.
 */
-func EnableForStealingFocus(process_id int) {
+func EnableForStealingFocus(process_id int) { //gd:DisplayServer.enable_for_stealing_focus
 	once.Do(singleton)
 	class(self).EnableForStealingFocus(gd.Int(process_id))
 }
@@ -1621,7 +1621,7 @@ func EnableForStealingFocus(process_id int) {
 Shows a text dialog which uses the operating system's native look-and-feel. [param callback] should accept a single [int] parameter which corresponds to the index of the pressed button.
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS and Windows.
 */
-func DialogShow(title string, description string, buttons []string, callback func(button int)) error {
+func DialogShow(title string, description string, buttons []string, callback func(button int)) error { //gd:DisplayServer.dialog_show
 	once.Do(singleton)
 	return error(gd.ToError(class(self).DialogShow(gd.NewString(title), gd.NewString(description), gd.NewPackedStringSlice(buttons), Callable.New(callback))))
 }
@@ -1630,7 +1630,7 @@ func DialogShow(title string, description string, buttons []string, callback fun
 Shows a text input dialog which uses the operating system's native look-and-feel. [param callback] should accept a single [String] parameter which contains the text field's contents.
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS and Windows.
 */
-func DialogInputText(title string, description string, existing_text string, callback func(text string)) error {
+func DialogInputText(title string, description string, existing_text string, callback func(text string)) error { //gd:DisplayServer.dialog_input_text
 	once.Do(singleton)
 	return error(gd.ToError(class(self).DialogInputText(gd.NewString(title), gd.NewString(description), gd.NewString(existing_text), Callable.New(callback))))
 }
@@ -1645,7 +1645,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
-func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error {
+func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error { //gd:DisplayServer.file_dialog_show
 	once.Do(singleton)
 	return error(gd.ToError(class(self).FileDialogShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), Callable.New(callback))))
 }
@@ -1664,7 +1664,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
-func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []map[any]any, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error {
+func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []map[any]any, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
 	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](options), Callable.New(callback))))
 }
@@ -1673,7 +1673,7 @@ func FileDialogWithOptionsShow(title string, current_directory string, root stri
 Returns the number of keyboard layouts.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
-func KeyboardGetLayoutCount() int {
+func KeyboardGetLayoutCount() int { //gd:DisplayServer.keyboard_get_layout_count
 	once.Do(singleton)
 	return int(int(class(self).KeyboardGetLayoutCount()))
 }
@@ -1682,7 +1682,7 @@ func KeyboardGetLayoutCount() int {
 Returns active keyboard layout index.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
-func KeyboardGetCurrentLayout() int {
+func KeyboardGetCurrentLayout() int { //gd:DisplayServer.keyboard_get_current_layout
 	once.Do(singleton)
 	return int(int(class(self).KeyboardGetCurrentLayout()))
 }
@@ -1691,7 +1691,7 @@ func KeyboardGetCurrentLayout() int {
 Sets the active keyboard layout.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
-func KeyboardSetCurrentLayout(index int) {
+func KeyboardSetCurrentLayout(index int) { //gd:DisplayServer.keyboard_set_current_layout
 	once.Do(singleton)
 	class(self).KeyboardSetCurrentLayout(gd.Int(index))
 }
@@ -1700,7 +1700,7 @@ func KeyboardSetCurrentLayout(index int) {
 Returns the ISO-639/BCP-47 language code of the keyboard layout at position [param index].
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
-func KeyboardGetLayoutLanguage(index int) string {
+func KeyboardGetLayoutLanguage(index int) string { //gd:DisplayServer.keyboard_get_layout_language
 	once.Do(singleton)
 	return string(class(self).KeyboardGetLayoutLanguage(gd.Int(index)).String())
 }
@@ -1709,7 +1709,7 @@ func KeyboardGetLayoutLanguage(index int) string {
 Returns the localized name of the keyboard layout at position [param index].
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
-func KeyboardGetLayoutName(index int) string {
+func KeyboardGetLayoutName(index int) string { //gd:DisplayServer.keyboard_get_layout_name
 	once.Do(singleton)
 	return string(class(self).KeyboardGetLayoutName(gd.Int(index)).String())
 }
@@ -1718,7 +1718,7 @@ func KeyboardGetLayoutName(index int) string {
 Converts a physical (US QWERTY) [param keycode] to one in the active keyboard layout.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
-func KeyboardGetKeycodeFromPhysical(keycode Key) Key {
+func KeyboardGetKeycodeFromPhysical(keycode Key) Key { //gd:DisplayServer.keyboard_get_keycode_from_physical
 	once.Do(singleton)
 	return Key(class(self).KeyboardGetKeycodeFromPhysical(keycode))
 }
@@ -1727,7 +1727,7 @@ func KeyboardGetKeycodeFromPhysical(keycode Key) Key {
 Converts a physical (US QWERTY) [param keycode] to localized label printed on the key in the active keyboard layout.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
-func KeyboardGetLabelFromPhysical(keycode Key) Key {
+func KeyboardGetLabelFromPhysical(keycode Key) Key { //gd:DisplayServer.keyboard_get_label_from_physical
 	once.Do(singleton)
 	return Key(class(self).KeyboardGetLabelFromPhysical(keycode))
 }
@@ -1735,7 +1735,7 @@ func KeyboardGetLabelFromPhysical(keycode Key) Key {
 /*
 Perform window manager processing, including input flushing. See also [method force_process_and_drop_events], [method Input.flush_buffered_events] and [member Input.use_accumulated_input].
 */
-func ProcessEvents() {
+func ProcessEvents() { //gd:DisplayServer.process_events
 	once.Do(singleton)
 	class(self).ProcessEvents()
 }
@@ -1744,7 +1744,7 @@ func ProcessEvents() {
 Forces window manager processing while ignoring all [InputEvent]s. See also [method process_events].
 [b]Note:[/b] This method is implemented on Windows and macOS.
 */
-func ForceProcessAndDropEvents() {
+func ForceProcessAndDropEvents() { //gd:DisplayServer.force_process_and_drop_events
 	once.Do(singleton)
 	class(self).ForceProcessAndDropEvents()
 }
@@ -1753,7 +1753,7 @@ func ForceProcessAndDropEvents() {
 Sets the window icon (usually displayed in the top-left corner) in the operating system's [i]native[/i] format. The file at [param filename] must be in [code].ico[/code] format on Windows or [code].icns[/code] on macOS. By using specially crafted [code].ico[/code] or [code].icns[/code] icons, [method set_native_icon] allows specifying different icons depending on the size the icon is displayed at. This size is determined by the operating system and user preferences (including the display scale factor). To use icons in other formats, use [method set_icon] instead.
 [b]Note:[/b] Requires support for [constant FEATURE_NATIVE_ICON].
 */
-func SetNativeIcon(filename string) {
+func SetNativeIcon(filename string) { //gd:DisplayServer.set_native_icon
 	once.Do(singleton)
 	class(self).SetNativeIcon(gd.NewString(filename))
 }
@@ -1762,7 +1762,7 @@ func SetNativeIcon(filename string) {
 Sets the window icon (usually displayed in the top-left corner) with an [Image]. To use icons in the operating system's native format, use [method set_native_icon] instead.
 [b]Note:[/b] Requires support for [constant FEATURE_ICON].
 */
-func SetIcon(image [1]gdclass.Image) {
+func SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
 	once.Do(singleton)
 	class(self).SetIcon(image)
 }
@@ -1771,7 +1771,7 @@ func SetIcon(image [1]gdclass.Image) {
 Creates a new application status indicator with the specified icon, tooltip, and activation callback.
 [param callback] should take two arguments: the pressed mouse button (one of the [enum MouseButton] constants) and the click position in screen coordinates (a [Vector2i]).
 */
-func CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip string, callback func(button MouseButton, click_position Vector2i.XY)) int {
+func CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip string, callback func(button MouseButton, click_position Vector2i.XY)) int { //gd:DisplayServer.create_status_indicator
 	once.Do(singleton)
 	return int(int(class(self).CreateStatusIndicator(icon, gd.NewString(tooltip), Callable.New(callback))))
 }
@@ -1780,7 +1780,7 @@ func CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip string, callback f
 Sets the application status indicator icon.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func StatusIndicatorSetIcon(id int, icon [1]gdclass.Texture2D) {
+func StatusIndicatorSetIcon(id int, icon [1]gdclass.Texture2D) { //gd:DisplayServer.status_indicator_set_icon
 	once.Do(singleton)
 	class(self).StatusIndicatorSetIcon(gd.Int(id), icon)
 }
@@ -1789,7 +1789,7 @@ func StatusIndicatorSetIcon(id int, icon [1]gdclass.Texture2D) {
 Sets the application status indicator tooltip.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func StatusIndicatorSetTooltip(id int, tooltip string) {
+func StatusIndicatorSetTooltip(id int, tooltip string) { //gd:DisplayServer.status_indicator_set_tooltip
 	once.Do(singleton)
 	class(self).StatusIndicatorSetTooltip(gd.Int(id), gd.NewString(tooltip))
 }
@@ -1800,7 +1800,7 @@ Sets the application status indicator native popup menu.
 [b]Note:[/b] On Windows, the menu is activated by the right mouse button, selecting the status icon and pressing [kbd]Shift + F10[/kbd], or the applications key. The menu's activation callback for the other mouse buttons is still triggered.
 [b]Note:[/b] Native popup is only supported if [NativeMenu] supports the [constant NativeMenu.FEATURE_POPUP_MENU] feature.
 */
-func StatusIndicatorSetMenu(id int, menu_rid Resource.ID) {
+func StatusIndicatorSetMenu(id int, menu_rid Resource.ID) { //gd:DisplayServer.status_indicator_set_menu
 	once.Do(singleton)
 	class(self).StatusIndicatorSetMenu(gd.Int(id), menu_rid)
 }
@@ -1809,7 +1809,7 @@ func StatusIndicatorSetMenu(id int, menu_rid Resource.ID) {
 Sets the application status indicator activation callback. [param callback] should take two arguments: [int] mouse button index (one of [enum MouseButton] values) and [Vector2i] click position in screen coordinates.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func StatusIndicatorSetCallback(id int, callback func(button MouseButton, click_position Vector2i.XY)) {
+func StatusIndicatorSetCallback(id int, callback func(button MouseButton, click_position Vector2i.XY)) { //gd:DisplayServer.status_indicator_set_callback
 	once.Do(singleton)
 	class(self).StatusIndicatorSetCallback(gd.Int(id), Callable.New(callback))
 }
@@ -1818,7 +1818,7 @@ func StatusIndicatorSetCallback(id int, callback func(button MouseButton, click_
 Returns the rectangle for the given status indicator [param id] in screen coordinates. If the status indicator is not visible, returns an empty [Rect2].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func StatusIndicatorGetRect(id int) Rect2.PositionSize {
+func StatusIndicatorGetRect(id int) Rect2.PositionSize { //gd:DisplayServer.status_indicator_get_rect
 	once.Do(singleton)
 	return Rect2.PositionSize(class(self).StatusIndicatorGetRect(gd.Int(id)))
 }
@@ -1826,7 +1826,7 @@ func StatusIndicatorGetRect(id int) Rect2.PositionSize {
 /*
 Removes the application status indicator.
 */
-func DeleteStatusIndicator(id int) {
+func DeleteStatusIndicator(id int) { //gd:DisplayServer.delete_status_indicator
 	once.Do(singleton)
 	class(self).DeleteStatusIndicator(gd.Int(id))
 }
@@ -1835,7 +1835,7 @@ func DeleteStatusIndicator(id int) {
 Returns the total number of available tablet drivers.
 [b]Note:[/b] This method is implemented only on Windows.
 */
-func TabletGetDriverCount() int {
+func TabletGetDriverCount() int { //gd:DisplayServer.tablet_get_driver_count
 	once.Do(singleton)
 	return int(int(class(self).TabletGetDriverCount()))
 }
@@ -1844,7 +1844,7 @@ func TabletGetDriverCount() int {
 Returns the tablet driver name for the given index.
 [b]Note:[/b] This method is implemented only on Windows.
 */
-func TabletGetDriverName(idx int) string {
+func TabletGetDriverName(idx int) string { //gd:DisplayServer.tablet_get_driver_name
 	once.Do(singleton)
 	return string(class(self).TabletGetDriverName(gd.Int(idx)).String())
 }
@@ -1853,7 +1853,7 @@ func TabletGetDriverName(idx int) string {
 Returns current active tablet driver name.
 [b]Note:[/b] This method is implemented only on Windows.
 */
-func TabletGetCurrentDriver() string {
+func TabletGetCurrentDriver() string { //gd:DisplayServer.tablet_get_current_driver
 	once.Do(singleton)
 	return string(class(self).TabletGetCurrentDriver().String())
 }
@@ -1866,7 +1866,7 @@ Supported drivers:
 - [code]dummy[/code]: Dummy driver, tablet input is disabled.
 [b]Note:[/b] This method is implemented only on Windows.
 */
-func TabletSetCurrentDriver(name string) {
+func TabletSetCurrentDriver(name string) { //gd:DisplayServer.tablet_set_current_driver
 	once.Do(singleton)
 	class(self).TabletSetCurrentDriver(gd.NewString(name))
 }
@@ -1874,7 +1874,7 @@ func TabletSetCurrentDriver(name string) {
 /*
 Returns [code]true[/code] if the window background can be made transparent. This method returns [code]false[/code] if [member ProjectSettings.display/window/per_pixel_transparency/allowed] is set to [code]false[/code], or if transparency is not supported by the renderer or OS compositor.
 */
-func IsWindowTransparencyAvailable() bool {
+func IsWindowTransparencyAvailable() bool { //gd:DisplayServer.is_window_transparency_available
 	once.Do(singleton)
 	return bool(class(self).IsWindowTransparencyAvailable())
 }
@@ -1883,7 +1883,7 @@ func IsWindowTransparencyAvailable() bool {
 Registers an [Object] which represents an additional output that will be rendered too, beyond normal windows. The [Object] is only used as an identifier, which can be later passed to [method unregister_additional_output].
 This can be used to prevent Godot from skipping rendering when no normal windows are visible.
 */
-func RegisterAdditionalOutput(obj Object.Instance) {
+func RegisterAdditionalOutput(obj Object.Instance) { //gd:DisplayServer.register_additional_output
 	once.Do(singleton)
 	class(self).RegisterAdditionalOutput(obj)
 }
@@ -1891,7 +1891,7 @@ func RegisterAdditionalOutput(obj Object.Instance) {
 /*
 Unregisters an [Object] representing an additional output, that was registered via [method register_additional_output].
 */
-func UnregisterAdditionalOutput(obj Object.Instance) {
+func UnregisterAdditionalOutput(obj Object.Instance) { //gd:DisplayServer.unregister_additional_output
 	once.Do(singleton)
 	class(self).UnregisterAdditionalOutput(obj)
 }
@@ -1899,7 +1899,7 @@ func UnregisterAdditionalOutput(obj Object.Instance) {
 /*
 Returns [code]true[/code] if any additional outputs have been registered via [method register_additional_output].
 */
-func HasAdditionalOutputs() bool {
+func HasAdditionalOutputs() bool { //gd:DisplayServer.has_additional_outputs
 	once.Do(singleton)
 	return bool(class(self).HasAdditionalOutputs())
 }
@@ -1918,7 +1918,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns [code]true[/code] if the specified [param feature] is supported by the current [DisplayServer], [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self class) HasFeature(feature gdclass.DisplayServerFeature) bool {
+func (self class) HasFeature(feature gdclass.DisplayServerFeature) bool { //gd:DisplayServer.has_feature
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1933,7 +1933,7 @@ Returns the name of the [DisplayServer] currently in use. Most operating systems
 The names of built-in display servers are [code]Windows[/code], [code]macOS[/code], [code]X11[/code] (Linux), [code]Wayland[/code] (Linux), [code]Android[/code], [code]iOS[/code], [code]web[/code] (HTML5), and [code]headless[/code] (when started with the [code]--headless[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url]).
 */
 //go:nosplit
-func (self class) GetName() gd.String {
+func (self class) GetName() gd.String { //gd:DisplayServer.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1949,7 +1949,7 @@ Sets native help system search callbacks.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) HelpSetSearchCallbacks(search_callback Callable.Function, action_callback Callable.Function) {
+func (self class) HelpSetSearchCallbacks(search_callback Callable.Function, action_callback Callable.Function) { //gd:DisplayServer.help_set_search_callbacks
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(search_callback)))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(action_callback)))
@@ -1962,7 +1962,7 @@ func (self class) HelpSetSearchCallbacks(search_callback Callable.Function, acti
 Registers callables to emit when the menu is respectively about to show or closed. Callback methods should have zero arguments.
 */
 //go:nosplit
-func (self class) GlobalMenuSetPopupCallbacks(menu_root gd.String, open_callback Callable.Function, close_callback Callable.Function) {
+func (self class) GlobalMenuSetPopupCallbacks(menu_root gd.String, open_callback Callable.Function, close_callback Callable.Function) { //gd:DisplayServer.global_menu_set_popup_callbacks
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(open_callback)))
@@ -1986,7 +1986,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddSubmenuItem(menu_root gd.String, label gd.String, submenu gd.String, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddSubmenuItem(menu_root gd.String, label gd.String, submenu gd.String, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_submenu_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(label))
@@ -2015,7 +2015,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(label))
@@ -2047,7 +2047,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddCheckItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddCheckItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(label))
@@ -2079,7 +2079,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddIconItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_icon_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -2112,7 +2112,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddIconCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_icon_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -2146,7 +2146,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddRadioCheckItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddRadioCheckItem(menu_root gd.String, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_radio_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(label))
@@ -2179,7 +2179,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconRadioCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddIconRadioCheckItem(menu_root gd.String, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -2214,7 +2214,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddMultistateItem(menu_root gd.String, label gd.String, max_states gd.Int, default_state gd.Int, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddMultistateItem(menu_root gd.String, label gd.String, max_states gd.Int, default_state gd.Int, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_multistate_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(label))
@@ -2246,7 +2246,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddSeparator(menu_root gd.String, index gd.Int) gd.Int {
+func (self class) GlobalMenuAddSeparator(menu_root gd.String, index gd.Int) gd.Int { //gd:DisplayServer.global_menu_add_separator
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, index)
@@ -2262,7 +2262,7 @@ Returns the index of the item with the specified [param text]. Indices are autom
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemIndexFromText(menu_root gd.String, text gd.String) gd.Int {
+func (self class) GlobalMenuGetItemIndexFromText(menu_root gd.String, text gd.String) gd.Int { //gd:DisplayServer.global_menu_get_item_index_from_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(text))
@@ -2278,7 +2278,7 @@ Returns the index of the item with the specified [param tag]. Indices are automa
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemIndexFromTag(menu_root gd.String, tag gd.Variant) gd.Int {
+func (self class) GlobalMenuGetItemIndexFromTag(menu_root gd.String, tag gd.Variant) gd.Int { //gd:DisplayServer.global_menu_get_item_index_from_tag
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, pointers.Get(tag))
@@ -2294,7 +2294,7 @@ Returns [code]true[/code] if the item at index [param idx] is checked.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemChecked(menu_root gd.String, idx gd.Int) bool {
+func (self class) GlobalMenuIsItemChecked(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_checked
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2310,7 +2310,7 @@ Returns [code]true[/code] if the item at index [param idx] is checkable in some 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemCheckable(menu_root gd.String, idx gd.Int) bool {
+func (self class) GlobalMenuIsItemCheckable(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_checkable
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2327,7 +2327,7 @@ Returns [code]true[/code] if the item at index [param idx] has radio button-styl
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemRadioCheckable(menu_root gd.String, idx gd.Int) bool {
+func (self class) GlobalMenuIsItemRadioCheckable(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_radio_checkable
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2343,7 +2343,7 @@ Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemCallback(menu_root gd.String, idx gd.Int) Callable.Function {
+func (self class) GlobalMenuGetItemCallback(menu_root gd.String, idx gd.Int) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2359,7 +2359,7 @@ Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemKeyCallback(menu_root gd.String, idx gd.Int) Callable.Function {
+func (self class) GlobalMenuGetItemKeyCallback(menu_root gd.String, idx gd.Int) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2375,7 +2375,7 @@ Returns the metadata of the specified item, which might be of any type. You can 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemTag(menu_root gd.String, idx gd.Int) gd.Variant {
+func (self class) GlobalMenuGetItemTag(menu_root gd.String, idx gd.Int) gd.Variant { //gd:DisplayServer.global_menu_get_item_tag
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2391,7 +2391,7 @@ Returns the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemText(menu_root gd.String, idx gd.Int) gd.String {
+func (self class) GlobalMenuGetItemText(menu_root gd.String, idx gd.Int) gd.String { //gd:DisplayServer.global_menu_get_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2407,7 +2407,7 @@ Returns the submenu ID of the item at index [param idx]. See [method global_menu
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemSubmenu(menu_root gd.String, idx gd.Int) gd.String {
+func (self class) GlobalMenuGetItemSubmenu(menu_root gd.String, idx gd.Int) gd.String { //gd:DisplayServer.global_menu_get_item_submenu
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2423,7 +2423,7 @@ Returns the accelerator of the item at index [param idx]. Accelerators are speci
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemAccelerator(menu_root gd.String, idx gd.Int) Key {
+func (self class) GlobalMenuGetItemAccelerator(menu_root gd.String, idx gd.Int) Key { //gd:DisplayServer.global_menu_get_item_accelerator
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2440,7 +2440,7 @@ See [method global_menu_set_item_disabled] for more info on how to disable an it
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemDisabled(menu_root gd.String, idx gd.Int) bool {
+func (self class) GlobalMenuIsItemDisabled(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2457,7 +2457,7 @@ See [method global_menu_set_item_hidden] for more info on how to hide an item.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuIsItemHidden(menu_root gd.String, idx gd.Int) bool {
+func (self class) GlobalMenuIsItemHidden(menu_root gd.String, idx gd.Int) bool { //gd:DisplayServer.global_menu_is_item_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2473,7 +2473,7 @@ Returns the tooltip associated with the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemTooltip(menu_root gd.String, idx gd.Int) gd.String {
+func (self class) GlobalMenuGetItemTooltip(menu_root gd.String, idx gd.Int) gd.String { //gd:DisplayServer.global_menu_get_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2489,7 +2489,7 @@ Returns the state of a multistate item. See [method global_menu_add_multistate_i
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemState(menu_root gd.String, idx gd.Int) gd.Int {
+func (self class) GlobalMenuGetItemState(menu_root gd.String, idx gd.Int) gd.Int { //gd:DisplayServer.global_menu_get_item_state
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2505,7 +2505,7 @@ Returns number of states of a multistate item. See [method global_menu_add_multi
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemMaxStates(menu_root gd.String, idx gd.Int) gd.Int {
+func (self class) GlobalMenuGetItemMaxStates(menu_root gd.String, idx gd.Int) gd.Int { //gd:DisplayServer.global_menu_get_item_max_states
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2521,7 +2521,7 @@ Returns the icon of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemIcon(menu_root gd.String, idx gd.Int) [1]gdclass.Texture2D {
+func (self class) GlobalMenuGetItemIcon(menu_root gd.String, idx gd.Int) [1]gdclass.Texture2D { //gd:DisplayServer.global_menu_get_item_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2537,7 +2537,7 @@ Returns the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemIndentationLevel(menu_root gd.String, idx gd.Int) gd.Int {
+func (self class) GlobalMenuGetItemIndentationLevel(menu_root gd.String, idx gd.Int) gd.Int { //gd:DisplayServer.global_menu_get_item_indentation_level
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2553,7 +2553,7 @@ Sets the checkstate status of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemChecked(menu_root gd.String, idx gd.Int, checked bool) {
+func (self class) GlobalMenuSetItemChecked(menu_root gd.String, idx gd.Int, checked bool) { //gd:DisplayServer.global_menu_set_item_checked
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2568,7 +2568,7 @@ Sets whether the item at index [param idx] has a checkbox. If [code]false[/code]
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemCheckable(menu_root gd.String, idx gd.Int, checkable bool) {
+func (self class) GlobalMenuSetItemCheckable(menu_root gd.String, idx gd.Int, checkable bool) { //gd:DisplayServer.global_menu_set_item_checkable
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2584,7 +2584,7 @@ Sets the type of the item at the specified index [param idx] to radio button. If
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemRadioCheckable(menu_root gd.String, idx gd.Int, checkable bool) {
+func (self class) GlobalMenuSetItemRadioCheckable(menu_root gd.String, idx gd.Int, checkable bool) { //gd:DisplayServer.global_menu_set_item_radio_checkable
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2600,7 +2600,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemCallback(menu_root gd.String, idx gd.Int, callback Callable.Function) {
+func (self class) GlobalMenuSetItemCallback(menu_root gd.String, idx gd.Int, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2616,7 +2616,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemHoverCallbacks(menu_root gd.String, idx gd.Int, callback Callable.Function) {
+func (self class) GlobalMenuSetItemHoverCallbacks(menu_root gd.String, idx gd.Int, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_hover_callbacks
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2632,7 +2632,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemKeyCallback(menu_root gd.String, idx gd.Int, key_callback Callable.Function) {
+func (self class) GlobalMenuSetItemKeyCallback(menu_root gd.String, idx gd.Int, key_callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_key_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2647,7 +2647,7 @@ Sets the metadata of an item, which may be of any type. You can later get it wit
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemTag(menu_root gd.String, idx gd.Int, tag gd.Variant) {
+func (self class) GlobalMenuSetItemTag(menu_root gd.String, idx gd.Int, tag gd.Variant) { //gd:DisplayServer.global_menu_set_item_tag
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2662,7 +2662,7 @@ Sets the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemText(menu_root gd.String, idx gd.Int, text gd.String) {
+func (self class) GlobalMenuSetItemText(menu_root gd.String, idx gd.Int, text gd.String) { //gd:DisplayServer.global_menu_set_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2677,7 +2677,7 @@ Sets the submenu of the item at index [param idx]. The submenu is the ID of a gl
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemSubmenu(menu_root gd.String, idx gd.Int, submenu gd.String) {
+func (self class) GlobalMenuSetItemSubmenu(menu_root gd.String, idx gd.Int, submenu gd.String) { //gd:DisplayServer.global_menu_set_item_submenu
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2692,7 +2692,7 @@ Sets the accelerator of the item at index [param idx]. [param keycode] can be a 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemAccelerator(menu_root gd.String, idx gd.Int, keycode Key) {
+func (self class) GlobalMenuSetItemAccelerator(menu_root gd.String, idx gd.Int, keycode Key) { //gd:DisplayServer.global_menu_set_item_accelerator
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2707,7 +2707,7 @@ Enables/disables the item at index [param idx]. When it is disabled, it can't be
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemDisabled(menu_root gd.String, idx gd.Int, disabled bool) {
+func (self class) GlobalMenuSetItemDisabled(menu_root gd.String, idx gd.Int, disabled bool) { //gd:DisplayServer.global_menu_set_item_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2722,7 +2722,7 @@ Hides/shows the item at index [param idx]. When it is hidden, an item does not a
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemHidden(menu_root gd.String, idx gd.Int, hidden bool) {
+func (self class) GlobalMenuSetItemHidden(menu_root gd.String, idx gd.Int, hidden bool) { //gd:DisplayServer.global_menu_set_item_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2737,7 +2737,7 @@ Sets the [String] tooltip of the item at the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemTooltip(menu_root gd.String, idx gd.Int, tooltip gd.String) {
+func (self class) GlobalMenuSetItemTooltip(menu_root gd.String, idx gd.Int, tooltip gd.String) { //gd:DisplayServer.global_menu_set_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2752,7 +2752,7 @@ Sets the state of a multistate item. See [method global_menu_add_multistate_item
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemState(menu_root gd.String, idx gd.Int, state gd.Int) {
+func (self class) GlobalMenuSetItemState(menu_root gd.String, idx gd.Int, state gd.Int) { //gd:DisplayServer.global_menu_set_item_state
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2767,7 +2767,7 @@ Sets number of state of a multistate item. See [method global_menu_add_multistat
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemMaxStates(menu_root gd.String, idx gd.Int, max_states gd.Int) {
+func (self class) GlobalMenuSetItemMaxStates(menu_root gd.String, idx gd.Int, max_states gd.Int) { //gd:DisplayServer.global_menu_set_item_max_states
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2783,7 +2783,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 [b]Note:[/b] This method is not supported by macOS "_dock" menu items.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemIcon(menu_root gd.String, idx gd.Int, icon [1]gdclass.Texture2D) {
+func (self class) GlobalMenuSetItemIcon(menu_root gd.String, idx gd.Int, icon [1]gdclass.Texture2D) { //gd:DisplayServer.global_menu_set_item_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2798,7 +2798,7 @@ Sets the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemIndentationLevel(menu_root gd.String, idx gd.Int, level gd.Int) {
+func (self class) GlobalMenuSetItemIndentationLevel(menu_root gd.String, idx gd.Int, level gd.Int) { //gd:DisplayServer.global_menu_set_item_indentation_level
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2813,7 +2813,7 @@ Returns number of items in the global menu with ID [param menu_root].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemCount(menu_root gd.String) gd.Int {
+func (self class) GlobalMenuGetItemCount(menu_root gd.String) gd.Int { //gd:DisplayServer.global_menu_get_item_count
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -2829,7 +2829,7 @@ Removes the item at index [param idx] from the global menu [param menu_root].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuRemoveItem(menu_root gd.String, idx gd.Int) {
+func (self class) GlobalMenuRemoveItem(menu_root gd.String, idx gd.Int) { //gd:DisplayServer.global_menu_remove_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	callframe.Arg(frame, idx)
@@ -2851,7 +2851,7 @@ Removes all items from the global menu with ID [param menu_root].
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuClear(menu_root gd.String) {
+func (self class) GlobalMenuClear(menu_root gd.String) { //gd:DisplayServer.global_menu_clear
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu_root))
 	var r_ret = callframe.Nil
@@ -2864,7 +2864,7 @@ Returns Dictionary of supported system menu IDs and names.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetSystemMenuRoots() gd.Dictionary {
+func (self class) GlobalMenuGetSystemMenuRoots() gd.Dictionary { //gd:DisplayServer.global_menu_get_system_menu_roots
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_system_menu_roots, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2879,7 +2879,7 @@ Returns [code]true[/code] if the synthesizer is generating speech, or have utter
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsIsSpeaking() bool {
+func (self class) TtsIsSpeaking() bool { //gd:DisplayServer.tts_is_speaking
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_is_speaking, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2894,7 +2894,7 @@ Returns [code]true[/code] if the synthesizer is in a paused state.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsIsPaused() bool {
+func (self class) TtsIsPaused() bool { //gd:DisplayServer.tts_is_paused
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_is_paused, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2914,7 +2914,7 @@ Note that Godot depends on system libraries for text-to-speech functionality. Th
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsGetVoices() Array.Contains[gd.Dictionary] {
+func (self class) TtsGetVoices() Array.Contains[gd.Dictionary] { //gd:DisplayServer.tts_get_voices
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_get_voices, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2929,7 +2929,7 @@ Returns an [PackedStringArray] of voice identifiers for the [param language].
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsGetVoicesForLanguage(language gd.String) gd.PackedStringArray {
+func (self class) TtsGetVoicesForLanguage(language gd.String) gd.PackedStringArray { //gd:DisplayServer.tts_get_voices_for_language
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -2952,7 +2952,7 @@ Adds an utterance to the queue. If [param interrupt] is [code]true[/code], the q
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsSpeak(text gd.String, voice gd.String, volume gd.Int, pitch gd.Float, rate gd.Float, utterance_id gd.Int, interrupt bool) {
+func (self class) TtsSpeak(text gd.String, voice gd.String, volume gd.Int, pitch gd.Float, rate gd.Float, utterance_id gd.Int, interrupt bool) { //gd:DisplayServer.tts_speak
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, pointers.Get(voice))
@@ -2972,7 +2972,7 @@ Puts the synthesizer into a paused state.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsPause() {
+func (self class) TtsPause() { //gd:DisplayServer.tts_pause
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_pause, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2985,7 +2985,7 @@ Resumes the synthesizer if it was paused.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsResume() {
+func (self class) TtsResume() { //gd:DisplayServer.tts_resume
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_resume, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2998,7 +2998,7 @@ Stops synthesis in progress and removes all utterances from the queue.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsStop() {
+func (self class) TtsStop() { //gd:DisplayServer.tts_stop
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tts_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3014,7 +3014,7 @@ Adds a callback, which is called when the utterance has started, finished, cance
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, callable Callable.Function) {
+func (self class) TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, callable Callable.Function) { //gd:DisplayServer.tts_set_utterance_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, event)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
@@ -3028,7 +3028,7 @@ Returns [code]true[/code] if OS supports dark mode.
 [b]Note:[/b] This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
 */
 //go:nosplit
-func (self class) IsDarkModeSupported() bool {
+func (self class) IsDarkModeSupported() bool { //gd:DisplayServer.is_dark_mode_supported
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_dark_mode_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3042,7 +3042,7 @@ Returns [code]true[/code] if OS is using dark mode.
 [b]Note:[/b] This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
 */
 //go:nosplit
-func (self class) IsDarkMode() bool {
+func (self class) IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_dark_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3056,7 +3056,7 @@ Returns OS theme accent color. Returns [code]Color(0, 0, 0, 0)[/code], if accent
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetAccentColor() gd.Color {
+func (self class) GetAccentColor() gd.Color { //gd:DisplayServer.get_accent_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_accent_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3070,7 +3070,7 @@ Returns the OS theme base color (default control background). Returns [code]Colo
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetBaseColor() gd.Color {
+func (self class) GetBaseColor() gd.Color { //gd:DisplayServer.get_base_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_base_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3084,7 +3084,7 @@ Sets the [param callable] that should be called when system theme settings are c
 [b]Note:[/b] This method is implemented on Android, iOS, macOS, Windows, and Linux (X11/Wayland).
 */
 //go:nosplit
-func (self class) SetSystemThemeChangeCallback(callable Callable.Function) {
+func (self class) SetSystemThemeChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_system_theme_change_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
@@ -3096,7 +3096,7 @@ func (self class) SetSystemThemeChangeCallback(callable Callable.Function) {
 Sets the current mouse mode. See also [method mouse_get_mode].
 */
 //go:nosplit
-func (self class) MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) {
+func (self class) MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) { //gd:DisplayServer.mouse_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mouse_mode)
 	var r_ret = callframe.Nil
@@ -3108,7 +3108,7 @@ func (self class) MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) {
 Returns the current mouse mode. See also [method mouse_set_mode].
 */
 //go:nosplit
-func (self class) MouseGetMode() gdclass.DisplayServerMouseMode {
+func (self class) MouseGetMode() gdclass.DisplayServerMouseMode { //gd:DisplayServer.mouse_get_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.DisplayServerMouseMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3122,7 +3122,7 @@ Sets the mouse cursor position to the given [param position] relative to an orig
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS, and Linux (X11/Wayland). It has no effect on Android, iOS, and Web.
 */
 //go:nosplit
-func (self class) WarpMouse(position gd.Vector2i) {
+func (self class) WarpMouse(position gd.Vector2i) { //gd:DisplayServer.warp_mouse
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -3134,7 +3134,7 @@ func (self class) WarpMouse(position gd.Vector2i) {
 Returns the mouse cursor's current position in screen coordinates.
 */
 //go:nosplit
-func (self class) MouseGetPosition() gd.Vector2i {
+func (self class) MouseGetPosition() gd.Vector2i { //gd:DisplayServer.mouse_get_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3147,7 +3147,7 @@ func (self class) MouseGetPosition() gd.Vector2i {
 Returns the current state of mouse buttons (whether each button is pressed) as a bitmask. If multiple mouse buttons are pressed at the same time, the bits are added together. Equivalent to [method Input.get_mouse_button_mask].
 */
 //go:nosplit
-func (self class) MouseGetButtonState() MouseButtonMask {
+func (self class) MouseGetButtonState() MouseButtonMask { //gd:DisplayServer.mouse_get_button_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[MouseButtonMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_button_state, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3160,7 +3160,7 @@ func (self class) MouseGetButtonState() MouseButtonMask {
 Sets the user's clipboard content to the given string.
 */
 //go:nosplit
-func (self class) ClipboardSet(clipboard gd.String) {
+func (self class) ClipboardSet(clipboard gd.String) { //gd:DisplayServer.clipboard_set
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(clipboard))
 	var r_ret = callframe.Nil
@@ -3172,7 +3172,7 @@ func (self class) ClipboardSet(clipboard gd.String) {
 Returns the user's clipboard as a string if possible.
 */
 //go:nosplit
-func (self class) ClipboardGet() gd.String {
+func (self class) ClipboardGet() gd.String { //gd:DisplayServer.clipboard_get
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3186,7 +3186,7 @@ Returns the user's clipboard as an image if possible.
 [b]Note:[/b] This method uses the copied pixel data, e.g. from a image editing software or a web browser, not an image file copied from file explorer.
 */
 //go:nosplit
-func (self class) ClipboardGetImage() [1]gdclass.Image {
+func (self class) ClipboardGetImage() [1]gdclass.Image { //gd:DisplayServer.clipboard_get_image
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get_image, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3199,7 +3199,7 @@ func (self class) ClipboardGetImage() [1]gdclass.Image {
 Returns [code]true[/code] if there is a text content on the user's clipboard.
 */
 //go:nosplit
-func (self class) ClipboardHas() bool {
+func (self class) ClipboardHas() bool { //gd:DisplayServer.clipboard_has
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_has, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3212,7 +3212,7 @@ func (self class) ClipboardHas() bool {
 Returns [code]true[/code] if there is an image content on the user's clipboard.
 */
 //go:nosplit
-func (self class) ClipboardHasImage() bool {
+func (self class) ClipboardHasImage() bool { //gd:DisplayServer.clipboard_has_image
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_has_image, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3226,7 +3226,7 @@ Sets the user's [url=https://unix.stackexchange.com/questions/139191/whats-the-d
 [b]Note:[/b] This method is only implemented on Linux (X11/Wayland).
 */
 //go:nosplit
-func (self class) ClipboardSetPrimary(clipboard_primary gd.String) {
+func (self class) ClipboardSetPrimary(clipboard_primary gd.String) { //gd:DisplayServer.clipboard_set_primary
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(clipboard_primary))
 	var r_ret = callframe.Nil
@@ -3239,7 +3239,7 @@ Returns the user's [url=https://unix.stackexchange.com/questions/139191/whats-th
 [b]Note:[/b] This method is only implemented on Linux (X11/Wayland).
 */
 //go:nosplit
-func (self class) ClipboardGetPrimary() gd.String {
+func (self class) ClipboardGetPrimary() gd.String { //gd:DisplayServer.clipboard_get_primary
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_clipboard_get_primary, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3253,7 +3253,7 @@ Returns an [Array] of [Rect2], each of which is the bounding rectangle for a dis
 [b]Note:[/b] Currently only implemented on Android. Other platforms will return an empty array even if they do have display cutouts or notches.
 */
 //go:nosplit
-func (self class) GetDisplayCutouts() Array.Contains[gd.Rect2] {
+func (self class) GetDisplayCutouts() Array.Contains[gd.Rect2] { //gd:DisplayServer.get_display_cutouts
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_display_cutouts, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3266,7 +3266,7 @@ func (self class) GetDisplayCutouts() Array.Contains[gd.Rect2] {
 Returns the unobscured area of the display where interactive controls should be rendered. See also [method get_display_cutouts].
 */
 //go:nosplit
-func (self class) GetDisplaySafeArea() gd.Rect2i {
+func (self class) GetDisplaySafeArea() gd.Rect2i { //gd:DisplayServer.get_display_safe_area
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_display_safe_area, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3279,7 +3279,7 @@ func (self class) GetDisplaySafeArea() gd.Rect2i {
 Returns the number of displays available.
 */
 //go:nosplit
-func (self class) GetScreenCount() gd.Int {
+func (self class) GetScreenCount() gd.Int { //gd:DisplayServer.get_screen_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_screen_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3292,7 +3292,7 @@ func (self class) GetScreenCount() gd.Int {
 Returns index of the primary screen.
 */
 //go:nosplit
-func (self class) GetPrimaryScreen() gd.Int {
+func (self class) GetPrimaryScreen() gd.Int { //gd:DisplayServer.get_primary_screen
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_primary_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3305,7 +3305,7 @@ func (self class) GetPrimaryScreen() gd.Int {
 Returns the index of the screen containing the window with the keyboard focus, or the primary screen if there's no focused window.
 */
 //go:nosplit
-func (self class) GetKeyboardFocusScreen() gd.Int {
+func (self class) GetKeyboardFocusScreen() gd.Int { //gd:DisplayServer.get_keyboard_focus_screen
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_keyboard_focus_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3318,7 +3318,7 @@ func (self class) GetKeyboardFocusScreen() gd.Int {
 Returns index of the screen which contains specified rectangle.
 */
 //go:nosplit
-func (self class) GetScreenFromRect(rect gd.Rect2) gd.Int {
+func (self class) GetScreenFromRect(rect gd.Rect2) gd.Int { //gd:DisplayServer.get_screen_from_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -3342,7 +3342,7 @@ See also [method screen_get_size].
 [b]Note:[/b] On Linux (Wayland) this method always returns [code](0, 0)[/code].
 */
 //go:nosplit
-func (self class) ScreenGetPosition(screen gd.Int) gd.Vector2i {
+func (self class) ScreenGetPosition(screen gd.Int) gd.Vector2i { //gd:DisplayServer.screen_get_position
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -3356,7 +3356,7 @@ func (self class) ScreenGetPosition(screen gd.Int) gd.Vector2i {
 Returns the screen's size in pixels. See also [method screen_get_position] and [method screen_get_usable_rect].
 */
 //go:nosplit
-func (self class) ScreenGetSize(screen gd.Int) gd.Vector2i {
+func (self class) ScreenGetSize(screen gd.Int) gd.Vector2i { //gd:DisplayServer.screen_get_size
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -3370,7 +3370,7 @@ func (self class) ScreenGetSize(screen gd.Int) gd.Vector2i {
 Returns the portion of the screen that is not obstructed by a status bar in pixels. See also [method screen_get_size].
 */
 //go:nosplit
-func (self class) ScreenGetUsableRect(screen gd.Int) gd.Rect2i {
+func (self class) ScreenGetUsableRect(screen gd.Int) gd.Rect2i { //gd:DisplayServer.screen_get_usable_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
@@ -3395,7 +3395,7 @@ xxxhdpi - 640 dpi
 [b]Note:[/b] This method is implemented on Android, Linux (X11/Wayland), macOS and Windows. Returns [code]72[/code] on unsupported platforms.
 */
 //go:nosplit
-func (self class) ScreenGetDpi(screen gd.Int) gd.Int {
+func (self class) ScreenGetDpi(screen gd.Int) gd.Int { //gd:DisplayServer.screen_get_dpi
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -3412,7 +3412,7 @@ Returns the scale factor of the specified screen by index.
 [b]Note:[/b] This method is implemented only on macOS and Linux (Wayland).
 */
 //go:nosplit
-func (self class) ScreenGetScale(screen gd.Int) gd.Float {
+func (self class) ScreenGetScale(screen gd.Int) gd.Float { //gd:DisplayServer.screen_get_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -3426,7 +3426,7 @@ func (self class) ScreenGetScale(screen gd.Int) gd.Float {
 Returns [code]true[/code] if touch events are available (Android or iOS), the capability is detected on the Web platform or if [member ProjectSettings.input_devices/pointing/emulate_touch_from_mouse] is [code]true[/code].
 */
 //go:nosplit
-func (self class) IsTouchscreenAvailable() bool {
+func (self class) IsTouchscreenAvailable() bool { //gd:DisplayServer.is_touchscreen_available
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_touchscreen_available, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3441,7 +3441,7 @@ Returns the greatest scale factor of all screens.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) ScreenGetMaxScale() gd.Float {
+func (self class) ScreenGetMaxScale() gd.Float { //gd:DisplayServer.screen_get_max_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_max_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3461,7 +3461,7 @@ if refresh_rate < 0:
 [/codeblock]
 */
 //go:nosplit
-func (self class) ScreenGetRefreshRate(screen gd.Int) gd.Float {
+func (self class) ScreenGetRefreshRate(screen gd.Int) gd.Float { //gd:DisplayServer.screen_get_refresh_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -3477,7 +3477,7 @@ Returns color of the display pixel at the [param position].
 [b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
 */
 //go:nosplit
-func (self class) ScreenGetPixel(position gd.Vector2i) gd.Color {
+func (self class) ScreenGetPixel(position gd.Vector2i) gd.Color { //gd:DisplayServer.screen_get_pixel
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Color](frame)
@@ -3493,7 +3493,7 @@ Returns screenshot of the [param screen].
 [b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
 */
 //go:nosplit
-func (self class) ScreenGetImage(screen gd.Int) [1]gdclass.Image {
+func (self class) ScreenGetImage(screen gd.Int) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -3508,7 +3508,7 @@ Sets the [param screen]'s [param orientation]. See also [method screen_get_orien
 [b]Note:[/b] On iOS, this method has no effect if [member ProjectSettings.display/window/handheld/orientation] is not set to [constant SCREEN_SENSOR].
 */
 //go:nosplit
-func (self class) ScreenSetOrientation(orientation gdclass.DisplayServerScreenOrientation, screen gd.Int) {
+func (self class) ScreenSetOrientation(orientation gdclass.DisplayServerScreenOrientation, screen gd.Int) { //gd:DisplayServer.screen_set_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, orientation)
 	callframe.Arg(frame, screen)
@@ -3522,7 +3522,7 @@ Returns the [param screen]'s current orientation. See also [method screen_set_or
 [b]Note:[/b] This method is implemented on Android and iOS.
 */
 //go:nosplit
-func (self class) ScreenGetOrientation(screen gd.Int) gdclass.DisplayServerScreenOrientation {
+func (self class) ScreenGetOrientation(screen gd.Int) gdclass.DisplayServerScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	var r_ret = callframe.Ret[gdclass.DisplayServerScreenOrientation](frame)
@@ -3536,7 +3536,7 @@ func (self class) ScreenGetOrientation(screen gd.Int) gdclass.DisplayServerScree
 Sets whether the screen should never be turned off by the operating system's power-saving measures. See also [method screen_is_kept_on].
 */
 //go:nosplit
-func (self class) ScreenSetKeepOn(enable bool) {
+func (self class) ScreenSetKeepOn(enable bool) { //gd:DisplayServer.screen_set_keep_on
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -3548,7 +3548,7 @@ func (self class) ScreenSetKeepOn(enable bool) {
 Returns [code]true[/code] if the screen should never be turned off by the operating system's power-saving measures. See also [method screen_set_keep_on].
 */
 //go:nosplit
-func (self class) ScreenIsKeptOn() bool {
+func (self class) ScreenIsKeptOn() bool { //gd:DisplayServer.screen_is_kept_on
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_is_kept_on, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3562,7 +3562,7 @@ Returns the list of Godot window IDs belonging to this process.
 [b]Note:[/b] Native dialogs are not included in this list.
 */
 //go:nosplit
-func (self class) GetWindowList() gd.PackedInt32Array {
+func (self class) GetWindowList() gd.PackedInt32Array { //gd:DisplayServer.get_window_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_window_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3583,7 +3583,7 @@ Returns the ID of the window at the specified screen [param position] (in pixels
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetWindowAtScreenPosition(position gd.Vector2i) gd.Int {
+func (self class) GetWindowAtScreenPosition(position gd.Vector2i) gd.Int { //gd:DisplayServer.get_window_at_screen_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -3598,7 +3598,7 @@ Returns internal structure pointers for use in plugins.
 [b]Note:[/b] This method is implemented on Android, Linux (X11/Wayland), macOS, and Windows.
 */
 //go:nosplit
-func (self class) WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleType, window_id gd.Int) gd.Int {
+func (self class) WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleType, window_id gd.Int) gd.Int { //gd:DisplayServer.window_get_native_handle
 	var frame = callframe.New()
 	callframe.Arg(frame, handle_type)
 	callframe.Arg(frame, window_id)
@@ -3613,7 +3613,7 @@ func (self class) WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleT
 Returns ID of the active popup window, or [constant INVALID_WINDOW_ID] if there is none.
 */
 //go:nosplit
-func (self class) WindowGetActivePopup() gd.Int {
+func (self class) WindowGetActivePopup() gd.Int { //gd:DisplayServer.window_get_active_popup
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_active_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3626,7 +3626,7 @@ func (self class) WindowGetActivePopup() gd.Int {
 Sets the bounding box of control, or menu item that was used to open the popup window, in the screen coordinate system. Clicking this area will not auto-close this popup.
 */
 //go:nosplit
-func (self class) WindowSetPopupSafeRect(window gd.Int, rect gd.Rect2i) {
+func (self class) WindowSetPopupSafeRect(window gd.Int, rect gd.Rect2i) { //gd:DisplayServer.window_set_popup_safe_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, window)
 	callframe.Arg(frame, rect)
@@ -3639,7 +3639,7 @@ func (self class) WindowSetPopupSafeRect(window gd.Int, rect gd.Rect2i) {
 Returns the bounding box of control, or menu item that was used to open the popup window, in the screen coordinate system.
 */
 //go:nosplit
-func (self class) WindowGetPopupSafeRect(window gd.Int) gd.Rect2i {
+func (self class) WindowGetPopupSafeRect(window gd.Int) gd.Rect2i { //gd:DisplayServer.window_get_popup_safe_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, window)
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
@@ -3655,7 +3655,7 @@ Sets the title of the given window to [param title].
 [b]Note:[/b] Avoid changing the window title every frame, as this can cause performance issues on certain window managers. Try to change the window title only a few times per second at most.
 */
 //go:nosplit
-func (self class) WindowSetTitle(title gd.String, window_id gd.Int) {
+func (self class) WindowSetTitle(title gd.String, window_id gd.Int) { //gd:DisplayServer.window_set_title
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, window_id)
@@ -3669,7 +3669,7 @@ Returns the estimated window title bar size (including text and window buttons) 
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) WindowGetTitleSize(title gd.String, window_id gd.Int) gd.Vector2i {
+func (self class) WindowGetTitleSize(title gd.String, window_id gd.Int) gd.Vector2i { //gd:DisplayServer.window_get_title_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, window_id)
@@ -3709,7 +3709,7 @@ DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
 [b]Note:[/b] This method is implemented on Linux (X11), macOS and Windows.
 */
 //go:nosplit
-func (self class) WindowSetMousePassthrough(region gd.PackedVector2Array, window_id gd.Int) {
+func (self class) WindowSetMousePassthrough(region gd.PackedVector2Array, window_id gd.Int) { //gd:DisplayServer.window_set_mouse_passthrough
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(region))
 	callframe.Arg(frame, window_id)
@@ -3722,7 +3722,7 @@ func (self class) WindowSetMousePassthrough(region gd.PackedVector2Array, window
 Returns the screen the window specified by [param window_id] is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [method window_set_current_screen].
 */
 //go:nosplit
-func (self class) WindowGetCurrentScreen(window_id gd.Int) gd.Int {
+func (self class) WindowGetCurrentScreen(window_id gd.Int) gd.Int { //gd:DisplayServer.window_get_current_screen
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -3736,7 +3736,7 @@ func (self class) WindowGetCurrentScreen(window_id gd.Int) gd.Int {
 Moves the window specified by [param window_id] to the specified [param screen]. See also [method window_get_current_screen].
 */
 //go:nosplit
-func (self class) WindowSetCurrentScreen(screen gd.Int, window_id gd.Int) {
+func (self class) WindowSetCurrentScreen(screen gd.Int, window_id gd.Int) { //gd:DisplayServer.window_set_current_screen
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
 	callframe.Arg(frame, window_id)
@@ -3749,7 +3749,7 @@ func (self class) WindowSetCurrentScreen(screen gd.Int, window_id gd.Int) {
 Returns the position of the client area of the given window on the screen.
 */
 //go:nosplit
-func (self class) WindowGetPosition(window_id gd.Int) gd.Vector2i {
+func (self class) WindowGetPosition(window_id gd.Int) gd.Vector2i { //gd:DisplayServer.window_get_position
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -3763,7 +3763,7 @@ func (self class) WindowGetPosition(window_id gd.Int) gd.Vector2i {
 Returns the position of the given window on the screen including the borders drawn by the operating system. See also [method window_get_position].
 */
 //go:nosplit
-func (self class) WindowGetPositionWithDecorations(window_id gd.Int) gd.Vector2i {
+func (self class) WindowGetPositionWithDecorations(window_id gd.Int) gd.Vector2i { //gd:DisplayServer.window_get_position_with_decorations
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -3788,7 +3788,7 @@ See also [method window_get_position] and [method window_set_size].
 [b]Note:[/b] On Linux (Wayland): this method is a no-op.
 */
 //go:nosplit
-func (self class) WindowSetPosition(position gd.Vector2i, window_id gd.Int) {
+func (self class) WindowSetPosition(position gd.Vector2i, window_id gd.Int) { //gd:DisplayServer.window_set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, window_id)
@@ -3801,7 +3801,7 @@ func (self class) WindowSetPosition(position gd.Vector2i, window_id gd.Int) {
 Returns the size of the window specified by [param window_id] (in pixels), excluding the borders drawn by the operating system. This is also called the "client area". See also [method window_get_size_with_decorations], [method window_set_size] and [method window_get_position].
 */
 //go:nosplit
-func (self class) WindowGetSize(window_id gd.Int) gd.Vector2i {
+func (self class) WindowGetSize(window_id gd.Int) gd.Vector2i { //gd:DisplayServer.window_get_size
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -3816,7 +3816,7 @@ Sets the size of the given window to [param size] (in pixels). See also [method 
 [b]Note:[/b] It's recommended to change this value using [member Window.size] instead.
 */
 //go:nosplit
-func (self class) WindowSetSize(size gd.Vector2i, window_id gd.Int) {
+func (self class) WindowSetSize(size gd.Vector2i, window_id gd.Int) { //gd:DisplayServer.window_set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, window_id)
@@ -3830,7 +3830,7 @@ Sets the [param callback] that will be called when the window specified by [para
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
 //go:nosplit
-func (self class) WindowSetRectChangedCallback(callback Callable.Function, window_id gd.Int) {
+func (self class) WindowSetRectChangedCallback(callback Callable.Function, window_id gd.Int) { //gd:DisplayServer.window_set_rect_changed_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
@@ -3844,7 +3844,7 @@ Sets the [param callback] that will be called when an event occurs in the window
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
 //go:nosplit
-func (self class) WindowSetWindowEventCallback(callback Callable.Function, window_id gd.Int) {
+func (self class) WindowSetWindowEventCallback(callback Callable.Function, window_id gd.Int) { //gd:DisplayServer.window_set_window_event_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
@@ -3858,7 +3858,7 @@ Sets the [param callback] that should be called when any [InputEvent] is sent to
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
 //go:nosplit
-func (self class) WindowSetInputEventCallback(callback Callable.Function, window_id gd.Int) {
+func (self class) WindowSetInputEventCallback(callback Callable.Function, window_id gd.Int) { //gd:DisplayServer.window_set_input_event_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
@@ -3872,7 +3872,7 @@ Sets the [param callback] that should be called when text is entered using the v
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
 //go:nosplit
-func (self class) WindowSetInputTextCallback(callback Callable.Function, window_id gd.Int) {
+func (self class) WindowSetInputTextCallback(callback Callable.Function, window_id gd.Int) { //gd:DisplayServer.window_set_input_text_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
@@ -3887,7 +3887,7 @@ Sets the [param callback] that should be called when files are dropped from the 
 [b]Note:[/b] This method is implemented on Windows, macOS, Linux (X11/Wayland), and Web.
 */
 //go:nosplit
-func (self class) WindowSetDropFilesCallback(callback Callable.Function, window_id gd.Int) {
+func (self class) WindowSetDropFilesCallback(callback Callable.Function, window_id gd.Int) { //gd:DisplayServer.window_set_drop_files_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	callframe.Arg(frame, window_id)
@@ -3900,7 +3900,7 @@ func (self class) WindowSetDropFilesCallback(callback Callable.Function, window_
 Returns the [method Object.get_instance_id] of the [Window] the [param window_id] is attached to.
 */
 //go:nosplit
-func (self class) WindowGetAttachedInstanceId(window_id gd.Int) gd.Int {
+func (self class) WindowGetAttachedInstanceId(window_id gd.Int) gd.Int { //gd:DisplayServer.window_get_attached_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -3914,7 +3914,7 @@ func (self class) WindowGetAttachedInstanceId(window_id gd.Int) gd.Int {
 Returns the window's maximum size (in pixels). See also [method window_set_max_size].
 */
 //go:nosplit
-func (self class) WindowGetMaxSize(window_id gd.Int) gd.Vector2i {
+func (self class) WindowGetMaxSize(window_id gd.Int) gd.Vector2i { //gd:DisplayServer.window_get_max_size
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -3930,7 +3930,7 @@ Sets the maximum size of the window specified by [param window_id] in pixels. No
 [b]Note:[/b] Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
 */
 //go:nosplit
-func (self class) WindowSetMaxSize(max_size gd.Vector2i, window_id gd.Int) {
+func (self class) WindowSetMaxSize(max_size gd.Vector2i, window_id gd.Int) { //gd:DisplayServer.window_set_max_size
 	var frame = callframe.New()
 	callframe.Arg(frame, max_size)
 	callframe.Arg(frame, window_id)
@@ -3943,7 +3943,7 @@ func (self class) WindowSetMaxSize(max_size gd.Vector2i, window_id gd.Int) {
 Returns the window's minimum size (in pixels). See also [method window_set_min_size].
 */
 //go:nosplit
-func (self class) WindowGetMinSize(window_id gd.Int) gd.Vector2i {
+func (self class) WindowGetMinSize(window_id gd.Int) gd.Vector2i { //gd:DisplayServer.window_get_min_size
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -3960,7 +3960,7 @@ Sets the minimum size for the given window to [param min_size] in pixels. Normal
 [b]Note:[/b] Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
 */
 //go:nosplit
-func (self class) WindowSetMinSize(min_size gd.Vector2i, window_id gd.Int) {
+func (self class) WindowSetMinSize(min_size gd.Vector2i, window_id gd.Int) { //gd:DisplayServer.window_set_min_size
 	var frame = callframe.New()
 	callframe.Arg(frame, min_size)
 	callframe.Arg(frame, window_id)
@@ -3973,7 +3973,7 @@ func (self class) WindowSetMinSize(min_size gd.Vector2i, window_id gd.Int) {
 Returns the size of the window specified by [param window_id] (in pixels), including the borders drawn by the operating system. See also [method window_get_size].
 */
 //go:nosplit
-func (self class) WindowGetSizeWithDecorations(window_id gd.Int) gd.Vector2i {
+func (self class) WindowGetSizeWithDecorations(window_id gd.Int) gd.Vector2i { //gd:DisplayServer.window_get_size_with_decorations
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -3987,7 +3987,7 @@ func (self class) WindowGetSizeWithDecorations(window_id gd.Int) gd.Vector2i {
 Returns the mode of the given window.
 */
 //go:nosplit
-func (self class) WindowGetMode(window_id gd.Int) gdclass.DisplayServerWindowMode {
+func (self class) WindowGetMode(window_id gd.Int) gdclass.DisplayServerWindowMode { //gd:DisplayServer.window_get_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gdclass.DisplayServerWindowMode](frame)
@@ -4002,7 +4002,7 @@ Sets window mode for the given window to [param mode]. See [enum WindowMode] for
 [b]Note:[/b] Setting the window to full screen forcibly sets the borderless flag to [code]true[/code], so make sure to set it back to [code]false[/code] when not wanted.
 */
 //go:nosplit
-func (self class) WindowSetMode(mode gdclass.DisplayServerWindowMode, window_id gd.Int) {
+func (self class) WindowSetMode(mode gdclass.DisplayServerWindowMode, window_id gd.Int) { //gd:DisplayServer.window_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, window_id)
@@ -4015,7 +4015,7 @@ func (self class) WindowSetMode(mode gdclass.DisplayServerWindowMode, window_id 
 Enables or disables the given window's given [param flag]. See [enum WindowFlags] for possible values and their behavior.
 */
 //go:nosplit
-func (self class) WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled bool, window_id gd.Int) {
+func (self class) WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled bool, window_id gd.Int) { //gd:DisplayServer.window_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
@@ -4029,7 +4029,7 @@ func (self class) WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled b
 Returns the current value of the given window's [param flag].
 */
 //go:nosplit
-func (self class) WindowGetFlag(flag gdclass.DisplayServerWindowFlags, window_id gd.Int) bool {
+func (self class) WindowGetFlag(flag gdclass.DisplayServerWindowFlags, window_id gd.Int) bool { //gd:DisplayServer.window_get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, window_id)
@@ -4045,7 +4045,7 @@ When [constant WINDOW_FLAG_EXTEND_TO_TITLE] flag is set, set offset to the cente
 [b]Note:[/b] This flag is implemented only on macOS.
 */
 //go:nosplit
-func (self class) WindowSetWindowButtonsOffset(offset gd.Vector2i, window_id gd.Int) {
+func (self class) WindowSetWindowButtonsOffset(offset gd.Vector2i, window_id gd.Int) { //gd:DisplayServer.window_set_window_buttons_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, window_id)
@@ -4058,7 +4058,7 @@ func (self class) WindowSetWindowButtonsOffset(offset gd.Vector2i, window_id gd.
 Returns left margins ([code]x[/code]), right margins ([code]y[/code]) and height ([code]z[/code]) of the title that are safe to use (contains no buttons or other elements) when [constant WINDOW_FLAG_EXTEND_TO_TITLE] flag is set.
 */
 //go:nosplit
-func (self class) WindowGetSafeTitleMargins(window_id gd.Int) gd.Vector3i {
+func (self class) WindowGetSafeTitleMargins(window_id gd.Int) gd.Vector3i { //gd:DisplayServer.window_get_safe_title_margins
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gd.Vector3i](frame)
@@ -4072,7 +4072,7 @@ func (self class) WindowGetSafeTitleMargins(window_id gd.Int) gd.Vector3i {
 Makes the window specified by [param window_id] request attention, which is materialized by the window title and taskbar entry blinking until the window is focused. This usually has no visible effect if the window is currently focused. The exact behavior varies depending on the operating system.
 */
 //go:nosplit
-func (self class) WindowRequestAttention(window_id gd.Int) {
+func (self class) WindowRequestAttention(window_id gd.Int) { //gd:DisplayServer.window_request_attention
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
@@ -4084,7 +4084,7 @@ func (self class) WindowRequestAttention(window_id gd.Int) {
 Moves the window specified by [param window_id] to the foreground, so that it is visible over other windows.
 */
 //go:nosplit
-func (self class) WindowMoveToForeground(window_id gd.Int) {
+func (self class) WindowMoveToForeground(window_id gd.Int) { //gd:DisplayServer.window_move_to_foreground
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Nil
@@ -4096,7 +4096,7 @@ func (self class) WindowMoveToForeground(window_id gd.Int) {
 Returns [code]true[/code] if the window specified by [param window_id] is focused.
 */
 //go:nosplit
-func (self class) WindowIsFocused(window_id gd.Int) bool {
+func (self class) WindowIsFocused(window_id gd.Int) bool { //gd:DisplayServer.window_is_focused
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -4110,7 +4110,7 @@ func (self class) WindowIsFocused(window_id gd.Int) bool {
 Returns [code]true[/code] if anything can be drawn in the window specified by [param window_id], [code]false[/code] otherwise. Using the [code]--disable-render-loop[/code] command line argument or a headless build will return [code]false[/code].
 */
 //go:nosplit
-func (self class) WindowCanDraw(window_id gd.Int) bool {
+func (self class) WindowCanDraw(window_id gd.Int) bool { //gd:DisplayServer.window_can_draw
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -4126,7 +4126,7 @@ Sets window transient parent. Transient window is will be destroyed with its tra
 [b]Note:[/b] The behavior might be different depending on the platform.
 */
 //go:nosplit
-func (self class) WindowSetTransient(window_id gd.Int, parent_window_id gd.Int) {
+func (self class) WindowSetTransient(window_id gd.Int, parent_window_id gd.Int) { //gd:DisplayServer.window_set_transient
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	callframe.Arg(frame, parent_window_id)
@@ -4141,7 +4141,7 @@ If set to [code]true[/code], this window will always stay on top of its parent w
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) WindowSetExclusive(window_id gd.Int, exclusive bool) {
+func (self class) WindowSetExclusive(window_id gd.Int, exclusive bool) { //gd:DisplayServer.window_set_exclusive
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	callframe.Arg(frame, exclusive)
@@ -4154,7 +4154,7 @@ func (self class) WindowSetExclusive(window_id gd.Int, exclusive bool) {
 Sets whether [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] should be enabled for the window specified by [param window_id]. See also [method window_set_ime_position].
 */
 //go:nosplit
-func (self class) WindowSetImeActive(active bool, window_id gd.Int) {
+func (self class) WindowSetImeActive(active bool, window_id gd.Int) { //gd:DisplayServer.window_set_ime_active
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	callframe.Arg(frame, window_id)
@@ -4167,7 +4167,7 @@ func (self class) WindowSetImeActive(active bool, window_id gd.Int) {
 Sets the position of the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] popup for the specified [param window_id]. Only effective if [method window_set_ime_active] was set to [code]true[/code] for the specified [param window_id].
 */
 //go:nosplit
-func (self class) WindowSetImePosition(position gd.Vector2i, window_id gd.Int) {
+func (self class) WindowSetImePosition(position gd.Vector2i, window_id gd.Int) { //gd:DisplayServer.window_set_ime_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, window_id)
@@ -4183,7 +4183,7 @@ Depending on the platform and used renderer, the engine will fall back to [const
 [b]Note:[/b] V-Sync modes other than [constant VSYNC_ENABLED] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 */
 //go:nosplit
-func (self class) WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode, window_id gd.Int) {
+func (self class) WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode, window_id gd.Int) { //gd:DisplayServer.window_set_vsync_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, vsync_mode)
 	callframe.Arg(frame, window_id)
@@ -4196,7 +4196,7 @@ func (self class) WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode, 
 Returns the V-Sync mode of the given window.
 */
 //go:nosplit
-func (self class) WindowGetVsyncMode(window_id gd.Int) gdclass.DisplayServerVSyncMode {
+func (self class) WindowGetVsyncMode(window_id gd.Int) gdclass.DisplayServerVSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[gdclass.DisplayServerVSyncMode](frame)
@@ -4210,7 +4210,7 @@ func (self class) WindowGetVsyncMode(window_id gd.Int) gdclass.DisplayServerVSyn
 Returns [code]true[/code] if the given window can be maximized (the maximize button is enabled).
 */
 //go:nosplit
-func (self class) WindowIsMaximizeAllowed(window_id gd.Int) bool {
+func (self class) WindowIsMaximizeAllowed(window_id gd.Int) bool { //gd:DisplayServer.window_is_maximize_allowed
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -4225,7 +4225,7 @@ Returns [code]true[/code], if double-click on a window title should maximize it.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) WindowMaximizeOnTitleDblClick() bool {
+func (self class) WindowMaximizeOnTitleDblClick() bool { //gd:DisplayServer.window_maximize_on_title_dbl_click
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_maximize_on_title_dbl_click, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4239,7 +4239,7 @@ Returns [code]true[/code], if double-click on a window title should minimize it.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) WindowMinimizeOnTitleDblClick() bool {
+func (self class) WindowMinimizeOnTitleDblClick() bool { //gd:DisplayServer.window_minimize_on_title_dbl_click
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_minimize_on_title_dbl_click, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4253,7 +4253,7 @@ Returns the text selection in the [url=https://en.wikipedia.org/wiki/Input_metho
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) ImeGetSelection() gd.Vector2i {
+func (self class) ImeGetSelection() gd.Vector2i { //gd:DisplayServer.ime_get_selection
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_ime_get_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4267,7 +4267,7 @@ Returns the composition string contained within the [url=https://en.wikipedia.or
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) ImeGetText() gd.String {
+func (self class) ImeGetText() gd.String { //gd:DisplayServer.ime_get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_ime_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4287,7 +4287,7 @@ Shows the virtual keyboard if the platform has one.
 [b]Note:[/b] This method is implemented on Android, iOS and Web.
 */
 //go:nosplit
-func (self class) VirtualKeyboardShow(existing_text gd.String, position gd.Rect2, atype gdclass.DisplayServerVirtualKeyboardType, max_length gd.Int, cursor_start gd.Int, cursor_end gd.Int) {
+func (self class) VirtualKeyboardShow(existing_text gd.String, position gd.Rect2, atype gdclass.DisplayServerVirtualKeyboardType, max_length gd.Int, cursor_start gd.Int, cursor_end gd.Int) { //gd:DisplayServer.virtual_keyboard_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing_text))
 	callframe.Arg(frame, position)
@@ -4304,7 +4304,7 @@ func (self class) VirtualKeyboardShow(existing_text gd.String, position gd.Rect2
 Hides the virtual keyboard if it is shown, does nothing otherwise.
 */
 //go:nosplit
-func (self class) VirtualKeyboardHide() {
+func (self class) VirtualKeyboardHide() { //gd:DisplayServer.virtual_keyboard_hide
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_virtual_keyboard_hide, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4315,7 +4315,7 @@ func (self class) VirtualKeyboardHide() {
 Returns the on-screen keyboard's height in pixels. Returns 0 if there is no keyboard or if it is currently hidden.
 */
 //go:nosplit
-func (self class) VirtualKeyboardGetHeight() gd.Int {
+func (self class) VirtualKeyboardGetHeight() gd.Int { //gd:DisplayServer.virtual_keyboard_get_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_virtual_keyboard_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4328,7 +4328,7 @@ func (self class) VirtualKeyboardGetHeight() gd.Int {
 Sets the default mouse cursor shape. The cursor's appearance will vary depending on the user's operating system and mouse cursor theme. See also [method cursor_get_shape] and [method cursor_set_custom_image].
 */
 //go:nosplit
-func (self class) CursorSetShape(shape gdclass.DisplayServerCursorShape) {
+func (self class) CursorSetShape(shape gdclass.DisplayServerCursorShape) { //gd:DisplayServer.cursor_set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -4340,7 +4340,7 @@ func (self class) CursorSetShape(shape gdclass.DisplayServerCursorShape) {
 Returns the default mouse cursor shape set by [method cursor_set_shape].
 */
 //go:nosplit
-func (self class) CursorGetShape() gdclass.DisplayServerCursorShape {
+func (self class) CursorGetShape() gdclass.DisplayServerCursorShape { //gd:DisplayServer.cursor_get_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.DisplayServerCursorShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_cursor_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4354,7 +4354,7 @@ Sets a custom mouse cursor image for the given [param shape]. This means the use
 [param cursor] can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, [param hotspot] can be set to offset the image's position relative to the click point. By default, [param hotspot] is set to the top-left corner of the image. See also [method cursor_set_shape].
 */
 //go:nosplit
-func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape gdclass.DisplayServerCursorShape, hotspot gd.Vector2) {
+func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape gdclass.DisplayServerCursorShape, hotspot gd.Vector2) { //gd:DisplayServer.cursor_set_custom_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(cursor[0])[0])
 	callframe.Arg(frame, shape)
@@ -4369,7 +4369,7 @@ Returns [code]true[/code] if positions of [b]OK[/b] and [b]Cancel[/b] buttons ar
 [b]Note:[/b] This doesn't affect native dialogs such as the ones spawned by [method DisplayServer.dialog_show].
 */
 //go:nosplit
-func (self class) GetSwapCancelOk() bool {
+func (self class) GetSwapCancelOk() bool { //gd:DisplayServer.get_swap_cancel_ok
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_get_swap_cancel_ok, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4383,7 +4383,7 @@ Allows the [param process_id] PID to steal focus from this window. In other word
 [b]Note:[/b] This method is implemented only on Windows.
 */
 //go:nosplit
-func (self class) EnableForStealingFocus(process_id gd.Int) {
+func (self class) EnableForStealingFocus(process_id gd.Int) { //gd:DisplayServer.enable_for_stealing_focus
 	var frame = callframe.New()
 	callframe.Arg(frame, process_id)
 	var r_ret = callframe.Nil
@@ -4396,7 +4396,7 @@ Shows a text dialog which uses the operating system's native look-and-feel. [par
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG] feature. Supported platforms include macOS and Windows.
 */
 //go:nosplit
-func (self class) DialogShow(title gd.String, description gd.String, buttons gd.PackedStringArray, callback Callable.Function) gd.Error {
+func (self class) DialogShow(title gd.String, description gd.String, buttons gd.PackedStringArray, callback Callable.Function) gd.Error { //gd:DisplayServer.dialog_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(description))
@@ -4414,7 +4414,7 @@ Shows a text input dialog which uses the operating system's native look-and-feel
 [b]Note:[/b] This method is implemented if the display server has the [constant FEATURE_NATIVE_DIALOG_INPUT] feature. Supported platforms include macOS and Windows.
 */
 //go:nosplit
-func (self class) DialogInputText(title gd.String, description gd.String, existing_text gd.String, callback Callable.Function) gd.Error {
+func (self class) DialogInputText(title gd.String, description gd.String, existing_text gd.String, callback Callable.Function) gd.Error { //gd:DisplayServer.dialog_input_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(description))
@@ -4438,7 +4438,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogShow(title gd.String, current_directory gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, callback Callable.Function) gd.Error {
+func (self class) FileDialogShow(title gd.String, current_directory gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(current_directory))
@@ -4469,7 +4469,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogWithOptionsShow(title gd.String, current_directory gd.String, root gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options Array.Contains[gd.Dictionary], callback Callable.Function) gd.Error {
+func (self class) FileDialogWithOptionsShow(title gd.String, current_directory gd.String, root gd.String, filename gd.String, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters gd.PackedStringArray, options Array.Contains[gd.Dictionary], callback Callable.Function) gd.Error { //gd:DisplayServer.file_dialog_with_options_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(current_directory))
@@ -4492,7 +4492,7 @@ Returns the number of keyboard layouts.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetLayoutCount() gd.Int {
+func (self class) KeyboardGetLayoutCount() gd.Int { //gd:DisplayServer.keyboard_get_layout_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_layout_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4506,7 +4506,7 @@ Returns active keyboard layout index.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetCurrentLayout() gd.Int {
+func (self class) KeyboardGetCurrentLayout() gd.Int { //gd:DisplayServer.keyboard_get_current_layout
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_current_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4520,7 +4520,7 @@ Sets the active keyboard layout.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardSetCurrentLayout(index gd.Int) {
+func (self class) KeyboardSetCurrentLayout(index gd.Int) { //gd:DisplayServer.keyboard_set_current_layout
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -4533,7 +4533,7 @@ Returns the ISO-639/BCP-47 language code of the keyboard layout at position [par
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetLayoutLanguage(index gd.Int) gd.String {
+func (self class) KeyboardGetLayoutLanguage(index gd.Int) gd.String { //gd:DisplayServer.keyboard_get_layout_language
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -4548,7 +4548,7 @@ Returns the localized name of the keyboard layout at position [param index].
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetLayoutName(index gd.Int) gd.String {
+func (self class) KeyboardGetLayoutName(index gd.Int) gd.String { //gd:DisplayServer.keyboard_get_layout_name
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -4563,7 +4563,7 @@ Converts a physical (US QWERTY) [param keycode] to one in the active keyboard la
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetKeycodeFromPhysical(keycode Key) Key {
+func (self class) KeyboardGetKeycodeFromPhysical(keycode Key) Key { //gd:DisplayServer.keyboard_get_keycode_from_physical
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[Key](frame)
@@ -4578,7 +4578,7 @@ Converts a physical (US QWERTY) [param keycode] to localized label printed on th
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetLabelFromPhysical(keycode Key) Key {
+func (self class) KeyboardGetLabelFromPhysical(keycode Key) Key { //gd:DisplayServer.keyboard_get_label_from_physical
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Ret[Key](frame)
@@ -4592,7 +4592,7 @@ func (self class) KeyboardGetLabelFromPhysical(keycode Key) Key {
 Perform window manager processing, including input flushing. See also [method force_process_and_drop_events], [method Input.flush_buffered_events] and [member Input.use_accumulated_input].
 */
 //go:nosplit
-func (self class) ProcessEvents() {
+func (self class) ProcessEvents() { //gd:DisplayServer.process_events
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_process_events, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4604,7 +4604,7 @@ Forces window manager processing while ignoring all [InputEvent]s. See also [met
 [b]Note:[/b] This method is implemented on Windows and macOS.
 */
 //go:nosplit
-func (self class) ForceProcessAndDropEvents() {
+func (self class) ForceProcessAndDropEvents() { //gd:DisplayServer.force_process_and_drop_events
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_force_process_and_drop_events, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4616,7 +4616,7 @@ Sets the window icon (usually displayed in the top-left corner) in the operating
 [b]Note:[/b] Requires support for [constant FEATURE_NATIVE_ICON].
 */
 //go:nosplit
-func (self class) SetNativeIcon(filename gd.String) {
+func (self class) SetNativeIcon(filename gd.String) { //gd:DisplayServer.set_native_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(filename))
 	var r_ret = callframe.Nil
@@ -4629,7 +4629,7 @@ Sets the window icon (usually displayed in the top-left corner) with an [Image].
 [b]Note:[/b] Requires support for [constant FEATURE_ICON].
 */
 //go:nosplit
-func (self class) SetIcon(image [1]gdclass.Image) {
+func (self class) SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret = callframe.Nil
@@ -4642,7 +4642,7 @@ Creates a new application status indicator with the specified icon, tooltip, and
 [param callback] should take two arguments: the pressed mouse button (one of the [enum MouseButton] constants) and the click position in screen coordinates (a [Vector2i]).
 */
 //go:nosplit
-func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip gd.String, callback Callable.Function) gd.Int {
+func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip gd.String, callback Callable.Function) gd.Int { //gd:DisplayServer.create_status_indicator
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	callframe.Arg(frame, pointers.Get(tooltip))
@@ -4659,7 +4659,7 @@ Sets the application status indicator icon.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) StatusIndicatorSetIcon(id gd.Int, icon [1]gdclass.Texture2D) {
+func (self class) StatusIndicatorSetIcon(id gd.Int, icon [1]gdclass.Texture2D) { //gd:DisplayServer.status_indicator_set_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -4673,7 +4673,7 @@ Sets the application status indicator tooltip.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) StatusIndicatorSetTooltip(id gd.Int, tooltip gd.String) {
+func (self class) StatusIndicatorSetTooltip(id gd.Int, tooltip gd.String) { //gd:DisplayServer.status_indicator_set_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(tooltip))
@@ -4689,7 +4689,7 @@ Sets the application status indicator native popup menu.
 [b]Note:[/b] Native popup is only supported if [NativeMenu] supports the [constant NativeMenu.FEATURE_POPUP_MENU] feature.
 */
 //go:nosplit
-func (self class) StatusIndicatorSetMenu(id gd.Int, menu_rid gd.RID) {
+func (self class) StatusIndicatorSetMenu(id gd.Int, menu_rid gd.RID) { //gd:DisplayServer.status_indicator_set_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, menu_rid)
@@ -4703,7 +4703,7 @@ Sets the application status indicator activation callback. [param callback] shou
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) StatusIndicatorSetCallback(id gd.Int, callback Callable.Function) {
+func (self class) StatusIndicatorSetCallback(id gd.Int, callback Callable.Function) { //gd:DisplayServer.status_indicator_set_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
@@ -4717,7 +4717,7 @@ Returns the rectangle for the given status indicator [param id] in screen coordi
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) StatusIndicatorGetRect(id gd.Int) gd.Rect2 {
+func (self class) StatusIndicatorGetRect(id gd.Int) gd.Rect2 { //gd:DisplayServer.status_indicator_get_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Rect2](frame)
@@ -4731,7 +4731,7 @@ func (self class) StatusIndicatorGetRect(id gd.Int) gd.Rect2 {
 Removes the application status indicator.
 */
 //go:nosplit
-func (self class) DeleteStatusIndicator(id gd.Int) {
+func (self class) DeleteStatusIndicator(id gd.Int) { //gd:DisplayServer.delete_status_indicator
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -4744,7 +4744,7 @@ Returns the total number of available tablet drivers.
 [b]Note:[/b] This method is implemented only on Windows.
 */
 //go:nosplit
-func (self class) TabletGetDriverCount() gd.Int {
+func (self class) TabletGetDriverCount() gd.Int { //gd:DisplayServer.tablet_get_driver_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_driver_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4758,7 +4758,7 @@ Returns the tablet driver name for the given index.
 [b]Note:[/b] This method is implemented only on Windows.
 */
 //go:nosplit
-func (self class) TabletGetDriverName(idx gd.Int) gd.String {
+func (self class) TabletGetDriverName(idx gd.Int) gd.String { //gd:DisplayServer.tablet_get_driver_name
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -4773,7 +4773,7 @@ Returns current active tablet driver name.
 [b]Note:[/b] This method is implemented only on Windows.
 */
 //go:nosplit
-func (self class) TabletGetCurrentDriver() gd.String {
+func (self class) TabletGetCurrentDriver() gd.String { //gd:DisplayServer.tablet_get_current_driver
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_tablet_get_current_driver, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4791,7 +4791,7 @@ Supported drivers:
 [b]Note:[/b] This method is implemented only on Windows.
 */
 //go:nosplit
-func (self class) TabletSetCurrentDriver(name gd.String) {
+func (self class) TabletSetCurrentDriver(name gd.String) { //gd:DisplayServer.tablet_set_current_driver
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -4803,7 +4803,7 @@ func (self class) TabletSetCurrentDriver(name gd.String) {
 Returns [code]true[/code] if the window background can be made transparent. This method returns [code]false[/code] if [member ProjectSettings.display/window/per_pixel_transparency/allowed] is set to [code]false[/code], or if transparency is not supported by the renderer or OS compositor.
 */
 //go:nosplit
-func (self class) IsWindowTransparencyAvailable() bool {
+func (self class) IsWindowTransparencyAvailable() bool { //gd:DisplayServer.is_window_transparency_available
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_is_window_transparency_available, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4817,7 +4817,7 @@ Registers an [Object] which represents an additional output that will be rendere
 This can be used to prevent Godot from skipping rendering when no normal windows are visible.
 */
 //go:nosplit
-func (self class) RegisterAdditionalOutput(obj [1]gd.Object) {
+func (self class) RegisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.register_additional_output
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -4829,7 +4829,7 @@ func (self class) RegisterAdditionalOutput(obj [1]gd.Object) {
 Unregisters an [Object] representing an additional output, that was registered via [method register_additional_output].
 */
 //go:nosplit
-func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) {
+func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.unregister_additional_output
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	var r_ret = callframe.Nil
@@ -4841,7 +4841,7 @@ func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) {
 Returns [code]true[/code] if any additional outputs have been registered via [method register_additional_output].
 */
 //go:nosplit
-func (self class) HasAdditionalOutputs() bool {
+func (self class) HasAdditionalOutputs() bool { //gd:DisplayServer.has_additional_outputs
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_has_additional_outputs, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4861,7 +4861,7 @@ func init() {
 	})
 }
 
-type Feature = gdclass.DisplayServerFeature
+type Feature = gdclass.DisplayServerFeature //gd:DisplayServer.Feature
 
 const (
 	/*Display server supports global menu. This allows the application to display its menu items in the operating system's top bar. [b]macOS[/b]*/
@@ -4916,7 +4916,7 @@ const (
 	FeatureNativeDialogFile Feature = 25
 )
 
-type MouseModeValue = gdclass.DisplayServerMouseMode
+type MouseModeValue = gdclass.DisplayServerMouseMode //gd:DisplayServer.MouseMode
 
 const (
 	/*Makes the mouse cursor visible if it is hidden.*/
@@ -4932,7 +4932,7 @@ const (
 	MouseModeConfinedHidden MouseModeValue = 4
 )
 
-type ScreenOrientation = gdclass.DisplayServerScreenOrientation
+type ScreenOrientation = gdclass.DisplayServerScreenOrientation //gd:DisplayServer.ScreenOrientation
 
 const (
 	/*Default landscape orientation.*/
@@ -4951,7 +4951,7 @@ const (
 	ScreenSensor ScreenOrientation = 6
 )
 
-type VirtualKeyboardType = gdclass.DisplayServerVirtualKeyboardType
+type VirtualKeyboardType = gdclass.DisplayServerVirtualKeyboardType //gd:DisplayServer.VirtualKeyboardType
 
 const (
 	/*Default text virtual keyboard.*/
@@ -4973,7 +4973,7 @@ const (
 	KeyboardTypeUrl VirtualKeyboardType = 7
 )
 
-type CursorShape = gdclass.DisplayServerCursorShape
+type CursorShape = gdclass.DisplayServerCursorShape //gd:DisplayServer.CursorShape
 
 const (
 	/*Arrow cursor shape. This is the default when not pointing anything that overrides the mouse cursor, such as a [LineEdit] or [TextEdit].*/
@@ -5014,7 +5014,7 @@ const (
 	CursorMax CursorShape = 17
 )
 
-type FileDialogMode = gdclass.DisplayServerFileDialogMode
+type FileDialogMode = gdclass.DisplayServerFileDialogMode //gd:DisplayServer.FileDialogMode
 
 const (
 	/*The native file dialog allows selecting one, and only one file.*/
@@ -5029,7 +5029,7 @@ const (
 	FileDialogModeSaveFile FileDialogMode = 4
 )
 
-type WindowMode = gdclass.DisplayServerWindowMode
+type WindowMode = gdclass.DisplayServerWindowMode //gd:DisplayServer.WindowMode
 
 const (
 	/*Windowed mode, i.e. [Window] doesn't occupy the whole screen (unless set to the size of the screen).*/
@@ -5053,7 +5053,7 @@ const (
 	WindowModeExclusiveFullscreen WindowMode = 4
 )
 
-type WindowFlags = gdclass.DisplayServerWindowFlags
+type WindowFlags = gdclass.DisplayServerWindowFlags //gd:DisplayServer.WindowFlags
 
 const (
 	/*The window can't be resized by dragging its resize grip. It's still possible to resize the window using [method window_set_size]. This flag is ignored for full screen windows.*/
@@ -5081,7 +5081,7 @@ const (
 	WindowFlagMax WindowFlags = 8
 )
 
-type WindowEvent = gdclass.DisplayServerWindowEvent
+type WindowEvent = gdclass.DisplayServerWindowEvent //gd:DisplayServer.WindowEvent
 
 const (
 	/*Sent when the mouse pointer enters the window.*/
@@ -5105,7 +5105,7 @@ const (
 	WindowEventTitlebarChange WindowEvent = 7
 )
 
-type VSyncMode = gdclass.DisplayServerVSyncMode
+type VSyncMode = gdclass.DisplayServerVSyncMode //gd:DisplayServer.VSyncMode
 
 const (
 	/*No vertical synchronization, which means the engine will display frames as fast as possible (tearing may be visible). Framerate is unlimited (regardless of [member Engine.max_fps]).*/
@@ -5119,7 +5119,7 @@ const (
 	VsyncMailbox VSyncMode = 3
 )
 
-type HandleType = gdclass.DisplayServerHandleType
+type HandleType = gdclass.DisplayServerHandleType //gd:DisplayServer.HandleType
 
 const (
 	/*Display handle:
@@ -5146,7 +5146,7 @@ const (
 	OpenglContext HandleType = 3
 )
 
-type TTSUtteranceEvent = gdclass.DisplayServerTTSUtteranceEvent
+type TTSUtteranceEvent = gdclass.DisplayServerTTSUtteranceEvent //gd:DisplayServer.TTSUtteranceEvent
 
 const (
 	/*Utterance has begun to be spoken.*/
@@ -5159,7 +5159,7 @@ const (
 	TtsUtteranceBoundary TTSUtteranceEvent = 3
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

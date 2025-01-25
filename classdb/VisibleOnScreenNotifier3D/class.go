@@ -46,7 +46,7 @@ type Any interface {
 Returns [code]true[/code] if the bounding box is on the screen.
 [b]Note:[/b] It takes one frame for the [VisibleOnScreenNotifier3D]'s visibility to be assessed once added to the scene tree, so this method will always return [code]false[/code] right after it is instantiated.
 */
-func (self Instance) IsOnScreen() bool {
+func (self Instance) IsOnScreen() bool { //gd:VisibleOnScreenNotifier3D.is_on_screen
 	return bool(class(self).IsOnScreen())
 }
 
@@ -73,7 +73,7 @@ func (self Instance) SetAabb(value AABB.PositionSize) {
 }
 
 //go:nosplit
-func (self class) SetAabb(rect gd.AABB) {
+func (self class) SetAabb(rect gd.AABB) { //gd:VisibleOnScreenNotifier3D.set_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -86,7 +86,7 @@ Returns [code]true[/code] if the bounding box is on the screen.
 [b]Note:[/b] It takes one frame for the [VisibleOnScreenNotifier3D]'s visibility to be assessed once added to the scene tree, so this method will always return [code]false[/code] right after it is instantiated.
 */
 //go:nosplit
-func (self class) IsOnScreen() bool {
+func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier3D.is_on_screen
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_is_on_screen, self.AsObject(), frame.Array(0), r_ret.Addr())

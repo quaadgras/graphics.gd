@@ -44,7 +44,7 @@ type Any interface {
 /*
 Removes all filters except for "All Files (*)".
 */
-func (self Instance) ClearFilters() {
+func (self Instance) ClearFilters() { //gd:EditorFileDialog.clear_filters
 	class(self).ClearFilters()
 }
 
@@ -53,49 +53,49 @@ Adds a comma-delimited file name [param filter] option to the [EditorFileDialog]
 A [param filter] should be of the form [code]"filename.extension"[/code], where filename and extension can be [code]*[/code] to match any string. Filters starting with [code].[/code] (i.e. empty filenames) are not allowed.
 For example, a [param filter] of [code]"*.tscn, *.scn"[/code] and a [param description] of [code]"Scenes"[/code] results in filter text "Scenes (*.tscn, *.scn)".
 */
-func (self Instance) AddFilter(filter string) {
+func (self Instance) AddFilter(filter string) { //gd:EditorFileDialog.add_filter
 	class(self).AddFilter(gd.NewString(filter), gd.NewString(""))
 }
 
 /*
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
-func (self Instance) GetOptionName(option int) string {
+func (self Instance) GetOptionName(option int) string { //gd:EditorFileDialog.get_option_name
 	return string(class(self).GetOptionName(gd.Int(option)).String())
 }
 
 /*
 Returns an array of values of the [OptionButton] with index [param option].
 */
-func (self Instance) GetOptionValues(option int) []string {
+func (self Instance) GetOptionValues(option int) []string { //gd:EditorFileDialog.get_option_values
 	return []string(class(self).GetOptionValues(gd.Int(option)).Strings())
 }
 
 /*
 Returns the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
-func (self Instance) GetOptionDefault(option int) int {
+func (self Instance) GetOptionDefault(option int) int { //gd:EditorFileDialog.get_option_default
 	return int(int(class(self).GetOptionDefault(gd.Int(option))))
 }
 
 /*
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
-func (self Instance) SetOptionName(option int, name string) {
+func (self Instance) SetOptionName(option int, name string) { //gd:EditorFileDialog.set_option_name
 	class(self).SetOptionName(gd.Int(option), gd.NewString(name))
 }
 
 /*
 Sets the option values of the [OptionButton] with index [param option].
 */
-func (self Instance) SetOptionValues(option int, values []string) {
+func (self Instance) SetOptionValues(option int, values []string) { //gd:EditorFileDialog.set_option_values
 	class(self).SetOptionValues(gd.Int(option), gd.NewPackedStringSlice(values))
 }
 
 /*
 Sets the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
-func (self Instance) SetOptionDefault(option int, default_value_index int) {
+func (self Instance) SetOptionDefault(option int, default_value_index int) { //gd:EditorFileDialog.set_option_default
 	class(self).SetOptionDefault(gd.Int(option), gd.Int(default_value_index))
 }
 
@@ -103,14 +103,14 @@ func (self Instance) SetOptionDefault(option int, default_value_index int) {
 Adds an additional [OptionButton] to the file dialog. If [param values] is empty, a [CheckBox] is added instead.
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
-func (self Instance) AddOption(name string, values []string, default_value_index int) {
+func (self Instance) AddOption(name string, values []string, default_value_index int) { //gd:EditorFileDialog.add_option
 	class(self).AddOption(gd.NewString(name), gd.NewPackedStringSlice(values), gd.Int(default_value_index))
 }
 
 /*
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
-func (self Instance) GetSelectedOptions() map[any]any {
+func (self Instance) GetSelectedOptions() map[any]any { //gd:EditorFileDialog.get_selected_options
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetSelectedOptions()))
 }
 
@@ -118,7 +118,7 @@ func (self Instance) GetSelectedOptions() map[any]any {
 Returns the [VBoxContainer] used to display the file system.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetVbox() [1]gdclass.VBoxContainer {
+func (self Instance) GetVbox() [1]gdclass.VBoxContainer { //gd:EditorFileDialog.get_vbox
 	return [1]gdclass.VBoxContainer(class(self).GetVbox())
 }
 
@@ -126,28 +126,28 @@ func (self Instance) GetVbox() [1]gdclass.VBoxContainer {
 Returns the LineEdit for the selected file.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetLineEdit() [1]gdclass.LineEdit {
+func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:EditorFileDialog.get_line_edit
 	return [1]gdclass.LineEdit(class(self).GetLineEdit())
 }
 
 /*
 Adds the given [param menu] to the side of the file dialog with the given [param title] text on top. Only one side menu is allowed.
 */
-func (self Instance) AddSideMenu(menu [1]gdclass.Control) {
+func (self Instance) AddSideMenu(menu [1]gdclass.Control) { //gd:EditorFileDialog.add_side_menu
 	class(self).AddSideMenu(menu, gd.NewString(""))
 }
 
 /*
 Shows the [EditorFileDialog] at the default size and position for file dialogs in the editor, and selects the file name if there is a current file.
 */
-func (self Instance) PopupFileDialog() {
+func (self Instance) PopupFileDialog() { //gd:EditorFileDialog.popup_file_dialog
 	class(self).PopupFileDialog()
 }
 
 /*
 Notify the [EditorFileDialog] that its view of the data is no longer accurate. Updates the view contents on next view update.
 */
-func (self Instance) Invalidate() {
+func (self Instance) Invalidate() { //gd:EditorFileDialog.invalidate
 	class(self).Invalidate()
 }
 
@@ -253,7 +253,7 @@ func (self Instance) SetDisableOverwriteWarning(value bool) {
 Removes all filters except for "All Files (*)".
 */
 //go:nosplit
-func (self class) ClearFilters() {
+func (self class) ClearFilters() { //gd:EditorFileDialog.clear_filters
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_clear_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -266,7 +266,7 @@ A [param filter] should be of the form [code]"filename.extension"[/code], where 
 For example, a [param filter] of [code]"*.tscn, *.scn"[/code] and a [param description] of [code]"Scenes"[/code] results in filter text "Scenes (*.tscn, *.scn)".
 */
 //go:nosplit
-func (self class) AddFilter(filter gd.String, description gd.String) {
+func (self class) AddFilter(filter gd.String, description gd.String) { //gd:EditorFileDialog.add_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(filter))
 	callframe.Arg(frame, pointers.Get(description))
@@ -276,7 +276,7 @@ func (self class) AddFilter(filter gd.String, description gd.String) {
 }
 
 //go:nosplit
-func (self class) SetFilters(filters gd.PackedStringArray) {
+func (self class) SetFilters(filters gd.PackedStringArray) { //gd:EditorFileDialog.set_filters
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(filters))
 	var r_ret = callframe.Nil
@@ -285,7 +285,7 @@ func (self class) SetFilters(filters gd.PackedStringArray) {
 }
 
 //go:nosplit
-func (self class) GetFilters() gd.PackedStringArray {
+func (self class) GetFilters() gd.PackedStringArray { //gd:EditorFileDialog.get_filters
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -298,7 +298,7 @@ func (self class) GetFilters() gd.PackedStringArray {
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionName(option gd.Int) gd.String {
+func (self class) GetOptionName(option gd.Int) gd.String { //gd:EditorFileDialog.get_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -312,7 +312,7 @@ func (self class) GetOptionName(option gd.Int) gd.String {
 Returns an array of values of the [OptionButton] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionValues(option gd.Int) gd.PackedStringArray {
+func (self class) GetOptionValues(option gd.Int) gd.PackedStringArray { //gd:EditorFileDialog.get_option_values
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -326,7 +326,7 @@ func (self class) GetOptionValues(option gd.Int) gd.PackedStringArray {
 Returns the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionDefault(option gd.Int) gd.Int {
+func (self class) GetOptionDefault(option gd.Int) gd.Int { //gd:EditorFileDialog.get_option_default
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -340,7 +340,7 @@ func (self class) GetOptionDefault(option gd.Int) gd.Int {
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionName(option gd.Int, name gd.String) {
+func (self class) SetOptionName(option gd.Int, name gd.String) { //gd:EditorFileDialog.set_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, pointers.Get(name))
@@ -353,7 +353,7 @@ func (self class) SetOptionName(option gd.Int, name gd.String) {
 Sets the option values of the [OptionButton] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionValues(option gd.Int, values gd.PackedStringArray) {
+func (self class) SetOptionValues(option gd.Int, values gd.PackedStringArray) { //gd:EditorFileDialog.set_option_values
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, pointers.Get(values))
@@ -366,7 +366,7 @@ func (self class) SetOptionValues(option gd.Int, values gd.PackedStringArray) {
 Sets the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) {
+func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) { //gd:EditorFileDialog.set_option_default
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, default_value_index)
@@ -376,7 +376,7 @@ func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetOptionCount(count gd.Int) {
+func (self class) SetOptionCount(count gd.Int) { //gd:EditorFileDialog.set_option_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -385,7 +385,7 @@ func (self class) SetOptionCount(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetOptionCount() gd.Int {
+func (self class) GetOptionCount() gd.Int { //gd:EditorFileDialog.get_option_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_option_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -399,7 +399,7 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 //go:nosplit
-func (self class) AddOption(name gd.String, values gd.PackedStringArray, default_value_index gd.Int) {
+func (self class) AddOption(name gd.String, values gd.PackedStringArray, default_value_index gd.Int) { //gd:EditorFileDialog.add_option
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(values))
@@ -413,7 +413,7 @@ func (self class) AddOption(name gd.String, values gd.PackedStringArray, default
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
 //go:nosplit
-func (self class) GetSelectedOptions() gd.Dictionary {
+func (self class) GetSelectedOptions() gd.Dictionary { //gd:EditorFileDialog.get_selected_options
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_selected_options, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -423,7 +423,7 @@ func (self class) GetSelectedOptions() gd.Dictionary {
 }
 
 //go:nosplit
-func (self class) GetCurrentDir() gd.String {
+func (self class) GetCurrentDir() gd.String { //gd:EditorFileDialog.get_current_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -433,7 +433,7 @@ func (self class) GetCurrentDir() gd.String {
 }
 
 //go:nosplit
-func (self class) GetCurrentFile() gd.String {
+func (self class) GetCurrentFile() gd.String { //gd:EditorFileDialog.get_current_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -443,7 +443,7 @@ func (self class) GetCurrentFile() gd.String {
 }
 
 //go:nosplit
-func (self class) GetCurrentPath() gd.String {
+func (self class) GetCurrentPath() gd.String { //gd:EditorFileDialog.get_current_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -453,7 +453,7 @@ func (self class) GetCurrentPath() gd.String {
 }
 
 //go:nosplit
-func (self class) SetCurrentDir(dir gd.String) {
+func (self class) SetCurrentDir(dir gd.String) { //gd:EditorFileDialog.set_current_dir
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dir))
 	var r_ret = callframe.Nil
@@ -462,7 +462,7 @@ func (self class) SetCurrentDir(dir gd.String) {
 }
 
 //go:nosplit
-func (self class) SetCurrentFile(file gd.String) {
+func (self class) SetCurrentFile(file gd.String) { //gd:EditorFileDialog.set_current_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
 	var r_ret = callframe.Nil
@@ -471,7 +471,7 @@ func (self class) SetCurrentFile(file gd.String) {
 }
 
 //go:nosplit
-func (self class) SetCurrentPath(path gd.String) {
+func (self class) SetCurrentPath(path gd.String) { //gd:EditorFileDialog.set_current_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -480,7 +480,7 @@ func (self class) SetCurrentPath(path gd.String) {
 }
 
 //go:nosplit
-func (self class) SetFileMode(mode gdclass.EditorFileDialogFileMode) {
+func (self class) SetFileMode(mode gdclass.EditorFileDialogFileMode) { //gd:EditorFileDialog.set_file_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -489,7 +489,7 @@ func (self class) SetFileMode(mode gdclass.EditorFileDialogFileMode) {
 }
 
 //go:nosplit
-func (self class) GetFileMode() gdclass.EditorFileDialogFileMode {
+func (self class) GetFileMode() gdclass.EditorFileDialogFileMode { //gd:EditorFileDialog.get_file_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EditorFileDialogFileMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_file_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -503,7 +503,7 @@ Returns the [VBoxContainer] used to display the file system.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 //go:nosplit
-func (self class) GetVbox() [1]gdclass.VBoxContainer {
+func (self class) GetVbox() [1]gdclass.VBoxContainer { //gd:EditorFileDialog.get_vbox
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_vbox, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -517,7 +517,7 @@ Returns the LineEdit for the selected file.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 //go:nosplit
-func (self class) GetLineEdit() [1]gdclass.LineEdit {
+func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:EditorFileDialog.get_line_edit
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -527,7 +527,7 @@ func (self class) GetLineEdit() [1]gdclass.LineEdit {
 }
 
 //go:nosplit
-func (self class) SetAccess(access gdclass.EditorFileDialogAccess) {
+func (self class) SetAccess(access gdclass.EditorFileDialogAccess) { //gd:EditorFileDialog.set_access
 	var frame = callframe.New()
 	callframe.Arg(frame, access)
 	var r_ret = callframe.Nil
@@ -536,7 +536,7 @@ func (self class) SetAccess(access gdclass.EditorFileDialogAccess) {
 }
 
 //go:nosplit
-func (self class) GetAccess() gdclass.EditorFileDialogAccess {
+func (self class) GetAccess() gdclass.EditorFileDialogAccess { //gd:EditorFileDialog.get_access
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EditorFileDialogAccess](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_access, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -546,7 +546,7 @@ func (self class) GetAccess() gdclass.EditorFileDialogAccess {
 }
 
 //go:nosplit
-func (self class) SetShowHiddenFiles(show bool) {
+func (self class) SetShowHiddenFiles(show bool) { //gd:EditorFileDialog.set_show_hidden_files
 	var frame = callframe.New()
 	callframe.Arg(frame, show)
 	var r_ret = callframe.Nil
@@ -555,7 +555,7 @@ func (self class) SetShowHiddenFiles(show bool) {
 }
 
 //go:nosplit
-func (self class) IsShowingHiddenFiles() bool {
+func (self class) IsShowingHiddenFiles() bool { //gd:EditorFileDialog.is_showing_hidden_files
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_is_showing_hidden_files, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -565,7 +565,7 @@ func (self class) IsShowingHiddenFiles() bool {
 }
 
 //go:nosplit
-func (self class) SetDisplayMode(mode gdclass.EditorFileDialogDisplayMode) {
+func (self class) SetDisplayMode(mode gdclass.EditorFileDialogDisplayMode) { //gd:EditorFileDialog.set_display_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -574,7 +574,7 @@ func (self class) SetDisplayMode(mode gdclass.EditorFileDialogDisplayMode) {
 }
 
 //go:nosplit
-func (self class) GetDisplayMode() gdclass.EditorFileDialogDisplayMode {
+func (self class) GetDisplayMode() gdclass.EditorFileDialogDisplayMode { //gd:EditorFileDialog.get_display_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EditorFileDialogDisplayMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_display_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -584,7 +584,7 @@ func (self class) GetDisplayMode() gdclass.EditorFileDialogDisplayMode {
 }
 
 //go:nosplit
-func (self class) SetDisableOverwriteWarning(disable bool) {
+func (self class) SetDisableOverwriteWarning(disable bool) { //gd:EditorFileDialog.set_disable_overwrite_warning
 	var frame = callframe.New()
 	callframe.Arg(frame, disable)
 	var r_ret = callframe.Nil
@@ -593,7 +593,7 @@ func (self class) SetDisableOverwriteWarning(disable bool) {
 }
 
 //go:nosplit
-func (self class) IsOverwriteWarningDisabled() bool {
+func (self class) IsOverwriteWarningDisabled() bool { //gd:EditorFileDialog.is_overwrite_warning_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_is_overwrite_warning_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -606,7 +606,7 @@ func (self class) IsOverwriteWarningDisabled() bool {
 Adds the given [param menu] to the side of the file dialog with the given [param title] text on top. Only one side menu is allowed.
 */
 //go:nosplit
-func (self class) AddSideMenu(menu [1]gdclass.Control, title gd.String) {
+func (self class) AddSideMenu(menu [1]gdclass.Control, title gd.String) { //gd:EditorFileDialog.add_side_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(menu[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(title))
@@ -619,7 +619,7 @@ func (self class) AddSideMenu(menu [1]gdclass.Control, title gd.String) {
 Shows the [EditorFileDialog] at the default size and position for file dialogs in the editor, and selects the file name if there is a current file.
 */
 //go:nosplit
-func (self class) PopupFileDialog() {
+func (self class) PopupFileDialog() { //gd:EditorFileDialog.popup_file_dialog
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_popup_file_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -630,7 +630,7 @@ func (self class) PopupFileDialog() {
 Notify the [EditorFileDialog] that its view of the data is no longer accurate. Updates the view contents on next view update.
 */
 //go:nosplit
-func (self class) Invalidate() {
+func (self class) Invalidate() { //gd:EditorFileDialog.invalidate
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_invalidate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -692,7 +692,7 @@ func init() {
 	})
 }
 
-type FileMode = gdclass.EditorFileDialogFileMode
+type FileMode = gdclass.EditorFileDialogFileMode //gd:EditorFileDialog.FileMode
 
 const (
 	/*The [EditorFileDialog] can select only one file. Accepting the window will open the file.*/
@@ -707,7 +707,7 @@ const (
 	FileModeSaveFile FileMode = 4
 )
 
-type Access = gdclass.EditorFileDialogAccess
+type Access = gdclass.EditorFileDialogAccess //gd:EditorFileDialog.Access
 
 const (
 	/*The [EditorFileDialog] can only view [code]res://[/code] directory contents.*/
@@ -718,7 +718,7 @@ const (
 	AccessFilesystem Access = 2
 )
 
-type DisplayMode = gdclass.EditorFileDialogDisplayMode
+type DisplayMode = gdclass.EditorFileDialogDisplayMode //gd:EditorFileDialog.DisplayMode
 
 const (
 	/*The [EditorFileDialog] displays resources as thumbnails.*/

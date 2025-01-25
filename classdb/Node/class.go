@@ -304,7 +304,7 @@ func (Instance) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]gdcl
 Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 [b]Note:[/b] This method only works in debug builds. Does nothing in a project exported in release mode.
 */
-func PrintOrphanNodes() {
+func PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 	self := Instance{}
 	class(self).PrintOrphanNodes()
 }
@@ -315,7 +315,7 @@ If [param force_readable_name] is [code]true[/code], improves the readability of
 Use [method add_child] instead of this method if you don't need the child node to be added below a specific node in the list of children.
 [b]Note:[/b] If this node is internal, the added sibling will be internal too (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Instance) AddSibling(sibling [1]gdclass.Node) {
+func (self Instance) AddSibling(sibling [1]gdclass.Node) { //gd:Node.add_sibling
 	class(self).AddSibling(sibling, false)
 }
 
@@ -347,7 +347,7 @@ AddChild(childNode);
 If you need the child node to be added below a specific node in the list of children, use [method add_sibling] instead of this method.
 [b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 */
-func (self Instance) AddChild(node [1]gdclass.Node) {
+func (self Instance) AddChild(node [1]gdclass.Node) { //gd:Node.add_child
 	class(self).AddChild(node, false, 0)
 }
 
@@ -355,7 +355,7 @@ func (self Instance) AddChild(node [1]gdclass.Node) {
 Removes a child [param node]. The [param node], along with its children, are [b]not[/b] deleted. To delete a node, see [method queue_free].
 [b]Note:[/b] When this node is inside the tree, this method sets the [member owner] of the removed [param node] (or its descendants) to [code]null[/code], if their [member owner] is no longer an ancestor (see [method is_ancestor_of]).
 */
-func (self Instance) RemoveChild(node [1]gdclass.Node) {
+func (self Instance) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
 	class(self).RemoveChild(node)
 }
 
@@ -363,7 +363,7 @@ func (self Instance) RemoveChild(node [1]gdclass.Node) {
 Changes the parent of this [Node] to the [param new_parent]. The node needs to already have a parent. The node's [member owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
 If [param keep_global_transform] is [code]true[/code], the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
 */
-func (self Instance) Reparent(new_parent [1]gdclass.Node) {
+func (self Instance) Reparent(new_parent [1]gdclass.Node) { //gd:Node.reparent
 	class(self).Reparent(new_parent, true)
 }
 
@@ -371,7 +371,7 @@ func (self Instance) Reparent(new_parent [1]gdclass.Node) {
 Returns the number of children of this node.
 If [param include_internal] is [code]false[/code], internal children are not counted (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Instance) GetChildCount() int {
+func (self Instance) GetChildCount() int { //gd:Node.get_child_count
 	return int(int(class(self).GetChildCount(false)))
 }
 
@@ -379,7 +379,7 @@ func (self Instance) GetChildCount() int {
 Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Instance) GetChildren() [][1]gdclass.Node {
+func (self Instance) GetChildren() [][1]gdclass.Node { //gd:Node.get_children
 	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetChildren(false))))
 }
 
@@ -397,14 +397,14 @@ var c = get_child(-1).name # c is "Last"
 [/codeblock]
 [b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
 */
-func (self Instance) GetChild(idx int) [1]gdclass.Node {
+func (self Instance) GetChild(idx int) [1]gdclass.Node { //gd:Node.get_child
 	return [1]gdclass.Node(class(self).GetChild(gd.Int(idx), false))
 }
 
 /*
 Returns [code]true[/code] if the [param path] points to a valid node. See also [method get_node].
 */
-func (self Instance) HasNode(path NodePath.String) bool {
+func (self Instance) HasNode(path NodePath.String) bool { //gd:Node.has_node
 	return bool(class(self).HasNode(gd.NewString(string(path)).NodePath()))
 }
 
@@ -442,21 +442,21 @@ GetNode("/root/MyGame");
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNode(path NodePath.String) [1]gdclass.Node {
+func (self Instance) GetNode(path NodePath.String) [1]gdclass.Node { //gd:Node.get_node
 	return [1]gdclass.Node(class(self).GetNode(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
-func (self Instance) GetNodeOrNull(path NodePath.String) [1]gdclass.Node {
+func (self Instance) GetNodeOrNull(path NodePath.String) [1]gdclass.Node { //gd:Node.get_node_or_null
 	return [1]gdclass.Node(class(self).GetNodeOrNull(gd.NewString(string(path)).NodePath()))
 }
 
 /*
 Returns this node's parent node, or [code]null[/code] if the node doesn't have a parent.
 */
-func (self Instance) GetParent() [1]gdclass.Node {
+func (self Instance) GetParent() [1]gdclass.Node { //gd:Node.get_parent
 	return [1]gdclass.Node(class(self).GetParent())
 }
 
@@ -467,7 +467,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 [b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
 */
-func (self Instance) FindChild(pattern string) [1]gdclass.Node {
+func (self Instance) FindChild(pattern string) [1]gdclass.Node { //gd:Node.find_child
 	return [1]gdclass.Node(class(self).FindChild(gd.NewString(pattern), true, true))
 }
 
@@ -479,7 +479,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] This method can be very slow. Consider storing references to the found nodes in a variable.
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
-func (self Instance) FindChildren(pattern string) [][1]gdclass.Node {
+func (self Instance) FindChildren(pattern string) [][1]gdclass.Node { //gd:Node.find_children
 	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).FindChildren(gd.NewString(pattern), gd.NewString(""), true, true))))
 }
 
@@ -487,14 +487,14 @@ func (self Instance) FindChildren(pattern string) [][1]gdclass.Node {
 Finds the first ancestor of this node whose [member name] matches [param pattern], returning [code]null[/code] if no match is found. The matching is done through [method String.match]. As such, it is case-sensitive, [code]"*"[/code] matches zero or more characters, and [code]"?"[/code] matches any single character. See also [method find_child] and [method find_children].
 [b]Note:[/b] As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 */
-func (self Instance) FindParent(pattern string) [1]gdclass.Node {
+func (self Instance) FindParent(pattern string) [1]gdclass.Node { //gd:Node.find_parent
 	return [1]gdclass.Node(class(self).FindParent(gd.NewString(pattern)))
 }
 
 /*
 Returns [code]true[/code] if [param path] points to a valid node and its subnames point to a valid [Resource], e.g. [code]Area2D/CollisionShape2D:shape[/code]. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [method get_node_and_resource].
 */
-func (self Instance) HasNodeAndResource(path NodePath.String) bool {
+func (self Instance) HasNodeAndResource(path NodePath.String) bool { //gd:Node.has_node_and_resource
 	return bool(class(self).HasNodeAndResource(gd.NewString(string(path)).NodePath()))
 }
 
@@ -539,42 +539,42 @@ GD.Print(c[2]);             // Prints ^":region"
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNodeAndResource(path NodePath.String) []any {
+func (self Instance) GetNodeAndResource(path NodePath.String) []any { //gd:Node.get_node_and_resource
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetNodeAndResource(gd.NewString(string(path)).NodePath()))))
 }
 
 /*
 Returns [code]true[/code] if this node is currently inside a [SceneTree]. See also [method get_tree].
 */
-func (self Instance) IsInsideTree() bool {
+func (self Instance) IsInsideTree() bool { //gd:Node.is_inside_tree
 	return bool(class(self).IsInsideTree())
 }
 
 /*
 Returns [code]true[/code] if the node is part of the scene currently opened in the editor.
 */
-func (self Instance) IsPartOfEditedScene() bool {
+func (self Instance) IsPartOfEditedScene() bool { //gd:Node.is_part_of_edited_scene
 	return bool(class(self).IsPartOfEditedScene())
 }
 
 /*
 Returns [code]true[/code] if the given [param node] is a direct or indirect child of this node.
 */
-func (self Instance) IsAncestorOf(node [1]gdclass.Node) bool {
+func (self Instance) IsAncestorOf(node [1]gdclass.Node) bool { //gd:Node.is_ancestor_of
 	return bool(class(self).IsAncestorOf(node))
 }
 
 /*
 Returns [code]true[/code] if the given [param node] occurs later in the scene hierarchy than this node. A node occurring later is usually processed last.
 */
-func (self Instance) IsGreaterThan(node [1]gdclass.Node) bool {
+func (self Instance) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greater_than
 	return bool(class(self).IsGreaterThan(node))
 }
 
 /*
 Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
 */
-func (self Instance) GetPath() NodePath.String {
+func (self Instance) GetPath() NodePath.String { //gd:Node.get_path
 	return NodePath.String(class(self).GetPath().String())
 }
 
@@ -583,7 +583,7 @@ Returns the relative [NodePath] from this node to the specified [param node]. Bo
 If [param use_unique_path] is [code]true[/code], returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
-func (self Instance) GetPathTo(node [1]gdclass.Node) NodePath.String {
+func (self Instance) GetPathTo(node [1]gdclass.Node) NodePath.String { //gd:Node.get_path_to
 	return NodePath.String(class(self).GetPathTo(node, false).String())
 }
 
@@ -593,21 +593,21 @@ If [param persistent] is [code]true[/code], the group will be stored when saved 
 [b]Note:[/b] To improve performance, the order of group names is [i]not[/i] guaranteed and may vary between project runs. Therefore, do not rely on the group order.
 [b]Note:[/b] [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [method is_inside_tree]).
 */
-func (self Instance) AddToGroup(group string) {
+func (self Instance) AddToGroup(group string) { //gd:Node.add_to_group
 	class(self).AddToGroup(gd.NewStringName(group), false)
 }
 
 /*
 Removes the node from the given [param group]. Does nothing if the node is not in the [param group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
-func (self Instance) RemoveFromGroup(group string) {
+func (self Instance) RemoveFromGroup(group string) { //gd:Node.remove_from_group
 	class(self).RemoveFromGroup(gd.NewStringName(group))
 }
 
 /*
 Returns [code]true[/code] if this node has been added to the given [param group]. See [method add_to_group] and [method remove_from_group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
-func (self Instance) IsInGroup(group string) bool {
+func (self Instance) IsInGroup(group string) bool { //gd:Node.is_in_group
 	return bool(class(self).IsInGroup(gd.NewStringName(group)))
 }
 
@@ -615,7 +615,7 @@ func (self Instance) IsInGroup(group string) bool {
 Moves [param child_node] to the given index. A node's index is the order among its siblings. If [param to_index] is negative, the index is counted from the end of the list. See also [method get_child] and [method get_index].
 [b]Note:[/b] The processing order of several engine callbacks ([method _ready], [method _process], etc.) and notifications sent through [method propagate_notification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [member process_priority].
 */
-func (self Instance) MoveChild(child_node [1]gdclass.Node, to_index int) {
+func (self Instance) MoveChild(child_node [1]gdclass.Node, to_index int) { //gd:Node.move_child
 	class(self).MoveChild(child_node, gd.Int(to_index))
 }
 
@@ -646,7 +646,7 @@ foreach (string group in GetGroups())
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetGroups() []string {
+func (self Instance) GetGroups() []string { //gd:Node.get_groups
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetGroups())))
 }
 
@@ -654,7 +654,7 @@ func (self Instance) GetGroups() []string {
 Returns this node's order among its siblings. The first node's index is [code]0[/code]. See also [method get_child].
 If [param include_internal] is [code]false[/code], returns the index ignoring internal children. The first, non-internal child will have an index of [code]0[/code] (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Instance) GetIndex() int {
+func (self Instance) GetIndex() int { //gd:Node.get_index
 	return int(int(class(self).GetIndex(false)))
 }
 
@@ -670,7 +670,7 @@ SplashScreen
 SplashScreen/Camera2D
 [/codeblock]
 */
-func (self Instance) PrintTree() {
+func (self Instance) PrintTree() { //gd:Node.print_tree
 	class(self).PrintTree()
 }
 
@@ -688,7 +688,7 @@ May print, for example:
 
 [/codeblock]
 */
-func (self Instance) PrintTreePretty() {
+func (self Instance) PrintTreePretty() { //gd:Node.print_tree_pretty
 	class(self).PrintTreePretty()
 }
 
@@ -704,7 +704,7 @@ TheGame/SplashScreen
 TheGame/SplashScreen/Camera2D
 [/codeblock]
 */
-func (self Instance) GetTreeString() string {
+func (self Instance) GetTreeString() string { //gd:Node.get_tree_string
 	return string(class(self).GetTreeString().String())
 }
 
@@ -722,14 +722,14 @@ May print, for example:
 
 [/codeblock]
 */
-func (self Instance) GetTreeStringPretty() string {
+func (self Instance) GetTreeStringPretty() string { //gd:Node.get_tree_string_pretty
 	return string(class(self).GetTreeStringPretty().String())
 }
 
 /*
 Calls [method Object.notification] with [param what] on this node and all of its children, recursively.
 */
-func (self Instance) PropagateNotification(what int) {
+func (self Instance) PropagateNotification(what int) { //gd:Node.propagate_notification
 	class(self).PropagateNotification(gd.Int(what))
 }
 
@@ -737,7 +737,7 @@ func (self Instance) PropagateNotification(what int) {
 Calls the given [param method] name, passing [param args] as arguments, on this node and all of its children, recursively.
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
-func (self Instance) PropagateCall(method string) {
+func (self Instance) PropagateCall(method string) { //gd:Node.propagate_call
 	class(self).PropagateCall(gd.NewStringName(method), Array.Nil, false)
 }
 
@@ -745,28 +745,28 @@ func (self Instance) PropagateCall(method string) {
 If set to [code]true[/code], enables physics (fixed framerate) processing. When a node is being processed, it will receive a [constant NOTIFICATION_PHYSICS_PROCESS] at a fixed (usually 60 FPS, see [member Engine.physics_ticks_per_second] to change) interval (and the [method _physics_process] callback will be called if it exists).
 [b]Note:[/b] If [method _physics_process] is overridden, this will be automatically enabled before [method _ready] is called.
 */
-func (self Instance) SetPhysicsProcess(enable bool) {
+func (self Instance) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
 	class(self).SetPhysicsProcess(enable)
 }
 
 /*
 Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [method _physics_process]'s [code]delta[/code] parameter, and is often consistent at run-time, unless [member Engine.physics_ticks_per_second] is changed. See also [constant NOTIFICATION_PHYSICS_PROCESS].
 */
-func (self Instance) GetPhysicsProcessDeltaTime() Float.X {
+func (self Instance) GetPhysicsProcessDeltaTime() Float.X { //gd:Node.get_physics_process_delta_time
 	return Float.X(Float.X(class(self).GetPhysicsProcessDeltaTime()))
 }
 
 /*
 Returns [code]true[/code] if physics processing is enabled (see [method set_physics_process]).
 */
-func (self Instance) IsPhysicsProcessing() bool {
+func (self Instance) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
 	return bool(class(self).IsPhysicsProcessing())
 }
 
 /*
 Returns the time elapsed (in seconds) since the last process callback. This value is identical to [method _process]'s [code]delta[/code] parameter, and may vary from frame to frame. See also [constant NOTIFICATION_PROCESS].
 */
-func (self Instance) GetProcessDeltaTime() Float.X {
+func (self Instance) GetProcessDeltaTime() Float.X { //gd:Node.get_process_delta_time
 	return Float.X(Float.X(class(self).GetProcessDeltaTime()))
 }
 
@@ -775,14 +775,14 @@ If set to [code]true[/code], enables processing. When a node is being processed,
 [b]Note:[/b] If [method _process] is overridden, this will be automatically enabled before [method _ready] is called.
 [b]Note:[/b] This method only affects the [method _process] callback, i.e. it has no effect on other callbacks like [method _physics_process]. If you want to disable all processing for the node, set [member process_mode] to [constant PROCESS_MODE_DISABLED].
 */
-func (self Instance) SetProcess(enable bool) {
+func (self Instance) SetProcess(enable bool) { //gd:Node.set_process
 	class(self).SetProcess(enable)
 }
 
 /*
 Returns [code]true[/code] if processing is enabled (see [method set_process]).
 */
-func (self Instance) IsProcessing() bool {
+func (self Instance) IsProcessing() bool { //gd:Node.is_processing
 	return bool(class(self).IsProcessing())
 }
 
@@ -790,14 +790,14 @@ func (self Instance) IsProcessing() bool {
 If set to [code]true[/code], enables input processing.
 [b]Note:[/b] If [method _input] is overridden, this will be automatically enabled before [method _ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 */
-func (self Instance) SetProcessInput(enable bool) {
+func (self Instance) SetProcessInput(enable bool) { //gd:Node.set_process_input
 	class(self).SetProcessInput(enable)
 }
 
 /*
 Returns [code]true[/code] if the node is processing input (see [method set_process_input]).
 */
-func (self Instance) IsProcessingInput() bool {
+func (self Instance) IsProcessingInput() bool { //gd:Node.is_processing_input
 	return bool(class(self).IsProcessingInput())
 }
 
@@ -805,14 +805,14 @@ func (self Instance) IsProcessingInput() bool {
 If set to [code]true[/code], enables shortcut processing for this node.
 [b]Note:[/b] If [method _shortcut_input] is overridden, this will be automatically enabled before [method _ready] is called.
 */
-func (self Instance) SetProcessShortcutInput(enable bool) {
+func (self Instance) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
 	class(self).SetProcessShortcutInput(enable)
 }
 
 /*
 Returns [code]true[/code] if the node is processing shortcuts (see [method set_process_shortcut_input]).
 */
-func (self Instance) IsProcessingShortcutInput() bool {
+func (self Instance) IsProcessingShortcutInput() bool { //gd:Node.is_processing_shortcut_input
 	return bool(class(self).IsProcessingShortcutInput())
 }
 
@@ -820,14 +820,14 @@ func (self Instance) IsProcessingShortcutInput() bool {
 If set to [code]true[/code], enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [Control]).
 [b]Note:[/b] If [method _unhandled_input] is overridden, this will be automatically enabled before [method _ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 */
-func (self Instance) SetProcessUnhandledInput(enable bool) {
+func (self Instance) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
 	class(self).SetProcessUnhandledInput(enable)
 }
 
 /*
 Returns [code]true[/code] if the node is processing unhandled input (see [method set_process_unhandled_input]).
 */
-func (self Instance) IsProcessingUnhandledInput() bool {
+func (self Instance) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_unhandled_input
 	return bool(class(self).IsProcessingUnhandledInput())
 }
 
@@ -835,14 +835,14 @@ func (self Instance) IsProcessingUnhandledInput() bool {
 If set to [code]true[/code], enables unhandled key input processing.
 [b]Note:[/b] If [method _unhandled_key_input] is overridden, this will be automatically enabled before [method _ready] is called.
 */
-func (self Instance) SetProcessUnhandledKeyInput(enable bool) {
+func (self Instance) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
 	class(self).SetProcessUnhandledKeyInput(enable)
 }
 
 /*
 Returns [code]true[/code] if the node is processing unhandled key input (see [method set_process_unhandled_key_input]).
 */
-func (self Instance) IsProcessingUnhandledKeyInput() bool {
+func (self Instance) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_processing_unhandled_key_input
 	return bool(class(self).IsProcessingUnhandledKeyInput())
 }
 
@@ -855,21 +855,21 @@ Returns [code]true[/code] if the node can receive processing notifications and i
 - If set to [constant PROCESS_MODE_INHERIT], use the parent node's [member process_mode] to determine the result.
 If the node is not inside the tree, returns [code]false[/code] no matter the value of [member process_mode].
 */
-func (self Instance) CanProcess() bool {
+func (self Instance) CanProcess() bool { //gd:Node.can_process
 	return bool(class(self).CanProcess())
 }
 
 /*
 If set to [code]true[/code], the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [method is_displayed_folded].
 */
-func (self Instance) SetDisplayFolded(fold bool) {
+func (self Instance) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
 	class(self).SetDisplayFolded(fold)
 }
 
 /*
 Returns [code]true[/code] if the node is folded (collapsed) in the Scene dock. This method is intended to be used in editor plugins and tools. See also [method set_display_folded].
 */
-func (self Instance) IsDisplayedFolded() bool {
+func (self Instance) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
 	return bool(class(self).IsDisplayedFolded())
 }
 
@@ -877,14 +877,14 @@ func (self Instance) IsDisplayedFolded() bool {
 If set to [code]true[/code], enables internal processing for this node. Internal processing happens in isolation from the normal [method _process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([method set_process]).
 [b]Warning:[/b] Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
-func (self Instance) SetProcessInternal(enable bool) {
+func (self Instance) SetProcessInternal(enable bool) { //gd:Node.set_process_internal
 	class(self).SetProcessInternal(enable)
 }
 
 /*
 Returns [code]true[/code] if internal processing is enabled (see [method set_process_internal]).
 */
-func (self Instance) IsProcessingInternal() bool {
+func (self Instance) IsProcessingInternal() bool { //gd:Node.is_processing_internal
 	return bool(class(self).IsProcessingInternal())
 }
 
@@ -892,14 +892,14 @@ func (self Instance) IsProcessingInternal() bool {
 If set to [code]true[/code], enables internal physics for this node. Internal physics processing happens in isolation from the normal [method _physics_process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([method set_physics_process]).
 [b]Warning:[/b] Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
-func (self Instance) SetPhysicsProcessInternal(enable bool) {
+func (self Instance) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics_process_internal
 	class(self).SetPhysicsProcessInternal(enable)
 }
 
 /*
 Returns [code]true[/code] if internal physics processing is enabled (see [method set_physics_process_internal]).
 */
-func (self Instance) IsPhysicsProcessingInternal() bool {
+func (self Instance) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_processing_internal
 	return bool(class(self).IsPhysicsProcessingInternal())
 }
 
@@ -907,7 +907,7 @@ func (self Instance) IsPhysicsProcessingInternal() bool {
 Returns [code]true[/code] if physics interpolation is enabled for this node (see [member physics_interpolation_mode]).
 [b]Note:[/b] Interpolation will only be active if both the flag is set [b]and[/b] physics interpolation is enabled within the [SceneTree]. This can be tested using [method is_physics_interpolated_and_enabled].
 */
-func (self Instance) IsPhysicsInterpolated() bool {
+func (self Instance) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
 	return bool(class(self).IsPhysicsInterpolated())
 }
 
@@ -916,7 +916,7 @@ Returns [code]true[/code] if physics interpolation is enabled (see [member physi
 This is a convenience version of [method is_physics_interpolated] that also checks whether physics interpolation is enabled globally.
 See [member SceneTree.physics_interpolation] and [member ProjectSettings.physics/common/physics_interpolation].
 */
-func (self Instance) IsPhysicsInterpolatedAndEnabled() bool {
+func (self Instance) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_interpolated_and_enabled
 	return bool(class(self).IsPhysicsInterpolatedAndEnabled())
 }
 
@@ -926,28 +926,28 @@ That glitch can be prevented by calling this method, which temporarily disables 
 The notification [constant NOTIFICATION_RESET_PHYSICS_INTERPOLATION] will be received by the node and all children recursively.
 [b]Note:[/b] This function should be called [b]after[/b] moving the node, rather than before.
 */
-func (self Instance) ResetPhysicsInterpolation() {
+func (self Instance) ResetPhysicsInterpolation() { //gd:Node.reset_physics_interpolation
 	class(self).ResetPhysicsInterpolation()
 }
 
 /*
 Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
 */
-func (self Instance) GetWindow() [1]gdclass.Window {
+func (self Instance) GetWindow() [1]gdclass.Window { //gd:Node.get_window
 	return [1]gdclass.Window(class(self).GetWindow())
 }
 
 /*
 Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
 */
-func (self Instance) GetLastExclusiveWindow() [1]gdclass.Window {
+func (self Instance) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
 	return [1]gdclass.Window(class(self).GetLastExclusiveWindow())
 }
 
 /*
 Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns [code]null[/code]. See also [method is_inside_tree].
 */
-func (self Instance) GetTree() [1]gdclass.SceneTree {
+func (self Instance) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
 	return [1]gdclass.SceneTree(class(self).GetTree())
 }
 
@@ -965,7 +965,7 @@ GetTree().CreateTween().BindNode(this);
 The Tween will start automatically on the next process frame or physics frame (depending on [enum Tween.TweenProcessMode]). See [method Tween.bind_node] for more info on Tweens bound to nodes.
 [b]Note:[/b] The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
 */
-func (self Instance) CreateTween() [1]gdclass.Tween {
+func (self Instance) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
 	return [1]gdclass.Tween(class(self).CreateTween())
 }
 
@@ -973,7 +973,7 @@ func (self Instance) CreateTween() [1]gdclass.Tween {
 Duplicates the node, returning a new node with all of its properties, signals and groups copied from the original. The behavior can be tweaked through the [param flags] (see [enum DuplicateFlags]).
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
-func (self Instance) Duplicate() [1]gdclass.Node {
+func (self Instance) Duplicate() [1]gdclass.Node { //gd:Node.duplicate
 	return [1]gdclass.Node(class(self).Duplicate(gd.Int(15)))
 }
 
@@ -982,42 +982,42 @@ Replaces this node by the given [param node]. All children of this node are move
 If [param keep_groups] is [code]true[/code], the [param node] is added to the same groups that the replaced node is in (see [method add_to_group]).
 [b]Warning:[/b] The replaced node is removed from the tree, but it is [b]not[/b] deleted. To prevent memory leaks, store a reference to the node in a variable, or use [method Object.free].
 */
-func (self Instance) ReplaceBy(node [1]gdclass.Node) {
+func (self Instance) ReplaceBy(node [1]gdclass.Node) { //gd:Node.replace_by
 	class(self).ReplaceBy(node, false)
 }
 
 /*
 If set to [code]true[/code], the node becomes a [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [method get_scene_instance_load_placeholder].
 */
-func (self Instance) SetSceneInstanceLoadPlaceholder(load_placeholder bool) {
+func (self Instance) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
 	class(self).SetSceneInstanceLoadPlaceholder(load_placeholder)
 }
 
 /*
 Returns [code]true[/code] if this node is an instance load placeholder. See [InstancePlaceholder] and [method set_scene_instance_load_placeholder].
 */
-func (self Instance) GetSceneInstanceLoadPlaceholder() bool {
+func (self Instance) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
 	return bool(class(self).GetSceneInstanceLoadPlaceholder())
 }
 
 /*
 Set to [code]true[/code] to allow all nodes owned by [param node] to be available, and editable, in the Scene dock, even if their [member owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [method is_editable_instance].
 */
-func (self Instance) SetEditableInstance(node [1]gdclass.Node, is_editable bool) {
+func (self Instance) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { //gd:Node.set_editable_instance
 	class(self).SetEditableInstance(node, is_editable)
 }
 
 /*
 Returns [code]true[/code] if [param node] has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [method set_editable_instance].
 */
-func (self Instance) IsEditableInstance(node [1]gdclass.Node) bool {
+func (self Instance) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_editable_instance
 	return bool(class(self).IsEditableInstance(node))
 }
 
 /*
 Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns [code]null[/code].
 */
-func (self Instance) GetViewport() [1]gdclass.Viewport {
+func (self Instance) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
 	return [1]gdclass.Viewport(class(self).GetViewport())
 }
 
@@ -1026,7 +1026,7 @@ Queues this node to be deleted at the end of the current frame. When deleted, al
 Unlike with [method Object.free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [method queue_free] multiple times. Use [method Object.is_queued_for_deletion] to check if the node will be deleted at the end of the frame.
 [b]Note:[/b] The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [method Object.free] through [method Object.call_deferred].
 */
-func (self Instance) QueueFree() {
+func (self Instance) QueueFree() { //gd:Node.queue_free
 	class(self).QueueFree()
 }
 
@@ -1034,7 +1034,7 @@ func (self Instance) QueueFree() {
 Requests [method _ready] to be called again the next time the node enters the tree. Does [b]not[/b] immediately call [method _ready].
 [b]Note:[/b] This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [method _ready] callbacks will be the same as normal.
 */
-func (self Instance) RequestReady() {
+func (self Instance) RequestReady() { //gd:Node.request_ready
 	class(self).RequestReady()
 }
 
@@ -1042,7 +1042,7 @@ func (self Instance) RequestReady() {
 Returns [code]true[/code] if the node is ready, i.e. it's inside scene tree and all its children are initialized.
 [method request_ready] resets it back to [code]false[/code].
 */
-func (self Instance) IsNodeReady() bool {
+func (self Instance) IsNodeReady() bool { //gd:Node.is_node_ready
 	return bool(class(self).IsNodeReady())
 }
 
@@ -1051,21 +1051,21 @@ Sets the node's multiplayer authority to the peer with the given peer [param id]
 If [param recursive] is [code]true[/code], the given peer is recursively set as the authority for all children of this node.
 [b]Warning:[/b] This does [b]not[/b] automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does [b]not[/b] propagate to newly added children.
 */
-func (self Instance) SetMultiplayerAuthority(id int) {
+func (self Instance) SetMultiplayerAuthority(id int) { //gd:Node.set_multiplayer_authority
 	class(self).SetMultiplayerAuthority(gd.Int(id), true)
 }
 
 /*
 Returns the peer ID of the multiplayer authority for this node. See [method set_multiplayer_authority].
 */
-func (self Instance) GetMultiplayerAuthority() int {
+func (self Instance) GetMultiplayerAuthority() int { //gd:Node.get_multiplayer_authority
 	return int(int(class(self).GetMultiplayerAuthority()))
 }
 
 /*
 Returns [code]true[/code] if the local system is the multiplayer authority of this node.
 */
-func (self Instance) IsMultiplayerAuthority() bool {
+func (self Instance) IsMultiplayerAuthority() bool { //gd:Node.is_multiplayer_authority
 	return bool(class(self).IsMultiplayerAuthority())
 }
 
@@ -1077,7 +1077,7 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 - [code]channel[/code]: an [int] representing the channel to send the RPC on.
 [b]Note:[/b] In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
 */
-func (self Instance) RpcConfig(method string, config any) {
+func (self Instance) RpcConfig(method string, config any) { //gd:Node.rpc_config
 	class(self).RpcConfig(gd.NewStringName(method), gd.NewVariant(config))
 }
 
@@ -1087,7 +1087,7 @@ This method works the same as [method Object.tr], with the addition of respectin
 If [method Object.can_translate_messages] is [code]false[/code], or no translation is available, this method returns the [param message] without changes. See [method Object.set_message_translation].
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
-func (self Instance) Atr(message string) string {
+func (self Instance) Atr(message string) string { //gd:Node.atr
 	return string(class(self).Atr(gd.NewString(message), gd.NewStringName("")).String())
 }
 
@@ -1099,42 +1099,42 @@ The [param n] is the number, or amount, of the message's subject. It is used by 
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gettext.html]Localization using gettext[/url].
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
-func (self Instance) AtrN(message string, plural_message string, n int) string {
+func (self Instance) AtrN(message string, plural_message string, n int) string { //gd:Node.atr_n
 	return string(class(self).AtrN(gd.NewString(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName("")).String())
 }
 
 /*
 Refreshes the warnings displayed for this node in the Scene dock. Use [method _get_configuration_warnings] to customize the warning messages to display.
 */
-func (self Instance) UpdateConfigurationWarnings() {
+func (self Instance) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
 	class(self).UpdateConfigurationWarnings()
 }
 
 /*
 Similar to [method call_deferred_thread_group], but for setting properties.
 */
-func (self Instance) SetDeferredThreadGroup(property string, value any) {
+func (self Instance) SetDeferredThreadGroup(property string, value any) { //gd:Node.set_deferred_thread_group
 	class(self).SetDeferredThreadGroup(gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*
 Similar to [method call_deferred_thread_group], but for notifications.
 */
-func (self Instance) NotifyDeferredThreadGroup(what int) {
+func (self Instance) NotifyDeferredThreadGroup(what int) { //gd:Node.notify_deferred_thread_group
 	class(self).NotifyDeferredThreadGroup(gd.Int(what))
 }
 
 /*
 Similar to [method call_thread_safe], but for setting properties.
 */
-func (self Instance) SetThreadSafe(property string, value any) {
+func (self Instance) SetThreadSafe(property string, value any) { //gd:Node.set_thread_safe
 	class(self).SetThreadSafe(gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*
 Similar to [method call_thread_safe], but for notifications.
 */
-func (self Instance) NotifyThreadSafe(what int) {
+func (self Instance) NotifyThreadSafe(what int) { //gd:Node.notify_thread_safe
 	class(self).NotifyThreadSafe(gd.Int(what))
 }
 
@@ -1436,7 +1436,7 @@ Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 [b]Note:[/b] This method only works in debug builds. Does nothing in a project exported in release mode.
 */
 //go:nosplit
-func (self class) PrintOrphanNodes() {
+func (self class) PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_orphan_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1450,7 +1450,7 @@ Use [method add_child] instead of this method if you don't need the child node t
 [b]Note:[/b] If this node is internal, the added sibling will be internal too (see [method add_child]'s [code]internal[/code] parameter).
 */
 //go:nosplit
-func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) {
+func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) { //gd:Node.add_sibling
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(sibling[0].AsObject()[0]))
 	callframe.Arg(frame, force_readable_name)
@@ -1460,7 +1460,7 @@ func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) 
 }
 
 //go:nosplit
-func (self class) SetName(name gd.String) {
+func (self class) SetName(name gd.String) { //gd:Node.set_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -1469,7 +1469,7 @@ func (self class) SetName(name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetName() gd.StringName {
+func (self class) GetName() gd.StringName { //gd:Node.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1503,7 +1503,7 @@ If you need the child node to be added below a specific node in the list of chil
 [b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 */
 //go:nosplit
-func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ gdclass.NodeInternalMode) {
+func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ gdclass.NodeInternalMode) { //gd:Node.add_child
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	callframe.Arg(frame, force_readable_name)
@@ -1518,7 +1518,7 @@ Removes a child [param node]. The [param node], along with its children, are [b]
 [b]Note:[/b] When this node is inside the tree, this method sets the [member owner] of the removed [param node] (or its descendants) to [code]null[/code], if their [member owner] is no longer an ancestor (see [method is_ancestor_of]).
 */
 //go:nosplit
-func (self class) RemoveChild(node [1]gdclass.Node) {
+func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Nil
@@ -1531,7 +1531,7 @@ Changes the parent of this [Node] to the [param new_parent]. The node needs to a
 If [param keep_global_transform] is [code]true[/code], the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
 */
 //go:nosplit
-func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform bool) {
+func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform bool) { //gd:Node.reparent
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(new_parent[0])[0])
 	callframe.Arg(frame, keep_global_transform)
@@ -1545,7 +1545,7 @@ Returns the number of children of this node.
 If [param include_internal] is [code]false[/code], internal children are not counted (see [method add_child]'s [code]internal[/code] parameter).
 */
 //go:nosplit
-func (self class) GetChildCount(include_internal bool) gd.Int {
+func (self class) GetChildCount(include_internal bool) gd.Int { //gd:Node.get_child_count
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1560,7 +1560,7 @@ Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
 //go:nosplit
-func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.Node] {
+func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.Node] { //gd:Node.get_children
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1585,7 +1585,7 @@ var c = get_child(-1).name # c is "Last"
 [b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
 */
 //go:nosplit
-func (self class) GetChild(idx gd.Int, include_internal bool) [1]gdclass.Node {
+func (self class) GetChild(idx gd.Int, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, include_internal)
@@ -1600,7 +1600,7 @@ func (self class) GetChild(idx gd.Int, include_internal bool) [1]gdclass.Node {
 Returns [code]true[/code] if the [param path] points to a valid node. See also [method get_node].
 */
 //go:nosplit
-func (self class) HasNode(path gd.NodePath) bool {
+func (self class) HasNode(path gd.NodePath) bool { //gd:Node.has_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
@@ -1643,7 +1643,7 @@ GetNode("/root/MyGame");
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetNode(path gd.NodePath) [1]gdclass.Node {
+func (self class) GetNode(path gd.NodePath) [1]gdclass.Node { //gd:Node.get_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1657,7 +1657,7 @@ func (self class) GetNode(path gd.NodePath) [1]gdclass.Node {
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
 //go:nosplit
-func (self class) GetNodeOrNull(path gd.NodePath) [1]gdclass.Node {
+func (self class) GetNodeOrNull(path gd.NodePath) [1]gdclass.Node { //gd:Node.get_node_or_null
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1671,7 +1671,7 @@ func (self class) GetNodeOrNull(path gd.NodePath) [1]gdclass.Node {
 Returns this node's parent node, or [code]null[/code] if the node doesn't have a parent.
 */
 //go:nosplit
-func (self class) GetParent() [1]gdclass.Node {
+func (self class) GetParent() [1]gdclass.Node { //gd:Node.get_parent
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1688,7 +1688,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
 */
 //go:nosplit
-func (self class) FindChild(pattern gd.String, recursive bool, owned bool) [1]gdclass.Node {
+func (self class) FindChild(pattern gd.String, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pattern))
 	callframe.Arg(frame, recursive)
@@ -1709,7 +1709,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
 //go:nosplit
-func (self class) FindChildren(pattern gd.String, atype gd.String, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] {
+func (self class) FindChildren(pattern gd.String, atype gd.String, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] { //gd:Node.find_children
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pattern))
 	callframe.Arg(frame, pointers.Get(atype))
@@ -1727,7 +1727,7 @@ Finds the first ancestor of this node whose [member name] matches [param pattern
 [b]Note:[/b] As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 */
 //go:nosplit
-func (self class) FindParent(pattern gd.String) [1]gdclass.Node {
+func (self class) FindParent(pattern gd.String) [1]gdclass.Node { //gd:Node.find_parent
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pattern))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1741,7 +1741,7 @@ func (self class) FindParent(pattern gd.String) [1]gdclass.Node {
 Returns [code]true[/code] if [param path] points to a valid node and its subnames point to a valid [Resource], e.g. [code]Area2D/CollisionShape2D:shape[/code]. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [method get_node_and_resource].
 */
 //go:nosplit
-func (self class) HasNodeAndResource(path gd.NodePath) bool {
+func (self class) HasNodeAndResource(path gd.NodePath) bool { //gd:Node.has_node_and_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
@@ -1793,7 +1793,7 @@ GD.Print(c[2]);             // Prints ^":region"
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetNodeAndResource(path gd.NodePath) Array.Any {
+func (self class) GetNodeAndResource(path gd.NodePath) Array.Any { //gd:Node.get_node_and_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1807,7 +1807,7 @@ func (self class) GetNodeAndResource(path gd.NodePath) Array.Any {
 Returns [code]true[/code] if this node is currently inside a [SceneTree]. See also [method get_tree].
 */
 //go:nosplit
-func (self class) IsInsideTree() bool {
+func (self class) IsInsideTree() bool { //gd:Node.is_inside_tree
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_inside_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1820,7 +1820,7 @@ func (self class) IsInsideTree() bool {
 Returns [code]true[/code] if the node is part of the scene currently opened in the editor.
 */
 //go:nosplit
-func (self class) IsPartOfEditedScene() bool {
+func (self class) IsPartOfEditedScene() bool { //gd:Node.is_part_of_edited_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_part_of_edited_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1833,7 +1833,7 @@ func (self class) IsPartOfEditedScene() bool {
 Returns [code]true[/code] if the given [param node] is a direct or indirect child of this node.
 */
 //go:nosplit
-func (self class) IsAncestorOf(node [1]gdclass.Node) bool {
+func (self class) IsAncestorOf(node [1]gdclass.Node) bool { //gd:Node.is_ancestor_of
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
@@ -1847,7 +1847,7 @@ func (self class) IsAncestorOf(node [1]gdclass.Node) bool {
 Returns [code]true[/code] if the given [param node] occurs later in the scene hierarchy than this node. A node occurring later is usually processed last.
 */
 //go:nosplit
-func (self class) IsGreaterThan(node [1]gdclass.Node) bool {
+func (self class) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greater_than
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
@@ -1861,7 +1861,7 @@ func (self class) IsGreaterThan(node [1]gdclass.Node) bool {
 Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
 */
 //go:nosplit
-func (self class) GetPath() gd.NodePath {
+func (self class) GetPath() gd.NodePath { //gd:Node.get_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1876,7 +1876,7 @@ If [param use_unique_path] is [code]true[/code], returns the shortest path accou
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
 //go:nosplit
-func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) gd.NodePath {
+func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) gd.NodePath { //gd:Node.get_path_to
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, use_unique_path)
@@ -1894,7 +1894,7 @@ If [param persistent] is [code]true[/code], the group will be stored when saved 
 [b]Note:[/b] [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [method is_inside_tree]).
 */
 //go:nosplit
-func (self class) AddToGroup(group gd.StringName, persistent bool) {
+func (self class) AddToGroup(group gd.StringName, persistent bool) { //gd:Node.add_to_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(group))
 	callframe.Arg(frame, persistent)
@@ -1907,7 +1907,7 @@ func (self class) AddToGroup(group gd.StringName, persistent bool) {
 Removes the node from the given [param group]. Does nothing if the node is not in the [param group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 //go:nosplit
-func (self class) RemoveFromGroup(group gd.StringName) {
+func (self class) RemoveFromGroup(group gd.StringName) { //gd:Node.remove_from_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(group))
 	var r_ret = callframe.Nil
@@ -1919,7 +1919,7 @@ func (self class) RemoveFromGroup(group gd.StringName) {
 Returns [code]true[/code] if this node has been added to the given [param group]. See [method add_to_group] and [method remove_from_group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 //go:nosplit
-func (self class) IsInGroup(group gd.StringName) bool {
+func (self class) IsInGroup(group gd.StringName) bool { //gd:Node.is_in_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(group))
 	var r_ret = callframe.Ret[bool](frame)
@@ -1934,7 +1934,7 @@ Moves [param child_node] to the given index. A node's index is the order among i
 [b]Note:[/b] The processing order of several engine callbacks ([method _ready], [method _process], etc.) and notifications sent through [method propagate_notification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [member process_priority].
 */
 //go:nosplit
-func (self class) MoveChild(child_node [1]gdclass.Node, to_index gd.Int) {
+func (self class) MoveChild(child_node [1]gdclass.Node, to_index gd.Int) { //gd:Node.move_child
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(child_node[0])[0])
 	callframe.Arg(frame, to_index)
@@ -1967,7 +1967,7 @@ foreach (string group in GetGroups())
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetGroups() Array.Contains[gd.StringName] {
+func (self class) GetGroups() Array.Contains[gd.StringName] { //gd:Node.get_groups
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_groups, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1977,7 +1977,7 @@ func (self class) GetGroups() Array.Contains[gd.StringName] {
 }
 
 //go:nosplit
-func (self class) SetOwner(owner [1]gdclass.Node) {
+func (self class) SetOwner(owner [1]gdclass.Node) { //gd:Node.set_owner
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(owner[0])[0])
 	var r_ret = callframe.Nil
@@ -1986,7 +1986,7 @@ func (self class) SetOwner(owner [1]gdclass.Node) {
 }
 
 //go:nosplit
-func (self class) GetOwner() [1]gdclass.Node {
+func (self class) GetOwner() [1]gdclass.Node { //gd:Node.get_owner
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2000,7 +2000,7 @@ Returns this node's order among its siblings. The first node's index is [code]0[
 If [param include_internal] is [code]false[/code], returns the index ignoring internal children. The first, non-internal child will have an index of [code]0[/code] (see [method add_child]'s [code]internal[/code] parameter).
 */
 //go:nosplit
-func (self class) GetIndex(include_internal bool) gd.Int {
+func (self class) GetIndex(include_internal bool) gd.Int { //gd:Node.get_index
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -2023,7 +2023,7 @@ SplashScreen/Camera2D
 [/codeblock]
 */
 //go:nosplit
-func (self class) PrintTree() {
+func (self class) PrintTree() { //gd:Node.print_tree
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2043,7 +2043,7 @@ May print, for example:
 [/codeblock]
 */
 //go:nosplit
-func (self class) PrintTreePretty() {
+func (self class) PrintTreePretty() { //gd:Node.print_tree_pretty
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_tree_pretty, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2063,7 +2063,7 @@ TheGame/SplashScreen/Camera2D
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetTreeString() gd.String {
+func (self class) GetTreeString() gd.String { //gd:Node.get_tree_string
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2085,7 +2085,7 @@ May print, for example:
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetTreeStringPretty() gd.String {
+func (self class) GetTreeStringPretty() gd.String { //gd:Node.get_tree_string_pretty
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree_string_pretty, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2095,7 +2095,7 @@ func (self class) GetTreeStringPretty() gd.String {
 }
 
 //go:nosplit
-func (self class) SetSceneFilePath(scene_file_path gd.String) {
+func (self class) SetSceneFilePath(scene_file_path gd.String) { //gd:Node.set_scene_file_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scene_file_path))
 	var r_ret = callframe.Nil
@@ -2104,7 +2104,7 @@ func (self class) SetSceneFilePath(scene_file_path gd.String) {
 }
 
 //go:nosplit
-func (self class) GetSceneFilePath() gd.String {
+func (self class) GetSceneFilePath() gd.String { //gd:Node.get_scene_file_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_file_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2117,7 +2117,7 @@ func (self class) GetSceneFilePath() gd.String {
 Calls [method Object.notification] with [param what] on this node and all of its children, recursively.
 */
 //go:nosplit
-func (self class) PropagateNotification(what gd.Int) {
+func (self class) PropagateNotification(what gd.Int) { //gd:Node.propagate_notification
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	var r_ret = callframe.Nil
@@ -2130,7 +2130,7 @@ Calls the given [param method] name, passing [param args] as arguments, on this 
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
 //go:nosplit
-func (self class) PropagateCall(method gd.StringName, args Array.Any, parent_first bool) {
+func (self class) PropagateCall(method gd.StringName, args Array.Any, parent_first bool) { //gd:Node.propagate_call
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
@@ -2145,7 +2145,7 @@ If set to [code]true[/code], enables physics (fixed framerate) processing. When 
 [b]Note:[/b] If [method _physics_process] is overridden, this will be automatically enabled before [method _ready] is called.
 */
 //go:nosplit
-func (self class) SetPhysicsProcess(enable bool) {
+func (self class) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2157,7 +2157,7 @@ func (self class) SetPhysicsProcess(enable bool) {
 Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [method _physics_process]'s [code]delta[/code] parameter, and is often consistent at run-time, unless [member Engine.physics_ticks_per_second] is changed. See also [constant NOTIFICATION_PHYSICS_PROCESS].
 */
 //go:nosplit
-func (self class) GetPhysicsProcessDeltaTime() gd.Float {
+func (self class) GetPhysicsProcessDeltaTime() gd.Float { //gd:Node.get_physics_process_delta_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2170,7 +2170,7 @@ func (self class) GetPhysicsProcessDeltaTime() gd.Float {
 Returns [code]true[/code] if physics processing is enabled (see [method set_physics_process]).
 */
 //go:nosplit
-func (self class) IsPhysicsProcessing() bool {
+func (self class) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_processing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2183,7 +2183,7 @@ func (self class) IsPhysicsProcessing() bool {
 Returns the time elapsed (in seconds) since the last process callback. This value is identical to [method _process]'s [code]delta[/code] parameter, and may vary from frame to frame. See also [constant NOTIFICATION_PROCESS].
 */
 //go:nosplit
-func (self class) GetProcessDeltaTime() gd.Float {
+func (self class) GetProcessDeltaTime() gd.Float { //gd:Node.get_process_delta_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_delta_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2198,7 +2198,7 @@ If set to [code]true[/code], enables processing. When a node is being processed,
 [b]Note:[/b] This method only affects the [method _process] callback, i.e. it has no effect on other callbacks like [method _physics_process]. If you want to disable all processing for the node, set [member process_mode] to [constant PROCESS_MODE_DISABLED].
 */
 //go:nosplit
-func (self class) SetProcess(enable bool) {
+func (self class) SetProcess(enable bool) { //gd:Node.set_process
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2207,7 +2207,7 @@ func (self class) SetProcess(enable bool) {
 }
 
 //go:nosplit
-func (self class) SetProcessPriority(priority gd.Int) {
+func (self class) SetProcessPriority(priority gd.Int) { //gd:Node.set_process_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -2216,7 +2216,7 @@ func (self class) SetProcessPriority(priority gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetProcessPriority() gd.Int {
+func (self class) GetProcessPriority() gd.Int { //gd:Node.get_process_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2226,7 +2226,7 @@ func (self class) GetProcessPriority() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetPhysicsProcessPriority(priority gd.Int) {
+func (self class) SetPhysicsProcessPriority(priority gd.Int) { //gd:Node.set_physics_process_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -2235,7 +2235,7 @@ func (self class) SetPhysicsProcessPriority(priority gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPhysicsProcessPriority() gd.Int {
+func (self class) GetPhysicsProcessPriority() gd.Int { //gd:Node.get_physics_process_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_process_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2248,7 +2248,7 @@ func (self class) GetPhysicsProcessPriority() gd.Int {
 Returns [code]true[/code] if processing is enabled (see [method set_process]).
 */
 //go:nosplit
-func (self class) IsProcessing() bool {
+func (self class) IsProcessing() bool { //gd:Node.is_processing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2262,7 +2262,7 @@ If set to [code]true[/code], enables input processing.
 [b]Note:[/b] If [method _input] is overridden, this will be automatically enabled before [method _ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 */
 //go:nosplit
-func (self class) SetProcessInput(enable bool) {
+func (self class) SetProcessInput(enable bool) { //gd:Node.set_process_input
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2274,7 +2274,7 @@ func (self class) SetProcessInput(enable bool) {
 Returns [code]true[/code] if the node is processing input (see [method set_process_input]).
 */
 //go:nosplit
-func (self class) IsProcessingInput() bool {
+func (self class) IsProcessingInput() bool { //gd:Node.is_processing_input
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_input, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2288,7 +2288,7 @@ If set to [code]true[/code], enables shortcut processing for this node.
 [b]Note:[/b] If [method _shortcut_input] is overridden, this will be automatically enabled before [method _ready] is called.
 */
 //go:nosplit
-func (self class) SetProcessShortcutInput(enable bool) {
+func (self class) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2300,7 +2300,7 @@ func (self class) SetProcessShortcutInput(enable bool) {
 Returns [code]true[/code] if the node is processing shortcuts (see [method set_process_shortcut_input]).
 */
 //go:nosplit
-func (self class) IsProcessingShortcutInput() bool {
+func (self class) IsProcessingShortcutInput() bool { //gd:Node.is_processing_shortcut_input
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_shortcut_input, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2314,7 +2314,7 @@ If set to [code]true[/code], enables unhandled input processing. It enables the 
 [b]Note:[/b] If [method _unhandled_input] is overridden, this will be automatically enabled before [method _ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 */
 //go:nosplit
-func (self class) SetProcessUnhandledInput(enable bool) {
+func (self class) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2326,7 +2326,7 @@ func (self class) SetProcessUnhandledInput(enable bool) {
 Returns [code]true[/code] if the node is processing unhandled input (see [method set_process_unhandled_input]).
 */
 //go:nosplit
-func (self class) IsProcessingUnhandledInput() bool {
+func (self class) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_unhandled_input
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_unhandled_input, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2340,7 +2340,7 @@ If set to [code]true[/code], enables unhandled key input processing.
 [b]Note:[/b] If [method _unhandled_key_input] is overridden, this will be automatically enabled before [method _ready] is called.
 */
 //go:nosplit
-func (self class) SetProcessUnhandledKeyInput(enable bool) {
+func (self class) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2352,7 +2352,7 @@ func (self class) SetProcessUnhandledKeyInput(enable bool) {
 Returns [code]true[/code] if the node is processing unhandled key input (see [method set_process_unhandled_key_input]).
 */
 //go:nosplit
-func (self class) IsProcessingUnhandledKeyInput() bool {
+func (self class) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_processing_unhandled_key_input
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_unhandled_key_input, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2362,7 +2362,7 @@ func (self class) IsProcessingUnhandledKeyInput() bool {
 }
 
 //go:nosplit
-func (self class) SetProcessMode(mode gdclass.NodeProcessMode) {
+func (self class) SetProcessMode(mode gdclass.NodeProcessMode) { //gd:Node.set_process_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2371,7 +2371,7 @@ func (self class) SetProcessMode(mode gdclass.NodeProcessMode) {
 }
 
 //go:nosplit
-func (self class) GetProcessMode() gdclass.NodeProcessMode {
+func (self class) GetProcessMode() gdclass.NodeProcessMode { //gd:Node.get_process_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodeProcessMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2390,7 +2390,7 @@ Returns [code]true[/code] if the node can receive processing notifications and i
 If the node is not inside the tree, returns [code]false[/code] no matter the value of [member process_mode].
 */
 //go:nosplit
-func (self class) CanProcess() bool {
+func (self class) CanProcess() bool { //gd:Node.can_process
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_can_process, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2400,7 +2400,7 @@ func (self class) CanProcess() bool {
 }
 
 //go:nosplit
-func (self class) SetProcessThreadGroup(mode gdclass.NodeProcessThreadGroup) {
+func (self class) SetProcessThreadGroup(mode gdclass.NodeProcessThreadGroup) { //gd:Node.set_process_thread_group
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2409,7 +2409,7 @@ func (self class) SetProcessThreadGroup(mode gdclass.NodeProcessThreadGroup) {
 }
 
 //go:nosplit
-func (self class) GetProcessThreadGroup() gdclass.NodeProcessThreadGroup {
+func (self class) GetProcessThreadGroup() gdclass.NodeProcessThreadGroup { //gd:Node.get_process_thread_group
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodeProcessThreadGroup](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2419,7 +2419,7 @@ func (self class) GetProcessThreadGroup() gdclass.NodeProcessThreadGroup {
 }
 
 //go:nosplit
-func (self class) SetProcessThreadMessages(flags gdclass.NodeProcessThreadMessages) {
+func (self class) SetProcessThreadMessages(flags gdclass.NodeProcessThreadMessages) { //gd:Node.set_process_thread_messages
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -2428,7 +2428,7 @@ func (self class) SetProcessThreadMessages(flags gdclass.NodeProcessThreadMessag
 }
 
 //go:nosplit
-func (self class) GetProcessThreadMessages() gdclass.NodeProcessThreadMessages {
+func (self class) GetProcessThreadMessages() gdclass.NodeProcessThreadMessages { //gd:Node.get_process_thread_messages
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodeProcessThreadMessages](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2438,7 +2438,7 @@ func (self class) GetProcessThreadMessages() gdclass.NodeProcessThreadMessages {
 }
 
 //go:nosplit
-func (self class) SetProcessThreadGroupOrder(order gd.Int) {
+func (self class) SetProcessThreadGroupOrder(order gd.Int) { //gd:Node.set_process_thread_group_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret = callframe.Nil
@@ -2447,7 +2447,7 @@ func (self class) SetProcessThreadGroupOrder(order gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetProcessThreadGroupOrder() gd.Int {
+func (self class) GetProcessThreadGroupOrder() gd.Int { //gd:Node.get_process_thread_group_order
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group_order, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2460,7 +2460,7 @@ func (self class) GetProcessThreadGroupOrder() gd.Int {
 If set to [code]true[/code], the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [method is_displayed_folded].
 */
 //go:nosplit
-func (self class) SetDisplayFolded(fold bool) {
+func (self class) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
 	var frame = callframe.New()
 	callframe.Arg(frame, fold)
 	var r_ret = callframe.Nil
@@ -2472,7 +2472,7 @@ func (self class) SetDisplayFolded(fold bool) {
 Returns [code]true[/code] if the node is folded (collapsed) in the Scene dock. This method is intended to be used in editor plugins and tools. See also [method set_display_folded].
 */
 //go:nosplit
-func (self class) IsDisplayedFolded() bool {
+func (self class) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_displayed_folded, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2486,7 +2486,7 @@ If set to [code]true[/code], enables internal processing for this node. Internal
 [b]Warning:[/b] Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 //go:nosplit
-func (self class) SetProcessInternal(enable bool) {
+func (self class) SetProcessInternal(enable bool) { //gd:Node.set_process_internal
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2498,7 +2498,7 @@ func (self class) SetProcessInternal(enable bool) {
 Returns [code]true[/code] if internal processing is enabled (see [method set_process_internal]).
 */
 //go:nosplit
-func (self class) IsProcessingInternal() bool {
+func (self class) IsProcessingInternal() bool { //gd:Node.is_processing_internal
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_processing_internal, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2512,7 +2512,7 @@ If set to [code]true[/code], enables internal physics for this node. Internal ph
 [b]Warning:[/b] Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 //go:nosplit
-func (self class) SetPhysicsProcessInternal(enable bool) {
+func (self class) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics_process_internal
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2524,7 +2524,7 @@ func (self class) SetPhysicsProcessInternal(enable bool) {
 Returns [code]true[/code] if internal physics processing is enabled (see [method set_physics_process_internal]).
 */
 //go:nosplit
-func (self class) IsPhysicsProcessingInternal() bool {
+func (self class) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_processing_internal
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_processing_internal, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2534,7 +2534,7 @@ func (self class) IsPhysicsProcessingInternal() bool {
 }
 
 //go:nosplit
-func (self class) SetPhysicsInterpolationMode(mode gdclass.NodePhysicsInterpolationMode) {
+func (self class) SetPhysicsInterpolationMode(mode gdclass.NodePhysicsInterpolationMode) { //gd:Node.set_physics_interpolation_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2543,7 +2543,7 @@ func (self class) SetPhysicsInterpolationMode(mode gdclass.NodePhysicsInterpolat
 }
 
 //go:nosplit
-func (self class) GetPhysicsInterpolationMode() gdclass.NodePhysicsInterpolationMode {
+func (self class) GetPhysicsInterpolationMode() gdclass.NodePhysicsInterpolationMode { //gd:Node.get_physics_interpolation_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodePhysicsInterpolationMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2557,7 +2557,7 @@ Returns [code]true[/code] if physics interpolation is enabled for this node (see
 [b]Note:[/b] Interpolation will only be active if both the flag is set [b]and[/b] physics interpolation is enabled within the [SceneTree]. This can be tested using [method is_physics_interpolated_and_enabled].
 */
 //go:nosplit
-func (self class) IsPhysicsInterpolated() bool {
+func (self class) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2572,7 +2572,7 @@ This is a convenience version of [method is_physics_interpolated] that also chec
 See [member SceneTree.physics_interpolation] and [member ProjectSettings.physics/common/physics_interpolation].
 */
 //go:nosplit
-func (self class) IsPhysicsInterpolatedAndEnabled() bool {
+func (self class) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_interpolated_and_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_physics_interpolated_and_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2588,7 +2588,7 @@ The notification [constant NOTIFICATION_RESET_PHYSICS_INTERPOLATION] will be rec
 [b]Note:[/b] This function should be called [b]after[/b] moving the node, rather than before.
 */
 //go:nosplit
-func (self class) ResetPhysicsInterpolation() {
+func (self class) ResetPhysicsInterpolation() { //gd:Node.reset_physics_interpolation
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_reset_physics_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2596,7 +2596,7 @@ func (self class) ResetPhysicsInterpolation() {
 }
 
 //go:nosplit
-func (self class) SetAutoTranslateMode(mode gdclass.NodeAutoTranslateMode) {
+func (self class) SetAutoTranslateMode(mode gdclass.NodeAutoTranslateMode) { //gd:Node.set_auto_translate_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2605,7 +2605,7 @@ func (self class) SetAutoTranslateMode(mode gdclass.NodeAutoTranslateMode) {
 }
 
 //go:nosplit
-func (self class) GetAutoTranslateMode() gdclass.NodeAutoTranslateMode {
+func (self class) GetAutoTranslateMode() gdclass.NodeAutoTranslateMode { //gd:Node.get_auto_translate_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NodeAutoTranslateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2618,7 +2618,7 @@ func (self class) GetAutoTranslateMode() gdclass.NodeAutoTranslateMode {
 Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
 */
 //go:nosplit
-func (self class) GetWindow() [1]gdclass.Window {
+func (self class) GetWindow() [1]gdclass.Window { //gd:Node.get_window
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_window, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2631,7 +2631,7 @@ func (self class) GetWindow() [1]gdclass.Window {
 Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
 */
 //go:nosplit
-func (self class) GetLastExclusiveWindow() [1]gdclass.Window {
+func (self class) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_last_exclusive_window, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2644,7 +2644,7 @@ func (self class) GetLastExclusiveWindow() [1]gdclass.Window {
 Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns [code]null[/code]. See also [method is_inside_tree].
 */
 //go:nosplit
-func (self class) GetTree() [1]gdclass.SceneTree {
+func (self class) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2668,7 +2668,7 @@ The Tween will start automatically on the next process frame or physics frame (d
 [b]Note:[/b] The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
 */
 //go:nosplit
-func (self class) CreateTween() [1]gdclass.Tween {
+func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_create_tween, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2682,7 +2682,7 @@ Duplicates the node, returning a new node with all of its properties, signals an
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
 //go:nosplit
-func (self class) Duplicate(flags gd.Int) [1]gdclass.Node {
+func (self class) Duplicate(flags gd.Int) [1]gdclass.Node { //gd:Node.duplicate
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -2698,7 +2698,7 @@ If [param keep_groups] is [code]true[/code], the [param node] is added to the sa
 [b]Warning:[/b] The replaced node is removed from the tree, but it is [b]not[/b] deleted. To prevent memory leaks, store a reference to the node in a variable, or use [method Object.free].
 */
 //go:nosplit
-func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) {
+func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.replace_by
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	callframe.Arg(frame, keep_groups)
@@ -2711,7 +2711,7 @@ func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) {
 If set to [code]true[/code], the node becomes a [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [method get_scene_instance_load_placeholder].
 */
 //go:nosplit
-func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) {
+func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
 	var frame = callframe.New()
 	callframe.Arg(frame, load_placeholder)
 	var r_ret = callframe.Nil
@@ -2723,7 +2723,7 @@ func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) {
 Returns [code]true[/code] if this node is an instance load placeholder. See [InstancePlaceholder] and [method set_scene_instance_load_placeholder].
 */
 //go:nosplit
-func (self class) GetSceneInstanceLoadPlaceholder() bool {
+func (self class) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_scene_instance_load_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2736,7 +2736,7 @@ func (self class) GetSceneInstanceLoadPlaceholder() bool {
 Set to [code]true[/code] to allow all nodes owned by [param node] to be available, and editable, in the Scene dock, even if their [member owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [method is_editable_instance].
 */
 //go:nosplit
-func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) {
+func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { //gd:Node.set_editable_instance
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	callframe.Arg(frame, is_editable)
@@ -2749,7 +2749,7 @@ func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) {
 Returns [code]true[/code] if [param node] has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [method set_editable_instance].
 */
 //go:nosplit
-func (self class) IsEditableInstance(node [1]gdclass.Node) bool {
+func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_editable_instance
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
@@ -2763,7 +2763,7 @@ func (self class) IsEditableInstance(node [1]gdclass.Node) bool {
 Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns [code]null[/code].
 */
 //go:nosplit
-func (self class) GetViewport() [1]gdclass.Viewport {
+func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_viewport, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2778,7 +2778,7 @@ Unlike with [method Object.free], the node is not deleted instantly, and it can 
 [b]Note:[/b] The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [method Object.free] through [method Object.call_deferred].
 */
 //go:nosplit
-func (self class) QueueFree() {
+func (self class) QueueFree() { //gd:Node.queue_free
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_queue_free, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2790,7 +2790,7 @@ Requests [method _ready] to be called again the next time the node enters the tr
 [b]Note:[/b] This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [method _ready] callbacks will be the same as normal.
 */
 //go:nosplit
-func (self class) RequestReady() {
+func (self class) RequestReady() { //gd:Node.request_ready
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_request_ready, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2802,7 +2802,7 @@ Returns [code]true[/code] if the node is ready, i.e. it's inside scene tree and 
 [method request_ready] resets it back to [code]false[/code].
 */
 //go:nosplit
-func (self class) IsNodeReady() bool {
+func (self class) IsNodeReady() bool { //gd:Node.is_node_ready
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_node_ready, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2817,7 +2817,7 @@ If [param recursive] is [code]true[/code], the given peer is recursively set as 
 [b]Warning:[/b] This does [b]not[/b] automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does [b]not[/b] propagate to newly added children.
 */
 //go:nosplit
-func (self class) SetMultiplayerAuthority(id gd.Int, recursive bool) {
+func (self class) SetMultiplayerAuthority(id gd.Int, recursive bool) { //gd:Node.set_multiplayer_authority
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, recursive)
@@ -2830,7 +2830,7 @@ func (self class) SetMultiplayerAuthority(id gd.Int, recursive bool) {
 Returns the peer ID of the multiplayer authority for this node. See [method set_multiplayer_authority].
 */
 //go:nosplit
-func (self class) GetMultiplayerAuthority() gd.Int {
+func (self class) GetMultiplayerAuthority() gd.Int { //gd:Node.get_multiplayer_authority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2843,7 +2843,7 @@ func (self class) GetMultiplayerAuthority() gd.Int {
 Returns [code]true[/code] if the local system is the multiplayer authority of this node.
 */
 //go:nosplit
-func (self class) IsMultiplayerAuthority() bool {
+func (self class) IsMultiplayerAuthority() bool { //gd:Node.is_multiplayer_authority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_multiplayer_authority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2853,7 +2853,7 @@ func (self class) IsMultiplayerAuthority() bool {
 }
 
 //go:nosplit
-func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI {
+func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI { //gd:Node.get_multiplayer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_multiplayer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2871,7 +2871,7 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 [b]Note:[/b] In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
 */
 //go:nosplit
-func (self class) RpcConfig(method gd.StringName, config gd.Variant) {
+func (self class) RpcConfig(method gd.StringName, config gd.Variant) { //gd:Node.rpc_config
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(config))
@@ -2881,7 +2881,7 @@ func (self class) RpcConfig(method gd.StringName, config gd.Variant) {
 }
 
 //go:nosplit
-func (self class) SetEditorDescription(editor_description gd.String) {
+func (self class) SetEditorDescription(editor_description gd.String) { //gd:Node.set_editor_description
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(editor_description))
 	var r_ret = callframe.Nil
@@ -2890,7 +2890,7 @@ func (self class) SetEditorDescription(editor_description gd.String) {
 }
 
 //go:nosplit
-func (self class) GetEditorDescription() gd.String {
+func (self class) GetEditorDescription() gd.String { //gd:Node.get_editor_description
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_editor_description, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2900,7 +2900,7 @@ func (self class) GetEditorDescription() gd.String {
 }
 
 //go:nosplit
-func (self class) SetUniqueNameInOwner(enable bool) {
+func (self class) SetUniqueNameInOwner(enable bool) { //gd:Node.set_unique_name_in_owner
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2909,7 +2909,7 @@ func (self class) SetUniqueNameInOwner(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUniqueNameInOwner() bool {
+func (self class) IsUniqueNameInOwner() bool { //gd:Node.is_unique_name_in_owner
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_is_unique_name_in_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2925,7 +2925,7 @@ If [method Object.can_translate_messages] is [code]false[/code], or no translati
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
 //go:nosplit
-func (self class) Atr(message gd.String, context gd.StringName) gd.String {
+func (self class) Atr(message gd.String, context gd.StringName) gd.String { //gd:Node.atr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(context))
@@ -2945,7 +2945,7 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 //go:nosplit
-func (self class) AtrN(message gd.String, plural_message gd.StringName, n gd.Int, context gd.StringName) gd.String {
+func (self class) AtrN(message gd.String, plural_message gd.StringName, n gd.Int, context gd.StringName) gd.String { //gd:Node.atr_n
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(plural_message))
@@ -2962,7 +2962,7 @@ func (self class) AtrN(message gd.String, plural_message gd.StringName, n gd.Int
 Refreshes the warnings displayed for this node in the Scene dock. Use [method _get_configuration_warnings] to customize the warning messages to display.
 */
 //go:nosplit
-func (self class) UpdateConfigurationWarnings() {
+func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_update_configuration_warnings, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2973,7 +2973,7 @@ func (self class) UpdateConfigurationWarnings() {
 Similar to [method call_deferred_thread_group], but for setting properties.
 */
 //go:nosplit
-func (self class) SetDeferredThreadGroup(property gd.StringName, value gd.Variant) {
+func (self class) SetDeferredThreadGroup(property gd.StringName, value gd.Variant) { //gd:Node.set_deferred_thread_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
@@ -2986,7 +2986,7 @@ func (self class) SetDeferredThreadGroup(property gd.StringName, value gd.Varian
 Similar to [method call_deferred_thread_group], but for notifications.
 */
 //go:nosplit
-func (self class) NotifyDeferredThreadGroup(what gd.Int) {
+func (self class) NotifyDeferredThreadGroup(what gd.Int) { //gd:Node.notify_deferred_thread_group
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	var r_ret = callframe.Nil
@@ -2998,7 +2998,7 @@ func (self class) NotifyDeferredThreadGroup(what gd.Int) {
 Similar to [method call_thread_safe], but for setting properties.
 */
 //go:nosplit
-func (self class) SetThreadSafe(property gd.StringName, value gd.Variant) {
+func (self class) SetThreadSafe(property gd.StringName, value gd.Variant) { //gd:Node.set_thread_safe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))
@@ -3011,7 +3011,7 @@ func (self class) SetThreadSafe(property gd.StringName, value gd.Variant) {
 Similar to [method call_thread_safe], but for notifications.
 */
 //go:nosplit
-func (self class) NotifyThreadSafe(what gd.Int) {
+func (self class) NotifyThreadSafe(what gd.Int) { //gd:Node.notify_thread_safe
 	var frame = callframe.New()
 	callframe.Arg(frame, what)
 	var r_ret = callframe.Nil
@@ -3118,7 +3118,7 @@ func init() {
 	gdclass.Register("Node", func(ptr gd.Object) any { return [1]gdclass.Node{*(*gdclass.Node)(unsafe.Pointer(&ptr))} })
 }
 
-type ProcessMode = gdclass.NodeProcessMode
+type ProcessMode = gdclass.NodeProcessMode //gd:Node.ProcessMode
 
 const (
 	/*Inherits [member process_mode] from the node's parent. This is the default for any newly created node.*/
@@ -3133,7 +3133,7 @@ const (
 	ProcessModeDisabled ProcessMode = 4
 )
 
-type ProcessThreadGroup = gdclass.NodeProcessThreadGroup
+type ProcessThreadGroup = gdclass.NodeProcessThreadGroup //gd:Node.ProcessThreadGroup
 
 const (
 	/*Process this node based on the thread group mode of the first parent (or grandparent) node that has a thread group mode that is not inherit. See [member process_thread_group] for more information.*/
@@ -3144,7 +3144,7 @@ const (
 	ProcessThreadGroupSubThread ProcessThreadGroup = 2
 )
 
-type ProcessThreadMessages = gdclass.NodeProcessThreadMessages
+type ProcessThreadMessages = gdclass.NodeProcessThreadMessages //gd:Node.ProcessThreadMessages
 
 const (
 	/*Allows this node to process threaded messages created with [method call_deferred_thread_group] right before [method _process] is called.*/
@@ -3155,7 +3155,7 @@ const (
 	FlagProcessThreadMessagesAll ProcessThreadMessages = 3
 )
 
-type PhysicsInterpolationMode = gdclass.NodePhysicsInterpolationMode
+type PhysicsInterpolationMode = gdclass.NodePhysicsInterpolationMode //gd:Node.PhysicsInterpolationMode
 
 const (
 	/*Inherits [member physics_interpolation_mode] from the node's parent. This is the default for any newly created node.*/
@@ -3166,7 +3166,7 @@ const (
 	PhysicsInterpolationModeOff PhysicsInterpolationMode = 2
 )
 
-type DuplicateFlags = gdclass.NodeDuplicateFlags
+type DuplicateFlags = gdclass.NodeDuplicateFlags //gd:Node.DuplicateFlags
 
 const (
 	/*Duplicate the node's signal connections.*/
@@ -3179,7 +3179,7 @@ const (
 	DuplicateUseInstantiation DuplicateFlags = 8
 )
 
-type InternalMode = gdclass.NodeInternalMode
+type InternalMode = gdclass.NodeInternalMode //gd:Node.InternalMode
 
 const (
 	/*The node will not be internal.*/
@@ -3190,7 +3190,7 @@ const (
 	InternalModeBack InternalMode = 2
 )
 
-type AutoTranslateMode = gdclass.NodeAutoTranslateMode
+type AutoTranslateMode = gdclass.NodeAutoTranslateMode //gd:Node.AutoTranslateMode
 
 const (
 	/*Inherits [member auto_translate_mode] from the node's parent. This is the default for any newly created node.*/
@@ -3202,7 +3202,7 @@ const (
 	AutoTranslateModeDisabled AutoTranslateMode = 2
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

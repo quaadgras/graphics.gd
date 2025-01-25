@@ -46,14 +46,14 @@ type Any interface {
 /*
 Restarts the particle emitter.
 */
-func (self Instance) Restart() {
+func (self Instance) Restart() { //gd:CPUParticles2D.restart
 	class(self).Restart()
 }
 
 /*
 Sets this node's properties to match a given [GPUParticles2D] node with an assigned [ParticleProcessMaterial].
 */
-func (self Instance) ConvertFromParticles(particles [1]gdclass.Node) {
+func (self Instance) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles2D.convert_from_particles
 	class(self).ConvertFromParticles(particles)
 }
 
@@ -596,7 +596,7 @@ func (self Instance) SetAnimOffsetCurve(value [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) SetEmitting(emitting bool) {
+func (self class) SetEmitting(emitting bool) { //gd:CPUParticles2D.set_emitting
 	var frame = callframe.New()
 	callframe.Arg(frame, emitting)
 	var r_ret = callframe.Nil
@@ -605,7 +605,7 @@ func (self class) SetEmitting(emitting bool) {
 }
 
 //go:nosplit
-func (self class) SetAmount(amount gd.Int) {
+func (self class) SetAmount(amount gd.Int) { //gd:CPUParticles2D.set_amount
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -614,7 +614,7 @@ func (self class) SetAmount(amount gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetLifetime(secs gd.Float) {
+func (self class) SetLifetime(secs gd.Float) { //gd:CPUParticles2D.set_lifetime
 	var frame = callframe.New()
 	callframe.Arg(frame, secs)
 	var r_ret = callframe.Nil
@@ -623,7 +623,7 @@ func (self class) SetLifetime(secs gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetOneShot(enable bool) {
+func (self class) SetOneShot(enable bool) { //gd:CPUParticles2D.set_one_shot
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -632,7 +632,7 @@ func (self class) SetOneShot(enable bool) {
 }
 
 //go:nosplit
-func (self class) SetPreProcessTime(secs gd.Float) {
+func (self class) SetPreProcessTime(secs gd.Float) { //gd:CPUParticles2D.set_pre_process_time
 	var frame = callframe.New()
 	callframe.Arg(frame, secs)
 	var r_ret = callframe.Nil
@@ -641,7 +641,7 @@ func (self class) SetPreProcessTime(secs gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetExplosivenessRatio(ratio gd.Float) {
+func (self class) SetExplosivenessRatio(ratio gd.Float) { //gd:CPUParticles2D.set_explosiveness_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -650,7 +650,7 @@ func (self class) SetExplosivenessRatio(ratio gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetRandomnessRatio(ratio gd.Float) {
+func (self class) SetRandomnessRatio(ratio gd.Float) { //gd:CPUParticles2D.set_randomness_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -659,7 +659,7 @@ func (self class) SetRandomnessRatio(ratio gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetLifetimeRandomness(random gd.Float) {
+func (self class) SetLifetimeRandomness(random gd.Float) { //gd:CPUParticles2D.set_lifetime_randomness
 	var frame = callframe.New()
 	callframe.Arg(frame, random)
 	var r_ret = callframe.Nil
@@ -668,7 +668,7 @@ func (self class) SetLifetimeRandomness(random gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetUseLocalCoordinates(enable bool) {
+func (self class) SetUseLocalCoordinates(enable bool) { //gd:CPUParticles2D.set_use_local_coordinates
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -677,7 +677,7 @@ func (self class) SetUseLocalCoordinates(enable bool) {
 }
 
 //go:nosplit
-func (self class) SetFixedFps(fps gd.Int) {
+func (self class) SetFixedFps(fps gd.Int) { //gd:CPUParticles2D.set_fixed_fps
 	var frame = callframe.New()
 	callframe.Arg(frame, fps)
 	var r_ret = callframe.Nil
@@ -686,7 +686,7 @@ func (self class) SetFixedFps(fps gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetFractionalDelta(enable bool) {
+func (self class) SetFractionalDelta(enable bool) { //gd:CPUParticles2D.set_fractional_delta
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -695,7 +695,7 @@ func (self class) SetFractionalDelta(enable bool) {
 }
 
 //go:nosplit
-func (self class) SetSpeedScale(scale gd.Float) {
+func (self class) SetSpeedScale(scale gd.Float) { //gd:CPUParticles2D.set_speed_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -704,7 +704,7 @@ func (self class) SetSpeedScale(scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) IsEmitting() bool {
+func (self class) IsEmitting() bool { //gd:CPUParticles2D.is_emitting
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_is_emitting, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -714,7 +714,7 @@ func (self class) IsEmitting() bool {
 }
 
 //go:nosplit
-func (self class) GetAmount() gd.Int {
+func (self class) GetAmount() gd.Int { //gd:CPUParticles2D.get_amount
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_amount, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -724,7 +724,7 @@ func (self class) GetAmount() gd.Int {
 }
 
 //go:nosplit
-func (self class) GetLifetime() gd.Float {
+func (self class) GetLifetime() gd.Float { //gd:CPUParticles2D.get_lifetime
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_lifetime, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -734,7 +734,7 @@ func (self class) GetLifetime() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetOneShot() bool {
+func (self class) GetOneShot() bool { //gd:CPUParticles2D.get_one_shot
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_one_shot, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -744,7 +744,7 @@ func (self class) GetOneShot() bool {
 }
 
 //go:nosplit
-func (self class) GetPreProcessTime() gd.Float {
+func (self class) GetPreProcessTime() gd.Float { //gd:CPUParticles2D.get_pre_process_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_pre_process_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -754,7 +754,7 @@ func (self class) GetPreProcessTime() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetExplosivenessRatio() gd.Float {
+func (self class) GetExplosivenessRatio() gd.Float { //gd:CPUParticles2D.get_explosiveness_ratio
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_explosiveness_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -764,7 +764,7 @@ func (self class) GetExplosivenessRatio() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetRandomnessRatio() gd.Float {
+func (self class) GetRandomnessRatio() gd.Float { //gd:CPUParticles2D.get_randomness_ratio
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_randomness_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -774,7 +774,7 @@ func (self class) GetRandomnessRatio() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetLifetimeRandomness() gd.Float {
+func (self class) GetLifetimeRandomness() gd.Float { //gd:CPUParticles2D.get_lifetime_randomness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_lifetime_randomness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -784,7 +784,7 @@ func (self class) GetLifetimeRandomness() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetUseLocalCoordinates() bool {
+func (self class) GetUseLocalCoordinates() bool { //gd:CPUParticles2D.get_use_local_coordinates
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_use_local_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -794,7 +794,7 @@ func (self class) GetUseLocalCoordinates() bool {
 }
 
 //go:nosplit
-func (self class) GetFixedFps() gd.Int {
+func (self class) GetFixedFps() gd.Int { //gd:CPUParticles2D.get_fixed_fps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_fixed_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -804,7 +804,7 @@ func (self class) GetFixedFps() gd.Int {
 }
 
 //go:nosplit
-func (self class) GetFractionalDelta() bool {
+func (self class) GetFractionalDelta() bool { //gd:CPUParticles2D.get_fractional_delta
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_fractional_delta, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -814,7 +814,7 @@ func (self class) GetFractionalDelta() bool {
 }
 
 //go:nosplit
-func (self class) GetSpeedScale() gd.Float {
+func (self class) GetSpeedScale() gd.Float { //gd:CPUParticles2D.get_speed_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -824,7 +824,7 @@ func (self class) GetSpeedScale() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDrawOrder(order gdclass.CPUParticles2DDrawOrder) {
+func (self class) SetDrawOrder(order gdclass.CPUParticles2DDrawOrder) { //gd:CPUParticles2D.set_draw_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret = callframe.Nil
@@ -833,7 +833,7 @@ func (self class) SetDrawOrder(order gdclass.CPUParticles2DDrawOrder) {
 }
 
 //go:nosplit
-func (self class) GetDrawOrder() gdclass.CPUParticles2DDrawOrder {
+func (self class) GetDrawOrder() gdclass.CPUParticles2DDrawOrder { //gd:CPUParticles2D.get_draw_order
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CPUParticles2DDrawOrder](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_draw_order, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -843,7 +843,7 @@ func (self class) GetDrawOrder() gdclass.CPUParticles2DDrawOrder {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:CPUParticles2D.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -852,7 +852,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture2D {
+func (self class) GetTexture() [1]gdclass.Texture2D { //gd:CPUParticles2D.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -865,7 +865,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D {
 Restarts the particle emitter.
 */
 //go:nosplit
-func (self class) Restart() {
+func (self class) Restart() { //gd:CPUParticles2D.restart
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -873,7 +873,7 @@ func (self class) Restart() {
 }
 
 //go:nosplit
-func (self class) SetDirection(direction gd.Vector2) {
+func (self class) SetDirection(direction gd.Vector2) { //gd:CPUParticles2D.set_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -882,7 +882,7 @@ func (self class) SetDirection(direction gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetDirection() gd.Vector2 {
+func (self class) GetDirection() gd.Vector2 { //gd:CPUParticles2D.get_direction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -892,7 +892,7 @@ func (self class) GetDirection() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetSpread(spread gd.Float) {
+func (self class) SetSpread(spread gd.Float) { //gd:CPUParticles2D.set_spread
 	var frame = callframe.New()
 	callframe.Arg(frame, spread)
 	var r_ret = callframe.Nil
@@ -901,7 +901,7 @@ func (self class) SetSpread(spread gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSpread() gd.Float {
+func (self class) GetSpread() gd.Float { //gd:CPUParticles2D.get_spread
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_spread, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -914,7 +914,7 @@ func (self class) GetSpread() gd.Float {
 Sets the minimum value for the given parameter.
 */
 //go:nosplit
-func (self class) SetParamMin(param gdclass.CPUParticles2DParameter, value gd.Float) {
+func (self class) SetParamMin(param gdclass.CPUParticles2DParameter, value gd.Float) { //gd:CPUParticles2D.set_param_min
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -927,7 +927,7 @@ func (self class) SetParamMin(param gdclass.CPUParticles2DParameter, value gd.Fl
 Returns the minimum value range for the given parameter.
 */
 //go:nosplit
-func (self class) GetParamMin(param gdclass.CPUParticles2DParameter) gd.Float {
+func (self class) GetParamMin(param gdclass.CPUParticles2DParameter) gd.Float { //gd:CPUParticles2D.get_param_min
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -941,7 +941,7 @@ func (self class) GetParamMin(param gdclass.CPUParticles2DParameter) gd.Float {
 Sets the maximum value for the given parameter.
 */
 //go:nosplit
-func (self class) SetParamMax(param gdclass.CPUParticles2DParameter, value gd.Float) {
+func (self class) SetParamMax(param gdclass.CPUParticles2DParameter, value gd.Float) { //gd:CPUParticles2D.set_param_max
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -954,7 +954,7 @@ func (self class) SetParamMax(param gdclass.CPUParticles2DParameter, value gd.Fl
 Returns the maximum value range for the given parameter.
 */
 //go:nosplit
-func (self class) GetParamMax(param gdclass.CPUParticles2DParameter) gd.Float {
+func (self class) GetParamMax(param gdclass.CPUParticles2DParameter) gd.Float { //gd:CPUParticles2D.get_param_max
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -968,7 +968,7 @@ func (self class) GetParamMax(param gdclass.CPUParticles2DParameter) gd.Float {
 Sets the [Curve] of the parameter specified by [enum Parameter].
 */
 //go:nosplit
-func (self class) SetParamCurve(param gdclass.CPUParticles2DParameter, curve [1]gdclass.Curve) {
+func (self class) SetParamCurve(param gdclass.CPUParticles2DParameter, curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_param_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
@@ -981,7 +981,7 @@ func (self class) SetParamCurve(param gdclass.CPUParticles2DParameter, curve [1]
 Returns the [Curve] of the parameter specified by [enum Parameter].
 */
 //go:nosplit
-func (self class) GetParamCurve(param gdclass.CPUParticles2DParameter) [1]gdclass.Curve {
+func (self class) GetParamCurve(param gdclass.CPUParticles2DParameter) [1]gdclass.Curve { //gd:CPUParticles2D.get_param_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -992,7 +992,7 @@ func (self class) GetParamCurve(param gdclass.CPUParticles2DParameter) [1]gdclas
 }
 
 //go:nosplit
-func (self class) SetColor(color gd.Color) {
+func (self class) SetColor(color gd.Color) { //gd:CPUParticles2D.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -1001,7 +1001,7 @@ func (self class) SetColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetColor() gd.Color {
+func (self class) GetColor() gd.Color { //gd:CPUParticles2D.get_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1011,7 +1011,7 @@ func (self class) GetColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetColorRamp(ramp [1]gdclass.Gradient) {
+func (self class) SetColorRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles2D.set_color_ramp
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(ramp[0])[0])
 	var r_ret = callframe.Nil
@@ -1020,7 +1020,7 @@ func (self class) SetColorRamp(ramp [1]gdclass.Gradient) {
 }
 
 //go:nosplit
-func (self class) GetColorRamp() [1]gdclass.Gradient {
+func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:CPUParticles2D.get_color_ramp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_color_ramp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1030,7 +1030,7 @@ func (self class) GetColorRamp() [1]gdclass.Gradient {
 }
 
 //go:nosplit
-func (self class) SetColorInitialRamp(ramp [1]gdclass.Gradient) {
+func (self class) SetColorInitialRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles2D.set_color_initial_ramp
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(ramp[0])[0])
 	var r_ret = callframe.Nil
@@ -1039,7 +1039,7 @@ func (self class) SetColorInitialRamp(ramp [1]gdclass.Gradient) {
 }
 
 //go:nosplit
-func (self class) GetColorInitialRamp() [1]gdclass.Gradient {
+func (self class) GetColorInitialRamp() [1]gdclass.Gradient { //gd:CPUParticles2D.get_color_initial_ramp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_color_initial_ramp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1052,7 +1052,7 @@ func (self class) GetColorInitialRamp() [1]gdclass.Gradient {
 Enables or disables the given flag (see [enum ParticleFlags] for options).
 */
 //go:nosplit
-func (self class) SetParticleFlag(particle_flag gdclass.CPUParticles2DParticleFlags, enable bool) {
+func (self class) SetParticleFlag(particle_flag gdclass.CPUParticles2DParticleFlags, enable bool) { //gd:CPUParticles2D.set_particle_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, particle_flag)
 	callframe.Arg(frame, enable)
@@ -1065,7 +1065,7 @@ func (self class) SetParticleFlag(particle_flag gdclass.CPUParticles2DParticleFl
 Returns the enabled state of the given flag (see [enum ParticleFlags] for options).
 */
 //go:nosplit
-func (self class) GetParticleFlag(particle_flag gdclass.CPUParticles2DParticleFlags) bool {
+func (self class) GetParticleFlag(particle_flag gdclass.CPUParticles2DParticleFlags) bool { //gd:CPUParticles2D.get_particle_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, particle_flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1076,7 +1076,7 @@ func (self class) GetParticleFlag(particle_flag gdclass.CPUParticles2DParticleFl
 }
 
 //go:nosplit
-func (self class) SetEmissionShape(shape gdclass.CPUParticles2DEmissionShape) {
+func (self class) SetEmissionShape(shape gdclass.CPUParticles2DEmissionShape) { //gd:CPUParticles2D.set_emission_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -1085,7 +1085,7 @@ func (self class) SetEmissionShape(shape gdclass.CPUParticles2DEmissionShape) {
 }
 
 //go:nosplit
-func (self class) GetEmissionShape() gdclass.CPUParticles2DEmissionShape {
+func (self class) GetEmissionShape() gdclass.CPUParticles2DEmissionShape { //gd:CPUParticles2D.get_emission_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CPUParticles2DEmissionShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_emission_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1095,7 +1095,7 @@ func (self class) GetEmissionShape() gdclass.CPUParticles2DEmissionShape {
 }
 
 //go:nosplit
-func (self class) SetEmissionSphereRadius(radius gd.Float) {
+func (self class) SetEmissionSphereRadius(radius gd.Float) { //gd:CPUParticles2D.set_emission_sphere_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -1104,7 +1104,7 @@ func (self class) SetEmissionSphereRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEmissionSphereRadius() gd.Float {
+func (self class) GetEmissionSphereRadius() gd.Float { //gd:CPUParticles2D.get_emission_sphere_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_emission_sphere_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1114,7 +1114,7 @@ func (self class) GetEmissionSphereRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEmissionRectExtents(extents gd.Vector2) {
+func (self class) SetEmissionRectExtents(extents gd.Vector2) { //gd:CPUParticles2D.set_emission_rect_extents
 	var frame = callframe.New()
 	callframe.Arg(frame, extents)
 	var r_ret = callframe.Nil
@@ -1123,7 +1123,7 @@ func (self class) SetEmissionRectExtents(extents gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetEmissionRectExtents() gd.Vector2 {
+func (self class) GetEmissionRectExtents() gd.Vector2 { //gd:CPUParticles2D.get_emission_rect_extents
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_emission_rect_extents, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1133,7 +1133,7 @@ func (self class) GetEmissionRectExtents() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetEmissionPoints(array gd.PackedVector2Array) {
+func (self class) SetEmissionPoints(array gd.PackedVector2Array) { //gd:CPUParticles2D.set_emission_points
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
@@ -1142,7 +1142,7 @@ func (self class) SetEmissionPoints(array gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetEmissionPoints() gd.PackedVector2Array {
+func (self class) GetEmissionPoints() gd.PackedVector2Array { //gd:CPUParticles2D.get_emission_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_emission_points, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1152,7 +1152,7 @@ func (self class) GetEmissionPoints() gd.PackedVector2Array {
 }
 
 //go:nosplit
-func (self class) SetEmissionNormals(array gd.PackedVector2Array) {
+func (self class) SetEmissionNormals(array gd.PackedVector2Array) { //gd:CPUParticles2D.set_emission_normals
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
@@ -1161,7 +1161,7 @@ func (self class) SetEmissionNormals(array gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetEmissionNormals() gd.PackedVector2Array {
+func (self class) GetEmissionNormals() gd.PackedVector2Array { //gd:CPUParticles2D.get_emission_normals
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_emission_normals, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1171,7 +1171,7 @@ func (self class) GetEmissionNormals() gd.PackedVector2Array {
 }
 
 //go:nosplit
-func (self class) SetEmissionColors(array gd.PackedColorArray) {
+func (self class) SetEmissionColors(array gd.PackedColorArray) { //gd:CPUParticles2D.set_emission_colors
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(array))
 	var r_ret = callframe.Nil
@@ -1180,7 +1180,7 @@ func (self class) SetEmissionColors(array gd.PackedColorArray) {
 }
 
 //go:nosplit
-func (self class) GetEmissionColors() gd.PackedColorArray {
+func (self class) GetEmissionColors() gd.PackedColorArray { //gd:CPUParticles2D.get_emission_colors
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_emission_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1190,7 +1190,7 @@ func (self class) GetEmissionColors() gd.PackedColorArray {
 }
 
 //go:nosplit
-func (self class) GetGravity() gd.Vector2 {
+func (self class) GetGravity() gd.Vector2 { //gd:CPUParticles2D.get_gravity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1200,7 +1200,7 @@ func (self class) GetGravity() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetGravity(accel_vec gd.Vector2) {
+func (self class) SetGravity(accel_vec gd.Vector2) { //gd:CPUParticles2D.set_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, accel_vec)
 	var r_ret = callframe.Nil
@@ -1209,7 +1209,7 @@ func (self class) SetGravity(accel_vec gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetSplitScale() bool {
+func (self class) GetSplitScale() bool { //gd:CPUParticles2D.get_split_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_split_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1219,7 +1219,7 @@ func (self class) GetSplitScale() bool {
 }
 
 //go:nosplit
-func (self class) SetSplitScale(split_scale bool) {
+func (self class) SetSplitScale(split_scale bool) { //gd:CPUParticles2D.set_split_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, split_scale)
 	var r_ret = callframe.Nil
@@ -1228,7 +1228,7 @@ func (self class) SetSplitScale(split_scale bool) {
 }
 
 //go:nosplit
-func (self class) GetScaleCurveX() [1]gdclass.Curve {
+func (self class) GetScaleCurveX() [1]gdclass.Curve { //gd:CPUParticles2D.get_scale_curve_x
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_scale_curve_x, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1238,7 +1238,7 @@ func (self class) GetScaleCurveX() [1]gdclass.Curve {
 }
 
 //go:nosplit
-func (self class) SetScaleCurveX(scale_curve [1]gdclass.Curve) {
+func (self class) SetScaleCurveX(scale_curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_scale_curve_x
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scale_curve[0])[0])
 	var r_ret = callframe.Nil
@@ -1247,7 +1247,7 @@ func (self class) SetScaleCurveX(scale_curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetScaleCurveY() [1]gdclass.Curve {
+func (self class) GetScaleCurveY() [1]gdclass.Curve { //gd:CPUParticles2D.get_scale_curve_y
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_get_scale_curve_y, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1257,7 +1257,7 @@ func (self class) GetScaleCurveY() [1]gdclass.Curve {
 }
 
 //go:nosplit
-func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) {
+func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_scale_curve_y
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scale_curve[0])[0])
 	var r_ret = callframe.Nil
@@ -1269,7 +1269,7 @@ func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) {
 Sets this node's properties to match a given [GPUParticles2D] node with an assigned [ParticleProcessMaterial].
 */
 //go:nosplit
-func (self class) ConvertFromParticles(particles [1]gdclass.Node) {
+func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles2D.convert_from_particles
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(particles[0])[0])
 	var r_ret = callframe.Nil
@@ -1312,7 +1312,7 @@ func init() {
 	})
 }
 
-type DrawOrder = gdclass.CPUParticles2DDrawOrder
+type DrawOrder = gdclass.CPUParticles2DDrawOrder //gd:CPUParticles2D.DrawOrder
 
 const (
 	/*Particles are drawn in the order emitted.*/
@@ -1321,7 +1321,7 @@ const (
 	DrawOrderLifetime DrawOrder = 1
 )
 
-type Parameter = gdclass.CPUParticles2DParameter
+type Parameter = gdclass.CPUParticles2DParameter //gd:CPUParticles2D.Parameter
 
 const (
 	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set initial velocity properties.*/
@@ -1352,7 +1352,7 @@ const (
 	ParamMax Parameter = 12
 )
 
-type ParticleFlags = gdclass.CPUParticles2DParticleFlags
+type ParticleFlags = gdclass.CPUParticles2DParticleFlags //gd:CPUParticles2D.ParticleFlags
 
 const (
 	/*Use with [method set_particle_flag] to set [member particle_flag_align_y].*/
@@ -1365,7 +1365,7 @@ const (
 	ParticleFlagMax ParticleFlags = 3
 )
 
-type EmissionShape = gdclass.CPUParticles2DEmissionShape
+type EmissionShape = gdclass.CPUParticles2DEmissionShape //gd:CPUParticles2D.EmissionShape
 
 const (
 	/*All particles will be emitted from a single point.*/

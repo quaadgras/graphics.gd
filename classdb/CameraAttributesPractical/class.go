@@ -132,7 +132,7 @@ func (self Instance) SetAutoExposureMaxSensitivity(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetDofBlurFarEnabled(enabled bool) {
+func (self class) SetDofBlurFarEnabled(enabled bool) { //gd:CameraAttributesPractical.set_dof_blur_far_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -141,7 +141,7 @@ func (self class) SetDofBlurFarEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDofBlurFarEnabled() bool {
+func (self class) IsDofBlurFarEnabled() bool { //gd:CameraAttributesPractical.is_dof_blur_far_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPractical.Bind_is_dof_blur_far_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -151,7 +151,7 @@ func (self class) IsDofBlurFarEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDofBlurFarDistance(distance gd.Float) {
+func (self class) SetDofBlurFarDistance(distance gd.Float) { //gd:CameraAttributesPractical.set_dof_blur_far_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -160,7 +160,7 @@ func (self class) SetDofBlurFarDistance(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDofBlurFarDistance() gd.Float {
+func (self class) GetDofBlurFarDistance() gd.Float { //gd:CameraAttributesPractical.get_dof_blur_far_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_far_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -170,7 +170,7 @@ func (self class) GetDofBlurFarDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDofBlurFarTransition(distance gd.Float) {
+func (self class) SetDofBlurFarTransition(distance gd.Float) { //gd:CameraAttributesPractical.set_dof_blur_far_transition
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -179,7 +179,7 @@ func (self class) SetDofBlurFarTransition(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDofBlurFarTransition() gd.Float {
+func (self class) GetDofBlurFarTransition() gd.Float { //gd:CameraAttributesPractical.get_dof_blur_far_transition
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_far_transition, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -189,7 +189,7 @@ func (self class) GetDofBlurFarTransition() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDofBlurNearEnabled(enabled bool) {
+func (self class) SetDofBlurNearEnabled(enabled bool) { //gd:CameraAttributesPractical.set_dof_blur_near_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -198,7 +198,7 @@ func (self class) SetDofBlurNearEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDofBlurNearEnabled() bool {
+func (self class) IsDofBlurNearEnabled() bool { //gd:CameraAttributesPractical.is_dof_blur_near_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPractical.Bind_is_dof_blur_near_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -208,7 +208,7 @@ func (self class) IsDofBlurNearEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDofBlurNearDistance(distance gd.Float) {
+func (self class) SetDofBlurNearDistance(distance gd.Float) { //gd:CameraAttributesPractical.set_dof_blur_near_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -217,7 +217,7 @@ func (self class) SetDofBlurNearDistance(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDofBlurNearDistance() gd.Float {
+func (self class) GetDofBlurNearDistance() gd.Float { //gd:CameraAttributesPractical.get_dof_blur_near_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_near_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -227,7 +227,7 @@ func (self class) GetDofBlurNearDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDofBlurNearTransition(distance gd.Float) {
+func (self class) SetDofBlurNearTransition(distance gd.Float) { //gd:CameraAttributesPractical.set_dof_blur_near_transition
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -236,7 +236,7 @@ func (self class) SetDofBlurNearTransition(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDofBlurNearTransition() gd.Float {
+func (self class) GetDofBlurNearTransition() gd.Float { //gd:CameraAttributesPractical.get_dof_blur_near_transition
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_near_transition, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -246,7 +246,7 @@ func (self class) GetDofBlurNearTransition() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDofBlurAmount(amount gd.Float) {
+func (self class) SetDofBlurAmount(amount gd.Float) { //gd:CameraAttributesPractical.set_dof_blur_amount
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -255,7 +255,7 @@ func (self class) SetDofBlurAmount(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDofBlurAmount() gd.Float {
+func (self class) GetDofBlurAmount() gd.Float { //gd:CameraAttributesPractical.get_dof_blur_amount
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_amount, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -265,7 +265,7 @@ func (self class) GetDofBlurAmount() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAutoExposureMaxSensitivity(max_sensitivity gd.Float) {
+func (self class) SetAutoExposureMaxSensitivity(max_sensitivity gd.Float) { //gd:CameraAttributesPractical.set_auto_exposure_max_sensitivity
 	var frame = callframe.New()
 	callframe.Arg(frame, max_sensitivity)
 	var r_ret = callframe.Nil
@@ -274,7 +274,7 @@ func (self class) SetAutoExposureMaxSensitivity(max_sensitivity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAutoExposureMaxSensitivity() gd.Float {
+func (self class) GetAutoExposureMaxSensitivity() gd.Float { //gd:CameraAttributesPractical.get_auto_exposure_max_sensitivity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPractical.Bind_get_auto_exposure_max_sensitivity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -284,7 +284,7 @@ func (self class) GetAutoExposureMaxSensitivity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAutoExposureMinSensitivity(min_sensitivity gd.Float) {
+func (self class) SetAutoExposureMinSensitivity(min_sensitivity gd.Float) { //gd:CameraAttributesPractical.set_auto_exposure_min_sensitivity
 	var frame = callframe.New()
 	callframe.Arg(frame, min_sensitivity)
 	var r_ret = callframe.Nil
@@ -293,7 +293,7 @@ func (self class) SetAutoExposureMinSensitivity(min_sensitivity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAutoExposureMinSensitivity() gd.Float {
+func (self class) GetAutoExposureMinSensitivity() gd.Float { //gd:CameraAttributesPractical.get_auto_exposure_min_sensitivity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPractical.Bind_get_auto_exposure_min_sensitivity, self.AsObject(), frame.Array(0), r_ret.Addr())

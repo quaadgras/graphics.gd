@@ -82,7 +82,7 @@ func (self Instance) SetCompositor(value [1]gdclass.Compositor) {
 }
 
 //go:nosplit
-func (self class) SetEnvironment(env [1]gdclass.Environment) {
+func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:WorldEnvironment.set_environment
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(env[0])[0])
 	var r_ret = callframe.Nil
@@ -91,7 +91,7 @@ func (self class) SetEnvironment(env [1]gdclass.Environment) {
 }
 
 //go:nosplit
-func (self class) GetEnvironment() [1]gdclass.Environment {
+func (self class) GetEnvironment() [1]gdclass.Environment { //gd:WorldEnvironment.get_environment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) GetEnvironment() [1]gdclass.Environment {
 }
 
 //go:nosplit
-func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) {
+func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:WorldEnvironment.set_camera_attributes
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(camera_attributes[0])[0])
 	var r_ret = callframe.Nil
@@ -110,7 +110,7 @@ func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttribu
 }
 
 //go:nosplit
-func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes {
+func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:WorldEnvironment.get_camera_attributes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes {
 }
 
 //go:nosplit
-func (self class) SetCompositor(compositor [1]gdclass.Compositor) {
+func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:WorldEnvironment.set_compositor
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(compositor[0])[0])
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetCompositor(compositor [1]gdclass.Compositor) {
 }
 
 //go:nosplit
-func (self class) GetCompositor() [1]gdclass.Compositor {
+func (self class) GetCompositor() [1]gdclass.Compositor { //gd:WorldEnvironment.get_compositor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())

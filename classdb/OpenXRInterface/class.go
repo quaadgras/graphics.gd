@@ -45,98 +45,98 @@ type Any interface {
 Returns [code]true[/code] if OpenXR's foveation extension is supported, the interface must be initialized before this returns a valid value.
 [b]Note:[/b] This feature is only available on the compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [member Viewport.vrs_mode] to [code]VRS_XR[/code] on desktop.
 */
-func (self Instance) IsFoveationSupported() bool {
+func (self Instance) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveation_supported
 	return bool(class(self).IsFoveationSupported())
 }
 
 /*
 Returns [code]true[/code] if the given action set is active.
 */
-func (self Instance) IsActionSetActive(name string) bool {
+func (self Instance) IsActionSetActive(name string) bool { //gd:OpenXRInterface.is_action_set_active
 	return bool(class(self).IsActionSetActive(gd.NewString(name)))
 }
 
 /*
 Sets the given action set as active or inactive.
 */
-func (self Instance) SetActionSetActive(name string, active bool) {
+func (self Instance) SetActionSetActive(name string, active bool) { //gd:OpenXRInterface.set_action_set_active
 	class(self).SetActionSetActive(gd.NewString(name), active)
 }
 
 /*
 Returns a list of action sets registered with Godot (loaded from the action map at runtime).
 */
-func (self Instance) GetActionSets() []any {
+func (self Instance) GetActionSets() []any { //gd:OpenXRInterface.get_action_sets
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetActionSets())))
 }
 
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the OpenXR runtime and after the interface has been initialized.
 */
-func (self Instance) GetAvailableDisplayRefreshRates() []any {
+func (self Instance) GetAvailableDisplayRefreshRates() []any { //gd:OpenXRInterface.get_available_display_refresh_rates
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetAvailableDisplayRefreshRates())))
 }
 
 /*
 If handtracking is enabled and motion range is supported, sets the currently configured motion range for [param hand] to [param motion_range].
 */
-func (self Instance) SetMotionRange(hand gdclass.OpenXRInterfaceHand, motion_range gdclass.OpenXRInterfaceHandMotionRange) {
+func (self Instance) SetMotionRange(hand gdclass.OpenXRInterfaceHand, motion_range gdclass.OpenXRInterfaceHandMotionRange) { //gd:OpenXRInterface.set_motion_range
 	class(self).SetMotionRange(hand, motion_range)
 }
 
 /*
 If handtracking is enabled and motion range is supported, gets the currently configured motion range for [param hand].
 */
-func (self Instance) GetMotionRange(hand gdclass.OpenXRInterfaceHand) gdclass.OpenXRInterfaceHandMotionRange {
+func (self Instance) GetMotionRange(hand gdclass.OpenXRInterfaceHand) gdclass.OpenXRInterfaceHandMotionRange { //gd:OpenXRInterface.get_motion_range
 	return gdclass.OpenXRInterfaceHandMotionRange(class(self).GetMotionRange(hand))
 }
 
 /*
 If handtracking is enabled and hand tracking source is supported, gets the source of the hand tracking data for [param hand].
 */
-func (self Instance) GetHandTrackingSource(hand gdclass.OpenXRInterfaceHand) gdclass.OpenXRInterfaceHandTrackedSource {
+func (self Instance) GetHandTrackingSource(hand gdclass.OpenXRInterfaceHand) gdclass.OpenXRInterfaceHandTrackedSource { //gd:OpenXRInterface.get_hand_tracking_source
 	return gdclass.OpenXRInterfaceHandTrackedSource(class(self).GetHandTrackingSource(hand))
 }
 
 /*
 If handtracking is enabled, returns flags that inform us of the validity of the tracking data.
 */
-func (self Instance) GetHandJointFlags(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gdclass.OpenXRInterfaceHandJointFlags {
+func (self Instance) GetHandJointFlags(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gdclass.OpenXRInterfaceHandJointFlags { //gd:OpenXRInterface.get_hand_joint_flags
 	return gdclass.OpenXRInterfaceHandJointFlags(class(self).GetHandJointFlags(hand, joint))
 }
 
 /*
 If handtracking is enabled, returns the rotation of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR.
 */
-func (self Instance) GetHandJointRotation(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Quaternion.IJKX {
+func (self Instance) GetHandJointRotation(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Quaternion.IJKX { //gd:OpenXRInterface.get_hand_joint_rotation
 	return Quaternion.IJKX(class(self).GetHandJointRotation(hand, joint))
 }
 
 /*
 If handtracking is enabled, returns the position of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
 */
-func (self Instance) GetHandJointPosition(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Vector3.XYZ {
+func (self Instance) GetHandJointPosition(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_position
 	return Vector3.XYZ(class(self).GetHandJointPosition(hand, joint))
 }
 
 /*
 If handtracking is enabled, returns the radius of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is without worldscale applied!
 */
-func (self Instance) GetHandJointRadius(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Float.X {
+func (self Instance) GetHandJointRadius(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Float.X { //gd:OpenXRInterface.get_hand_joint_radius
 	return Float.X(Float.X(class(self).GetHandJointRadius(hand, joint)))
 }
 
 /*
 If handtracking is enabled, returns the linear velocity of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
 */
-func (self Instance) GetHandJointLinearVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Vector3.XYZ {
+func (self Instance) GetHandJointLinearVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_linear_velocity
 	return Vector3.XYZ(class(self).GetHandJointLinearVelocity(hand, joint))
 }
 
 /*
 If handtracking is enabled, returns the angular velocity of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D]!
 */
-func (self Instance) GetHandJointAngularVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Vector3.XYZ {
+func (self Instance) GetHandJointAngularVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_angular_velocity
 	return Vector3.XYZ(class(self).GetHandJointAngularVelocity(hand, joint))
 }
 
@@ -144,7 +144,7 @@ func (self Instance) GetHandJointAngularVelocity(hand gdclass.OpenXRInterfaceHan
 Returns [code]true[/code] if OpenXR's hand tracking is supported and enabled.
 [b]Note:[/b] This only returns a valid value after OpenXR has been initialized.
 */
-func (self Instance) IsHandTrackingSupported() bool {
+func (self Instance) IsHandTrackingSupported() bool { //gd:OpenXRInterface.is_hand_tracking_supported
 	return bool(class(self).IsHandTrackingSupported())
 }
 
@@ -152,7 +152,7 @@ func (self Instance) IsHandTrackingSupported() bool {
 Returns [code]true[/code] if OpenXR's hand interaction profile is supported and enabled.
 [b]Note:[/b] This only returns a valid value after OpenXR has been initialized.
 */
-func (self Instance) IsHandInteractionSupported() bool {
+func (self Instance) IsHandInteractionSupported() bool { //gd:OpenXRInterface.is_hand_interaction_supported
 	return bool(class(self).IsHandInteractionSupported())
 }
 
@@ -160,7 +160,7 @@ func (self Instance) IsHandInteractionSupported() bool {
 Returns the capabilities of the eye gaze interaction extension.
 [b]Note:[/b] This only returns a valid value after OpenXR has been initialized.
 */
-func (self Instance) IsEyeGazeInteractionSupported() bool {
+func (self Instance) IsEyeGazeInteractionSupported() bool { //gd:OpenXRInterface.is_eye_gaze_interaction_supported
 	return bool(class(self).IsEyeGazeInteractionSupported())
 }
 
@@ -232,7 +232,7 @@ func (self Instance) SetVrsStrength(value Float.X) {
 }
 
 //go:nosplit
-func (self class) GetDisplayRefreshRate() gd.Float {
+func (self class) GetDisplayRefreshRate() gd.Float { //gd:OpenXRInterface.get_display_refresh_rate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -242,7 +242,7 @@ func (self class) GetDisplayRefreshRate() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) {
+func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) { //gd:OpenXRInterface.set_display_refresh_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, refresh_rate)
 	var r_ret = callframe.Nil
@@ -251,7 +251,7 @@ func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRenderTargetSizeMultiplier() gd.Float {
+func (self class) GetRenderTargetSizeMultiplier() gd.Float { //gd:OpenXRInterface.get_render_target_size_multiplier
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_render_target_size_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -261,7 +261,7 @@ func (self class) GetRenderTargetSizeMultiplier() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRenderTargetSizeMultiplier(multiplier gd.Float) {
+func (self class) SetRenderTargetSizeMultiplier(multiplier gd.Float) { //gd:OpenXRInterface.set_render_target_size_multiplier
 	var frame = callframe.New()
 	callframe.Arg(frame, multiplier)
 	var r_ret = callframe.Nil
@@ -274,7 +274,7 @@ Returns [code]true[/code] if OpenXR's foveation extension is supported, the inte
 [b]Note:[/b] This feature is only available on the compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [member Viewport.vrs_mode] to [code]VRS_XR[/code] on desktop.
 */
 //go:nosplit
-func (self class) IsFoveationSupported() bool {
+func (self class) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveation_supported
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_foveation_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -284,7 +284,7 @@ func (self class) IsFoveationSupported() bool {
 }
 
 //go:nosplit
-func (self class) GetFoveationLevel() gd.Int {
+func (self class) GetFoveationLevel() gd.Int { //gd:OpenXRInterface.get_foveation_level
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_foveation_level, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -294,7 +294,7 @@ func (self class) GetFoveationLevel() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFoveationLevel(foveation_level gd.Int) {
+func (self class) SetFoveationLevel(foveation_level gd.Int) { //gd:OpenXRInterface.set_foveation_level
 	var frame = callframe.New()
 	callframe.Arg(frame, foveation_level)
 	var r_ret = callframe.Nil
@@ -303,7 +303,7 @@ func (self class) SetFoveationLevel(foveation_level gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFoveationDynamic() bool {
+func (self class) GetFoveationDynamic() bool { //gd:OpenXRInterface.get_foveation_dynamic
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_foveation_dynamic, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -313,7 +313,7 @@ func (self class) GetFoveationDynamic() bool {
 }
 
 //go:nosplit
-func (self class) SetFoveationDynamic(foveation_dynamic bool) {
+func (self class) SetFoveationDynamic(foveation_dynamic bool) { //gd:OpenXRInterface.set_foveation_dynamic
 	var frame = callframe.New()
 	callframe.Arg(frame, foveation_dynamic)
 	var r_ret = callframe.Nil
@@ -325,7 +325,7 @@ func (self class) SetFoveationDynamic(foveation_dynamic bool) {
 Returns [code]true[/code] if the given action set is active.
 */
 //go:nosplit
-func (self class) IsActionSetActive(name gd.String) bool {
+func (self class) IsActionSetActive(name gd.String) bool { //gd:OpenXRInterface.is_action_set_active
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -339,7 +339,7 @@ func (self class) IsActionSetActive(name gd.String) bool {
 Sets the given action set as active or inactive.
 */
 //go:nosplit
-func (self class) SetActionSetActive(name gd.String, active bool) {
+func (self class) SetActionSetActive(name gd.String, active bool) { //gd:OpenXRInterface.set_action_set_active
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, active)
@@ -352,7 +352,7 @@ func (self class) SetActionSetActive(name gd.String, active bool) {
 Returns a list of action sets registered with Godot (loaded from the action map at runtime).
 */
 //go:nosplit
-func (self class) GetActionSets() Array.Any {
+func (self class) GetActionSets() Array.Any { //gd:OpenXRInterface.get_action_sets
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_action_sets, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -365,7 +365,7 @@ func (self class) GetActionSets() Array.Any {
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the OpenXR runtime and after the interface has been initialized.
 */
 //go:nosplit
-func (self class) GetAvailableDisplayRefreshRates() Array.Any {
+func (self class) GetAvailableDisplayRefreshRates() Array.Any { //gd:OpenXRInterface.get_available_display_refresh_rates
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_available_display_refresh_rates, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -378,7 +378,7 @@ func (self class) GetAvailableDisplayRefreshRates() Array.Any {
 If handtracking is enabled and motion range is supported, sets the currently configured motion range for [param hand] to [param motion_range].
 */
 //go:nosplit
-func (self class) SetMotionRange(hand gdclass.OpenXRInterfaceHand, motion_range gdclass.OpenXRInterfaceHandMotionRange) {
+func (self class) SetMotionRange(hand gdclass.OpenXRInterfaceHand, motion_range gdclass.OpenXRInterfaceHandMotionRange) { //gd:OpenXRInterface.set_motion_range
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, motion_range)
@@ -391,7 +391,7 @@ func (self class) SetMotionRange(hand gdclass.OpenXRInterfaceHand, motion_range 
 If handtracking is enabled and motion range is supported, gets the currently configured motion range for [param hand].
 */
 //go:nosplit
-func (self class) GetMotionRange(hand gdclass.OpenXRInterfaceHand) gdclass.OpenXRInterfaceHandMotionRange {
+func (self class) GetMotionRange(hand gdclass.OpenXRInterfaceHand) gdclass.OpenXRInterfaceHandMotionRange { //gd:OpenXRInterface.get_motion_range
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	var r_ret = callframe.Ret[gdclass.OpenXRInterfaceHandMotionRange](frame)
@@ -405,7 +405,7 @@ func (self class) GetMotionRange(hand gdclass.OpenXRInterfaceHand) gdclass.OpenX
 If handtracking is enabled and hand tracking source is supported, gets the source of the hand tracking data for [param hand].
 */
 //go:nosplit
-func (self class) GetHandTrackingSource(hand gdclass.OpenXRInterfaceHand) gdclass.OpenXRInterfaceHandTrackedSource {
+func (self class) GetHandTrackingSource(hand gdclass.OpenXRInterfaceHand) gdclass.OpenXRInterfaceHandTrackedSource { //gd:OpenXRInterface.get_hand_tracking_source
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	var r_ret = callframe.Ret[gdclass.OpenXRInterfaceHandTrackedSource](frame)
@@ -419,7 +419,7 @@ func (self class) GetHandTrackingSource(hand gdclass.OpenXRInterfaceHand) gdclas
 If handtracking is enabled, returns flags that inform us of the validity of the tracking data.
 */
 //go:nosplit
-func (self class) GetHandJointFlags(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gdclass.OpenXRInterfaceHandJointFlags {
+func (self class) GetHandJointFlags(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gdclass.OpenXRInterfaceHandJointFlags { //gd:OpenXRInterface.get_hand_joint_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
@@ -434,7 +434,7 @@ func (self class) GetHandJointFlags(hand gdclass.OpenXRInterfaceHand, joint gdcl
 If handtracking is enabled, returns the rotation of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR.
 */
 //go:nosplit
-func (self class) GetHandJointRotation(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Quaternion {
+func (self class) GetHandJointRotation(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Quaternion { //gd:OpenXRInterface.get_hand_joint_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
@@ -449,7 +449,7 @@ func (self class) GetHandJointRotation(hand gdclass.OpenXRInterfaceHand, joint g
 If handtracking is enabled, returns the position of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
 */
 //go:nosplit
-func (self class) GetHandJointPosition(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Vector3 {
+func (self class) GetHandJointPosition(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Vector3 { //gd:OpenXRInterface.get_hand_joint_position
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
@@ -464,7 +464,7 @@ func (self class) GetHandJointPosition(hand gdclass.OpenXRInterfaceHand, joint g
 If handtracking is enabled, returns the radius of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is without worldscale applied!
 */
 //go:nosplit
-func (self class) GetHandJointRadius(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Float {
+func (self class) GetHandJointRadius(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Float { //gd:OpenXRInterface.get_hand_joint_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
@@ -479,7 +479,7 @@ func (self class) GetHandJointRadius(hand gdclass.OpenXRInterfaceHand, joint gdc
 If handtracking is enabled, returns the linear velocity of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
 */
 //go:nosplit
-func (self class) GetHandJointLinearVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Vector3 {
+func (self class) GetHandJointLinearVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Vector3 { //gd:OpenXRInterface.get_hand_joint_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
@@ -494,7 +494,7 @@ func (self class) GetHandJointLinearVelocity(hand gdclass.OpenXRInterfaceHand, j
 If handtracking is enabled, returns the angular velocity of a joint ([param joint]) of a hand ([param hand]) as provided by OpenXR. This is relative to [XROrigin3D]!
 */
 //go:nosplit
-func (self class) GetHandJointAngularVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Vector3 {
+func (self class) GetHandJointAngularVelocity(hand gdclass.OpenXRInterfaceHand, joint gdclass.OpenXRInterfaceHandJoints) gd.Vector3 { //gd:OpenXRInterface.get_hand_joint_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	callframe.Arg(frame, joint)
@@ -510,7 +510,7 @@ Returns [code]true[/code] if OpenXR's hand tracking is supported and enabled.
 [b]Note:[/b] This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
-func (self class) IsHandTrackingSupported() bool {
+func (self class) IsHandTrackingSupported() bool { //gd:OpenXRInterface.is_hand_tracking_supported
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_hand_tracking_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -524,7 +524,7 @@ Returns [code]true[/code] if OpenXR's hand interaction profile is supported and 
 [b]Note:[/b] This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
-func (self class) IsHandInteractionSupported() bool {
+func (self class) IsHandInteractionSupported() bool { //gd:OpenXRInterface.is_hand_interaction_supported
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_hand_interaction_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -538,7 +538,7 @@ Returns the capabilities of the eye gaze interaction extension.
 [b]Note:[/b] This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
-func (self class) IsEyeGazeInteractionSupported() bool {
+func (self class) IsEyeGazeInteractionSupported() bool { //gd:OpenXRInterface.is_eye_gaze_interaction_supported
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_is_eye_gaze_interaction_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -548,7 +548,7 @@ func (self class) IsEyeGazeInteractionSupported() bool {
 }
 
 //go:nosplit
-func (self class) GetVrsMinRadius() gd.Float {
+func (self class) GetVrsMinRadius() gd.Float { //gd:OpenXRInterface.get_vrs_min_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -558,7 +558,7 @@ func (self class) GetVrsMinRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVrsMinRadius(radius gd.Float) {
+func (self class) SetVrsMinRadius(radius gd.Float) { //gd:OpenXRInterface.set_vrs_min_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -567,7 +567,7 @@ func (self class) SetVrsMinRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVrsStrength() gd.Float {
+func (self class) GetVrsStrength() gd.Float { //gd:OpenXRInterface.get_vrs_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -577,7 +577,7 @@ func (self class) GetVrsStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVrsStrength(strength gd.Float) {
+func (self class) SetVrsStrength(strength gd.Float) { //gd:OpenXRInterface.set_vrs_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -650,7 +650,7 @@ func init() {
 	})
 }
 
-type Hand = gdclass.OpenXRInterfaceHand
+type Hand = gdclass.OpenXRInterfaceHand //gd:OpenXRInterface.Hand
 
 const (
 	/*Left hand.*/
@@ -661,7 +661,7 @@ const (
 	HandMax Hand = 2
 )
 
-type HandMotionRange = gdclass.OpenXRInterfaceHandMotionRange
+type HandMotionRange = gdclass.OpenXRInterfaceHandMotionRange //gd:OpenXRInterface.HandMotionRange
 
 const (
 	/*Full hand range, if user closes their hands, we make a full fist.*/
@@ -672,7 +672,7 @@ const (
 	HandMotionRangeMax HandMotionRange = 2
 )
 
-type HandTrackedSource = gdclass.OpenXRInterfaceHandTrackedSource
+type HandTrackedSource = gdclass.OpenXRInterfaceHandTrackedSource //gd:OpenXRInterface.HandTrackedSource
 
 const (
 	/*The source of hand tracking data is unknown (the extension is likely unsupported).*/
@@ -685,7 +685,7 @@ const (
 	HandTrackedSourceMax HandTrackedSource = 3
 )
 
-type HandJoints = gdclass.OpenXRInterfaceHandJoints
+type HandJoints = gdclass.OpenXRInterfaceHandJoints //gd:OpenXRInterface.HandJoints
 
 const (
 	/*Palm joint.*/
@@ -744,7 +744,7 @@ const (
 	HandJointMax HandJoints = 26
 )
 
-type HandJointFlags = gdclass.OpenXRInterfaceHandJointFlags
+type HandJointFlags = gdclass.OpenXRInterfaceHandJointFlags //gd:OpenXRInterface.HandJointFlags
 
 const (
 	/*No flags are set.*/

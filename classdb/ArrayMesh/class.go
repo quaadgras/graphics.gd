@@ -87,35 +87,35 @@ type Any interface {
 /*
 Adds name for a blend shape that will be added with [method add_surface_from_arrays]. Must be called before surface is added.
 */
-func (self Instance) AddBlendShape(name string) {
+func (self Instance) AddBlendShape(name string) { //gd:ArrayMesh.add_blend_shape
 	class(self).AddBlendShape(gd.NewStringName(name))
 }
 
 /*
 Returns the number of blend shapes that the [ArrayMesh] holds.
 */
-func (self Instance) GetBlendShapeCount() int {
+func (self Instance) GetBlendShapeCount() int { //gd:ArrayMesh.get_blend_shape_count
 	return int(int(class(self).GetBlendShapeCount()))
 }
 
 /*
 Returns the name of the blend shape at this index.
 */
-func (self Instance) GetBlendShapeName(index int) string {
+func (self Instance) GetBlendShapeName(index int) string { //gd:ArrayMesh.get_blend_shape_name
 	return string(class(self).GetBlendShapeName(gd.Int(index)).String())
 }
 
 /*
 Sets the name of the blend shape at this index.
 */
-func (self Instance) SetBlendShapeName(index int, name string) {
+func (self Instance) SetBlendShapeName(index int, name string) { //gd:ArrayMesh.set_blend_shape_name
 	class(self).SetBlendShapeName(gd.Int(index), gd.NewStringName(name))
 }
 
 /*
 Removes all blend shapes from this [ArrayMesh].
 */
-func (self Instance) ClearBlendShapes() {
+func (self Instance) ClearBlendShapes() { //gd:ArrayMesh.clear_blend_shapes
 	class(self).ClearBlendShapes()
 }
 
@@ -128,86 +128,86 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise or of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Instance) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays []any) {
+func (self Instance) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays []any) { //gd:ArrayMesh.add_surface_from_arrays
 	class(self).AddSurfaceFromArrays(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
 }
 
 /*
 Removes all surfaces from this [ArrayMesh].
 */
-func (self Instance) ClearSurfaces() {
+func (self Instance) ClearSurfaces() { //gd:ArrayMesh.clear_surfaces
 	class(self).ClearSurfaces()
 }
-func (self Instance) SurfaceUpdateVertexRegion(surf_idx int, offset int, data []byte) {
+func (self Instance) SurfaceUpdateVertexRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_vertex_region
 	class(self).SurfaceUpdateVertexRegion(gd.Int(surf_idx), gd.Int(offset), gd.NewPackedByteSlice(data))
 }
-func (self Instance) SurfaceUpdateAttributeRegion(surf_idx int, offset int, data []byte) {
+func (self Instance) SurfaceUpdateAttributeRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_attribute_region
 	class(self).SurfaceUpdateAttributeRegion(gd.Int(surf_idx), gd.Int(offset), gd.NewPackedByteSlice(data))
 }
-func (self Instance) SurfaceUpdateSkinRegion(surf_idx int, offset int, data []byte) {
+func (self Instance) SurfaceUpdateSkinRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_skin_region
 	class(self).SurfaceUpdateSkinRegion(gd.Int(surf_idx), gd.Int(offset), gd.NewPackedByteSlice(data))
 }
 
 /*
 Returns the length in vertices of the vertex array in the requested surface (see [method add_surface_from_arrays]).
 */
-func (self Instance) SurfaceGetArrayLen(surf_idx int) int {
+func (self Instance) SurfaceGetArrayLen(surf_idx int) int { //gd:ArrayMesh.surface_get_array_len
 	return int(int(class(self).SurfaceGetArrayLen(gd.Int(surf_idx))))
 }
 
 /*
 Returns the length in indices of the index array in the requested surface (see [method add_surface_from_arrays]).
 */
-func (self Instance) SurfaceGetArrayIndexLen(surf_idx int) int {
+func (self Instance) SurfaceGetArrayIndexLen(surf_idx int) int { //gd:ArrayMesh.surface_get_array_index_len
 	return int(int(class(self).SurfaceGetArrayIndexLen(gd.Int(surf_idx))))
 }
 
 /*
 Returns the format mask of the requested surface (see [method add_surface_from_arrays]).
 */
-func (self Instance) SurfaceGetFormat(surf_idx int) gdclass.MeshArrayFormat {
+func (self Instance) SurfaceGetFormat(surf_idx int) gdclass.MeshArrayFormat { //gd:ArrayMesh.surface_get_format
 	return gdclass.MeshArrayFormat(class(self).SurfaceGetFormat(gd.Int(surf_idx)))
 }
 
 /*
 Returns the primitive type of the requested surface (see [method add_surface_from_arrays]).
 */
-func (self Instance) SurfaceGetPrimitiveType(surf_idx int) gdclass.MeshPrimitiveType {
+func (self Instance) SurfaceGetPrimitiveType(surf_idx int) gdclass.MeshPrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
 	return gdclass.MeshPrimitiveType(class(self).SurfaceGetPrimitiveType(gd.Int(surf_idx)))
 }
 
 /*
 Returns the index of the first surface with this name held within this [ArrayMesh]. If none are found, -1 is returned.
 */
-func (self Instance) SurfaceFindByName(name string) int {
+func (self Instance) SurfaceFindByName(name string) int { //gd:ArrayMesh.surface_find_by_name
 	return int(int(class(self).SurfaceFindByName(gd.NewString(name))))
 }
 
 /*
 Sets a name for a given surface.
 */
-func (self Instance) SurfaceSetName(surf_idx int, name string) {
+func (self Instance) SurfaceSetName(surf_idx int, name string) { //gd:ArrayMesh.surface_set_name
 	class(self).SurfaceSetName(gd.Int(surf_idx), gd.NewString(name))
 }
 
 /*
 Gets the name assigned to this surface.
 */
-func (self Instance) SurfaceGetName(surf_idx int) string {
+func (self Instance) SurfaceGetName(surf_idx int) string { //gd:ArrayMesh.surface_get_name
 	return string(class(self).SurfaceGetName(gd.Int(surf_idx)).String())
 }
 
 /*
 Regenerates tangents for each of the [ArrayMesh]'s surfaces.
 */
-func (self Instance) RegenNormalMaps() {
+func (self Instance) RegenNormalMaps() { //gd:ArrayMesh.regen_normal_maps
 	class(self).RegenNormalMaps()
 }
 
 /*
 Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 */
-func (self Instance) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size Float.X) error {
+func (self Instance) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size Float.X) error { //gd:ArrayMesh.lightmap_unwrap
 	return error(gd.ToError(class(self).LightmapUnwrap(gd.Transform3D(transform), gd.Float(texel_size))))
 }
 
@@ -258,7 +258,7 @@ func (self Instance) SetShadowMesh(value [1]gdclass.ArrayMesh) {
 Adds name for a blend shape that will be added with [method add_surface_from_arrays]. Must be called before surface is added.
 */
 //go:nosplit
-func (self class) AddBlendShape(name gd.StringName) {
+func (self class) AddBlendShape(name gd.StringName) { //gd:ArrayMesh.add_blend_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -270,7 +270,7 @@ func (self class) AddBlendShape(name gd.StringName) {
 Returns the number of blend shapes that the [ArrayMesh] holds.
 */
 //go:nosplit
-func (self class) GetBlendShapeCount() gd.Int {
+func (self class) GetBlendShapeCount() gd.Int { //gd:ArrayMesh.get_blend_shape_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -283,7 +283,7 @@ func (self class) GetBlendShapeCount() gd.Int {
 Returns the name of the blend shape at this index.
 */
 //go:nosplit
-func (self class) GetBlendShapeName(index gd.Int) gd.StringName {
+func (self class) GetBlendShapeName(index gd.Int) gd.StringName { //gd:ArrayMesh.get_blend_shape_name
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -297,7 +297,7 @@ func (self class) GetBlendShapeName(index gd.Int) gd.StringName {
 Sets the name of the blend shape at this index.
 */
 //go:nosplit
-func (self class) SetBlendShapeName(index gd.Int, name gd.StringName) {
+func (self class) SetBlendShapeName(index gd.Int, name gd.StringName) { //gd:ArrayMesh.set_blend_shape_name
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(name))
@@ -310,7 +310,7 @@ func (self class) SetBlendShapeName(index gd.Int, name gd.StringName) {
 Removes all blend shapes from this [ArrayMesh].
 */
 //go:nosplit
-func (self class) ClearBlendShapes() {
+func (self class) ClearBlendShapes() { //gd:ArrayMesh.clear_blend_shapes
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_clear_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -318,7 +318,7 @@ func (self class) ClearBlendShapes() {
 }
 
 //go:nosplit
-func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) {
+func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) { //gd:ArrayMesh.set_blend_shape_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -327,7 +327,7 @@ func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) {
 }
 
 //go:nosplit
-func (self class) GetBlendShapeMode() gdclass.MeshBlendShapeMode {
+func (self class) GetBlendShapeMode() gdclass.MeshBlendShapeMode { //gd:ArrayMesh.get_blend_shape_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.MeshBlendShapeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -346,7 +346,7 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 //go:nosplit
-func (self class) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods gd.Dictionary, flags gdclass.MeshArrayFormat) {
+func (self class) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods gd.Dictionary, flags gdclass.MeshArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
@@ -362,7 +362,7 @@ func (self class) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arra
 Removes all surfaces from this [ArrayMesh].
 */
 //go:nosplit
-func (self class) ClearSurfaces() {
+func (self class) ClearSurfaces() { //gd:ArrayMesh.clear_surfaces
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_clear_surfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -370,7 +370,7 @@ func (self class) ClearSurfaces() {
 }
 
 //go:nosplit
-func (self class) SurfaceUpdateVertexRegion(surf_idx gd.Int, offset gd.Int, data gd.PackedByteArray) {
+func (self class) SurfaceUpdateVertexRegion(surf_idx gd.Int, offset gd.Int, data gd.PackedByteArray) { //gd:ArrayMesh.surface_update_vertex_region
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
@@ -381,7 +381,7 @@ func (self class) SurfaceUpdateVertexRegion(surf_idx gd.Int, offset gd.Int, data
 }
 
 //go:nosplit
-func (self class) SurfaceUpdateAttributeRegion(surf_idx gd.Int, offset gd.Int, data gd.PackedByteArray) {
+func (self class) SurfaceUpdateAttributeRegion(surf_idx gd.Int, offset gd.Int, data gd.PackedByteArray) { //gd:ArrayMesh.surface_update_attribute_region
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
@@ -392,7 +392,7 @@ func (self class) SurfaceUpdateAttributeRegion(surf_idx gd.Int, offset gd.Int, d
 }
 
 //go:nosplit
-func (self class) SurfaceUpdateSkinRegion(surf_idx gd.Int, offset gd.Int, data gd.PackedByteArray) {
+func (self class) SurfaceUpdateSkinRegion(surf_idx gd.Int, offset gd.Int, data gd.PackedByteArray) { //gd:ArrayMesh.surface_update_skin_region
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, offset)
@@ -406,7 +406,7 @@ func (self class) SurfaceUpdateSkinRegion(surf_idx gd.Int, offset gd.Int, data g
 Returns the length in vertices of the vertex array in the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetArrayLen(surf_idx gd.Int) gd.Int {
+func (self class) SurfaceGetArrayLen(surf_idx gd.Int) gd.Int { //gd:ArrayMesh.surface_get_array_len
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -420,7 +420,7 @@ func (self class) SurfaceGetArrayLen(surf_idx gd.Int) gd.Int {
 Returns the length in indices of the index array in the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetArrayIndexLen(surf_idx gd.Int) gd.Int {
+func (self class) SurfaceGetArrayIndexLen(surf_idx gd.Int) gd.Int { //gd:ArrayMesh.surface_get_array_index_len
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -434,7 +434,7 @@ func (self class) SurfaceGetArrayIndexLen(surf_idx gd.Int) gd.Int {
 Returns the format mask of the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetFormat(surf_idx gd.Int) gdclass.MeshArrayFormat {
+func (self class) SurfaceGetFormat(surf_idx gd.Int) gdclass.MeshArrayFormat { //gd:ArrayMesh.surface_get_format
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gdclass.MeshArrayFormat](frame)
@@ -448,7 +448,7 @@ func (self class) SurfaceGetFormat(surf_idx gd.Int) gdclass.MeshArrayFormat {
 Returns the primitive type of the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetPrimitiveType(surf_idx gd.Int) gdclass.MeshPrimitiveType {
+func (self class) SurfaceGetPrimitiveType(surf_idx gd.Int) gdclass.MeshPrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gdclass.MeshPrimitiveType](frame)
@@ -462,7 +462,7 @@ func (self class) SurfaceGetPrimitiveType(surf_idx gd.Int) gdclass.MeshPrimitive
 Returns the index of the first surface with this name held within this [ArrayMesh]. If none are found, -1 is returned.
 */
 //go:nosplit
-func (self class) SurfaceFindByName(name gd.String) gd.Int {
+func (self class) SurfaceFindByName(name gd.String) gd.Int { //gd:ArrayMesh.surface_find_by_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -476,7 +476,7 @@ func (self class) SurfaceFindByName(name gd.String) gd.Int {
 Sets a name for a given surface.
 */
 //go:nosplit
-func (self class) SurfaceSetName(surf_idx gd.Int, name gd.String) {
+func (self class) SurfaceSetName(surf_idx gd.Int, name gd.String) { //gd:ArrayMesh.surface_set_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, pointers.Get(name))
@@ -489,7 +489,7 @@ func (self class) SurfaceSetName(surf_idx gd.Int, name gd.String) {
 Gets the name assigned to this surface.
 */
 //go:nosplit
-func (self class) SurfaceGetName(surf_idx gd.Int) gd.String {
+func (self class) SurfaceGetName(surf_idx gd.Int) gd.String { //gd:ArrayMesh.surface_get_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -503,7 +503,7 @@ func (self class) SurfaceGetName(surf_idx gd.Int) gd.String {
 Regenerates tangents for each of the [ArrayMesh]'s surfaces.
 */
 //go:nosplit
-func (self class) RegenNormalMaps() {
+func (self class) RegenNormalMaps() { //gd:ArrayMesh.regen_normal_maps
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_regen_normal_maps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -514,7 +514,7 @@ func (self class) RegenNormalMaps() {
 Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 */
 //go:nosplit
-func (self class) LightmapUnwrap(transform gd.Transform3D, texel_size gd.Float) gd.Error {
+func (self class) LightmapUnwrap(transform gd.Transform3D, texel_size gd.Float) gd.Error { //gd:ArrayMesh.lightmap_unwrap
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, texel_size)
@@ -526,7 +526,7 @@ func (self class) LightmapUnwrap(transform gd.Transform3D, texel_size gd.Float) 
 }
 
 //go:nosplit
-func (self class) SetCustomAabb(aabb gd.AABB) {
+func (self class) SetCustomAabb(aabb gd.AABB) { //gd:ArrayMesh.set_custom_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
 	var r_ret = callframe.Nil
@@ -535,7 +535,7 @@ func (self class) SetCustomAabb(aabb gd.AABB) {
 }
 
 //go:nosplit
-func (self class) GetCustomAabb() gd.AABB {
+func (self class) GetCustomAabb() gd.AABB { //gd:ArrayMesh.get_custom_aabb
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -545,7 +545,7 @@ func (self class) GetCustomAabb() gd.AABB {
 }
 
 //go:nosplit
-func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) {
+func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) { //gd:ArrayMesh.set_shadow_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -554,7 +554,7 @@ func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) {
 }
 
 //go:nosplit
-func (self class) GetShadowMesh() [1]gdclass.ArrayMesh {
+func (self class) GetShadowMesh() [1]gdclass.ArrayMesh { //gd:ArrayMesh.get_shadow_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_shadow_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -596,7 +596,7 @@ func init() {
 	gdclass.Register("ArrayMesh", func(ptr gd.Object) any { return [1]gdclass.ArrayMesh{*(*gdclass.ArrayMesh)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -41,7 +41,7 @@ func singleton() {
 /*
 Calculates and returns all the vertex points of a convex shape defined by an array of [param planes].
 */
-func ComputeConvexMeshPoints(planes []Plane.NormalD) []Vector3.XYZ {
+func ComputeConvexMeshPoints(planes []Plane.NormalD) []Vector3.XYZ { //gd:Geometry3D.compute_convex_mesh_points
 	once.Do(singleton)
 	return []Vector3.XYZ(class(self).ComputeConvexMeshPoints(gd.ArrayFromSlice[Array.Contains[gd.Plane]](planes)).AsSlice())
 }
@@ -49,7 +49,7 @@ func ComputeConvexMeshPoints(planes []Plane.NormalD) []Vector3.XYZ {
 /*
 Returns an array with 6 [Plane]s that describe the sides of a box centered at the origin. The box size is defined by [param extents], which represents one (positive) corner of the box (i.e. half its actual size).
 */
-func BuildBoxPlanes(extents Vector3.XYZ) []Plane.NormalD {
+func BuildBoxPlanes(extents Vector3.XYZ) []Plane.NormalD { //gd:Geometry3D.build_box_planes
 	once.Do(singleton)
 	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(class(self).BuildBoxPlanes(gd.Vector3(extents)))))
 }
@@ -57,7 +57,7 @@ func BuildBoxPlanes(extents Vector3.XYZ) []Plane.NormalD {
 /*
 Returns an array of [Plane]s closely bounding a faceted cylinder centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the round part of the cylinder. The parameter [param axis] describes the axis along which the cylinder is oriented (0 for X, 1 for Y, 2 for Z).
 */
-func BuildCylinderPlanes(radius Float.X, height Float.X, sides int) []Plane.NormalD {
+func BuildCylinderPlanes(radius Float.X, height Float.X, sides int) []Plane.NormalD { //gd:Geometry3D.build_cylinder_planes
 	once.Do(singleton)
 	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(class(self).BuildCylinderPlanes(gd.Float(radius), gd.Float(height), gd.Int(sides), 2))))
 }
@@ -65,7 +65,7 @@ func BuildCylinderPlanes(radius Float.X, height Float.X, sides int) []Plane.Norm
 /*
 Returns an array of [Plane]s closely bounding a faceted capsule centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the side part of the capsule, whereas [param lats] gives the number of latitudinal steps at the bottom and top of the capsule. The parameter [param axis] describes the axis along which the capsule is oriented (0 for X, 1 for Y, 2 for Z).
 */
-func BuildCapsulePlanes(radius Float.X, height Float.X, sides int, lats int) []Plane.NormalD {
+func BuildCapsulePlanes(radius Float.X, height Float.X, sides int, lats int) []Plane.NormalD { //gd:Geometry3D.build_capsule_planes
 	once.Do(singleton)
 	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(class(self).BuildCapsulePlanes(gd.Float(radius), gd.Float(height), gd.Int(sides), gd.Int(lats), 2))))
 }
@@ -73,7 +73,7 @@ func BuildCapsulePlanes(radius Float.X, height Float.X, sides int, lats int) []P
 /*
 Given the two 3D segments ([param p1], [param p2]) and ([param q1], [param q2]), finds those two points on the two segments that are closest to each other. Returns a [PackedVector3Array] that contains this point on ([param p1], [param p2]) as well the accompanying point on ([param q1], [param q2]).
 */
-func GetClosestPointsBetweenSegments(p1 Vector3.XYZ, p2 Vector3.XYZ, q1 Vector3.XYZ, q2 Vector3.XYZ) []Vector3.XYZ {
+func GetClosestPointsBetweenSegments(p1 Vector3.XYZ, p2 Vector3.XYZ, q1 Vector3.XYZ, q2 Vector3.XYZ) []Vector3.XYZ { //gd:Geometry3D.get_closest_points_between_segments
 	once.Do(singleton)
 	return []Vector3.XYZ(class(self).GetClosestPointsBetweenSegments(gd.Vector3(p1), gd.Vector3(p2), gd.Vector3(q1), gd.Vector3(q2)).AsSlice())
 }
@@ -81,7 +81,7 @@ func GetClosestPointsBetweenSegments(p1 Vector3.XYZ, p2 Vector3.XYZ, q1 Vector3.
 /*
 Returns the 3D point on the 3D segment ([param s1], [param s2]) that is closest to [param point]. The returned point will always be inside the specified segment.
 */
-func GetClosestPointToSegment(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vector3.XYZ) Vector3.XYZ {
+func GetClosestPointToSegment(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_closest_point_to_segment
 	once.Do(singleton)
 	return Vector3.XYZ(class(self).GetClosestPointToSegment(gd.Vector3(point), gd.Vector3(s1), gd.Vector3(s2)))
 }
@@ -89,7 +89,7 @@ func GetClosestPointToSegment(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vector3.XYZ)
 /*
 Returns the 3D point on the 3D line defined by ([param s1], [param s2]) that is closest to [param point]. The returned point can be inside the segment ([param s1], [param s2]) or outside of it, i.e. somewhere on the line extending from the segment.
 */
-func GetClosestPointToSegmentUncapped(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vector3.XYZ) Vector3.XYZ {
+func GetClosestPointToSegmentUncapped(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_closest_point_to_segment_uncapped
 	once.Do(singleton)
 	return Vector3.XYZ(class(self).GetClosestPointToSegmentUncapped(gd.Vector3(point), gd.Vector3(s1), gd.Vector3(s2)))
 }
@@ -98,7 +98,7 @@ func GetClosestPointToSegmentUncapped(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vect
 Returns a [Vector3] containing weights based on how close a 3D position ([param point]) is to a triangle's different vertices ([param a], [param b] and [param c]). This is useful for interpolating between the data of different vertices in a triangle. One example use case is using this to smoothly rotate over a mesh instead of relying solely on face normals.
 [url=https://en.wikipedia.org/wiki/Barycentric_coordinate_system]Here is a more detailed explanation of barycentric coordinates.[/url]
 */
-func GetTriangleBarycentricCoords(point Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) Vector3.XYZ {
+func GetTriangleBarycentricCoords(point Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_triangle_barycentric_coords
 	once.Do(singleton)
 	return Vector3.XYZ(class(self).GetTriangleBarycentricCoords(gd.Vector3(point), gd.Vector3(a), gd.Vector3(b), gd.Vector3(c)))
 }
@@ -106,7 +106,7 @@ func GetTriangleBarycentricCoords(point Vector3.XYZ, a Vector3.XYZ, b Vector3.XY
 /*
 Tests if the 3D ray starting at [param from] with the direction of [param dir] intersects the triangle specified by [param a], [param b] and [param c]. If yes, returns the point of intersection as [Vector3]. If no intersection takes place, returns [code]null[/code].
 */
-func RayIntersectsTriangle(from Vector3.XYZ, dir Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) any {
+func RayIntersectsTriangle(from Vector3.XYZ, dir Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) any { //gd:Geometry3D.ray_intersects_triangle
 	once.Do(singleton)
 	return any(class(self).RayIntersectsTriangle(gd.Vector3(from), gd.Vector3(dir), gd.Vector3(a), gd.Vector3(b), gd.Vector3(c)).Interface())
 }
@@ -114,7 +114,7 @@ func RayIntersectsTriangle(from Vector3.XYZ, dir Vector3.XYZ, a Vector3.XYZ, b V
 /*
 Tests if the segment ([param from], [param to]) intersects the triangle [param a], [param b], [param c]. If yes, returns the point of intersection as [Vector3]. If no intersection takes place, returns [code]null[/code].
 */
-func SegmentIntersectsTriangle(from Vector3.XYZ, to Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) any {
+func SegmentIntersectsTriangle(from Vector3.XYZ, to Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) any { //gd:Geometry3D.segment_intersects_triangle
 	once.Do(singleton)
 	return any(class(self).SegmentIntersectsTriangle(gd.Vector3(from), gd.Vector3(to), gd.Vector3(a), gd.Vector3(b), gd.Vector3(c)).Interface())
 }
@@ -122,7 +122,7 @@ func SegmentIntersectsTriangle(from Vector3.XYZ, to Vector3.XYZ, a Vector3.XYZ, 
 /*
 Checks if the segment ([param from], [param to]) intersects the sphere that is located at [param sphere_position] and has radius [param sphere_radius]. If no, returns an empty [PackedVector3Array]. If yes, returns a [PackedVector3Array] containing the point of intersection and the sphere's normal at the point of intersection.
 */
-func SegmentIntersectsSphere(from Vector3.XYZ, to Vector3.XYZ, sphere_position Vector3.XYZ, sphere_radius Float.X) []Vector3.XYZ {
+func SegmentIntersectsSphere(from Vector3.XYZ, to Vector3.XYZ, sphere_position Vector3.XYZ, sphere_radius Float.X) []Vector3.XYZ { //gd:Geometry3D.segment_intersects_sphere
 	once.Do(singleton)
 	return []Vector3.XYZ(class(self).SegmentIntersectsSphere(gd.Vector3(from), gd.Vector3(to), gd.Vector3(sphere_position), gd.Float(sphere_radius)).AsSlice())
 }
@@ -130,7 +130,7 @@ func SegmentIntersectsSphere(from Vector3.XYZ, to Vector3.XYZ, sphere_position V
 /*
 Checks if the segment ([param from], [param to]) intersects the cylinder with height [param height] that is centered at the origin and has radius [param radius]. If no, returns an empty [PackedVector3Array]. If an intersection takes place, the returned array contains the point of intersection and the cylinder's normal at the point of intersection.
 */
-func SegmentIntersectsCylinder(from Vector3.XYZ, to Vector3.XYZ, height Float.X, radius Float.X) []Vector3.XYZ {
+func SegmentIntersectsCylinder(from Vector3.XYZ, to Vector3.XYZ, height Float.X, radius Float.X) []Vector3.XYZ { //gd:Geometry3D.segment_intersects_cylinder
 	once.Do(singleton)
 	return []Vector3.XYZ(class(self).SegmentIntersectsCylinder(gd.Vector3(from), gd.Vector3(to), gd.Float(height), gd.Float(radius)).AsSlice())
 }
@@ -138,7 +138,7 @@ func SegmentIntersectsCylinder(from Vector3.XYZ, to Vector3.XYZ, height Float.X,
 /*
 Given a convex hull defined though the [Plane]s in the array [param planes], tests if the segment ([param from], [param to]) intersects with that hull. If an intersection is found, returns a [PackedVector3Array] containing the point the intersection and the hull's normal. Otherwise, returns an empty array.
 */
-func SegmentIntersectsConvex(from Vector3.XYZ, to Vector3.XYZ, planes []Plane.NormalD) []Vector3.XYZ {
+func SegmentIntersectsConvex(from Vector3.XYZ, to Vector3.XYZ, planes []Plane.NormalD) []Vector3.XYZ { //gd:Geometry3D.segment_intersects_convex
 	once.Do(singleton)
 	return []Vector3.XYZ(class(self).SegmentIntersectsConvex(gd.Vector3(from), gd.Vector3(to), gd.ArrayFromSlice[Array.Contains[gd.Plane]](planes)).AsSlice())
 }
@@ -146,7 +146,7 @@ func SegmentIntersectsConvex(from Vector3.XYZ, to Vector3.XYZ, planes []Plane.No
 /*
 Clips the polygon defined by the points in [param points] against the [param plane] and returns the points of the clipped polygon.
 */
-func ClipPolygon(points []Vector3.XYZ, plane Plane.NormalD) []Vector3.XYZ {
+func ClipPolygon(points []Vector3.XYZ, plane Plane.NormalD) []Vector3.XYZ { //gd:Geometry3D.clip_polygon
 	once.Do(singleton)
 	return []Vector3.XYZ(class(self).ClipPolygon(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&points))), gd.Plane(plane)).AsSlice())
 }
@@ -154,7 +154,7 @@ func ClipPolygon(points []Vector3.XYZ, plane Plane.NormalD) []Vector3.XYZ {
 /*
 Tetrahedralizes the volume specified by a discrete set of [param points] in 3D space, ensuring that no point lies within the circumsphere of any resulting tetrahedron. The method returns a [PackedInt32Array] where each tetrahedron consists of four consecutive point indices into the [param points] array (resulting in an array with [code]n * 4[/code] elements, where [code]n[/code] is the number of tetrahedra found). If the tetrahedralization is unsuccessful, an empty [PackedInt32Array] is returned.
 */
-func TetrahedralizeDelaunay(points []Vector3.XYZ) []int32 {
+func TetrahedralizeDelaunay(points []Vector3.XYZ) []int32 { //gd:Geometry3D.tetrahedralize_delaunay
 	once.Do(singleton)
 	return []int32(class(self).TetrahedralizeDelaunay(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&points)))).AsSlice())
 }
@@ -173,7 +173,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Calculates and returns all the vertex points of a convex shape defined by an array of [param planes].
 */
 //go:nosplit
-func (self class) ComputeConvexMeshPoints(planes Array.Contains[gd.Plane]) gd.PackedVector3Array {
+func (self class) ComputeConvexMeshPoints(planes Array.Contains[gd.Plane]) gd.PackedVector3Array { //gd:Geometry3D.compute_convex_mesh_points
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(planes)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -187,7 +187,7 @@ func (self class) ComputeConvexMeshPoints(planes Array.Contains[gd.Plane]) gd.Pa
 Returns an array with 6 [Plane]s that describe the sides of a box centered at the origin. The box size is defined by [param extents], which represents one (positive) corner of the box (i.e. half its actual size).
 */
 //go:nosplit
-func (self class) BuildBoxPlanes(extents gd.Vector3) Array.Contains[gd.Plane] {
+func (self class) BuildBoxPlanes(extents gd.Vector3) Array.Contains[gd.Plane] { //gd:Geometry3D.build_box_planes
 	var frame = callframe.New()
 	callframe.Arg(frame, extents)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -201,7 +201,7 @@ func (self class) BuildBoxPlanes(extents gd.Vector3) Array.Contains[gd.Plane] {
 Returns an array of [Plane]s closely bounding a faceted cylinder centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the round part of the cylinder. The parameter [param axis] describes the axis along which the cylinder is oriented (0 for X, 1 for Y, 2 for Z).
 */
 //go:nosplit
-func (self class) BuildCylinderPlanes(radius gd.Float, height gd.Float, sides gd.Int, axis gd.Vector3Axis) Array.Contains[gd.Plane] {
+func (self class) BuildCylinderPlanes(radius gd.Float, height gd.Float, sides gd.Int, axis gd.Vector3Axis) Array.Contains[gd.Plane] { //gd:Geometry3D.build_cylinder_planes
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	callframe.Arg(frame, height)
@@ -218,7 +218,7 @@ func (self class) BuildCylinderPlanes(radius gd.Float, height gd.Float, sides gd
 Returns an array of [Plane]s closely bounding a faceted capsule centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the side part of the capsule, whereas [param lats] gives the number of latitudinal steps at the bottom and top of the capsule. The parameter [param axis] describes the axis along which the capsule is oriented (0 for X, 1 for Y, 2 for Z).
 */
 //go:nosplit
-func (self class) BuildCapsulePlanes(radius gd.Float, height gd.Float, sides gd.Int, lats gd.Int, axis gd.Vector3Axis) Array.Contains[gd.Plane] {
+func (self class) BuildCapsulePlanes(radius gd.Float, height gd.Float, sides gd.Int, lats gd.Int, axis gd.Vector3Axis) Array.Contains[gd.Plane] { //gd:Geometry3D.build_capsule_planes
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	callframe.Arg(frame, height)
@@ -236,7 +236,7 @@ func (self class) BuildCapsulePlanes(radius gd.Float, height gd.Float, sides gd.
 Given the two 3D segments ([param p1], [param p2]) and ([param q1], [param q2]), finds those two points on the two segments that are closest to each other. Returns a [PackedVector3Array] that contains this point on ([param p1], [param p2]) as well the accompanying point on ([param q1], [param q2]).
 */
 //go:nosplit
-func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector3, p2 gd.Vector3, q1 gd.Vector3, q2 gd.Vector3) gd.PackedVector3Array {
+func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector3, p2 gd.Vector3, q1 gd.Vector3, q2 gd.Vector3) gd.PackedVector3Array { //gd:Geometry3D.get_closest_points_between_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, p1)
 	callframe.Arg(frame, p2)
@@ -253,7 +253,7 @@ func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector3, p2 gd.Vector3, 
 Returns the 3D point on the 3D segment ([param s1], [param s2]) that is closest to [param point]. The returned point will always be inside the specified segment.
 */
 //go:nosplit
-func (self class) GetClosestPointToSegment(point gd.Vector3, s1 gd.Vector3, s2 gd.Vector3) gd.Vector3 {
+func (self class) GetClosestPointToSegment(point gd.Vector3, s1 gd.Vector3, s2 gd.Vector3) gd.Vector3 { //gd:Geometry3D.get_closest_point_to_segment
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, s1)
@@ -269,7 +269,7 @@ func (self class) GetClosestPointToSegment(point gd.Vector3, s1 gd.Vector3, s2 g
 Returns the 3D point on the 3D line defined by ([param s1], [param s2]) that is closest to [param point]. The returned point can be inside the segment ([param s1], [param s2]) or outside of it, i.e. somewhere on the line extending from the segment.
 */
 //go:nosplit
-func (self class) GetClosestPointToSegmentUncapped(point gd.Vector3, s1 gd.Vector3, s2 gd.Vector3) gd.Vector3 {
+func (self class) GetClosestPointToSegmentUncapped(point gd.Vector3, s1 gd.Vector3, s2 gd.Vector3) gd.Vector3 { //gd:Geometry3D.get_closest_point_to_segment_uncapped
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, s1)
@@ -286,7 +286,7 @@ Returns a [Vector3] containing weights based on how close a 3D position ([param 
 [url=https://en.wikipedia.org/wiki/Barycentric_coordinate_system]Here is a more detailed explanation of barycentric coordinates.[/url]
 */
 //go:nosplit
-func (self class) GetTriangleBarycentricCoords(point gd.Vector3, a gd.Vector3, b gd.Vector3, c gd.Vector3) gd.Vector3 {
+func (self class) GetTriangleBarycentricCoords(point gd.Vector3, a gd.Vector3, b gd.Vector3, c gd.Vector3) gd.Vector3 { //gd:Geometry3D.get_triangle_barycentric_coords
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, a)
@@ -303,7 +303,7 @@ func (self class) GetTriangleBarycentricCoords(point gd.Vector3, a gd.Vector3, b
 Tests if the 3D ray starting at [param from] with the direction of [param dir] intersects the triangle specified by [param a], [param b] and [param c]. If yes, returns the point of intersection as [Vector3]. If no intersection takes place, returns [code]null[/code].
 */
 //go:nosplit
-func (self class) RayIntersectsTriangle(from gd.Vector3, dir gd.Vector3, a gd.Vector3, b gd.Vector3, c gd.Vector3) gd.Variant {
+func (self class) RayIntersectsTriangle(from gd.Vector3, dir gd.Vector3, a gd.Vector3, b gd.Vector3, c gd.Vector3) gd.Variant { //gd:Geometry3D.ray_intersects_triangle
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, dir)
@@ -321,7 +321,7 @@ func (self class) RayIntersectsTriangle(from gd.Vector3, dir gd.Vector3, a gd.Ve
 Tests if the segment ([param from], [param to]) intersects the triangle [param a], [param b], [param c]. If yes, returns the point of intersection as [Vector3]. If no intersection takes place, returns [code]null[/code].
 */
 //go:nosplit
-func (self class) SegmentIntersectsTriangle(from gd.Vector3, to gd.Vector3, a gd.Vector3, b gd.Vector3, c gd.Vector3) gd.Variant {
+func (self class) SegmentIntersectsTriangle(from gd.Vector3, to gd.Vector3, a gd.Vector3, b gd.Vector3, c gd.Vector3) gd.Variant { //gd:Geometry3D.segment_intersects_triangle
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -339,7 +339,7 @@ func (self class) SegmentIntersectsTriangle(from gd.Vector3, to gd.Vector3, a gd
 Checks if the segment ([param from], [param to]) intersects the sphere that is located at [param sphere_position] and has radius [param sphere_radius]. If no, returns an empty [PackedVector3Array]. If yes, returns a [PackedVector3Array] containing the point of intersection and the sphere's normal at the point of intersection.
 */
 //go:nosplit
-func (self class) SegmentIntersectsSphere(from gd.Vector3, to gd.Vector3, sphere_position gd.Vector3, sphere_radius gd.Float) gd.PackedVector3Array {
+func (self class) SegmentIntersectsSphere(from gd.Vector3, to gd.Vector3, sphere_position gd.Vector3, sphere_radius gd.Float) gd.PackedVector3Array { //gd:Geometry3D.segment_intersects_sphere
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -356,7 +356,7 @@ func (self class) SegmentIntersectsSphere(from gd.Vector3, to gd.Vector3, sphere
 Checks if the segment ([param from], [param to]) intersects the cylinder with height [param height] that is centered at the origin and has radius [param radius]. If no, returns an empty [PackedVector3Array]. If an intersection takes place, the returned array contains the point of intersection and the cylinder's normal at the point of intersection.
 */
 //go:nosplit
-func (self class) SegmentIntersectsCylinder(from gd.Vector3, to gd.Vector3, height gd.Float, radius gd.Float) gd.PackedVector3Array {
+func (self class) SegmentIntersectsCylinder(from gd.Vector3, to gd.Vector3, height gd.Float, radius gd.Float) gd.PackedVector3Array { //gd:Geometry3D.segment_intersects_cylinder
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -373,7 +373,7 @@ func (self class) SegmentIntersectsCylinder(from gd.Vector3, to gd.Vector3, heig
 Given a convex hull defined though the [Plane]s in the array [param planes], tests if the segment ([param from], [param to]) intersects with that hull. If an intersection is found, returns a [PackedVector3Array] containing the point the intersection and the hull's normal. Otherwise, returns an empty array.
 */
 //go:nosplit
-func (self class) SegmentIntersectsConvex(from gd.Vector3, to gd.Vector3, planes Array.Contains[gd.Plane]) gd.PackedVector3Array {
+func (self class) SegmentIntersectsConvex(from gd.Vector3, to gd.Vector3, planes Array.Contains[gd.Plane]) gd.PackedVector3Array { //gd:Geometry3D.segment_intersects_convex
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -389,7 +389,7 @@ func (self class) SegmentIntersectsConvex(from gd.Vector3, to gd.Vector3, planes
 Clips the polygon defined by the points in [param points] against the [param plane] and returns the points of the clipped polygon.
 */
 //go:nosplit
-func (self class) ClipPolygon(points gd.PackedVector3Array, plane gd.Plane) gd.PackedVector3Array {
+func (self class) ClipPolygon(points gd.PackedVector3Array, plane gd.Plane) gd.PackedVector3Array { //gd:Geometry3D.clip_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, plane)
@@ -404,7 +404,7 @@ func (self class) ClipPolygon(points gd.PackedVector3Array, plane gd.Plane) gd.P
 Tetrahedralizes the volume specified by a discrete set of [param points] in 3D space, ensuring that no point lies within the circumsphere of any resulting tetrahedron. The method returns a [PackedInt32Array] where each tetrahedron consists of four consecutive point indices into the [param points] array (resulting in an array with [code]n * 4[/code] elements, where [code]n[/code] is the number of tetrahedra found). If the tetrahedralization is unsuccessful, an empty [PackedInt32Array] is returned.
 */
 //go:nosplit
-func (self class) TetrahedralizeDelaunay(points gd.PackedVector3Array) gd.PackedInt32Array {
+func (self class) TetrahedralizeDelaunay(points gd.PackedVector3Array) gd.PackedInt32Array { //gd:Geometry3D.tetrahedralize_delaunay
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)

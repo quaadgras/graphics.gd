@@ -66,7 +66,7 @@ func (self Instance) SetAllowGeometryHelperNodes(value bool) {
 }
 
 //go:nosplit
-func (self class) GetAllowGeometryHelperNodes() bool {
+func (self class) GetAllowGeometryHelperNodes() bool { //gd:FBXState.get_allow_geometry_helper_nodes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FBXState.Bind_get_allow_geometry_helper_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -76,7 +76,7 @@ func (self class) GetAllowGeometryHelperNodes() bool {
 }
 
 //go:nosplit
-func (self class) SetAllowGeometryHelperNodes(allow bool) {
+func (self class) SetAllowGeometryHelperNodes(allow bool) { //gd:FBXState.set_allow_geometry_helper_nodes
 	var frame = callframe.New()
 	callframe.Arg(frame, allow)
 	var r_ret = callframe.Nil

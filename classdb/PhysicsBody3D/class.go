@@ -50,7 +50,7 @@ If [param test_only] is [code]true[/code], the body does not move but the would-
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody3D] for improving floor detection during floor snapping.
 [param max_collisions] allows to retrieve more than one collision result.
 */
-func (self Instance) MoveAndCollide(motion Vector3.XYZ) [1]gdclass.KinematicCollision3D {
+func (self Instance) MoveAndCollide(motion Vector3.XYZ) [1]gdclass.KinematicCollision3D { //gd:PhysicsBody3D.move_and_collide
 	return [1]gdclass.KinematicCollision3D(class(self).MoveAndCollide(gd.Vector3(motion), false, gd.Float(0.001), false, gd.Int(1)))
 }
 
@@ -62,35 +62,35 @@ Virtually sets the node's position, scale and rotation to that of the given [Tra
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
 [param max_collisions] allows to retrieve more than one collision result.
 */
-func (self Instance) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ) bool {
+func (self Instance) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ) bool { //gd:PhysicsBody3D.test_move
 	return bool(class(self).TestMove(gd.Transform3D(from), gd.Vector3(motion), [1][1]gdclass.KinematicCollision3D{}[0], gd.Float(0.001), false, gd.Int(1)))
 }
 
 /*
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area3D] nodes and the global world gravity.
 */
-func (self Instance) GetGravity() Vector3.XYZ {
+func (self Instance) GetGravity() Vector3.XYZ { //gd:PhysicsBody3D.get_gravity
 	return Vector3.XYZ(class(self).GetGravity())
 }
 
 /*
 Returns an array of nodes that were added as collision exceptions for this body.
 */
-func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody3D {
+func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody3D { //gd:PhysicsBody3D.get_collision_exceptions
 	return [][1]gdclass.PhysicsBody3D(gd.ArrayAs[[][1]gdclass.PhysicsBody3D](gd.InternalArray(class(self).GetCollisionExceptions())))
 }
 
 /*
 Adds a body to the list of bodies that this body can't collide with.
 */
-func (self Instance) AddCollisionExceptionWith(body [1]gdclass.Node) {
+func (self Instance) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.add_collision_exception_with
 	class(self).AddCollisionExceptionWith(body)
 }
 
 /*
 Removes a body from the list of bodies that this body can't collide with.
 */
-func (self Instance) RemoveCollisionExceptionWith(body [1]gdclass.Node) {
+func (self Instance) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.remove_collision_exception_with
 	class(self).RemoveCollisionExceptionWith(body)
 }
 
@@ -169,7 +169,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 [param max_collisions] allows to retrieve more than one collision result.
 */
 //go:nosplit
-func (self class) MoveAndCollide(motion gd.Vector3, test_only bool, safe_margin gd.Float, recovery_as_collision bool, max_collisions gd.Int) [1]gdclass.KinematicCollision3D {
+func (self class) MoveAndCollide(motion gd.Vector3, test_only bool, safe_margin gd.Float, recovery_as_collision bool, max_collisions gd.Int) [1]gdclass.KinematicCollision3D { //gd:PhysicsBody3D.move_and_collide
 	var frame = callframe.New()
 	callframe.Arg(frame, motion)
 	callframe.Arg(frame, test_only)
@@ -192,7 +192,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 [param max_collisions] allows to retrieve more than one collision result.
 */
 //go:nosplit
-func (self class) TestMove(from gd.Transform3D, motion gd.Vector3, collision [1]gdclass.KinematicCollision3D, safe_margin gd.Float, recovery_as_collision bool, max_collisions gd.Int) bool {
+func (self class) TestMove(from gd.Transform3D, motion gd.Vector3, collision [1]gdclass.KinematicCollision3D, safe_margin gd.Float, recovery_as_collision bool, max_collisions gd.Int) bool { //gd:PhysicsBody3D.test_move
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, motion)
@@ -211,7 +211,7 @@ func (self class) TestMove(from gd.Transform3D, motion gd.Vector3, collision [1]
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area3D] nodes and the global world gravity.
 */
 //go:nosplit
-func (self class) GetGravity() gd.Vector3 {
+func (self class) GetGravity() gd.Vector3 { //gd:PhysicsBody3D.get_gravity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsBody3D.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -224,7 +224,7 @@ func (self class) GetGravity() gd.Vector3 {
 Locks or unlocks the specified linear or rotational [param axis] depending on the value of [param lock].
 */
 //go:nosplit
-func (self class) SetAxisLock(axis gdclass.PhysicsServer3DBodyAxis, lock bool) {
+func (self class) SetAxisLock(axis gdclass.PhysicsServer3DBodyAxis, lock bool) { //gd:PhysicsBody3D.set_axis_lock
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, lock)
@@ -237,7 +237,7 @@ func (self class) SetAxisLock(axis gdclass.PhysicsServer3DBodyAxis, lock bool) {
 Returns [code]true[/code] if the specified linear or rotational [param axis] is locked.
 */
 //go:nosplit
-func (self class) GetAxisLock(axis gdclass.PhysicsServer3DBodyAxis) bool {
+func (self class) GetAxisLock(axis gdclass.PhysicsServer3DBodyAxis) bool { //gd:PhysicsBody3D.get_axis_lock
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Ret[bool](frame)
@@ -251,7 +251,7 @@ func (self class) GetAxisLock(axis gdclass.PhysicsServer3DBodyAxis) bool {
 Returns an array of nodes that were added as collision exceptions for this body.
 */
 //go:nosplit
-func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody3D] {
+func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody3D] { //gd:PhysicsBody3D.get_collision_exceptions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsBody3D.Bind_get_collision_exceptions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -264,7 +264,7 @@ func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody
 Adds a body to the list of bodies that this body can't collide with.
 */
 //go:nosplit
-func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) {
+func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.add_collision_exception_with
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(body[0])[0])
 	var r_ret = callframe.Nil
@@ -276,7 +276,7 @@ func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) {
 Removes a body from the list of bodies that this body can't collide with.
 */
 //go:nosplit
-func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) {
+func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.remove_collision_exception_with
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(body[0])[0])
 	var r_ret = callframe.Nil

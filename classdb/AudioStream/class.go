@@ -170,42 +170,42 @@ func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) []map[any]any)
 /*
 Returns the length of the audio stream in seconds.
 */
-func (self Instance) GetLength() Float.X {
+func (self Instance) GetLength() Float.X { //gd:AudioStream.get_length
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
 /*
 Returns [code]true[/code] if this audio stream only supports one channel ([i]monophony[/i]), or [code]false[/code] if the audio stream supports two or more channels ([i]polyphony[/i]).
 */
-func (self Instance) IsMonophonic() bool {
+func (self Instance) IsMonophonic() bool { //gd:AudioStream.is_monophonic
 	return bool(class(self).IsMonophonic())
 }
 
 /*
 Returns a newly created [AudioStreamPlayback] intended to play this audio stream. Useful for when you want to extend [method _instantiate_playback] but call [method instantiate_playback] from an internally held AudioStream subresource. An example of this can be found in the source code for [code]AudioStreamRandomPitch::instantiate_playback[/code].
 */
-func (self Instance) InstantiatePlayback() [1]gdclass.AudioStreamPlayback {
+func (self Instance) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
 	return [1]gdclass.AudioStreamPlayback(class(self).InstantiatePlayback())
 }
 
 /*
 Returns if the current [AudioStream] can be used as a sample. Only static streams can be sampled.
 */
-func (self Instance) CanBeSampled() bool {
+func (self Instance) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
 	return bool(class(self).CanBeSampled())
 }
 
 /*
 Generates an [AudioSample] based on the current stream.
 */
-func (self Instance) GenerateSample() [1]gdclass.AudioSample {
+func (self Instance) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
 	return [1]gdclass.AudioSample(class(self).GenerateSample())
 }
 
 /*
 Returns [code]true[/code] if the stream is a collection of other streams, [code]false[/code] otherwise.
 */
-func (self Instance) IsMetaStream() bool {
+func (self Instance) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
 	return bool(class(self).IsMetaStream())
 }
 
@@ -326,7 +326,7 @@ func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Contains[gd
 Returns the length of the audio stream in seconds.
 */
 //go:nosplit
-func (self class) GetLength() gd.Float {
+func (self class) GetLength() gd.Float { //gd:AudioStream.get_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -339,7 +339,7 @@ func (self class) GetLength() gd.Float {
 Returns [code]true[/code] if this audio stream only supports one channel ([i]monophony[/i]), or [code]false[/code] if the audio stream supports two or more channels ([i]polyphony[/i]).
 */
 //go:nosplit
-func (self class) IsMonophonic() bool {
+func (self class) IsMonophonic() bool { //gd:AudioStream.is_monophonic
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_is_monophonic, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -352,7 +352,7 @@ func (self class) IsMonophonic() bool {
 Returns a newly created [AudioStreamPlayback] intended to play this audio stream. Useful for when you want to extend [method _instantiate_playback] but call [method instantiate_playback] from an internally held AudioStream subresource. An example of this can be found in the source code for [code]AudioStreamRandomPitch::instantiate_playback[/code].
 */
 //go:nosplit
-func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback {
+func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_instantiate_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -365,7 +365,7 @@ func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback {
 Returns if the current [AudioStream] can be used as a sample. Only static streams can be sampled.
 */
 //go:nosplit
-func (self class) CanBeSampled() bool {
+func (self class) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_can_be_sampled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -378,7 +378,7 @@ func (self class) CanBeSampled() bool {
 Generates an [AudioSample] based on the current stream.
 */
 //go:nosplit
-func (self class) GenerateSample() [1]gdclass.AudioSample {
+func (self class) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_generate_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -391,7 +391,7 @@ func (self class) GenerateSample() [1]gdclass.AudioSample {
 Returns [code]true[/code] if the stream is a collection of other streams, [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self class) IsMetaStream() bool {
+func (self class) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_is_meta_stream, self.AsObject(), frame.Array(0), r_ret.Addr())

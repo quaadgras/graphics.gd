@@ -86,21 +86,21 @@ type Any interface {
 /*
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [method finish] has been called.
 */
-func (self Instance) Start(hash_type gdclass.HashingContextHashType, key []byte) error {
+func (self Instance) Start(hash_type gdclass.HashingContextHashType, key []byte) error { //gd:HMACContext.start
 	return error(gd.ToError(class(self).Start(hash_type, gd.NewPackedByteSlice(key))))
 }
 
 /*
 Updates the message to be HMACed. This can be called multiple times before [method finish] is called to append [param data] to the message, but cannot be called until [method start] has been called.
 */
-func (self Instance) Update(data []byte) error {
+func (self Instance) Update(data []byte) error { //gd:HMACContext.update
 	return error(gd.ToError(class(self).Update(gd.NewPackedByteSlice(data))))
 }
 
 /*
 Returns the resulting HMAC. If the HMAC failed, an empty [PackedByteArray] is returned.
 */
-func (self Instance) Finish() []byte {
+func (self Instance) Finish() []byte { //gd:HMACContext.finish
 	return []byte(class(self).Finish().Bytes())
 }
 
@@ -127,7 +127,7 @@ func New() Instance {
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [method finish] has been called.
 */
 //go:nosplit
-func (self class) Start(hash_type gdclass.HashingContextHashType, key gd.PackedByteArray) gd.Error {
+func (self class) Start(hash_type gdclass.HashingContextHashType, key gd.PackedByteArray) gd.Error { //gd:HMACContext.start
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(key))
@@ -142,7 +142,7 @@ func (self class) Start(hash_type gdclass.HashingContextHashType, key gd.PackedB
 Updates the message to be HMACed. This can be called multiple times before [method finish] is called to append [param data] to the message, but cannot be called until [method start] has been called.
 */
 //go:nosplit
-func (self class) Update(data gd.PackedByteArray) gd.Error {
+func (self class) Update(data gd.PackedByteArray) gd.Error { //gd:HMACContext.update
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -156,7 +156,7 @@ func (self class) Update(data gd.PackedByteArray) gd.Error {
 Returns the resulting HMAC. If the HMAC failed, an empty [PackedByteArray] is returned.
 */
 //go:nosplit
-func (self class) Finish() gd.PackedByteArray {
+func (self class) Finish() gd.PackedByteArray { //gd:HMACContext.finish
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HMACContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -190,7 +190,7 @@ func init() {
 	gdclass.Register("HMACContext", func(ptr gd.Object) any { return [1]gdclass.HMACContext{*(*gdclass.HMACContext)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

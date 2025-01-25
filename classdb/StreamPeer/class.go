@@ -41,105 +41,105 @@ type Any interface {
 /*
 Sends a chunk of data through the connection, blocking if necessary until the data is done sending. This function returns an [enum Error] code.
 */
-func (self Instance) PutData(data []byte) error {
+func (self Instance) PutData(data []byte) error { //gd:StreamPeer.put_data
 	return error(gd.ToError(class(self).PutData(gd.NewPackedByteSlice(data))))
 }
 
 /*
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [enum Error] code and an integer, describing how much data was actually sent.
 */
-func (self Instance) PutPartialData(data []byte) []any {
+func (self Instance) PutPartialData(data []byte) []any { //gd:StreamPeer.put_partial_data
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).PutPartialData(gd.NewPackedByteSlice(data)))))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the [param bytes] argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [enum Error] code and a data array.
 */
-func (self Instance) GetData(bytes int) []any {
+func (self Instance) GetData(bytes int) []any { //gd:StreamPeer.get_data
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetData(gd.Int(bytes)))))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [enum Error] code, and a data array.
 */
-func (self Instance) GetPartialData(bytes int) []any {
+func (self Instance) GetPartialData(bytes int) []any { //gd:StreamPeer.get_partial_data
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetPartialData(gd.Int(bytes)))))
 }
 
 /*
 Returns the number of bytes this [StreamPeer] has available.
 */
-func (self Instance) GetAvailableBytes() int {
+func (self Instance) GetAvailableBytes() int { //gd:StreamPeer.get_available_bytes
 	return int(int(class(self).GetAvailableBytes()))
 }
 
 /*
 Puts a signed byte into the stream.
 */
-func (self Instance) Put8(value int) {
+func (self Instance) Put8(value int) { //gd:StreamPeer.put_8
 	class(self).Put8(gd.Int(value))
 }
 
 /*
 Puts an unsigned byte into the stream.
 */
-func (self Instance) PutU8(value int) {
+func (self Instance) PutU8(value int) { //gd:StreamPeer.put_u8
 	class(self).PutU8(gd.Int(value))
 }
 
 /*
 Puts a signed 16-bit value into the stream.
 */
-func (self Instance) Put16(value int) {
+func (self Instance) Put16(value int) { //gd:StreamPeer.put_16
 	class(self).Put16(gd.Int(value))
 }
 
 /*
 Puts an unsigned 16-bit value into the stream.
 */
-func (self Instance) PutU16(value int) {
+func (self Instance) PutU16(value int) { //gd:StreamPeer.put_u16
 	class(self).PutU16(gd.Int(value))
 }
 
 /*
 Puts a signed 32-bit value into the stream.
 */
-func (self Instance) Put32(value int) {
+func (self Instance) Put32(value int) { //gd:StreamPeer.put_32
 	class(self).Put32(gd.Int(value))
 }
 
 /*
 Puts an unsigned 32-bit value into the stream.
 */
-func (self Instance) PutU32(value int) {
+func (self Instance) PutU32(value int) { //gd:StreamPeer.put_u32
 	class(self).PutU32(gd.Int(value))
 }
 
 /*
 Puts a signed 64-bit value into the stream.
 */
-func (self Instance) Put64(value int) {
+func (self Instance) Put64(value int) { //gd:StreamPeer.put_64
 	class(self).Put64(gd.Int(value))
 }
 
 /*
 Puts an unsigned 64-bit value into the stream.
 */
-func (self Instance) PutU64(value int) {
+func (self Instance) PutU64(value int) { //gd:StreamPeer.put_u64
 	class(self).PutU64(gd.Int(value))
 }
 
 /*
 Puts a single-precision float into the stream.
 */
-func (self Instance) PutFloat(value Float.X) {
+func (self Instance) PutFloat(value Float.X) { //gd:StreamPeer.put_float
 	class(self).PutFloat(gd.Float(value))
 }
 
 /*
 Puts a double-precision float into the stream.
 */
-func (self Instance) PutDouble(value Float.X) {
+func (self Instance) PutDouble(value Float.X) { //gd:StreamPeer.put_double
 	class(self).PutDouble(gd.Float(value))
 }
 
@@ -155,7 +155,7 @@ PutData("Hello World".ToAsciiBuffer());
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) PutString(value string) {
+func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
 	class(self).PutString(gd.NewString(value))
 }
 
@@ -171,7 +171,7 @@ PutData("Hello World".ToUtf8Buffer());
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) PutUtf8String(value string) {
+func (self Instance) PutUtf8String(value string) { //gd:StreamPeer.put_utf8_string
 	class(self).PutUtf8String(gd.NewString(value))
 }
 
@@ -179,91 +179,91 @@ func (self Instance) PutUtf8String(value string) {
 Puts a Variant into the stream. If [param full_objects] is [code]true[/code] encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
-func (self Instance) PutVar(value any) {
+func (self Instance) PutVar(value any) { //gd:StreamPeer.put_var
 	class(self).PutVar(gd.NewVariant(value), false)
 }
 
 /*
 Gets a signed byte from the stream.
 */
-func (self Instance) Get8() int {
+func (self Instance) Get8() int { //gd:StreamPeer.get_8
 	return int(int(class(self).Get8()))
 }
 
 /*
 Gets an unsigned byte from the stream.
 */
-func (self Instance) GetU8() int {
+func (self Instance) GetU8() int { //gd:StreamPeer.get_u8
 	return int(int(class(self).GetU8()))
 }
 
 /*
 Gets a signed 16-bit value from the stream.
 */
-func (self Instance) Get16() int {
+func (self Instance) Get16() int { //gd:StreamPeer.get_16
 	return int(int(class(self).Get16()))
 }
 
 /*
 Gets an unsigned 16-bit value from the stream.
 */
-func (self Instance) GetU16() int {
+func (self Instance) GetU16() int { //gd:StreamPeer.get_u16
 	return int(int(class(self).GetU16()))
 }
 
 /*
 Gets a signed 32-bit value from the stream.
 */
-func (self Instance) Get32() int {
+func (self Instance) Get32() int { //gd:StreamPeer.get_32
 	return int(int(class(self).Get32()))
 }
 
 /*
 Gets an unsigned 32-bit value from the stream.
 */
-func (self Instance) GetU32() int {
+func (self Instance) GetU32() int { //gd:StreamPeer.get_u32
 	return int(int(class(self).GetU32()))
 }
 
 /*
 Gets a signed 64-bit value from the stream.
 */
-func (self Instance) Get64() int {
+func (self Instance) Get64() int { //gd:StreamPeer.get_64
 	return int(int(class(self).Get64()))
 }
 
 /*
 Gets an unsigned 64-bit value from the stream.
 */
-func (self Instance) GetU64() int {
+func (self Instance) GetU64() int { //gd:StreamPeer.get_u64
 	return int(int(class(self).GetU64()))
 }
 
 /*
 Gets a single-precision float from the stream.
 */
-func (self Instance) GetFloat() Float.X {
+func (self Instance) GetFloat() Float.X { //gd:StreamPeer.get_float
 	return Float.X(Float.X(class(self).GetFloat()))
 }
 
 /*
 Gets a double-precision float from the stream.
 */
-func (self Instance) GetDouble() Float.X {
+func (self Instance) GetDouble() Float.X { //gd:StreamPeer.get_double
 	return Float.X(Float.X(class(self).GetDouble()))
 }
 
 /*
 Gets an ASCII string with byte-length [param bytes] from the stream. If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_string].
 */
-func (self Instance) GetString() string {
+func (self Instance) GetString() string { //gd:StreamPeer.get_string
 	return string(class(self).GetString(gd.Int(-1)).String())
 }
 
 /*
 Gets a UTF-8 string with byte-length [param bytes] from the stream (this decodes the string sent as UTF-8). If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_utf8_string].
 */
-func (self Instance) GetUtf8String() string {
+func (self Instance) GetUtf8String() string { //gd:StreamPeer.get_utf8_string
 	return string(class(self).GetUtf8String(gd.Int(-1)).String())
 }
 
@@ -272,7 +272,7 @@ Gets a Variant from the stream. If [param allow_objects] is [code]true[/code], d
 Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
-func (self Instance) GetVar() any {
+func (self Instance) GetVar() any { //gd:StreamPeer.get_var
 	return any(class(self).GetVar(false).Interface())
 }
 
@@ -307,7 +307,7 @@ func (self Instance) SetBigEndian(value bool) {
 Sends a chunk of data through the connection, blocking if necessary until the data is done sending. This function returns an [enum Error] code.
 */
 //go:nosplit
-func (self class) PutData(data gd.PackedByteArray) gd.Error {
+func (self class) PutData(data gd.PackedByteArray) gd.Error { //gd:StreamPeer.put_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -321,7 +321,7 @@ func (self class) PutData(data gd.PackedByteArray) gd.Error {
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [enum Error] code and an integer, describing how much data was actually sent.
 */
 //go:nosplit
-func (self class) PutPartialData(data gd.PackedByteArray) Array.Any {
+func (self class) PutPartialData(data gd.PackedByteArray) Array.Any { //gd:StreamPeer.put_partial_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -335,7 +335,7 @@ func (self class) PutPartialData(data gd.PackedByteArray) Array.Any {
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the [param bytes] argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [enum Error] code and a data array.
 */
 //go:nosplit
-func (self class) GetData(bytes gd.Int) Array.Any {
+func (self class) GetData(bytes gd.Int) Array.Any { //gd:StreamPeer.get_data
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -349,7 +349,7 @@ func (self class) GetData(bytes gd.Int) Array.Any {
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [enum Error] code, and a data array.
 */
 //go:nosplit
-func (self class) GetPartialData(bytes gd.Int) Array.Any {
+func (self class) GetPartialData(bytes gd.Int) Array.Any { //gd:StreamPeer.get_partial_data
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -363,7 +363,7 @@ func (self class) GetPartialData(bytes gd.Int) Array.Any {
 Returns the number of bytes this [StreamPeer] has available.
 */
 //go:nosplit
-func (self class) GetAvailableBytes() gd.Int {
+func (self class) GetAvailableBytes() gd.Int { //gd:StreamPeer.get_available_bytes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_available_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -373,7 +373,7 @@ func (self class) GetAvailableBytes() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetBigEndian(enable bool) {
+func (self class) SetBigEndian(enable bool) { //gd:StreamPeer.set_big_endian
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -382,7 +382,7 @@ func (self class) SetBigEndian(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsBigEndianEnabled() bool {
+func (self class) IsBigEndianEnabled() bool { //gd:StreamPeer.is_big_endian_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_is_big_endian_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -395,7 +395,7 @@ func (self class) IsBigEndianEnabled() bool {
 Puts a signed byte into the stream.
 */
 //go:nosplit
-func (self class) Put8(value gd.Int) {
+func (self class) Put8(value gd.Int) { //gd:StreamPeer.put_8
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -407,7 +407,7 @@ func (self class) Put8(value gd.Int) {
 Puts an unsigned byte into the stream.
 */
 //go:nosplit
-func (self class) PutU8(value gd.Int) {
+func (self class) PutU8(value gd.Int) { //gd:StreamPeer.put_u8
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -419,7 +419,7 @@ func (self class) PutU8(value gd.Int) {
 Puts a signed 16-bit value into the stream.
 */
 //go:nosplit
-func (self class) Put16(value gd.Int) {
+func (self class) Put16(value gd.Int) { //gd:StreamPeer.put_16
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -431,7 +431,7 @@ func (self class) Put16(value gd.Int) {
 Puts an unsigned 16-bit value into the stream.
 */
 //go:nosplit
-func (self class) PutU16(value gd.Int) {
+func (self class) PutU16(value gd.Int) { //gd:StreamPeer.put_u16
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -443,7 +443,7 @@ func (self class) PutU16(value gd.Int) {
 Puts a signed 32-bit value into the stream.
 */
 //go:nosplit
-func (self class) Put32(value gd.Int) {
+func (self class) Put32(value gd.Int) { //gd:StreamPeer.put_32
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -455,7 +455,7 @@ func (self class) Put32(value gd.Int) {
 Puts an unsigned 32-bit value into the stream.
 */
 //go:nosplit
-func (self class) PutU32(value gd.Int) {
+func (self class) PutU32(value gd.Int) { //gd:StreamPeer.put_u32
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -467,7 +467,7 @@ func (self class) PutU32(value gd.Int) {
 Puts a signed 64-bit value into the stream.
 */
 //go:nosplit
-func (self class) Put64(value gd.Int) {
+func (self class) Put64(value gd.Int) { //gd:StreamPeer.put_64
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -479,7 +479,7 @@ func (self class) Put64(value gd.Int) {
 Puts an unsigned 64-bit value into the stream.
 */
 //go:nosplit
-func (self class) PutU64(value gd.Int) {
+func (self class) PutU64(value gd.Int) { //gd:StreamPeer.put_u64
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -491,7 +491,7 @@ func (self class) PutU64(value gd.Int) {
 Puts a single-precision float into the stream.
 */
 //go:nosplit
-func (self class) PutFloat(value gd.Float) {
+func (self class) PutFloat(value gd.Float) { //gd:StreamPeer.put_float
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -503,7 +503,7 @@ func (self class) PutFloat(value gd.Float) {
 Puts a double-precision float into the stream.
 */
 //go:nosplit
-func (self class) PutDouble(value gd.Float) {
+func (self class) PutDouble(value gd.Float) { //gd:StreamPeer.put_double
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -524,7 +524,7 @@ PutData("Hello World".ToAsciiBuffer());
 [/codeblocks]
 */
 //go:nosplit
-func (self class) PutString(value gd.String) {
+func (self class) PutString(value gd.String) { //gd:StreamPeer.put_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
@@ -545,7 +545,7 @@ PutData("Hello World".ToUtf8Buffer());
 [/codeblocks]
 */
 //go:nosplit
-func (self class) PutUtf8String(value gd.String) {
+func (self class) PutUtf8String(value gd.String) { //gd:StreamPeer.put_utf8_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Nil
@@ -558,7 +558,7 @@ Puts a Variant into the stream. If [param full_objects] is [code]true[/code] enc
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
 //go:nosplit
-func (self class) PutVar(value gd.Variant, full_objects bool) {
+func (self class) PutVar(value gd.Variant, full_objects bool) { //gd:StreamPeer.put_var
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	callframe.Arg(frame, full_objects)
@@ -571,7 +571,7 @@ func (self class) PutVar(value gd.Variant, full_objects bool) {
 Gets a signed byte from the stream.
 */
 //go:nosplit
-func (self class) Get8() gd.Int {
+func (self class) Get8() gd.Int { //gd:StreamPeer.get_8
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_8, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -584,7 +584,7 @@ func (self class) Get8() gd.Int {
 Gets an unsigned byte from the stream.
 */
 //go:nosplit
-func (self class) GetU8() gd.Int {
+func (self class) GetU8() gd.Int { //gd:StreamPeer.get_u8
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_u8, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -597,7 +597,7 @@ func (self class) GetU8() gd.Int {
 Gets a signed 16-bit value from the stream.
 */
 //go:nosplit
-func (self class) Get16() gd.Int {
+func (self class) Get16() gd.Int { //gd:StreamPeer.get_16
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_16, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -610,7 +610,7 @@ func (self class) Get16() gd.Int {
 Gets an unsigned 16-bit value from the stream.
 */
 //go:nosplit
-func (self class) GetU16() gd.Int {
+func (self class) GetU16() gd.Int { //gd:StreamPeer.get_u16
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_u16, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -623,7 +623,7 @@ func (self class) GetU16() gd.Int {
 Gets a signed 32-bit value from the stream.
 */
 //go:nosplit
-func (self class) Get32() gd.Int {
+func (self class) Get32() gd.Int { //gd:StreamPeer.get_32
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_32, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -636,7 +636,7 @@ func (self class) Get32() gd.Int {
 Gets an unsigned 32-bit value from the stream.
 */
 //go:nosplit
-func (self class) GetU32() gd.Int {
+func (self class) GetU32() gd.Int { //gd:StreamPeer.get_u32
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_u32, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -649,7 +649,7 @@ func (self class) GetU32() gd.Int {
 Gets a signed 64-bit value from the stream.
 */
 //go:nosplit
-func (self class) Get64() gd.Int {
+func (self class) Get64() gd.Int { //gd:StreamPeer.get_64
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_64, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -662,7 +662,7 @@ func (self class) Get64() gd.Int {
 Gets an unsigned 64-bit value from the stream.
 */
 //go:nosplit
-func (self class) GetU64() gd.Int {
+func (self class) GetU64() gd.Int { //gd:StreamPeer.get_u64
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_u64, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -675,7 +675,7 @@ func (self class) GetU64() gd.Int {
 Gets a single-precision float from the stream.
 */
 //go:nosplit
-func (self class) GetFloat() gd.Float {
+func (self class) GetFloat() gd.Float { //gd:StreamPeer.get_float
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_float, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -688,7 +688,7 @@ func (self class) GetFloat() gd.Float {
 Gets a double-precision float from the stream.
 */
 //go:nosplit
-func (self class) GetDouble() gd.Float {
+func (self class) GetDouble() gd.Float { //gd:StreamPeer.get_double
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_double, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -701,7 +701,7 @@ func (self class) GetDouble() gd.Float {
 Gets an ASCII string with byte-length [param bytes] from the stream. If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_string].
 */
 //go:nosplit
-func (self class) GetString(bytes gd.Int) gd.String {
+func (self class) GetString(bytes gd.Int) gd.String { //gd:StreamPeer.get_string
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -715,7 +715,7 @@ func (self class) GetString(bytes gd.Int) gd.String {
 Gets a UTF-8 string with byte-length [param bytes] from the stream (this decodes the string sent as UTF-8). If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_utf8_string].
 */
 //go:nosplit
-func (self class) GetUtf8String(bytes gd.Int) gd.String {
+func (self class) GetUtf8String(bytes gd.Int) gd.String { //gd:StreamPeer.get_utf8_string
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -731,7 +731,7 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit
-func (self class) GetVar(allow_objects bool) gd.Variant {
+func (self class) GetVar(allow_objects bool) gd.Variant { //gd:StreamPeer.get_var
 	var frame = callframe.New()
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -766,7 +766,7 @@ func init() {
 	gdclass.Register("StreamPeer", func(ptr gd.Object) any { return [1]gdclass.StreamPeer{*(*gdclass.StreamPeer)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

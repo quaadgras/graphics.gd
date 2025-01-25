@@ -89,7 +89,7 @@ func (self Instance) SetAttachments(value [][1]gdclass.RDPipelineColorBlendState
 }
 
 //go:nosplit
-func (self class) SetEnableLogicOp(p_member bool) {
+func (self class) SetEnableLogicOp(p_member bool) { //gd:RDPipelineColorBlendState.set_enable_logic_op
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -98,7 +98,7 @@ func (self class) SetEnableLogicOp(p_member bool) {
 }
 
 //go:nosplit
-func (self class) GetEnableLogicOp() bool {
+func (self class) GetEnableLogicOp() bool { //gd:RDPipelineColorBlendState.get_enable_logic_op
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendState.Bind_get_enable_logic_op, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -108,7 +108,7 @@ func (self class) GetEnableLogicOp() bool {
 }
 
 //go:nosplit
-func (self class) SetLogicOp(p_member gdclass.RenderingDeviceLogicOperation) {
+func (self class) SetLogicOp(p_member gdclass.RenderingDeviceLogicOperation) { //gd:RDPipelineColorBlendState.set_logic_op
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -117,7 +117,7 @@ func (self class) SetLogicOp(p_member gdclass.RenderingDeviceLogicOperation) {
 }
 
 //go:nosplit
-func (self class) GetLogicOp() gdclass.RenderingDeviceLogicOperation {
+func (self class) GetLogicOp() gdclass.RenderingDeviceLogicOperation { //gd:RDPipelineColorBlendState.get_logic_op
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceLogicOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendState.Bind_get_logic_op, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func (self class) GetLogicOp() gdclass.RenderingDeviceLogicOperation {
 }
 
 //go:nosplit
-func (self class) SetBlendConstant(p_member gd.Color) {
+func (self class) SetBlendConstant(p_member gd.Color) { //gd:RDPipelineColorBlendState.set_blend_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -136,7 +136,7 @@ func (self class) SetBlendConstant(p_member gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetBlendConstant() gd.Color {
+func (self class) GetBlendConstant() gd.Color { //gd:RDPipelineColorBlendState.get_blend_constant
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendState.Bind_get_blend_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -146,7 +146,7 @@ func (self class) GetBlendConstant() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetAttachments(attachments Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment]) {
+func (self class) SetAttachments(attachments Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment]) { //gd:RDPipelineColorBlendState.set_attachments
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(attachments)))
 	var r_ret = callframe.Nil
@@ -155,7 +155,7 @@ func (self class) SetAttachments(attachments Array.Contains[[1]gdclass.RDPipelin
 }
 
 //go:nosplit
-func (self class) GetAttachments() Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment] {
+func (self class) GetAttachments() Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment] { //gd:RDPipelineColorBlendState.get_attachments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendState.Bind_get_attachments, self.AsObject(), frame.Array(0), r_ret.Addr())

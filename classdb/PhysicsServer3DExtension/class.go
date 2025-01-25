@@ -2513,10 +2513,10 @@ func (Instance) _get_process_info(impl func(ptr unsafe.Pointer, process_info gdc
 		gd.UnsafeSet(p_back, gd.Int(ret))
 	}
 }
-func (self Instance) BodyTestMotionIsExcludingBody(body Resource.ID) bool {
+func (self Instance) BodyTestMotionIsExcludingBody(body Resource.ID) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_body
 	return bool(class(self).BodyTestMotionIsExcludingBody(body))
 }
-func (self Instance) BodyTestMotionIsExcludingObject(obj int) bool {
+func (self Instance) BodyTestMotionIsExcludingObject(obj int) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_object
 	return bool(class(self).BodyTestMotionIsExcludingObject(gd.Int(obj)))
 }
 
@@ -4665,7 +4665,7 @@ func (class) _get_process_info(impl func(ptr unsafe.Pointer, process_info gdclas
 }
 
 //go:nosplit
-func (self class) BodyTestMotionIsExcludingBody(body gd.RID) bool {
+func (self class) BodyTestMotionIsExcludingBody(body gd.RID) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_body
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[bool](frame)
@@ -4676,7 +4676,7 @@ func (self class) BodyTestMotionIsExcludingBody(body gd.RID) bool {
 }
 
 //go:nosplit
-func (self class) BodyTestMotionIsExcludingObject(obj gd.Int) bool {
+func (self class) BodyTestMotionIsExcludingObject(obj gd.Int) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_object
 	var frame = callframe.New()
 	callframe.Arg(frame, obj)
 	var r_ret = callframe.Ret[bool](frame)

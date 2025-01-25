@@ -98,7 +98,7 @@ func (self Instance) SetFlipV(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:TextureRect.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture2D {
+func (self class) GetTexture() [1]gdclass.Texture2D { //gd:TextureRect.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureRect.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -117,7 +117,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetExpandMode(expand_mode gdclass.TextureRectExpandMode) {
+func (self class) SetExpandMode(expand_mode gdclass.TextureRectExpandMode) { //gd:TextureRect.set_expand_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, expand_mode)
 	var r_ret = callframe.Nil
@@ -126,7 +126,7 @@ func (self class) SetExpandMode(expand_mode gdclass.TextureRectExpandMode) {
 }
 
 //go:nosplit
-func (self class) GetExpandMode() gdclass.TextureRectExpandMode {
+func (self class) GetExpandMode() gdclass.TextureRectExpandMode { //gd:TextureRect.get_expand_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextureRectExpandMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureRect.Bind_get_expand_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -136,7 +136,7 @@ func (self class) GetExpandMode() gdclass.TextureRectExpandMode {
 }
 
 //go:nosplit
-func (self class) SetFlipH(enable bool) {
+func (self class) SetFlipH(enable bool) { //gd:TextureRect.set_flip_h
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -145,7 +145,7 @@ func (self class) SetFlipH(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsFlippedH() bool {
+func (self class) IsFlippedH() bool { //gd:TextureRect.is_flipped_h
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureRect.Bind_is_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -155,7 +155,7 @@ func (self class) IsFlippedH() bool {
 }
 
 //go:nosplit
-func (self class) SetFlipV(enable bool) {
+func (self class) SetFlipV(enable bool) { //gd:TextureRect.set_flip_v
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -164,7 +164,7 @@ func (self class) SetFlipV(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsFlippedV() bool {
+func (self class) IsFlippedV() bool { //gd:TextureRect.is_flipped_v
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureRect.Bind_is_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func (self class) IsFlippedV() bool {
 }
 
 //go:nosplit
-func (self class) SetStretchMode(stretch_mode gdclass.TextureRectStretchMode) {
+func (self class) SetStretchMode(stretch_mode gdclass.TextureRectStretchMode) { //gd:TextureRect.set_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch_mode)
 	var r_ret = callframe.Nil
@@ -183,7 +183,7 @@ func (self class) SetStretchMode(stretch_mode gdclass.TextureRectStretchMode) {
 }
 
 //go:nosplit
-func (self class) GetStretchMode() gdclass.TextureRectStretchMode {
+func (self class) GetStretchMode() gdclass.TextureRectStretchMode { //gd:TextureRect.get_stretch_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextureRectStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureRect.Bind_get_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -223,7 +223,7 @@ func init() {
 	gdclass.Register("TextureRect", func(ptr gd.Object) any { return [1]gdclass.TextureRect{*(*gdclass.TextureRect)(unsafe.Pointer(&ptr))} })
 }
 
-type ExpandMode = gdclass.TextureRectExpandMode
+type ExpandMode = gdclass.TextureRectExpandMode //gd:TextureRect.ExpandMode
 
 const (
 	/*The minimum size will be equal to texture size, i.e. [TextureRect] can't be smaller than the texture.*/
@@ -240,7 +240,7 @@ const (
 	ExpandFitHeightProportional ExpandMode = 5
 )
 
-type StretchMode = gdclass.TextureRectStretchMode
+type StretchMode = gdclass.TextureRectStretchMode //gd:TextureRect.StretchMode
 
 const (
 	/*Scale to fit the node's bounding rectangle.*/

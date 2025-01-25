@@ -47,7 +47,7 @@ type Any interface {
 /*
 Returns a new unused source ID. This generated ID is the same that a call to [method add_source] would return.
 */
-func (self Instance) GetNextSourceId() int {
+func (self Instance) GetNextSourceId() int { //gd:TileSet.get_next_source_id
 	return int(int(class(self).GetNextSourceId()))
 }
 
@@ -56,56 +56,56 @@ Adds a [TileSetSource] to the TileSet. If [param atlas_source_id_override] is no
 The function returns the added source ID or -1 if the source could not be added.
 [b]Warning:[/b] A source cannot belong to two TileSets at the same time. If the added source was attached to another [TileSet], it will be removed from that one.
 */
-func (self Instance) AddSource(source [1]gdclass.TileSetSource) int {
+func (self Instance) AddSource(source [1]gdclass.TileSetSource) int { //gd:TileSet.add_source
 	return int(int(class(self).AddSource(source, gd.Int(-1))))
 }
 
 /*
 Removes the source with the given source ID.
 */
-func (self Instance) RemoveSource(source_id int) {
+func (self Instance) RemoveSource(source_id int) { //gd:TileSet.remove_source
 	class(self).RemoveSource(gd.Int(source_id))
 }
 
 /*
 Changes a source's ID.
 */
-func (self Instance) SetSourceId(source_id int, new_source_id int) {
+func (self Instance) SetSourceId(source_id int, new_source_id int) { //gd:TileSet.set_source_id
 	class(self).SetSourceId(gd.Int(source_id), gd.Int(new_source_id))
 }
 
 /*
 Returns the number of [TileSetSource] in this TileSet.
 */
-func (self Instance) GetSourceCount() int {
+func (self Instance) GetSourceCount() int { //gd:TileSet.get_source_count
 	return int(int(class(self).GetSourceCount()))
 }
 
 /*
 Returns the source ID for source with index [param index].
 */
-func (self Instance) GetSourceId(index int) int {
+func (self Instance) GetSourceId(index int) int { //gd:TileSet.get_source_id
 	return int(int(class(self).GetSourceId(gd.Int(index))))
 }
 
 /*
 Returns if this TileSet has a source for the given source ID.
 */
-func (self Instance) HasSource(source_id int) bool {
+func (self Instance) HasSource(source_id int) bool { //gd:TileSet.has_source
 	return bool(class(self).HasSource(gd.Int(source_id)))
 }
 
 /*
 Returns the [TileSetSource] with ID [param source_id].
 */
-func (self Instance) GetSource(source_id int) [1]gdclass.TileSetSource {
+func (self Instance) GetSource(source_id int) [1]gdclass.TileSetSource { //gd:TileSet.get_source
 	return [1]gdclass.TileSetSource(class(self).GetSource(gd.Int(source_id)))
 }
 
 /*
 Returns the occlusion layers count.
 */
-func (self Instance) GetOcclusionLayersCount() int {
+func (self Instance) GetOcclusionLayersCount() int { //gd:TileSet.get_occlusion_layers_count
 	return int(int(class(self).GetOcclusionLayersCount()))
 }
 
@@ -113,56 +113,56 @@ func (self Instance) GetOcclusionLayersCount() int {
 Adds an occlusion layer to the TileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 Occlusion layers allow assigning occlusion polygons to atlas tiles.
 */
-func (self Instance) AddOcclusionLayer() {
+func (self Instance) AddOcclusionLayer() { //gd:TileSet.add_occlusion_layer
 	class(self).AddOcclusionLayer(gd.Int(-1))
 }
 
 /*
 Moves the occlusion layer at index [param layer_index] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
-func (self Instance) MoveOcclusionLayer(layer_index int, to_position int) {
+func (self Instance) MoveOcclusionLayer(layer_index int, to_position int) { //gd:TileSet.move_occlusion_layer
 	class(self).MoveOcclusionLayer(gd.Int(layer_index), gd.Int(to_position))
 }
 
 /*
 Removes the occlusion layer at index [param layer_index]. Also updates the atlas tiles accordingly.
 */
-func (self Instance) RemoveOcclusionLayer(layer_index int) {
+func (self Instance) RemoveOcclusionLayer(layer_index int) { //gd:TileSet.remove_occlusion_layer
 	class(self).RemoveOcclusionLayer(gd.Int(layer_index))
 }
 
 /*
 Sets the occlusion layer (as in the rendering server) for occluders in the given TileSet occlusion layer.
 */
-func (self Instance) SetOcclusionLayerLightMask(layer_index int, light_mask int) {
+func (self Instance) SetOcclusionLayerLightMask(layer_index int, light_mask int) { //gd:TileSet.set_occlusion_layer_light_mask
 	class(self).SetOcclusionLayerLightMask(gd.Int(layer_index), gd.Int(light_mask))
 }
 
 /*
 Returns the light mask of the occlusion layer.
 */
-func (self Instance) GetOcclusionLayerLightMask(layer_index int) int {
+func (self Instance) GetOcclusionLayerLightMask(layer_index int) int { //gd:TileSet.get_occlusion_layer_light_mask
 	return int(int(class(self).GetOcclusionLayerLightMask(gd.Int(layer_index))))
 }
 
 /*
 Enables or disables SDF collision for occluders in the given TileSet occlusion layer.
 */
-func (self Instance) SetOcclusionLayerSdfCollision(layer_index int, sdf_collision bool) {
+func (self Instance) SetOcclusionLayerSdfCollision(layer_index int, sdf_collision bool) { //gd:TileSet.set_occlusion_layer_sdf_collision
 	class(self).SetOcclusionLayerSdfCollision(gd.Int(layer_index), sdf_collision)
 }
 
 /*
 Returns if the occluders from this layer use [code]sdf_collision[/code].
 */
-func (self Instance) GetOcclusionLayerSdfCollision(layer_index int) bool {
+func (self Instance) GetOcclusionLayerSdfCollision(layer_index int) bool { //gd:TileSet.get_occlusion_layer_sdf_collision
 	return bool(class(self).GetOcclusionLayerSdfCollision(gd.Int(layer_index)))
 }
 
 /*
 Returns the physics layers count.
 */
-func (self Instance) GetPhysicsLayersCount() int {
+func (self Instance) GetPhysicsLayersCount() int { //gd:TileSet.get_physics_layers_count
 	return int(int(class(self).GetPhysicsLayersCount()))
 }
 
@@ -170,168 +170,168 @@ func (self Instance) GetPhysicsLayersCount() int {
 Adds a physics layer to the TileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 Physics layers allow assigning collision polygons to atlas tiles.
 */
-func (self Instance) AddPhysicsLayer() {
+func (self Instance) AddPhysicsLayer() { //gd:TileSet.add_physics_layer
 	class(self).AddPhysicsLayer(gd.Int(-1))
 }
 
 /*
 Moves the physics layer at index [param layer_index] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
-func (self Instance) MovePhysicsLayer(layer_index int, to_position int) {
+func (self Instance) MovePhysicsLayer(layer_index int, to_position int) { //gd:TileSet.move_physics_layer
 	class(self).MovePhysicsLayer(gd.Int(layer_index), gd.Int(to_position))
 }
 
 /*
 Removes the physics layer at index [param layer_index]. Also updates the atlas tiles accordingly.
 */
-func (self Instance) RemovePhysicsLayer(layer_index int) {
+func (self Instance) RemovePhysicsLayer(layer_index int) { //gd:TileSet.remove_physics_layer
 	class(self).RemovePhysicsLayer(gd.Int(layer_index))
 }
 
 /*
 Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
 */
-func (self Instance) SetPhysicsLayerCollisionLayer(layer_index int, layer int) {
+func (self Instance) SetPhysicsLayerCollisionLayer(layer_index int, layer int) { //gd:TileSet.set_physics_layer_collision_layer
 	class(self).SetPhysicsLayerCollisionLayer(gd.Int(layer_index), gd.Int(layer))
 }
 
 /*
 Returns the collision layer (as in the physics server) bodies on the given TileSet's physics layer are in.
 */
-func (self Instance) GetPhysicsLayerCollisionLayer(layer_index int) int {
+func (self Instance) GetPhysicsLayerCollisionLayer(layer_index int) int { //gd:TileSet.get_physics_layer_collision_layer
 	return int(int(class(self).GetPhysicsLayerCollisionLayer(gd.Int(layer_index))))
 }
 
 /*
 Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
 */
-func (self Instance) SetPhysicsLayerCollisionMask(layer_index int, mask int) {
+func (self Instance) SetPhysicsLayerCollisionMask(layer_index int, mask int) { //gd:TileSet.set_physics_layer_collision_mask
 	class(self).SetPhysicsLayerCollisionMask(gd.Int(layer_index), gd.Int(mask))
 }
 
 /*
 Returns the collision mask of bodies on the given TileSet's physics layer.
 */
-func (self Instance) GetPhysicsLayerCollisionMask(layer_index int) int {
+func (self Instance) GetPhysicsLayerCollisionMask(layer_index int) int { //gd:TileSet.get_physics_layer_collision_mask
 	return int(int(class(self).GetPhysicsLayerCollisionMask(gd.Int(layer_index))))
 }
 
 /*
 Sets the physics material for bodies in the given TileSet physics layer.
 */
-func (self Instance) SetPhysicsLayerPhysicsMaterial(layer_index int, physics_material [1]gdclass.PhysicsMaterial) {
+func (self Instance) SetPhysicsLayerPhysicsMaterial(layer_index int, physics_material [1]gdclass.PhysicsMaterial) { //gd:TileSet.set_physics_layer_physics_material
 	class(self).SetPhysicsLayerPhysicsMaterial(gd.Int(layer_index), physics_material)
 }
 
 /*
 Returns the physics material of bodies on the given TileSet's physics layer.
 */
-func (self Instance) GetPhysicsLayerPhysicsMaterial(layer_index int) [1]gdclass.PhysicsMaterial {
+func (self Instance) GetPhysicsLayerPhysicsMaterial(layer_index int) [1]gdclass.PhysicsMaterial { //gd:TileSet.get_physics_layer_physics_material
 	return [1]gdclass.PhysicsMaterial(class(self).GetPhysicsLayerPhysicsMaterial(gd.Int(layer_index)))
 }
 
 /*
 Returns the terrain sets count.
 */
-func (self Instance) GetTerrainSetsCount() int {
+func (self Instance) GetTerrainSetsCount() int { //gd:TileSet.get_terrain_sets_count
 	return int(int(class(self).GetTerrainSetsCount()))
 }
 
 /*
 Adds a new terrain set at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 */
-func (self Instance) AddTerrainSet() {
+func (self Instance) AddTerrainSet() { //gd:TileSet.add_terrain_set
 	class(self).AddTerrainSet(gd.Int(-1))
 }
 
 /*
 Moves the terrain set at index [param terrain_set] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
-func (self Instance) MoveTerrainSet(terrain_set int, to_position int) {
+func (self Instance) MoveTerrainSet(terrain_set int, to_position int) { //gd:TileSet.move_terrain_set
 	class(self).MoveTerrainSet(gd.Int(terrain_set), gd.Int(to_position))
 }
 
 /*
 Removes the terrain set at index [param terrain_set]. Also updates the atlas tiles accordingly.
 */
-func (self Instance) RemoveTerrainSet(terrain_set int) {
+func (self Instance) RemoveTerrainSet(terrain_set int) { //gd:TileSet.remove_terrain_set
 	class(self).RemoveTerrainSet(gd.Int(terrain_set))
 }
 
 /*
 Sets a terrain mode. Each mode determines which bits of a tile shape is used to match the neighboring tiles' terrains.
 */
-func (self Instance) SetTerrainSetMode(terrain_set int, mode gdclass.TileSetTerrainMode) {
+func (self Instance) SetTerrainSetMode(terrain_set int, mode gdclass.TileSetTerrainMode) { //gd:TileSet.set_terrain_set_mode
 	class(self).SetTerrainSetMode(gd.Int(terrain_set), mode)
 }
 
 /*
 Returns a terrain set mode.
 */
-func (self Instance) GetTerrainSetMode(terrain_set int) gdclass.TileSetTerrainMode {
+func (self Instance) GetTerrainSetMode(terrain_set int) gdclass.TileSetTerrainMode { //gd:TileSet.get_terrain_set_mode
 	return gdclass.TileSetTerrainMode(class(self).GetTerrainSetMode(gd.Int(terrain_set)))
 }
 
 /*
 Returns the number of terrains in the given terrain set.
 */
-func (self Instance) GetTerrainsCount(terrain_set int) int {
+func (self Instance) GetTerrainsCount(terrain_set int) int { //gd:TileSet.get_terrains_count
 	return int(int(class(self).GetTerrainsCount(gd.Int(terrain_set))))
 }
 
 /*
 Adds a new terrain to the given terrain set [param terrain_set] at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 */
-func (self Instance) AddTerrain(terrain_set int) {
+func (self Instance) AddTerrain(terrain_set int) { //gd:TileSet.add_terrain
 	class(self).AddTerrain(gd.Int(terrain_set), gd.Int(-1))
 }
 
 /*
 Moves the terrain at index [param terrain_index] for terrain set [param terrain_set] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
-func (self Instance) MoveTerrain(terrain_set int, terrain_index int, to_position int) {
+func (self Instance) MoveTerrain(terrain_set int, terrain_index int, to_position int) { //gd:TileSet.move_terrain
 	class(self).MoveTerrain(gd.Int(terrain_set), gd.Int(terrain_index), gd.Int(to_position))
 }
 
 /*
 Removes the terrain at index [param terrain_index] in the given terrain set [param terrain_set]. Also updates the atlas tiles accordingly.
 */
-func (self Instance) RemoveTerrain(terrain_set int, terrain_index int) {
+func (self Instance) RemoveTerrain(terrain_set int, terrain_index int) { //gd:TileSet.remove_terrain
 	class(self).RemoveTerrain(gd.Int(terrain_set), gd.Int(terrain_index))
 }
 
 /*
 Sets a terrain's name.
 */
-func (self Instance) SetTerrainName(terrain_set int, terrain_index int, name string) {
+func (self Instance) SetTerrainName(terrain_set int, terrain_index int, name string) { //gd:TileSet.set_terrain_name
 	class(self).SetTerrainName(gd.Int(terrain_set), gd.Int(terrain_index), gd.NewString(name))
 }
 
 /*
 Returns a terrain's name.
 */
-func (self Instance) GetTerrainName(terrain_set int, terrain_index int) string {
+func (self Instance) GetTerrainName(terrain_set int, terrain_index int) string { //gd:TileSet.get_terrain_name
 	return string(class(self).GetTerrainName(gd.Int(terrain_set), gd.Int(terrain_index)).String())
 }
 
 /*
 Sets a terrain's color. This color is used for identifying the different terrains in the TileSet editor.
 */
-func (self Instance) SetTerrainColor(terrain_set int, terrain_index int, color Color.RGBA) {
+func (self Instance) SetTerrainColor(terrain_set int, terrain_index int, color Color.RGBA) { //gd:TileSet.set_terrain_color
 	class(self).SetTerrainColor(gd.Int(terrain_set), gd.Int(terrain_index), gd.Color(color))
 }
 
 /*
 Returns a terrain's color.
 */
-func (self Instance) GetTerrainColor(terrain_set int, terrain_index int) Color.RGBA {
+func (self Instance) GetTerrainColor(terrain_set int, terrain_index int) Color.RGBA { //gd:TileSet.get_terrain_color
 	return Color.RGBA(class(self).GetTerrainColor(gd.Int(terrain_set), gd.Int(terrain_index)))
 }
 
 /*
 Returns the navigation layers count.
 */
-func (self Instance) GetNavigationLayersCount() int {
+func (self Instance) GetNavigationLayersCount() int { //gd:TileSet.get_navigation_layers_count
 	return int(int(class(self).GetNavigationLayersCount()))
 }
 
@@ -339,56 +339,56 @@ func (self Instance) GetNavigationLayersCount() int {
 Adds a navigation layer to the TileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 Navigation layers allow assigning a navigable area to atlas tiles.
 */
-func (self Instance) AddNavigationLayer() {
+func (self Instance) AddNavigationLayer() { //gd:TileSet.add_navigation_layer
 	class(self).AddNavigationLayer(gd.Int(-1))
 }
 
 /*
 Moves the navigation layer at index [param layer_index] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
-func (self Instance) MoveNavigationLayer(layer_index int, to_position int) {
+func (self Instance) MoveNavigationLayer(layer_index int, to_position int) { //gd:TileSet.move_navigation_layer
 	class(self).MoveNavigationLayer(gd.Int(layer_index), gd.Int(to_position))
 }
 
 /*
 Removes the navigation layer at index [param layer_index]. Also updates the atlas tiles accordingly.
 */
-func (self Instance) RemoveNavigationLayer(layer_index int) {
+func (self Instance) RemoveNavigationLayer(layer_index int) { //gd:TileSet.remove_navigation_layer
 	class(self).RemoveNavigationLayer(gd.Int(layer_index))
 }
 
 /*
 Sets the navigation layers (as in the navigation server) for navigation regions in the given TileSet navigation layer.
 */
-func (self Instance) SetNavigationLayerLayers(layer_index int, layers int) {
+func (self Instance) SetNavigationLayerLayers(layer_index int, layers int) { //gd:TileSet.set_navigation_layer_layers
 	class(self).SetNavigationLayerLayers(gd.Int(layer_index), gd.Int(layers))
 }
 
 /*
 Returns the navigation layers (as in the Navigation server) of the given TileSet navigation layer.
 */
-func (self Instance) GetNavigationLayerLayers(layer_index int) int {
+func (self Instance) GetNavigationLayerLayers(layer_index int) int { //gd:TileSet.get_navigation_layer_layers
 	return int(int(class(self).GetNavigationLayerLayers(gd.Int(layer_index))))
 }
 
 /*
 Based on [param value], enables or disables the specified navigation layer of the TileSet navigation data layer identified by the given [param layer_index], given a navigation_layers [param layer_number] between 1 and 32.
 */
-func (self Instance) SetNavigationLayerLayerValue(layer_index int, layer_number int, value bool) {
+func (self Instance) SetNavigationLayerLayerValue(layer_index int, layer_number int, value bool) { //gd:TileSet.set_navigation_layer_layer_value
 	class(self).SetNavigationLayerLayerValue(gd.Int(layer_index), gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified navigation layer of the TileSet navigation data layer identified by the given [param layer_index] is enabled, given a navigation_layers [param layer_number] between 1 and 32.
 */
-func (self Instance) GetNavigationLayerLayerValue(layer_index int, layer_number int) bool {
+func (self Instance) GetNavigationLayerLayerValue(layer_index int, layer_number int) bool { //gd:TileSet.get_navigation_layer_layer_value
 	return bool(class(self).GetNavigationLayerLayerValue(gd.Int(layer_index), gd.Int(layer_number)))
 }
 
 /*
 Returns the custom data layers count.
 */
-func (self Instance) GetCustomDataLayersCount() int {
+func (self Instance) GetCustomDataLayersCount() int { //gd:TileSet.get_custom_data_layers_count
 	return int(int(class(self).GetCustomDataLayersCount()))
 }
 
@@ -396,56 +396,56 @@ func (self Instance) GetCustomDataLayersCount() int {
 Adds a custom data layer to the TileSet at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 Custom data layers allow assigning custom properties to atlas tiles.
 */
-func (self Instance) AddCustomDataLayer() {
+func (self Instance) AddCustomDataLayer() { //gd:TileSet.add_custom_data_layer
 	class(self).AddCustomDataLayer(gd.Int(-1))
 }
 
 /*
 Moves the custom data layer at index [param layer_index] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
-func (self Instance) MoveCustomDataLayer(layer_index int, to_position int) {
+func (self Instance) MoveCustomDataLayer(layer_index int, to_position int) { //gd:TileSet.move_custom_data_layer
 	class(self).MoveCustomDataLayer(gd.Int(layer_index), gd.Int(to_position))
 }
 
 /*
 Removes the custom data layer at index [param layer_index]. Also updates the atlas tiles accordingly.
 */
-func (self Instance) RemoveCustomDataLayer(layer_index int) {
+func (self Instance) RemoveCustomDataLayer(layer_index int) { //gd:TileSet.remove_custom_data_layer
 	class(self).RemoveCustomDataLayer(gd.Int(layer_index))
 }
 
 /*
 Returns the index of the custom data layer identified by the given name.
 */
-func (self Instance) GetCustomDataLayerByName(layer_name string) int {
+func (self Instance) GetCustomDataLayerByName(layer_name string) int { //gd:TileSet.get_custom_data_layer_by_name
 	return int(int(class(self).GetCustomDataLayerByName(gd.NewString(layer_name))))
 }
 
 /*
 Sets the name of the custom data layer identified by the given index. Names are identifiers of the layer therefore if the name is already taken it will fail and raise an error.
 */
-func (self Instance) SetCustomDataLayerName(layer_index int, layer_name string) {
+func (self Instance) SetCustomDataLayerName(layer_index int, layer_name string) { //gd:TileSet.set_custom_data_layer_name
 	class(self).SetCustomDataLayerName(gd.Int(layer_index), gd.NewString(layer_name))
 }
 
 /*
 Returns the name of the custom data layer identified by the given index.
 */
-func (self Instance) GetCustomDataLayerName(layer_index int) string {
+func (self Instance) GetCustomDataLayerName(layer_index int) string { //gd:TileSet.get_custom_data_layer_name
 	return string(class(self).GetCustomDataLayerName(gd.Int(layer_index)).String())
 }
 
 /*
 Sets the type of the custom data layer identified by the given index.
 */
-func (self Instance) SetCustomDataLayerType(layer_index int, layer_type gd.VariantType) {
+func (self Instance) SetCustomDataLayerType(layer_index int, layer_type gd.VariantType) { //gd:TileSet.set_custom_data_layer_type
 	class(self).SetCustomDataLayerType(gd.Int(layer_index), layer_type)
 }
 
 /*
 Returns the type of the custom data layer identified by the given index.
 */
-func (self Instance) GetCustomDataLayerType(layer_index int) gd.VariantType {
+func (self Instance) GetCustomDataLayerType(layer_index int) gd.VariantType { //gd:TileSet.get_custom_data_layer_type
 	return gd.VariantType(class(self).GetCustomDataLayerType(gd.Int(layer_index)))
 }
 
@@ -454,7 +454,7 @@ Creates a source-level proxy for the given source ID. A proxy will map set of ti
 This can be used to replace a source in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target source when one is available.
 Proxied tiles can be automatically replaced in TileMap nodes using the editor.
 */
-func (self Instance) SetSourceLevelTileProxy(source_from int, source_to int) {
+func (self Instance) SetSourceLevelTileProxy(source_from int, source_to int) { //gd:TileSet.set_source_level_tile_proxy
 	class(self).SetSourceLevelTileProxy(gd.Int(source_from), gd.Int(source_to))
 }
 
@@ -462,21 +462,21 @@ func (self Instance) SetSourceLevelTileProxy(source_from int, source_to int) {
 Returns the source-level proxy for the given source identifier.
 If the TileSet has no proxy for the given identifier, returns -1.
 */
-func (self Instance) GetSourceLevelTileProxy(source_from int) int {
+func (self Instance) GetSourceLevelTileProxy(source_from int) int { //gd:TileSet.get_source_level_tile_proxy
 	return int(int(class(self).GetSourceLevelTileProxy(gd.Int(source_from))))
 }
 
 /*
 Returns if there is a source-level proxy for the given source ID.
 */
-func (self Instance) HasSourceLevelTileProxy(source_from int) bool {
+func (self Instance) HasSourceLevelTileProxy(source_from int) bool { //gd:TileSet.has_source_level_tile_proxy
 	return bool(class(self).HasSourceLevelTileProxy(gd.Int(source_from)))
 }
 
 /*
 Removes a source-level tile proxy.
 */
-func (self Instance) RemoveSourceLevelTileProxy(source_from int) {
+func (self Instance) RemoveSourceLevelTileProxy(source_from int) { //gd:TileSet.remove_source_level_tile_proxy
 	class(self).RemoveSourceLevelTileProxy(gd.Int(source_from))
 }
 
@@ -485,7 +485,7 @@ Creates a coordinates-level proxy for the given identifiers. A proxy will map se
 This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
 Proxied tiles can be automatically replaced in TileMap nodes using the editor.
 */
-func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from Vector2i.XY, source_to int, coords_to Vector2i.XY) {
+func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from Vector2i.XY, source_to int, coords_to Vector2i.XY) { //gd:TileSet.set_coords_level_tile_proxy
 	class(self).SetCoordsLevelTileProxy(gd.Int(p_source_from), gd.Vector2i(coords_from), gd.Int(source_to), gd.Vector2i(coords_to))
 }
 
@@ -493,21 +493,21 @@ func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from Vect
 Returns the coordinate-level proxy for the given identifiers. The returned array contains the two target identifiers of the proxy (source ID and atlas coordinates ID).
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
-func (self Instance) GetCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) []any {
+func (self Instance) GetCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) []any { //gd:TileSet.get_coords_level_tile_proxy
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from)))))
 }
 
 /*
 Returns if there is a coodinates-level proxy for the given identifiers.
 */
-func (self Instance) HasCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) bool {
+func (self Instance) HasCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) bool { //gd:TileSet.has_coords_level_tile_proxy
 	return bool(class(self).HasCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from)))
 }
 
 /*
 Removes a coordinates-level proxy for the given identifiers.
 */
-func (self Instance) RemoveCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) {
+func (self Instance) RemoveCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) { //gd:TileSet.remove_coords_level_tile_proxy
 	class(self).RemoveCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from))
 }
 
@@ -516,7 +516,7 @@ Create an alternative-level proxy for the given identifiers. A proxy will map se
 This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
 Proxied tiles can be automatically replaced in TileMap nodes using the editor.
 */
-func (self Instance) SetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int, source_to int, coords_to Vector2i.XY, alternative_to int) {
+func (self Instance) SetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int, source_to int, coords_to Vector2i.XY, alternative_to int) { //gd:TileSet.set_alternative_level_tile_proxy
 	class(self).SetAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from), gd.Int(source_to), gd.Vector2i(coords_to), gd.Int(alternative_to))
 }
 
@@ -524,21 +524,21 @@ func (self Instance) SetAlternativeLevelTileProxy(source_from int, coords_from V
 Returns the alternative-level proxy for the given identifiers. The returned array contains the three proxie's target identifiers (source ID, atlas coords ID and alternative tile ID).
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
-func (self Instance) GetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any {
+func (self Instance) GetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any { //gd:TileSet.get_alternative_level_tile_proxy
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))))
 }
 
 /*
 Returns if there is an alternative-level proxy for the given identifiers.
 */
-func (self Instance) HasAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) bool {
+func (self Instance) HasAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) bool { //gd:TileSet.has_alternative_level_tile_proxy
 	return bool(class(self).HasAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))
 }
 
 /*
 Removes an alternative-level proxy for the given identifiers.
 */
-func (self Instance) RemoveAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) {
+func (self Instance) RemoveAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) { //gd:TileSet.remove_alternative_level_tile_proxy
 	class(self).RemoveAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from))
 }
 
@@ -547,49 +547,49 @@ According to the configured proxies, maps the provided identifiers to a new set 
 This function first look for matching alternative-level proxies, then coordinates-level proxies, then source-level proxies.
 If no proxy corresponding to provided identifiers are found, returns the same values the ones used as arguments.
 */
-func (self Instance) MapTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any {
+func (self Instance) MapTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any { //gd:TileSet.map_tile_proxy
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).MapTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))))
 }
 
 /*
 Clears tile proxies pointing to invalid tiles.
 */
-func (self Instance) CleanupInvalidTileProxies() {
+func (self Instance) CleanupInvalidTileProxies() { //gd:TileSet.cleanup_invalid_tile_proxies
 	class(self).CleanupInvalidTileProxies()
 }
 
 /*
 Clears all tile proxies.
 */
-func (self Instance) ClearTileProxies() {
+func (self Instance) ClearTileProxies() { //gd:TileSet.clear_tile_proxies
 	class(self).ClearTileProxies()
 }
 
 /*
 Adds a [TileMapPattern] to be stored in the TileSet resource. If provided, insert it at the given [param index].
 */
-func (self Instance) AddPattern(pattern [1]gdclass.TileMapPattern) int {
+func (self Instance) AddPattern(pattern [1]gdclass.TileMapPattern) int { //gd:TileSet.add_pattern
 	return int(int(class(self).AddPattern(pattern, gd.Int(-1))))
 }
 
 /*
 Returns the [TileMapPattern] at the given [param index].
 */
-func (self Instance) GetPattern() [1]gdclass.TileMapPattern {
+func (self Instance) GetPattern() [1]gdclass.TileMapPattern { //gd:TileSet.get_pattern
 	return [1]gdclass.TileMapPattern(class(self).GetPattern(gd.Int(-1)))
 }
 
 /*
 Remove the [TileMapPattern] at the given index.
 */
-func (self Instance) RemovePattern(index int) {
+func (self Instance) RemovePattern(index int) { //gd:TileSet.remove_pattern
 	class(self).RemovePattern(gd.Int(index))
 }
 
 /*
 Returns the number of [TileMapPattern] this tile set handles.
 */
-func (self Instance) GetPatternsCount() int {
+func (self Instance) GetPatternsCount() int { //gd:TileSet.get_patterns_count
 	return int(int(class(self).GetPatternsCount()))
 }
 
@@ -656,7 +656,7 @@ func (self Instance) SetUvClipping(value bool) {
 Returns a new unused source ID. This generated ID is the same that a call to [method add_source] would return.
 */
 //go:nosplit
-func (self class) GetNextSourceId() gd.Int {
+func (self class) GetNextSourceId() gd.Int { //gd:TileSet.get_next_source_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_next_source_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -671,7 +671,7 @@ The function returns the added source ID or -1 if the source could not be added.
 [b]Warning:[/b] A source cannot belong to two TileSets at the same time. If the added source was attached to another [TileSet], it will be removed from that one.
 */
 //go:nosplit
-func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_override gd.Int) gd.Int {
+func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_override gd.Int) gd.Int { //gd:TileSet.add_source
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(source[0])[0])
 	callframe.Arg(frame, atlas_source_id_override)
@@ -686,7 +686,7 @@ func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_ove
 Removes the source with the given source ID.
 */
 //go:nosplit
-func (self class) RemoveSource(source_id gd.Int) {
+func (self class) RemoveSource(source_id gd.Int) { //gd:TileSet.remove_source
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
 	var r_ret = callframe.Nil
@@ -698,7 +698,7 @@ func (self class) RemoveSource(source_id gd.Int) {
 Changes a source's ID.
 */
 //go:nosplit
-func (self class) SetSourceId(source_id gd.Int, new_source_id gd.Int) {
+func (self class) SetSourceId(source_id gd.Int, new_source_id gd.Int) { //gd:TileSet.set_source_id
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
 	callframe.Arg(frame, new_source_id)
@@ -711,7 +711,7 @@ func (self class) SetSourceId(source_id gd.Int, new_source_id gd.Int) {
 Returns the number of [TileSetSource] in this TileSet.
 */
 //go:nosplit
-func (self class) GetSourceCount() gd.Int {
+func (self class) GetSourceCount() gd.Int { //gd:TileSet.get_source_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_source_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -724,7 +724,7 @@ func (self class) GetSourceCount() gd.Int {
 Returns the source ID for source with index [param index].
 */
 //go:nosplit
-func (self class) GetSourceId(index gd.Int) gd.Int {
+func (self class) GetSourceId(index gd.Int) gd.Int { //gd:TileSet.get_source_id
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -738,7 +738,7 @@ func (self class) GetSourceId(index gd.Int) gd.Int {
 Returns if this TileSet has a source for the given source ID.
 */
 //go:nosplit
-func (self class) HasSource(source_id gd.Int) bool {
+func (self class) HasSource(source_id gd.Int) bool { //gd:TileSet.has_source
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -752,7 +752,7 @@ func (self class) HasSource(source_id gd.Int) bool {
 Returns the [TileSetSource] with ID [param source_id].
 */
 //go:nosplit
-func (self class) GetSource(source_id gd.Int) [1]gdclass.TileSetSource {
+func (self class) GetSource(source_id gd.Int) [1]gdclass.TileSetSource { //gd:TileSet.get_source
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -763,7 +763,7 @@ func (self class) GetSource(source_id gd.Int) [1]gdclass.TileSetSource {
 }
 
 //go:nosplit
-func (self class) SetTileShape(shape gdclass.TileSetTileShape) {
+func (self class) SetTileShape(shape gdclass.TileSetTileShape) { //gd:TileSet.set_tile_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -772,7 +772,7 @@ func (self class) SetTileShape(shape gdclass.TileSetTileShape) {
 }
 
 //go:nosplit
-func (self class) GetTileShape() gdclass.TileSetTileShape {
+func (self class) GetTileShape() gdclass.TileSetTileShape { //gd:TileSet.get_tile_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileSetTileShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -782,7 +782,7 @@ func (self class) GetTileShape() gdclass.TileSetTileShape {
 }
 
 //go:nosplit
-func (self class) SetTileLayout(layout gdclass.TileSetTileLayout) {
+func (self class) SetTileLayout(layout gdclass.TileSetTileLayout) { //gd:TileSet.set_tile_layout
 	var frame = callframe.New()
 	callframe.Arg(frame, layout)
 	var r_ret = callframe.Nil
@@ -791,7 +791,7 @@ func (self class) SetTileLayout(layout gdclass.TileSetTileLayout) {
 }
 
 //go:nosplit
-func (self class) GetTileLayout() gdclass.TileSetTileLayout {
+func (self class) GetTileLayout() gdclass.TileSetTileLayout { //gd:TileSet.get_tile_layout
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileSetTileLayout](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -801,7 +801,7 @@ func (self class) GetTileLayout() gdclass.TileSetTileLayout {
 }
 
 //go:nosplit
-func (self class) SetTileOffsetAxis(alignment gdclass.TileSetTileOffsetAxis) {
+func (self class) SetTileOffsetAxis(alignment gdclass.TileSetTileOffsetAxis) { //gd:TileSet.set_tile_offset_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -810,7 +810,7 @@ func (self class) SetTileOffsetAxis(alignment gdclass.TileSetTileOffsetAxis) {
 }
 
 //go:nosplit
-func (self class) GetTileOffsetAxis() gdclass.TileSetTileOffsetAxis {
+func (self class) GetTileOffsetAxis() gdclass.TileSetTileOffsetAxis { //gd:TileSet.get_tile_offset_axis
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileSetTileOffsetAxis](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_offset_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -820,7 +820,7 @@ func (self class) GetTileOffsetAxis() gdclass.TileSetTileOffsetAxis {
 }
 
 //go:nosplit
-func (self class) SetTileSize(size gd.Vector2i) {
+func (self class) SetTileSize(size gd.Vector2i) { //gd:TileSet.set_tile_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -829,7 +829,7 @@ func (self class) SetTileSize(size gd.Vector2i) {
 }
 
 //go:nosplit
-func (self class) GetTileSize() gd.Vector2i {
+func (self class) GetTileSize() gd.Vector2i { //gd:TileSet.get_tile_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -839,7 +839,7 @@ func (self class) GetTileSize() gd.Vector2i {
 }
 
 //go:nosplit
-func (self class) SetUvClipping(uv_clipping bool) {
+func (self class) SetUvClipping(uv_clipping bool) { //gd:TileSet.set_uv_clipping
 	var frame = callframe.New()
 	callframe.Arg(frame, uv_clipping)
 	var r_ret = callframe.Nil
@@ -848,7 +848,7 @@ func (self class) SetUvClipping(uv_clipping bool) {
 }
 
 //go:nosplit
-func (self class) IsUvClipping() bool {
+func (self class) IsUvClipping() bool { //gd:TileSet.is_uv_clipping
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_is_uv_clipping, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -861,7 +861,7 @@ func (self class) IsUvClipping() bool {
 Returns the occlusion layers count.
 */
 //go:nosplit
-func (self class) GetOcclusionLayersCount() gd.Int {
+func (self class) GetOcclusionLayersCount() gd.Int { //gd:TileSet.get_occlusion_layers_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_occlusion_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -875,7 +875,7 @@ Adds an occlusion layer to the TileSet at the given position [param to_position]
 Occlusion layers allow assigning occlusion polygons to atlas tiles.
 */
 //go:nosplit
-func (self class) AddOcclusionLayer(to_position gd.Int) {
+func (self class) AddOcclusionLayer(to_position gd.Int) { //gd:TileSet.add_occlusion_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -887,7 +887,7 @@ func (self class) AddOcclusionLayer(to_position gd.Int) {
 Moves the occlusion layer at index [param layer_index] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) MoveOcclusionLayer(layer_index gd.Int, to_position gd.Int) {
+func (self class) MoveOcclusionLayer(layer_index gd.Int, to_position gd.Int) { //gd:TileSet.move_occlusion_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, to_position)
@@ -900,7 +900,7 @@ func (self class) MoveOcclusionLayer(layer_index gd.Int, to_position gd.Int) {
 Removes the occlusion layer at index [param layer_index]. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) RemoveOcclusionLayer(layer_index gd.Int) {
+func (self class) RemoveOcclusionLayer(layer_index gd.Int) { //gd:TileSet.remove_occlusion_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Nil
@@ -912,7 +912,7 @@ func (self class) RemoveOcclusionLayer(layer_index gd.Int) {
 Sets the occlusion layer (as in the rendering server) for occluders in the given TileSet occlusion layer.
 */
 //go:nosplit
-func (self class) SetOcclusionLayerLightMask(layer_index gd.Int, light_mask gd.Int) {
+func (self class) SetOcclusionLayerLightMask(layer_index gd.Int, light_mask gd.Int) { //gd:TileSet.set_occlusion_layer_light_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, light_mask)
@@ -925,7 +925,7 @@ func (self class) SetOcclusionLayerLightMask(layer_index gd.Int, light_mask gd.I
 Returns the light mask of the occlusion layer.
 */
 //go:nosplit
-func (self class) GetOcclusionLayerLightMask(layer_index gd.Int) gd.Int {
+func (self class) GetOcclusionLayerLightMask(layer_index gd.Int) gd.Int { //gd:TileSet.get_occlusion_layer_light_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -939,7 +939,7 @@ func (self class) GetOcclusionLayerLightMask(layer_index gd.Int) gd.Int {
 Enables or disables SDF collision for occluders in the given TileSet occlusion layer.
 */
 //go:nosplit
-func (self class) SetOcclusionLayerSdfCollision(layer_index gd.Int, sdf_collision bool) {
+func (self class) SetOcclusionLayerSdfCollision(layer_index gd.Int, sdf_collision bool) { //gd:TileSet.set_occlusion_layer_sdf_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, sdf_collision)
@@ -952,7 +952,7 @@ func (self class) SetOcclusionLayerSdfCollision(layer_index gd.Int, sdf_collisio
 Returns if the occluders from this layer use [code]sdf_collision[/code].
 */
 //go:nosplit
-func (self class) GetOcclusionLayerSdfCollision(layer_index gd.Int) bool {
+func (self class) GetOcclusionLayerSdfCollision(layer_index gd.Int) bool { //gd:TileSet.get_occlusion_layer_sdf_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[bool](frame)
@@ -966,7 +966,7 @@ func (self class) GetOcclusionLayerSdfCollision(layer_index gd.Int) bool {
 Returns the physics layers count.
 */
 //go:nosplit
-func (self class) GetPhysicsLayersCount() gd.Int {
+func (self class) GetPhysicsLayersCount() gd.Int { //gd:TileSet.get_physics_layers_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_physics_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -980,7 +980,7 @@ Adds a physics layer to the TileSet at the given position [param to_position] in
 Physics layers allow assigning collision polygons to atlas tiles.
 */
 //go:nosplit
-func (self class) AddPhysicsLayer(to_position gd.Int) {
+func (self class) AddPhysicsLayer(to_position gd.Int) { //gd:TileSet.add_physics_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -992,7 +992,7 @@ func (self class) AddPhysicsLayer(to_position gd.Int) {
 Moves the physics layer at index [param layer_index] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) MovePhysicsLayer(layer_index gd.Int, to_position gd.Int) {
+func (self class) MovePhysicsLayer(layer_index gd.Int, to_position gd.Int) { //gd:TileSet.move_physics_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, to_position)
@@ -1005,7 +1005,7 @@ func (self class) MovePhysicsLayer(layer_index gd.Int, to_position gd.Int) {
 Removes the physics layer at index [param layer_index]. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) RemovePhysicsLayer(layer_index gd.Int) {
+func (self class) RemovePhysicsLayer(layer_index gd.Int) { //gd:TileSet.remove_physics_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Nil
@@ -1017,7 +1017,7 @@ func (self class) RemovePhysicsLayer(layer_index gd.Int) {
 Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
 */
 //go:nosplit
-func (self class) SetPhysicsLayerCollisionLayer(layer_index gd.Int, layer gd.Int) {
+func (self class) SetPhysicsLayerCollisionLayer(layer_index gd.Int, layer gd.Int) { //gd:TileSet.set_physics_layer_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layer)
@@ -1030,7 +1030,7 @@ func (self class) SetPhysicsLayerCollisionLayer(layer_index gd.Int, layer gd.Int
 Returns the collision layer (as in the physics server) bodies on the given TileSet's physics layer are in.
 */
 //go:nosplit
-func (self class) GetPhysicsLayerCollisionLayer(layer_index gd.Int) gd.Int {
+func (self class) GetPhysicsLayerCollisionLayer(layer_index gd.Int) gd.Int { //gd:TileSet.get_physics_layer_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1044,7 +1044,7 @@ func (self class) GetPhysicsLayerCollisionLayer(layer_index gd.Int) gd.Int {
 Sets the physics layer (as in the physics server) for bodies in the given TileSet physics layer.
 */
 //go:nosplit
-func (self class) SetPhysicsLayerCollisionMask(layer_index gd.Int, mask gd.Int) {
+func (self class) SetPhysicsLayerCollisionMask(layer_index gd.Int, mask gd.Int) { //gd:TileSet.set_physics_layer_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, mask)
@@ -1057,7 +1057,7 @@ func (self class) SetPhysicsLayerCollisionMask(layer_index gd.Int, mask gd.Int) 
 Returns the collision mask of bodies on the given TileSet's physics layer.
 */
 //go:nosplit
-func (self class) GetPhysicsLayerCollisionMask(layer_index gd.Int) gd.Int {
+func (self class) GetPhysicsLayerCollisionMask(layer_index gd.Int) gd.Int { //gd:TileSet.get_physics_layer_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1071,7 +1071,7 @@ func (self class) GetPhysicsLayerCollisionMask(layer_index gd.Int) gd.Int {
 Sets the physics material for bodies in the given TileSet physics layer.
 */
 //go:nosplit
-func (self class) SetPhysicsLayerPhysicsMaterial(layer_index gd.Int, physics_material [1]gdclass.PhysicsMaterial) {
+func (self class) SetPhysicsLayerPhysicsMaterial(layer_index gd.Int, physics_material [1]gdclass.PhysicsMaterial) { //gd:TileSet.set_physics_layer_physics_material
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, pointers.Get(physics_material[0])[0])
@@ -1084,7 +1084,7 @@ func (self class) SetPhysicsLayerPhysicsMaterial(layer_index gd.Int, physics_mat
 Returns the physics material of bodies on the given TileSet's physics layer.
 */
 //go:nosplit
-func (self class) GetPhysicsLayerPhysicsMaterial(layer_index gd.Int) [1]gdclass.PhysicsMaterial {
+func (self class) GetPhysicsLayerPhysicsMaterial(layer_index gd.Int) [1]gdclass.PhysicsMaterial { //gd:TileSet.get_physics_layer_physics_material
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1098,7 +1098,7 @@ func (self class) GetPhysicsLayerPhysicsMaterial(layer_index gd.Int) [1]gdclass.
 Returns the terrain sets count.
 */
 //go:nosplit
-func (self class) GetTerrainSetsCount() gd.Int {
+func (self class) GetTerrainSetsCount() gd.Int { //gd:TileSet.get_terrain_sets_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_sets_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1111,7 +1111,7 @@ func (self class) GetTerrainSetsCount() gd.Int {
 Adds a new terrain set at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 */
 //go:nosplit
-func (self class) AddTerrainSet(to_position gd.Int) {
+func (self class) AddTerrainSet(to_position gd.Int) { //gd:TileSet.add_terrain_set
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -1123,7 +1123,7 @@ func (self class) AddTerrainSet(to_position gd.Int) {
 Moves the terrain set at index [param terrain_set] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) MoveTerrainSet(terrain_set gd.Int, to_position gd.Int) {
+func (self class) MoveTerrainSet(terrain_set gd.Int, to_position gd.Int) { //gd:TileSet.move_terrain_set
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, to_position)
@@ -1136,7 +1136,7 @@ func (self class) MoveTerrainSet(terrain_set gd.Int, to_position gd.Int) {
 Removes the terrain set at index [param terrain_set]. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) RemoveTerrainSet(terrain_set gd.Int) {
+func (self class) RemoveTerrainSet(terrain_set gd.Int) { //gd:TileSet.remove_terrain_set
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	var r_ret = callframe.Nil
@@ -1148,7 +1148,7 @@ func (self class) RemoveTerrainSet(terrain_set gd.Int) {
 Sets a terrain mode. Each mode determines which bits of a tile shape is used to match the neighboring tiles' terrains.
 */
 //go:nosplit
-func (self class) SetTerrainSetMode(terrain_set gd.Int, mode gdclass.TileSetTerrainMode) {
+func (self class) SetTerrainSetMode(terrain_set gd.Int, mode gdclass.TileSetTerrainMode) { //gd:TileSet.set_terrain_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, mode)
@@ -1161,7 +1161,7 @@ func (self class) SetTerrainSetMode(terrain_set gd.Int, mode gdclass.TileSetTerr
 Returns a terrain set mode.
 */
 //go:nosplit
-func (self class) GetTerrainSetMode(terrain_set gd.Int) gdclass.TileSetTerrainMode {
+func (self class) GetTerrainSetMode(terrain_set gd.Int) gdclass.TileSetTerrainMode { //gd:TileSet.get_terrain_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	var r_ret = callframe.Ret[gdclass.TileSetTerrainMode](frame)
@@ -1175,7 +1175,7 @@ func (self class) GetTerrainSetMode(terrain_set gd.Int) gdclass.TileSetTerrainMo
 Returns the number of terrains in the given terrain set.
 */
 //go:nosplit
-func (self class) GetTerrainsCount(terrain_set gd.Int) gd.Int {
+func (self class) GetTerrainsCount(terrain_set gd.Int) gd.Int { //gd:TileSet.get_terrains_count
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1189,7 +1189,7 @@ func (self class) GetTerrainsCount(terrain_set gd.Int) gd.Int {
 Adds a new terrain to the given terrain set [param terrain_set] at the given position [param to_position] in the array. If [param to_position] is -1, adds it at the end of the array.
 */
 //go:nosplit
-func (self class) AddTerrain(terrain_set gd.Int, to_position gd.Int) {
+func (self class) AddTerrain(terrain_set gd.Int, to_position gd.Int) { //gd:TileSet.add_terrain
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, to_position)
@@ -1202,7 +1202,7 @@ func (self class) AddTerrain(terrain_set gd.Int, to_position gd.Int) {
 Moves the terrain at index [param terrain_index] for terrain set [param terrain_set] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) MoveTerrain(terrain_set gd.Int, terrain_index gd.Int, to_position gd.Int) {
+func (self class) MoveTerrain(terrain_set gd.Int, terrain_index gd.Int, to_position gd.Int) { //gd:TileSet.move_terrain
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
@@ -1216,7 +1216,7 @@ func (self class) MoveTerrain(terrain_set gd.Int, terrain_index gd.Int, to_posit
 Removes the terrain at index [param terrain_index] in the given terrain set [param terrain_set]. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) RemoveTerrain(terrain_set gd.Int, terrain_index gd.Int) {
+func (self class) RemoveTerrain(terrain_set gd.Int, terrain_index gd.Int) { //gd:TileSet.remove_terrain
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
@@ -1229,7 +1229,7 @@ func (self class) RemoveTerrain(terrain_set gd.Int, terrain_index gd.Int) {
 Sets a terrain's name.
 */
 //go:nosplit
-func (self class) SetTerrainName(terrain_set gd.Int, terrain_index gd.Int, name gd.String) {
+func (self class) SetTerrainName(terrain_set gd.Int, terrain_index gd.Int, name gd.String) { //gd:TileSet.set_terrain_name
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
@@ -1243,7 +1243,7 @@ func (self class) SetTerrainName(terrain_set gd.Int, terrain_index gd.Int, name 
 Returns a terrain's name.
 */
 //go:nosplit
-func (self class) GetTerrainName(terrain_set gd.Int, terrain_index gd.Int) gd.String {
+func (self class) GetTerrainName(terrain_set gd.Int, terrain_index gd.Int) gd.String { //gd:TileSet.get_terrain_name
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
@@ -1258,7 +1258,7 @@ func (self class) GetTerrainName(terrain_set gd.Int, terrain_index gd.Int) gd.St
 Sets a terrain's color. This color is used for identifying the different terrains in the TileSet editor.
 */
 //go:nosplit
-func (self class) SetTerrainColor(terrain_set gd.Int, terrain_index gd.Int, color gd.Color) {
+func (self class) SetTerrainColor(terrain_set gd.Int, terrain_index gd.Int, color gd.Color) { //gd:TileSet.set_terrain_color
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
@@ -1272,7 +1272,7 @@ func (self class) SetTerrainColor(terrain_set gd.Int, terrain_index gd.Int, colo
 Returns a terrain's color.
 */
 //go:nosplit
-func (self class) GetTerrainColor(terrain_set gd.Int, terrain_index gd.Int) gd.Color {
+func (self class) GetTerrainColor(terrain_set gd.Int, terrain_index gd.Int) gd.Color { //gd:TileSet.get_terrain_color
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain_index)
@@ -1287,7 +1287,7 @@ func (self class) GetTerrainColor(terrain_set gd.Int, terrain_index gd.Int) gd.C
 Returns the navigation layers count.
 */
 //go:nosplit
-func (self class) GetNavigationLayersCount() gd.Int {
+func (self class) GetNavigationLayersCount() gd.Int { //gd:TileSet.get_navigation_layers_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_navigation_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1301,7 +1301,7 @@ Adds a navigation layer to the TileSet at the given position [param to_position]
 Navigation layers allow assigning a navigable area to atlas tiles.
 */
 //go:nosplit
-func (self class) AddNavigationLayer(to_position gd.Int) {
+func (self class) AddNavigationLayer(to_position gd.Int) { //gd:TileSet.add_navigation_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -1313,7 +1313,7 @@ func (self class) AddNavigationLayer(to_position gd.Int) {
 Moves the navigation layer at index [param layer_index] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) MoveNavigationLayer(layer_index gd.Int, to_position gd.Int) {
+func (self class) MoveNavigationLayer(layer_index gd.Int, to_position gd.Int) { //gd:TileSet.move_navigation_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, to_position)
@@ -1326,7 +1326,7 @@ func (self class) MoveNavigationLayer(layer_index gd.Int, to_position gd.Int) {
 Removes the navigation layer at index [param layer_index]. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) RemoveNavigationLayer(layer_index gd.Int) {
+func (self class) RemoveNavigationLayer(layer_index gd.Int) { //gd:TileSet.remove_navigation_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Nil
@@ -1338,7 +1338,7 @@ func (self class) RemoveNavigationLayer(layer_index gd.Int) {
 Sets the navigation layers (as in the navigation server) for navigation regions in the given TileSet navigation layer.
 */
 //go:nosplit
-func (self class) SetNavigationLayerLayers(layer_index gd.Int, layers gd.Int) {
+func (self class) SetNavigationLayerLayers(layer_index gd.Int, layers gd.Int) { //gd:TileSet.set_navigation_layer_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layers)
@@ -1351,7 +1351,7 @@ func (self class) SetNavigationLayerLayers(layer_index gd.Int, layers gd.Int) {
 Returns the navigation layers (as in the Navigation server) of the given TileSet navigation layer.
 */
 //go:nosplit
-func (self class) GetNavigationLayerLayers(layer_index gd.Int) gd.Int {
+func (self class) GetNavigationLayerLayers(layer_index gd.Int) gd.Int { //gd:TileSet.get_navigation_layer_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1365,7 +1365,7 @@ func (self class) GetNavigationLayerLayers(layer_index gd.Int) gd.Int {
 Based on [param value], enables or disables the specified navigation layer of the TileSet navigation data layer identified by the given [param layer_index], given a navigation_layers [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetNavigationLayerLayerValue(layer_index gd.Int, layer_number gd.Int, value bool) {
+func (self class) SetNavigationLayerLayerValue(layer_index gd.Int, layer_number gd.Int, value bool) { //gd:TileSet.set_navigation_layer_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layer_number)
@@ -1379,7 +1379,7 @@ func (self class) SetNavigationLayerLayerValue(layer_index gd.Int, layer_number 
 Returns whether or not the specified navigation layer of the TileSet navigation data layer identified by the given [param layer_index] is enabled, given a navigation_layers [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetNavigationLayerLayerValue(layer_index gd.Int, layer_number gd.Int) bool {
+func (self class) GetNavigationLayerLayerValue(layer_index gd.Int, layer_number gd.Int) bool { //gd:TileSet.get_navigation_layer_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layer_number)
@@ -1394,7 +1394,7 @@ func (self class) GetNavigationLayerLayerValue(layer_index gd.Int, layer_number 
 Returns the custom data layers count.
 */
 //go:nosplit
-func (self class) GetCustomDataLayersCount() gd.Int {
+func (self class) GetCustomDataLayersCount() gd.Int { //gd:TileSet.get_custom_data_layers_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_custom_data_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1408,7 +1408,7 @@ Adds a custom data layer to the TileSet at the given position [param to_position
 Custom data layers allow assigning custom properties to atlas tiles.
 */
 //go:nosplit
-func (self class) AddCustomDataLayer(to_position gd.Int) {
+func (self class) AddCustomDataLayer(to_position gd.Int) { //gd:TileSet.add_custom_data_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -1420,7 +1420,7 @@ func (self class) AddCustomDataLayer(to_position gd.Int) {
 Moves the custom data layer at index [param layer_index] to the given position [param to_position] in the array. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) MoveCustomDataLayer(layer_index gd.Int, to_position gd.Int) {
+func (self class) MoveCustomDataLayer(layer_index gd.Int, to_position gd.Int) { //gd:TileSet.move_custom_data_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, to_position)
@@ -1433,7 +1433,7 @@ func (self class) MoveCustomDataLayer(layer_index gd.Int, to_position gd.Int) {
 Removes the custom data layer at index [param layer_index]. Also updates the atlas tiles accordingly.
 */
 //go:nosplit
-func (self class) RemoveCustomDataLayer(layer_index gd.Int) {
+func (self class) RemoveCustomDataLayer(layer_index gd.Int) { //gd:TileSet.remove_custom_data_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Nil
@@ -1445,7 +1445,7 @@ func (self class) RemoveCustomDataLayer(layer_index gd.Int) {
 Returns the index of the custom data layer identified by the given name.
 */
 //go:nosplit
-func (self class) GetCustomDataLayerByName(layer_name gd.String) gd.Int {
+func (self class) GetCustomDataLayerByName(layer_name gd.String) gd.Int { //gd:TileSet.get_custom_data_layer_by_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(layer_name))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1459,7 +1459,7 @@ func (self class) GetCustomDataLayerByName(layer_name gd.String) gd.Int {
 Sets the name of the custom data layer identified by the given index. Names are identifiers of the layer therefore if the name is already taken it will fail and raise an error.
 */
 //go:nosplit
-func (self class) SetCustomDataLayerName(layer_index gd.Int, layer_name gd.String) {
+func (self class) SetCustomDataLayerName(layer_index gd.Int, layer_name gd.String) { //gd:TileSet.set_custom_data_layer_name
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, pointers.Get(layer_name))
@@ -1472,7 +1472,7 @@ func (self class) SetCustomDataLayerName(layer_index gd.Int, layer_name gd.Strin
 Returns the name of the custom data layer identified by the given index.
 */
 //go:nosplit
-func (self class) GetCustomDataLayerName(layer_index gd.Int) gd.String {
+func (self class) GetCustomDataLayerName(layer_index gd.Int) gd.String { //gd:TileSet.get_custom_data_layer_name
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1486,7 +1486,7 @@ func (self class) GetCustomDataLayerName(layer_index gd.Int) gd.String {
 Sets the type of the custom data layer identified by the given index.
 */
 //go:nosplit
-func (self class) SetCustomDataLayerType(layer_index gd.Int, layer_type gd.VariantType) {
+func (self class) SetCustomDataLayerType(layer_index gd.Int, layer_type gd.VariantType) { //gd:TileSet.set_custom_data_layer_type
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	callframe.Arg(frame, layer_type)
@@ -1499,7 +1499,7 @@ func (self class) SetCustomDataLayerType(layer_index gd.Int, layer_type gd.Varia
 Returns the type of the custom data layer identified by the given index.
 */
 //go:nosplit
-func (self class) GetCustomDataLayerType(layer_index gd.Int) gd.VariantType {
+func (self class) GetCustomDataLayerType(layer_index gd.Int) gd.VariantType { //gd:TileSet.get_custom_data_layer_type
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_index)
 	var r_ret = callframe.Ret[gd.VariantType](frame)
@@ -1515,7 +1515,7 @@ This can be used to replace a source in all TileMaps using this TileSet, as Tile
 Proxied tiles can be automatically replaced in TileMap nodes using the editor.
 */
 //go:nosplit
-func (self class) SetSourceLevelTileProxy(source_from gd.Int, source_to gd.Int) {
+func (self class) SetSourceLevelTileProxy(source_from gd.Int, source_to gd.Int) { //gd:TileSet.set_source_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, source_to)
@@ -1529,7 +1529,7 @@ Returns the source-level proxy for the given source identifier.
 If the TileSet has no proxy for the given identifier, returns -1.
 */
 //go:nosplit
-func (self class) GetSourceLevelTileProxy(source_from gd.Int) gd.Int {
+func (self class) GetSourceLevelTileProxy(source_from gd.Int) gd.Int { //gd:TileSet.get_source_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1543,7 +1543,7 @@ func (self class) GetSourceLevelTileProxy(source_from gd.Int) gd.Int {
 Returns if there is a source-level proxy for the given source ID.
 */
 //go:nosplit
-func (self class) HasSourceLevelTileProxy(source_from gd.Int) bool {
+func (self class) HasSourceLevelTileProxy(source_from gd.Int) bool { //gd:TileSet.has_source_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1557,7 +1557,7 @@ func (self class) HasSourceLevelTileProxy(source_from gd.Int) bool {
 Removes a source-level tile proxy.
 */
 //go:nosplit
-func (self class) RemoveSourceLevelTileProxy(source_from gd.Int) {
+func (self class) RemoveSourceLevelTileProxy(source_from gd.Int) { //gd:TileSet.remove_source_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	var r_ret = callframe.Nil
@@ -1571,7 +1571,7 @@ This can be used to replace a tile in all TileMaps using this TileSet, as TileMa
 Proxied tiles can be automatically replaced in TileMap nodes using the editor.
 */
 //go:nosplit
-func (self class) SetCoordsLevelTileProxy(p_source_from gd.Int, coords_from gd.Vector2i, source_to gd.Int, coords_to gd.Vector2i) {
+func (self class) SetCoordsLevelTileProxy(p_source_from gd.Int, coords_from gd.Vector2i, source_to gd.Int, coords_to gd.Vector2i) { //gd:TileSet.set_coords_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, p_source_from)
 	callframe.Arg(frame, coords_from)
@@ -1587,7 +1587,7 @@ Returns the coordinate-level proxy for the given identifiers. The returned array
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
 //go:nosplit
-func (self class) GetCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i) Array.Any {
+func (self class) GetCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i) Array.Any { //gd:TileSet.get_coords_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
@@ -1602,7 +1602,7 @@ func (self class) GetCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vec
 Returns if there is a coodinates-level proxy for the given identifiers.
 */
 //go:nosplit
-func (self class) HasCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i) bool {
+func (self class) HasCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i) bool { //gd:TileSet.has_coords_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
@@ -1617,7 +1617,7 @@ func (self class) HasCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vec
 Removes a coordinates-level proxy for the given identifiers.
 */
 //go:nosplit
-func (self class) RemoveCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i) {
+func (self class) RemoveCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i) { //gd:TileSet.remove_coords_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
@@ -1632,7 +1632,7 @@ This can be used to replace a tile in all TileMaps using this TileSet, as TileMa
 Proxied tiles can be automatically replaced in TileMap nodes using the editor.
 */
 //go:nosplit
-func (self class) SetAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int, source_to gd.Int, coords_to gd.Vector2i, alternative_to gd.Int) {
+func (self class) SetAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int, source_to gd.Int, coords_to gd.Vector2i, alternative_to gd.Int) { //gd:TileSet.set_alternative_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
@@ -1650,7 +1650,7 @@ Returns the alternative-level proxy for the given identifiers. The returned arra
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
 //go:nosplit
-func (self class) GetAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) Array.Any {
+func (self class) GetAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) Array.Any { //gd:TileSet.get_alternative_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
@@ -1666,7 +1666,7 @@ func (self class) GetAlternativeLevelTileProxy(source_from gd.Int, coords_from g
 Returns if there is an alternative-level proxy for the given identifiers.
 */
 //go:nosplit
-func (self class) HasAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) bool {
+func (self class) HasAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) bool { //gd:TileSet.has_alternative_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
@@ -1682,7 +1682,7 @@ func (self class) HasAlternativeLevelTileProxy(source_from gd.Int, coords_from g
 Removes an alternative-level proxy for the given identifiers.
 */
 //go:nosplit
-func (self class) RemoveAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) {
+func (self class) RemoveAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) { //gd:TileSet.remove_alternative_level_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
@@ -1698,7 +1698,7 @@ This function first look for matching alternative-level proxies, then coordinate
 If no proxy corresponding to provided identifiers are found, returns the same values the ones used as arguments.
 */
 //go:nosplit
-func (self class) MapTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) Array.Any {
+func (self class) MapTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) Array.Any { //gd:TileSet.map_tile_proxy
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
@@ -1714,7 +1714,7 @@ func (self class) MapTileProxy(source_from gd.Int, coords_from gd.Vector2i, alte
 Clears tile proxies pointing to invalid tiles.
 */
 //go:nosplit
-func (self class) CleanupInvalidTileProxies() {
+func (self class) CleanupInvalidTileProxies() { //gd:TileSet.cleanup_invalid_tile_proxies
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_cleanup_invalid_tile_proxies, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1725,7 +1725,7 @@ func (self class) CleanupInvalidTileProxies() {
 Clears all tile proxies.
 */
 //go:nosplit
-func (self class) ClearTileProxies() {
+func (self class) ClearTileProxies() { //gd:TileSet.clear_tile_proxies
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_clear_tile_proxies, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1736,7 +1736,7 @@ func (self class) ClearTileProxies() {
 Adds a [TileMapPattern] to be stored in the TileSet resource. If provided, insert it at the given [param index].
 */
 //go:nosplit
-func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index gd.Int) gd.Int {
+func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index gd.Int) gd.Int { //gd:TileSet.add_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pattern[0])[0])
 	callframe.Arg(frame, index)
@@ -1751,7 +1751,7 @@ func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index gd.Int) gd
 Returns the [TileMapPattern] at the given [param index].
 */
 //go:nosplit
-func (self class) GetPattern(index gd.Int) [1]gdclass.TileMapPattern {
+func (self class) GetPattern(index gd.Int) [1]gdclass.TileMapPattern { //gd:TileSet.get_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1765,7 +1765,7 @@ func (self class) GetPattern(index gd.Int) [1]gdclass.TileMapPattern {
 Remove the [TileMapPattern] at the given index.
 */
 //go:nosplit
-func (self class) RemovePattern(index gd.Int) {
+func (self class) RemovePattern(index gd.Int) { //gd:TileSet.remove_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -1777,7 +1777,7 @@ func (self class) RemovePattern(index gd.Int) {
 Returns the number of [TileMapPattern] this tile set handles.
 */
 //go:nosplit
-func (self class) GetPatternsCount() gd.Int {
+func (self class) GetPatternsCount() gd.Int { //gd:TileSet.get_patterns_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_patterns_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1817,7 +1817,7 @@ func init() {
 	gdclass.Register("TileSet", func(ptr gd.Object) any { return [1]gdclass.TileSet{*(*gdclass.TileSet)(unsafe.Pointer(&ptr))} })
 }
 
-type TileShape = gdclass.TileSetTileShape
+type TileShape = gdclass.TileSetTileShape //gd:TileSet.TileShape
 
 const (
 	/*Rectangular tile shape.*/
@@ -1831,7 +1831,7 @@ const (
 	TileShapeHexagon TileShape = 3
 )
 
-type TileLayout = gdclass.TileSetTileLayout
+type TileLayout = gdclass.TileSetTileLayout //gd:TileSet.TileLayout
 
 const (
 	/*Tile coordinates layout where both axis stay consistent with their respective local horizontal and vertical axis.*/
@@ -1848,7 +1848,7 @@ const (
 	TileLayoutDiamondDown TileLayout = 5
 )
 
-type TileOffsetAxis = gdclass.TileSetTileOffsetAxis
+type TileOffsetAxis = gdclass.TileSetTileOffsetAxis //gd:TileSet.TileOffsetAxis
 
 const (
 	/*Horizontal half-offset.*/
@@ -1857,7 +1857,7 @@ const (
 	TileOffsetAxisVertical TileOffsetAxis = 1
 )
 
-type CellNeighbor = gdclass.TileSetCellNeighbor
+type CellNeighbor = gdclass.TileSetCellNeighbor //gd:TileSet.CellNeighbor
 
 const (
 	/*Neighbor on the right side.*/
@@ -1894,7 +1894,7 @@ const (
 	CellNeighborTopRightCorner CellNeighbor = 15
 )
 
-type TerrainMode = gdclass.TileSetTerrainMode
+type TerrainMode = gdclass.TileSetTerrainMode //gd:TileSet.TerrainMode
 
 const (
 	/*Requires both corners and side to match with neighboring tiles' terrains.*/

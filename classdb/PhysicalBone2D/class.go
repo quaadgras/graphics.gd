@@ -48,14 +48,14 @@ type Any interface {
 /*
 Returns the first [Joint2D] child node, if one exists. This is mainly a helper function to make it easier to get the [Joint2D] that the [PhysicalBone2D] is autoconfiguring.
 */
-func (self Instance) GetJoint() [1]gdclass.Joint2D {
+func (self Instance) GetJoint() [1]gdclass.Joint2D { //gd:PhysicalBone2D.get_joint
 	return [1]gdclass.Joint2D(class(self).GetJoint())
 }
 
 /*
 Returns a boolean that indicates whether the [PhysicalBone2D] is running and simulating using the Godot 2D physics engine. When [code]true[/code], the PhysicalBone2D node is using physics.
 */
-func (self Instance) IsSimulatingPhysics() bool {
+func (self Instance) IsSimulatingPhysics() bool { //gd:PhysicalBone2D.is_simulating_physics
 	return bool(class(self).IsSimulatingPhysics())
 }
 
@@ -121,7 +121,7 @@ func (self Instance) SetFollowBoneWhenSimulating(value bool) {
 Returns the first [Joint2D] child node, if one exists. This is mainly a helper function to make it easier to get the [Joint2D] that the [PhysicalBone2D] is autoconfiguring.
 */
 //go:nosplit
-func (self class) GetJoint() [1]gdclass.Joint2D {
+func (self class) GetJoint() [1]gdclass.Joint2D { //gd:PhysicalBone2D.get_joint
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_get_joint, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -131,7 +131,7 @@ func (self class) GetJoint() [1]gdclass.Joint2D {
 }
 
 //go:nosplit
-func (self class) GetAutoConfigureJoint() bool {
+func (self class) GetAutoConfigureJoint() bool { //gd:PhysicalBone2D.get_auto_configure_joint
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_get_auto_configure_joint, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -141,7 +141,7 @@ func (self class) GetAutoConfigureJoint() bool {
 }
 
 //go:nosplit
-func (self class) SetAutoConfigureJoint(auto_configure_joint bool) {
+func (self class) SetAutoConfigureJoint(auto_configure_joint bool) { //gd:PhysicalBone2D.set_auto_configure_joint
 	var frame = callframe.New()
 	callframe.Arg(frame, auto_configure_joint)
 	var r_ret = callframe.Nil
@@ -150,7 +150,7 @@ func (self class) SetAutoConfigureJoint(auto_configure_joint bool) {
 }
 
 //go:nosplit
-func (self class) SetSimulatePhysics(simulate_physics bool) {
+func (self class) SetSimulatePhysics(simulate_physics bool) { //gd:PhysicalBone2D.set_simulate_physics
 	var frame = callframe.New()
 	callframe.Arg(frame, simulate_physics)
 	var r_ret = callframe.Nil
@@ -159,7 +159,7 @@ func (self class) SetSimulatePhysics(simulate_physics bool) {
 }
 
 //go:nosplit
-func (self class) GetSimulatePhysics() bool {
+func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone2D.get_simulate_physics
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_get_simulate_physics, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func (self class) GetSimulatePhysics() bool {
 Returns a boolean that indicates whether the [PhysicalBone2D] is running and simulating using the Godot 2D physics engine. When [code]true[/code], the PhysicalBone2D node is using physics.
 */
 //go:nosplit
-func (self class) IsSimulatingPhysics() bool {
+func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone2D.is_simulating_physics
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_is_simulating_physics, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -182,7 +182,7 @@ func (self class) IsSimulatingPhysics() bool {
 }
 
 //go:nosplit
-func (self class) SetBone2dNodepath(nodepath gd.NodePath) {
+func (self class) SetBone2dNodepath(nodepath gd.NodePath) { //gd:PhysicalBone2D.set_bone2d_nodepath
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(nodepath))
 	var r_ret = callframe.Nil
@@ -191,7 +191,7 @@ func (self class) SetBone2dNodepath(nodepath gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetBone2dNodepath() gd.NodePath {
+func (self class) GetBone2dNodepath() gd.NodePath { //gd:PhysicalBone2D.get_bone2d_nodepath
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_get_bone2d_nodepath, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -201,7 +201,7 @@ func (self class) GetBone2dNodepath() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetBone2dIndex(bone_index gd.Int) {
+func (self class) SetBone2dIndex(bone_index gd.Int) { //gd:PhysicalBone2D.set_bone2d_index
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_index)
 	var r_ret = callframe.Nil
@@ -210,7 +210,7 @@ func (self class) SetBone2dIndex(bone_index gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBone2dIndex() gd.Int {
+func (self class) GetBone2dIndex() gd.Int { //gd:PhysicalBone2D.get_bone2d_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_get_bone2d_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -220,7 +220,7 @@ func (self class) GetBone2dIndex() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFollowBoneWhenSimulating(follow_bone bool) {
+func (self class) SetFollowBoneWhenSimulating(follow_bone bool) { //gd:PhysicalBone2D.set_follow_bone_when_simulating
 	var frame = callframe.New()
 	callframe.Arg(frame, follow_bone)
 	var r_ret = callframe.Nil
@@ -229,7 +229,7 @@ func (self class) SetFollowBoneWhenSimulating(follow_bone bool) {
 }
 
 //go:nosplit
-func (self class) GetFollowBoneWhenSimulating() bool {
+func (self class) GetFollowBoneWhenSimulating() bool { //gd:PhysicalBone2D.get_follow_bone_when_simulating
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone2D.Bind_get_follow_bone_when_simulating, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -36,7 +36,7 @@ type Any interface {
 	AsJSONRPC() Instance
 }
 
-func (self Instance) SetScope(scope string, target Object.Instance) {
+func (self Instance) SetScope(scope string, target Object.Instance) { //gd:JSONRPC.set_scope
 	class(self).SetScope(gd.NewString(scope), target)
 }
 
@@ -45,10 +45,10 @@ Given a Dictionary which takes the form of a JSON-RPC request: unpack the reques
 To add new supported methods extend the JSONRPC class and call [method process_action] on your subclass.
 [param action]: The action to be run, as a Dictionary in the form of a JSON-RPC request or notification.
 */
-func (self Instance) ProcessAction(action any) any {
+func (self Instance) ProcessAction(action any) any { //gd:JSONRPC.process_action
 	return any(class(self).ProcessAction(gd.NewVariant(action), false).Interface())
 }
-func (self Instance) ProcessString(action string) string {
+func (self Instance) ProcessString(action string) string { //gd:JSONRPC.process_string
 	return string(class(self).ProcessString(gd.NewString(action)).String())
 }
 
@@ -58,7 +58,7 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - [param params]: An array or dictionary of parameters being passed to the method.
 - [param id]: Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
-func (self Instance) MakeRequest(method string, params any, id any) map[any]any {
+func (self Instance) MakeRequest(method string, params any, id any) map[any]any { //gd:JSONRPC.make_request
 	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeRequest(gd.NewString(method), gd.NewVariant(params), gd.NewVariant(id))))
 }
 
@@ -67,7 +67,7 @@ When a server has received and processed a request, it is expected to send a res
 - [param result]: The return value of the function which was called.
 - [param id]: The ID of the request this response is targeted to.
 */
-func (self Instance) MakeResponse(result any, id any) map[any]any {
+func (self Instance) MakeResponse(result any, id any) map[any]any { //gd:JSONRPC.make_response
 	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeResponse(gd.NewVariant(result), gd.NewVariant(id))))
 }
 
@@ -76,7 +76,7 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - [param method]: Name of the method being called.
 - [param params]: An array or dictionary of parameters being passed to the method.
 */
-func (self Instance) MakeNotification(method string, params any) map[any]any {
+func (self Instance) MakeNotification(method string, params any) map[any]any { //gd:JSONRPC.make_notification
 	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeNotification(gd.NewString(method), gd.NewVariant(params))))
 }
 
@@ -86,7 +86,7 @@ Creates a response which indicates a previous reply has failed in some way.
 - [param message]: A custom message about this error.
 - [param id]: The request this error is a response to.
 */
-func (self Instance) MakeResponseError(code int, message string) map[any]any {
+func (self Instance) MakeResponseError(code int, message string) map[any]any { //gd:JSONRPC.make_response_error
 	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeResponseError(gd.Int(code), gd.NewString(message), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))))
 }
 
@@ -109,7 +109,7 @@ func New() Instance {
 }
 
 //go:nosplit
-func (self class) SetScope(scope gd.String, target [1]gd.Object) {
+func (self class) SetScope(scope gd.String, target [1]gd.Object) { //gd:JSONRPC.set_scope
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(scope))
 	callframe.Arg(frame, pointers.Get(target[0])[0])
@@ -124,7 +124,7 @@ To add new supported methods extend the JSONRPC class and call [method process_a
 [param action]: The action to be run, as a Dictionary in the form of a JSON-RPC request or notification.
 */
 //go:nosplit
-func (self class) ProcessAction(action gd.Variant, recurse bool) gd.Variant {
+func (self class) ProcessAction(action gd.Variant, recurse bool) gd.Variant { //gd:JSONRPC.process_action
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	callframe.Arg(frame, recurse)
@@ -136,7 +136,7 @@ func (self class) ProcessAction(action gd.Variant, recurse bool) gd.Variant {
 }
 
 //go:nosplit
-func (self class) ProcessString(action gd.String) gd.String {
+func (self class) ProcessString(action gd.String) gd.String { //gd:JSONRPC.process_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -153,7 +153,7 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - [param id]: Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
 //go:nosplit
-func (self class) MakeRequest(method gd.String, params gd.Variant, id gd.Variant) gd.Dictionary {
+func (self class) MakeRequest(method gd.String, params gd.Variant, id gd.Variant) gd.Dictionary { //gd:JSONRPC.make_request
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(params))
@@ -171,7 +171,7 @@ When a server has received and processed a request, it is expected to send a res
 - [param id]: The ID of the request this response is targeted to.
 */
 //go:nosplit
-func (self class) MakeResponse(result gd.Variant, id gd.Variant) gd.Dictionary {
+func (self class) MakeResponse(result gd.Variant, id gd.Variant) gd.Dictionary { //gd:JSONRPC.make_response
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(result))
 	callframe.Arg(frame, pointers.Get(id))
@@ -188,7 +188,7 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - [param params]: An array or dictionary of parameters being passed to the method.
 */
 //go:nosplit
-func (self class) MakeNotification(method gd.String, params gd.Variant) gd.Dictionary {
+func (self class) MakeNotification(method gd.String, params gd.Variant) gd.Dictionary { //gd:JSONRPC.make_notification
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(params))
@@ -206,7 +206,7 @@ Creates a response which indicates a previous reply has failed in some way.
 - [param id]: The request this error is a response to.
 */
 //go:nosplit
-func (self class) MakeResponseError(code gd.Int, message gd.String, id gd.Variant) gd.Dictionary {
+func (self class) MakeResponseError(code gd.Int, message gd.String, id gd.Variant) gd.Dictionary { //gd:JSONRPC.make_response_error
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
 	callframe.Arg(frame, pointers.Get(message))
@@ -237,7 +237,7 @@ func init() {
 	gdclass.Register("JSONRPC", func(ptr gd.Object) any { return [1]gdclass.JSONRPC{*(*gdclass.JSONRPC)(unsafe.Pointer(&ptr))} })
 }
 
-type ErrorCode = gdclass.JSONRPCErrorCode
+type ErrorCode = gdclass.JSONRPCErrorCode //gd:JSONRPC.ErrorCode
 
 const (
 	/*The request could not be parsed as it was not valid by JSON standard ([method JSON.parse] failed).*/

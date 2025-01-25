@@ -43,7 +43,7 @@ type Any interface {
 /*
 Sets [member indices] and [member vertices], while updating the final occluder only once after both values are set.
 */
-func (self Instance) SetArrays(vertices []Vector3.XYZ, indices []int32) {
+func (self Instance) SetArrays(vertices []Vector3.XYZ, indices []int32) { //gd:ArrayOccluder3D.set_arrays
 	class(self).SetArrays(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedInt32Slice(indices))
 }
 
@@ -78,7 +78,7 @@ func (self Instance) SetIndices(value []int32) {
 Sets [member indices] and [member vertices], while updating the final occluder only once after both values are set.
 */
 //go:nosplit
-func (self class) SetArrays(vertices gd.PackedVector3Array, indices gd.PackedInt32Array) {
+func (self class) SetArrays(vertices gd.PackedVector3Array, indices gd.PackedInt32Array) { //gd:ArrayOccluder3D.set_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(vertices))
 	callframe.Arg(frame, pointers.Get(indices))
@@ -88,7 +88,7 @@ func (self class) SetArrays(vertices gd.PackedVector3Array, indices gd.PackedInt
 }
 
 //go:nosplit
-func (self class) SetVertices(vertices gd.PackedVector3Array) {
+func (self class) SetVertices(vertices gd.PackedVector3Array) { //gd:ArrayOccluder3D.set_vertices
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(vertices))
 	var r_ret = callframe.Nil
@@ -97,7 +97,7 @@ func (self class) SetVertices(vertices gd.PackedVector3Array) {
 }
 
 //go:nosplit
-func (self class) SetIndices(indices gd.PackedInt32Array) {
+func (self class) SetIndices(indices gd.PackedInt32Array) { //gd:ArrayOccluder3D.set_indices
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(indices))
 	var r_ret = callframe.Nil

@@ -41,42 +41,42 @@ type Any interface {
 /*
 Returns the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrInstance.html]XrInstance[/url] created during the initialization of the OpenXR API.
 */
-func (self Instance) GetInstance() int {
+func (self Instance) GetInstance() int { //gd:OpenXRAPIExtension.get_instance
 	return int(int(class(self).GetInstance()))
 }
 
 /*
 Returns the id of the system, which is a [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSystemId.html]XrSystemId[/url] cast to an integer.
 */
-func (self Instance) GetSystemId() int {
+func (self Instance) GetSystemId() int { //gd:OpenXRAPIExtension.get_system_id
 	return int(int(class(self).GetSystemId()))
 }
 
 /*
 Returns the OpenXR session, which is an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSession.html]XrSession[/url] cast to an integer.
 */
-func (self Instance) GetSession() int {
+func (self Instance) GetSession() int { //gd:OpenXRAPIExtension.get_session
 	return int(int(class(self).GetSession()))
 }
 
 /*
 Creates a [Transform3D] from an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrPosef.html]XrPosef[/url].
 */
-func (self Instance) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOrigin {
+func (self Instance) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
 	return Transform3D.BasisOrigin(class(self).TransformFromPose(pose))
 }
 
 /*
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
-func (self Instance) XrResult(result int, format string, args []any) bool {
+func (self Instance) XrResult(result int, format string, args []any) bool { //gd:OpenXRAPIExtension.xr_result
 	return bool(class(self).XrResult(gd.Int(result), gd.NewString(format), gd.EngineArrayFromSlice(args)))
 }
 
 /*
 Returns [code]true[/code] if OpenXR is enabled.
 */
-func OpenxrIsEnabled(check_run_in_editor bool) bool {
+func OpenxrIsEnabled(check_run_in_editor bool) bool { //gd:OpenXRAPIExtension.openxr_is_enabled
 	self := Instance{}
 	return bool(class(self).OpenxrIsEnabled(check_run_in_editor))
 }
@@ -85,98 +85,98 @@ func OpenxrIsEnabled(check_run_in_editor bool) bool {
 Returns the function pointer of the OpenXR function with the specified name, cast to an integer. If the function with the given name does not exist, the method returns [code]0[/code].
 [b]Note:[/b] [code]openxr/util.h[/code] contains utility macros for acquiring OpenXR functions, e.g. [code]GDEXTENSION_INIT_XR_FUNC_V(xrCreateAction)[/code].
 */
-func (self Instance) GetInstanceProcAddr(name string) int {
+func (self Instance) GetInstanceProcAddr(name string) int { //gd:OpenXRAPIExtension.get_instance_proc_addr
 	return int(int(class(self).GetInstanceProcAddr(gd.NewString(name))))
 }
 
 /*
 Returns an error string for the given [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url].
 */
-func (self Instance) GetErrorString(result int) string {
+func (self Instance) GetErrorString(result int) string { //gd:OpenXRAPIExtension.get_error_string
 	return string(class(self).GetErrorString(gd.Int(result)).String())
 }
 
 /*
 Returns the name of the specified swapchain format.
 */
-func (self Instance) GetSwapchainFormatName(swapchain_format int) string {
+func (self Instance) GetSwapchainFormatName(swapchain_format int) string { //gd:OpenXRAPIExtension.get_swapchain_format_name
 	return string(class(self).GetSwapchainFormatName(gd.Int(swapchain_format)).String())
 }
 
 /*
 Returns [code]true[/code] if OpenXR is initialized.
 */
-func (self Instance) IsInitialized() bool {
+func (self Instance) IsInitialized() bool { //gd:OpenXRAPIExtension.is_initialized
 	return bool(class(self).IsInitialized())
 }
 
 /*
 Returns [code]true[/code] if OpenXR is running ([url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/xrBeginSession.html]xrBeginSession[/url] was successfully called and the swapchains were created).
 */
-func (self Instance) IsRunning() bool {
+func (self Instance) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
 	return bool(class(self).IsRunning())
 }
 
 /*
 Returns the play space, which is an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html]XrSpace[/url] cast to an integer.
 */
-func (self Instance) GetPlaySpace() int {
+func (self Instance) GetPlaySpace() int { //gd:OpenXRAPIExtension.get_play_space
 	return int(int(class(self).GetPlaySpace()))
 }
 
 /*
 Returns the predicted display timing for the current frame.
 */
-func (self Instance) GetPredictedDisplayTime() int {
+func (self Instance) GetPredictedDisplayTime() int { //gd:OpenXRAPIExtension.get_predicted_display_time
 	return int(int(class(self).GetPredictedDisplayTime()))
 }
 
 /*
 Returns the predicted display timing for the next frame.
 */
-func (self Instance) GetNextFrameTime() int {
+func (self Instance) GetNextFrameTime() int { //gd:OpenXRAPIExtension.get_next_frame_time
 	return int(int(class(self).GetNextFrameTime()))
 }
 
 /*
 Returns [code]true[/code] if OpenXR is initialized for rendering with an XR viewport.
 */
-func (self Instance) CanRender() bool {
+func (self Instance) CanRender() bool { //gd:OpenXRAPIExtension.can_render
 	return bool(class(self).CanRender())
 }
 
 /*
 Returns the corresponding [code]XRHandTrackerEXT[/code] handle for the given hand index value.
 */
-func (self Instance) GetHandTracker(hand_index int) int {
+func (self Instance) GetHandTracker(hand_index int) int { //gd:OpenXRAPIExtension.get_hand_tracker
 	return int(int(class(self).GetHandTracker(gd.Int(hand_index))))
 }
 
 /*
 Registers the given extension as a composition layer provider.
 */
-func (self Instance) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) {
+func (self Instance) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_composition_layer_provider
 	class(self).RegisterCompositionLayerProvider(extension)
 }
 
 /*
 Unregisters the given extension as a composition layer provider.
 */
-func (self Instance) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) {
+func (self Instance) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
 	class(self).UnregisterCompositionLayerProvider(extension)
 }
 
 /*
 If set to [code]true[/code], an OpenXR extension is loaded which is capable of emulating the [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] blend mode.
 */
-func (self Instance) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) {
+func (self Instance) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) { //gd:OpenXRAPIExtension.set_emulate_environment_blend_mode_alpha_blend
 	class(self).SetEmulateEnvironmentBlendModeAlphaBlend(enabled)
 }
 
 /*
 Returns [enum OpenXRAPIExtension.OpenXRAlphaBlendModeSupport] denoting if [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] is really supported, emulated or not supported at all.
 */
-func (self Instance) IsEnvironmentBlendModeAlphaSupported() gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport {
+func (self Instance) IsEnvironmentBlendModeAlphaSupported() gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
 	return gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport(class(self).IsEnvironmentBlendModeAlphaSupported())
 }
 
@@ -203,7 +203,7 @@ func New() Instance {
 Returns the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrInstance.html]XrInstance[/url] created during the initialization of the OpenXR API.
 */
 //go:nosplit
-func (self class) GetInstance() gd.Int {
+func (self class) GetInstance() gd.Int { //gd:OpenXRAPIExtension.get_instance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -216,7 +216,7 @@ func (self class) GetInstance() gd.Int {
 Returns the id of the system, which is a [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSystemId.html]XrSystemId[/url] cast to an integer.
 */
 //go:nosplit
-func (self class) GetSystemId() gd.Int {
+func (self class) GetSystemId() gd.Int { //gd:OpenXRAPIExtension.get_system_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_system_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) GetSystemId() gd.Int {
 Returns the OpenXR session, which is an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSession.html]XrSession[/url] cast to an integer.
 */
 //go:nosplit
-func (self class) GetSession() gd.Int {
+func (self class) GetSession() gd.Int { //gd:OpenXRAPIExtension.get_session
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_session, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -242,7 +242,7 @@ func (self class) GetSession() gd.Int {
 Creates a [Transform3D] from an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrPosef.html]XrPosef[/url].
 */
 //go:nosplit
-func (self class) TransformFromPose(pose unsafe.Pointer) gd.Transform3D {
+func (self class) TransformFromPose(pose unsafe.Pointer) gd.Transform3D { //gd:OpenXRAPIExtension.transform_from_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, pose)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
@@ -256,7 +256,7 @@ func (self class) TransformFromPose(pose unsafe.Pointer) gd.Transform3D {
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
 //go:nosplit
-func (self class) XrResult(result gd.Int, format gd.String, args Array.Any) bool {
+func (self class) XrResult(result gd.Int, format gd.String, args Array.Any) bool { //gd:OpenXRAPIExtension.xr_result
 	var frame = callframe.New()
 	callframe.Arg(frame, result)
 	callframe.Arg(frame, pointers.Get(format))
@@ -272,7 +272,7 @@ func (self class) XrResult(result gd.Int, format gd.String, args Array.Any) bool
 Returns [code]true[/code] if OpenXR is enabled.
 */
 //go:nosplit
-func (self class) OpenxrIsEnabled(check_run_in_editor bool) bool {
+func (self class) OpenxrIsEnabled(check_run_in_editor bool) bool { //gd:OpenXRAPIExtension.openxr_is_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, check_run_in_editor)
 	var r_ret = callframe.Ret[bool](frame)
@@ -287,7 +287,7 @@ Returns the function pointer of the OpenXR function with the specified name, cas
 [b]Note:[/b] [code]openxr/util.h[/code] contains utility macros for acquiring OpenXR functions, e.g. [code]GDEXTENSION_INIT_XR_FUNC_V(xrCreateAction)[/code].
 */
 //go:nosplit
-func (self class) GetInstanceProcAddr(name gd.String) gd.Int {
+func (self class) GetInstanceProcAddr(name gd.String) gd.Int { //gd:OpenXRAPIExtension.get_instance_proc_addr
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -301,7 +301,7 @@ func (self class) GetInstanceProcAddr(name gd.String) gd.Int {
 Returns an error string for the given [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url].
 */
 //go:nosplit
-func (self class) GetErrorString(result gd.Int) gd.String {
+func (self class) GetErrorString(result gd.Int) gd.String { //gd:OpenXRAPIExtension.get_error_string
 	var frame = callframe.New()
 	callframe.Arg(frame, result)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -315,7 +315,7 @@ func (self class) GetErrorString(result gd.Int) gd.String {
 Returns the name of the specified swapchain format.
 */
 //go:nosplit
-func (self class) GetSwapchainFormatName(swapchain_format gd.Int) gd.String {
+func (self class) GetSwapchainFormatName(swapchain_format gd.Int) gd.String { //gd:OpenXRAPIExtension.get_swapchain_format_name
 	var frame = callframe.New()
 	callframe.Arg(frame, swapchain_format)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -329,7 +329,7 @@ func (self class) GetSwapchainFormatName(swapchain_format gd.Int) gd.String {
 Returns [code]true[/code] if OpenXR is initialized.
 */
 //go:nosplit
-func (self class) IsInitialized() bool {
+func (self class) IsInitialized() bool { //gd:OpenXRAPIExtension.is_initialized
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_is_initialized, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,7 +342,7 @@ func (self class) IsInitialized() bool {
 Returns [code]true[/code] if OpenXR is running ([url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/xrBeginSession.html]xrBeginSession[/url] was successfully called and the swapchains were created).
 */
 //go:nosplit
-func (self class) IsRunning() bool {
+func (self class) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_is_running, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -355,7 +355,7 @@ func (self class) IsRunning() bool {
 Returns the play space, which is an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html]XrSpace[/url] cast to an integer.
 */
 //go:nosplit
-func (self class) GetPlaySpace() gd.Int {
+func (self class) GetPlaySpace() gd.Int { //gd:OpenXRAPIExtension.get_play_space
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_play_space, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -368,7 +368,7 @@ func (self class) GetPlaySpace() gd.Int {
 Returns the predicted display timing for the current frame.
 */
 //go:nosplit
-func (self class) GetPredictedDisplayTime() gd.Int {
+func (self class) GetPredictedDisplayTime() gd.Int { //gd:OpenXRAPIExtension.get_predicted_display_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_predicted_display_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -381,7 +381,7 @@ func (self class) GetPredictedDisplayTime() gd.Int {
 Returns the predicted display timing for the next frame.
 */
 //go:nosplit
-func (self class) GetNextFrameTime() gd.Int {
+func (self class) GetNextFrameTime() gd.Int { //gd:OpenXRAPIExtension.get_next_frame_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_next_frame_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -394,7 +394,7 @@ func (self class) GetNextFrameTime() gd.Int {
 Returns [code]true[/code] if OpenXR is initialized for rendering with an XR viewport.
 */
 //go:nosplit
-func (self class) CanRender() bool {
+func (self class) CanRender() bool { //gd:OpenXRAPIExtension.can_render
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_can_render, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -407,7 +407,7 @@ func (self class) CanRender() bool {
 Returns the corresponding [code]XRHandTrackerEXT[/code] handle for the given hand index value.
 */
 //go:nosplit
-func (self class) GetHandTracker(hand_index gd.Int) gd.Int {
+func (self class) GetHandTracker(hand_index gd.Int) gd.Int { //gd:OpenXRAPIExtension.get_hand_tracker
 	var frame = callframe.New()
 	callframe.Arg(frame, hand_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -421,7 +421,7 @@ func (self class) GetHandTracker(hand_index gd.Int) gd.Int {
 Registers the given extension as a composition layer provider.
 */
 //go:nosplit
-func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) {
+func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_composition_layer_provider
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -433,7 +433,7 @@ func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXREx
 Unregisters the given extension as a composition layer provider.
 */
 //go:nosplit
-func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) {
+func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension[0])[0])
 	var r_ret = callframe.Nil
@@ -445,7 +445,7 @@ func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXR
 If set to [code]true[/code], an OpenXR extension is loaded which is capable of emulating the [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] blend mode.
 */
 //go:nosplit
-func (self class) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) {
+func (self class) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) { //gd:OpenXRAPIExtension.set_emulate_environment_blend_mode_alpha_blend
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -457,7 +457,7 @@ func (self class) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) {
 Returns [enum OpenXRAPIExtension.OpenXRAlphaBlendModeSupport] denoting if [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] is really supported, emulated or not supported at all.
 */
 //go:nosplit
-func (self class) IsEnvironmentBlendModeAlphaSupported() gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport {
+func (self class) IsEnvironmentBlendModeAlphaSupported() gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_is_environment_blend_mode_alpha_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -493,7 +493,7 @@ func init() {
 	})
 }
 
-type OpenXRAlphaBlendModeSupport = gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport
+type OpenXRAlphaBlendModeSupport = gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport //gd:OpenXRAPIExtension.OpenXRAlphaBlendModeSupport
 
 const (
 	/*Means that [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] isn't supported at all.*/

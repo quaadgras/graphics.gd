@@ -47,7 +47,7 @@ type Any interface {
 /*
 Returns whether any object is intersecting with the ray's vector (considering the vector length).
 */
-func (self Instance) IsColliding() bool {
+func (self Instance) IsColliding() bool { //gd:RayCast2D.is_colliding
 	return bool(class(self).IsColliding())
 }
 
@@ -55,21 +55,21 @@ func (self Instance) IsColliding() bool {
 Updates the collision information for the ray immediately, without waiting for the next [code]_physics_process[/code] call. Use this method, for example, when the ray or its parent has changed state.
 [b]Note:[/b] [member enabled] does not need to be [code]true[/code] for this to work.
 */
-func (self Instance) ForceRaycastUpdate() {
+func (self Instance) ForceRaycastUpdate() { //gd:RayCast2D.force_raycast_update
 	class(self).ForceRaycastUpdate()
 }
 
 /*
 Returns the first object that the ray intersects, or [code]null[/code] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
-func (self Instance) GetCollider() Object.Instance {
+func (self Instance) GetCollider() Object.Instance { //gd:RayCast2D.get_collider
 	return Object.Instance(class(self).GetCollider())
 }
 
 /*
 Returns the [RID] of the first object that the ray intersects, or an empty [RID] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
-func (self Instance) GetColliderRid() Resource.ID {
+func (self Instance) GetColliderRid() Resource.ID { //gd:RayCast2D.get_collider_rid
 	return Resource.ID(class(self).GetColliderRid())
 }
 
@@ -91,7 +91,7 @@ var shape = target.ShapeOwnerGetOwner(ownerId);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetColliderShape() int {
+func (self Instance) GetColliderShape() int { //gd:RayCast2D.get_collider_shape
 	return int(int(class(self).GetColliderShape()))
 }
 
@@ -99,7 +99,7 @@ func (self Instance) GetColliderShape() int {
 Returns the collision point at which the ray intersects the closest object, in the global coordinate system. If [member hit_from_inside] is [code]true[/code] and the ray starts inside of a collision shape, this function will return the origin point of the ray.
 [b]Note:[/b] Check that [method is_colliding] returns [code]true[/code] before calling this method to ensure the returned point is valid and up-to-date.
 */
-func (self Instance) GetCollisionPoint() Vector2.XY {
+func (self Instance) GetCollisionPoint() Vector2.XY { //gd:RayCast2D.get_collision_point
 	return Vector2.XY(class(self).GetCollisionPoint())
 }
 
@@ -107,56 +107,56 @@ func (self Instance) GetCollisionPoint() Vector2.XY {
 Returns the normal of the intersecting object's shape at the collision point, or [code]Vector2(0, 0)[/code] if the ray starts inside the shape and [member hit_from_inside] is [code]true[/code].
 [b]Note:[/b] Check that [method is_colliding] returns [code]true[/code] before calling this method to ensure the returned normal is valid and up-to-date.
 */
-func (self Instance) GetCollisionNormal() Vector2.XY {
+func (self Instance) GetCollisionNormal() Vector2.XY { //gd:RayCast2D.get_collision_normal
 	return Vector2.XY(class(self).GetCollisionNormal())
 }
 
 /*
 Adds a collision exception so the ray does not report collisions with the specified [RID].
 */
-func (self Instance) AddExceptionRid(rid Resource.ID) {
+func (self Instance) AddExceptionRid(rid Resource.ID) { //gd:RayCast2D.add_exception_rid
 	class(self).AddExceptionRid(rid)
 }
 
 /*
 Adds a collision exception so the ray does not report collisions with the specified [CollisionObject2D] node.
 */
-func (self Instance) AddException(node [1]gdclass.CollisionObject2D) {
+func (self Instance) AddException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.add_exception
 	class(self).AddException(node)
 }
 
 /*
 Removes a collision exception so the ray does report collisions with the specified [RID].
 */
-func (self Instance) RemoveExceptionRid(rid Resource.ID) {
+func (self Instance) RemoveExceptionRid(rid Resource.ID) { //gd:RayCast2D.remove_exception_rid
 	class(self).RemoveExceptionRid(rid)
 }
 
 /*
 Removes a collision exception so the ray does report collisions with the specified [CollisionObject2D] node.
 */
-func (self Instance) RemoveException(node [1]gdclass.CollisionObject2D) {
+func (self Instance) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.remove_exception
 	class(self).RemoveException(node)
 }
 
 /*
 Removes all collision exceptions for this ray.
 */
-func (self Instance) ClearExceptions() {
+func (self Instance) ClearExceptions() { //gd:RayCast2D.clear_exceptions
 	class(self).ClearExceptions()
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) {
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:RayCast2D.set_collision_mask_value
 	class(self).SetCollisionMaskValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetCollisionMaskValue(layer_number int) bool {
+func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:RayCast2D.get_collision_mask_value
 	return bool(class(self).GetCollisionMaskValue(gd.Int(layer_number)))
 }
 
@@ -235,7 +235,7 @@ func (self Instance) SetCollideWithBodies(value bool) {
 }
 
 //go:nosplit
-func (self class) SetEnabled(enabled bool) {
+func (self class) SetEnabled(enabled bool) { //gd:RayCast2D.set_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -244,7 +244,7 @@ func (self class) SetEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsEnabled() bool {
+func (self class) IsEnabled() bool { //gd:RayCast2D.is_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -254,7 +254,7 @@ func (self class) IsEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetTargetPosition(local_point gd.Vector2) {
+func (self class) SetTargetPosition(local_point gd.Vector2) { //gd:RayCast2D.set_target_position
 	var frame = callframe.New()
 	callframe.Arg(frame, local_point)
 	var r_ret = callframe.Nil
@@ -263,7 +263,7 @@ func (self class) SetTargetPosition(local_point gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetTargetPosition() gd.Vector2 {
+func (self class) GetTargetPosition() gd.Vector2 { //gd:RayCast2D.get_target_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -276,7 +276,7 @@ func (self class) GetTargetPosition() gd.Vector2 {
 Returns whether any object is intersecting with the ray's vector (considering the vector length).
 */
 //go:nosplit
-func (self class) IsColliding() bool {
+func (self class) IsColliding() bool { //gd:RayCast2D.is_colliding
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_is_colliding, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -290,7 +290,7 @@ Updates the collision information for the ray immediately, without waiting for t
 [b]Note:[/b] [member enabled] does not need to be [code]true[/code] for this to work.
 */
 //go:nosplit
-func (self class) ForceRaycastUpdate() {
+func (self class) ForceRaycastUpdate() { //gd:RayCast2D.force_raycast_update
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_force_raycast_update, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -301,7 +301,7 @@ func (self class) ForceRaycastUpdate() {
 Returns the first object that the ray intersects, or [code]null[/code] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
 //go:nosplit
-func (self class) GetCollider() [1]gd.Object {
+func (self class) GetCollider() [1]gd.Object { //gd:RayCast2D.get_collider
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -314,7 +314,7 @@ func (self class) GetCollider() [1]gd.Object {
 Returns the [RID] of the first object that the ray intersects, or an empty [RID] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
 //go:nosplit
-func (self class) GetColliderRid() gd.RID {
+func (self class) GetColliderRid() gd.RID { //gd:RayCast2D.get_collider_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_get_collider_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,7 +342,7 @@ var shape = target.ShapeOwnerGetOwner(ownerId);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetColliderShape() gd.Int {
+func (self class) GetColliderShape() gd.Int { //gd:RayCast2D.get_collider_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -356,7 +356,7 @@ Returns the collision point at which the ray intersects the closest object, in t
 [b]Note:[/b] Check that [method is_colliding] returns [code]true[/code] before calling this method to ensure the returned point is valid and up-to-date.
 */
 //go:nosplit
-func (self class) GetCollisionPoint() gd.Vector2 {
+func (self class) GetCollisionPoint() gd.Vector2 { //gd:RayCast2D.get_collision_point
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_get_collision_point, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -370,7 +370,7 @@ Returns the normal of the intersecting object's shape at the collision point, or
 [b]Note:[/b] Check that [method is_colliding] returns [code]true[/code] before calling this method to ensure the returned normal is valid and up-to-date.
 */
 //go:nosplit
-func (self class) GetCollisionNormal() gd.Vector2 {
+func (self class) GetCollisionNormal() gd.Vector2 { //gd:RayCast2D.get_collision_normal
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_get_collision_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -383,7 +383,7 @@ func (self class) GetCollisionNormal() gd.Vector2 {
 Adds a collision exception so the ray does not report collisions with the specified [RID].
 */
 //go:nosplit
-func (self class) AddExceptionRid(rid gd.RID) {
+func (self class) AddExceptionRid(rid gd.RID) { //gd:RayCast2D.add_exception_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Nil
@@ -395,7 +395,7 @@ func (self class) AddExceptionRid(rid gd.RID) {
 Adds a collision exception so the ray does not report collisions with the specified [CollisionObject2D] node.
 */
 //go:nosplit
-func (self class) AddException(node [1]gdclass.CollisionObject2D) {
+func (self class) AddException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.add_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -407,7 +407,7 @@ func (self class) AddException(node [1]gdclass.CollisionObject2D) {
 Removes a collision exception so the ray does report collisions with the specified [RID].
 */
 //go:nosplit
-func (self class) RemoveExceptionRid(rid gd.RID) {
+func (self class) RemoveExceptionRid(rid gd.RID) { //gd:RayCast2D.remove_exception_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Nil
@@ -419,7 +419,7 @@ func (self class) RemoveExceptionRid(rid gd.RID) {
 Removes a collision exception so the ray does report collisions with the specified [CollisionObject2D] node.
 */
 //go:nosplit
-func (self class) RemoveException(node [1]gdclass.CollisionObject2D) {
+func (self class) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.remove_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Nil
@@ -431,7 +431,7 @@ func (self class) RemoveException(node [1]gdclass.CollisionObject2D) {
 Removes all collision exceptions for this ray.
 */
 //go:nosplit
-func (self class) ClearExceptions() {
+func (self class) ClearExceptions() { //gd:RayCast2D.clear_exceptions
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_clear_exceptions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -439,7 +439,7 @@ func (self class) ClearExceptions() {
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(mask gd.Int) {
+func (self class) SetCollisionMask(mask gd.Int) { //gd:RayCast2D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -448,7 +448,7 @@ func (self class) SetCollisionMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int {
+func (self class) GetCollisionMask() gd.Int { //gd:RayCast2D.get_collision_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -461,7 +461,7 @@ func (self class) GetCollisionMask() gd.Int {
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
+func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:RayCast2D.set_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -474,7 +474,7 @@ func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
+func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:RayCast2D.get_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -485,7 +485,7 @@ func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) SetExcludeParentBody(mask bool) {
+func (self class) SetExcludeParentBody(mask bool) { //gd:RayCast2D.set_exclude_parent_body
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -494,7 +494,7 @@ func (self class) SetExcludeParentBody(mask bool) {
 }
 
 //go:nosplit
-func (self class) GetExcludeParentBody() bool {
+func (self class) GetExcludeParentBody() bool { //gd:RayCast2D.get_exclude_parent_body
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_get_exclude_parent_body, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -504,7 +504,7 @@ func (self class) GetExcludeParentBody() bool {
 }
 
 //go:nosplit
-func (self class) SetCollideWithAreas(enable bool) {
+func (self class) SetCollideWithAreas(enable bool) { //gd:RayCast2D.set_collide_with_areas
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -513,7 +513,7 @@ func (self class) SetCollideWithAreas(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCollideWithAreasEnabled() bool {
+func (self class) IsCollideWithAreasEnabled() bool { //gd:RayCast2D.is_collide_with_areas_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_is_collide_with_areas_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -523,7 +523,7 @@ func (self class) IsCollideWithAreasEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetCollideWithBodies(enable bool) {
+func (self class) SetCollideWithBodies(enable bool) { //gd:RayCast2D.set_collide_with_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -532,7 +532,7 @@ func (self class) SetCollideWithBodies(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCollideWithBodiesEnabled() bool {
+func (self class) IsCollideWithBodiesEnabled() bool { //gd:RayCast2D.is_collide_with_bodies_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_is_collide_with_bodies_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -542,7 +542,7 @@ func (self class) IsCollideWithBodiesEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetHitFromInside(enable bool) {
+func (self class) SetHitFromInside(enable bool) { //gd:RayCast2D.set_hit_from_inside
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -551,7 +551,7 @@ func (self class) SetHitFromInside(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsHitFromInsideEnabled() bool {
+func (self class) IsHitFromInsideEnabled() bool { //gd:RayCast2D.is_hit_from_inside_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RayCast2D.Bind_is_hit_from_inside_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())

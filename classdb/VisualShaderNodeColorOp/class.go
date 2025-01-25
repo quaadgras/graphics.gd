@@ -66,7 +66,7 @@ func (self Instance) SetOperator(value gdclass.VisualShaderNodeColorOpOperator) 
 }
 
 //go:nosplit
-func (self class) SetOperator(op gdclass.VisualShaderNodeColorOpOperator) {
+func (self class) SetOperator(op gdclass.VisualShaderNodeColorOpOperator) { //gd:VisualShaderNodeColorOp.set_operator
 	var frame = callframe.New()
 	callframe.Arg(frame, op)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetOperator(op gdclass.VisualShaderNodeColorOpOperator) {
 }
 
 //go:nosplit
-func (self class) GetOperator() gdclass.VisualShaderNodeColorOpOperator {
+func (self class) GetOperator() gdclass.VisualShaderNodeColorOpOperator { //gd:VisualShaderNodeColorOp.get_operator
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeColorOpOperator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeColorOp.Bind_get_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -125,7 +125,7 @@ func init() {
 	})
 }
 
-type Operator = gdclass.VisualShaderNodeColorOpOperator
+type Operator = gdclass.VisualShaderNodeColorOpOperator //gd:VisualShaderNodeColorOp.Operator
 
 const (
 	/*Produce a screen effect with the following formula:

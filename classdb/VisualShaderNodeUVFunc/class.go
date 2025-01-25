@@ -66,7 +66,7 @@ func (self Instance) SetFunction(value gdclass.VisualShaderNodeUVFuncFunction) {
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeUVFuncFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeUVFuncFunction) { //gd:VisualShaderNodeUVFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeUVFuncFunction) {
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeUVFuncFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeUVFuncFunction { //gd:VisualShaderNodeUVFunc.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeUVFuncFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeUVFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -125,7 +125,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeUVFuncFunction
+type Function = gdclass.VisualShaderNodeUVFuncFunction //gd:VisualShaderNodeUVFunc.Function
 
 const (
 	/*Translates [code]uv[/code] by using [code]scale[/code] and [code]offset[/code] values using the following formula: [code]uv = uv + offset * scale[/code]. [code]uv[/code] port is connected to [code]UV[/code] built-in by default.*/

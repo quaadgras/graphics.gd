@@ -73,7 +73,7 @@ func init() {
 	})
 }
 
-type ScriptNameCasing = gdclass.ScriptLanguageScriptNameCasing
+type ScriptNameCasing = gdclass.ScriptLanguageScriptNameCasing //gd:ScriptLanguage.ScriptNameCasing
 
 const (
 	ScriptNameCasingAuto       ScriptNameCasing = 0

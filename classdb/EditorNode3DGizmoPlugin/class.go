@@ -462,14 +462,14 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass
 /*
 Creates an unshaded material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_mesh] and [method EditorNode3DGizmo.add_lines]. Should not be overridden.
 */
-func (self Instance) CreateMaterial(name string, color Color.RGBA) {
+func (self Instance) CreateMaterial(name string, color Color.RGBA) { //gd:EditorNode3DGizmoPlugin.create_material
 	class(self).CreateMaterial(gd.NewString(name), gd.Color(color), false, false, false)
 }
 
 /*
 Creates an icon material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_unscaled_billboard]. Should not be overridden.
 */
-func (self Instance) CreateIconMaterial(name string, texture [1]gdclass.Texture2D) {
+func (self Instance) CreateIconMaterial(name string, texture [1]gdclass.Texture2D) { //gd:EditorNode3DGizmoPlugin.create_icon_material
 	class(self).CreateIconMaterial(gd.NewString(name), texture, false, gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
@@ -477,21 +477,21 @@ func (self Instance) CreateIconMaterial(name string, texture [1]gdclass.Texture2
 Creates a handle material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_handles]. Should not be overridden.
 You can optionally provide a texture to use instead of the default icon.
 */
-func (self Instance) CreateHandleMaterial(name string) {
+func (self Instance) CreateHandleMaterial(name string) { //gd:EditorNode3DGizmoPlugin.create_handle_material
 	class(self).CreateHandleMaterial(gd.NewString(name), false, [1][1]gdclass.Texture2D{}[0])
 }
 
 /*
 Adds a new material to the internal material list for the plugin. It can then be accessed with [method get_material]. Should not be overridden.
 */
-func (self Instance) AddMaterial(name string, material [1]gdclass.StandardMaterial3D) {
+func (self Instance) AddMaterial(name string, material [1]gdclass.StandardMaterial3D) { //gd:EditorNode3DGizmoPlugin.add_material
 	class(self).AddMaterial(gd.NewString(name), material)
 }
 
 /*
 Gets material from the internal list of materials. If an [EditorNode3DGizmo] is provided, it will try to get the corresponding variant (selected and/or editable).
 */
-func (self Instance) GetMaterial(name string) [1]gdclass.StandardMaterial3D {
+func (self Instance) GetMaterial(name string) [1]gdclass.StandardMaterial3D { //gd:EditorNode3DGizmoPlugin.get_material
 	return [1]gdclass.StandardMaterial3D(class(self).GetMaterial(gd.NewString(name), [1][1]gdclass.EditorNode3DGizmo{}[0]))
 }
 
@@ -838,7 +838,7 @@ func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.Ed
 Creates an unshaded material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_mesh] and [method EditorNode3DGizmo.add_lines]. Should not be overridden.
 */
 //go:nosplit
-func (self class) CreateMaterial(name gd.String, color gd.Color, billboard bool, on_top bool, use_vertex_color bool) {
+func (self class) CreateMaterial(name gd.String, color gd.Color, billboard bool, on_top bool, use_vertex_color bool) { //gd:EditorNode3DGizmoPlugin.create_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, color)
@@ -854,7 +854,7 @@ func (self class) CreateMaterial(name gd.String, color gd.Color, billboard bool,
 Creates an icon material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_unscaled_billboard]. Should not be overridden.
 */
 //go:nosplit
-func (self class) CreateIconMaterial(name gd.String, texture [1]gdclass.Texture2D, on_top bool, color gd.Color) {
+func (self class) CreateIconMaterial(name gd.String, texture [1]gdclass.Texture2D, on_top bool, color gd.Color) { //gd:EditorNode3DGizmoPlugin.create_icon_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -870,7 +870,7 @@ Creates a handle material with its variants (selected and/or editable) and adds 
 You can optionally provide a texture to use instead of the default icon.
 */
 //go:nosplit
-func (self class) CreateHandleMaterial(name gd.String, billboard bool, texture [1]gdclass.Texture2D) {
+func (self class) CreateHandleMaterial(name gd.String, billboard bool, texture [1]gdclass.Texture2D) { //gd:EditorNode3DGizmoPlugin.create_handle_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, billboard)
@@ -884,7 +884,7 @@ func (self class) CreateHandleMaterial(name gd.String, billboard bool, texture [
 Adds a new material to the internal material list for the plugin. It can then be accessed with [method get_material]. Should not be overridden.
 */
 //go:nosplit
-func (self class) AddMaterial(name gd.String, material [1]gdclass.StandardMaterial3D) {
+func (self class) AddMaterial(name gd.String, material [1]gdclass.StandardMaterial3D) { //gd:EditorNode3DGizmoPlugin.add_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
@@ -897,7 +897,7 @@ func (self class) AddMaterial(name gd.String, material [1]gdclass.StandardMateri
 Gets material from the internal list of materials. If an [EditorNode3DGizmo] is provided, it will try to get the corresponding variant (selected and/or editable).
 */
 //go:nosplit
-func (self class) GetMaterial(name gd.String, gizmo [1]gdclass.EditorNode3DGizmo) [1]gdclass.StandardMaterial3D {
+func (self class) GetMaterial(name gd.String, gizmo [1]gdclass.EditorNode3DGizmo) [1]gdclass.StandardMaterial3D { //gd:EditorNode3DGizmoPlugin.get_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(gizmo[0])[0])

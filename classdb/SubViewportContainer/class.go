@@ -120,7 +120,7 @@ func (class) _propagate_input_event(impl func(ptr unsafe.Pointer, event [1]gdcla
 }
 
 //go:nosplit
-func (self class) SetStretch(enable bool) {
+func (self class) SetStretch(enable bool) { //gd:SubViewportContainer.set_stretch
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetStretch(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsStretchEnabled() bool {
+func (self class) IsStretchEnabled() bool { //gd:SubViewportContainer.is_stretch_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewportContainer.Bind_is_stretch_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -139,7 +139,7 @@ func (self class) IsStretchEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetStretchShrink(amount gd.Int) {
+func (self class) SetStretchShrink(amount gd.Int) { //gd:SubViewportContainer.set_stretch_shrink
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -148,7 +148,7 @@ func (self class) SetStretchShrink(amount gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetStretchShrink() gd.Int {
+func (self class) GetStretchShrink() gd.Int { //gd:SubViewportContainer.get_stretch_shrink
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewportContainer.Bind_get_stretch_shrink, self.AsObject(), frame.Array(0), r_ret.Addr())

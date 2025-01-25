@@ -67,7 +67,7 @@ func (self Instance) SetTexture(value [1]gdclass.CurveTexture) {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.CurveTexture) {
+func (self class) SetTexture(texture [1]gdclass.CurveTexture) { //gd:VisualShaderNodeCurveTexture.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetTexture(texture [1]gdclass.CurveTexture) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.CurveTexture {
+func (self class) GetTexture() [1]gdclass.CurveTexture { //gd:VisualShaderNodeCurveTexture.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCurveTexture.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())

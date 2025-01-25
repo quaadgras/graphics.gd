@@ -108,7 +108,7 @@ func (self Instance) SetLanguage(value gdclass.RenderingDeviceShaderLanguage) {
 Sets [param source] code for the specified shader [param stage]. Equivalent to setting one of [member source_compute], [member source_fragment], [member source_tesselation_control], [member source_tesselation_evaluation] or [member source_vertex].
 */
 //go:nosplit
-func (self class) SetStageSource(stage gdclass.RenderingDeviceShaderStage, source gd.String) {
+func (self class) SetStageSource(stage gdclass.RenderingDeviceShaderStage, source gd.String) { //gd:RDShaderSource.set_stage_source
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	callframe.Arg(frame, pointers.Get(source))
@@ -121,7 +121,7 @@ func (self class) SetStageSource(stage gdclass.RenderingDeviceShaderStage, sourc
 Returns source code for the specified shader [param stage]. Equivalent to getting one of [member source_compute], [member source_fragment], [member source_tesselation_control], [member source_tesselation_evaluation] or [member source_vertex].
 */
 //go:nosplit
-func (self class) GetStageSource(stage gdclass.RenderingDeviceShaderStage) gd.String {
+func (self class) GetStageSource(stage gdclass.RenderingDeviceShaderStage) gd.String { //gd:RDShaderSource.get_stage_source
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -132,7 +132,7 @@ func (self class) GetStageSource(stage gdclass.RenderingDeviceShaderStage) gd.St
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gdclass.RenderingDeviceShaderLanguage) {
+func (self class) SetLanguage(language gdclass.RenderingDeviceShaderLanguage) { //gd:RDShaderSource.set_language
 	var frame = callframe.New()
 	callframe.Arg(frame, language)
 	var r_ret = callframe.Nil
@@ -141,7 +141,7 @@ func (self class) SetLanguage(language gdclass.RenderingDeviceShaderLanguage) {
 }
 
 //go:nosplit
-func (self class) GetLanguage() gdclass.RenderingDeviceShaderLanguage {
+func (self class) GetLanguage() gdclass.RenderingDeviceShaderLanguage { //gd:RDShaderSource.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceShaderLanguage](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())

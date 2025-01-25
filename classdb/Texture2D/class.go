@@ -200,49 +200,49 @@ func (Instance) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item R
 /*
 Returns the texture width in pixels.
 */
-func (self Instance) GetWidth() int {
+func (self Instance) GetWidth() int { //gd:Texture2D.get_width
 	return int(int(class(self).GetWidth()))
 }
 
 /*
 Returns the texture height in pixels.
 */
-func (self Instance) GetHeight() int {
+func (self Instance) GetHeight() int { //gd:Texture2D.get_height
 	return int(int(class(self).GetHeight()))
 }
 
 /*
 Returns the texture size in pixels.
 */
-func (self Instance) GetSize() Vector2.XY {
+func (self Instance) GetSize() Vector2.XY { //gd:Texture2D.get_size
 	return Vector2.XY(class(self).GetSize())
 }
 
 /*
 Returns [code]true[/code] if this [Texture2D] has an alpha channel.
 */
-func (self Instance) HasAlpha() bool {
+func (self Instance) HasAlpha() bool { //gd:Texture2D.has_alpha
 	return bool(class(self).HasAlpha())
 }
 
 /*
 Draws the texture using a [CanvasItem] with the [RenderingServer] API at the specified [param position].
 */
-func (self Instance) Draw(canvas_item Resource.ID, position Vector2.XY) {
+func (self Instance) Draw(canvas_item Resource.ID, position Vector2.XY) { //gd:Texture2D.draw
 	class(self).Draw(canvas_item, gd.Vector2(position), gd.Color(gd.Color{1, 1, 1, 1}), false)
 }
 
 /*
 Draws the texture using a [CanvasItem] with the [RenderingServer] API.
 */
-func (self Instance) DrawRect(canvas_item Resource.ID, rect Rect2.PositionSize, tile bool) {
+func (self Instance) DrawRect(canvas_item Resource.ID, rect Rect2.PositionSize, tile bool) { //gd:Texture2D.draw_rect
 	class(self).DrawRect(canvas_item, gd.Rect2(rect), tile, gd.Color(gd.Color{1, 1, 1, 1}), false)
 }
 
 /*
 Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
 */
-func (self Instance) DrawRectRegion(canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize) {
+func (self Instance) DrawRectRegion(canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:Texture2D.draw_rect_region
 	class(self).DrawRectRegion(canvas_item, gd.Rect2(rect), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), false, true)
 }
 
@@ -251,14 +251,14 @@ Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] i
 [b]Note:[/b] This will return [code]null[/code] if this [Texture2D] is invalid.
 [b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused.
 */
-func (self Instance) GetImage() [1]gdclass.Image {
+func (self Instance) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image
 	return [1]gdclass.Image(class(self).GetImage())
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture2D]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource {
+func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2D.create_placeholder
 	return [1]gdclass.Resource(class(self).CreatePlaceholder())
 }
 
@@ -396,7 +396,7 @@ func (class) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item gd.R
 Returns the texture width in pixels.
 */
 //go:nosplit
-func (self class) GetWidth() gd.Int {
+func (self class) GetWidth() gd.Int { //gd:Texture2D.get_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -409,7 +409,7 @@ func (self class) GetWidth() gd.Int {
 Returns the texture height in pixels.
 */
 //go:nosplit
-func (self class) GetHeight() gd.Int {
+func (self class) GetHeight() gd.Int { //gd:Texture2D.get_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -422,7 +422,7 @@ func (self class) GetHeight() gd.Int {
 Returns the texture size in pixels.
 */
 //go:nosplit
-func (self class) GetSize() gd.Vector2 {
+func (self class) GetSize() gd.Vector2 { //gd:Texture2D.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -435,7 +435,7 @@ func (self class) GetSize() gd.Vector2 {
 Returns [code]true[/code] if this [Texture2D] has an alpha channel.
 */
 //go:nosplit
-func (self class) HasAlpha() bool {
+func (self class) HasAlpha() bool { //gd:Texture2D.has_alpha
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_has_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -448,7 +448,7 @@ func (self class) HasAlpha() bool {
 Draws the texture using a [CanvasItem] with the [RenderingServer] API at the specified [param position].
 */
 //go:nosplit
-func (self class) Draw(canvas_item gd.RID, position gd.Vector2, modulate gd.Color, transpose bool) {
+func (self class) Draw(canvas_item gd.RID, position gd.Vector2, modulate gd.Color, transpose bool) { //gd:Texture2D.draw
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, position)
@@ -463,7 +463,7 @@ func (self class) Draw(canvas_item gd.RID, position gd.Vector2, modulate gd.Colo
 Draws the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
-func (self class) DrawRect(canvas_item gd.RID, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool) {
+func (self class) DrawRect(canvas_item gd.RID, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool) { //gd:Texture2D.draw_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, rect)
@@ -479,7 +479,7 @@ func (self class) DrawRect(canvas_item gd.RID, rect gd.Rect2, tile bool, modulat
 Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
-func (self class) DrawRectRegion(canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool) {
+func (self class) DrawRectRegion(canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool) { //gd:Texture2D.draw_rect_region
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, rect)
@@ -498,7 +498,7 @@ Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] i
 [b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused.
 */
 //go:nosplit
-func (self class) GetImage() [1]gdclass.Image {
+func (self class) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_image, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -511,7 +511,7 @@ func (self class) GetImage() [1]gdclass.Image {
 Creates a placeholder version of this resource ([PlaceholderTexture2D]).
 */
 //go:nosplit
-func (self class) CreatePlaceholder() [1]gdclass.Resource {
+func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2D.create_placeholder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())

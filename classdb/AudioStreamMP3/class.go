@@ -107,7 +107,7 @@ func (self Instance) SetLoopOffset(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetData(data gd.PackedByteArray) {
+func (self class) SetData(data gd.PackedByteArray) { //gd:AudioStreamMP3.set_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Nil
@@ -116,7 +116,7 @@ func (self class) SetData(data gd.PackedByteArray) {
 }
 
 //go:nosplit
-func (self class) GetData() gd.PackedByteArray {
+func (self class) GetData() gd.PackedByteArray { //gd:AudioStreamMP3.get_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -126,7 +126,7 @@ func (self class) GetData() gd.PackedByteArray {
 }
 
 //go:nosplit
-func (self class) SetLoop(enable bool) {
+func (self class) SetLoop(enable bool) { //gd:AudioStreamMP3.set_loop
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -135,7 +135,7 @@ func (self class) SetLoop(enable bool) {
 }
 
 //go:nosplit
-func (self class) HasLoop() bool {
+func (self class) HasLoop() bool { //gd:AudioStreamMP3.has_loop
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_has_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -145,7 +145,7 @@ func (self class) HasLoop() bool {
 }
 
 //go:nosplit
-func (self class) SetLoopOffset(seconds gd.Float) {
+func (self class) SetLoopOffset(seconds gd.Float) { //gd:AudioStreamMP3.set_loop_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
 	var r_ret = callframe.Nil
@@ -154,7 +154,7 @@ func (self class) SetLoopOffset(seconds gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLoopOffset() gd.Float {
+func (self class) GetLoopOffset() gd.Float { //gd:AudioStreamMP3.get_loop_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_get_loop_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -164,7 +164,7 @@ func (self class) GetLoopOffset() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBpm(bpm gd.Float) {
+func (self class) SetBpm(bpm gd.Float) { //gd:AudioStreamMP3.set_bpm
 	var frame = callframe.New()
 	callframe.Arg(frame, bpm)
 	var r_ret = callframe.Nil
@@ -173,7 +173,7 @@ func (self class) SetBpm(bpm gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBpm() gd.Float {
+func (self class) GetBpm() gd.Float { //gd:AudioStreamMP3.get_bpm
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_get_bpm, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -183,7 +183,7 @@ func (self class) GetBpm() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBeatCount(count gd.Int) {
+func (self class) SetBeatCount(count gd.Int) { //gd:AudioStreamMP3.set_beat_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -192,7 +192,7 @@ func (self class) SetBeatCount(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBeatCount() gd.Int {
+func (self class) GetBeatCount() gd.Int { //gd:AudioStreamMP3.get_beat_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_get_beat_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -202,7 +202,7 @@ func (self class) GetBeatCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetBarBeats(count gd.Int) {
+func (self class) SetBarBeats(count gd.Int) { //gd:AudioStreamMP3.set_bar_beats
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -211,7 +211,7 @@ func (self class) SetBarBeats(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBarBeats() gd.Int {
+func (self class) GetBarBeats() gd.Int { //gd:AudioStreamMP3.get_bar_beats
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamMP3.Bind_get_bar_beats, self.AsObject(), frame.Array(0), r_ret.Addr())

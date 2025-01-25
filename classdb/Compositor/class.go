@@ -65,7 +65,7 @@ func (self Instance) SetCompositorEffects(value [][1]gdclass.CompositorEffect) {
 }
 
 //go:nosplit
-func (self class) SetCompositorEffects(compositor_effects Array.Contains[[1]gdclass.CompositorEffect]) {
+func (self class) SetCompositorEffects(compositor_effects Array.Contains[[1]gdclass.CompositorEffect]) { //gd:Compositor.set_compositor_effects
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(compositor_effects)))
 	var r_ret = callframe.Nil
@@ -74,7 +74,7 @@ func (self class) SetCompositorEffects(compositor_effects Array.Contains[[1]gdcl
 }
 
 //go:nosplit
-func (self class) GetCompositorEffects() Array.Contains[[1]gdclass.CompositorEffect] {
+func (self class) GetCompositorEffects() Array.Contains[[1]gdclass.CompositorEffect] { //gd:Compositor.get_compositor_effects
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Compositor.Bind_get_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -82,7 +82,7 @@ Adds [param action] as a task to be executed by a worker thread. [param high_pri
 Returns a task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddTask(action func()) int {
+func AddTask(action func()) int { //gd:WorkerThreadPool.add_task
 	once.Do(singleton)
 	return int(int(class(self).AddTask(Callable.New(action), false, gd.NewString(""))))
 }
@@ -91,7 +91,7 @@ func AddTask(action func()) int {
 Returns [code]true[/code] if the task with the given ID is completed.
 [b]Note:[/b] You should only call this method between adding the task and awaiting its completion.
 */
-func IsTaskCompleted(task_id int) bool {
+func IsTaskCompleted(task_id int) bool { //gd:WorkerThreadPool.is_task_completed
 	once.Do(singleton)
 	return bool(class(self).IsTaskCompleted(gd.Int(task_id)))
 }
@@ -102,7 +102,7 @@ Returns [constant @GlobalScope.OK] if the task could be successfully awaited.
 Returns [constant @GlobalScope.ERR_INVALID_PARAMETER] if a task with the passed ID does not exist (maybe because it was already awaited and disposed of).
 Returns [constant @GlobalScope.ERR_BUSY] if the call is made from another running task and, due to task scheduling, there's potential for deadlocking (e.g., the task to await may be at a lower level in the call stack and therefore can't progress). This is an advanced situation that should only matter when some tasks depend on others (in the current implementation, the tricky case is a task trying to wait on an older one).
 */
-func WaitForTaskCompletion(task_id int) error {
+func WaitForTaskCompletion(task_id int) error { //gd:WorkerThreadPool.wait_for_task_completion
 	once.Do(singleton)
 	return error(gd.ToError(class(self).WaitForTaskCompletion(gd.Int(task_id))))
 }
@@ -113,7 +113,7 @@ The number of threads the task is distributed to is defined by [param tasks_need
 Returns a group task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddGroupTask(action func(), elements int) int {
+func AddGroupTask(action func(), elements int) int { //gd:WorkerThreadPool.add_group_task
 	once.Do(singleton)
 	return int(int(class(self).AddGroupTask(Callable.New(action), gd.Int(elements), gd.Int(-1), false, gd.NewString(""))))
 }
@@ -122,7 +122,7 @@ func AddGroupTask(action func(), elements int) int {
 Returns [code]true[/code] if the group task with the given ID is completed.
 [b]Note:[/b] You should only call this method between adding the group task and awaiting its completion.
 */
-func IsGroupTaskCompleted(group_id int) bool {
+func IsGroupTaskCompleted(group_id int) bool { //gd:WorkerThreadPool.is_group_task_completed
 	once.Do(singleton)
 	return bool(class(self).IsGroupTaskCompleted(gd.Int(group_id)))
 }
@@ -131,7 +131,7 @@ func IsGroupTaskCompleted(group_id int) bool {
 Returns how many times the [Callable] of the group task with the given ID has already been executed by the worker threads.
 [b]Note:[/b] If a thread has started executing the [Callable] but is yet to finish, it won't be counted.
 */
-func GetGroupProcessedElementCount(group_id int) int {
+func GetGroupProcessedElementCount(group_id int) int { //gd:WorkerThreadPool.get_group_processed_element_count
 	once.Do(singleton)
 	return int(int(class(self).GetGroupProcessedElementCount(gd.Int(group_id))))
 }
@@ -139,7 +139,7 @@ func GetGroupProcessedElementCount(group_id int) int {
 /*
 Pauses the thread that calls this method until the group task with the given ID is completed.
 */
-func WaitForGroupTaskCompletion(group_id int) {
+func WaitForGroupTaskCompletion(group_id int) { //gd:WorkerThreadPool.wait_for_group_task_completion
 	once.Do(singleton)
 	class(self).WaitForGroupTaskCompletion(gd.Int(group_id))
 }
@@ -160,7 +160,7 @@ Returns a task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
 //go:nosplit
-func (self class) AddTask(action Callable.Function, high_priority bool, description gd.String) gd.Int {
+func (self class) AddTask(action Callable.Function, high_priority bool, description gd.String) gd.Int { //gd:WorkerThreadPool.add_task
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(action)))
 	callframe.Arg(frame, high_priority)
@@ -177,7 +177,7 @@ Returns [code]true[/code] if the task with the given ID is completed.
 [b]Note:[/b] You should only call this method between adding the task and awaiting its completion.
 */
 //go:nosplit
-func (self class) IsTaskCompleted(task_id gd.Int) bool {
+func (self class) IsTaskCompleted(task_id gd.Int) bool { //gd:WorkerThreadPool.is_task_completed
 	var frame = callframe.New()
 	callframe.Arg(frame, task_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -194,7 +194,7 @@ Returns [constant @GlobalScope.ERR_INVALID_PARAMETER] if a task with the passed 
 Returns [constant @GlobalScope.ERR_BUSY] if the call is made from another running task and, due to task scheduling, there's potential for deadlocking (e.g., the task to await may be at a lower level in the call stack and therefore can't progress). This is an advanced situation that should only matter when some tasks depend on others (in the current implementation, the tricky case is a task trying to wait on an older one).
 */
 //go:nosplit
-func (self class) WaitForTaskCompletion(task_id gd.Int) gd.Error {
+func (self class) WaitForTaskCompletion(task_id gd.Int) gd.Error { //gd:WorkerThreadPool.wait_for_task_completion
 	var frame = callframe.New()
 	callframe.Arg(frame, task_id)
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -211,7 +211,7 @@ Returns a group task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
 //go:nosplit
-func (self class) AddGroupTask(action Callable.Function, elements gd.Int, tasks_needed gd.Int, high_priority bool, description gd.String) gd.Int {
+func (self class) AddGroupTask(action Callable.Function, elements gd.Int, tasks_needed gd.Int, high_priority bool, description gd.String) gd.Int { //gd:WorkerThreadPool.add_group_task
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(action)))
 	callframe.Arg(frame, elements)
@@ -230,7 +230,7 @@ Returns [code]true[/code] if the group task with the given ID is completed.
 [b]Note:[/b] You should only call this method between adding the group task and awaiting its completion.
 */
 //go:nosplit
-func (self class) IsGroupTaskCompleted(group_id gd.Int) bool {
+func (self class) IsGroupTaskCompleted(group_id gd.Int) bool { //gd:WorkerThreadPool.is_group_task_completed
 	var frame = callframe.New()
 	callframe.Arg(frame, group_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -245,7 +245,7 @@ Returns how many times the [Callable] of the group task with the given ID has al
 [b]Note:[/b] If a thread has started executing the [Callable] but is yet to finish, it won't be counted.
 */
 //go:nosplit
-func (self class) GetGroupProcessedElementCount(group_id gd.Int) gd.Int {
+func (self class) GetGroupProcessedElementCount(group_id gd.Int) gd.Int { //gd:WorkerThreadPool.get_group_processed_element_count
 	var frame = callframe.New()
 	callframe.Arg(frame, group_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -259,7 +259,7 @@ func (self class) GetGroupProcessedElementCount(group_id gd.Int) gd.Int {
 Pauses the thread that calls this method until the group task with the given ID is completed.
 */
 //go:nosplit
-func (self class) WaitForGroupTaskCompletion(group_id gd.Int) {
+func (self class) WaitForGroupTaskCompletion(group_id gd.Int) { //gd:WorkerThreadPool.wait_for_group_task_completion
 	var frame = callframe.New()
 	callframe.Arg(frame, group_id)
 	var r_ret = callframe.Nil
@@ -278,7 +278,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -43,21 +43,21 @@ type Any interface {
 /*
 Sets the time in seconds after which the [MethodTweener] will start interpolating. By default there's no delay.
 */
-func (self Instance) SetDelay(delay Float.X) [1]gdclass.MethodTweener {
+func (self Instance) SetDelay(delay Float.X) [1]gdclass.MethodTweener { //gd:MethodTweener.set_delay
 	return [1]gdclass.MethodTweener(class(self).SetDelay(gd.Float(delay)))
 }
 
 /*
 Sets the type of used transition from [enum Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
 */
-func (self Instance) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.MethodTweener {
+func (self Instance) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_trans
 	return [1]gdclass.MethodTweener(class(self).SetTrans(trans))
 }
 
 /*
 Sets the type of used easing from [enum Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
 */
-func (self Instance) SetEase(ease gdclass.TweenEaseType) [1]gdclass.MethodTweener {
+func (self Instance) SetEase(ease gdclass.TweenEaseType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_ease
 	return [1]gdclass.MethodTweener(class(self).SetEase(ease))
 }
 
@@ -84,7 +84,7 @@ func New() Instance {
 Sets the time in seconds after which the [MethodTweener] will start interpolating. By default there's no delay.
 */
 //go:nosplit
-func (self class) SetDelay(delay gd.Float) [1]gdclass.MethodTweener {
+func (self class) SetDelay(delay gd.Float) [1]gdclass.MethodTweener { //gd:MethodTweener.set_delay
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -98,7 +98,7 @@ func (self class) SetDelay(delay gd.Float) [1]gdclass.MethodTweener {
 Sets the type of used transition from [enum Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
 */
 //go:nosplit
-func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.MethodTweener {
+func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_trans
 	var frame = callframe.New()
 	callframe.Arg(frame, trans)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -112,7 +112,7 @@ func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.MethodT
 Sets the type of used easing from [enum Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
 */
 //go:nosplit
-func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.MethodTweener {
+func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_ease
 	var frame = callframe.New()
 	callframe.Arg(frame, ease)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

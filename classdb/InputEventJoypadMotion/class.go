@@ -75,7 +75,7 @@ func (self Instance) SetAxisValue(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetAxis(axis JoyAxis) {
+func (self class) SetAxis(axis JoyAxis) { //gd:InputEventJoypadMotion.set_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Nil
@@ -84,7 +84,7 @@ func (self class) SetAxis(axis JoyAxis) {
 }
 
 //go:nosplit
-func (self class) GetAxis() JoyAxis {
+func (self class) GetAxis() JoyAxis { //gd:InputEventJoypadMotion.get_axis
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[JoyAxis](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -94,7 +94,7 @@ func (self class) GetAxis() JoyAxis {
 }
 
 //go:nosplit
-func (self class) SetAxisValue(axis_value gd.Float) {
+func (self class) SetAxisValue(axis_value gd.Float) { //gd:InputEventJoypadMotion.set_axis_value
 	var frame = callframe.New()
 	callframe.Arg(frame, axis_value)
 	var r_ret = callframe.Nil
@@ -103,7 +103,7 @@ func (self class) SetAxisValue(axis_value gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAxisValue() gd.Float {
+func (self class) GetAxisValue() gd.Float { //gd:InputEventJoypadMotion.get_axis_value
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis_value, self.AsObject(), frame.Array(0), r_ret.Addr())

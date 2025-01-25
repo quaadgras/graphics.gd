@@ -76,7 +76,7 @@ func (self Instance) SetDefaultValue(value Transform3D.BasisOrigin) {
 }
 
 //go:nosplit
-func (self class) SetDefaultValueEnabled(enabled bool) {
+func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeTransformParameter.set_default_value_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -85,7 +85,7 @@ func (self class) SetDefaultValueEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDefaultValueEnabled() bool {
+func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeTransformParameter.is_default_value_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_is_default_value_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) IsDefaultValueEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDefaultValue(value gd.Transform3D) {
+func (self class) SetDefaultValue(value gd.Transform3D) { //gd:VisualShaderNodeTransformParameter.set_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetDefaultValue(value gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) GetDefaultValue() gd.Transform3D {
+func (self class) GetDefaultValue() gd.Transform3D { //gd:VisualShaderNodeTransformParameter.get_default_value
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -77,7 +77,7 @@ func singleton() {
 Returns [code]true[/code] if the specified [param feature] is supported by the current [NativeMenu], [code]false[/code] otherwise.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func HasFeature(feature gdclass.NativeMenuFeature) bool {
+func HasFeature(feature gdclass.NativeMenuFeature) bool { //gd:NativeMenu.has_feature
 	once.Do(singleton)
 	return bool(class(self).HasFeature(feature))
 }
@@ -86,7 +86,7 @@ func HasFeature(feature gdclass.NativeMenuFeature) bool {
 Returns [code]true[/code] if a special system menu is supported.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func HasSystemMenu(menu_id gdclass.NativeMenuSystemMenus) bool {
+func HasSystemMenu(menu_id gdclass.NativeMenuSystemMenus) bool { //gd:NativeMenu.has_system_menu
 	once.Do(singleton)
 	return bool(class(self).HasSystemMenu(menu_id))
 }
@@ -95,7 +95,7 @@ func HasSystemMenu(menu_id gdclass.NativeMenuSystemMenus) bool {
 Returns RID of a special system menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetSystemMenu(menu_id gdclass.NativeMenuSystemMenus) Resource.ID {
+func GetSystemMenu(menu_id gdclass.NativeMenuSystemMenus) Resource.ID { //gd:NativeMenu.get_system_menu
 	once.Do(singleton)
 	return Resource.ID(class(self).GetSystemMenu(menu_id))
 }
@@ -104,7 +104,7 @@ func GetSystemMenu(menu_id gdclass.NativeMenuSystemMenus) Resource.ID {
 Returns readable name of a special system menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetSystemMenuName(menu_id gdclass.NativeMenuSystemMenus) string {
+func GetSystemMenuName(menu_id gdclass.NativeMenuSystemMenus) string { //gd:NativeMenu.get_system_menu_name
 	once.Do(singleton)
 	return string(class(self).GetSystemMenuName(menu_id).String())
 }
@@ -113,7 +113,7 @@ func GetSystemMenuName(menu_id gdclass.NativeMenuSystemMenus) string {
 Creates a new global menu object.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func CreateMenu() Resource.ID {
+func CreateMenu() Resource.ID { //gd:NativeMenu.create_menu
 	once.Do(singleton)
 	return Resource.ID(class(self).CreateMenu())
 }
@@ -122,7 +122,7 @@ func CreateMenu() Resource.ID {
 Returns [code]true[/code] if [param rid] is valid global menu.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func HasMenu(rid Resource.ID) bool {
+func HasMenu(rid Resource.ID) bool { //gd:NativeMenu.has_menu
 	once.Do(singleton)
 	return bool(class(self).HasMenu(rid))
 }
@@ -131,7 +131,7 @@ func HasMenu(rid Resource.ID) bool {
 Frees a global menu object created by this [NativeMenu].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func FreeMenu(rid Resource.ID) {
+func FreeMenu(rid Resource.ID) { //gd:NativeMenu.free_menu
 	once.Do(singleton)
 	class(self).FreeMenu(rid)
 }
@@ -140,7 +140,7 @@ func FreeMenu(rid Resource.ID) {
 Returns global menu size.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetSize(rid Resource.ID) Vector2.XY {
+func GetSize(rid Resource.ID) Vector2.XY { //gd:NativeMenu.get_size
 	once.Do(singleton)
 	return Vector2.XY(class(self).GetSize(rid))
 }
@@ -149,7 +149,7 @@ func GetSize(rid Resource.ID) Vector2.XY {
 Shows the global menu at [param position] in the screen coordinates.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func Popup(rid Resource.ID, position Vector2i.XY) {
+func Popup(rid Resource.ID, position Vector2i.XY) { //gd:NativeMenu.popup
 	once.Do(singleton)
 	class(self).Popup(rid, gd.Vector2i(position))
 }
@@ -158,7 +158,7 @@ func Popup(rid Resource.ID, position Vector2i.XY) {
 Sets the menu text layout direction from right-to-left if [param is_rtl] is [code]true[/code].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetInterfaceDirection(rid Resource.ID, is_rtl bool) {
+func SetInterfaceDirection(rid Resource.ID, is_rtl bool) { //gd:NativeMenu.set_interface_direction
 	once.Do(singleton)
 	class(self).SetInterfaceDirection(rid, is_rtl)
 }
@@ -167,7 +167,7 @@ func SetInterfaceDirection(rid Resource.ID, is_rtl bool) {
 Registers callable to emit after the menu is closed.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetPopupOpenCallback(rid Resource.ID, callback func()) {
+func SetPopupOpenCallback(rid Resource.ID, callback func()) { //gd:NativeMenu.set_popup_open_callback
 	once.Do(singleton)
 	class(self).SetPopupOpenCallback(rid, Callable.New(callback))
 }
@@ -176,7 +176,7 @@ func SetPopupOpenCallback(rid Resource.ID, callback func()) {
 Returns global menu open callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
-func GetPopupOpenCallback(rid Resource.ID) Callable.Function {
+func GetPopupOpenCallback(rid Resource.ID) Callable.Function { //gd:NativeMenu.get_popup_open_callback
 	once.Do(singleton)
 	return Callable.Function(class(self).GetPopupOpenCallback(rid))
 }
@@ -186,7 +186,7 @@ Registers callable to emit when the menu is about to show.
 [b]Note:[/b] The OS can simulate menu opening to track menu item changes and global shortcuts, in which case the corresponding close callback is not triggered. Use [method is_opened] to check if the menu is currently opened.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetPopupCloseCallback(rid Resource.ID, callback func()) {
+func SetPopupCloseCallback(rid Resource.ID, callback func()) { //gd:NativeMenu.set_popup_close_callback
 	once.Do(singleton)
 	class(self).SetPopupCloseCallback(rid, Callable.New(callback))
 }
@@ -195,7 +195,7 @@ func SetPopupCloseCallback(rid Resource.ID, callback func()) {
 Returns global menu close callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
-func GetPopupCloseCallback(rid Resource.ID) Callable.Function {
+func GetPopupCloseCallback(rid Resource.ID) Callable.Function { //gd:NativeMenu.get_popup_close_callback
 	once.Do(singleton)
 	return Callable.Function(class(self).GetPopupCloseCallback(rid))
 }
@@ -204,7 +204,7 @@ func GetPopupCloseCallback(rid Resource.ID) Callable.Function {
 Sets the minimum width of the global menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetMinimumWidth(rid Resource.ID, width Float.X) {
+func SetMinimumWidth(rid Resource.ID, width Float.X) { //gd:NativeMenu.set_minimum_width
 	once.Do(singleton)
 	class(self).SetMinimumWidth(rid, gd.Float(width))
 }
@@ -213,7 +213,7 @@ func SetMinimumWidth(rid Resource.ID, width Float.X) {
 Returns global menu minimum width.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetMinimumWidth(rid Resource.ID) Float.X {
+func GetMinimumWidth(rid Resource.ID) Float.X { //gd:NativeMenu.get_minimum_width
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetMinimumWidth(rid)))
 }
@@ -222,7 +222,7 @@ func GetMinimumWidth(rid Resource.ID) Float.X {
 Returns [code]true[/code] if the menu is currently opened.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func IsOpened(rid Resource.ID) bool {
+func IsOpened(rid Resource.ID) bool { //gd:NativeMenu.is_opened
 	once.Do(singleton)
 	return bool(class(self).IsOpened(rid))
 }
@@ -232,7 +232,7 @@ Adds an item that will act as a submenu of the global menu [param rid]. The [par
 Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func AddSubmenuItem(rid Resource.ID, label string, submenu_rid Resource.ID) int {
+func AddSubmenuItem(rid Resource.ID, label string, submenu_rid Resource.ID) int { //gd:NativeMenu.add_submenu_item
 	once.Do(singleton)
 	return int(int(class(self).AddSubmenuItem(rid, gd.NewString(label), submenu_rid, gd.NewVariant(gd.NewVariant(([1]any{}[0]))), gd.Int(-1))))
 }
@@ -245,7 +245,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddItem(rid Resource.ID, label string) int {
+func AddItem(rid Resource.ID, label string) int { //gd:NativeMenu.add_item
 	once.Do(singleton)
 	return int(int(class(self).AddItem(rid, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -258,7 +258,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddCheckItem(rid Resource.ID, label string) int {
+func AddCheckItem(rid Resource.ID, label string) int { //gd:NativeMenu.add_check_item
 	once.Do(singleton)
 	return int(int(class(self).AddCheckItem(rid, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -271,7 +271,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconItem(rid Resource.ID, icon [1]gdclass.Texture2D, label string) int {
+func AddIconItem(rid Resource.ID, icon [1]gdclass.Texture2D, label string) int { //gd:NativeMenu.add_icon_item
 	once.Do(singleton)
 	return int(int(class(self).AddIconItem(rid, icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -284,7 +284,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconCheckItem(rid Resource.ID, icon [1]gdclass.Texture2D, label string) int {
+func AddIconCheckItem(rid Resource.ID, icon [1]gdclass.Texture2D, label string) int { //gd:NativeMenu.add_icon_check_item
 	once.Do(singleton)
 	return int(int(class(self).AddIconCheckItem(rid, icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -298,7 +298,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddRadioCheckItem(rid Resource.ID, label string) int {
+func AddRadioCheckItem(rid Resource.ID, label string) int { //gd:NativeMenu.add_radio_check_item
 	once.Do(singleton)
 	return int(int(class(self).AddRadioCheckItem(rid, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -312,7 +312,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconRadioCheckItem(rid Resource.ID, icon [1]gdclass.Texture2D, label string) int {
+func AddIconRadioCheckItem(rid Resource.ID, icon [1]gdclass.Texture2D, label string) int { //gd:NativeMenu.add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(class(self).AddIconRadioCheckItem(rid, icon, gd.NewString(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -327,7 +327,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddMultistateItem(rid Resource.ID, label string, max_states int, default_state int) int {
+func AddMultistateItem(rid Resource.ID, label string, max_states int, default_state int) int { //gd:NativeMenu.add_multistate_item
 	once.Do(singleton)
 	return int(int(class(self).AddMultistateItem(rid, gd.NewString(label), gd.Int(max_states), gd.Int(default_state), Callable.New(Callable.Nil), Callable.New(Callable.Nil), gd.NewVariant(gd.NewVariant(([1]any{}[0]))), 0, gd.Int(-1))))
 }
@@ -337,7 +337,7 @@ Adds a separator between items to the global menu [param rid]. Separators also o
 Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func AddSeparator(rid Resource.ID) int {
+func AddSeparator(rid Resource.ID) int { //gd:NativeMenu.add_separator
 	once.Do(singleton)
 	return int(int(class(self).AddSeparator(rid, gd.Int(-1))))
 }
@@ -346,7 +346,7 @@ func AddSeparator(rid Resource.ID) int {
 Returns the index of the item with the specified [param text]. Indices are automatically assigned to each item by the engine, and cannot be set manually.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func FindItemIndexWithText(rid Resource.ID, text string) int {
+func FindItemIndexWithText(rid Resource.ID, text string) int { //gd:NativeMenu.find_item_index_with_text
 	once.Do(singleton)
 	return int(int(class(self).FindItemIndexWithText(rid, gd.NewString(text))))
 }
@@ -355,7 +355,7 @@ func FindItemIndexWithText(rid Resource.ID, text string) int {
 Returns the index of the item with the specified [param tag]. Indices are automatically assigned to each item by the engine, and cannot be set manually.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func FindItemIndexWithTag(rid Resource.ID, tag any) int {
+func FindItemIndexWithTag(rid Resource.ID, tag any) int { //gd:NativeMenu.find_item_index_with_tag
 	once.Do(singleton)
 	return int(int(class(self).FindItemIndexWithTag(rid, gd.NewVariant(tag))))
 }
@@ -364,7 +364,7 @@ func FindItemIndexWithTag(rid Resource.ID, tag any) int {
 Returns the index of the item with the submenu specified by [param submenu_rid]. Indices are automatically assigned to each item by the engine, and cannot be set manually.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func FindItemIndexWithSubmenu(rid Resource.ID, submenu_rid Resource.ID) int {
+func FindItemIndexWithSubmenu(rid Resource.ID, submenu_rid Resource.ID) int { //gd:NativeMenu.find_item_index_with_submenu
 	once.Do(singleton)
 	return int(int(class(self).FindItemIndexWithSubmenu(rid, submenu_rid)))
 }
@@ -373,7 +373,7 @@ func FindItemIndexWithSubmenu(rid Resource.ID, submenu_rid Resource.ID) int {
 Returns [code]true[/code] if the item at index [param idx] is checked.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func IsItemChecked(rid Resource.ID, idx int) bool {
+func IsItemChecked(rid Resource.ID, idx int) bool { //gd:NativeMenu.is_item_checked
 	once.Do(singleton)
 	return bool(class(self).IsItemChecked(rid, gd.Int(idx)))
 }
@@ -382,7 +382,7 @@ func IsItemChecked(rid Resource.ID, idx int) bool {
 Returns [code]true[/code] if the item at index [param idx] is checkable in some way, i.e. if it has a checkbox or radio button.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func IsItemCheckable(rid Resource.ID, idx int) bool {
+func IsItemCheckable(rid Resource.ID, idx int) bool { //gd:NativeMenu.is_item_checkable
 	once.Do(singleton)
 	return bool(class(self).IsItemCheckable(rid, gd.Int(idx)))
 }
@@ -392,7 +392,7 @@ Returns [code]true[/code] if the item at index [param idx] has radio button-styl
 [b]Note:[/b] This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func IsItemRadioCheckable(rid Resource.ID, idx int) bool {
+func IsItemRadioCheckable(rid Resource.ID, idx int) bool { //gd:NativeMenu.is_item_radio_checkable
 	once.Do(singleton)
 	return bool(class(self).IsItemRadioCheckable(rid, gd.Int(idx)))
 }
@@ -401,7 +401,7 @@ func IsItemRadioCheckable(rid Resource.ID, idx int) bool {
 Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemCallback(rid Resource.ID, idx int) Callable.Function {
+func GetItemCallback(rid Resource.ID, idx int) Callable.Function { //gd:NativeMenu.get_item_callback
 	once.Do(singleton)
 	return Callable.Function(class(self).GetItemCallback(rid, gd.Int(idx)))
 }
@@ -410,7 +410,7 @@ func GetItemCallback(rid Resource.ID, idx int) Callable.Function {
 Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemKeyCallback(rid Resource.ID, idx int) Callable.Function {
+func GetItemKeyCallback(rid Resource.ID, idx int) Callable.Function { //gd:NativeMenu.get_item_key_callback
 	once.Do(singleton)
 	return Callable.Function(class(self).GetItemKeyCallback(rid, gd.Int(idx)))
 }
@@ -419,7 +419,7 @@ func GetItemKeyCallback(rid Resource.ID, idx int) Callable.Function {
 Returns the metadata of the specified item, which might be of any type. You can set it with [method set_item_tag], which provides a simple way of assigning context data to items.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemTag(rid Resource.ID, idx int) any {
+func GetItemTag(rid Resource.ID, idx int) any { //gd:NativeMenu.get_item_tag
 	once.Do(singleton)
 	return any(class(self).GetItemTag(rid, gd.Int(idx)).Interface())
 }
@@ -428,7 +428,7 @@ func GetItemTag(rid Resource.ID, idx int) any {
 Returns the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemText(rid Resource.ID, idx int) string {
+func GetItemText(rid Resource.ID, idx int) string { //gd:NativeMenu.get_item_text
 	once.Do(singleton)
 	return string(class(self).GetItemText(rid, gd.Int(idx)).String())
 }
@@ -437,7 +437,7 @@ func GetItemText(rid Resource.ID, idx int) string {
 Returns the submenu ID of the item at index [param idx]. See [method add_submenu_item] for more info on how to add a submenu.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemSubmenu(rid Resource.ID, idx int) Resource.ID {
+func GetItemSubmenu(rid Resource.ID, idx int) Resource.ID { //gd:NativeMenu.get_item_submenu
 	once.Do(singleton)
 	return Resource.ID(class(self).GetItemSubmenu(rid, gd.Int(idx)))
 }
@@ -446,7 +446,7 @@ func GetItemSubmenu(rid Resource.ID, idx int) Resource.ID {
 Returns the accelerator of the item at index [param idx]. Accelerators are special combinations of keys that activate the item, no matter which control is focused.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemAccelerator(rid Resource.ID, idx int) Key {
+func GetItemAccelerator(rid Resource.ID, idx int) Key { //gd:NativeMenu.get_item_accelerator
 	once.Do(singleton)
 	return Key(class(self).GetItemAccelerator(rid, gd.Int(idx)))
 }
@@ -456,7 +456,7 @@ Returns [code]true[/code] if the item at index [param idx] is disabled. When it 
 See [method set_item_disabled] for more info on how to disable an item.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func IsItemDisabled(rid Resource.ID, idx int) bool {
+func IsItemDisabled(rid Resource.ID, idx int) bool { //gd:NativeMenu.is_item_disabled
 	once.Do(singleton)
 	return bool(class(self).IsItemDisabled(rid, gd.Int(idx)))
 }
@@ -466,7 +466,7 @@ Returns [code]true[/code] if the item at index [param idx] is hidden.
 See [method set_item_hidden] for more info on how to hide an item.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func IsItemHidden(rid Resource.ID, idx int) bool {
+func IsItemHidden(rid Resource.ID, idx int) bool { //gd:NativeMenu.is_item_hidden
 	once.Do(singleton)
 	return bool(class(self).IsItemHidden(rid, gd.Int(idx)))
 }
@@ -475,7 +475,7 @@ func IsItemHidden(rid Resource.ID, idx int) bool {
 Returns the tooltip associated with the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemTooltip(rid Resource.ID, idx int) string {
+func GetItemTooltip(rid Resource.ID, idx int) string { //gd:NativeMenu.get_item_tooltip
 	once.Do(singleton)
 	return string(class(self).GetItemTooltip(rid, gd.Int(idx)).String())
 }
@@ -484,7 +484,7 @@ func GetItemTooltip(rid Resource.ID, idx int) string {
 Returns the state of a multistate item. See [method add_multistate_item] for details.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemState(rid Resource.ID, idx int) int {
+func GetItemState(rid Resource.ID, idx int) int { //gd:NativeMenu.get_item_state
 	once.Do(singleton)
 	return int(int(class(self).GetItemState(rid, gd.Int(idx))))
 }
@@ -493,7 +493,7 @@ func GetItemState(rid Resource.ID, idx int) int {
 Returns number of states of a multistate item. See [method add_multistate_item] for details.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemMaxStates(rid Resource.ID, idx int) int {
+func GetItemMaxStates(rid Resource.ID, idx int) int { //gd:NativeMenu.get_item_max_states
 	once.Do(singleton)
 	return int(int(class(self).GetItemMaxStates(rid, gd.Int(idx))))
 }
@@ -502,7 +502,7 @@ func GetItemMaxStates(rid Resource.ID, idx int) int {
 Returns the icon of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemIcon(rid Resource.ID, idx int) [1]gdclass.Texture2D {
+func GetItemIcon(rid Resource.ID, idx int) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
 	once.Do(singleton)
 	return [1]gdclass.Texture2D(class(self).GetItemIcon(rid, gd.Int(idx)))
 }
@@ -511,7 +511,7 @@ func GetItemIcon(rid Resource.ID, idx int) [1]gdclass.Texture2D {
 Returns the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GetItemIndentationLevel(rid Resource.ID, idx int) int {
+func GetItemIndentationLevel(rid Resource.ID, idx int) int { //gd:NativeMenu.get_item_indentation_level
 	once.Do(singleton)
 	return int(int(class(self).GetItemIndentationLevel(rid, gd.Int(idx))))
 }
@@ -520,7 +520,7 @@ func GetItemIndentationLevel(rid Resource.ID, idx int) int {
 Sets the checkstate status of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemChecked(rid Resource.ID, idx int, checked bool) {
+func SetItemChecked(rid Resource.ID, idx int, checked bool) { //gd:NativeMenu.set_item_checked
 	once.Do(singleton)
 	class(self).SetItemChecked(rid, gd.Int(idx), checked)
 }
@@ -529,7 +529,7 @@ func SetItemChecked(rid Resource.ID, idx int, checked bool) {
 Sets whether the item at index [param idx] has a checkbox. If [code]false[/code], sets the type of the item to plain text.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemCheckable(rid Resource.ID, idx int, checkable bool) {
+func SetItemCheckable(rid Resource.ID, idx int, checkable bool) { //gd:NativeMenu.set_item_checkable
 	once.Do(singleton)
 	class(self).SetItemCheckable(rid, gd.Int(idx), checkable)
 }
@@ -539,7 +539,7 @@ Sets the type of the item at the specified index [param idx] to radio button. If
 [b]Note:[/b] This is purely cosmetic; you must add the logic for checking/unchecking items in radio groups.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemRadioCheckable(rid Resource.ID, idx int, checkable bool) {
+func SetItemRadioCheckable(rid Resource.ID, idx int, checkable bool) { //gd:NativeMenu.set_item_radio_checkable
 	once.Do(singleton)
 	class(self).SetItemRadioCheckable(rid, gd.Int(idx), checkable)
 }
@@ -549,7 +549,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemCallback(rid Resource.ID, idx int, callback func(tag any)) {
+func SetItemCallback(rid Resource.ID, idx int, callback func(tag any)) { //gd:NativeMenu.set_item_callback
 	once.Do(singleton)
 	class(self).SetItemCallback(rid, gd.Int(idx), Callable.New(callback))
 }
@@ -559,7 +559,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] The [param callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemHoverCallbacks(rid Resource.ID, idx int, callback func(tag any)) {
+func SetItemHoverCallbacks(rid Resource.ID, idx int, callback func(tag any)) { //gd:NativeMenu.set_item_hover_callbacks
 	once.Do(singleton)
 	class(self).SetItemHoverCallbacks(rid, gd.Int(idx), Callable.New(callback))
 }
@@ -569,7 +569,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] The [param key_callback] Callable needs to accept exactly one Variant parameter, the parameter passed to the Callable will be the value passed to the [code]tag[/code] parameter when the menu item was created.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemKeyCallback(rid Resource.ID, idx int, key_callback func(tag any)) {
+func SetItemKeyCallback(rid Resource.ID, idx int, key_callback func(tag any)) { //gd:NativeMenu.set_item_key_callback
 	once.Do(singleton)
 	class(self).SetItemKeyCallback(rid, gd.Int(idx), Callable.New(key_callback))
 }
@@ -578,7 +578,7 @@ func SetItemKeyCallback(rid Resource.ID, idx int, key_callback func(tag any)) {
 Sets the metadata of an item, which may be of any type. You can later get it with [method get_item_tag], which provides a simple way of assigning context data to items.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemTag(rid Resource.ID, idx int, tag any) {
+func SetItemTag(rid Resource.ID, idx int, tag any) { //gd:NativeMenu.set_item_tag
 	once.Do(singleton)
 	class(self).SetItemTag(rid, gd.Int(idx), gd.NewVariant(tag))
 }
@@ -587,7 +587,7 @@ func SetItemTag(rid Resource.ID, idx int, tag any) {
 Sets the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemText(rid Resource.ID, idx int, text string) {
+func SetItemText(rid Resource.ID, idx int, text string) { //gd:NativeMenu.set_item_text
 	once.Do(singleton)
 	class(self).SetItemText(rid, gd.Int(idx), gd.NewString(text))
 }
@@ -596,7 +596,7 @@ func SetItemText(rid Resource.ID, idx int, text string) {
 Sets the submenu RID of the item at index [param idx]. The submenu is a global menu that would be shown when the item is clicked.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemSubmenu(rid Resource.ID, idx int, submenu_rid Resource.ID) {
+func SetItemSubmenu(rid Resource.ID, idx int, submenu_rid Resource.ID) { //gd:NativeMenu.set_item_submenu
 	once.Do(singleton)
 	class(self).SetItemSubmenu(rid, gd.Int(idx), submenu_rid)
 }
@@ -605,7 +605,7 @@ func SetItemSubmenu(rid Resource.ID, idx int, submenu_rid Resource.ID) {
 Sets the accelerator of the item at index [param idx]. [param keycode] can be a single [enum Key], or a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemAccelerator(rid Resource.ID, idx int, keycode Key) {
+func SetItemAccelerator(rid Resource.ID, idx int, keycode Key) { //gd:NativeMenu.set_item_accelerator
 	once.Do(singleton)
 	class(self).SetItemAccelerator(rid, gd.Int(idx), keycode)
 }
@@ -614,7 +614,7 @@ func SetItemAccelerator(rid Resource.ID, idx int, keycode Key) {
 Enables/disables the item at index [param idx]. When it is disabled, it can't be selected and its action can't be invoked.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemDisabled(rid Resource.ID, idx int, disabled bool) {
+func SetItemDisabled(rid Resource.ID, idx int, disabled bool) { //gd:NativeMenu.set_item_disabled
 	once.Do(singleton)
 	class(self).SetItemDisabled(rid, gd.Int(idx), disabled)
 }
@@ -623,7 +623,7 @@ func SetItemDisabled(rid Resource.ID, idx int, disabled bool) {
 Hides/shows the item at index [param idx]. When it is hidden, an item does not appear in a menu and its action cannot be invoked.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemHidden(rid Resource.ID, idx int, hidden bool) {
+func SetItemHidden(rid Resource.ID, idx int, hidden bool) { //gd:NativeMenu.set_item_hidden
 	once.Do(singleton)
 	class(self).SetItemHidden(rid, gd.Int(idx), hidden)
 }
@@ -632,7 +632,7 @@ func SetItemHidden(rid Resource.ID, idx int, hidden bool) {
 Sets the [String] tooltip of the item at the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemTooltip(rid Resource.ID, idx int, tooltip string) {
+func SetItemTooltip(rid Resource.ID, idx int, tooltip string) { //gd:NativeMenu.set_item_tooltip
 	once.Do(singleton)
 	class(self).SetItemTooltip(rid, gd.Int(idx), gd.NewString(tooltip))
 }
@@ -641,7 +641,7 @@ func SetItemTooltip(rid Resource.ID, idx int, tooltip string) {
 Sets the state of a multistate item. See [method add_multistate_item] for details.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemState(rid Resource.ID, idx int, state int) {
+func SetItemState(rid Resource.ID, idx int, state int) { //gd:NativeMenu.set_item_state
 	once.Do(singleton)
 	class(self).SetItemState(rid, gd.Int(idx), gd.Int(state))
 }
@@ -650,7 +650,7 @@ func SetItemState(rid Resource.ID, idx int, state int) {
 Sets number of state of a multistate item. See [method add_multistate_item] for details.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func SetItemMaxStates(rid Resource.ID, idx int, max_states int) {
+func SetItemMaxStates(rid Resource.ID, idx int, max_states int) { //gd:NativeMenu.set_item_max_states
 	once.Do(singleton)
 	class(self).SetItemMaxStates(rid, gd.Int(idx), gd.Int(max_states))
 }
@@ -660,7 +660,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] This method is not supported by macOS Dock menu items.
 */
-func SetItemIcon(rid Resource.ID, idx int, icon [1]gdclass.Texture2D) {
+func SetItemIcon(rid Resource.ID, idx int, icon [1]gdclass.Texture2D) { //gd:NativeMenu.set_item_icon
 	once.Do(singleton)
 	class(self).SetItemIcon(rid, gd.Int(idx), icon)
 }
@@ -669,7 +669,7 @@ func SetItemIcon(rid Resource.ID, idx int, icon [1]gdclass.Texture2D) {
 Sets the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func SetItemIndentationLevel(rid Resource.ID, idx int, level int) {
+func SetItemIndentationLevel(rid Resource.ID, idx int, level int) { //gd:NativeMenu.set_item_indentation_level
 	once.Do(singleton)
 	class(self).SetItemIndentationLevel(rid, gd.Int(idx), gd.Int(level))
 }
@@ -678,7 +678,7 @@ func SetItemIndentationLevel(rid Resource.ID, idx int, level int) {
 Returns number of items in the global menu [param rid].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemCount(rid Resource.ID) int {
+func GetItemCount(rid Resource.ID) int { //gd:NativeMenu.get_item_count
 	once.Do(singleton)
 	return int(int(class(self).GetItemCount(rid)))
 }
@@ -687,7 +687,7 @@ func GetItemCount(rid Resource.ID) int {
 Return [code]true[/code] is global menu is a special system menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func IsSystemMenu(rid Resource.ID) bool {
+func IsSystemMenu(rid Resource.ID) bool { //gd:NativeMenu.is_system_menu
 	once.Do(singleton)
 	return bool(class(self).IsSystemMenu(rid))
 }
@@ -697,7 +697,7 @@ Removes the item at index [param idx] from the global menu [param rid].
 [b]Note:[/b] The indices of items after the removed item will be shifted by one.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func RemoveItem(rid Resource.ID, idx int) {
+func RemoveItem(rid Resource.ID, idx int) { //gd:NativeMenu.remove_item
 	once.Do(singleton)
 	class(self).RemoveItem(rid, gd.Int(idx))
 }
@@ -706,7 +706,7 @@ func RemoveItem(rid Resource.ID, idx int) {
 Removes all items from the global menu [param rid].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func Clear(rid Resource.ID) {
+func Clear(rid Resource.ID) { //gd:NativeMenu.clear
 	once.Do(singleton)
 	class(self).Clear(rid)
 }
@@ -726,7 +726,7 @@ Returns [code]true[/code] if the specified [param feature] is supported by the c
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) HasFeature(feature gdclass.NativeMenuFeature) bool {
+func (self class) HasFeature(feature gdclass.NativeMenuFeature) bool { //gd:NativeMenu.has_feature
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
@@ -741,7 +741,7 @@ Returns [code]true[/code] if a special system menu is supported.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) HasSystemMenu(menu_id gdclass.NativeMenuSystemMenus) bool {
+func (self class) HasSystemMenu(menu_id gdclass.NativeMenuSystemMenus) bool { //gd:NativeMenu.has_system_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, menu_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -756,7 +756,7 @@ Returns RID of a special system menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetSystemMenu(menu_id gdclass.NativeMenuSystemMenus) gd.RID {
+func (self class) GetSystemMenu(menu_id gdclass.NativeMenuSystemMenus) gd.RID { //gd:NativeMenu.get_system_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, menu_id)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -771,7 +771,7 @@ Returns readable name of a special system menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetSystemMenuName(menu_id gdclass.NativeMenuSystemMenus) gd.String {
+func (self class) GetSystemMenuName(menu_id gdclass.NativeMenuSystemMenus) gd.String { //gd:NativeMenu.get_system_menu_name
 	var frame = callframe.New()
 	callframe.Arg(frame, menu_id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -786,7 +786,7 @@ Creates a new global menu object.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) CreateMenu() gd.RID {
+func (self class) CreateMenu() gd.RID { //gd:NativeMenu.create_menu
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NativeMenu.Bind_create_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -800,7 +800,7 @@ Returns [code]true[/code] if [param rid] is valid global menu.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) HasMenu(rid gd.RID) bool {
+func (self class) HasMenu(rid gd.RID) bool { //gd:NativeMenu.has_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[bool](frame)
@@ -815,7 +815,7 @@ Frees a global menu object created by this [NativeMenu].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) FreeMenu(rid gd.RID) {
+func (self class) FreeMenu(rid gd.RID) { //gd:NativeMenu.free_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Nil
@@ -828,7 +828,7 @@ Returns global menu size.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSize(rid gd.RID) gd.Vector2 {
+func (self class) GetSize(rid gd.RID) gd.Vector2 { //gd:NativeMenu.get_size
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -843,7 +843,7 @@ Shows the global menu at [param position] in the screen coordinates.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) Popup(rid gd.RID, position gd.Vector2i) {
+func (self class) Popup(rid gd.RID, position gd.Vector2i) { //gd:NativeMenu.popup
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, position)
@@ -857,7 +857,7 @@ Sets the menu text layout direction from right-to-left if [param is_rtl] is [cod
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetInterfaceDirection(rid gd.RID, is_rtl bool) {
+func (self class) SetInterfaceDirection(rid gd.RID, is_rtl bool) { //gd:NativeMenu.set_interface_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, is_rtl)
@@ -871,7 +871,7 @@ Registers callable to emit after the menu is closed.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetPopupOpenCallback(rid gd.RID, callback Callable.Function) {
+func (self class) SetPopupOpenCallback(rid gd.RID, callback Callable.Function) { //gd:NativeMenu.set_popup_open_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
@@ -885,7 +885,7 @@ Returns global menu open callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetPopupOpenCallback(rid gd.RID) Callable.Function {
+func (self class) GetPopupOpenCallback(rid gd.RID) Callable.Function { //gd:NativeMenu.get_popup_open_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[[2]uint64](frame)
@@ -901,7 +901,7 @@ Registers callable to emit when the menu is about to show.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetPopupCloseCallback(rid gd.RID, callback Callable.Function) {
+func (self class) SetPopupCloseCallback(rid gd.RID, callback Callable.Function) { //gd:NativeMenu.set_popup_close_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
@@ -915,7 +915,7 @@ Returns global menu close callback.
 b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetPopupCloseCallback(rid gd.RID) Callable.Function {
+func (self class) GetPopupCloseCallback(rid gd.RID) Callable.Function { //gd:NativeMenu.get_popup_close_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[[2]uint64](frame)
@@ -930,7 +930,7 @@ Sets the minimum width of the global menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetMinimumWidth(rid gd.RID, width gd.Float) {
+func (self class) SetMinimumWidth(rid gd.RID, width gd.Float) { //gd:NativeMenu.set_minimum_width
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, width)
@@ -944,7 +944,7 @@ Returns global menu minimum width.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetMinimumWidth(rid gd.RID) gd.Float {
+func (self class) GetMinimumWidth(rid gd.RID) gd.Float { //gd:NativeMenu.get_minimum_width
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -959,7 +959,7 @@ Returns [code]true[/code] if the menu is currently opened.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) IsOpened(rid gd.RID) bool {
+func (self class) IsOpened(rid gd.RID) bool { //gd:NativeMenu.is_opened
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[bool](frame)
@@ -975,7 +975,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) AddSubmenuItem(rid gd.RID, label gd.String, submenu_rid gd.RID, tag gd.Variant, index gd.Int) gd.Int {
+func (self class) AddSubmenuItem(rid gd.RID, label gd.String, submenu_rid gd.RID, tag gd.Variant, index gd.Int) gd.Int { //gd:NativeMenu.add_submenu_item
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(label))
@@ -998,7 +998,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddItem(rid gd.RID, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddItem(rid gd.RID, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:NativeMenu.add_item
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(label))
@@ -1023,7 +1023,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddCheckItem(rid gd.RID, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddCheckItem(rid gd.RID, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:NativeMenu.add_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(label))
@@ -1048,7 +1048,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddIconItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddIconItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:NativeMenu.add_icon_item
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -1074,7 +1074,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddIconCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddIconCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:NativeMenu.add_icon_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -1101,7 +1101,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddRadioCheckItem(rid gd.RID, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddRadioCheckItem(rid gd.RID, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:NativeMenu.add_radio_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(label))
@@ -1127,7 +1127,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddIconRadioCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddIconRadioCheckItem(rid gd.RID, icon [1]gdclass.Texture2D, label gd.String, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:NativeMenu.add_icon_radio_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -1155,7 +1155,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
 //go:nosplit
-func (self class) AddMultistateItem(rid gd.RID, label gd.String, max_states gd.Int, default_state gd.Int, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int {
+func (self class) AddMultistateItem(rid gd.RID, label gd.String, max_states gd.Int, default_state gd.Int, callback Callable.Function, key_callback Callable.Function, tag gd.Variant, accelerator Key, index gd.Int) gd.Int { //gd:NativeMenu.add_multistate_item
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(label))
@@ -1179,7 +1179,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) AddSeparator(rid gd.RID, index gd.Int) gd.Int {
+func (self class) AddSeparator(rid gd.RID, index gd.Int) gd.Int { //gd:NativeMenu.add_separator
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, index)
@@ -1195,7 +1195,7 @@ Returns the index of the item with the specified [param text]. Indices are autom
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) FindItemIndexWithText(rid gd.RID, text gd.String) gd.Int {
+func (self class) FindItemIndexWithText(rid gd.RID, text gd.String) gd.Int { //gd:NativeMenu.find_item_index_with_text
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(text))
@@ -1211,7 +1211,7 @@ Returns the index of the item with the specified [param tag]. Indices are automa
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) FindItemIndexWithTag(rid gd.RID, tag gd.Variant) gd.Int {
+func (self class) FindItemIndexWithTag(rid gd.RID, tag gd.Variant) gd.Int { //gd:NativeMenu.find_item_index_with_tag
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, pointers.Get(tag))
@@ -1227,7 +1227,7 @@ Returns the index of the item with the submenu specified by [param submenu_rid].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) FindItemIndexWithSubmenu(rid gd.RID, submenu_rid gd.RID) gd.Int {
+func (self class) FindItemIndexWithSubmenu(rid gd.RID, submenu_rid gd.RID) gd.Int { //gd:NativeMenu.find_item_index_with_submenu
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, submenu_rid)
@@ -1243,7 +1243,7 @@ Returns [code]true[/code] if the item at index [param idx] is checked.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) IsItemChecked(rid gd.RID, idx gd.Int) bool {
+func (self class) IsItemChecked(rid gd.RID, idx gd.Int) bool { //gd:NativeMenu.is_item_checked
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1259,7 +1259,7 @@ Returns [code]true[/code] if the item at index [param idx] is checkable in some 
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) IsItemCheckable(rid gd.RID, idx gd.Int) bool {
+func (self class) IsItemCheckable(rid gd.RID, idx gd.Int) bool { //gd:NativeMenu.is_item_checkable
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1276,7 +1276,7 @@ Returns [code]true[/code] if the item at index [param idx] has radio button-styl
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) IsItemRadioCheckable(rid gd.RID, idx gd.Int) bool {
+func (self class) IsItemRadioCheckable(rid gd.RID, idx gd.Int) bool { //gd:NativeMenu.is_item_radio_checkable
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1292,7 +1292,7 @@ Returns the callback of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetItemCallback(rid gd.RID, idx gd.Int) Callable.Function {
+func (self class) GetItemCallback(rid gd.RID, idx gd.Int) Callable.Function { //gd:NativeMenu.get_item_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1308,7 +1308,7 @@ Returns the callback of the item accelerator at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetItemKeyCallback(rid gd.RID, idx gd.Int) Callable.Function {
+func (self class) GetItemKeyCallback(rid gd.RID, idx gd.Int) Callable.Function { //gd:NativeMenu.get_item_key_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1324,7 +1324,7 @@ Returns the metadata of the specified item, which might be of any type. You can 
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetItemTag(rid gd.RID, idx gd.Int) gd.Variant {
+func (self class) GetItemTag(rid gd.RID, idx gd.Int) gd.Variant { //gd:NativeMenu.get_item_tag
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1340,7 +1340,7 @@ Returns the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetItemText(rid gd.RID, idx gd.Int) gd.String {
+func (self class) GetItemText(rid gd.RID, idx gd.Int) gd.String { //gd:NativeMenu.get_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1356,7 +1356,7 @@ Returns the submenu ID of the item at index [param idx]. See [method add_submenu
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetItemSubmenu(rid gd.RID, idx gd.Int) gd.RID {
+func (self class) GetItemSubmenu(rid gd.RID, idx gd.Int) gd.RID { //gd:NativeMenu.get_item_submenu
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1372,7 +1372,7 @@ Returns the accelerator of the item at index [param idx]. Accelerators are speci
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetItemAccelerator(rid gd.RID, idx gd.Int) Key {
+func (self class) GetItemAccelerator(rid gd.RID, idx gd.Int) Key { //gd:NativeMenu.get_item_accelerator
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1389,7 +1389,7 @@ See [method set_item_disabled] for more info on how to disable an item.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) IsItemDisabled(rid gd.RID, idx gd.Int) bool {
+func (self class) IsItemDisabled(rid gd.RID, idx gd.Int) bool { //gd:NativeMenu.is_item_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1406,7 +1406,7 @@ See [method set_item_hidden] for more info on how to hide an item.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) IsItemHidden(rid gd.RID, idx gd.Int) bool {
+func (self class) IsItemHidden(rid gd.RID, idx gd.Int) bool { //gd:NativeMenu.is_item_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1422,7 +1422,7 @@ Returns the tooltip associated with the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetItemTooltip(rid gd.RID, idx gd.Int) gd.String {
+func (self class) GetItemTooltip(rid gd.RID, idx gd.Int) gd.String { //gd:NativeMenu.get_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1438,7 +1438,7 @@ Returns the state of a multistate item. See [method add_multistate_item] for det
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetItemState(rid gd.RID, idx gd.Int) gd.Int {
+func (self class) GetItemState(rid gd.RID, idx gd.Int) gd.Int { //gd:NativeMenu.get_item_state
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1454,7 +1454,7 @@ Returns number of states of a multistate item. See [method add_multistate_item] 
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetItemMaxStates(rid gd.RID, idx gd.Int) gd.Int {
+func (self class) GetItemMaxStates(rid gd.RID, idx gd.Int) gd.Int { //gd:NativeMenu.get_item_max_states
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1470,7 +1470,7 @@ Returns the icon of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetItemIcon(rid gd.RID, idx gd.Int) [1]gdclass.Texture2D {
+func (self class) GetItemIcon(rid gd.RID, idx gd.Int) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1486,7 +1486,7 @@ Returns the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GetItemIndentationLevel(rid gd.RID, idx gd.Int) gd.Int {
+func (self class) GetItemIndentationLevel(rid gd.RID, idx gd.Int) gd.Int { //gd:NativeMenu.get_item_indentation_level
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1502,7 +1502,7 @@ Sets the checkstate status of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemChecked(rid gd.RID, idx gd.Int, checked bool) {
+func (self class) SetItemChecked(rid gd.RID, idx gd.Int, checked bool) { //gd:NativeMenu.set_item_checked
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1517,7 +1517,7 @@ Sets whether the item at index [param idx] has a checkbox. If [code]false[/code]
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemCheckable(rid gd.RID, idx gd.Int, checkable bool) {
+func (self class) SetItemCheckable(rid gd.RID, idx gd.Int, checkable bool) { //gd:NativeMenu.set_item_checkable
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1533,7 +1533,7 @@ Sets the type of the item at the specified index [param idx] to radio button. If
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemRadioCheckable(rid gd.RID, idx gd.Int, checkable bool) {
+func (self class) SetItemRadioCheckable(rid gd.RID, idx gd.Int, checkable bool) { //gd:NativeMenu.set_item_radio_checkable
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1549,7 +1549,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemCallback(rid gd.RID, idx gd.Int, callback Callable.Function) {
+func (self class) SetItemCallback(rid gd.RID, idx gd.Int, callback Callable.Function) { //gd:NativeMenu.set_item_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1565,7 +1565,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetItemHoverCallbacks(rid gd.RID, idx gd.Int, callback Callable.Function) {
+func (self class) SetItemHoverCallbacks(rid gd.RID, idx gd.Int, callback Callable.Function) { //gd:NativeMenu.set_item_hover_callbacks
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1581,7 +1581,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetItemKeyCallback(rid gd.RID, idx gd.Int, key_callback Callable.Function) {
+func (self class) SetItemKeyCallback(rid gd.RID, idx gd.Int, key_callback Callable.Function) { //gd:NativeMenu.set_item_key_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1596,7 +1596,7 @@ Sets the metadata of an item, which may be of any type. You can later get it wit
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemTag(rid gd.RID, idx gd.Int, tag gd.Variant) {
+func (self class) SetItemTag(rid gd.RID, idx gd.Int, tag gd.Variant) { //gd:NativeMenu.set_item_tag
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1611,7 +1611,7 @@ Sets the text of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemText(rid gd.RID, idx gd.Int, text gd.String) {
+func (self class) SetItemText(rid gd.RID, idx gd.Int, text gd.String) { //gd:NativeMenu.set_item_text
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1626,7 +1626,7 @@ Sets the submenu RID of the item at index [param idx]. The submenu is a global m
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemSubmenu(rid gd.RID, idx gd.Int, submenu_rid gd.RID) {
+func (self class) SetItemSubmenu(rid gd.RID, idx gd.Int, submenu_rid gd.RID) { //gd:NativeMenu.set_item_submenu
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1641,7 +1641,7 @@ Sets the accelerator of the item at index [param idx]. [param keycode] can be a 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetItemAccelerator(rid gd.RID, idx gd.Int, keycode Key) {
+func (self class) SetItemAccelerator(rid gd.RID, idx gd.Int, keycode Key) { //gd:NativeMenu.set_item_accelerator
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1656,7 +1656,7 @@ Enables/disables the item at index [param idx]. When it is disabled, it can't be
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemDisabled(rid gd.RID, idx gd.Int, disabled bool) {
+func (self class) SetItemDisabled(rid gd.RID, idx gd.Int, disabled bool) { //gd:NativeMenu.set_item_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1671,7 +1671,7 @@ Hides/shows the item at index [param idx]. When it is hidden, an item does not a
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetItemHidden(rid gd.RID, idx gd.Int, hidden bool) {
+func (self class) SetItemHidden(rid gd.RID, idx gd.Int, hidden bool) { //gd:NativeMenu.set_item_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1686,7 +1686,7 @@ Sets the [String] tooltip of the item at the specified index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetItemTooltip(rid gd.RID, idx gd.Int, tooltip gd.String) {
+func (self class) SetItemTooltip(rid gd.RID, idx gd.Int, tooltip gd.String) { //gd:NativeMenu.set_item_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1701,7 +1701,7 @@ Sets the state of a multistate item. See [method add_multistate_item] for detail
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemState(rid gd.RID, idx gd.Int, state gd.Int) {
+func (self class) SetItemState(rid gd.RID, idx gd.Int, state gd.Int) { //gd:NativeMenu.set_item_state
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1716,7 +1716,7 @@ Sets number of state of a multistate item. See [method add_multistate_item] for 
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) SetItemMaxStates(rid gd.RID, idx gd.Int, max_states gd.Int) {
+func (self class) SetItemMaxStates(rid gd.RID, idx gd.Int, max_states gd.Int) { //gd:NativeMenu.set_item_max_states
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1732,7 +1732,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 [b]Note:[/b] This method is not supported by macOS Dock menu items.
 */
 //go:nosplit
-func (self class) SetItemIcon(rid gd.RID, idx gd.Int, icon [1]gdclass.Texture2D) {
+func (self class) SetItemIcon(rid gd.RID, idx gd.Int, icon [1]gdclass.Texture2D) { //gd:NativeMenu.set_item_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1747,7 +1747,7 @@ Sets the horizontal offset of the item at the given [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) SetItemIndentationLevel(rid gd.RID, idx gd.Int, level gd.Int) {
+func (self class) SetItemIndentationLevel(rid gd.RID, idx gd.Int, level gd.Int) { //gd:NativeMenu.set_item_indentation_level
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1762,7 +1762,7 @@ Returns number of items in the global menu [param rid].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) GetItemCount(rid gd.RID) gd.Int {
+func (self class) GetItemCount(rid gd.RID) gd.Int { //gd:NativeMenu.get_item_count
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1777,7 +1777,7 @@ Return [code]true[/code] is global menu is a special system menu.
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) IsSystemMenu(rid gd.RID) bool {
+func (self class) IsSystemMenu(rid gd.RID) bool { //gd:NativeMenu.is_system_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1793,7 +1793,7 @@ Removes the item at index [param idx] from the global menu [param rid].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) RemoveItem(rid gd.RID, idx gd.Int) {
+func (self class) RemoveItem(rid gd.RID, idx gd.Int) { //gd:NativeMenu.remove_item
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	callframe.Arg(frame, idx)
@@ -1807,7 +1807,7 @@ Removes all items from the global menu [param rid].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
 //go:nosplit
-func (self class) Clear(rid gd.RID) {
+func (self class) Clear(rid gd.RID) { //gd:NativeMenu.clear
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Nil
@@ -1824,7 +1824,7 @@ func init() {
 	gdclass.Register("NativeMenu", func(ptr gd.Object) any { return [1]gdclass.NativeMenu{*(*gdclass.NativeMenu)(unsafe.Pointer(&ptr))} })
 }
 
-type Feature = gdclass.NativeMenuFeature
+type Feature = gdclass.NativeMenuFeature //gd:NativeMenu.Feature
 
 const (
 	/*[NativeMenu] supports native global main menu.*/
@@ -1839,7 +1839,7 @@ const (
 	FeatureKeyCallback Feature = 4
 )
 
-type SystemMenus = gdclass.NativeMenuSystemMenus
+type SystemMenus = gdclass.NativeMenuSystemMenus //gd:NativeMenu.SystemMenus
 
 const (
 	/*Invalid special system menu ID.*/

@@ -123,7 +123,7 @@ func (self Instance) SetWet(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetPredelayMsec(msec gd.Float) {
+func (self class) SetPredelayMsec(msec gd.Float) { //gd:AudioEffectReverb.set_predelay_msec
 	var frame = callframe.New()
 	callframe.Arg(frame, msec)
 	var r_ret = callframe.Nil
@@ -132,7 +132,7 @@ func (self class) SetPredelayMsec(msec gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPredelayMsec() gd.Float {
+func (self class) GetPredelayMsec() gd.Float { //gd:AudioEffectReverb.get_predelay_msec
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectReverb.Bind_get_predelay_msec, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -142,7 +142,7 @@ func (self class) GetPredelayMsec() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPredelayFeedback(feedback gd.Float) {
+func (self class) SetPredelayFeedback(feedback gd.Float) { //gd:AudioEffectReverb.set_predelay_feedback
 	var frame = callframe.New()
 	callframe.Arg(frame, feedback)
 	var r_ret = callframe.Nil
@@ -151,7 +151,7 @@ func (self class) SetPredelayFeedback(feedback gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPredelayFeedback() gd.Float {
+func (self class) GetPredelayFeedback() gd.Float { //gd:AudioEffectReverb.get_predelay_feedback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectReverb.Bind_get_predelay_feedback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -161,7 +161,7 @@ func (self class) GetPredelayFeedback() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRoomSize(size gd.Float) {
+func (self class) SetRoomSize(size gd.Float) { //gd:AudioEffectReverb.set_room_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -170,7 +170,7 @@ func (self class) SetRoomSize(size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRoomSize() gd.Float {
+func (self class) GetRoomSize() gd.Float { //gd:AudioEffectReverb.get_room_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectReverb.Bind_get_room_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -180,7 +180,7 @@ func (self class) GetRoomSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDamping(amount gd.Float) {
+func (self class) SetDamping(amount gd.Float) { //gd:AudioEffectReverb.set_damping
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -189,7 +189,7 @@ func (self class) SetDamping(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDamping() gd.Float {
+func (self class) GetDamping() gd.Float { //gd:AudioEffectReverb.get_damping
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectReverb.Bind_get_damping, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -199,7 +199,7 @@ func (self class) GetDamping() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSpread(amount gd.Float) {
+func (self class) SetSpread(amount gd.Float) { //gd:AudioEffectReverb.set_spread
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -208,7 +208,7 @@ func (self class) SetSpread(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSpread() gd.Float {
+func (self class) GetSpread() gd.Float { //gd:AudioEffectReverb.get_spread
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectReverb.Bind_get_spread, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -218,7 +218,7 @@ func (self class) GetSpread() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDry(amount gd.Float) {
+func (self class) SetDry(amount gd.Float) { //gd:AudioEffectReverb.set_dry
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -227,7 +227,7 @@ func (self class) SetDry(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDry() gd.Float {
+func (self class) GetDry() gd.Float { //gd:AudioEffectReverb.get_dry
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectReverb.Bind_get_dry, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -237,7 +237,7 @@ func (self class) GetDry() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetWet(amount gd.Float) {
+func (self class) SetWet(amount gd.Float) { //gd:AudioEffectReverb.set_wet
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -246,7 +246,7 @@ func (self class) SetWet(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetWet() gd.Float {
+func (self class) GetWet() gd.Float { //gd:AudioEffectReverb.get_wet
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectReverb.Bind_get_wet, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -256,7 +256,7 @@ func (self class) GetWet() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetHpf(amount gd.Float) {
+func (self class) SetHpf(amount gd.Float) { //gd:AudioEffectReverb.set_hpf
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -265,7 +265,7 @@ func (self class) SetHpf(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetHpf() gd.Float {
+func (self class) GetHpf() gd.Float { //gd:AudioEffectReverb.get_hpf
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectReverb.Bind_get_hpf, self.AsObject(), frame.Array(0), r_ret.Addr())

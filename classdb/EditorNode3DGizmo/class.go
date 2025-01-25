@@ -305,35 +305,35 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, res
 /*
 Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
 */
-func (self Instance) AddLines(lines []Vector3.XYZ, material [1]gdclass.Material) {
+func (self Instance) AddLines(lines []Vector3.XYZ, material [1]gdclass.Material) { //gd:EditorNode3DGizmo.add_lines
 	class(self).AddLines(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&lines))), material, false, gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Adds a mesh to the gizmo with the specified [param material], local [param transform] and [param skeleton]. Call this method during [method _redraw].
 */
-func (self Instance) AddMesh(mesh [1]gdclass.Mesh) {
+func (self Instance) AddMesh(mesh [1]gdclass.Mesh) { //gd:EditorNode3DGizmo.add_mesh
 	class(self).AddMesh(mesh, [1][1]gdclass.Material{}[0], gd.Transform3D(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), [1][1]gdclass.SkinReference{}[0])
 }
 
 /*
 Adds the specified [param segments] to the gizmo's collision shape for picking. Call this method during [method _redraw].
 */
-func (self Instance) AddCollisionSegments(segments []Vector3.XYZ) {
+func (self Instance) AddCollisionSegments(segments []Vector3.XYZ) { //gd:EditorNode3DGizmo.add_collision_segments
 	class(self).AddCollisionSegments(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&segments))))
 }
 
 /*
 Adds collision triangles to the gizmo for picking. A [TriangleMesh] can be generated from a regular [Mesh] too. Call this method during [method _redraw].
 */
-func (self Instance) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) {
+func (self Instance) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) { //gd:EditorNode3DGizmo.add_collision_triangles
 	class(self).AddCollisionTriangles(triangles)
 }
 
 /*
 Adds an unscaled billboard for visualization and selection. Call this method during [method _redraw].
 */
-func (self Instance) AddUnscaledBillboard(material [1]gdclass.Material) {
+func (self Instance) AddUnscaledBillboard(material [1]gdclass.Material) { //gd:EditorNode3DGizmo.add_unscaled_billboard
 	class(self).AddUnscaledBillboard(material, gd.Float(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
@@ -342,56 +342,56 @@ Adds a list of handles (points) which can be used to edit the properties of the 
 The [param secondary] argument marks the added handles as secondary, meaning they will normally have lower selection priority than regular handles. When the user is holding the shift key secondary handles will switch to have higher priority than regular handles. This change in priority can be used to place multiple handles at the same point while still giving the user control on their selection.
 There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
 */
-func (self Instance) AddHandles(handles []Vector3.XYZ, material [1]gdclass.Material, ids []int32) {
+func (self Instance) AddHandles(handles []Vector3.XYZ, material [1]gdclass.Material, ids []int32) { //gd:EditorNode3DGizmo.add_handles
 	class(self).AddHandles(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&handles))), material, gd.NewPackedInt32Slice(ids), false, false)
 }
 
 /*
 Sets the reference [Node3D] node for the gizmo. [param node] must inherit from [Node3D].
 */
-func (self Instance) SetNode3d(node [1]gdclass.Node) {
+func (self Instance) SetNode3d(node [1]gdclass.Node) { //gd:EditorNode3DGizmo.set_node_3d
 	class(self).SetNode3d(node)
 }
 
 /*
 Returns the [Node3D] node associated with this gizmo.
 */
-func (self Instance) GetNode3d() [1]gdclass.Node3D {
+func (self Instance) GetNode3d() [1]gdclass.Node3D { //gd:EditorNode3DGizmo.get_node_3d
 	return [1]gdclass.Node3D(class(self).GetNode3d())
 }
 
 /*
 Returns the [EditorNode3DGizmoPlugin] that owns this gizmo. It's useful to retrieve materials using [method EditorNode3DGizmoPlugin.get_material].
 */
-func (self Instance) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin {
+func (self Instance) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin { //gd:EditorNode3DGizmo.get_plugin
 	return [1]gdclass.EditorNode3DGizmoPlugin(class(self).GetPlugin())
 }
 
 /*
 Removes everything in the gizmo including meshes, collisions and handles.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:EditorNode3DGizmo.clear
 	class(self).Clear()
 }
 
 /*
 Sets the gizmo's hidden state. If [code]true[/code], the gizmo will be hidden. If [code]false[/code], it will be shown.
 */
-func (self Instance) SetHidden(hidden bool) {
+func (self Instance) SetHidden(hidden bool) { //gd:EditorNode3DGizmo.set_hidden
 	class(self).SetHidden(hidden)
 }
 
 /*
 Returns [code]true[/code] if the given subgizmo is currently selected. Can be used to highlight selected elements during [method _redraw].
 */
-func (self Instance) IsSubgizmoSelected(id int) bool {
+func (self Instance) IsSubgizmoSelected(id int) bool { //gd:EditorNode3DGizmo.is_subgizmo_selected
 	return bool(class(self).IsSubgizmoSelected(gd.Int(id)))
 }
 
 /*
 Returns a list of the currently selected subgizmos. Can be used to highlight selected elements during [method _redraw].
 */
-func (self Instance) GetSubgizmoSelection() []int32 {
+func (self Instance) GetSubgizmoSelection() []int32 { //gd:EditorNode3DGizmo.get_subgizmo_selection
 	return []int32(class(self).GetSubgizmoSelection().AsSlice())
 }
 
@@ -618,7 +618,7 @@ func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids gd.PackedInt32A
 Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
 */
 //go:nosplit
-func (self class) AddLines(lines gd.PackedVector3Array, material [1]gdclass.Material, billboard bool, modulate gd.Color) {
+func (self class) AddLines(lines gd.PackedVector3Array, material [1]gdclass.Material, billboard bool, modulate gd.Color) { //gd:EditorNode3DGizmo.add_lines
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(lines))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
@@ -633,7 +633,7 @@ func (self class) AddLines(lines gd.PackedVector3Array, material [1]gdclass.Mate
 Adds a mesh to the gizmo with the specified [param material], local [param transform] and [param skeleton]. Call this method during [method _redraw].
 */
 //go:nosplit
-func (self class) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, transform gd.Transform3D, skeleton [1]gdclass.SkinReference) {
+func (self class) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, transform gd.Transform3D, skeleton [1]gdclass.SkinReference) { //gd:EditorNode3DGizmo.add_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(material[0])[0])
@@ -648,7 +648,7 @@ func (self class) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, tr
 Adds the specified [param segments] to the gizmo's collision shape for picking. Call this method during [method _redraw].
 */
 //go:nosplit
-func (self class) AddCollisionSegments(segments gd.PackedVector3Array) {
+func (self class) AddCollisionSegments(segments gd.PackedVector3Array) { //gd:EditorNode3DGizmo.add_collision_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(segments))
 	var r_ret = callframe.Nil
@@ -660,7 +660,7 @@ func (self class) AddCollisionSegments(segments gd.PackedVector3Array) {
 Adds collision triangles to the gizmo for picking. A [TriangleMesh] can be generated from a regular [Mesh] too. Call this method during [method _redraw].
 */
 //go:nosplit
-func (self class) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) {
+func (self class) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) { //gd:EditorNode3DGizmo.add_collision_triangles
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(triangles[0])[0])
 	var r_ret = callframe.Nil
@@ -672,7 +672,7 @@ func (self class) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) {
 Adds an unscaled billboard for visualization and selection. Call this method during [method _redraw].
 */
 //go:nosplit
-func (self class) AddUnscaledBillboard(material [1]gdclass.Material, default_scale gd.Float, modulate gd.Color) {
+func (self class) AddUnscaledBillboard(material [1]gdclass.Material, default_scale gd.Float, modulate gd.Color) { //gd:EditorNode3DGizmo.add_unscaled_billboard
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	callframe.Arg(frame, default_scale)
@@ -688,7 +688,7 @@ The [param secondary] argument marks the added handles as secondary, meaning the
 There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
 */
 //go:nosplit
-func (self class) AddHandles(handles gd.PackedVector3Array, material [1]gdclass.Material, ids gd.PackedInt32Array, billboard bool, secondary bool) {
+func (self class) AddHandles(handles gd.PackedVector3Array, material [1]gdclass.Material, ids gd.PackedInt32Array, billboard bool, secondary bool) { //gd:EditorNode3DGizmo.add_handles
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(handles))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
@@ -704,7 +704,7 @@ func (self class) AddHandles(handles gd.PackedVector3Array, material [1]gdclass.
 Sets the reference [Node3D] node for the gizmo. [param node] must inherit from [Node3D].
 */
 //go:nosplit
-func (self class) SetNode3d(node [1]gdclass.Node) {
+func (self class) SetNode3d(node [1]gdclass.Node) { //gd:EditorNode3DGizmo.set_node_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -716,7 +716,7 @@ func (self class) SetNode3d(node [1]gdclass.Node) {
 Returns the [Node3D] node associated with this gizmo.
 */
 //go:nosplit
-func (self class) GetNode3d() [1]gdclass.Node3D {
+func (self class) GetNode3d() [1]gdclass.Node3D { //gd:EditorNode3DGizmo.get_node_3d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_node_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -729,7 +729,7 @@ func (self class) GetNode3d() [1]gdclass.Node3D {
 Returns the [EditorNode3DGizmoPlugin] that owns this gizmo. It's useful to retrieve materials using [method EditorNode3DGizmoPlugin.get_material].
 */
 //go:nosplit
-func (self class) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin {
+func (self class) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin { //gd:EditorNode3DGizmo.get_plugin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_plugin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -742,7 +742,7 @@ func (self class) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin {
 Removes everything in the gizmo including meshes, collisions and handles.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:EditorNode3DGizmo.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -753,7 +753,7 @@ func (self class) Clear() {
 Sets the gizmo's hidden state. If [code]true[/code], the gizmo will be hidden. If [code]false[/code], it will be shown.
 */
 //go:nosplit
-func (self class) SetHidden(hidden bool) {
+func (self class) SetHidden(hidden bool) { //gd:EditorNode3DGizmo.set_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, hidden)
 	var r_ret = callframe.Nil
@@ -765,7 +765,7 @@ func (self class) SetHidden(hidden bool) {
 Returns [code]true[/code] if the given subgizmo is currently selected. Can be used to highlight selected elements during [method _redraw].
 */
 //go:nosplit
-func (self class) IsSubgizmoSelected(id gd.Int) bool {
+func (self class) IsSubgizmoSelected(id gd.Int) bool { //gd:EditorNode3DGizmo.is_subgizmo_selected
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -779,7 +779,7 @@ func (self class) IsSubgizmoSelected(id gd.Int) bool {
 Returns a list of the currently selected subgizmos. Can be used to highlight selected elements during [method _redraw].
 */
 //go:nosplit
-func (self class) GetSubgizmoSelection() gd.PackedInt32Array {
+func (self class) GetSubgizmoSelection() gd.PackedInt32Array { //gd:EditorNode3DGizmo.get_subgizmo_selection
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorNode3DGizmo.Bind_get_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Addr())

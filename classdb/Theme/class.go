@@ -44,7 +44,7 @@ type Any interface {
 /*
 Creates or changes the value of the icon property defined by [param name] and [param theme_type]. Use [method clear_icon] to remove the property.
 */
-func (self Instance) SetIcon(name string, theme_type string, texture [1]gdclass.Texture2D) {
+func (self Instance) SetIcon(name string, theme_type string, texture [1]gdclass.Texture2D) { //gd:Theme.set_icon
 	class(self).SetIcon(gd.NewStringName(name), gd.NewStringName(theme_type), texture)
 }
 
@@ -52,7 +52,7 @@ func (self Instance) SetIcon(name string, theme_type string, texture [1]gdclass.
 Returns the icon property defined by [param name] and [param theme_type], if it exists.
 Returns the engine fallback icon value if the property doesn't exist (see [member ThemeDB.fallback_icon]). Use [method has_icon] to check for existence.
 */
-func (self Instance) GetIcon(name string, theme_type string) [1]gdclass.Texture2D {
+func (self Instance) GetIcon(name string, theme_type string) [1]gdclass.Texture2D { //gd:Theme.get_icon
 	return [1]gdclass.Texture2D(class(self).GetIcon(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -60,7 +60,7 @@ func (self Instance) GetIcon(name string, theme_type string) [1]gdclass.Texture2
 Returns [code]true[/code] if the icon property defined by [param name] and [param theme_type] exists.
 Returns [code]false[/code] if it doesn't exist. Use [method set_icon] to define it.
 */
-func (self Instance) HasIcon(name string, theme_type string) bool {
+func (self Instance) HasIcon(name string, theme_type string) bool { //gd:Theme.has_icon
 	return bool(class(self).HasIcon(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -68,7 +68,7 @@ func (self Instance) HasIcon(name string, theme_type string) bool {
 Renames the icon property defined by [param old_name] and [param theme_type] to [param name], if it exists.
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_icon] to check for existence, and [method clear_icon] to remove the existing property.
 */
-func (self Instance) RenameIcon(old_name string, name string, theme_type string) {
+func (self Instance) RenameIcon(old_name string, name string, theme_type string) { //gd:Theme.rename_icon
 	class(self).RenameIcon(gd.NewStringName(old_name), gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
@@ -76,28 +76,28 @@ func (self Instance) RenameIcon(old_name string, name string, theme_type string)
 Removes the icon property defined by [param name] and [param theme_type], if it exists.
 Fails if it doesn't exist. Use [method has_icon] to check for existence.
 */
-func (self Instance) ClearIcon(name string, theme_type string) {
+func (self Instance) ClearIcon(name string, theme_type string) { //gd:Theme.clear_icon
 	class(self).ClearIcon(gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
 /*
 Returns a list of names for icon properties defined with [param theme_type]. Use [method get_icon_type_list] to get a list of possible theme type names.
 */
-func (self Instance) GetIconList(theme_type string) []string {
+func (self Instance) GetIconList(theme_type string) []string { //gd:Theme.get_icon_list
 	return []string(class(self).GetIconList(gd.NewString(theme_type)).Strings())
 }
 
 /*
 Returns a list of all unique theme type names for icon properties. Use [method get_type_list] to get a list of all unique theme types.
 */
-func (self Instance) GetIconTypeList() []string {
+func (self Instance) GetIconTypeList() []string { //gd:Theme.get_icon_type_list
 	return []string(class(self).GetIconTypeList().Strings())
 }
 
 /*
 Creates or changes the value of the [StyleBox] property defined by [param name] and [param theme_type]. Use [method clear_stylebox] to remove the property.
 */
-func (self Instance) SetStylebox(name string, theme_type string, texture [1]gdclass.StyleBox) {
+func (self Instance) SetStylebox(name string, theme_type string, texture [1]gdclass.StyleBox) { //gd:Theme.set_stylebox
 	class(self).SetStylebox(gd.NewStringName(name), gd.NewStringName(theme_type), texture)
 }
 
@@ -105,7 +105,7 @@ func (self Instance) SetStylebox(name string, theme_type string, texture [1]gdcl
 Returns the [StyleBox] property defined by [param name] and [param theme_type], if it exists.
 Returns the engine fallback stylebox value if the property doesn't exist (see [member ThemeDB.fallback_stylebox]). Use [method has_stylebox] to check for existence.
 */
-func (self Instance) GetStylebox(name string, theme_type string) [1]gdclass.StyleBox {
+func (self Instance) GetStylebox(name string, theme_type string) [1]gdclass.StyleBox { //gd:Theme.get_stylebox
 	return [1]gdclass.StyleBox(class(self).GetStylebox(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -113,7 +113,7 @@ func (self Instance) GetStylebox(name string, theme_type string) [1]gdclass.Styl
 Returns [code]true[/code] if the [StyleBox] property defined by [param name] and [param theme_type] exists.
 Returns [code]false[/code] if it doesn't exist. Use [method set_stylebox] to define it.
 */
-func (self Instance) HasStylebox(name string, theme_type string) bool {
+func (self Instance) HasStylebox(name string, theme_type string) bool { //gd:Theme.has_stylebox
 	return bool(class(self).HasStylebox(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -121,7 +121,7 @@ func (self Instance) HasStylebox(name string, theme_type string) bool {
 Renames the [StyleBox] property defined by [param old_name] and [param theme_type] to [param name], if it exists.
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_stylebox] to check for existence, and [method clear_stylebox] to remove the existing property.
 */
-func (self Instance) RenameStylebox(old_name string, name string, theme_type string) {
+func (self Instance) RenameStylebox(old_name string, name string, theme_type string) { //gd:Theme.rename_stylebox
 	class(self).RenameStylebox(gd.NewStringName(old_name), gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
@@ -129,28 +129,28 @@ func (self Instance) RenameStylebox(old_name string, name string, theme_type str
 Removes the [StyleBox] property defined by [param name] and [param theme_type], if it exists.
 Fails if it doesn't exist. Use [method has_stylebox] to check for existence.
 */
-func (self Instance) ClearStylebox(name string, theme_type string) {
+func (self Instance) ClearStylebox(name string, theme_type string) { //gd:Theme.clear_stylebox
 	class(self).ClearStylebox(gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
 /*
 Returns a list of names for [StyleBox] properties defined with [param theme_type]. Use [method get_stylebox_type_list] to get a list of possible theme type names.
 */
-func (self Instance) GetStyleboxList(theme_type string) []string {
+func (self Instance) GetStyleboxList(theme_type string) []string { //gd:Theme.get_stylebox_list
 	return []string(class(self).GetStyleboxList(gd.NewString(theme_type)).Strings())
 }
 
 /*
 Returns a list of all unique theme type names for [StyleBox] properties. Use [method get_type_list] to get a list of all unique theme types.
 */
-func (self Instance) GetStyleboxTypeList() []string {
+func (self Instance) GetStyleboxTypeList() []string { //gd:Theme.get_stylebox_type_list
 	return []string(class(self).GetStyleboxTypeList().Strings())
 }
 
 /*
 Creates or changes the value of the [Font] property defined by [param name] and [param theme_type]. Use [method clear_font] to remove the property.
 */
-func (self Instance) SetFont(name string, theme_type string, font [1]gdclass.Font) {
+func (self Instance) SetFont(name string, theme_type string, font [1]gdclass.Font) { //gd:Theme.set_font
 	class(self).SetFont(gd.NewStringName(name), gd.NewStringName(theme_type), font)
 }
 
@@ -159,7 +159,7 @@ Returns the [Font] property defined by [param name] and [param theme_type], if i
 Returns the default theme font if the property doesn't exist and the default theme font is set up (see [member default_font]). Use [method has_font] to check for existence of the property and [method has_default_font] to check for existence of the default theme font.
 Returns the engine fallback font value, if neither exist (see [member ThemeDB.fallback_font]).
 */
-func (self Instance) GetFont(name string, theme_type string) [1]gdclass.Font {
+func (self Instance) GetFont(name string, theme_type string) [1]gdclass.Font { //gd:Theme.get_font
 	return [1]gdclass.Font(class(self).GetFont(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -167,7 +167,7 @@ func (self Instance) GetFont(name string, theme_type string) [1]gdclass.Font {
 Returns [code]true[/code] if the [Font] property defined by [param name] and [param theme_type] exists, or if the default theme font is set up (see [method has_default_font]).
 Returns [code]false[/code] if neither exist. Use [method set_font] to define the property.
 */
-func (self Instance) HasFont(name string, theme_type string) bool {
+func (self Instance) HasFont(name string, theme_type string) bool { //gd:Theme.has_font
 	return bool(class(self).HasFont(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -175,7 +175,7 @@ func (self Instance) HasFont(name string, theme_type string) bool {
 Renames the [Font] property defined by [param old_name] and [param theme_type] to [param name], if it exists.
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_font] to check for existence, and [method clear_font] to remove the existing property.
 */
-func (self Instance) RenameFont(old_name string, name string, theme_type string) {
+func (self Instance) RenameFont(old_name string, name string, theme_type string) { //gd:Theme.rename_font
 	class(self).RenameFont(gd.NewStringName(old_name), gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
@@ -183,28 +183,28 @@ func (self Instance) RenameFont(old_name string, name string, theme_type string)
 Removes the [Font] property defined by [param name] and [param theme_type], if it exists.
 Fails if it doesn't exist. Use [method has_font] to check for existence.
 */
-func (self Instance) ClearFont(name string, theme_type string) {
+func (self Instance) ClearFont(name string, theme_type string) { //gd:Theme.clear_font
 	class(self).ClearFont(gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
 /*
 Returns a list of names for [Font] properties defined with [param theme_type]. Use [method get_font_type_list] to get a list of possible theme type names.
 */
-func (self Instance) GetFontList(theme_type string) []string {
+func (self Instance) GetFontList(theme_type string) []string { //gd:Theme.get_font_list
 	return []string(class(self).GetFontList(gd.NewString(theme_type)).Strings())
 }
 
 /*
 Returns a list of all unique theme type names for [Font] properties. Use [method get_type_list] to get a list of all unique theme types.
 */
-func (self Instance) GetFontTypeList() []string {
+func (self Instance) GetFontTypeList() []string { //gd:Theme.get_font_type_list
 	return []string(class(self).GetFontTypeList().Strings())
 }
 
 /*
 Creates or changes the value of the font size property defined by [param name] and [param theme_type]. Use [method clear_font_size] to remove the property.
 */
-func (self Instance) SetFontSize(name string, theme_type string, font_size int) {
+func (self Instance) SetFontSize(name string, theme_type string, font_size int) { //gd:Theme.set_font_size
 	class(self).SetFontSize(gd.NewStringName(name), gd.NewStringName(theme_type), gd.Int(font_size))
 }
 
@@ -213,7 +213,7 @@ Returns the font size property defined by [param name] and [param theme_type], i
 Returns the default theme font size if the property doesn't exist and the default theme font size is set up (see [member default_font_size]). Use [method has_font_size] to check for existence of the property and [method has_default_font_size] to check for existence of the default theme font.
 Returns the engine fallback font size value, if neither exist (see [member ThemeDB.fallback_font_size]).
 */
-func (self Instance) GetFontSize(name string, theme_type string) int {
+func (self Instance) GetFontSize(name string, theme_type string) int { //gd:Theme.get_font_size
 	return int(int(class(self).GetFontSize(gd.NewStringName(name), gd.NewStringName(theme_type))))
 }
 
@@ -221,7 +221,7 @@ func (self Instance) GetFontSize(name string, theme_type string) int {
 Returns [code]true[/code] if the font size property defined by [param name] and [param theme_type] exists, or if the default theme font size is set up (see [method has_default_font_size]).
 Returns [code]false[/code] if neither exist. Use [method set_font_size] to define the property.
 */
-func (self Instance) HasFontSize(name string, theme_type string) bool {
+func (self Instance) HasFontSize(name string, theme_type string) bool { //gd:Theme.has_font_size
 	return bool(class(self).HasFontSize(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -229,7 +229,7 @@ func (self Instance) HasFontSize(name string, theme_type string) bool {
 Renames the font size property defined by [param old_name] and [param theme_type] to [param name], if it exists.
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_font_size] to check for existence, and [method clear_font_size] to remove the existing property.
 */
-func (self Instance) RenameFontSize(old_name string, name string, theme_type string) {
+func (self Instance) RenameFontSize(old_name string, name string, theme_type string) { //gd:Theme.rename_font_size
 	class(self).RenameFontSize(gd.NewStringName(old_name), gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
@@ -237,28 +237,28 @@ func (self Instance) RenameFontSize(old_name string, name string, theme_type str
 Removes the font size property defined by [param name] and [param theme_type], if it exists.
 Fails if it doesn't exist. Use [method has_font_size] to check for existence.
 */
-func (self Instance) ClearFontSize(name string, theme_type string) {
+func (self Instance) ClearFontSize(name string, theme_type string) { //gd:Theme.clear_font_size
 	class(self).ClearFontSize(gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
 /*
 Returns a list of names for font size properties defined with [param theme_type]. Use [method get_font_size_type_list] to get a list of possible theme type names.
 */
-func (self Instance) GetFontSizeList(theme_type string) []string {
+func (self Instance) GetFontSizeList(theme_type string) []string { //gd:Theme.get_font_size_list
 	return []string(class(self).GetFontSizeList(gd.NewString(theme_type)).Strings())
 }
 
 /*
 Returns a list of all unique theme type names for font size properties. Use [method get_type_list] to get a list of all unique theme types.
 */
-func (self Instance) GetFontSizeTypeList() []string {
+func (self Instance) GetFontSizeTypeList() []string { //gd:Theme.get_font_size_type_list
 	return []string(class(self).GetFontSizeTypeList().Strings())
 }
 
 /*
 Creates or changes the value of the [Color] property defined by [param name] and [param theme_type]. Use [method clear_color] to remove the property.
 */
-func (self Instance) SetColor(name string, theme_type string, color Color.RGBA) {
+func (self Instance) SetColor(name string, theme_type string, color Color.RGBA) { //gd:Theme.set_color
 	class(self).SetColor(gd.NewStringName(name), gd.NewStringName(theme_type), gd.Color(color))
 }
 
@@ -266,7 +266,7 @@ func (self Instance) SetColor(name string, theme_type string, color Color.RGBA) 
 Returns the [Color] property defined by [param name] and [param theme_type], if it exists.
 Returns the default color value if the property doesn't exist. Use [method has_color] to check for existence.
 */
-func (self Instance) GetColor(name string, theme_type string) Color.RGBA {
+func (self Instance) GetColor(name string, theme_type string) Color.RGBA { //gd:Theme.get_color
 	return Color.RGBA(class(self).GetColor(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -274,7 +274,7 @@ func (self Instance) GetColor(name string, theme_type string) Color.RGBA {
 Returns [code]true[/code] if the [Color] property defined by [param name] and [param theme_type] exists.
 Returns [code]false[/code] if it doesn't exist. Use [method set_color] to define it.
 */
-func (self Instance) HasColor(name string, theme_type string) bool {
+func (self Instance) HasColor(name string, theme_type string) bool { //gd:Theme.has_color
 	return bool(class(self).HasColor(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -282,7 +282,7 @@ func (self Instance) HasColor(name string, theme_type string) bool {
 Renames the [Color] property defined by [param old_name] and [param theme_type] to [param name], if it exists.
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_color] to check for existence, and [method clear_color] to remove the existing property.
 */
-func (self Instance) RenameColor(old_name string, name string, theme_type string) {
+func (self Instance) RenameColor(old_name string, name string, theme_type string) { //gd:Theme.rename_color
 	class(self).RenameColor(gd.NewStringName(old_name), gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
@@ -290,28 +290,28 @@ func (self Instance) RenameColor(old_name string, name string, theme_type string
 Removes the [Color] property defined by [param name] and [param theme_type], if it exists.
 Fails if it doesn't exist. Use [method has_color] to check for existence.
 */
-func (self Instance) ClearColor(name string, theme_type string) {
+func (self Instance) ClearColor(name string, theme_type string) { //gd:Theme.clear_color
 	class(self).ClearColor(gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
 /*
 Returns a list of names for [Color] properties defined with [param theme_type]. Use [method get_color_type_list] to get a list of possible theme type names.
 */
-func (self Instance) GetColorList(theme_type string) []string {
+func (self Instance) GetColorList(theme_type string) []string { //gd:Theme.get_color_list
 	return []string(class(self).GetColorList(gd.NewString(theme_type)).Strings())
 }
 
 /*
 Returns a list of all unique theme type names for [Color] properties. Use [method get_type_list] to get a list of all unique theme types.
 */
-func (self Instance) GetColorTypeList() []string {
+func (self Instance) GetColorTypeList() []string { //gd:Theme.get_color_type_list
 	return []string(class(self).GetColorTypeList().Strings())
 }
 
 /*
 Creates or changes the value of the constant property defined by [param name] and [param theme_type]. Use [method clear_constant] to remove the property.
 */
-func (self Instance) SetConstant(name string, theme_type string, constant int) {
+func (self Instance) SetConstant(name string, theme_type string, constant int) { //gd:Theme.set_constant
 	class(self).SetConstant(gd.NewStringName(name), gd.NewStringName(theme_type), gd.Int(constant))
 }
 
@@ -319,7 +319,7 @@ func (self Instance) SetConstant(name string, theme_type string, constant int) {
 Returns the constant property defined by [param name] and [param theme_type], if it exists.
 Returns [code]0[/code] if the property doesn't exist. Use [method has_constant] to check for existence.
 */
-func (self Instance) GetConstant(name string, theme_type string) int {
+func (self Instance) GetConstant(name string, theme_type string) int { //gd:Theme.get_constant
 	return int(int(class(self).GetConstant(gd.NewStringName(name), gd.NewStringName(theme_type))))
 }
 
@@ -327,7 +327,7 @@ func (self Instance) GetConstant(name string, theme_type string) int {
 Returns [code]true[/code] if the constant property defined by [param name] and [param theme_type] exists.
 Returns [code]false[/code] if it doesn't exist. Use [method set_constant] to define it.
 */
-func (self Instance) HasConstant(name string, theme_type string) bool {
+func (self Instance) HasConstant(name string, theme_type string) bool { //gd:Theme.has_constant
 	return bool(class(self).HasConstant(gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -335,7 +335,7 @@ func (self Instance) HasConstant(name string, theme_type string) bool {
 Renames the constant property defined by [param old_name] and [param theme_type] to [param name], if it exists.
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_constant] to check for existence, and [method clear_constant] to remove the existing property.
 */
-func (self Instance) RenameConstant(old_name string, name string, theme_type string) {
+func (self Instance) RenameConstant(old_name string, name string, theme_type string) { //gd:Theme.rename_constant
 	class(self).RenameConstant(gd.NewStringName(old_name), gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
@@ -343,21 +343,21 @@ func (self Instance) RenameConstant(old_name string, name string, theme_type str
 Removes the constant property defined by [param name] and [param theme_type], if it exists.
 Fails if it doesn't exist. Use [method has_constant] to check for existence.
 */
-func (self Instance) ClearConstant(name string, theme_type string) {
+func (self Instance) ClearConstant(name string, theme_type string) { //gd:Theme.clear_constant
 	class(self).ClearConstant(gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
 /*
 Returns a list of names for constant properties defined with [param theme_type]. Use [method get_constant_type_list] to get a list of possible theme type names.
 */
-func (self Instance) GetConstantList(theme_type string) []string {
+func (self Instance) GetConstantList(theme_type string) []string { //gd:Theme.get_constant_list
 	return []string(class(self).GetConstantList(gd.NewString(theme_type)).Strings())
 }
 
 /*
 Returns a list of all unique theme type names for constant properties. Use [method get_type_list] to get a list of all unique theme types.
 */
-func (self Instance) GetConstantTypeList() []string {
+func (self Instance) GetConstantTypeList() []string { //gd:Theme.get_constant_type_list
 	return []string(class(self).GetConstantTypeList().Strings())
 }
 
@@ -365,7 +365,7 @@ func (self Instance) GetConstantTypeList() []string {
 Returns [code]true[/code] if [member default_base_scale] has a valid value.
 Returns [code]false[/code] if it doesn't. The value must be greater than [code]0.0[/code] to be considered valid.
 */
-func (self Instance) HasDefaultBaseScale() bool {
+func (self Instance) HasDefaultBaseScale() bool { //gd:Theme.has_default_base_scale
 	return bool(class(self).HasDefaultBaseScale())
 }
 
@@ -373,7 +373,7 @@ func (self Instance) HasDefaultBaseScale() bool {
 Returns [code]true[/code] if [member default_font] has a valid value.
 Returns [code]false[/code] if it doesn't.
 */
-func (self Instance) HasDefaultFont() bool {
+func (self Instance) HasDefaultFont() bool { //gd:Theme.has_default_font
 	return bool(class(self).HasDefaultFont())
 }
 
@@ -381,7 +381,7 @@ func (self Instance) HasDefaultFont() bool {
 Returns [code]true[/code] if [member default_font_size] has a valid value.
 Returns [code]false[/code] if it doesn't. The value must be greater than [code]0[/code] to be considered valid.
 */
-func (self Instance) HasDefaultFontSize() bool {
+func (self Instance) HasDefaultFontSize() bool { //gd:Theme.has_default_font_size
 	return bool(class(self).HasDefaultFontSize())
 }
 
@@ -390,7 +390,7 @@ Creates or changes the value of the theme property of [param data_type] defined 
 Fails if the [param value] type is not accepted by [param data_type].
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) SetThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string, value any) {
+func (self Instance) SetThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string, value any) { //gd:Theme.set_theme_item
 	class(self).SetThemeItem(data_type, gd.NewStringName(name), gd.NewStringName(theme_type), gd.NewVariant(value))
 }
 
@@ -399,7 +399,7 @@ Returns the theme property of [param data_type] defined by [param name] and [par
 Returns the engine fallback value if the property doesn't exist (see [ThemeDB]). Use [method has_theme_item] to check for existence.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) GetThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string) any {
+func (self Instance) GetThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string) any { //gd:Theme.get_theme_item
 	return any(class(self).GetThemeItem(data_type, gd.NewStringName(name), gd.NewStringName(theme_type)).Interface())
 }
 
@@ -408,7 +408,7 @@ Returns [code]true[/code] if the theme property of [param data_type] defined by 
 Returns [code]false[/code] if it doesn't exist. Use [method set_theme_item] to define it.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) HasThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string) bool {
+func (self Instance) HasThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string) bool { //gd:Theme.has_theme_item
 	return bool(class(self).HasThemeItem(data_type, gd.NewStringName(name), gd.NewStringName(theme_type)))
 }
 
@@ -417,7 +417,7 @@ Renames the theme property of [param data_type] defined by [param old_name] and 
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_theme_item] to check for existence, and [method clear_theme_item] to remove the existing property.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) RenameThemeItem(data_type gdclass.ThemeDataType, old_name string, name string, theme_type string) {
+func (self Instance) RenameThemeItem(data_type gdclass.ThemeDataType, old_name string, name string, theme_type string) { //gd:Theme.rename_theme_item
 	class(self).RenameThemeItem(data_type, gd.NewStringName(old_name), gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
@@ -426,7 +426,7 @@ Removes the theme property of [param data_type] defined by [param name] and [par
 Fails if it doesn't exist. Use [method has_theme_item] to check for existence.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) ClearThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string) {
+func (self Instance) ClearThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string) { //gd:Theme.clear_theme_item
 	class(self).ClearThemeItem(data_type, gd.NewStringName(name), gd.NewStringName(theme_type))
 }
 
@@ -434,7 +434,7 @@ func (self Instance) ClearThemeItem(data_type gdclass.ThemeDataType, name string
 Returns a list of names for properties of [param data_type] defined with [param theme_type]. Use [method get_theme_item_type_list] to get a list of possible theme type names.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) GetThemeItemList(data_type gdclass.ThemeDataType, theme_type string) []string {
+func (self Instance) GetThemeItemList(data_type gdclass.ThemeDataType, theme_type string) []string { //gd:Theme.get_theme_item_list
 	return []string(class(self).GetThemeItemList(data_type, gd.NewString(theme_type)).Strings())
 }
 
@@ -442,7 +442,7 @@ func (self Instance) GetThemeItemList(data_type gdclass.ThemeDataType, theme_typ
 Returns a list of all unique theme type names for [param data_type] properties. Use [method get_type_list] to get a list of all unique theme types.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) GetThemeItemTypeList(data_type gdclass.ThemeDataType) []string {
+func (self Instance) GetThemeItemTypeList(data_type gdclass.ThemeDataType) []string { //gd:Theme.get_theme_item_type_list
 	return []string(class(self).GetThemeItemTypeList(data_type).Strings())
 }
 
@@ -452,35 +452,35 @@ This adds [param theme_type] as a suggested option for [member Control.theme_typ
 Variations can also be nested, i.e. [param base_type] can be another variation. If a chain of variations ends with a [param base_type] matching the class of the [Control], the whole chain is going to be suggested as options.
 [b]Note:[/b] Suggestions only show up if this theme resource is set as the project default theme. See [member ProjectSettings.gui/theme/custom].
 */
-func (self Instance) SetTypeVariation(theme_type string, base_type string) {
+func (self Instance) SetTypeVariation(theme_type string, base_type string) { //gd:Theme.set_type_variation
 	class(self).SetTypeVariation(gd.NewStringName(theme_type), gd.NewStringName(base_type))
 }
 
 /*
 Returns [code]true[/code] if [param theme_type] is marked as a variation of [param base_type].
 */
-func (self Instance) IsTypeVariation(theme_type string, base_type string) bool {
+func (self Instance) IsTypeVariation(theme_type string, base_type string) bool { //gd:Theme.is_type_variation
 	return bool(class(self).IsTypeVariation(gd.NewStringName(theme_type), gd.NewStringName(base_type)))
 }
 
 /*
 Unmarks [param theme_type] as being a variation of another theme type. See [method set_type_variation].
 */
-func (self Instance) ClearTypeVariation(theme_type string) {
+func (self Instance) ClearTypeVariation(theme_type string) { //gd:Theme.clear_type_variation
 	class(self).ClearTypeVariation(gd.NewStringName(theme_type))
 }
 
 /*
 Returns the name of the base theme type if [param theme_type] is a valid variation type. Returns an empty string otherwise.
 */
-func (self Instance) GetTypeVariationBase(theme_type string) string {
+func (self Instance) GetTypeVariationBase(theme_type string) string { //gd:Theme.get_type_variation_base
 	return string(class(self).GetTypeVariationBase(gd.NewStringName(theme_type)).String())
 }
 
 /*
 Returns a list of all type variations for the given [param base_type].
 */
-func (self Instance) GetTypeVariationList(base_type string) []string {
+func (self Instance) GetTypeVariationList(base_type string) []string { //gd:Theme.get_type_variation_list
 	return []string(class(self).GetTypeVariationList(gd.NewStringName(base_type)).Strings())
 }
 
@@ -488,21 +488,21 @@ func (self Instance) GetTypeVariationList(base_type string) []string {
 Adds an empty theme type for every valid data type.
 [b]Note:[/b] Empty types are not saved with the theme. This method only exists to perform in-memory changes to the resource. Use available [code]set_*[/code] methods to add theme items.
 */
-func (self Instance) AddType(theme_type string) {
+func (self Instance) AddType(theme_type string) { //gd:Theme.add_type
 	class(self).AddType(gd.NewStringName(theme_type))
 }
 
 /*
 Removes the theme type, gracefully discarding defined theme items. If the type is a variation, this information is also erased. If the type is a base for type variations, those variations lose their base.
 */
-func (self Instance) RemoveType(theme_type string) {
+func (self Instance) RemoveType(theme_type string) { //gd:Theme.remove_type
 	class(self).RemoveType(gd.NewStringName(theme_type))
 }
 
 /*
 Returns a list of all unique theme type names. Use the appropriate [code]get_*_type_list[/code] method to get a list of unique theme types for a single data type.
 */
-func (self Instance) GetTypeList() []string {
+func (self Instance) GetTypeList() []string { //gd:Theme.get_type_list
 	return []string(class(self).GetTypeList().Strings())
 }
 
@@ -510,14 +510,14 @@ func (self Instance) GetTypeList() []string {
 Adds missing and overrides existing definitions with values from the [param other] theme resource.
 [b]Note:[/b] This modifies the current theme. If you want to merge two themes together without modifying either one, create a new empty theme and merge the other two into it one after another.
 */
-func (self Instance) MergeWith(other [1]gdclass.Theme) {
+func (self Instance) MergeWith(other [1]gdclass.Theme) { //gd:Theme.merge_with
 	class(self).MergeWith(other)
 }
 
 /*
 Removes all the theme properties defined on the theme resource.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:Theme.clear
 	class(self).Clear()
 }
 
@@ -568,7 +568,7 @@ func (self Instance) SetDefaultFontSize(value int) {
 Creates or changes the value of the icon property defined by [param name] and [param theme_type]. Use [method clear_icon] to remove the property.
 */
 //go:nosplit
-func (self class) SetIcon(name gd.StringName, theme_type gd.StringName, texture [1]gdclass.Texture2D) {
+func (self class) SetIcon(name gd.StringName, theme_type gd.StringName, texture [1]gdclass.Texture2D) { //gd:Theme.set_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -583,7 +583,7 @@ Returns the icon property defined by [param name] and [param theme_type], if it 
 Returns the engine fallback icon value if the property doesn't exist (see [member ThemeDB.fallback_icon]). Use [method has_icon] to check for existence.
 */
 //go:nosplit
-func (self class) GetIcon(name gd.StringName, theme_type gd.StringName) [1]gdclass.Texture2D {
+func (self class) GetIcon(name gd.StringName, theme_type gd.StringName) [1]gdclass.Texture2D { //gd:Theme.get_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -599,7 +599,7 @@ Returns [code]true[/code] if the icon property defined by [param name] and [para
 Returns [code]false[/code] if it doesn't exist. Use [method set_icon] to define it.
 */
 //go:nosplit
-func (self class) HasIcon(name gd.StringName, theme_type gd.StringName) bool {
+func (self class) HasIcon(name gd.StringName, theme_type gd.StringName) bool { //gd:Theme.has_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -615,7 +615,7 @@ Renames the icon property defined by [param old_name] and [param theme_type] to 
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_icon] to check for existence, and [method clear_icon] to remove the existing property.
 */
 //go:nosplit
-func (self class) RenameIcon(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) {
+func (self class) RenameIcon(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) { //gd:Theme.rename_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(old_name))
 	callframe.Arg(frame, pointers.Get(name))
@@ -630,7 +630,7 @@ Removes the icon property defined by [param name] and [param theme_type], if it 
 Fails if it doesn't exist. Use [method has_icon] to check for existence.
 */
 //go:nosplit
-func (self class) ClearIcon(name gd.StringName, theme_type gd.StringName) {
+func (self class) ClearIcon(name gd.StringName, theme_type gd.StringName) { //gd:Theme.clear_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -643,7 +643,7 @@ func (self class) ClearIcon(name gd.StringName, theme_type gd.StringName) {
 Returns a list of names for icon properties defined with [param theme_type]. Use [method get_icon_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetIconList(theme_type gd.String) gd.PackedStringArray {
+func (self class) GetIconList(theme_type gd.String) gd.PackedStringArray { //gd:Theme.get_icon_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -657,7 +657,7 @@ func (self class) GetIconList(theme_type gd.String) gd.PackedStringArray {
 Returns a list of all unique theme type names for icon properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetIconTypeList() gd.PackedStringArray {
+func (self class) GetIconTypeList() gd.PackedStringArray { //gd:Theme.get_icon_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_icon_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -670,7 +670,7 @@ func (self class) GetIconTypeList() gd.PackedStringArray {
 Creates or changes the value of the [StyleBox] property defined by [param name] and [param theme_type]. Use [method clear_stylebox] to remove the property.
 */
 //go:nosplit
-func (self class) SetStylebox(name gd.StringName, theme_type gd.StringName, texture [1]gdclass.StyleBox) {
+func (self class) SetStylebox(name gd.StringName, theme_type gd.StringName, texture [1]gdclass.StyleBox) { //gd:Theme.set_stylebox
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -685,7 +685,7 @@ Returns the [StyleBox] property defined by [param name] and [param theme_type], 
 Returns the engine fallback stylebox value if the property doesn't exist (see [member ThemeDB.fallback_stylebox]). Use [method has_stylebox] to check for existence.
 */
 //go:nosplit
-func (self class) GetStylebox(name gd.StringName, theme_type gd.StringName) [1]gdclass.StyleBox {
+func (self class) GetStylebox(name gd.StringName, theme_type gd.StringName) [1]gdclass.StyleBox { //gd:Theme.get_stylebox
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -701,7 +701,7 @@ Returns [code]true[/code] if the [StyleBox] property defined by [param name] and
 Returns [code]false[/code] if it doesn't exist. Use [method set_stylebox] to define it.
 */
 //go:nosplit
-func (self class) HasStylebox(name gd.StringName, theme_type gd.StringName) bool {
+func (self class) HasStylebox(name gd.StringName, theme_type gd.StringName) bool { //gd:Theme.has_stylebox
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -717,7 +717,7 @@ Renames the [StyleBox] property defined by [param old_name] and [param theme_typ
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_stylebox] to check for existence, and [method clear_stylebox] to remove the existing property.
 */
 //go:nosplit
-func (self class) RenameStylebox(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) {
+func (self class) RenameStylebox(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) { //gd:Theme.rename_stylebox
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(old_name))
 	callframe.Arg(frame, pointers.Get(name))
@@ -732,7 +732,7 @@ Removes the [StyleBox] property defined by [param name] and [param theme_type], 
 Fails if it doesn't exist. Use [method has_stylebox] to check for existence.
 */
 //go:nosplit
-func (self class) ClearStylebox(name gd.StringName, theme_type gd.StringName) {
+func (self class) ClearStylebox(name gd.StringName, theme_type gd.StringName) { //gd:Theme.clear_stylebox
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -745,7 +745,7 @@ func (self class) ClearStylebox(name gd.StringName, theme_type gd.StringName) {
 Returns a list of names for [StyleBox] properties defined with [param theme_type]. Use [method get_stylebox_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetStyleboxList(theme_type gd.String) gd.PackedStringArray {
+func (self class) GetStyleboxList(theme_type gd.String) gd.PackedStringArray { //gd:Theme.get_stylebox_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -759,7 +759,7 @@ func (self class) GetStyleboxList(theme_type gd.String) gd.PackedStringArray {
 Returns a list of all unique theme type names for [StyleBox] properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetStyleboxTypeList() gd.PackedStringArray {
+func (self class) GetStyleboxTypeList() gd.PackedStringArray { //gd:Theme.get_stylebox_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_stylebox_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -772,7 +772,7 @@ func (self class) GetStyleboxTypeList() gd.PackedStringArray {
 Creates or changes the value of the [Font] property defined by [param name] and [param theme_type]. Use [method clear_font] to remove the property.
 */
 //go:nosplit
-func (self class) SetFont(name gd.StringName, theme_type gd.StringName, font [1]gdclass.Font) {
+func (self class) SetFont(name gd.StringName, theme_type gd.StringName, font [1]gdclass.Font) { //gd:Theme.set_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -788,7 +788,7 @@ Returns the default theme font if the property doesn't exist and the default the
 Returns the engine fallback font value, if neither exist (see [member ThemeDB.fallback_font]).
 */
 //go:nosplit
-func (self class) GetFont(name gd.StringName, theme_type gd.StringName) [1]gdclass.Font {
+func (self class) GetFont(name gd.StringName, theme_type gd.StringName) [1]gdclass.Font { //gd:Theme.get_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -804,7 +804,7 @@ Returns [code]true[/code] if the [Font] property defined by [param name] and [pa
 Returns [code]false[/code] if neither exist. Use [method set_font] to define the property.
 */
 //go:nosplit
-func (self class) HasFont(name gd.StringName, theme_type gd.StringName) bool {
+func (self class) HasFont(name gd.StringName, theme_type gd.StringName) bool { //gd:Theme.has_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -820,7 +820,7 @@ Renames the [Font] property defined by [param old_name] and [param theme_type] t
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_font] to check for existence, and [method clear_font] to remove the existing property.
 */
 //go:nosplit
-func (self class) RenameFont(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) {
+func (self class) RenameFont(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) { //gd:Theme.rename_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(old_name))
 	callframe.Arg(frame, pointers.Get(name))
@@ -835,7 +835,7 @@ Removes the [Font] property defined by [param name] and [param theme_type], if i
 Fails if it doesn't exist. Use [method has_font] to check for existence.
 */
 //go:nosplit
-func (self class) ClearFont(name gd.StringName, theme_type gd.StringName) {
+func (self class) ClearFont(name gd.StringName, theme_type gd.StringName) { //gd:Theme.clear_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -848,7 +848,7 @@ func (self class) ClearFont(name gd.StringName, theme_type gd.StringName) {
 Returns a list of names for [Font] properties defined with [param theme_type]. Use [method get_font_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetFontList(theme_type gd.String) gd.PackedStringArray {
+func (self class) GetFontList(theme_type gd.String) gd.PackedStringArray { //gd:Theme.get_font_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -862,7 +862,7 @@ func (self class) GetFontList(theme_type gd.String) gd.PackedStringArray {
 Returns a list of all unique theme type names for [Font] properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetFontTypeList() gd.PackedStringArray {
+func (self class) GetFontTypeList() gd.PackedStringArray { //gd:Theme.get_font_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_font_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -875,7 +875,7 @@ func (self class) GetFontTypeList() gd.PackedStringArray {
 Creates or changes the value of the font size property defined by [param name] and [param theme_type]. Use [method clear_font_size] to remove the property.
 */
 //go:nosplit
-func (self class) SetFontSize(name gd.StringName, theme_type gd.StringName, font_size gd.Int) {
+func (self class) SetFontSize(name gd.StringName, theme_type gd.StringName, font_size gd.Int) { //gd:Theme.set_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -891,7 +891,7 @@ Returns the default theme font size if the property doesn't exist and the defaul
 Returns the engine fallback font size value, if neither exist (see [member ThemeDB.fallback_font_size]).
 */
 //go:nosplit
-func (self class) GetFontSize(name gd.StringName, theme_type gd.StringName) gd.Int {
+func (self class) GetFontSize(name gd.StringName, theme_type gd.StringName) gd.Int { //gd:Theme.get_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -907,7 +907,7 @@ Returns [code]true[/code] if the font size property defined by [param name] and 
 Returns [code]false[/code] if neither exist. Use [method set_font_size] to define the property.
 */
 //go:nosplit
-func (self class) HasFontSize(name gd.StringName, theme_type gd.StringName) bool {
+func (self class) HasFontSize(name gd.StringName, theme_type gd.StringName) bool { //gd:Theme.has_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -923,7 +923,7 @@ Renames the font size property defined by [param old_name] and [param theme_type
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_font_size] to check for existence, and [method clear_font_size] to remove the existing property.
 */
 //go:nosplit
-func (self class) RenameFontSize(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) {
+func (self class) RenameFontSize(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) { //gd:Theme.rename_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(old_name))
 	callframe.Arg(frame, pointers.Get(name))
@@ -938,7 +938,7 @@ Removes the font size property defined by [param name] and [param theme_type], i
 Fails if it doesn't exist. Use [method has_font_size] to check for existence.
 */
 //go:nosplit
-func (self class) ClearFontSize(name gd.StringName, theme_type gd.StringName) {
+func (self class) ClearFontSize(name gd.StringName, theme_type gd.StringName) { //gd:Theme.clear_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -951,7 +951,7 @@ func (self class) ClearFontSize(name gd.StringName, theme_type gd.StringName) {
 Returns a list of names for font size properties defined with [param theme_type]. Use [method get_font_size_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetFontSizeList(theme_type gd.String) gd.PackedStringArray {
+func (self class) GetFontSizeList(theme_type gd.String) gd.PackedStringArray { //gd:Theme.get_font_size_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -965,7 +965,7 @@ func (self class) GetFontSizeList(theme_type gd.String) gd.PackedStringArray {
 Returns a list of all unique theme type names for font size properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetFontSizeTypeList() gd.PackedStringArray {
+func (self class) GetFontSizeTypeList() gd.PackedStringArray { //gd:Theme.get_font_size_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_font_size_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -978,7 +978,7 @@ func (self class) GetFontSizeTypeList() gd.PackedStringArray {
 Creates or changes the value of the [Color] property defined by [param name] and [param theme_type]. Use [method clear_color] to remove the property.
 */
 //go:nosplit
-func (self class) SetColor(name gd.StringName, theme_type gd.StringName, color gd.Color) {
+func (self class) SetColor(name gd.StringName, theme_type gd.StringName, color gd.Color) { //gd:Theme.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -993,7 +993,7 @@ Returns the [Color] property defined by [param name] and [param theme_type], if 
 Returns the default color value if the property doesn't exist. Use [method has_color] to check for existence.
 */
 //go:nosplit
-func (self class) GetColor(name gd.StringName, theme_type gd.StringName) gd.Color {
+func (self class) GetColor(name gd.StringName, theme_type gd.StringName) gd.Color { //gd:Theme.get_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -1009,7 +1009,7 @@ Returns [code]true[/code] if the [Color] property defined by [param name] and [p
 Returns [code]false[/code] if it doesn't exist. Use [method set_color] to define it.
 */
 //go:nosplit
-func (self class) HasColor(name gd.StringName, theme_type gd.StringName) bool {
+func (self class) HasColor(name gd.StringName, theme_type gd.StringName) bool { //gd:Theme.has_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -1025,7 +1025,7 @@ Renames the [Color] property defined by [param old_name] and [param theme_type] 
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_color] to check for existence, and [method clear_color] to remove the existing property.
 */
 //go:nosplit
-func (self class) RenameColor(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) {
+func (self class) RenameColor(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) { //gd:Theme.rename_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(old_name))
 	callframe.Arg(frame, pointers.Get(name))
@@ -1040,7 +1040,7 @@ Removes the [Color] property defined by [param name] and [param theme_type], if 
 Fails if it doesn't exist. Use [method has_color] to check for existence.
 */
 //go:nosplit
-func (self class) ClearColor(name gd.StringName, theme_type gd.StringName) {
+func (self class) ClearColor(name gd.StringName, theme_type gd.StringName) { //gd:Theme.clear_color
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -1053,7 +1053,7 @@ func (self class) ClearColor(name gd.StringName, theme_type gd.StringName) {
 Returns a list of names for [Color] properties defined with [param theme_type]. Use [method get_color_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetColorList(theme_type gd.String) gd.PackedStringArray {
+func (self class) GetColorList(theme_type gd.String) gd.PackedStringArray { //gd:Theme.get_color_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -1067,7 +1067,7 @@ func (self class) GetColorList(theme_type gd.String) gd.PackedStringArray {
 Returns a list of all unique theme type names for [Color] properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetColorTypeList() gd.PackedStringArray {
+func (self class) GetColorTypeList() gd.PackedStringArray { //gd:Theme.get_color_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_color_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1080,7 +1080,7 @@ func (self class) GetColorTypeList() gd.PackedStringArray {
 Creates or changes the value of the constant property defined by [param name] and [param theme_type]. Use [method clear_constant] to remove the property.
 */
 //go:nosplit
-func (self class) SetConstant(name gd.StringName, theme_type gd.StringName, constant gd.Int) {
+func (self class) SetConstant(name gd.StringName, theme_type gd.StringName, constant gd.Int) { //gd:Theme.set_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -1095,7 +1095,7 @@ Returns the constant property defined by [param name] and [param theme_type], if
 Returns [code]0[/code] if the property doesn't exist. Use [method has_constant] to check for existence.
 */
 //go:nosplit
-func (self class) GetConstant(name gd.StringName, theme_type gd.StringName) gd.Int {
+func (self class) GetConstant(name gd.StringName, theme_type gd.StringName) gd.Int { //gd:Theme.get_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -1111,7 +1111,7 @@ Returns [code]true[/code] if the constant property defined by [param name] and [
 Returns [code]false[/code] if it doesn't exist. Use [method set_constant] to define it.
 */
 //go:nosplit
-func (self class) HasConstant(name gd.StringName, theme_type gd.StringName) bool {
+func (self class) HasConstant(name gd.StringName, theme_type gd.StringName) bool { //gd:Theme.has_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -1127,7 +1127,7 @@ Renames the constant property defined by [param old_name] and [param theme_type]
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_constant] to check for existence, and [method clear_constant] to remove the existing property.
 */
 //go:nosplit
-func (self class) RenameConstant(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) {
+func (self class) RenameConstant(old_name gd.StringName, name gd.StringName, theme_type gd.StringName) { //gd:Theme.rename_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(old_name))
 	callframe.Arg(frame, pointers.Get(name))
@@ -1142,7 +1142,7 @@ Removes the constant property defined by [param name] and [param theme_type], if
 Fails if it doesn't exist. Use [method has_constant] to check for existence.
 */
 //go:nosplit
-func (self class) ClearConstant(name gd.StringName, theme_type gd.StringName) {
+func (self class) ClearConstant(name gd.StringName, theme_type gd.StringName) { //gd:Theme.clear_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -1155,7 +1155,7 @@ func (self class) ClearConstant(name gd.StringName, theme_type gd.StringName) {
 Returns a list of names for constant properties defined with [param theme_type]. Use [method get_constant_type_list] to get a list of possible theme type names.
 */
 //go:nosplit
-func (self class) GetConstantList(theme_type gd.String) gd.PackedStringArray {
+func (self class) GetConstantList(theme_type gd.String) gd.PackedStringArray { //gd:Theme.get_constant_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -1169,7 +1169,7 @@ func (self class) GetConstantList(theme_type gd.String) gd.PackedStringArray {
 Returns a list of all unique theme type names for constant properties. Use [method get_type_list] to get a list of all unique theme types.
 */
 //go:nosplit
-func (self class) GetConstantTypeList() gd.PackedStringArray {
+func (self class) GetConstantTypeList() gd.PackedStringArray { //gd:Theme.get_constant_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_constant_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1179,7 +1179,7 @@ func (self class) GetConstantTypeList() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) SetDefaultBaseScale(base_scale gd.Float) {
+func (self class) SetDefaultBaseScale(base_scale gd.Float) { //gd:Theme.set_default_base_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, base_scale)
 	var r_ret = callframe.Nil
@@ -1188,7 +1188,7 @@ func (self class) SetDefaultBaseScale(base_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDefaultBaseScale() gd.Float {
+func (self class) GetDefaultBaseScale() gd.Float { //gd:Theme.get_default_base_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_default_base_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1202,7 +1202,7 @@ Returns [code]true[/code] if [member default_base_scale] has a valid value.
 Returns [code]false[/code] if it doesn't. The value must be greater than [code]0.0[/code] to be considered valid.
 */
 //go:nosplit
-func (self class) HasDefaultBaseScale() bool {
+func (self class) HasDefaultBaseScale() bool { //gd:Theme.has_default_base_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_has_default_base_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1212,7 +1212,7 @@ func (self class) HasDefaultBaseScale() bool {
 }
 
 //go:nosplit
-func (self class) SetDefaultFont(font [1]gdclass.Font) {
+func (self class) SetDefaultFont(font [1]gdclass.Font) { //gd:Theme.set_default_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	var r_ret = callframe.Nil
@@ -1221,7 +1221,7 @@ func (self class) SetDefaultFont(font [1]gdclass.Font) {
 }
 
 //go:nosplit
-func (self class) GetDefaultFont() [1]gdclass.Font {
+func (self class) GetDefaultFont() [1]gdclass.Font { //gd:Theme.get_default_font
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_default_font, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1235,7 +1235,7 @@ Returns [code]true[/code] if [member default_font] has a valid value.
 Returns [code]false[/code] if it doesn't.
 */
 //go:nosplit
-func (self class) HasDefaultFont() bool {
+func (self class) HasDefaultFont() bool { //gd:Theme.has_default_font
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_has_default_font, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1245,7 +1245,7 @@ func (self class) HasDefaultFont() bool {
 }
 
 //go:nosplit
-func (self class) SetDefaultFontSize(font_size gd.Int) {
+func (self class) SetDefaultFontSize(font_size gd.Int) { //gd:Theme.set_default_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Nil
@@ -1254,7 +1254,7 @@ func (self class) SetDefaultFontSize(font_size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetDefaultFontSize() gd.Int {
+func (self class) GetDefaultFontSize() gd.Int { //gd:Theme.get_default_font_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_default_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1268,7 +1268,7 @@ Returns [code]true[/code] if [member default_font_size] has a valid value.
 Returns [code]false[/code] if it doesn't. The value must be greater than [code]0[/code] to be considered valid.
 */
 //go:nosplit
-func (self class) HasDefaultFontSize() bool {
+func (self class) HasDefaultFontSize() bool { //gd:Theme.has_default_font_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_has_default_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1283,7 +1283,7 @@ Fails if the [param value] type is not accepted by [param data_type].
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) SetThemeItem(data_type gdclass.ThemeDataType, name gd.StringName, theme_type gd.StringName, value gd.Variant) {
+func (self class) SetThemeItem(data_type gdclass.ThemeDataType, name gd.StringName, theme_type gd.StringName, value gd.Variant) { //gd:Theme.set_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(name))
@@ -1300,7 +1300,7 @@ Returns the engine fallback value if the property doesn't exist (see [ThemeDB]).
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) GetThemeItem(data_type gdclass.ThemeDataType, name gd.StringName, theme_type gd.StringName) gd.Variant {
+func (self class) GetThemeItem(data_type gdclass.ThemeDataType, name gd.StringName, theme_type gd.StringName) gd.Variant { //gd:Theme.get_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(name))
@@ -1318,7 +1318,7 @@ Returns [code]false[/code] if it doesn't exist. Use [method set_theme_item] to d
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) HasThemeItem(data_type gdclass.ThemeDataType, name gd.StringName, theme_type gd.StringName) bool {
+func (self class) HasThemeItem(data_type gdclass.ThemeDataType, name gd.StringName, theme_type gd.StringName) bool { //gd:Theme.has_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(name))
@@ -1336,7 +1336,7 @@ Fails if it doesn't exist, or if a similar property with the new name already ex
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) RenameThemeItem(data_type gdclass.ThemeDataType, old_name gd.StringName, name gd.StringName, theme_type gd.StringName) {
+func (self class) RenameThemeItem(data_type gdclass.ThemeDataType, old_name gd.StringName, name gd.StringName, theme_type gd.StringName) { //gd:Theme.rename_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(old_name))
@@ -1353,7 +1353,7 @@ Fails if it doesn't exist. Use [method has_theme_item] to check for existence.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) ClearThemeItem(data_type gdclass.ThemeDataType, name gd.StringName, theme_type gd.StringName) {
+func (self class) ClearThemeItem(data_type gdclass.ThemeDataType, name gd.StringName, theme_type gd.StringName) { //gd:Theme.clear_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(name))
@@ -1368,7 +1368,7 @@ Returns a list of names for properties of [param data_type] defined with [param 
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) GetThemeItemList(data_type gdclass.ThemeDataType, theme_type gd.String) gd.PackedStringArray {
+func (self class) GetThemeItemList(data_type gdclass.ThemeDataType, theme_type gd.String) gd.PackedStringArray { //gd:Theme.get_theme_item_list
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(theme_type))
@@ -1384,7 +1384,7 @@ Returns a list of all unique theme type names for [param data_type] properties. 
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) GetThemeItemTypeList(data_type gdclass.ThemeDataType) gd.PackedStringArray {
+func (self class) GetThemeItemTypeList(data_type gdclass.ThemeDataType) gd.PackedStringArray { //gd:Theme.get_theme_item_type_list
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -1401,7 +1401,7 @@ Variations can also be nested, i.e. [param base_type] can be another variation. 
 [b]Note:[/b] Suggestions only show up if this theme resource is set as the project default theme. See [member ProjectSettings.gui/theme/custom].
 */
 //go:nosplit
-func (self class) SetTypeVariation(theme_type gd.StringName, base_type gd.StringName) {
+func (self class) SetTypeVariation(theme_type gd.StringName, base_type gd.StringName) { //gd:Theme.set_type_variation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	callframe.Arg(frame, pointers.Get(base_type))
@@ -1414,7 +1414,7 @@ func (self class) SetTypeVariation(theme_type gd.StringName, base_type gd.String
 Returns [code]true[/code] if [param theme_type] is marked as a variation of [param base_type].
 */
 //go:nosplit
-func (self class) IsTypeVariation(theme_type gd.StringName, base_type gd.StringName) bool {
+func (self class) IsTypeVariation(theme_type gd.StringName, base_type gd.StringName) bool { //gd:Theme.is_type_variation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	callframe.Arg(frame, pointers.Get(base_type))
@@ -1429,7 +1429,7 @@ func (self class) IsTypeVariation(theme_type gd.StringName, base_type gd.StringN
 Unmarks [param theme_type] as being a variation of another theme type. See [method set_type_variation].
 */
 //go:nosplit
-func (self class) ClearTypeVariation(theme_type gd.StringName) {
+func (self class) ClearTypeVariation(theme_type gd.StringName) { //gd:Theme.clear_type_variation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Nil
@@ -1441,7 +1441,7 @@ func (self class) ClearTypeVariation(theme_type gd.StringName) {
 Returns the name of the base theme type if [param theme_type] is a valid variation type. Returns an empty string otherwise.
 */
 //go:nosplit
-func (self class) GetTypeVariationBase(theme_type gd.StringName) gd.StringName {
+func (self class) GetTypeVariationBase(theme_type gd.StringName) gd.StringName { //gd:Theme.get_type_variation_base
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1455,7 +1455,7 @@ func (self class) GetTypeVariationBase(theme_type gd.StringName) gd.StringName {
 Returns a list of all type variations for the given [param base_type].
 */
 //go:nosplit
-func (self class) GetTypeVariationList(base_type gd.StringName) gd.PackedStringArray {
+func (self class) GetTypeVariationList(base_type gd.StringName) gd.PackedStringArray { //gd:Theme.get_type_variation_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base_type))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -1470,7 +1470,7 @@ Adds an empty theme type for every valid data type.
 [b]Note:[/b] Empty types are not saved with the theme. This method only exists to perform in-memory changes to the resource. Use available [code]set_*[/code] methods to add theme items.
 */
 //go:nosplit
-func (self class) AddType(theme_type gd.StringName) {
+func (self class) AddType(theme_type gd.StringName) { //gd:Theme.add_type
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Nil
@@ -1482,7 +1482,7 @@ func (self class) AddType(theme_type gd.StringName) {
 Removes the theme type, gracefully discarding defined theme items. If the type is a variation, this information is also erased. If the type is a base for type variations, those variations lose their base.
 */
 //go:nosplit
-func (self class) RemoveType(theme_type gd.StringName) {
+func (self class) RemoveType(theme_type gd.StringName) { //gd:Theme.remove_type
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(theme_type))
 	var r_ret = callframe.Nil
@@ -1494,7 +1494,7 @@ func (self class) RemoveType(theme_type gd.StringName) {
 Returns a list of all unique theme type names. Use the appropriate [code]get_*_type_list[/code] method to get a list of unique theme types for a single data type.
 */
 //go:nosplit
-func (self class) GetTypeList() gd.PackedStringArray {
+func (self class) GetTypeList() gd.PackedStringArray { //gd:Theme.get_type_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_get_type_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1508,7 +1508,7 @@ Adds missing and overrides existing definitions with values from the [param othe
 [b]Note:[/b] This modifies the current theme. If you want to merge two themes together without modifying either one, create a new empty theme and merge the other two into it one after another.
 */
 //go:nosplit
-func (self class) MergeWith(other [1]gdclass.Theme) {
+func (self class) MergeWith(other [1]gdclass.Theme) { //gd:Theme.merge_with
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(other[0])[0])
 	var r_ret = callframe.Nil
@@ -1520,7 +1520,7 @@ func (self class) MergeWith(other [1]gdclass.Theme) {
 Removes all the theme properties defined on the theme resource.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:Theme.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Theme.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1558,7 +1558,7 @@ func init() {
 	gdclass.Register("Theme", func(ptr gd.Object) any { return [1]gdclass.Theme{*(*gdclass.Theme)(unsafe.Pointer(&ptr))} })
 }
 
-type DataType = gdclass.ThemeDataType
+type DataType = gdclass.ThemeDataType //gd:Theme.DataType
 
 const (
 	/*Theme's [Color] item type.*/

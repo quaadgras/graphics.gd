@@ -41,7 +41,7 @@ type Any interface {
 /*
 The length of this stream, in seconds.
 */
-func (self Instance) GetLength() Float.X {
+func (self Instance) GetLength() Float.X { //gd:OggPacketSequence.get_length
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
@@ -89,7 +89,7 @@ func (self Instance) SetSamplingRate(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetPacketData(packet_data Array.Contains[Array.Any]) {
+func (self class) SetPacketData(packet_data Array.Contains[Array.Any]) { //gd:OggPacketSequence.set_packet_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(packet_data)))
 	var r_ret = callframe.Nil
@@ -98,7 +98,7 @@ func (self class) SetPacketData(packet_data Array.Contains[Array.Any]) {
 }
 
 //go:nosplit
-func (self class) GetPacketData() Array.Contains[Array.Any] {
+func (self class) GetPacketData() Array.Contains[Array.Any] { //gd:OggPacketSequence.get_packet_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_get_packet_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -108,7 +108,7 @@ func (self class) GetPacketData() Array.Contains[Array.Any] {
 }
 
 //go:nosplit
-func (self class) SetPacketGranulePositions(granule_positions gd.PackedInt64Array) {
+func (self class) SetPacketGranulePositions(granule_positions gd.PackedInt64Array) { //gd:OggPacketSequence.set_packet_granule_positions
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(granule_positions))
 	var r_ret = callframe.Nil
@@ -117,7 +117,7 @@ func (self class) SetPacketGranulePositions(granule_positions gd.PackedInt64Arra
 }
 
 //go:nosplit
-func (self class) GetPacketGranulePositions() gd.PackedInt64Array {
+func (self class) GetPacketGranulePositions() gd.PackedInt64Array { //gd:OggPacketSequence.get_packet_granule_positions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_get_packet_granule_positions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func (self class) GetPacketGranulePositions() gd.PackedInt64Array {
 }
 
 //go:nosplit
-func (self class) SetSamplingRate(sampling_rate gd.Float) {
+func (self class) SetSamplingRate(sampling_rate gd.Float) { //gd:OggPacketSequence.set_sampling_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, sampling_rate)
 	var r_ret = callframe.Nil
@@ -136,7 +136,7 @@ func (self class) SetSamplingRate(sampling_rate gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSamplingRate() gd.Float {
+func (self class) GetSamplingRate() gd.Float { //gd:OggPacketSequence.get_sampling_rate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_get_sampling_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ func (self class) GetSamplingRate() gd.Float {
 The length of this stream, in seconds.
 */
 //go:nosplit
-func (self class) GetLength() gd.Float {
+func (self class) GetLength() gd.Float { //gd:OggPacketSequence.get_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())

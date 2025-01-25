@@ -118,7 +118,7 @@ func (self Instance) SetRegionRect(value Rect2.PositionSize) {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Sprite3D.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -127,7 +127,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture2D {
+func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Sprite3D.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -137,7 +137,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetRegionEnabled(enabled bool) {
+func (self class) SetRegionEnabled(enabled bool) { //gd:Sprite3D.set_region_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -146,7 +146,7 @@ func (self class) SetRegionEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsRegionEnabled() bool {
+func (self class) IsRegionEnabled() bool { //gd:Sprite3D.is_region_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite3D.Bind_is_region_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -156,7 +156,7 @@ func (self class) IsRegionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetRegionRect(rect gd.Rect2) {
+func (self class) SetRegionRect(rect gd.Rect2) { //gd:Sprite3D.set_region_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -165,7 +165,7 @@ func (self class) SetRegionRect(rect gd.Rect2) {
 }
 
 //go:nosplit
-func (self class) GetRegionRect() gd.Rect2 {
+func (self class) GetRegionRect() gd.Rect2 { //gd:Sprite3D.get_region_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite3D.Bind_get_region_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -175,7 +175,7 @@ func (self class) GetRegionRect() gd.Rect2 {
 }
 
 //go:nosplit
-func (self class) SetFrame(frame_ gd.Int) {
+func (self class) SetFrame(frame_ gd.Int) { //gd:Sprite3D.set_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Nil
@@ -184,7 +184,7 @@ func (self class) SetFrame(frame_ gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFrame() gd.Int {
+func (self class) GetFrame() gd.Int { //gd:Sprite3D.get_frame
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite3D.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -194,7 +194,7 @@ func (self class) GetFrame() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFrameCoords(coords gd.Vector2i) {
+func (self class) SetFrameCoords(coords gd.Vector2i) { //gd:Sprite3D.set_frame_coords
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Nil
@@ -203,7 +203,7 @@ func (self class) SetFrameCoords(coords gd.Vector2i) {
 }
 
 //go:nosplit
-func (self class) GetFrameCoords() gd.Vector2i {
+func (self class) GetFrameCoords() gd.Vector2i { //gd:Sprite3D.get_frame_coords
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite3D.Bind_get_frame_coords, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -213,7 +213,7 @@ func (self class) GetFrameCoords() gd.Vector2i {
 }
 
 //go:nosplit
-func (self class) SetVframes(vframes gd.Int) {
+func (self class) SetVframes(vframes gd.Int) { //gd:Sprite3D.set_vframes
 	var frame = callframe.New()
 	callframe.Arg(frame, vframes)
 	var r_ret = callframe.Nil
@@ -222,7 +222,7 @@ func (self class) SetVframes(vframes gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetVframes() gd.Int {
+func (self class) GetVframes() gd.Int { //gd:Sprite3D.get_vframes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite3D.Bind_get_vframes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -232,7 +232,7 @@ func (self class) GetVframes() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetHframes(hframes gd.Int) {
+func (self class) SetHframes(hframes gd.Int) { //gd:Sprite3D.set_hframes
 	var frame = callframe.New()
 	callframe.Arg(frame, hframes)
 	var r_ret = callframe.Nil
@@ -241,7 +241,7 @@ func (self class) SetHframes(hframes gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetHframes() gd.Int {
+func (self class) GetHframes() gd.Int { //gd:Sprite3D.get_hframes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite3D.Bind_get_hframes, self.AsObject(), frame.Array(0), r_ret.Addr())

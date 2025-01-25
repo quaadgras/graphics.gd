@@ -66,7 +66,7 @@ func (self Instance) SetWindowId(value int) {
 }
 
 //go:nosplit
-func (self class) SetWindowId(id gd.Int) {
+func (self class) SetWindowId(id gd.Int) { //gd:InputEventFromWindow.set_window_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetWindowId(id gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetWindowId() gd.Int {
+func (self class) GetWindowId() gd.Int { //gd:InputEventFromWindow.get_window_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventFromWindow.Bind_get_window_id, self.AsObject(), frame.Array(0), r_ret.Addr())

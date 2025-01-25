@@ -44,7 +44,7 @@ type Any interface {
 /*
 Returns [code]true[/code] if an animation is currently playing (even if [member speed_scale] and/or [code]custom_speed[/code] are [code]0[/code]).
 */
-func (self Instance) IsPlaying() bool {
+func (self Instance) IsPlaying() bool { //gd:AnimatedSprite2D.is_playing
 	return bool(class(self).IsPlaying())
 }
 
@@ -52,7 +52,7 @@ func (self Instance) IsPlaying() bool {
 Plays the animation with key [param name]. If [param custom_speed] is negative and [param from_end] is [code]true[/code], the animation will play backwards (which is equivalent to calling [method play_backwards]).
 If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
 */
-func (self Instance) Play() {
+func (self Instance) Play() { //gd:AnimatedSprite2D.play
 	class(self).Play(gd.NewStringName(""), gd.Float(1.0), false)
 }
 
@@ -60,7 +60,7 @@ func (self Instance) Play() {
 Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
-func (self Instance) PlayBackwards() {
+func (self Instance) PlayBackwards() { //gd:AnimatedSprite2D.play_backwards
 	class(self).PlayBackwards(gd.NewStringName(""))
 }
 
@@ -68,14 +68,14 @@ func (self Instance) PlayBackwards() {
 Pauses the currently playing animation. The [member frame] and [member frame_progress] will be kept and calling [method play] or [method play_backwards] without arguments will resume the animation from the current playback position.
 See also [method stop].
 */
-func (self Instance) Pause() {
+func (self Instance) Pause() { //gd:AnimatedSprite2D.pause
 	class(self).Pause()
 }
 
 /*
 Stops the currently playing animation. The animation position is reset to [code]0[/code] and the [code]custom_speed[/code] is reset to [code]1.0[/code]. See also [method pause].
 */
-func (self Instance) Stop() {
+func (self Instance) Stop() { //gd:AnimatedSprite2D.stop
 	class(self).Stop()
 }
 
@@ -93,7 +93,7 @@ animated_sprite.set_frame_and_progress(current_frame, current_progress)
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) SetFrameAndProgress(frame_ int, progress Float.X) {
+func (self Instance) SetFrameAndProgress(frame_ int, progress Float.X) { //gd:AnimatedSprite2D.set_frame_and_progress
 	class(self).SetFrameAndProgress(gd.Int(frame_), gd.Float(progress))
 }
 
@@ -101,7 +101,7 @@ func (self Instance) SetFrameAndProgress(frame_ int, progress Float.X) {
 Returns the actual playing speed of current animation or [code]0[/code] if not playing. This speed is the [member speed_scale] property multiplied by [code]custom_speed[/code] argument specified when calling the [method play] method.
 Returns a negative value if the current animation is playing backwards.
 */
-func (self Instance) GetPlayingSpeed() Float.X {
+func (self Instance) GetPlayingSpeed() Float.X { //gd:AnimatedSprite2D.get_playing_speed
 	return Float.X(Float.X(class(self).GetPlayingSpeed()))
 }
 
@@ -204,7 +204,7 @@ func (self Instance) SetFlipV(value bool) {
 }
 
 //go:nosplit
-func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) {
+func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) { //gd:AnimatedSprite2D.set_sprite_frames
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(sprite_frames[0])[0])
 	var r_ret = callframe.Nil
@@ -213,7 +213,7 @@ func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) {
 }
 
 //go:nosplit
-func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames {
+func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames { //gd:AnimatedSprite2D.get_sprite_frames
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_sprite_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -223,7 +223,7 @@ func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames {
 }
 
 //go:nosplit
-func (self class) SetAnimation(name gd.StringName) {
+func (self class) SetAnimation(name gd.StringName) { //gd:AnimatedSprite2D.set_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -232,7 +232,7 @@ func (self class) SetAnimation(name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetAnimation() gd.StringName {
+func (self class) GetAnimation() gd.StringName { //gd:AnimatedSprite2D.get_animation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -242,7 +242,7 @@ func (self class) GetAnimation() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetAutoplay(name gd.String) {
+func (self class) SetAutoplay(name gd.String) { //gd:AnimatedSprite2D.set_autoplay
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -251,7 +251,7 @@ func (self class) SetAutoplay(name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetAutoplay() gd.String {
+func (self class) GetAutoplay() gd.String { //gd:AnimatedSprite2D.get_autoplay
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_autoplay, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -264,7 +264,7 @@ func (self class) GetAutoplay() gd.String {
 Returns [code]true[/code] if an animation is currently playing (even if [member speed_scale] and/or [code]custom_speed[/code] are [code]0[/code]).
 */
 //go:nosplit
-func (self class) IsPlaying() bool {
+func (self class) IsPlaying() bool { //gd:AnimatedSprite2D.is_playing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -278,7 +278,7 @@ Plays the animation with key [param name]. If [param custom_speed] is negative a
 If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
 */
 //go:nosplit
-func (self class) Play(name gd.StringName, custom_speed gd.Float, from_end bool) {
+func (self class) Play(name gd.StringName, custom_speed gd.Float, from_end bool) { //gd:AnimatedSprite2D.play
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, custom_speed)
@@ -293,7 +293,7 @@ Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 //go:nosplit
-func (self class) PlayBackwards(name gd.StringName) {
+func (self class) PlayBackwards(name gd.StringName) { //gd:AnimatedSprite2D.play_backwards
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -306,7 +306,7 @@ Pauses the currently playing animation. The [member frame] and [member frame_pro
 See also [method stop].
 */
 //go:nosplit
-func (self class) Pause() {
+func (self class) Pause() { //gd:AnimatedSprite2D.pause
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_pause, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -317,7 +317,7 @@ func (self class) Pause() {
 Stops the currently playing animation. The animation position is reset to [code]0[/code] and the [code]custom_speed[/code] is reset to [code]1.0[/code]. See also [method pause].
 */
 //go:nosplit
-func (self class) Stop() {
+func (self class) Stop() { //gd:AnimatedSprite2D.stop
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -325,7 +325,7 @@ func (self class) Stop() {
 }
 
 //go:nosplit
-func (self class) SetCentered(centered bool) {
+func (self class) SetCentered(centered bool) { //gd:AnimatedSprite2D.set_centered
 	var frame = callframe.New()
 	callframe.Arg(frame, centered)
 	var r_ret = callframe.Nil
@@ -334,7 +334,7 @@ func (self class) SetCentered(centered bool) {
 }
 
 //go:nosplit
-func (self class) IsCentered() bool {
+func (self class) IsCentered() bool { //gd:AnimatedSprite2D.is_centered
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_is_centered, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -344,7 +344,7 @@ func (self class) IsCentered() bool {
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) {
+func (self class) SetOffset(offset gd.Vector2) { //gd:AnimatedSprite2D.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -353,7 +353,7 @@ func (self class) SetOffset(offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 {
+func (self class) GetOffset() gd.Vector2 { //gd:AnimatedSprite2D.get_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -363,7 +363,7 @@ func (self class) GetOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetFlipH(flip_h bool) {
+func (self class) SetFlipH(flip_h bool) { //gd:AnimatedSprite2D.set_flip_h
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_h)
 	var r_ret = callframe.Nil
@@ -372,7 +372,7 @@ func (self class) SetFlipH(flip_h bool) {
 }
 
 //go:nosplit
-func (self class) IsFlippedH() bool {
+func (self class) IsFlippedH() bool { //gd:AnimatedSprite2D.is_flipped_h
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_is_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -382,7 +382,7 @@ func (self class) IsFlippedH() bool {
 }
 
 //go:nosplit
-func (self class) SetFlipV(flip_v bool) {
+func (self class) SetFlipV(flip_v bool) { //gd:AnimatedSprite2D.set_flip_v
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_v)
 	var r_ret = callframe.Nil
@@ -391,7 +391,7 @@ func (self class) SetFlipV(flip_v bool) {
 }
 
 //go:nosplit
-func (self class) IsFlippedV() bool {
+func (self class) IsFlippedV() bool { //gd:AnimatedSprite2D.is_flipped_v
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_is_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -401,7 +401,7 @@ func (self class) IsFlippedV() bool {
 }
 
 //go:nosplit
-func (self class) SetFrame(frame_ gd.Int) {
+func (self class) SetFrame(frame_ gd.Int) { //gd:AnimatedSprite2D.set_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	var r_ret = callframe.Nil
@@ -410,7 +410,7 @@ func (self class) SetFrame(frame_ gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFrame() gd.Int {
+func (self class) GetFrame() gd.Int { //gd:AnimatedSprite2D.get_frame
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -420,7 +420,7 @@ func (self class) GetFrame() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFrameProgress(progress gd.Float) {
+func (self class) SetFrameProgress(progress gd.Float) { //gd:AnimatedSprite2D.set_frame_progress
 	var frame = callframe.New()
 	callframe.Arg(frame, progress)
 	var r_ret = callframe.Nil
@@ -429,7 +429,7 @@ func (self class) SetFrameProgress(progress gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFrameProgress() gd.Float {
+func (self class) GetFrameProgress() gd.Float { //gd:AnimatedSprite2D.get_frame_progress
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_frame_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -453,7 +453,7 @@ animated_sprite.set_frame_and_progress(current_frame, current_progress)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float) {
+func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float) { //gd:AnimatedSprite2D.set_frame_and_progress
 	var frame = callframe.New()
 	callframe.Arg(frame, frame_)
 	callframe.Arg(frame, progress)
@@ -463,7 +463,7 @@ func (self class) SetFrameAndProgress(frame_ gd.Int, progress gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetSpeedScale(speed_scale gd.Float) {
+func (self class) SetSpeedScale(speed_scale gd.Float) { //gd:AnimatedSprite2D.set_speed_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, speed_scale)
 	var r_ret = callframe.Nil
@@ -472,7 +472,7 @@ func (self class) SetSpeedScale(speed_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSpeedScale() gd.Float {
+func (self class) GetSpeedScale() gd.Float { //gd:AnimatedSprite2D.get_speed_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -486,7 +486,7 @@ Returns the actual playing speed of current animation or [code]0[/code] if not p
 Returns a negative value if the current animation is playing backwards.
 */
 //go:nosplit
-func (self class) GetPlayingSpeed() gd.Float {
+func (self class) GetPlayingSpeed() gd.Float { //gd:AnimatedSprite2D.get_playing_speed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatedSprite2D.Bind_get_playing_speed, self.AsObject(), frame.Array(0), r_ret.Addr())

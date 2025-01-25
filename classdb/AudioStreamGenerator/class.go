@@ -137,7 +137,7 @@ func (self Instance) SetBufferLength(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetMixRate(hz gd.Float) {
+func (self class) SetMixRate(hz gd.Float) { //gd:AudioStreamGenerator.set_mix_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, hz)
 	var r_ret = callframe.Nil
@@ -146,7 +146,7 @@ func (self class) SetMixRate(hz gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMixRate() gd.Float {
+func (self class) GetMixRate() gd.Float { //gd:AudioStreamGenerator.get_mix_rate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGenerator.Bind_get_mix_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -156,7 +156,7 @@ func (self class) GetMixRate() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBufferLength(seconds gd.Float) {
+func (self class) SetBufferLength(seconds gd.Float) { //gd:AudioStreamGenerator.set_buffer_length
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
 	var r_ret = callframe.Nil
@@ -165,7 +165,7 @@ func (self class) SetBufferLength(seconds gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBufferLength() gd.Float {
+func (self class) GetBufferLength() gd.Float { //gd:AudioStreamGenerator.get_buffer_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGenerator.Bind_get_buffer_length, self.AsObject(), frame.Array(0), r_ret.Addr())

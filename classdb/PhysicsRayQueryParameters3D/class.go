@@ -45,7 +45,7 @@ var query = PhysicsRayQueryParameters3D.create(position, position + Vector3(0, -
 var collision = get_world_3d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
-func Create(from Vector3.XYZ, to Vector3.XYZ) [1]gdclass.PhysicsRayQueryParameters3D {
+func Create(from Vector3.XYZ, to Vector3.XYZ) [1]gdclass.PhysicsRayQueryParameters3D { //gd:PhysicsRayQueryParameters3D.create
 	self := Instance{}
 	return [1]gdclass.PhysicsRayQueryParameters3D(class(self).Create(gd.Vector3(from), gd.Vector3(to), gd.Int(4294967295), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]Resource.ID{}[0])))
 }
@@ -141,7 +141,7 @@ var collision = get_world_3d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
 //go:nosplit
-func (self class) Create(from gd.Vector3, to gd.Vector3, collision_mask gd.Int, exclude Array.Contains[gd.RID]) [1]gdclass.PhysicsRayQueryParameters3D {
+func (self class) Create(from gd.Vector3, to gd.Vector3, collision_mask gd.Int, exclude Array.Contains[gd.RID]) [1]gdclass.PhysicsRayQueryParameters3D { //gd:PhysicsRayQueryParameters3D.create
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -155,7 +155,7 @@ func (self class) Create(from gd.Vector3, to gd.Vector3, collision_mask gd.Int, 
 }
 
 //go:nosplit
-func (self class) SetFrom(from gd.Vector3) {
+func (self class) SetFrom(from gd.Vector3) { //gd:PhysicsRayQueryParameters3D.set_from
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Nil
@@ -164,7 +164,7 @@ func (self class) SetFrom(from gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetFrom() gd.Vector3 {
+func (self class) GetFrom() gd.Vector3 { //gd:PhysicsRayQueryParameters3D.get_from
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_from, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func (self class) GetFrom() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetTo(to gd.Vector3) {
+func (self class) SetTo(to gd.Vector3) { //gd:PhysicsRayQueryParameters3D.set_to
 	var frame = callframe.New()
 	callframe.Arg(frame, to)
 	var r_ret = callframe.Nil
@@ -183,7 +183,7 @@ func (self class) SetTo(to gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetTo() gd.Vector3 {
+func (self class) GetTo() gd.Vector3 { //gd:PhysicsRayQueryParameters3D.get_to
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_to, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -193,7 +193,7 @@ func (self class) GetTo() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(collision_mask gd.Int) {
+func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:PhysicsRayQueryParameters3D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_mask)
 	var r_ret = callframe.Nil
@@ -202,7 +202,7 @@ func (self class) SetCollisionMask(collision_mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int {
+func (self class) GetCollisionMask() gd.Int { //gd:PhysicsRayQueryParameters3D.get_collision_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -212,7 +212,7 @@ func (self class) GetCollisionMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetExclude(exclude Array.Contains[gd.RID]) {
+func (self class) SetExclude(exclude Array.Contains[gd.RID]) { //gd:PhysicsRayQueryParameters3D.set_exclude
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
 	var r_ret = callframe.Nil
@@ -221,7 +221,7 @@ func (self class) SetExclude(exclude Array.Contains[gd.RID]) {
 }
 
 //go:nosplit
-func (self class) GetExclude() Array.Contains[gd.RID] {
+func (self class) GetExclude() Array.Contains[gd.RID] { //gd:PhysicsRayQueryParameters3D.get_exclude
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -231,7 +231,7 @@ func (self class) GetExclude() Array.Contains[gd.RID] {
 }
 
 //go:nosplit
-func (self class) SetCollideWithBodies(enable bool) {
+func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsRayQueryParameters3D.set_collide_with_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -240,7 +240,7 @@ func (self class) SetCollideWithBodies(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCollideWithBodiesEnabled() bool {
+func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_collide_with_bodies_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_collide_with_bodies_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -250,7 +250,7 @@ func (self class) IsCollideWithBodiesEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetCollideWithAreas(enable bool) {
+func (self class) SetCollideWithAreas(enable bool) { //gd:PhysicsRayQueryParameters3D.set_collide_with_areas
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -259,7 +259,7 @@ func (self class) SetCollideWithAreas(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCollideWithAreasEnabled() bool {
+func (self class) IsCollideWithAreasEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_collide_with_areas_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_collide_with_areas_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -269,7 +269,7 @@ func (self class) IsCollideWithAreasEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetHitFromInside(enable bool) {
+func (self class) SetHitFromInside(enable bool) { //gd:PhysicsRayQueryParameters3D.set_hit_from_inside
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -278,7 +278,7 @@ func (self class) SetHitFromInside(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsHitFromInsideEnabled() bool {
+func (self class) IsHitFromInsideEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_hit_from_inside_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_hit_from_inside_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -288,7 +288,7 @@ func (self class) IsHitFromInsideEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetHitBackFaces(enable bool) {
+func (self class) SetHitBackFaces(enable bool) { //gd:PhysicsRayQueryParameters3D.set_hit_back_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -297,7 +297,7 @@ func (self class) SetHitBackFaces(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsHitBackFacesEnabled() bool {
+func (self class) IsHitBackFacesEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_hit_back_faces_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_hit_back_faces_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())

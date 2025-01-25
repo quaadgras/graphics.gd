@@ -43,49 +43,49 @@ type Any interface {
 /*
 Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
-func (self Instance) PeerDisconnect() {
+func (self Instance) PeerDisconnect() { //gd:ENetPacketPeer.peer_disconnect
 	class(self).PeerDisconnect(gd.Int(0))
 }
 
 /*
 Request a disconnection from a peer, but only after all queued outgoing packets are sent. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
-func (self Instance) PeerDisconnectLater() {
+func (self Instance) PeerDisconnectLater() { //gd:ENetPacketPeer.peer_disconnect_later
 	class(self).PeerDisconnectLater(gd.Int(0))
 }
 
 /*
 Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_DISCONNECT] will be generated. The foreign peer is not guaranteed to receive the disconnect notification, and is reset immediately upon return from this function.
 */
-func (self Instance) PeerDisconnectNow() {
+func (self Instance) PeerDisconnectNow() { //gd:ENetPacketPeer.peer_disconnect_now
 	class(self).PeerDisconnectNow(gd.Int(0))
 }
 
 /*
 Sends a ping request to a peer. ENet automatically pings all connected peers at regular intervals, however, this function may be called to ensure more frequent ping requests.
 */
-func (self Instance) Ping() {
+func (self Instance) Ping() { //gd:ENetPacketPeer.ping
 	class(self).Ping()
 }
 
 /*
 Sets the [param ping_interval] in milliseconds at which pings will be sent to a peer. Pings are used both to monitor the liveness of the connection and also to dynamically adjust the throttle during periods of low traffic so that the throttle has reasonable responsiveness during traffic spikes. The default ping interval is [code]500[/code] milliseconds.
 */
-func (self Instance) PingInterval(ping_interval int) {
+func (self Instance) PingInterval(ping_interval int) { //gd:ENetPacketPeer.ping_interval
 	class(self).PingInterval(gd.Int(ping_interval))
 }
 
 /*
 Forcefully disconnects a peer. The foreign host represented by the peer is not notified of the disconnection and will timeout on its connection to the local host.
 */
-func (self Instance) Reset() {
+func (self Instance) Reset() { //gd:ENetPacketPeer.reset
 	class(self).Reset()
 }
 
 /*
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
-func (self Instance) Send(channel int, packet []byte, flags int) error {
+func (self Instance) Send(channel int, packet []byte, flags int) error { //gd:ENetPacketPeer.send
 	return error(gd.ToError(class(self).Send(gd.Int(channel), gd.NewPackedByteSlice(packet), gd.Int(flags))))
 }
 
@@ -96,7 +96,7 @@ When the throttle has a value of [constant PACKET_THROTTLE_SCALE], no unreliable
 When the throttle has a value of [code]0[/code], all unreliable packets are dropped by ENet, and so 0% of all unreliable packets will be sent.
 Intermediate values for the throttle represent intermediate probabilities between 0% and 100% of unreliable packets being sent. The bandwidth limits of the local and foreign hosts are taken into account to determine a sensible limit for the throttle probability above which it should not raise even in the best of conditions.
 */
-func (self Instance) ThrottleConfigure(interval int, acceleration int, deceleration int) {
+func (self Instance) ThrottleConfigure(interval int, acceleration int, deceleration int) { //gd:ENetPacketPeer.throttle_configure
 	class(self).ThrottleConfigure(gd.Int(interval), gd.Int(acceleration), gd.Int(deceleration))
 }
 
@@ -104,49 +104,49 @@ func (self Instance) ThrottleConfigure(interval int, acceleration int, decelerat
 Sets the timeout parameters for a peer. The timeout parameters control how and when a peer will timeout from a failure to acknowledge reliable traffic. Timeout values are expressed in milliseconds.
 The [param timeout] is a factor that, multiplied by a value based on the average round trip time, will determine the timeout limit for a reliable packet. When that limit is reached, the timeout will be doubled, and the peer will be disconnected if that limit has reached [param timeout_min]. The [param timeout_max] parameter, on the other hand, defines a fixed timeout for which any packet must be acknowledged or the peer will be dropped.
 */
-func (self Instance) SetTimeout(timeout int, timeout_min int, timeout_max int) {
+func (self Instance) SetTimeout(timeout int, timeout_min int, timeout_max int) { //gd:ENetPacketPeer.set_timeout
 	class(self).SetTimeout(gd.Int(timeout), gd.Int(timeout_min), gd.Int(timeout_max))
 }
 
 /*
 Returns the IP address of this peer.
 */
-func (self Instance) GetRemoteAddress() string {
+func (self Instance) GetRemoteAddress() string { //gd:ENetPacketPeer.get_remote_address
 	return string(class(self).GetRemoteAddress().String())
 }
 
 /*
 Returns the remote port of this peer.
 */
-func (self Instance) GetRemotePort() int {
+func (self Instance) GetRemotePort() int { //gd:ENetPacketPeer.get_remote_port
 	return int(int(class(self).GetRemotePort()))
 }
 
 /*
 Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
-func (self Instance) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) Float.X {
+func (self Instance) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) Float.X { //gd:ENetPacketPeer.get_statistic
 	return Float.X(Float.X(class(self).GetStatistic(statistic)))
 }
 
 /*
 Returns the current peer state. See [enum PeerState].
 */
-func (self Instance) GetState() gdclass.ENetPacketPeerPeerState {
+func (self Instance) GetState() gdclass.ENetPacketPeerPeerState { //gd:ENetPacketPeer.get_state
 	return gdclass.ENetPacketPeerPeerState(class(self).GetState())
 }
 
 /*
 Returns the number of channels allocated for communication with peer.
 */
-func (self Instance) GetChannels() int {
+func (self Instance) GetChannels() int { //gd:ENetPacketPeer.get_channels
 	return int(int(class(self).GetChannels()))
 }
 
 /*
 Returns [code]true[/code] if the peer is currently active (i.e. the associated [ENetConnection] is still valid).
 */
-func (self Instance) IsActive() bool {
+func (self Instance) IsActive() bool { //gd:ENetPacketPeer.is_active
 	return bool(class(self).IsActive())
 }
 
@@ -173,7 +173,7 @@ func New() Instance {
 Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 //go:nosplit
-func (self class) PeerDisconnect(data gd.Int) {
+func (self class) PeerDisconnect(data gd.Int) { //gd:ENetPacketPeer.peer_disconnect
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
 	var r_ret = callframe.Nil
@@ -185,7 +185,7 @@ func (self class) PeerDisconnect(data gd.Int) {
 Request a disconnection from a peer, but only after all queued outgoing packets are sent. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 //go:nosplit
-func (self class) PeerDisconnectLater(data gd.Int) {
+func (self class) PeerDisconnectLater(data gd.Int) { //gd:ENetPacketPeer.peer_disconnect_later
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
 	var r_ret = callframe.Nil
@@ -197,7 +197,7 @@ func (self class) PeerDisconnectLater(data gd.Int) {
 Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_DISCONNECT] will be generated. The foreign peer is not guaranteed to receive the disconnect notification, and is reset immediately upon return from this function.
 */
 //go:nosplit
-func (self class) PeerDisconnectNow(data gd.Int) {
+func (self class) PeerDisconnectNow(data gd.Int) { //gd:ENetPacketPeer.peer_disconnect_now
 	var frame = callframe.New()
 	callframe.Arg(frame, data)
 	var r_ret = callframe.Nil
@@ -209,7 +209,7 @@ func (self class) PeerDisconnectNow(data gd.Int) {
 Sends a ping request to a peer. ENet automatically pings all connected peers at regular intervals, however, this function may be called to ensure more frequent ping requests.
 */
 //go:nosplit
-func (self class) Ping() {
+func (self class) Ping() { //gd:ENetPacketPeer.ping
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_ping, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -220,7 +220,7 @@ func (self class) Ping() {
 Sets the [param ping_interval] in milliseconds at which pings will be sent to a peer. Pings are used both to monitor the liveness of the connection and also to dynamically adjust the throttle during periods of low traffic so that the throttle has reasonable responsiveness during traffic spikes. The default ping interval is [code]500[/code] milliseconds.
 */
 //go:nosplit
-func (self class) PingInterval(ping_interval gd.Int) {
+func (self class) PingInterval(ping_interval gd.Int) { //gd:ENetPacketPeer.ping_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, ping_interval)
 	var r_ret = callframe.Nil
@@ -232,7 +232,7 @@ func (self class) PingInterval(ping_interval gd.Int) {
 Forcefully disconnects a peer. The foreign host represented by the peer is not notified of the disconnection and will timeout on its connection to the local host.
 */
 //go:nosplit
-func (self class) Reset() {
+func (self class) Reset() { //gd:ENetPacketPeer.reset
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -243,7 +243,7 @@ func (self class) Reset() {
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
 //go:nosplit
-func (self class) Send(channel gd.Int, packet gd.PackedByteArray, flags gd.Int) gd.Error {
+func (self class) Send(channel gd.Int, packet gd.PackedByteArray, flags gd.Int) gd.Error { //gd:ENetPacketPeer.send
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
 	callframe.Arg(frame, pointers.Get(packet))
@@ -263,7 +263,7 @@ When the throttle has a value of [code]0[/code], all unreliable packets are drop
 Intermediate values for the throttle represent intermediate probabilities between 0% and 100% of unreliable packets being sent. The bandwidth limits of the local and foreign hosts are taken into account to determine a sensible limit for the throttle probability above which it should not raise even in the best of conditions.
 */
 //go:nosplit
-func (self class) ThrottleConfigure(interval gd.Int, acceleration gd.Int, deceleration gd.Int) {
+func (self class) ThrottleConfigure(interval gd.Int, acceleration gd.Int, deceleration gd.Int) { //gd:ENetPacketPeer.throttle_configure
 	var frame = callframe.New()
 	callframe.Arg(frame, interval)
 	callframe.Arg(frame, acceleration)
@@ -278,7 +278,7 @@ Sets the timeout parameters for a peer. The timeout parameters control how and w
 The [param timeout] is a factor that, multiplied by a value based on the average round trip time, will determine the timeout limit for a reliable packet. When that limit is reached, the timeout will be doubled, and the peer will be disconnected if that limit has reached [param timeout_min]. The [param timeout_max] parameter, on the other hand, defines a fixed timeout for which any packet must be acknowledged or the peer will be dropped.
 */
 //go:nosplit
-func (self class) SetTimeout(timeout gd.Int, timeout_min gd.Int, timeout_max gd.Int) {
+func (self class) SetTimeout(timeout gd.Int, timeout_min gd.Int, timeout_max gd.Int) { //gd:ENetPacketPeer.set_timeout
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	callframe.Arg(frame, timeout_min)
@@ -292,7 +292,7 @@ func (self class) SetTimeout(timeout gd.Int, timeout_min gd.Int, timeout_max gd.
 Returns the IP address of this peer.
 */
 //go:nosplit
-func (self class) GetRemoteAddress() gd.String {
+func (self class) GetRemoteAddress() gd.String { //gd:ENetPacketPeer.get_remote_address
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_address, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -305,7 +305,7 @@ func (self class) GetRemoteAddress() gd.String {
 Returns the remote port of this peer.
 */
 //go:nosplit
-func (self class) GetRemotePort() gd.Int {
+func (self class) GetRemotePort() gd.Int { //gd:ENetPacketPeer.get_remote_port
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_port, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -318,7 +318,7 @@ func (self class) GetRemotePort() gd.Int {
 Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
 //go:nosplit
-func (self class) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) gd.Float {
+func (self class) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) gd.Float { //gd:ENetPacketPeer.get_statistic
 	var frame = callframe.New()
 	callframe.Arg(frame, statistic)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -332,7 +332,7 @@ func (self class) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) gd
 Returns the current peer state. See [enum PeerState].
 */
 //go:nosplit
-func (self class) GetState() gdclass.ENetPacketPeerPeerState {
+func (self class) GetState() gdclass.ENetPacketPeerPeerState { //gd:ENetPacketPeer.get_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ENetPacketPeerPeerState](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -345,7 +345,7 @@ func (self class) GetState() gdclass.ENetPacketPeerPeerState {
 Returns the number of channels allocated for communication with peer.
 */
 //go:nosplit
-func (self class) GetChannels() gd.Int {
+func (self class) GetChannels() gd.Int { //gd:ENetPacketPeer.get_channels
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -358,7 +358,7 @@ func (self class) GetChannels() gd.Int {
 Returns [code]true[/code] if the peer is currently active (i.e. the associated [ENetConnection] is still valid).
 */
 //go:nosplit
-func (self class) IsActive() bool {
+func (self class) IsActive() bool { //gd:ENetPacketPeer.is_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -400,7 +400,7 @@ func init() {
 	})
 }
 
-type PeerState = gdclass.ENetPacketPeerPeerState
+type PeerState = gdclass.ENetPacketPeerPeerState //gd:ENetPacketPeer.PeerState
 
 const (
 	/*The peer is disconnected.*/
@@ -425,7 +425,7 @@ const (
 	StateZombie PeerState = 9
 )
 
-type PeerStatistic = gdclass.ENetPacketPeerPeerStatistic
+type PeerStatistic = gdclass.ENetPacketPeerPeerStatistic //gd:ENetPacketPeer.PeerStatistic
 
 const (
 	/*Mean packet loss of reliable packets as a ratio with respect to the [constant PACKET_LOSS_SCALE].*/
@@ -458,7 +458,7 @@ const (
 	PeerPacketThrottleInterval PeerStatistic = 13
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

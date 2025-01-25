@@ -47,7 +47,7 @@ type Any interface {
 Returns the [HBoxContainer] used for the title bar, only containing a [Label] for displaying the title by default.
 This can be used to add custom controls to the title bar such as option or close buttons.
 */
-func (self Instance) GetTitlebarHbox() [1]gdclass.HBoxContainer {
+func (self Instance) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphFrame.get_titlebar_hbox
 	return [1]gdclass.HBoxContainer(class(self).GetTitlebarHbox())
 }
 
@@ -118,7 +118,7 @@ func (self Instance) SetTintColor(value Color.RGBA) {
 }
 
 //go:nosplit
-func (self class) SetTitle(title gd.String) {
+func (self class) SetTitle(title gd.String) { //gd:GraphFrame.set_title
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	var r_ret = callframe.Nil
@@ -127,7 +127,7 @@ func (self class) SetTitle(title gd.String) {
 }
 
 //go:nosplit
-func (self class) GetTitle() gd.String {
+func (self class) GetTitle() gd.String { //gd:GraphFrame.get_title
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -141,7 +141,7 @@ Returns the [HBoxContainer] used for the title bar, only containing a [Label] fo
 This can be used to add custom controls to the title bar such as option or close buttons.
 */
 //go:nosplit
-func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer {
+func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphFrame.get_titlebar_hbox
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_titlebar_hbox, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -151,7 +151,7 @@ func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer {
 }
 
 //go:nosplit
-func (self class) SetAutoshrinkEnabled(shrink bool) {
+func (self class) SetAutoshrinkEnabled(shrink bool) { //gd:GraphFrame.set_autoshrink_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, shrink)
 	var r_ret = callframe.Nil
@@ -160,7 +160,7 @@ func (self class) SetAutoshrinkEnabled(shrink bool) {
 }
 
 //go:nosplit
-func (self class) IsAutoshrinkEnabled() bool {
+func (self class) IsAutoshrinkEnabled() bool { //gd:GraphFrame.is_autoshrink_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_is_autoshrink_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -170,7 +170,7 @@ func (self class) IsAutoshrinkEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetAutoshrinkMargin(autoshrink_margin gd.Int) {
+func (self class) SetAutoshrinkMargin(autoshrink_margin gd.Int) { //gd:GraphFrame.set_autoshrink_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, autoshrink_margin)
 	var r_ret = callframe.Nil
@@ -179,7 +179,7 @@ func (self class) SetAutoshrinkMargin(autoshrink_margin gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetAutoshrinkMargin() gd.Int {
+func (self class) GetAutoshrinkMargin() gd.Int { //gd:GraphFrame.get_autoshrink_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_autoshrink_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -189,7 +189,7 @@ func (self class) GetAutoshrinkMargin() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetDragMargin(drag_margin gd.Int) {
+func (self class) SetDragMargin(drag_margin gd.Int) { //gd:GraphFrame.set_drag_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, drag_margin)
 	var r_ret = callframe.Nil
@@ -198,7 +198,7 @@ func (self class) SetDragMargin(drag_margin gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetDragMargin() gd.Int {
+func (self class) GetDragMargin() gd.Int { //gd:GraphFrame.get_drag_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_drag_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -208,7 +208,7 @@ func (self class) GetDragMargin() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetTintColorEnabled(enable bool) {
+func (self class) SetTintColorEnabled(enable bool) { //gd:GraphFrame.set_tint_color_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -217,7 +217,7 @@ func (self class) SetTintColorEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsTintColorEnabled() bool {
+func (self class) IsTintColorEnabled() bool { //gd:GraphFrame.is_tint_color_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_is_tint_color_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -227,7 +227,7 @@ func (self class) IsTintColorEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetTintColor(color gd.Color) {
+func (self class) SetTintColor(color gd.Color) { //gd:GraphFrame.set_tint_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -236,7 +236,7 @@ func (self class) SetTintColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetTintColor() gd.Color {
+func (self class) GetTintColor() gd.Color { //gd:GraphFrame.get_tint_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphFrame.Bind_get_tint_color, self.AsObject(), frame.Array(0), r_ret.Addr())

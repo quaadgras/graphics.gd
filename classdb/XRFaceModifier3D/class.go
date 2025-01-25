@@ -76,7 +76,7 @@ func (self Instance) SetTarget(value NodePath.String) {
 }
 
 //go:nosplit
-func (self class) SetFaceTracker(tracker_name gd.StringName) {
+func (self class) SetFaceTracker(tracker_name gd.StringName) { //gd:XRFaceModifier3D.set_face_tracker
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tracker_name))
 	var r_ret = callframe.Nil
@@ -85,7 +85,7 @@ func (self class) SetFaceTracker(tracker_name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetFaceTracker() gd.StringName {
+func (self class) GetFaceTracker() gd.StringName { //gd:XRFaceModifier3D.get_face_tracker
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceModifier3D.Bind_get_face_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) GetFaceTracker() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetTarget(target gd.NodePath) {
+func (self class) SetTarget(target gd.NodePath) { //gd:XRFaceModifier3D.set_target
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(target))
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetTarget(target gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetTarget() gd.NodePath {
+func (self class) GetTarget() gd.NodePath { //gd:XRFaceModifier3D.get_target
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceModifier3D.Bind_get_target, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -96,7 +96,7 @@ func (self Instance) SetFollowCameraEnabled(value bool) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) {
+func (self class) SetSize(size gd.Vector3) { //gd:GPUParticlesCollisionHeightField3D.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -105,7 +105,7 @@ func (self class) SetSize(size gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 {
+func (self class) GetSize() gd.Vector3 { //gd:GPUParticlesCollisionHeightField3D.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -115,7 +115,7 @@ func (self class) GetSize() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionHeightField3DResolution) {
+func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionHeightField3DResolution) { //gd:GPUParticlesCollisionHeightField3D.set_resolution
 	var frame = callframe.New()
 	callframe.Arg(frame, resolution)
 	var r_ret = callframe.Nil
@@ -124,7 +124,7 @@ func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionHeightFi
 }
 
 //go:nosplit
-func (self class) GetResolution() gdclass.GPUParticlesCollisionHeightField3DResolution {
+func (self class) GetResolution() gdclass.GPUParticlesCollisionHeightField3DResolution { //gd:GPUParticlesCollisionHeightField3D.get_resolution
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GPUParticlesCollisionHeightField3DResolution](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,7 +134,7 @@ func (self class) GetResolution() gdclass.GPUParticlesCollisionHeightField3DReso
 }
 
 //go:nosplit
-func (self class) SetUpdateMode(update_mode gdclass.GPUParticlesCollisionHeightField3DUpdateMode) {
+func (self class) SetUpdateMode(update_mode gdclass.GPUParticlesCollisionHeightField3DUpdateMode) { //gd:GPUParticlesCollisionHeightField3D.set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, update_mode)
 	var r_ret = callframe.Nil
@@ -143,7 +143,7 @@ func (self class) SetUpdateMode(update_mode gdclass.GPUParticlesCollisionHeightF
 }
 
 //go:nosplit
-func (self class) GetUpdateMode() gdclass.GPUParticlesCollisionHeightField3DUpdateMode {
+func (self class) GetUpdateMode() gdclass.GPUParticlesCollisionHeightField3DUpdateMode { //gd:GPUParticlesCollisionHeightField3D.get_update_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GPUParticlesCollisionHeightField3DUpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -153,7 +153,7 @@ func (self class) GetUpdateMode() gdclass.GPUParticlesCollisionHeightField3DUpda
 }
 
 //go:nosplit
-func (self class) SetFollowCameraEnabled(enabled bool) {
+func (self class) SetFollowCameraEnabled(enabled bool) { //gd:GPUParticlesCollisionHeightField3D.set_follow_camera_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetFollowCameraEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsFollowCameraEnabled() bool {
+func (self class) IsFollowCameraEnabled() bool { //gd:GPUParticlesCollisionHeightField3D.is_follow_camera_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_is_follow_camera_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -212,7 +212,7 @@ func init() {
 	})
 }
 
-type Resolution = gdclass.GPUParticlesCollisionHeightField3DResolution
+type Resolution = gdclass.GPUParticlesCollisionHeightField3DResolution //gd:GPUParticlesCollisionHeightField3D.Resolution
 
 const (
 	/*Generate a 256×256 heightmap. Intended for small-scale scenes, or larger scenes with no distant particles.*/
@@ -231,7 +231,7 @@ const (
 	ResolutionMax Resolution = 6
 )
 
-type UpdateMode = gdclass.GPUParticlesCollisionHeightField3DUpdateMode
+type UpdateMode = gdclass.GPUParticlesCollisionHeightField3DUpdateMode //gd:GPUParticlesCollisionHeightField3D.UpdateMode
 
 const (
 	/*Only update the heightmap when the [GPUParticlesCollisionHeightField3D] node is moved, or when the camera moves if [member follow_camera_enabled] is [code]true[/code]. An update can be forced by slightly moving the [GPUParticlesCollisionHeightField3D] in any direction, or by calling [method RenderingServer.particles_collision_height_field_update].*/

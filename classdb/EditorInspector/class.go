@@ -49,14 +49,14 @@ type Any interface {
 /*
 Gets the path of the currently selected property.
 */
-func (self Instance) GetSelectedPath() string {
+func (self Instance) GetSelectedPath() string { //gd:EditorInspector.get_selected_path
 	return string(class(self).GetSelectedPath().String())
 }
 
 /*
 Returns the object currently selected in this inspector.
 */
-func (self Instance) GetEditedObject() Object.Instance {
+func (self Instance) GetEditedObject() Object.Instance { //gd:EditorInspector.get_edited_object
 	return Object.Instance(class(self).GetEditedObject())
 }
 
@@ -82,7 +82,7 @@ func New() Instance {
 Gets the path of the currently selected property.
 */
 //go:nosplit
-func (self class) GetSelectedPath() gd.String {
+func (self class) GetSelectedPath() gd.String { //gd:EditorInspector.get_selected_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspector.Bind_get_selected_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) GetSelectedPath() gd.String {
 Returns the object currently selected in this inspector.
 */
 //go:nosplit
-func (self class) GetEditedObject() [1]gd.Object {
+func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edited_object
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspector.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Addr())

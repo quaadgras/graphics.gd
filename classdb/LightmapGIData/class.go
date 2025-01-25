@@ -42,28 +42,28 @@ type Any interface {
 /*
 Adds an object that is considered baked within this [LightmapGIData].
 */
-func (self Instance) AddUser(path NodePath.String, uv_scale Rect2.PositionSize, slice_index int, sub_instance int) {
+func (self Instance) AddUser(path NodePath.String, uv_scale Rect2.PositionSize, slice_index int, sub_instance int) { //gd:LightmapGIData.add_user
 	class(self).AddUser(gd.NewString(string(path)).NodePath(), gd.Rect2(uv_scale), gd.Int(slice_index), gd.Int(sub_instance))
 }
 
 /*
 Returns the number of objects that are considered baked within this [LightmapGIData].
 */
-func (self Instance) GetUserCount() int {
+func (self Instance) GetUserCount() int { //gd:LightmapGIData.get_user_count
 	return int(int(class(self).GetUserCount()))
 }
 
 /*
 Returns the [NodePath] of the baked object at index [param user_idx].
 */
-func (self Instance) GetUserPath(user_idx int) NodePath.String {
+func (self Instance) GetUserPath(user_idx int) NodePath.String { //gd:LightmapGIData.get_user_path
 	return NodePath.String(class(self).GetUserPath(gd.Int(user_idx)).String())
 }
 
 /*
 Clear all objects that are considered baked within this [LightmapGIData].
 */
-func (self Instance) ClearUsers() {
+func (self Instance) ClearUsers() { //gd:LightmapGIData.clear_users
 	class(self).ClearUsers()
 }
 
@@ -111,7 +111,7 @@ func (self Instance) SetLightTexture(value [1]gdclass.TextureLayered) {
 }
 
 //go:nosplit
-func (self class) SetLightmapTextures(light_textures Array.Contains[[1]gdclass.TextureLayered]) {
+func (self class) SetLightmapTextures(light_textures Array.Contains[[1]gdclass.TextureLayered]) { //gd:LightmapGIData.set_lightmap_textures
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(light_textures)))
 	var r_ret = callframe.Nil
@@ -120,7 +120,7 @@ func (self class) SetLightmapTextures(light_textures Array.Contains[[1]gdclass.T
 }
 
 //go:nosplit
-func (self class) GetLightmapTextures() Array.Contains[[1]gdclass.TextureLayered] {
+func (self class) GetLightmapTextures() Array.Contains[[1]gdclass.TextureLayered] { //gd:LightmapGIData.get_lightmap_textures
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_get_lightmap_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,7 +134,7 @@ If [param uses_spherical_harmonics] is [code]true[/code], tells the engine to tr
 [b]Note:[/b] Changing this value on already baked lightmaps will not cause them to be baked again. This means the material appearance will look incorrect until lightmaps are baked again, in which case the value set here is discarded as the entire [LightmapGIData] resource is replaced by the lightmapper.
 */
 //go:nosplit
-func (self class) SetUsesSphericalHarmonics(uses_spherical_harmonics bool) {
+func (self class) SetUsesSphericalHarmonics(uses_spherical_harmonics bool) { //gd:LightmapGIData.set_uses_spherical_harmonics
 	var frame = callframe.New()
 	callframe.Arg(frame, uses_spherical_harmonics)
 	var r_ret = callframe.Nil
@@ -146,7 +146,7 @@ func (self class) SetUsesSphericalHarmonics(uses_spherical_harmonics bool) {
 If [code]true[/code], lightmaps were baked with directional information. See also [member LightmapGI.directional].
 */
 //go:nosplit
-func (self class) IsUsingSphericalHarmonics() bool {
+func (self class) IsUsingSphericalHarmonics() bool { //gd:LightmapGIData.is_using_spherical_harmonics
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_is_using_spherical_harmonics, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -159,7 +159,7 @@ func (self class) IsUsingSphericalHarmonics() bool {
 Adds an object that is considered baked within this [LightmapGIData].
 */
 //go:nosplit
-func (self class) AddUser(path gd.NodePath, uv_scale gd.Rect2, slice_index gd.Int, sub_instance gd.Int) {
+func (self class) AddUser(path gd.NodePath, uv_scale gd.Rect2, slice_index gd.Int, sub_instance gd.Int) { //gd:LightmapGIData.add_user
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, uv_scale)
@@ -174,7 +174,7 @@ func (self class) AddUser(path gd.NodePath, uv_scale gd.Rect2, slice_index gd.In
 Returns the number of objects that are considered baked within this [LightmapGIData].
 */
 //go:nosplit
-func (self class) GetUserCount() gd.Int {
+func (self class) GetUserCount() gd.Int { //gd:LightmapGIData.get_user_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_get_user_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -187,7 +187,7 @@ func (self class) GetUserCount() gd.Int {
 Returns the [NodePath] of the baked object at index [param user_idx].
 */
 //go:nosplit
-func (self class) GetUserPath(user_idx gd.Int) gd.NodePath {
+func (self class) GetUserPath(user_idx gd.Int) gd.NodePath { //gd:LightmapGIData.get_user_path
 	var frame = callframe.New()
 	callframe.Arg(frame, user_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -201,7 +201,7 @@ func (self class) GetUserPath(user_idx gd.Int) gd.NodePath {
 Clear all objects that are considered baked within this [LightmapGIData].
 */
 //go:nosplit
-func (self class) ClearUsers() {
+func (self class) ClearUsers() { //gd:LightmapGIData.clear_users
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_clear_users, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -209,7 +209,7 @@ func (self class) ClearUsers() {
 }
 
 //go:nosplit
-func (self class) SetLightTexture(light_texture [1]gdclass.TextureLayered) {
+func (self class) SetLightTexture(light_texture [1]gdclass.TextureLayered) { //gd:LightmapGIData.set_light_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(light_texture[0])[0])
 	var r_ret = callframe.Nil
@@ -218,7 +218,7 @@ func (self class) SetLightTexture(light_texture [1]gdclass.TextureLayered) {
 }
 
 //go:nosplit
-func (self class) GetLightTexture() [1]gdclass.TextureLayered {
+func (self class) GetLightTexture() [1]gdclass.TextureLayered { //gd:LightmapGIData.get_light_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_get_light_texture, self.AsObject(), frame.Array(0), r_ret.Addr())

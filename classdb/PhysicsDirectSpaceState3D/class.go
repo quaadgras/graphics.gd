@@ -45,7 +45,7 @@ Checks whether a point is inside any solid shape. Position and other parameters 
 [code]shape[/code]: The shape index of the colliding shape.
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
-func (self Instance) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D) []map[any]any {
+func (self Instance) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D) []map[any]any { //gd:PhysicsDirectSpaceState3D.intersect_point
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).IntersectPoint(parameters, gd.Int(32)))))
 }
 
@@ -61,7 +61,7 @@ Intersects a ray in a given space. Ray position and other parameters are defined
 [code]shape[/code]: The shape index of the colliding shape.
 If the ray did not intersect anything, then an empty dictionary is returned instead.
 */
-func (self Instance) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) map[any]any {
+func (self Instance) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) map[any]any { //gd:PhysicsDirectSpaceState3D.intersect_ray
 	return map[any]any(gd.DictionaryAs[any, any](class(self).IntersectRay(parameters)))
 }
 
@@ -74,7 +74,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
-func (self Instance) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []map[any]any {
+func (self Instance) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []map[any]any { //gd:PhysicsDirectSpaceState3D.intersect_shape
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).IntersectShape(parameters, gd.Int(32)))))
 }
 
@@ -83,7 +83,7 @@ Checks how far a [Shape3D] can move without colliding. All the parameters for th
 Returns an array with the safe and unsafe proportions (between 0 and 1) of the motion. The safe proportion is the maximum fraction of the motion that can be made without a collision. The unsafe proportion is the minimum fraction of the distance that must be moved for a collision. If no collision is detected a result of [code][1.0, 1.0][/code] will be returned.
 [b]Note:[/b] Any [Shape3D]s that the shape is already colliding with e.g. inside of, will be ignored. Use [method collide_shape] to determine the [Shape3D]s that the shape is already colliding with.
 */
-func (self Instance) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []float32 {
+func (self Instance) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []float32 { //gd:PhysicsDirectSpaceState3D.cast_motion
 	return []float32(class(self).CastMotion(parameters).AsSlice())
 }
 
@@ -92,7 +92,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 Returned points are a list of pairs of contact points. For each pair the first one is in the shape passed in [PhysicsShapeQueryParameters3D] object, second one is in the collided shape from the physics space.
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
-func (self Instance) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []Vector3.XYZ {
+func (self Instance) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []Vector3.XYZ { //gd:PhysicsDirectSpaceState3D.collide_shape
 	return []Vector3.XYZ(gd.ArrayAs[[]Vector3.XYZ](gd.InternalArray(class(self).CollideShape(parameters, gd.Int(32)))))
 }
 
@@ -107,7 +107,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 If the shape did not intersect anything, then an empty dictionary is returned instead.
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
-func (self Instance) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) map[any]any {
+func (self Instance) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) map[any]any { //gd:PhysicsDirectSpaceState3D.get_rest_info
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetRestInfo(parameters)))
 }
 
@@ -138,7 +138,7 @@ Checks whether a point is inside any solid shape. Position and other parameters 
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
 //go:nosplit
-func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D, max_results gd.Int) Array.Contains[gd.Dictionary] {
+func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D, max_results gd.Int) Array.Contains[gd.Dictionary] { //gd:PhysicsDirectSpaceState3D.intersect_point
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
@@ -162,7 +162,7 @@ Intersects a ray in a given space. Ray position and other parameters are defined
 If the ray did not intersect anything, then an empty dictionary is returned instead.
 */
 //go:nosplit
-func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) gd.Dictionary {
+func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) gd.Dictionary { //gd:PhysicsDirectSpaceState3D.intersect_ray
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -182,7 +182,7 @@ The number of intersections can be limited with the [param max_results] paramete
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 //go:nosplit
-func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results gd.Int) Array.Contains[gd.Dictionary] {
+func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results gd.Int) Array.Contains[gd.Dictionary] { //gd:PhysicsDirectSpaceState3D.intersect_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
@@ -199,7 +199,7 @@ Returns an array with the safe and unsafe proportions (between 0 and 1) of the m
 [b]Note:[/b] Any [Shape3D]s that the shape is already colliding with e.g. inside of, will be ignored. Use [method collide_shape] to determine the [Shape3D]s that the shape is already colliding with.
 */
 //go:nosplit
-func (self class) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters3D) gd.PackedFloat32Array {
+func (self class) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters3D) gd.PackedFloat32Array { //gd:PhysicsDirectSpaceState3D.cast_motion
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -215,7 +215,7 @@ Returned points are a list of pairs of contact points. For each pair the first o
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 //go:nosplit
-func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results gd.Int) Array.Contains[gd.Vector3] {
+func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results gd.Int) Array.Contains[gd.Vector3] { //gd:PhysicsDirectSpaceState3D.collide_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
@@ -238,7 +238,7 @@ If the shape did not intersect anything, then an empty dictionary is returned in
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
 //go:nosplit
-func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) gd.Dictionary {
+func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) gd.Dictionary { //gd:PhysicsDirectSpaceState3D.get_rest_info
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)

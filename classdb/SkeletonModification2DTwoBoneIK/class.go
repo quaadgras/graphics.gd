@@ -44,56 +44,56 @@ type Any interface {
 /*
 Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
-func (self Instance) SetJointOneBone2dNode(bone2d_node NodePath.String) {
+func (self Instance) SetJointOneBone2dNode(bone2d_node NodePath.String) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone2d_node
 	class(self).SetJointOneBone2dNode(gd.NewString(string(bone2d_node)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
-func (self Instance) GetJointOneBone2dNode() NodePath.String {
+func (self Instance) GetJointOneBone2dNode() NodePath.String { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone2d_node
 	return NodePath.String(class(self).GetJointOneBone2dNode().String())
 }
 
 /*
 Sets the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
-func (self Instance) SetJointOneBoneIdx(bone_idx int) {
+func (self Instance) SetJointOneBoneIdx(bone_idx int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone_idx
 	class(self).SetJointOneBoneIdx(gd.Int(bone_idx))
 }
 
 /*
 Returns the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
-func (self Instance) GetJointOneBoneIdx() int {
+func (self Instance) GetJointOneBoneIdx() int { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone_idx
 	return int(int(class(self).GetJointOneBoneIdx()))
 }
 
 /*
 Sets the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
-func (self Instance) SetJointTwoBone2dNode(bone2d_node NodePath.String) {
+func (self Instance) SetJointTwoBone2dNode(bone2d_node NodePath.String) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone2d_node
 	class(self).SetJointTwoBone2dNode(gd.NewString(string(bone2d_node)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
-func (self Instance) GetJointTwoBone2dNode() NodePath.String {
+func (self Instance) GetJointTwoBone2dNode() NodePath.String { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone2d_node
 	return NodePath.String(class(self).GetJointTwoBone2dNode().String())
 }
 
 /*
 Sets the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
-func (self Instance) SetJointTwoBoneIdx(bone_idx int) {
+func (self Instance) SetJointTwoBoneIdx(bone_idx int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone_idx
 	class(self).SetJointTwoBoneIdx(gd.Int(bone_idx))
 }
 
 /*
 Returns the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
-func (self Instance) GetJointTwoBoneIdx() int {
+func (self Instance) GetJointTwoBoneIdx() int { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone_idx
 	return int(int(class(self).GetJointTwoBoneIdx()))
 }
 
@@ -149,7 +149,7 @@ func (self Instance) SetFlipBendDirection(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTargetNode(target_nodepath gd.NodePath) {
+func (self class) SetTargetNode(target_nodepath gd.NodePath) { //gd:SkeletonModification2DTwoBoneIK.set_target_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(target_nodepath))
 	var r_ret = callframe.Nil
@@ -158,7 +158,7 @@ func (self class) SetTargetNode(target_nodepath gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetTargetNode() gd.NodePath {
+func (self class) GetTargetNode() gd.NodePath { //gd:SkeletonModification2DTwoBoneIK.get_target_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -168,7 +168,7 @@ func (self class) GetTargetNode() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetTargetMinimumDistance(minimum_distance gd.Float) {
+func (self class) SetTargetMinimumDistance(minimum_distance gd.Float) { //gd:SkeletonModification2DTwoBoneIK.set_target_minimum_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, minimum_distance)
 	var r_ret = callframe.Nil
@@ -177,7 +177,7 @@ func (self class) SetTargetMinimumDistance(minimum_distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTargetMinimumDistance() gd.Float {
+func (self class) GetTargetMinimumDistance() gd.Float { //gd:SkeletonModification2DTwoBoneIK.get_target_minimum_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_minimum_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -187,7 +187,7 @@ func (self class) GetTargetMinimumDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTargetMaximumDistance(maximum_distance gd.Float) {
+func (self class) SetTargetMaximumDistance(maximum_distance gd.Float) { //gd:SkeletonModification2DTwoBoneIK.set_target_maximum_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, maximum_distance)
 	var r_ret = callframe.Nil
@@ -196,7 +196,7 @@ func (self class) SetTargetMaximumDistance(maximum_distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTargetMaximumDistance() gd.Float {
+func (self class) GetTargetMaximumDistance() gd.Float { //gd:SkeletonModification2DTwoBoneIK.get_target_maximum_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_maximum_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -206,7 +206,7 @@ func (self class) GetTargetMaximumDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFlipBendDirection(flip_direction bool) {
+func (self class) SetFlipBendDirection(flip_direction bool) { //gd:SkeletonModification2DTwoBoneIK.set_flip_bend_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_direction)
 	var r_ret = callframe.Nil
@@ -215,7 +215,7 @@ func (self class) SetFlipBendDirection(flip_direction bool) {
 }
 
 //go:nosplit
-func (self class) GetFlipBendDirection() bool {
+func (self class) GetFlipBendDirection() bool { //gd:SkeletonModification2DTwoBoneIK.get_flip_bend_direction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_flip_bend_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -228,7 +228,7 @@ func (self class) GetFlipBendDirection() bool {
 Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) SetJointOneBone2dNode(bone2d_node gd.NodePath) {
+func (self class) SetJointOneBone2dNode(bone2d_node gd.NodePath) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bone2d_node))
 	var r_ret = callframe.Nil
@@ -240,7 +240,7 @@ func (self class) SetJointOneBone2dNode(bone2d_node gd.NodePath) {
 Returns the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) GetJointOneBone2dNode() gd.NodePath {
+func (self class) GetJointOneBone2dNode() gd.NodePath { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone2d_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_one_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -253,7 +253,7 @@ func (self class) GetJointOneBone2dNode() gd.NodePath {
 Sets the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) SetJointOneBoneIdx(bone_idx gd.Int) {
+func (self class) SetJointOneBoneIdx(bone_idx gd.Int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone_idx
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -265,7 +265,7 @@ func (self class) SetJointOneBoneIdx(bone_idx gd.Int) {
 Returns the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) GetJointOneBoneIdx() gd.Int {
+func (self class) GetJointOneBoneIdx() gd.Int { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone_idx
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_one_bone_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -278,7 +278,7 @@ func (self class) GetJointOneBoneIdx() gd.Int {
 Sets the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) SetJointTwoBone2dNode(bone2d_node gd.NodePath) {
+func (self class) SetJointTwoBone2dNode(bone2d_node gd.NodePath) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bone2d_node))
 	var r_ret = callframe.Nil
@@ -290,7 +290,7 @@ func (self class) SetJointTwoBone2dNode(bone2d_node gd.NodePath) {
 Returns the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) GetJointTwoBone2dNode() gd.NodePath {
+func (self class) GetJointTwoBone2dNode() gd.NodePath { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone2d_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_two_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -303,7 +303,7 @@ func (self class) GetJointTwoBone2dNode() gd.NodePath {
 Sets the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) SetJointTwoBoneIdx(bone_idx gd.Int) {
+func (self class) SetJointTwoBoneIdx(bone_idx gd.Int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone_idx
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -315,7 +315,7 @@ func (self class) SetJointTwoBoneIdx(bone_idx gd.Int) {
 Returns the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 //go:nosplit
-func (self class) GetJointTwoBoneIdx() gd.Int {
+func (self class) GetJointTwoBoneIdx() gd.Int { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone_idx
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_two_bone_idx, self.AsObject(), frame.Array(0), r_ret.Addr())

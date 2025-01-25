@@ -102,7 +102,7 @@ func (self Instance) SetRelaxation(value Float.X) {
 Sets the value of the specified parameter.
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.ConeTwistJoint3DParam, value gd.Float) {
+func (self class) SetParam(param gdclass.ConeTwistJoint3DParam, value gd.Float) { //gd:ConeTwistJoint3D.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -115,7 +115,7 @@ func (self class) SetParam(param gdclass.ConeTwistJoint3DParam, value gd.Float) 
 Returns the value of the specified parameter.
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.ConeTwistJoint3DParam) gd.Float {
+func (self class) GetParam(param gdclass.ConeTwistJoint3DParam) gd.Float { //gd:ConeTwistJoint3D.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -154,7 +154,7 @@ func init() {
 	})
 }
 
-type Param = gdclass.ConeTwistJoint3DParam
+type Param = gdclass.ConeTwistJoint3DParam //gd:ConeTwistJoint3D.Param
 
 const (
 	/*Swing is rotation from side to side, around the axis perpendicular to the twist axis.

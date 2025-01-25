@@ -48,7 +48,7 @@ type Any interface {
 Returns the [ColorPicker] that this node toggles.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetPicker() [1]gdclass.ColorPicker {
+func (self Instance) GetPicker() [1]gdclass.ColorPicker { //gd:ColorPickerButton.get_picker
 	return [1]gdclass.ColorPicker(class(self).GetPicker())
 }
 
@@ -56,7 +56,7 @@ func (self Instance) GetPicker() [1]gdclass.ColorPicker {
 Returns the control's [PopupPanel] which allows you to connect to popup signals. This allows you to handle events when the ColorPicker is shown or hidden.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
-func (self Instance) GetPopup() [1]gdclass.PopupPanel {
+func (self Instance) GetPopup() [1]gdclass.PopupPanel { //gd:ColorPickerButton.get_popup
 	return [1]gdclass.PopupPanel(class(self).GetPopup())
 }
 
@@ -95,7 +95,7 @@ func (self Instance) SetEditAlpha(value bool) {
 }
 
 //go:nosplit
-func (self class) SetPickColor(color gd.Color) {
+func (self class) SetPickColor(color gd.Color) { //gd:ColorPickerButton.set_pick_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetPickColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetPickColor() gd.Color {
+func (self class) GetPickColor() gd.Color { //gd:ColorPickerButton.get_pick_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_pick_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -118,7 +118,7 @@ Returns the [ColorPicker] that this node toggles.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 //go:nosplit
-func (self class) GetPicker() [1]gdclass.ColorPicker {
+func (self class) GetPicker() [1]gdclass.ColorPicker { //gd:ColorPickerButton.get_picker
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_picker, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -132,7 +132,7 @@ Returns the control's [PopupPanel] which allows you to connect to popup signals.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 //go:nosplit
-func (self class) GetPopup() [1]gdclass.PopupPanel {
+func (self class) GetPopup() [1]gdclass.PopupPanel { //gd:ColorPickerButton.get_popup
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -142,7 +142,7 @@ func (self class) GetPopup() [1]gdclass.PopupPanel {
 }
 
 //go:nosplit
-func (self class) SetEditAlpha(show bool) {
+func (self class) SetEditAlpha(show bool) { //gd:ColorPickerButton.set_edit_alpha
 	var frame = callframe.New()
 	callframe.Arg(frame, show)
 	var r_ret = callframe.Nil
@@ -151,7 +151,7 @@ func (self class) SetEditAlpha(show bool) {
 }
 
 //go:nosplit
-func (self class) IsEditingAlpha() bool {
+func (self class) IsEditingAlpha() bool { //gd:ColorPickerButton.is_editing_alpha
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_is_editing_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -68,7 +68,7 @@ func (self Instance) SetConstant(value Quaternion.IJKX) {
 }
 
 //go:nosplit
-func (self class) SetConstant(constant gd.Quaternion) {
+func (self class) SetConstant(constant gd.Quaternion) { //gd:VisualShaderNodeVec4Constant.set_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, constant)
 	var r_ret = callframe.Nil
@@ -77,7 +77,7 @@ func (self class) SetConstant(constant gd.Quaternion) {
 }
 
 //go:nosplit
-func (self class) GetConstant() gd.Quaternion {
+func (self class) GetConstant() gd.Quaternion { //gd:VisualShaderNodeVec4Constant.get_constant
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Quaternion](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVec4Constant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())

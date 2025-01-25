@@ -87,35 +87,35 @@ func (Instance) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.Exte
 /*
 Sets the [member resource_path] to [param path], potentially overriding an existing cache entry for this path. Further attempts to load an overridden resource by path will instead return this resource.
 */
-func (self Instance) TakeOverPath(path string) {
+func (self Instance) TakeOverPath(path string) { //gd:Resource.take_over_path
 	class(self).TakeOverPath(gd.NewString(path))
 }
 
 /*
 Returns the [RID] of this resource (or an empty RID). Many resources (such as [Texture2D], [Mesh], and so on) are high-level abstractions of resources stored in a specialized server ([DisplayServer], [RenderingServer], etc.), so this function will return the original [RID].
 */
-func (self Instance) GetRid() ID {
+func (self Instance) GetRid() ID { //gd:Resource.get_rid
 	return ID(class(self).GetRid())
 }
 
 /*
 If [member resource_local_to_scene] is set to [code]true[/code] and the resource has been loaded from a [PackedScene] instantiation, returns the root [Node] of the scene where this resource is used. Otherwise, returns [code]null[/code].
 */
-func (self Instance) GetLocalScene() [1]gdclass.Node {
+func (self Instance) GetLocalScene() [1]gdclass.Node { //gd:Resource.get_local_scene
 	return [1]gdclass.Node(class(self).GetLocalScene())
 }
 
 /*
 Calls [method _setup_local_to_scene]. If [member resource_local_to_scene] is set to [code]true[/code], this method is automatically called from [method PackedScene.instantiate] by the newly duplicated resource within the scene instance.
 */
-func (self Instance) SetupLocalToScene() {
+func (self Instance) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
 	class(self).SetupLocalToScene()
 }
 
 /*
 Generates a unique identifier for a resource to be contained inside a [PackedScene], based on the current date, time, and a random value. The returned string is only composed of letters ([code]a[/code] to [code]y[/code]) and numbers ([code]0[/code] to [code]8[/code]). See also [member resource_scene_unique_id].
 */
-func GenerateSceneUniqueId() string {
+func GenerateSceneUniqueId() string { //gd:Resource.generate_scene_unique_id
 	self := Instance{}
 	return string(class(self).GenerateSceneUniqueId().String())
 }
@@ -133,7 +133,7 @@ var damage:
 
 [/codeblock]
 */
-func (self Instance) EmitChanged() {
+func (self Instance) EmitChanged() { //gd:Resource.emit_changed
 	class(self).EmitChanged()
 }
 
@@ -146,7 +146,7 @@ If [param subresources] is [code]false[/code], a shallow copy is returned; neste
 - Subresources inside [Array] and [Dictionary] properties are never duplicated.
 [b]Note:[/b] For custom resources, this method will fail if [method Object._init] has been defined with required parameters.
 */
-func (self Instance) Duplicate() [1]gdclass.Resource {
+func (self Instance) Duplicate() [1]gdclass.Resource { //gd:Resource.duplicate
 	return [1]gdclass.Resource(class(self).Duplicate(false))
 }
 
@@ -223,7 +223,7 @@ func (class) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.Extensi
 }
 
 //go:nosplit
-func (self class) SetPath(path gd.String) {
+func (self class) SetPath(path gd.String) { //gd:Resource.set_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -235,7 +235,7 @@ func (self class) SetPath(path gd.String) {
 Sets the [member resource_path] to [param path], potentially overriding an existing cache entry for this path. Further attempts to load an overridden resource by path will instead return this resource.
 */
 //go:nosplit
-func (self class) TakeOverPath(path gd.String) {
+func (self class) TakeOverPath(path gd.String) { //gd:Resource.take_over_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -244,7 +244,7 @@ func (self class) TakeOverPath(path gd.String) {
 }
 
 //go:nosplit
-func (self class) GetPath() gd.String {
+func (self class) GetPath() gd.String { //gd:Resource.get_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -254,7 +254,7 @@ func (self class) GetPath() gd.String {
 }
 
 //go:nosplit
-func (self class) SetName(name gd.String) {
+func (self class) SetName(name gd.String) { //gd:Resource.set_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -263,7 +263,7 @@ func (self class) SetName(name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetName() gd.String {
+func (self class) GetName() gd.String { //gd:Resource.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -276,7 +276,7 @@ func (self class) GetName() gd.String {
 Returns the [RID] of this resource (or an empty RID). Many resources (such as [Texture2D], [Mesh], and so on) are high-level abstractions of resources stored in a specialized server ([DisplayServer], [RenderingServer], etc.), so this function will return the original [RID].
 */
 //go:nosplit
-func (self class) GetRid() gd.RID {
+func (self class) GetRid() gd.RID { //gd:Resource.get_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -286,7 +286,7 @@ func (self class) GetRid() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetLocalToScene(enable bool) {
+func (self class) SetLocalToScene(enable bool) { //gd:Resource.set_local_to_scene
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -295,7 +295,7 @@ func (self class) SetLocalToScene(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsLocalToScene() bool {
+func (self class) IsLocalToScene() bool { //gd:Resource.is_local_to_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_is_local_to_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -308,7 +308,7 @@ func (self class) IsLocalToScene() bool {
 If [member resource_local_to_scene] is set to [code]true[/code] and the resource has been loaded from a [PackedScene] instantiation, returns the root [Node] of the scene where this resource is used. Otherwise, returns [code]null[/code].
 */
 //go:nosplit
-func (self class) GetLocalScene() [1]gdclass.Node {
+func (self class) GetLocalScene() [1]gdclass.Node { //gd:Resource.get_local_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_local_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -321,7 +321,7 @@ func (self class) GetLocalScene() [1]gdclass.Node {
 Calls [method _setup_local_to_scene]. If [member resource_local_to_scene] is set to [code]true[/code], this method is automatically called from [method PackedScene.instantiate] by the newly duplicated resource within the scene instance.
 */
 //go:nosplit
-func (self class) SetupLocalToScene() {
+func (self class) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_setup_local_to_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -332,7 +332,7 @@ func (self class) SetupLocalToScene() {
 Generates a unique identifier for a resource to be contained inside a [PackedScene], based on the current date, time, and a random value. The returned string is only composed of letters ([code]a[/code] to [code]y[/code]) and numbers ([code]0[/code] to [code]8[/code]). See also [member resource_scene_unique_id].
 */
 //go:nosplit
-func (self class) GenerateSceneUniqueId() gd.String {
+func (self class) GenerateSceneUniqueId() gd.String { //gd:Resource.generate_scene_unique_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_generate_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,7 +342,7 @@ func (self class) GenerateSceneUniqueId() gd.String {
 }
 
 //go:nosplit
-func (self class) SetSceneUniqueId(id gd.String) {
+func (self class) SetSceneUniqueId(id gd.String) { //gd:Resource.set_scene_unique_id
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(id))
 	var r_ret = callframe.Nil
@@ -351,7 +351,7 @@ func (self class) SetSceneUniqueId(id gd.String) {
 }
 
 //go:nosplit
-func (self class) GetSceneUniqueId() gd.String {
+func (self class) GetSceneUniqueId() gd.String { //gd:Resource.get_scene_unique_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_get_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -372,7 +372,7 @@ var damage:
 [/codeblock]
 */
 //go:nosplit
-func (self class) EmitChanged() {
+func (self class) EmitChanged() { //gd:Resource.emit_changed
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_emit_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -389,7 +389,7 @@ If [param subresources] is [code]false[/code], a shallow copy is returned; neste
 [b]Note:[/b] For custom resources, this method will fail if [method Object._init] has been defined with required parameters.
 */
 //go:nosplit
-func (self class) Duplicate(subresources bool) [1]gdclass.Resource {
+func (self class) Duplicate(subresources bool) [1]gdclass.Resource { //gd:Resource.duplicate
 	var frame = callframe.New()
 	callframe.Arg(frame, subresources)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

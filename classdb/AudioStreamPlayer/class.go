@@ -43,21 +43,21 @@ type Any interface {
 /*
 Plays a sound from the beginning, or the given [param from_position] in seconds.
 */
-func (self Instance) Play() {
+func (self Instance) Play() { //gd:AudioStreamPlayer.play
 	class(self).Play(gd.Float(0.0))
 }
 
 /*
 Restarts all sounds to be played from the given [param to_position], in seconds. Does nothing if no sounds are playing.
 */
-func (self Instance) SeekTo(to_position Float.X) {
+func (self Instance) SeekTo(to_position Float.X) { //gd:AudioStreamPlayer.seek
 	class(self).SeekTo(gd.Float(to_position))
 }
 
 /*
 Stops all sounds from this node.
 */
-func (self Instance) Stop() {
+func (self Instance) Stop() { //gd:AudioStreamPlayer.stop
 	class(self).Stop()
 }
 
@@ -65,21 +65,21 @@ func (self Instance) Stop() {
 Returns the position in the [AudioStream] of the latest sound, in seconds. Returns [code]0.0[/code] if no sounds are playing.
 [b]Note:[/b] The position is not always accurate, as the [AudioServer] does not mix audio every processed frame. To get more accurate results, add [method AudioServer.get_time_since_last_mix] to the returned position.
 */
-func (self Instance) GetPlaybackPosition() Float.X {
+func (self Instance) GetPlaybackPosition() Float.X { //gd:AudioStreamPlayer.get_playback_position
 	return Float.X(Float.X(class(self).GetPlaybackPosition()))
 }
 
 /*
 Returns [code]true[/code] if any sound is active, even if [member stream_paused] is set to [code]true[/code]. See also [member playing] and [method get_stream_playback].
 */
-func (self Instance) HasStreamPlayback() bool {
+func (self Instance) HasStreamPlayback() bool { //gd:AudioStreamPlayer.has_stream_playback
 	return bool(class(self).HasStreamPlayback())
 }
 
 /*
 Returns the latest [AudioStreamPlayback] of this node, usually the most recently created by [method play]. If no sounds are playing, this method fails and returns an empty playback.
 */
-func (self Instance) GetStreamPlayback() [1]gdclass.AudioStreamPlayback {
+func (self Instance) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer.get_stream_playback
 	return [1]gdclass.AudioStreamPlayback(class(self).GetStreamPlayback())
 }
 
@@ -178,7 +178,7 @@ func (self Instance) SetPlaybackType(value gdclass.AudioServerPlaybackType) {
 }
 
 //go:nosplit
-func (self class) SetStream(stream [1]gdclass.AudioStream) {
+func (self class) SetStream(stream [1]gdclass.AudioStream) { //gd:AudioStreamPlayer.set_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	var r_ret = callframe.Nil
@@ -187,7 +187,7 @@ func (self class) SetStream(stream [1]gdclass.AudioStream) {
 }
 
 //go:nosplit
-func (self class) GetStream() [1]gdclass.AudioStream {
+func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer.get_stream
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -197,7 +197,7 @@ func (self class) GetStream() [1]gdclass.AudioStream {
 }
 
 //go:nosplit
-func (self class) SetVolumeDb(volume_db gd.Float) {
+func (self class) SetVolumeDb(volume_db gd.Float) { //gd:AudioStreamPlayer.set_volume_db
 	var frame = callframe.New()
 	callframe.Arg(frame, volume_db)
 	var r_ret = callframe.Nil
@@ -206,7 +206,7 @@ func (self class) SetVolumeDb(volume_db gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumeDb() gd.Float {
+func (self class) GetVolumeDb() gd.Float { //gd:AudioStreamPlayer.get_volume_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -216,7 +216,7 @@ func (self class) GetVolumeDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPitchScale(pitch_scale gd.Float) {
+func (self class) SetPitchScale(pitch_scale gd.Float) { //gd:AudioStreamPlayer.set_pitch_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, pitch_scale)
 	var r_ret = callframe.Nil
@@ -225,7 +225,7 @@ func (self class) SetPitchScale(pitch_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPitchScale() gd.Float {
+func (self class) GetPitchScale() gd.Float { //gd:AudioStreamPlayer.get_pitch_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_pitch_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -238,7 +238,7 @@ func (self class) GetPitchScale() gd.Float {
 Plays a sound from the beginning, or the given [param from_position] in seconds.
 */
 //go:nosplit
-func (self class) Play(from_position gd.Float) {
+func (self class) Play(from_position gd.Float) { //gd:AudioStreamPlayer.play
 	var frame = callframe.New()
 	callframe.Arg(frame, from_position)
 	var r_ret = callframe.Nil
@@ -250,7 +250,7 @@ func (self class) Play(from_position gd.Float) {
 Restarts all sounds to be played from the given [param to_position], in seconds. Does nothing if no sounds are playing.
 */
 //go:nosplit
-func (self class) SeekTo(to_position gd.Float) {
+func (self class) SeekTo(to_position gd.Float) { //gd:AudioStreamPlayer.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -262,7 +262,7 @@ func (self class) SeekTo(to_position gd.Float) {
 Stops all sounds from this node.
 */
 //go:nosplit
-func (self class) Stop() {
+func (self class) Stop() { //gd:AudioStreamPlayer.stop
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -270,7 +270,7 @@ func (self class) Stop() {
 }
 
 //go:nosplit
-func (self class) IsPlaying() bool {
+func (self class) IsPlaying() bool { //gd:AudioStreamPlayer.is_playing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -284,7 +284,7 @@ Returns the position in the [AudioStream] of the latest sound, in seconds. Retur
 [b]Note:[/b] The position is not always accurate, as the [AudioServer] does not mix audio every processed frame. To get more accurate results, add [method AudioServer.get_time_since_last_mix] to the returned position.
 */
 //go:nosplit
-func (self class) GetPlaybackPosition() gd.Float {
+func (self class) GetPlaybackPosition() gd.Float { //gd:AudioStreamPlayer.get_playback_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_playback_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -294,7 +294,7 @@ func (self class) GetPlaybackPosition() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBus(bus gd.StringName) {
+func (self class) SetBus(bus gd.StringName) { //gd:AudioStreamPlayer.set_bus
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bus))
 	var r_ret = callframe.Nil
@@ -303,7 +303,7 @@ func (self class) SetBus(bus gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetBus() gd.StringName {
+func (self class) GetBus() gd.StringName { //gd:AudioStreamPlayer.get_bus
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -313,7 +313,7 @@ func (self class) GetBus() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetAutoplay(enable bool) {
+func (self class) SetAutoplay(enable bool) { //gd:AudioStreamPlayer.set_autoplay
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -322,7 +322,7 @@ func (self class) SetAutoplay(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsAutoplayEnabled() bool {
+func (self class) IsAutoplayEnabled() bool { //gd:AudioStreamPlayer.is_autoplay_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_is_autoplay_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -332,7 +332,7 @@ func (self class) IsAutoplayEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetMixTarget(mix_target gdclass.AudioStreamPlayerMixTarget) {
+func (self class) SetMixTarget(mix_target gdclass.AudioStreamPlayerMixTarget) { //gd:AudioStreamPlayer.set_mix_target
 	var frame = callframe.New()
 	callframe.Arg(frame, mix_target)
 	var r_ret = callframe.Nil
@@ -341,7 +341,7 @@ func (self class) SetMixTarget(mix_target gdclass.AudioStreamPlayerMixTarget) {
 }
 
 //go:nosplit
-func (self class) GetMixTarget() gdclass.AudioStreamPlayerMixTarget {
+func (self class) GetMixTarget() gdclass.AudioStreamPlayerMixTarget { //gd:AudioStreamPlayer.get_mix_target
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioStreamPlayerMixTarget](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_mix_target, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -351,7 +351,7 @@ func (self class) GetMixTarget() gdclass.AudioStreamPlayerMixTarget {
 }
 
 //go:nosplit
-func (self class) SetStreamPaused(pause bool) {
+func (self class) SetStreamPaused(pause bool) { //gd:AudioStreamPlayer.set_stream_paused
 	var frame = callframe.New()
 	callframe.Arg(frame, pause)
 	var r_ret = callframe.Nil
@@ -360,7 +360,7 @@ func (self class) SetStreamPaused(pause bool) {
 }
 
 //go:nosplit
-func (self class) GetStreamPaused() bool {
+func (self class) GetStreamPaused() bool { //gd:AudioStreamPlayer.get_stream_paused
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_stream_paused, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -370,7 +370,7 @@ func (self class) GetStreamPaused() bool {
 }
 
 //go:nosplit
-func (self class) SetMaxPolyphony(max_polyphony gd.Int) {
+func (self class) SetMaxPolyphony(max_polyphony gd.Int) { //gd:AudioStreamPlayer.set_max_polyphony
 	var frame = callframe.New()
 	callframe.Arg(frame, max_polyphony)
 	var r_ret = callframe.Nil
@@ -379,7 +379,7 @@ func (self class) SetMaxPolyphony(max_polyphony gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMaxPolyphony() gd.Int {
+func (self class) GetMaxPolyphony() gd.Int { //gd:AudioStreamPlayer.get_max_polyphony
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_max_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -392,7 +392,7 @@ func (self class) GetMaxPolyphony() gd.Int {
 Returns [code]true[/code] if any sound is active, even if [member stream_paused] is set to [code]true[/code]. See also [member playing] and [method get_stream_playback].
 */
 //go:nosplit
-func (self class) HasStreamPlayback() bool {
+func (self class) HasStreamPlayback() bool { //gd:AudioStreamPlayer.has_stream_playback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_has_stream_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -405,7 +405,7 @@ func (self class) HasStreamPlayback() bool {
 Returns the latest [AudioStreamPlayback] of this node, usually the most recently created by [method play]. If no sounds are playing, this method fails and returns an empty playback.
 */
 //go:nosplit
-func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback {
+func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer.get_stream_playback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_stream_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -415,7 +415,7 @@ func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback {
 }
 
 //go:nosplit
-func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType) {
+func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType) { //gd:AudioStreamPlayer.set_playback_type
 	var frame = callframe.New()
 	callframe.Arg(frame, playback_type)
 	var r_ret = callframe.Nil
@@ -424,7 +424,7 @@ func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType)
 }
 
 //go:nosplit
-func (self class) GetPlaybackType() gdclass.AudioServerPlaybackType {
+func (self class) GetPlaybackType() gdclass.AudioServerPlaybackType { //gd:AudioStreamPlayer.get_playback_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioServerPlaybackType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer.Bind_get_playback_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -460,7 +460,7 @@ func init() {
 	})
 }
 
-type MixTarget = gdclass.AudioStreamPlayerMixTarget
+type MixTarget = gdclass.AudioStreamPlayerMixTarget //gd:AudioStreamPlayer.MixTarget
 
 const (
 	/*The audio will be played only on the first channel. This is the default.*/

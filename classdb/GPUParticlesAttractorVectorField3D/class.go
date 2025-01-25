@@ -79,7 +79,7 @@ func (self Instance) SetTexture(value [1]gdclass.Texture3D) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) {
+func (self class) SetSize(size gd.Vector3) { //gd:GPUParticlesAttractorVectorField3D.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -88,7 +88,7 @@ func (self class) SetSize(size gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 {
+func (self class) GetSize() gd.Vector3 { //gd:GPUParticlesAttractorVectorField3D.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -98,7 +98,7 @@ func (self class) GetSize() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture3D) {
+func (self class) SetTexture(texture [1]gdclass.Texture3D) { //gd:GPUParticlesAttractorVectorField3D.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture3D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture3D {
+func (self class) GetTexture() [1]gdclass.Texture3D { //gd:GPUParticlesAttractorVectorField3D.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())

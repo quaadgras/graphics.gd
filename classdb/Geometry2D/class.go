@@ -40,7 +40,7 @@ func singleton() {
 /*
 Returns [code]true[/code] if [param point] is inside the circle or if it's located exactly [i]on[/i] the circle's boundary, otherwise returns [code]false[/code].
 */
-func IsPointInCircle(point Vector2.XY, circle_position Vector2.XY, circle_radius Float.X) bool {
+func IsPointInCircle(point Vector2.XY, circle_position Vector2.XY, circle_radius Float.X) bool { //gd:Geometry2D.is_point_in_circle
 	once.Do(singleton)
 	return bool(class(self).IsPointInCircle(gd.Vector2(point), gd.Vector2(circle_position), gd.Float(circle_radius)))
 }
@@ -48,7 +48,7 @@ func IsPointInCircle(point Vector2.XY, circle_position Vector2.XY, circle_radius
 /*
 Given the 2D segment ([param segment_from], [param segment_to]), returns the position on the segment (as a number between 0 and 1) at which the segment hits the circle that is located at position [param circle_position] and has radius [param circle_radius]. If the segment does not intersect the circle, -1 is returned (this is also the case if the line extending the segment would intersect the circle, but the segment does not).
 */
-func SegmentIntersectsCircle(segment_from Vector2.XY, segment_to Vector2.XY, circle_position Vector2.XY, circle_radius Float.X) Float.X {
+func SegmentIntersectsCircle(segment_from Vector2.XY, segment_to Vector2.XY, circle_position Vector2.XY, circle_radius Float.X) Float.X { //gd:Geometry2D.segment_intersects_circle
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).SegmentIntersectsCircle(gd.Vector2(segment_from), gd.Vector2(segment_to), gd.Vector2(circle_position), gd.Float(circle_radius))))
 }
@@ -56,7 +56,7 @@ func SegmentIntersectsCircle(segment_from Vector2.XY, segment_to Vector2.XY, cir
 /*
 Checks if the two segments ([param from_a], [param to_a]) and ([param from_b], [param to_b]) intersect. If yes, return the point of intersection as [Vector2]. If no intersection takes place, returns [code]null[/code].
 */
-func SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2.XY, to_b Vector2.XY) any {
+func SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2.XY, to_b Vector2.XY) any { //gd:Geometry2D.segment_intersects_segment
 	once.Do(singleton)
 	return any(class(self).SegmentIntersectsSegment(gd.Vector2(from_a), gd.Vector2(to_a), gd.Vector2(from_b), gd.Vector2(to_b)).Interface())
 }
@@ -65,7 +65,7 @@ func SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2
 Checks if the two lines ([param from_a], [param dir_a]) and ([param from_b], [param dir_b]) intersect. If yes, return the point of intersection as [Vector2]. If no intersection takes place, returns [code]null[/code].
 [b]Note:[/b] The lines are specified using direction vectors, not end points.
 */
-func LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) any {
+func LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) any { //gd:Geometry2D.line_intersects_line
 	once.Do(singleton)
 	return any(class(self).LineIntersectsLine(gd.Vector2(from_a), gd.Vector2(dir_a), gd.Vector2(from_b), gd.Vector2(dir_b)).Interface())
 }
@@ -73,7 +73,7 @@ func LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, 
 /*
 Given the two 2D segments ([param p1], [param q1]) and ([param p2], [param q2]), finds those two points on the two segments that are closest to each other. Returns a [PackedVector2Array] that contains this point on ([param p1], [param q1]) as well the accompanying point on ([param p2], [param q2]).
 */
-func GetClosestPointsBetweenSegments(p1 Vector2.XY, q1 Vector2.XY, p2 Vector2.XY, q2 Vector2.XY) []Vector2.XY {
+func GetClosestPointsBetweenSegments(p1 Vector2.XY, q1 Vector2.XY, p2 Vector2.XY, q2 Vector2.XY) []Vector2.XY { //gd:Geometry2D.get_closest_points_between_segments
 	once.Do(singleton)
 	return []Vector2.XY(class(self).GetClosestPointsBetweenSegments(gd.Vector2(p1), gd.Vector2(q1), gd.Vector2(p2), gd.Vector2(q2)).AsSlice())
 }
@@ -81,7 +81,7 @@ func GetClosestPointsBetweenSegments(p1 Vector2.XY, q1 Vector2.XY, p2 Vector2.XY
 /*
 Returns the 2D point on the 2D segment ([param s1], [param s2]) that is closest to [param point]. The returned point will always be inside the specified segment.
 */
-func GetClosestPointToSegment(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY {
+func GetClosestPointToSegment(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY { //gd:Geometry2D.get_closest_point_to_segment
 	once.Do(singleton)
 	return Vector2.XY(class(self).GetClosestPointToSegment(gd.Vector2(point), gd.Vector2(s1), gd.Vector2(s2)))
 }
@@ -89,7 +89,7 @@ func GetClosestPointToSegment(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Ve
 /*
 Returns the 2D point on the 2D line defined by ([param s1], [param s2]) that is closest to [param point]. The returned point can be inside the segment ([param s1], [param s2]) or outside of it, i.e. somewhere on the line extending from the segment.
 */
-func GetClosestPointToSegmentUncapped(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY {
+func GetClosestPointToSegmentUncapped(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY { //gd:Geometry2D.get_closest_point_to_segment_uncapped
 	once.Do(singleton)
 	return Vector2.XY(class(self).GetClosestPointToSegmentUncapped(gd.Vector2(point), gd.Vector2(s1), gd.Vector2(s2)))
 }
@@ -97,7 +97,7 @@ func GetClosestPointToSegmentUncapped(point Vector2.XY, s1 Vector2.XY, s2 Vector
 /*
 Returns if [param point] is inside the triangle specified by [param a], [param b] and [param c].
 */
-func PointIsInsideTriangle(point Vector2.XY, a Vector2.XY, b Vector2.XY, c Vector2.XY) bool {
+func PointIsInsideTriangle(point Vector2.XY, a Vector2.XY, b Vector2.XY, c Vector2.XY) bool { //gd:Geometry2D.point_is_inside_triangle
 	once.Do(singleton)
 	return bool(class(self).PointIsInsideTriangle(gd.Vector2(point), gd.Vector2(a), gd.Vector2(b), gd.Vector2(c)))
 }
@@ -106,7 +106,7 @@ func PointIsInsideTriangle(point Vector2.XY, a Vector2.XY, b Vector2.XY, c Vecto
 Returns [code]true[/code] if [param polygon]'s vertices are ordered in clockwise order, otherwise returns [code]false[/code].
 [b]Note:[/b] Assumes a Cartesian coordinate system where [code]+x[/code] is right and [code]+y[/code] is up. If using screen coordinates ([code]+y[/code] is down), the result will need to be flipped (i.e. a [code]true[/code] result will indicate counter-clockwise).
 */
-func IsPolygonClockwise(polygon []Vector2.XY) bool {
+func IsPolygonClockwise(polygon []Vector2.XY) bool { //gd:Geometry2D.is_polygon_clockwise
 	once.Do(singleton)
 	return bool(class(self).IsPolygonClockwise(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon)))))
 }
@@ -114,7 +114,7 @@ func IsPolygonClockwise(polygon []Vector2.XY) bool {
 /*
 Returns [code]true[/code] if [param point] is inside [param polygon] or if it's located exactly [i]on[/i] polygon's boundary, otherwise returns [code]false[/code].
 */
-func IsPointInPolygon(point Vector2.XY, polygon []Vector2.XY) bool {
+func IsPointInPolygon(point Vector2.XY, polygon []Vector2.XY) bool { //gd:Geometry2D.is_point_in_polygon
 	once.Do(singleton)
 	return bool(class(self).IsPointInPolygon(gd.Vector2(point), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon)))))
 }
@@ -122,7 +122,7 @@ func IsPointInPolygon(point Vector2.XY, polygon []Vector2.XY) bool {
 /*
 Triangulates the polygon specified by the points in [param polygon]. Returns a [PackedInt32Array] where each triangle consists of three consecutive point indices into [param polygon] (i.e. the returned array will have [code]n * 3[/code] elements, with [code]n[/code] being the number of found triangles). Output triangles will always be counter clockwise, and the contour will be flipped if it's clockwise. If the triangulation did not succeed, an empty [PackedInt32Array] is returned.
 */
-func TriangulatePolygon(polygon []Vector2.XY) []int32 {
+func TriangulatePolygon(polygon []Vector2.XY) []int32 { //gd:Geometry2D.triangulate_polygon
 	once.Do(singleton)
 	return []int32(class(self).TriangulatePolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon)))).AsSlice())
 }
@@ -130,7 +130,7 @@ func TriangulatePolygon(polygon []Vector2.XY) []int32 {
 /*
 Triangulates the area specified by discrete set of [param points] such that no point is inside the circumcircle of any resulting triangle. Returns a [PackedInt32Array] where each triangle consists of three consecutive point indices into [param points] (i.e. the returned array will have [code]n * 3[/code] elements, with [code]n[/code] being the number of found triangles). If the triangulation did not succeed, an empty [PackedInt32Array] is returned.
 */
-func TriangulateDelaunay(points []Vector2.XY) []int32 {
+func TriangulateDelaunay(points []Vector2.XY) []int32 { //gd:Geometry2D.triangulate_delaunay
 	once.Do(singleton)
 	return []int32(class(self).TriangulateDelaunay(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points)))).AsSlice())
 }
@@ -138,7 +138,7 @@ func TriangulateDelaunay(points []Vector2.XY) []int32 {
 /*
 Given an array of [Vector2]s, returns the convex hull as a list of points in counterclockwise order. The last point is the same as the first one.
 */
-func ConvexHull(points []Vector2.XY) []Vector2.XY {
+func ConvexHull(points []Vector2.XY) []Vector2.XY { //gd:Geometry2D.convex_hull
 	once.Do(singleton)
 	return []Vector2.XY(class(self).ConvexHull(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points)))).AsSlice())
 }
@@ -146,7 +146,7 @@ func ConvexHull(points []Vector2.XY) []Vector2.XY {
 /*
 Decomposes the [param polygon] into multiple convex hulls and returns an array of [PackedVector2Array].
 */
-func DecomposePolygonInConvex(polygon []Vector2.XY) [][]Vector2.XY {
+func DecomposePolygonInConvex(polygon []Vector2.XY) [][]Vector2.XY { //gd:Geometry2D.decompose_polygon_in_convex
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).DecomposePolygonInConvex(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon)))))))
 }
@@ -155,7 +155,7 @@ func DecomposePolygonInConvex(polygon []Vector2.XY) [][]Vector2.XY {
 Merges (combines) [param polygon_a] and [param polygon_b] and returns an array of merged polygons. This performs [constant OPERATION_UNION] between polygons.
 The operation may result in an outer polygon (boundary) and multiple inner polygons (holes) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
-func MergePolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY {
+func MergePolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY { //gd:Geometry2D.merge_polygons
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).MergePolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b)))))))
 }
@@ -164,7 +164,7 @@ func MergePolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.X
 Clips [param polygon_a] against [param polygon_b] and returns an array of clipped polygons. This performs [constant OPERATION_DIFFERENCE] between polygons. Returns an empty array if [param polygon_b] completely overlaps [param polygon_a].
 If [param polygon_b] is enclosed by [param polygon_a], returns an outer polygon (boundary) and inner polygon (hole) which could be distinguished by calling [method is_polygon_clockwise].
 */
-func ClipPolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY {
+func ClipPolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY { //gd:Geometry2D.clip_polygons
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).ClipPolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b)))))))
 }
@@ -173,7 +173,7 @@ func ClipPolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY
 Intersects [param polygon_a] with [param polygon_b] and returns an array of intersected polygons. This performs [constant OPERATION_INTERSECTION] between polygons. In other words, returns common area shared by polygons. Returns an empty array if no intersection occurs.
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
-func IntersectPolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY {
+func IntersectPolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY { //gd:Geometry2D.intersect_polygons
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).IntersectPolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b)))))))
 }
@@ -182,7 +182,7 @@ func IntersectPolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vecto
 Mutually excludes common area defined by intersection of [param polygon_a] and [param polygon_b] (see [method intersect_polygons]) and returns an array of excluded polygons. This performs [constant OPERATION_XOR] between polygons. In other words, returns all but common area between polygons.
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
-func ExcludePolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY {
+func ExcludePolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY { //gd:Geometry2D.exclude_polygons
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).ExcludePolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b)))))))
 }
@@ -190,7 +190,7 @@ func ExcludePolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2
 /*
 Clips [param polyline] against [param polygon] and returns an array of clipped polylines. This performs [constant OPERATION_DIFFERENCE] between the polyline and the polygon. This operation can be thought of as cutting a line with a closed shape.
 */
-func ClipPolylineWithPolygon(polyline []Vector2.XY, polygon []Vector2.XY) [][]Vector2.XY {
+func ClipPolylineWithPolygon(polyline []Vector2.XY, polygon []Vector2.XY) [][]Vector2.XY { //gd:Geometry2D.clip_polyline_with_polygon
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).ClipPolylineWithPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polyline))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon)))))))
 }
@@ -198,7 +198,7 @@ func ClipPolylineWithPolygon(polyline []Vector2.XY, polygon []Vector2.XY) [][]Ve
 /*
 Intersects [param polyline] with [param polygon] and returns an array of intersected polylines. This performs [constant OPERATION_INTERSECTION] between the polyline and the polygon. This operation can be thought of as chopping a line with a closed shape.
 */
-func IntersectPolylineWithPolygon(polyline []Vector2.XY, polygon []Vector2.XY) [][]Vector2.XY {
+func IntersectPolylineWithPolygon(polyline []Vector2.XY, polygon []Vector2.XY) [][]Vector2.XY { //gd:Geometry2D.intersect_polyline_with_polygon
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).IntersectPolylineWithPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polyline))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon)))))))
 }
@@ -223,7 +223,7 @@ GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, 150
 [/csharp]
 [/codeblocks]
 */
-func OffsetPolygon(polygon []Vector2.XY, delta Float.X) [][]Vector2.XY {
+func OffsetPolygon(polygon []Vector2.XY, delta Float.X) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OffsetPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon))), gd.Float(delta), 0))))
 }
@@ -234,7 +234,7 @@ Each polygon's vertices will be rounded as determined by [param join_type], see 
 Each polygon's endpoints will be rounded as determined by [param end_type], see [enum PolyEndType].
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
-func OffsetPolyline(polyline []Vector2.XY, delta Float.X) [][]Vector2.XY {
+func OffsetPolyline(polyline []Vector2.XY, delta Float.X) [][]Vector2.XY { //gd:Geometry2D.offset_polyline
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OffsetPolyline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polyline))), gd.Float(delta), 0, 3))))
 }
@@ -242,7 +242,7 @@ func OffsetPolyline(polyline []Vector2.XY, delta Float.X) [][]Vector2.XY {
 /*
 Given an array of [Vector2]s representing tiles, builds an atlas. The returned dictionary has two keys: [code]points[/code] is a [PackedVector2Array] that specifies the positions of each tile, [code]size[/code] contains the overall size of the whole atlas as [Vector2i].
 */
-func MakeAtlas(sizes []Vector2.XY) map[any]any {
+func MakeAtlas(sizes []Vector2.XY) map[any]any { //gd:Geometry2D.make_atlas
 	once.Do(singleton)
 	return map[any]any(gd.DictionaryAs[any, any](class(self).MakeAtlas(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&sizes))))))
 }
@@ -261,7 +261,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns [code]true[/code] if [param point] is inside the circle or if it's located exactly [i]on[/i] the circle's boundary, otherwise returns [code]false[/code].
 */
 //go:nosplit
-func (self class) IsPointInCircle(point gd.Vector2, circle_position gd.Vector2, circle_radius gd.Float) bool {
+func (self class) IsPointInCircle(point gd.Vector2, circle_position gd.Vector2, circle_radius gd.Float) bool { //gd:Geometry2D.is_point_in_circle
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, circle_position)
@@ -277,7 +277,7 @@ func (self class) IsPointInCircle(point gd.Vector2, circle_position gd.Vector2, 
 Given the 2D segment ([param segment_from], [param segment_to]), returns the position on the segment (as a number between 0 and 1) at which the segment hits the circle that is located at position [param circle_position] and has radius [param circle_radius]. If the segment does not intersect the circle, -1 is returned (this is also the case if the line extending the segment would intersect the circle, but the segment does not).
 */
 //go:nosplit
-func (self class) SegmentIntersectsCircle(segment_from gd.Vector2, segment_to gd.Vector2, circle_position gd.Vector2, circle_radius gd.Float) gd.Float {
+func (self class) SegmentIntersectsCircle(segment_from gd.Vector2, segment_to gd.Vector2, circle_position gd.Vector2, circle_radius gd.Float) gd.Float { //gd:Geometry2D.segment_intersects_circle
 	var frame = callframe.New()
 	callframe.Arg(frame, segment_from)
 	callframe.Arg(frame, segment_to)
@@ -294,7 +294,7 @@ func (self class) SegmentIntersectsCircle(segment_from gd.Vector2, segment_to gd
 Checks if the two segments ([param from_a], [param to_a]) and ([param from_b], [param to_b]) intersect. If yes, return the point of intersection as [Vector2]. If no intersection takes place, returns [code]null[/code].
 */
 //go:nosplit
-func (self class) SegmentIntersectsSegment(from_a gd.Vector2, to_a gd.Vector2, from_b gd.Vector2, to_b gd.Vector2) gd.Variant {
+func (self class) SegmentIntersectsSegment(from_a gd.Vector2, to_a gd.Vector2, from_b gd.Vector2, to_b gd.Vector2) gd.Variant { //gd:Geometry2D.segment_intersects_segment
 	var frame = callframe.New()
 	callframe.Arg(frame, from_a)
 	callframe.Arg(frame, to_a)
@@ -312,7 +312,7 @@ Checks if the two lines ([param from_a], [param dir_a]) and ([param from_b], [pa
 [b]Note:[/b] The lines are specified using direction vectors, not end points.
 */
 //go:nosplit
-func (self class) LineIntersectsLine(from_a gd.Vector2, dir_a gd.Vector2, from_b gd.Vector2, dir_b gd.Vector2) gd.Variant {
+func (self class) LineIntersectsLine(from_a gd.Vector2, dir_a gd.Vector2, from_b gd.Vector2, dir_b gd.Vector2) gd.Variant { //gd:Geometry2D.line_intersects_line
 	var frame = callframe.New()
 	callframe.Arg(frame, from_a)
 	callframe.Arg(frame, dir_a)
@@ -329,7 +329,7 @@ func (self class) LineIntersectsLine(from_a gd.Vector2, dir_a gd.Vector2, from_b
 Given the two 2D segments ([param p1], [param q1]) and ([param p2], [param q2]), finds those two points on the two segments that are closest to each other. Returns a [PackedVector2Array] that contains this point on ([param p1], [param q1]) as well the accompanying point on ([param p2], [param q2]).
 */
 //go:nosplit
-func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector2, q1 gd.Vector2, p2 gd.Vector2, q2 gd.Vector2) gd.PackedVector2Array {
+func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector2, q1 gd.Vector2, p2 gd.Vector2, q2 gd.Vector2) gd.PackedVector2Array { //gd:Geometry2D.get_closest_points_between_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, p1)
 	callframe.Arg(frame, q1)
@@ -346,7 +346,7 @@ func (self class) GetClosestPointsBetweenSegments(p1 gd.Vector2, q1 gd.Vector2, 
 Returns the 2D point on the 2D segment ([param s1], [param s2]) that is closest to [param point]. The returned point will always be inside the specified segment.
 */
 //go:nosplit
-func (self class) GetClosestPointToSegment(point gd.Vector2, s1 gd.Vector2, s2 gd.Vector2) gd.Vector2 {
+func (self class) GetClosestPointToSegment(point gd.Vector2, s1 gd.Vector2, s2 gd.Vector2) gd.Vector2 { //gd:Geometry2D.get_closest_point_to_segment
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, s1)
@@ -362,7 +362,7 @@ func (self class) GetClosestPointToSegment(point gd.Vector2, s1 gd.Vector2, s2 g
 Returns the 2D point on the 2D line defined by ([param s1], [param s2]) that is closest to [param point]. The returned point can be inside the segment ([param s1], [param s2]) or outside of it, i.e. somewhere on the line extending from the segment.
 */
 //go:nosplit
-func (self class) GetClosestPointToSegmentUncapped(point gd.Vector2, s1 gd.Vector2, s2 gd.Vector2) gd.Vector2 {
+func (self class) GetClosestPointToSegmentUncapped(point gd.Vector2, s1 gd.Vector2, s2 gd.Vector2) gd.Vector2 { //gd:Geometry2D.get_closest_point_to_segment_uncapped
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, s1)
@@ -378,7 +378,7 @@ func (self class) GetClosestPointToSegmentUncapped(point gd.Vector2, s1 gd.Vecto
 Returns if [param point] is inside the triangle specified by [param a], [param b] and [param c].
 */
 //go:nosplit
-func (self class) PointIsInsideTriangle(point gd.Vector2, a gd.Vector2, b gd.Vector2, c gd.Vector2) bool {
+func (self class) PointIsInsideTriangle(point gd.Vector2, a gd.Vector2, b gd.Vector2, c gd.Vector2) bool { //gd:Geometry2D.point_is_inside_triangle
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, a)
@@ -396,7 +396,7 @@ Returns [code]true[/code] if [param polygon]'s vertices are ordered in clockwise
 [b]Note:[/b] Assumes a Cartesian coordinate system where [code]+x[/code] is right and [code]+y[/code] is up. If using screen coordinates ([code]+y[/code] is down), the result will need to be flipped (i.e. a [code]true[/code] result will indicate counter-clockwise).
 */
 //go:nosplit
-func (self class) IsPolygonClockwise(polygon gd.PackedVector2Array) bool {
+func (self class) IsPolygonClockwise(polygon gd.PackedVector2Array) bool { //gd:Geometry2D.is_polygon_clockwise
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Ret[bool](frame)
@@ -410,7 +410,7 @@ func (self class) IsPolygonClockwise(polygon gd.PackedVector2Array) bool {
 Returns [code]true[/code] if [param point] is inside [param polygon] or if it's located exactly [i]on[/i] polygon's boundary, otherwise returns [code]false[/code].
 */
 //go:nosplit
-func (self class) IsPointInPolygon(point gd.Vector2, polygon gd.PackedVector2Array) bool {
+func (self class) IsPointInPolygon(point gd.Vector2, polygon gd.PackedVector2Array) bool { //gd:Geometry2D.is_point_in_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, pointers.Get(polygon))
@@ -425,7 +425,7 @@ func (self class) IsPointInPolygon(point gd.Vector2, polygon gd.PackedVector2Arr
 Triangulates the polygon specified by the points in [param polygon]. Returns a [PackedInt32Array] where each triangle consists of three consecutive point indices into [param polygon] (i.e. the returned array will have [code]n * 3[/code] elements, with [code]n[/code] being the number of found triangles). Output triangles will always be counter clockwise, and the contour will be flipped if it's clockwise. If the triangulation did not succeed, an empty [PackedInt32Array] is returned.
 */
 //go:nosplit
-func (self class) TriangulatePolygon(polygon gd.PackedVector2Array) gd.PackedInt32Array {
+func (self class) TriangulatePolygon(polygon gd.PackedVector2Array) gd.PackedInt32Array { //gd:Geometry2D.triangulate_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -439,7 +439,7 @@ func (self class) TriangulatePolygon(polygon gd.PackedVector2Array) gd.PackedInt
 Triangulates the area specified by discrete set of [param points] such that no point is inside the circumcircle of any resulting triangle. Returns a [PackedInt32Array] where each triangle consists of three consecutive point indices into [param points] (i.e. the returned array will have [code]n * 3[/code] elements, with [code]n[/code] being the number of found triangles). If the triangulation did not succeed, an empty [PackedInt32Array] is returned.
 */
 //go:nosplit
-func (self class) TriangulateDelaunay(points gd.PackedVector2Array) gd.PackedInt32Array {
+func (self class) TriangulateDelaunay(points gd.PackedVector2Array) gd.PackedInt32Array { //gd:Geometry2D.triangulate_delaunay
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -453,7 +453,7 @@ func (self class) TriangulateDelaunay(points gd.PackedVector2Array) gd.PackedInt
 Given an array of [Vector2]s, returns the convex hull as a list of points in counterclockwise order. The last point is the same as the first one.
 */
 //go:nosplit
-func (self class) ConvexHull(points gd.PackedVector2Array) gd.PackedVector2Array {
+func (self class) ConvexHull(points gd.PackedVector2Array) gd.PackedVector2Array { //gd:Geometry2D.convex_hull
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -467,7 +467,7 @@ func (self class) ConvexHull(points gd.PackedVector2Array) gd.PackedVector2Array
 Decomposes the [param polygon] into multiple convex hulls and returns an array of [PackedVector2Array].
 */
 //go:nosplit
-func (self class) DecomposePolygonInConvex(polygon gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
+func (self class) DecomposePolygonInConvex(polygon gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] { //gd:Geometry2D.decompose_polygon_in_convex
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -482,7 +482,7 @@ Merges (combines) [param polygon_a] and [param polygon_b] and returns an array o
 The operation may result in an outer polygon (boundary) and multiple inner polygons (holes) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) MergePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
+func (self class) MergePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] { //gd:Geometry2D.merge_polygons
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
@@ -498,7 +498,7 @@ Clips [param polygon_a] against [param polygon_b] and returns an array of clippe
 If [param polygon_b] is enclosed by [param polygon_a], returns an outer polygon (boundary) and inner polygon (hole) which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) ClipPolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
+func (self class) ClipPolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] { //gd:Geometry2D.clip_polygons
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
@@ -514,7 +514,7 @@ Intersects [param polygon_a] with [param polygon_b] and returns an array of inte
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) IntersectPolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
+func (self class) IntersectPolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] { //gd:Geometry2D.intersect_polygons
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
@@ -530,7 +530,7 @@ Mutually excludes common area defined by intersection of [param polygon_a] and [
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) ExcludePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
+func (self class) ExcludePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] { //gd:Geometry2D.exclude_polygons
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
@@ -545,7 +545,7 @@ func (self class) ExcludePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.
 Clips [param polyline] against [param polygon] and returns an array of clipped polylines. This performs [constant OPERATION_DIFFERENCE] between the polyline and the polygon. This operation can be thought of as cutting a line with a closed shape.
 */
 //go:nosplit
-func (self class) ClipPolylineWithPolygon(polyline gd.PackedVector2Array, polygon gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
+func (self class) ClipPolylineWithPolygon(polyline gd.PackedVector2Array, polygon gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] { //gd:Geometry2D.clip_polyline_with_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polyline))
 	callframe.Arg(frame, pointers.Get(polygon))
@@ -560,7 +560,7 @@ func (self class) ClipPolylineWithPolygon(polyline gd.PackedVector2Array, polygo
 Intersects [param polyline] with [param polygon] and returns an array of intersected polylines. This performs [constant OPERATION_INTERSECTION] between the polyline and the polygon. This operation can be thought of as chopping a line with a closed shape.
 */
 //go:nosplit
-func (self class) IntersectPolylineWithPolygon(polyline gd.PackedVector2Array, polygon gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
+func (self class) IntersectPolylineWithPolygon(polyline gd.PackedVector2Array, polygon gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] { //gd:Geometry2D.intersect_polyline_with_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polyline))
 	callframe.Arg(frame, pointers.Get(polygon))
@@ -592,7 +592,7 @@ GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, 150
 [/codeblocks]
 */
 //go:nosplit
-func (self class) OffsetPolygon(polygon gd.PackedVector2Array, delta gd.Float, join_type gdclass.Geometry2DPolyJoinType) Array.Contains[gd.PackedVector2Array] {
+func (self class) OffsetPolygon(polygon gd.PackedVector2Array, delta gd.Float, join_type gdclass.Geometry2DPolyJoinType) Array.Contains[gd.PackedVector2Array] { //gd:Geometry2D.offset_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	callframe.Arg(frame, delta)
@@ -611,7 +611,7 @@ Each polygon's endpoints will be rounded as determined by [param end_type], see 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) OffsetPolyline(polyline gd.PackedVector2Array, delta gd.Float, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) Array.Contains[gd.PackedVector2Array] {
+func (self class) OffsetPolyline(polyline gd.PackedVector2Array, delta gd.Float, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) Array.Contains[gd.PackedVector2Array] { //gd:Geometry2D.offset_polyline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polyline))
 	callframe.Arg(frame, delta)
@@ -628,7 +628,7 @@ func (self class) OffsetPolyline(polyline gd.PackedVector2Array, delta gd.Float,
 Given an array of [Vector2]s representing tiles, builds an atlas. The returned dictionary has two keys: [code]points[/code] is a [PackedVector2Array] that specifies the positions of each tile, [code]size[/code] contains the overall size of the whole atlas as [Vector2i].
 */
 //go:nosplit
-func (self class) MakeAtlas(sizes gd.PackedVector2Array) gd.Dictionary {
+func (self class) MakeAtlas(sizes gd.PackedVector2Array) gd.Dictionary { //gd:Geometry2D.make_atlas
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(sizes))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -647,7 +647,7 @@ func init() {
 	gdclass.Register("Geometry2D", func(ptr gd.Object) any { return [1]gdclass.Geometry2D{*(*gdclass.Geometry2D)(unsafe.Pointer(&ptr))} })
 }
 
-type PolyBooleanOperation = gdclass.Geometry2DPolyBooleanOperation
+type PolyBooleanOperation = gdclass.Geometry2DPolyBooleanOperation //gd:Geometry2D.PolyBooleanOperation
 
 const (
 	/*Create regions where either subject or clip polygons (or both) are filled.*/
@@ -660,7 +660,7 @@ const (
 	OperationXor PolyBooleanOperation = 3
 )
 
-type PolyJoinType = gdclass.Geometry2DPolyJoinType
+type PolyJoinType = gdclass.Geometry2DPolyJoinType //gd:Geometry2D.PolyJoinType
 
 const (
 	/*Squaring is applied uniformally at all convex edge joins at [code]1 * delta[/code].*/
@@ -671,7 +671,7 @@ const (
 	JoinMiter PolyJoinType = 2
 )
 
-type PolyEndType = gdclass.Geometry2DPolyEndType
+type PolyEndType = gdclass.Geometry2DPolyEndType //gd:Geometry2D.PolyEndType
 
 const (
 	/*Endpoints are joined using the [enum PolyJoinType] value and the path filled as a polygon.*/

@@ -42,7 +42,7 @@ type Any interface {
 /*
 Returns the [member transform] with world scale and our reference frame applied. This is the transform used to position [XRNode3D] objects.
 */
-func (self Instance) GetAdjustedTransform() Transform3D.BasisOrigin {
+func (self Instance) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform
 	return Transform3D.BasisOrigin(class(self).GetAdjustedTransform())
 }
 
@@ -114,7 +114,7 @@ func (self Instance) SetTrackingConfidence(value gdclass.XRPoseTrackingConfidenc
 }
 
 //go:nosplit
-func (self class) SetHasTrackingData(has_tracking_data bool) {
+func (self class) SetHasTrackingData(has_tracking_data bool) { //gd:XRPose.set_has_tracking_data
 	var frame = callframe.New()
 	callframe.Arg(frame, has_tracking_data)
 	var r_ret = callframe.Nil
@@ -123,7 +123,7 @@ func (self class) SetHasTrackingData(has_tracking_data bool) {
 }
 
 //go:nosplit
-func (self class) GetHasTrackingData() bool {
+func (self class) GetHasTrackingData() bool { //gd:XRPose.get_has_tracking_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -133,7 +133,7 @@ func (self class) GetHasTrackingData() bool {
 }
 
 //go:nosplit
-func (self class) SetName(name gd.StringName) {
+func (self class) SetName(name gd.StringName) { //gd:XRPose.set_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -142,7 +142,7 @@ func (self class) SetName(name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetName() gd.StringName {
+func (self class) GetName() gd.StringName { //gd:XRPose.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -152,7 +152,7 @@ func (self class) GetName() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetTransform(transform gd.Transform3D) {
+func (self class) SetTransform(transform gd.Transform3D) { //gd:XRPose.set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	var r_ret = callframe.Nil
@@ -161,7 +161,7 @@ func (self class) SetTransform(transform gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) GetTransform() gd.Transform3D {
+func (self class) GetTransform() gd.Transform3D { //gd:XRPose.get_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func (self class) GetTransform() gd.Transform3D {
 Returns the [member transform] with world scale and our reference frame applied. This is the transform used to position [XRNode3D] objects.
 */
 //go:nosplit
-func (self class) GetAdjustedTransform() gd.Transform3D {
+func (self class) GetAdjustedTransform() gd.Transform3D { //gd:XRPose.get_adjusted_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_adjusted_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -184,7 +184,7 @@ func (self class) GetAdjustedTransform() gd.Transform3D {
 }
 
 //go:nosplit
-func (self class) SetLinearVelocity(velocity gd.Vector3) {
+func (self class) SetLinearVelocity(velocity gd.Vector3) { //gd:XRPose.set_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -193,7 +193,7 @@ func (self class) SetLinearVelocity(velocity gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetLinearVelocity() gd.Vector3 {
+func (self class) GetLinearVelocity() gd.Vector3 { //gd:XRPose.get_linear_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -203,7 +203,7 @@ func (self class) GetLinearVelocity() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetAngularVelocity(velocity gd.Vector3) {
+func (self class) SetAngularVelocity(velocity gd.Vector3) { //gd:XRPose.set_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -212,7 +212,7 @@ func (self class) SetAngularVelocity(velocity gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetAngularVelocity() gd.Vector3 {
+func (self class) GetAngularVelocity() gd.Vector3 { //gd:XRPose.get_angular_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -222,7 +222,7 @@ func (self class) GetAngularVelocity() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetTrackingConfidence(tracking_confidence gdclass.XRPoseTrackingConfidence) {
+func (self class) SetTrackingConfidence(tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPose.set_tracking_confidence
 	var frame = callframe.New()
 	callframe.Arg(frame, tracking_confidence)
 	var r_ret = callframe.Nil
@@ -231,7 +231,7 @@ func (self class) SetTrackingConfidence(tracking_confidence gdclass.XRPoseTracki
 }
 
 //go:nosplit
-func (self class) GetTrackingConfidence() gdclass.XRPoseTrackingConfidence {
+func (self class) GetTrackingConfidence() gdclass.XRPoseTrackingConfidence { //gd:XRPose.get_tracking_confidence
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRPoseTrackingConfidence](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_tracking_confidence, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -265,7 +265,7 @@ func init() {
 	gdclass.Register("XRPose", func(ptr gd.Object) any { return [1]gdclass.XRPose{*(*gdclass.XRPose)(unsafe.Pointer(&ptr))} })
 }
 
-type TrackingConfidence = gdclass.XRPoseTrackingConfidence
+type TrackingConfidence = gdclass.XRPoseTrackingConfidence //gd:XRPose.TrackingConfidence
 
 const (
 	/*No tracking information is available for this pose.*/

@@ -144,49 +144,49 @@ func (Instance) _get_data(impl func(ptr unsafe.Pointer) [][1]gdclass.Image) (cb 
 /*
 Returns the current format being used by this texture. See [enum Image.Format] for details.
 */
-func (self Instance) GetFormat() gdclass.ImageFormat {
+func (self Instance) GetFormat() gdclass.ImageFormat { //gd:Texture3D.get_format
 	return gdclass.ImageFormat(class(self).GetFormat())
 }
 
 /*
 Returns the [Texture3D]'s width in pixels. Width is typically represented by the X axis.
 */
-func (self Instance) GetWidth() int {
+func (self Instance) GetWidth() int { //gd:Texture3D.get_width
 	return int(int(class(self).GetWidth()))
 }
 
 /*
 Returns the [Texture3D]'s height in pixels. Width is typically represented by the Y axis.
 */
-func (self Instance) GetHeight() int {
+func (self Instance) GetHeight() int { //gd:Texture3D.get_height
 	return int(int(class(self).GetHeight()))
 }
 
 /*
 Returns the [Texture3D]'s depth in pixels. Depth is typically represented by the Z axis (a dimension not present in [Texture2D]).
 */
-func (self Instance) GetDepth() int {
+func (self Instance) GetDepth() int { //gd:Texture3D.get_depth
 	return int(int(class(self).GetDepth()))
 }
 
 /*
 Returns [code]true[/code] if the [Texture3D] has generated mipmaps.
 */
-func (self Instance) HasMipmaps() bool {
+func (self Instance) HasMipmaps() bool { //gd:Texture3D.has_mipmaps
 	return bool(class(self).HasMipmaps())
 }
 
 /*
 Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a [i]slice[/i] of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
 */
-func (self Instance) GetData() [][1]gdclass.Image {
+func (self Instance) GetData() [][1]gdclass.Image { //gd:Texture3D.get_data
 	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).GetData())))
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture3D]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource {
+func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture3D.create_placeholder
 	return [1]gdclass.Resource(class(self).CreatePlaceholder())
 }
 
@@ -284,7 +284,7 @@ func (class) _get_data(impl func(ptr unsafe.Pointer) Array.Contains[[1]gdclass.I
 Returns the current format being used by this texture. See [enum Image.Format] for details.
 */
 //go:nosplit
-func (self class) GetFormat() gdclass.ImageFormat {
+func (self class) GetFormat() gdclass.ImageFormat { //gd:Texture3D.get_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -297,7 +297,7 @@ func (self class) GetFormat() gdclass.ImageFormat {
 Returns the [Texture3D]'s width in pixels. Width is typically represented by the X axis.
 */
 //go:nosplit
-func (self class) GetWidth() gd.Int {
+func (self class) GetWidth() gd.Int { //gd:Texture3D.get_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -310,7 +310,7 @@ func (self class) GetWidth() gd.Int {
 Returns the [Texture3D]'s height in pixels. Width is typically represented by the Y axis.
 */
 //go:nosplit
-func (self class) GetHeight() gd.Int {
+func (self class) GetHeight() gd.Int { //gd:Texture3D.get_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -323,7 +323,7 @@ func (self class) GetHeight() gd.Int {
 Returns the [Texture3D]'s depth in pixels. Depth is typically represented by the Z axis (a dimension not present in [Texture2D]).
 */
 //go:nosplit
-func (self class) GetDepth() gd.Int {
+func (self class) GetDepth() gd.Int { //gd:Texture3D.get_depth
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -336,7 +336,7 @@ func (self class) GetDepth() gd.Int {
 Returns [code]true[/code] if the [Texture3D] has generated mipmaps.
 */
 //go:nosplit
-func (self class) HasMipmaps() bool {
+func (self class) HasMipmaps() bool { //gd:Texture3D.has_mipmaps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -349,7 +349,7 @@ func (self class) HasMipmaps() bool {
 Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a [i]slice[/i] of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
 */
 //go:nosplit
-func (self class) GetData() Array.Contains[[1]gdclass.Image] {
+func (self class) GetData() Array.Contains[[1]gdclass.Image] { //gd:Texture3D.get_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -362,7 +362,7 @@ func (self class) GetData() Array.Contains[[1]gdclass.Image] {
 Creates a placeholder version of this resource ([PlaceholderTexture3D]).
 */
 //go:nosplit
-func (self class) CreatePlaceholder() [1]gdclass.Resource {
+func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture3D.create_placeholder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())

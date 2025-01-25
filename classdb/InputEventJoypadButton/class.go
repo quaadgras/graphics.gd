@@ -79,7 +79,7 @@ func (self Instance) SetPressed(value bool) {
 }
 
 //go:nosplit
-func (self class) SetButtonIndex(button_index JoyButton) {
+func (self class) SetButtonIndex(button_index JoyButton) { //gd:InputEventJoypadButton.set_button_index
 	var frame = callframe.New()
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Nil
@@ -88,7 +88,7 @@ func (self class) SetButtonIndex(button_index JoyButton) {
 }
 
 //go:nosplit
-func (self class) GetButtonIndex() JoyButton {
+func (self class) GetButtonIndex() JoyButton { //gd:InputEventJoypadButton.get_button_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[JoyButton](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventJoypadButton.Bind_get_button_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -98,7 +98,7 @@ func (self class) GetButtonIndex() JoyButton {
 }
 
 //go:nosplit
-func (self class) SetPressure(pressure gd.Float) {
+func (self class) SetPressure(pressure gd.Float) { //gd:InputEventJoypadButton.set_pressure
 	var frame = callframe.New()
 	callframe.Arg(frame, pressure)
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetPressure(pressure gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPressure() gd.Float {
+func (self class) GetPressure() gd.Float { //gd:InputEventJoypadButton.get_pressure
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventJoypadButton.Bind_get_pressure, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -117,7 +117,7 @@ func (self class) GetPressure() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPressed(pressed bool) {
+func (self class) SetPressed(pressed bool) { //gd:InputEventJoypadButton.set_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil

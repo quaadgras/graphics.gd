@@ -101,7 +101,7 @@ func (self Instance) SetOneWayCollisionMargin(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetPolygon(polygon gd.PackedVector2Array) {
+func (self class) SetPolygon(polygon gd.PackedVector2Array) { //gd:CollisionPolygon2D.set_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Nil
@@ -110,7 +110,7 @@ func (self class) SetPolygon(polygon gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetPolygon() gd.PackedVector2Array {
+func (self class) GetPolygon() gd.PackedVector2Array { //gd:CollisionPolygon2D.get_polygon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon2D.Bind_get_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func (self class) GetPolygon() gd.PackedVector2Array {
 }
 
 //go:nosplit
-func (self class) SetBuildMode(build_mode gdclass.CollisionPolygon2DBuildMode) {
+func (self class) SetBuildMode(build_mode gdclass.CollisionPolygon2DBuildMode) { //gd:CollisionPolygon2D.set_build_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, build_mode)
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetBuildMode(build_mode gdclass.CollisionPolygon2DBuildMode) {
 }
 
 //go:nosplit
-func (self class) GetBuildMode() gdclass.CollisionPolygon2DBuildMode {
+func (self class) GetBuildMode() gdclass.CollisionPolygon2DBuildMode { //gd:CollisionPolygon2D.get_build_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CollisionPolygon2DBuildMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon2D.Bind_get_build_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -139,7 +139,7 @@ func (self class) GetBuildMode() gdclass.CollisionPolygon2DBuildMode {
 }
 
 //go:nosplit
-func (self class) SetDisabled(disabled bool) {
+func (self class) SetDisabled(disabled bool) { //gd:CollisionPolygon2D.set_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, disabled)
 	var r_ret = callframe.Nil
@@ -148,7 +148,7 @@ func (self class) SetDisabled(disabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDisabled() bool {
+func (self class) IsDisabled() bool { //gd:CollisionPolygon2D.is_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon2D.Bind_is_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -158,7 +158,7 @@ func (self class) IsDisabled() bool {
 }
 
 //go:nosplit
-func (self class) SetOneWayCollision(enabled bool) {
+func (self class) SetOneWayCollision(enabled bool) { //gd:CollisionPolygon2D.set_one_way_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -167,7 +167,7 @@ func (self class) SetOneWayCollision(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsOneWayCollisionEnabled() bool {
+func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionPolygon2D.is_one_way_collision_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon2D.Bind_is_one_way_collision_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -177,7 +177,7 @@ func (self class) IsOneWayCollisionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetOneWayCollisionMargin(margin gd.Float) {
+func (self class) SetOneWayCollisionMargin(margin gd.Float) { //gd:CollisionPolygon2D.set_one_way_collision_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -186,7 +186,7 @@ func (self class) SetOneWayCollisionMargin(margin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetOneWayCollisionMargin() gd.Float {
+func (self class) GetOneWayCollisionMargin() gd.Float { //gd:CollisionPolygon2D.get_one_way_collision_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon2D.Bind_get_one_way_collision_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -226,7 +226,7 @@ func init() {
 	})
 }
 
-type BuildMode = gdclass.CollisionPolygon2DBuildMode
+type BuildMode = gdclass.CollisionPolygon2DBuildMode //gd:CollisionPolygon2D.BuildMode
 
 const (
 	/*Collisions will include the polygon and its contained area. In this mode the node has the same effect as several [ConvexPolygonShape2D] nodes, one for each convex shape in the convex decomposition of the polygon (but without the overhead of multiple nodes).*/

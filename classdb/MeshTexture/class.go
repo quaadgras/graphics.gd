@@ -84,7 +84,7 @@ func (self Instance) SetImageSize(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetMesh(mesh [1]gdclass.Mesh) {
+func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshTexture.set_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -93,7 +93,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 }
 
 //go:nosplit
-func (self class) GetMesh() [1]gdclass.Mesh {
+func (self class) GetMesh() [1]gdclass.Mesh { //gd:MeshTexture.get_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshTexture.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -103,7 +103,7 @@ func (self class) GetMesh() [1]gdclass.Mesh {
 }
 
 //go:nosplit
-func (self class) SetImageSize(size gd.Vector2) {
+func (self class) SetImageSize(size gd.Vector2) { //gd:MeshTexture.set_image_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -112,7 +112,7 @@ func (self class) SetImageSize(size gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetImageSize() gd.Vector2 {
+func (self class) GetImageSize() gd.Vector2 { //gd:MeshTexture.get_image_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshTexture.Bind_get_image_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -122,7 +122,7 @@ func (self class) GetImageSize() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetBaseTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetBaseTexture(texture [1]gdclass.Texture2D) { //gd:MeshTexture.set_base_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -131,7 +131,7 @@ func (self class) SetBaseTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetBaseTexture() [1]gdclass.Texture2D {
+func (self class) GetBaseTexture() [1]gdclass.Texture2D { //gd:MeshTexture.get_base_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshTexture.Bind_get_base_texture, self.AsObject(), frame.Array(0), r_ret.Addr())

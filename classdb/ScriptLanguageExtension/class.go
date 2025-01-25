@@ -1877,7 +1877,7 @@ func init() {
 	})
 }
 
-type LookupResultType = gdclass.ScriptLanguageExtensionLookupResultType
+type LookupResultType = gdclass.ScriptLanguageExtensionLookupResultType //gd:ScriptLanguageExtension.LookupResultType
 
 const (
 	LookupResultScriptLocation      LookupResultType = 0
@@ -1892,7 +1892,7 @@ const (
 	LookupResultMax                 LookupResultType = 9
 )
 
-type CodeCompletionLocation = gdclass.ScriptLanguageExtensionCodeCompletionLocation
+type CodeCompletionLocation = gdclass.ScriptLanguageExtensionCodeCompletionLocation //gd:ScriptLanguageExtension.CodeCompletionLocation
 
 const (
 	/*The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).*/
@@ -1905,7 +1905,7 @@ const (
 	LocationOther CodeCompletionLocation = 1024
 )
 
-type CodeCompletionKind = gdclass.ScriptLanguageExtensionCodeCompletionKind
+type CodeCompletionKind = gdclass.ScriptLanguageExtensionCodeCompletionKind //gd:ScriptLanguageExtension.CodeCompletionKind
 
 const (
 	CodeCompletionKindClass     CodeCompletionKind = 0
@@ -1921,7 +1921,7 @@ const (
 	CodeCompletionKindMax       CodeCompletionKind = 10
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

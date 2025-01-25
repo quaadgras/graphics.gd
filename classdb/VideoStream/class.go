@@ -112,7 +112,7 @@ func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.Vide
 }
 
 //go:nosplit
-func (self class) SetFile(file gd.String) {
+func (self class) SetFile(file gd.String) { //gd:VideoStream.set_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
 	var r_ret = callframe.Nil
@@ -121,7 +121,7 @@ func (self class) SetFile(file gd.String) {
 }
 
 //go:nosplit
-func (self class) GetFile() gd.String {
+func (self class) GetFile() gd.String { //gd:VideoStream.get_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VideoStream.Bind_get_file, self.AsObject(), frame.Array(0), r_ret.Addr())

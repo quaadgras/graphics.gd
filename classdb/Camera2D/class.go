@@ -47,14 +47,14 @@ type Any interface {
 /*
 Forces this [Camera2D] to become the current active one. [member enabled] must be [code]true[/code].
 */
-func (self Instance) MakeCurrent() {
+func (self Instance) MakeCurrent() { //gd:Camera2D.make_current
 	class(self).MakeCurrent()
 }
 
 /*
 Returns [code]true[/code] if this [Camera2D] is the active camera (see [method Viewport.get_camera_2d]).
 */
-func (self Instance) IsCurrent() bool {
+func (self Instance) IsCurrent() bool { //gd:Camera2D.is_current
 	return bool(class(self).IsCurrent())
 }
 
@@ -62,7 +62,7 @@ func (self Instance) IsCurrent() bool {
 Returns this camera's target position, in global coordinates.
 [b]Note:[/b] The returned value is not the same as [member Node2D.global_position], as it is affected by the drag properties. It is also not the same as the current position if [member position_smoothing_enabled] is [code]true[/code] (see [method get_screen_center_position]).
 */
-func (self Instance) GetTargetPosition() Vector2.XY {
+func (self Instance) GetTargetPosition() Vector2.XY { //gd:Camera2D.get_target_position
 	return Vector2.XY(class(self).GetTargetPosition())
 }
 
@@ -70,14 +70,14 @@ func (self Instance) GetTargetPosition() Vector2.XY {
 Returns the center of the screen from this camera's point of view, in global coordinates.
 [b]Note:[/b] The exact targeted position of the camera may be different. See [method get_target_position].
 */
-func (self Instance) GetScreenCenterPosition() Vector2.XY {
+func (self Instance) GetScreenCenterPosition() Vector2.XY { //gd:Camera2D.get_screen_center_position
 	return Vector2.XY(class(self).GetScreenCenterPosition())
 }
 
 /*
 Forces the camera to update scroll immediately.
 */
-func (self Instance) ForceUpdateScroll() {
+func (self Instance) ForceUpdateScroll() { //gd:Camera2D.force_update_scroll
 	class(self).ForceUpdateScroll()
 }
 
@@ -85,14 +85,14 @@ func (self Instance) ForceUpdateScroll() {
 Sets the camera's position immediately to its current smoothing destination.
 This method has no effect if [member position_smoothing_enabled] is [code]false[/code].
 */
-func (self Instance) ResetSmoothing() {
+func (self Instance) ResetSmoothing() { //gd:Camera2D.reset_smoothing
 	class(self).ResetSmoothing()
 }
 
 /*
 Aligns the camera to the tracked node.
 */
-func (self Instance) Align() {
+func (self Instance) Align() { //gd:Camera2D.align
 	class(self).Align()
 }
 
@@ -331,7 +331,7 @@ func (self Instance) SetEditorDrawDragMargin(value bool) {
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) {
+func (self class) SetOffset(offset gd.Vector2) { //gd:Camera2D.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -340,7 +340,7 @@ func (self class) SetOffset(offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 {
+func (self class) GetOffset() gd.Vector2 { //gd:Camera2D.get_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -350,7 +350,7 @@ func (self class) GetOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetAnchorMode(anchor_mode gdclass.Camera2DAnchorMode) {
+func (self class) SetAnchorMode(anchor_mode gdclass.Camera2DAnchorMode) { //gd:Camera2D.set_anchor_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, anchor_mode)
 	var r_ret = callframe.Nil
@@ -359,7 +359,7 @@ func (self class) SetAnchorMode(anchor_mode gdclass.Camera2DAnchorMode) {
 }
 
 //go:nosplit
-func (self class) GetAnchorMode() gdclass.Camera2DAnchorMode {
+func (self class) GetAnchorMode() gdclass.Camera2DAnchorMode { //gd:Camera2D.get_anchor_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Camera2DAnchorMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_anchor_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -369,7 +369,7 @@ func (self class) GetAnchorMode() gdclass.Camera2DAnchorMode {
 }
 
 //go:nosplit
-func (self class) SetIgnoreRotation(ignore bool) {
+func (self class) SetIgnoreRotation(ignore bool) { //gd:Camera2D.set_ignore_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, ignore)
 	var r_ret = callframe.Nil
@@ -378,7 +378,7 @@ func (self class) SetIgnoreRotation(ignore bool) {
 }
 
 //go:nosplit
-func (self class) IsIgnoringRotation() bool {
+func (self class) IsIgnoringRotation() bool { //gd:Camera2D.is_ignoring_rotation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_ignoring_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -388,7 +388,7 @@ func (self class) IsIgnoringRotation() bool {
 }
 
 //go:nosplit
-func (self class) SetProcessCallback(mode gdclass.Camera2DCamera2DProcessCallback) {
+func (self class) SetProcessCallback(mode gdclass.Camera2DCamera2DProcessCallback) { //gd:Camera2D.set_process_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -397,7 +397,7 @@ func (self class) SetProcessCallback(mode gdclass.Camera2DCamera2DProcessCallbac
 }
 
 //go:nosplit
-func (self class) GetProcessCallback() gdclass.Camera2DCamera2DProcessCallback {
+func (self class) GetProcessCallback() gdclass.Camera2DCamera2DProcessCallback { //gd:Camera2D.get_process_callback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Camera2DCamera2DProcessCallback](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_process_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -407,7 +407,7 @@ func (self class) GetProcessCallback() gdclass.Camera2DCamera2DProcessCallback {
 }
 
 //go:nosplit
-func (self class) SetEnabled(enabled bool) {
+func (self class) SetEnabled(enabled bool) { //gd:Camera2D.set_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -416,7 +416,7 @@ func (self class) SetEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsEnabled() bool {
+func (self class) IsEnabled() bool { //gd:Camera2D.is_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -429,7 +429,7 @@ func (self class) IsEnabled() bool {
 Forces this [Camera2D] to become the current active one. [member enabled] must be [code]true[/code].
 */
 //go:nosplit
-func (self class) MakeCurrent() {
+func (self class) MakeCurrent() { //gd:Camera2D.make_current
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_make_current, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -440,7 +440,7 @@ func (self class) MakeCurrent() {
 Returns [code]true[/code] if this [Camera2D] is the active camera (see [method Viewport.get_camera_2d]).
 */
 //go:nosplit
-func (self class) IsCurrent() bool {
+func (self class) IsCurrent() bool { //gd:Camera2D.is_current
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_current, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -453,7 +453,7 @@ func (self class) IsCurrent() bool {
 Sets the camera limit for the specified [enum Side]. See also [member limit_bottom], [member limit_top], [member limit_left], and [member limit_right].
 */
 //go:nosplit
-func (self class) SetLimit(margin Side, limit gd.Int) {
+func (self class) SetLimit(margin Side, limit gd.Int) { //gd:Camera2D.set_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, limit)
@@ -466,7 +466,7 @@ func (self class) SetLimit(margin Side, limit gd.Int) {
 Returns the camera limit for the specified [enum Side]. See also [member limit_bottom], [member limit_top], [member limit_left], and [member limit_right].
 */
 //go:nosplit
-func (self class) GetLimit(margin Side) gd.Int {
+func (self class) GetLimit(margin Side) gd.Int { //gd:Camera2D.get_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -477,7 +477,7 @@ func (self class) GetLimit(margin Side) gd.Int {
 }
 
 //go:nosplit
-func (self class) SetLimitSmoothingEnabled(limit_smoothing_enabled bool) {
+func (self class) SetLimitSmoothingEnabled(limit_smoothing_enabled bool) { //gd:Camera2D.set_limit_smoothing_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, limit_smoothing_enabled)
 	var r_ret = callframe.Nil
@@ -486,7 +486,7 @@ func (self class) SetLimitSmoothingEnabled(limit_smoothing_enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsLimitSmoothingEnabled() bool {
+func (self class) IsLimitSmoothingEnabled() bool { //gd:Camera2D.is_limit_smoothing_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_limit_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -496,7 +496,7 @@ func (self class) IsLimitSmoothingEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDragVerticalEnabled(enabled bool) {
+func (self class) SetDragVerticalEnabled(enabled bool) { //gd:Camera2D.set_drag_vertical_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -505,7 +505,7 @@ func (self class) SetDragVerticalEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDragVerticalEnabled() bool {
+func (self class) IsDragVerticalEnabled() bool { //gd:Camera2D.is_drag_vertical_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_drag_vertical_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -515,7 +515,7 @@ func (self class) IsDragVerticalEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDragHorizontalEnabled(enabled bool) {
+func (self class) SetDragHorizontalEnabled(enabled bool) { //gd:Camera2D.set_drag_horizontal_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -524,7 +524,7 @@ func (self class) SetDragHorizontalEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDragHorizontalEnabled() bool {
+func (self class) IsDragHorizontalEnabled() bool { //gd:Camera2D.is_drag_horizontal_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_drag_horizontal_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -534,7 +534,7 @@ func (self class) IsDragHorizontalEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDragVerticalOffset(offset gd.Float) {
+func (self class) SetDragVerticalOffset(offset gd.Float) { //gd:Camera2D.set_drag_vertical_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -543,7 +543,7 @@ func (self class) SetDragVerticalOffset(offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDragVerticalOffset() gd.Float {
+func (self class) GetDragVerticalOffset() gd.Float { //gd:Camera2D.get_drag_vertical_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_drag_vertical_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -553,7 +553,7 @@ func (self class) GetDragVerticalOffset() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDragHorizontalOffset(offset gd.Float) {
+func (self class) SetDragHorizontalOffset(offset gd.Float) { //gd:Camera2D.set_drag_horizontal_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -562,7 +562,7 @@ func (self class) SetDragHorizontalOffset(offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDragHorizontalOffset() gd.Float {
+func (self class) GetDragHorizontalOffset() gd.Float { //gd:Camera2D.get_drag_horizontal_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_drag_horizontal_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -575,7 +575,7 @@ func (self class) GetDragHorizontalOffset() gd.Float {
 Sets the specified [enum Side]'s margin. See also [member drag_bottom_margin], [member drag_top_margin], [member drag_left_margin], and [member drag_right_margin].
 */
 //go:nosplit
-func (self class) SetDragMargin(margin Side, drag_margin gd.Float) {
+func (self class) SetDragMargin(margin Side, drag_margin gd.Float) { //gd:Camera2D.set_drag_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, drag_margin)
@@ -588,7 +588,7 @@ func (self class) SetDragMargin(margin Side, drag_margin gd.Float) {
 Returns the specified [enum Side]'s margin. See also [member drag_bottom_margin], [member drag_top_margin], [member drag_left_margin], and [member drag_right_margin].
 */
 //go:nosplit
-func (self class) GetDragMargin(margin Side) gd.Float {
+func (self class) GetDragMargin(margin Side) gd.Float { //gd:Camera2D.get_drag_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -603,7 +603,7 @@ Returns this camera's target position, in global coordinates.
 [b]Note:[/b] The returned value is not the same as [member Node2D.global_position], as it is affected by the drag properties. It is also not the same as the current position if [member position_smoothing_enabled] is [code]true[/code] (see [method get_screen_center_position]).
 */
 //go:nosplit
-func (self class) GetTargetPosition() gd.Vector2 {
+func (self class) GetTargetPosition() gd.Vector2 { //gd:Camera2D.get_target_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -617,7 +617,7 @@ Returns the center of the screen from this camera's point of view, in global coo
 [b]Note:[/b] The exact targeted position of the camera may be different. See [method get_target_position].
 */
 //go:nosplit
-func (self class) GetScreenCenterPosition() gd.Vector2 {
+func (self class) GetScreenCenterPosition() gd.Vector2 { //gd:Camera2D.get_screen_center_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_screen_center_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -627,7 +627,7 @@ func (self class) GetScreenCenterPosition() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetZoom(zoom gd.Vector2) {
+func (self class) SetZoom(zoom gd.Vector2) { //gd:Camera2D.set_zoom
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom)
 	var r_ret = callframe.Nil
@@ -636,7 +636,7 @@ func (self class) SetZoom(zoom gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetZoom() gd.Vector2 {
+func (self class) GetZoom() gd.Vector2 { //gd:Camera2D.get_zoom
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_zoom, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -646,7 +646,7 @@ func (self class) GetZoom() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetCustomViewport(viewport [1]gdclass.Node) {
+func (self class) SetCustomViewport(viewport [1]gdclass.Node) { //gd:Camera2D.set_custom_viewport
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(viewport[0])[0])
 	var r_ret = callframe.Nil
@@ -655,7 +655,7 @@ func (self class) SetCustomViewport(viewport [1]gdclass.Node) {
 }
 
 //go:nosplit
-func (self class) GetCustomViewport() [1]gdclass.Node {
+func (self class) GetCustomViewport() [1]gdclass.Node { //gd:Camera2D.get_custom_viewport
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_custom_viewport, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -665,7 +665,7 @@ func (self class) GetCustomViewport() [1]gdclass.Node {
 }
 
 //go:nosplit
-func (self class) SetPositionSmoothingSpeed(position_smoothing_speed gd.Float) {
+func (self class) SetPositionSmoothingSpeed(position_smoothing_speed gd.Float) { //gd:Camera2D.set_position_smoothing_speed
 	var frame = callframe.New()
 	callframe.Arg(frame, position_smoothing_speed)
 	var r_ret = callframe.Nil
@@ -674,7 +674,7 @@ func (self class) SetPositionSmoothingSpeed(position_smoothing_speed gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPositionSmoothingSpeed() gd.Float {
+func (self class) GetPositionSmoothingSpeed() gd.Float { //gd:Camera2D.get_position_smoothing_speed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_position_smoothing_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -684,7 +684,7 @@ func (self class) GetPositionSmoothingSpeed() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPositionSmoothingEnabled(position_smoothing_speed bool) {
+func (self class) SetPositionSmoothingEnabled(position_smoothing_speed bool) { //gd:Camera2D.set_position_smoothing_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, position_smoothing_speed)
 	var r_ret = callframe.Nil
@@ -693,7 +693,7 @@ func (self class) SetPositionSmoothingEnabled(position_smoothing_speed bool) {
 }
 
 //go:nosplit
-func (self class) IsPositionSmoothingEnabled() bool {
+func (self class) IsPositionSmoothingEnabled() bool { //gd:Camera2D.is_position_smoothing_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_position_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -703,7 +703,7 @@ func (self class) IsPositionSmoothingEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetRotationSmoothingEnabled(enabled bool) {
+func (self class) SetRotationSmoothingEnabled(enabled bool) { //gd:Camera2D.set_rotation_smoothing_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -712,7 +712,7 @@ func (self class) SetRotationSmoothingEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsRotationSmoothingEnabled() bool {
+func (self class) IsRotationSmoothingEnabled() bool { //gd:Camera2D.is_rotation_smoothing_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_rotation_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -722,7 +722,7 @@ func (self class) IsRotationSmoothingEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetRotationSmoothingSpeed(speed gd.Float) {
+func (self class) SetRotationSmoothingSpeed(speed gd.Float) { //gd:Camera2D.set_rotation_smoothing_speed
 	var frame = callframe.New()
 	callframe.Arg(frame, speed)
 	var r_ret = callframe.Nil
@@ -731,7 +731,7 @@ func (self class) SetRotationSmoothingSpeed(speed gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRotationSmoothingSpeed() gd.Float {
+func (self class) GetRotationSmoothingSpeed() gd.Float { //gd:Camera2D.get_rotation_smoothing_speed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_rotation_smoothing_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -744,7 +744,7 @@ func (self class) GetRotationSmoothingSpeed() gd.Float {
 Forces the camera to update scroll immediately.
 */
 //go:nosplit
-func (self class) ForceUpdateScroll() {
+func (self class) ForceUpdateScroll() { //gd:Camera2D.force_update_scroll
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_force_update_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -756,7 +756,7 @@ Sets the camera's position immediately to its current smoothing destination.
 This method has no effect if [member position_smoothing_enabled] is [code]false[/code].
 */
 //go:nosplit
-func (self class) ResetSmoothing() {
+func (self class) ResetSmoothing() { //gd:Camera2D.reset_smoothing
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_reset_smoothing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -767,7 +767,7 @@ func (self class) ResetSmoothing() {
 Aligns the camera to the tracked node.
 */
 //go:nosplit
-func (self class) Align() {
+func (self class) Align() { //gd:Camera2D.align
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_align, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -775,7 +775,7 @@ func (self class) Align() {
 }
 
 //go:nosplit
-func (self class) SetScreenDrawingEnabled(screen_drawing_enabled bool) {
+func (self class) SetScreenDrawingEnabled(screen_drawing_enabled bool) { //gd:Camera2D.set_screen_drawing_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_drawing_enabled)
 	var r_ret = callframe.Nil
@@ -784,7 +784,7 @@ func (self class) SetScreenDrawingEnabled(screen_drawing_enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsScreenDrawingEnabled() bool {
+func (self class) IsScreenDrawingEnabled() bool { //gd:Camera2D.is_screen_drawing_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_screen_drawing_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -794,7 +794,7 @@ func (self class) IsScreenDrawingEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetLimitDrawingEnabled(limit_drawing_enabled bool) {
+func (self class) SetLimitDrawingEnabled(limit_drawing_enabled bool) { //gd:Camera2D.set_limit_drawing_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, limit_drawing_enabled)
 	var r_ret = callframe.Nil
@@ -803,7 +803,7 @@ func (self class) SetLimitDrawingEnabled(limit_drawing_enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsLimitDrawingEnabled() bool {
+func (self class) IsLimitDrawingEnabled() bool { //gd:Camera2D.is_limit_drawing_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_limit_drawing_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -813,7 +813,7 @@ func (self class) IsLimitDrawingEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetMarginDrawingEnabled(margin_drawing_enabled bool) {
+func (self class) SetMarginDrawingEnabled(margin_drawing_enabled bool) { //gd:Camera2D.set_margin_drawing_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, margin_drawing_enabled)
 	var r_ret = callframe.Nil
@@ -822,7 +822,7 @@ func (self class) SetMarginDrawingEnabled(margin_drawing_enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsMarginDrawingEnabled() bool {
+func (self class) IsMarginDrawingEnabled() bool { //gd:Camera2D.is_margin_drawing_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_is_margin_drawing_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -860,7 +860,7 @@ func init() {
 	gdclass.Register("Camera2D", func(ptr gd.Object) any { return [1]gdclass.Camera2D{*(*gdclass.Camera2D)(unsafe.Pointer(&ptr))} })
 }
 
-type AnchorMode = gdclass.Camera2DAnchorMode
+type AnchorMode = gdclass.Camera2DAnchorMode //gd:Camera2D.AnchorMode
 
 const (
 	/*The camera's position is fixed so that the top-left corner is always at the origin.*/
@@ -869,7 +869,7 @@ const (
 	AnchorModeDragCenter AnchorMode = 1
 )
 
-type Camera2DProcessCallback = gdclass.Camera2DCamera2DProcessCallback
+type Camera2DProcessCallback = gdclass.Camera2DCamera2DProcessCallback //gd:Camera2D.Camera2DProcessCallback
 
 const (
 	/*The camera updates during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/

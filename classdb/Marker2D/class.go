@@ -67,7 +67,7 @@ func (self Instance) SetGizmoExtents(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetGizmoExtents(extents gd.Float) {
+func (self class) SetGizmoExtents(extents gd.Float) { //gd:Marker2D.set_gizmo_extents
 	var frame = callframe.New()
 	callframe.Arg(frame, extents)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetGizmoExtents(extents gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGizmoExtents() gd.Float {
+func (self class) GetGizmoExtents() gd.Float { //gd:Marker2D.get_gizmo_extents
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marker2D.Bind_get_gizmo_extents, self.AsObject(), frame.Array(0), r_ret.Addr())

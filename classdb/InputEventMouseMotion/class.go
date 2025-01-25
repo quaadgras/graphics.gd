@@ -120,7 +120,7 @@ func (self Instance) SetScreenVelocity(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetTilt(tilt gd.Vector2) {
+func (self class) SetTilt(tilt gd.Vector2) { //gd:InputEventMouseMotion.set_tilt
 	var frame = callframe.New()
 	callframe.Arg(frame, tilt)
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetTilt(tilt gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetTilt() gd.Vector2 {
+func (self class) GetTilt() gd.Vector2 { //gd:InputEventMouseMotion.get_tilt
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseMotion.Bind_get_tilt, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -139,7 +139,7 @@ func (self class) GetTilt() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetPressure(pressure gd.Float) {
+func (self class) SetPressure(pressure gd.Float) { //gd:InputEventMouseMotion.set_pressure
 	var frame = callframe.New()
 	callframe.Arg(frame, pressure)
 	var r_ret = callframe.Nil
@@ -148,7 +148,7 @@ func (self class) SetPressure(pressure gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPressure() gd.Float {
+func (self class) GetPressure() gd.Float { //gd:InputEventMouseMotion.get_pressure
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseMotion.Bind_get_pressure, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -158,7 +158,7 @@ func (self class) GetPressure() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPenInverted(pen_inverted bool) {
+func (self class) SetPenInverted(pen_inverted bool) { //gd:InputEventMouseMotion.set_pen_inverted
 	var frame = callframe.New()
 	callframe.Arg(frame, pen_inverted)
 	var r_ret = callframe.Nil
@@ -167,7 +167,7 @@ func (self class) SetPenInverted(pen_inverted bool) {
 }
 
 //go:nosplit
-func (self class) GetPenInverted() bool {
+func (self class) GetPenInverted() bool { //gd:InputEventMouseMotion.get_pen_inverted
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseMotion.Bind_get_pen_inverted, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -177,7 +177,7 @@ func (self class) GetPenInverted() bool {
 }
 
 //go:nosplit
-func (self class) SetRelative(relative gd.Vector2) {
+func (self class) SetRelative(relative gd.Vector2) { //gd:InputEventMouseMotion.set_relative
 	var frame = callframe.New()
 	callframe.Arg(frame, relative)
 	var r_ret = callframe.Nil
@@ -186,7 +186,7 @@ func (self class) SetRelative(relative gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetRelative() gd.Vector2 {
+func (self class) GetRelative() gd.Vector2 { //gd:InputEventMouseMotion.get_relative
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseMotion.Bind_get_relative, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -196,7 +196,7 @@ func (self class) GetRelative() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetScreenRelative(relative gd.Vector2) {
+func (self class) SetScreenRelative(relative gd.Vector2) { //gd:InputEventMouseMotion.set_screen_relative
 	var frame = callframe.New()
 	callframe.Arg(frame, relative)
 	var r_ret = callframe.Nil
@@ -205,7 +205,7 @@ func (self class) SetScreenRelative(relative gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetScreenRelative() gd.Vector2 {
+func (self class) GetScreenRelative() gd.Vector2 { //gd:InputEventMouseMotion.get_screen_relative
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseMotion.Bind_get_screen_relative, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -215,7 +215,7 @@ func (self class) GetScreenRelative() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetVelocity(velocity gd.Vector2) {
+func (self class) SetVelocity(velocity gd.Vector2) { //gd:InputEventMouseMotion.set_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -224,7 +224,7 @@ func (self class) SetVelocity(velocity gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetVelocity() gd.Vector2 {
+func (self class) GetVelocity() gd.Vector2 { //gd:InputEventMouseMotion.get_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseMotion.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -234,7 +234,7 @@ func (self class) GetVelocity() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetScreenVelocity(velocity gd.Vector2) {
+func (self class) SetScreenVelocity(velocity gd.Vector2) { //gd:InputEventMouseMotion.set_screen_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -243,7 +243,7 @@ func (self class) SetScreenVelocity(velocity gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetScreenVelocity() gd.Vector2 {
+func (self class) GetScreenVelocity() gd.Vector2 { //gd:InputEventMouseMotion.get_screen_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseMotion.Bind_get_screen_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())

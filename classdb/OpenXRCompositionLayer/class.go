@@ -45,7 +45,7 @@ type Any interface {
 Returns true if the OpenXR runtime natively supports this composition layer type.
 [b]Note:[/b] This will only return an accurate result after the OpenXR session has started.
 */
-func (self Instance) IsNativelySupported() bool {
+func (self Instance) IsNativelySupported() bool { //gd:OpenXRCompositionLayer.is_natively_supported
 	return bool(class(self).IsNativelySupported())
 }
 
@@ -53,7 +53,7 @@ func (self Instance) IsNativelySupported() bool {
 Returns UV coordinates where the given ray intersects with the composition layer. [param origin] and [param direction] must be in global space.
 Returns [code]Vector2(-1.0, -1.0)[/code] if the ray doesn't intersect.
 */
-func (self Instance) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY {
+func (self Instance) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY { //gd:OpenXRCompositionLayer.intersects_ray
 	return Vector2.XY(class(self).IntersectsRay(gd.Vector3(origin), gd.Vector3(direction)))
 }
 
@@ -108,7 +108,7 @@ func (self Instance) SetEnableHolePunch(value bool) {
 }
 
 //go:nosplit
-func (self class) SetLayerViewport(viewport [1]gdclass.SubViewport) {
+func (self class) SetLayerViewport(viewport [1]gdclass.SubViewport) { //gd:OpenXRCompositionLayer.set_layer_viewport
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(viewport[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -117,7 +117,7 @@ func (self class) SetLayerViewport(viewport [1]gdclass.SubViewport) {
 }
 
 //go:nosplit
-func (self class) GetLayerViewport() [1]gdclass.SubViewport {
+func (self class) GetLayerViewport() [1]gdclass.SubViewport { //gd:OpenXRCompositionLayer.get_layer_viewport
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_layer_viewport, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func (self class) GetLayerViewport() [1]gdclass.SubViewport {
 }
 
 //go:nosplit
-func (self class) SetEnableHolePunch(enable bool) {
+func (self class) SetEnableHolePunch(enable bool) { //gd:OpenXRCompositionLayer.set_enable_hole_punch
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -136,7 +136,7 @@ func (self class) SetEnableHolePunch(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetEnableHolePunch() bool {
+func (self class) GetEnableHolePunch() bool { //gd:OpenXRCompositionLayer.get_enable_hole_punch
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_enable_hole_punch, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -146,7 +146,7 @@ func (self class) GetEnableHolePunch() bool {
 }
 
 //go:nosplit
-func (self class) SetSortOrder(order gd.Int) {
+func (self class) SetSortOrder(order gd.Int) { //gd:OpenXRCompositionLayer.set_sort_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret = callframe.Nil
@@ -155,7 +155,7 @@ func (self class) SetSortOrder(order gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSortOrder() gd.Int {
+func (self class) GetSortOrder() gd.Int { //gd:OpenXRCompositionLayer.get_sort_order
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_sort_order, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -165,7 +165,7 @@ func (self class) GetSortOrder() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetAlphaBlend(enabled bool) {
+func (self class) SetAlphaBlend(enabled bool) { //gd:OpenXRCompositionLayer.set_alpha_blend
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -174,7 +174,7 @@ func (self class) SetAlphaBlend(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetAlphaBlend() bool {
+func (self class) GetAlphaBlend() bool { //gd:OpenXRCompositionLayer.get_alpha_blend
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_alpha_blend, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -188,7 +188,7 @@ Returns true if the OpenXR runtime natively supports this composition layer type
 [b]Note:[/b] This will only return an accurate result after the OpenXR session has started.
 */
 //go:nosplit
-func (self class) IsNativelySupported() bool {
+func (self class) IsNativelySupported() bool { //gd:OpenXRCompositionLayer.is_natively_supported
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayer.Bind_is_natively_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -202,7 +202,7 @@ Returns UV coordinates where the given ray intersects with the composition layer
 Returns [code]Vector2(-1.0, -1.0)[/code] if the ray doesn't intersect.
 */
 //go:nosplit
-func (self class) IntersectsRay(origin gd.Vector3, direction gd.Vector3) gd.Vector2 {
+func (self class) IntersectsRay(origin gd.Vector3, direction gd.Vector3) gd.Vector2 { //gd:OpenXRCompositionLayer.intersects_ray
 	var frame = callframe.New()
 	callframe.Arg(frame, origin)
 	callframe.Arg(frame, direction)

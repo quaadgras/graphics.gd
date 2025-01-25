@@ -109,7 +109,7 @@ func (self Instance) SetCurve(value [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Float) {
+func (self class) SetSize(size gd.Float) { //gd:RibbonTrailMesh.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -118,7 +118,7 @@ func (self class) SetSize(size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Float {
+func (self class) GetSize() gd.Float { //gd:RibbonTrailMesh.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -128,7 +128,7 @@ func (self class) GetSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSections(sections gd.Int) {
+func (self class) SetSections(sections gd.Int) { //gd:RibbonTrailMesh.set_sections
 	var frame = callframe.New()
 	callframe.Arg(frame, sections)
 	var r_ret = callframe.Nil
@@ -137,7 +137,7 @@ func (self class) SetSections(sections gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSections() gd.Int {
+func (self class) GetSections() gd.Int { //gd:RibbonTrailMesh.get_sections
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_sections, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -147,7 +147,7 @@ func (self class) GetSections() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSectionLength(section_length gd.Float) {
+func (self class) SetSectionLength(section_length gd.Float) { //gd:RibbonTrailMesh.set_section_length
 	var frame = callframe.New()
 	callframe.Arg(frame, section_length)
 	var r_ret = callframe.Nil
@@ -156,7 +156,7 @@ func (self class) SetSectionLength(section_length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSectionLength() gd.Float {
+func (self class) GetSectionLength() gd.Float { //gd:RibbonTrailMesh.get_section_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_section_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -166,7 +166,7 @@ func (self class) GetSectionLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSectionSegments(section_segments gd.Int) {
+func (self class) SetSectionSegments(section_segments gd.Int) { //gd:RibbonTrailMesh.set_section_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, section_segments)
 	var r_ret = callframe.Nil
@@ -175,7 +175,7 @@ func (self class) SetSectionSegments(section_segments gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSectionSegments() gd.Int {
+func (self class) GetSectionSegments() gd.Int { //gd:RibbonTrailMesh.get_section_segments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_section_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -185,7 +185,7 @@ func (self class) GetSectionSegments() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCurve(curve [1]gdclass.Curve) {
+func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:RibbonTrailMesh.set_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -194,7 +194,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetCurve() [1]gdclass.Curve {
+func (self class) GetCurve() [1]gdclass.Curve { //gd:RibbonTrailMesh.get_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -204,7 +204,7 @@ func (self class) GetCurve() [1]gdclass.Curve {
 }
 
 //go:nosplit
-func (self class) SetShape(shape gdclass.RibbonTrailMeshShape) {
+func (self class) SetShape(shape gdclass.RibbonTrailMeshShape) { //gd:RibbonTrailMesh.set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -213,7 +213,7 @@ func (self class) SetShape(shape gdclass.RibbonTrailMeshShape) {
 }
 
 //go:nosplit
-func (self class) GetShape() gdclass.RibbonTrailMeshShape {
+func (self class) GetShape() gdclass.RibbonTrailMeshShape { //gd:RibbonTrailMesh.get_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RibbonTrailMeshShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -263,7 +263,7 @@ func init() {
 	})
 }
 
-type Shape = gdclass.RibbonTrailMeshShape
+type Shape = gdclass.RibbonTrailMeshShape //gd:RibbonTrailMesh.Shape
 
 const (
 	/*Gives the mesh a single flat face.*/

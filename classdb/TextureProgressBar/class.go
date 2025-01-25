@@ -190,7 +190,7 @@ func (self Instance) SetTintProgress(value Color.RGBA) {
 }
 
 //go:nosplit
-func (self class) SetUnderTexture(tex [1]gdclass.Texture2D) {
+func (self class) SetUnderTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_under_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tex[0])[0])
 	var r_ret = callframe.Nil
@@ -199,7 +199,7 @@ func (self class) SetUnderTexture(tex [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetUnderTexture() [1]gdclass.Texture2D {
+func (self class) GetUnderTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_under_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_under_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -209,7 +209,7 @@ func (self class) GetUnderTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetProgressTexture(tex [1]gdclass.Texture2D) {
+func (self class) SetProgressTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_progress_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tex[0])[0])
 	var r_ret = callframe.Nil
@@ -218,7 +218,7 @@ func (self class) SetProgressTexture(tex [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetProgressTexture() [1]gdclass.Texture2D {
+func (self class) GetProgressTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_progress_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_progress_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -228,7 +228,7 @@ func (self class) GetProgressTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetOverTexture(tex [1]gdclass.Texture2D) {
+func (self class) SetOverTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_over_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tex[0])[0])
 	var r_ret = callframe.Nil
@@ -237,7 +237,7 @@ func (self class) SetOverTexture(tex [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetOverTexture() [1]gdclass.Texture2D {
+func (self class) GetOverTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_over_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_over_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -247,7 +247,7 @@ func (self class) GetOverTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetFillMode(mode gd.Int) {
+func (self class) SetFillMode(mode gd.Int) { //gd:TextureProgressBar.set_fill_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -256,7 +256,7 @@ func (self class) SetFillMode(mode gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFillMode() gd.Int {
+func (self class) GetFillMode() gd.Int { //gd:TextureProgressBar.get_fill_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_fill_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -266,7 +266,7 @@ func (self class) GetFillMode() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetTintUnder(tint gd.Color) {
+func (self class) SetTintUnder(tint gd.Color) { //gd:TextureProgressBar.set_tint_under
 	var frame = callframe.New()
 	callframe.Arg(frame, tint)
 	var r_ret = callframe.Nil
@@ -275,7 +275,7 @@ func (self class) SetTintUnder(tint gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetTintUnder() gd.Color {
+func (self class) GetTintUnder() gd.Color { //gd:TextureProgressBar.get_tint_under
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_tint_under, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -285,7 +285,7 @@ func (self class) GetTintUnder() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetTintProgress(tint gd.Color) {
+func (self class) SetTintProgress(tint gd.Color) { //gd:TextureProgressBar.set_tint_progress
 	var frame = callframe.New()
 	callframe.Arg(frame, tint)
 	var r_ret = callframe.Nil
@@ -294,7 +294,7 @@ func (self class) SetTintProgress(tint gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetTintProgress() gd.Color {
+func (self class) GetTintProgress() gd.Color { //gd:TextureProgressBar.get_tint_progress
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_tint_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -304,7 +304,7 @@ func (self class) GetTintProgress() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetTintOver(tint gd.Color) {
+func (self class) SetTintOver(tint gd.Color) { //gd:TextureProgressBar.set_tint_over
 	var frame = callframe.New()
 	callframe.Arg(frame, tint)
 	var r_ret = callframe.Nil
@@ -313,7 +313,7 @@ func (self class) SetTintOver(tint gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetTintOver() gd.Color {
+func (self class) GetTintOver() gd.Color { //gd:TextureProgressBar.get_tint_over
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_tint_over, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -323,7 +323,7 @@ func (self class) GetTintOver() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetTextureProgressOffset(offset gd.Vector2) {
+func (self class) SetTextureProgressOffset(offset gd.Vector2) { //gd:TextureProgressBar.set_texture_progress_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -332,7 +332,7 @@ func (self class) SetTextureProgressOffset(offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetTextureProgressOffset() gd.Vector2 {
+func (self class) GetTextureProgressOffset() gd.Vector2 { //gd:TextureProgressBar.get_texture_progress_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_texture_progress_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,7 +342,7 @@ func (self class) GetTextureProgressOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetRadialInitialAngle(mode gd.Float) {
+func (self class) SetRadialInitialAngle(mode gd.Float) { //gd:TextureProgressBar.set_radial_initial_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -351,7 +351,7 @@ func (self class) SetRadialInitialAngle(mode gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRadialInitialAngle() gd.Float {
+func (self class) GetRadialInitialAngle() gd.Float { //gd:TextureProgressBar.get_radial_initial_angle
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_radial_initial_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -361,7 +361,7 @@ func (self class) GetRadialInitialAngle() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRadialCenterOffset(mode gd.Vector2) {
+func (self class) SetRadialCenterOffset(mode gd.Vector2) { //gd:TextureProgressBar.set_radial_center_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -370,7 +370,7 @@ func (self class) SetRadialCenterOffset(mode gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetRadialCenterOffset() gd.Vector2 {
+func (self class) GetRadialCenterOffset() gd.Vector2 { //gd:TextureProgressBar.get_radial_center_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_radial_center_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -380,7 +380,7 @@ func (self class) GetRadialCenterOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetFillDegrees(mode gd.Float) {
+func (self class) SetFillDegrees(mode gd.Float) { //gd:TextureProgressBar.set_fill_degrees
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -389,7 +389,7 @@ func (self class) SetFillDegrees(mode gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFillDegrees() gd.Float {
+func (self class) GetFillDegrees() gd.Float { //gd:TextureProgressBar.get_fill_degrees
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_fill_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -402,7 +402,7 @@ func (self class) GetFillDegrees() gd.Float {
 Sets the stretch margin with the specified index. See [member stretch_margin_bottom] and related properties.
 */
 //go:nosplit
-func (self class) SetStretchMargin(margin Side, value gd.Int) {
+func (self class) SetStretchMargin(margin Side, value gd.Int) { //gd:TextureProgressBar.set_stretch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, value)
@@ -415,7 +415,7 @@ func (self class) SetStretchMargin(margin Side, value gd.Int) {
 Returns the stretch margin with the specified index. See [member stretch_margin_bottom] and related properties.
 */
 //go:nosplit
-func (self class) GetStretchMargin(margin Side) gd.Int {
+func (self class) GetStretchMargin(margin Side) gd.Int { //gd:TextureProgressBar.get_stretch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -426,7 +426,7 @@ func (self class) GetStretchMargin(margin Side) gd.Int {
 }
 
 //go:nosplit
-func (self class) SetNinePatchStretch(stretch bool) {
+func (self class) SetNinePatchStretch(stretch bool) { //gd:TextureProgressBar.set_nine_patch_stretch
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch)
 	var r_ret = callframe.Nil
@@ -435,7 +435,7 @@ func (self class) SetNinePatchStretch(stretch bool) {
 }
 
 //go:nosplit
-func (self class) GetNinePatchStretch() bool {
+func (self class) GetNinePatchStretch() bool { //gd:TextureProgressBar.get_nine_patch_stretch
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureProgressBar.Bind_get_nine_patch_stretch, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -479,7 +479,7 @@ func init() {
 	})
 }
 
-type FillMode = gdclass.TextureProgressBarFillMode
+type FillMode = gdclass.TextureProgressBarFillMode //gd:TextureProgressBar.FillMode
 
 const (
 	/*The [member texture_progress] fills from left to right.*/

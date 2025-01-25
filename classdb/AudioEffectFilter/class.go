@@ -91,7 +91,7 @@ func (self Instance) SetDb(value gdclass.AudioEffectFilterFilterDB) {
 }
 
 //go:nosplit
-func (self class) SetCutoff(freq gd.Float) {
+func (self class) SetCutoff(freq gd.Float) { //gd:AudioEffectFilter.set_cutoff
 	var frame = callframe.New()
 	callframe.Arg(frame, freq)
 	var r_ret = callframe.Nil
@@ -100,7 +100,7 @@ func (self class) SetCutoff(freq gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCutoff() gd.Float {
+func (self class) GetCutoff() gd.Float { //gd:AudioEffectFilter.get_cutoff
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectFilter.Bind_get_cutoff, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -110,7 +110,7 @@ func (self class) GetCutoff() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetResonance(amount gd.Float) {
+func (self class) SetResonance(amount gd.Float) { //gd:AudioEffectFilter.set_resonance
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -119,7 +119,7 @@ func (self class) SetResonance(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetResonance() gd.Float {
+func (self class) GetResonance() gd.Float { //gd:AudioEffectFilter.get_resonance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectFilter.Bind_get_resonance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -129,7 +129,7 @@ func (self class) GetResonance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGain(amount gd.Float) {
+func (self class) SetGain(amount gd.Float) { //gd:AudioEffectFilter.set_gain
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -138,7 +138,7 @@ func (self class) SetGain(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGain() gd.Float {
+func (self class) GetGain() gd.Float { //gd:AudioEffectFilter.get_gain
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectFilter.Bind_get_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -148,7 +148,7 @@ func (self class) GetGain() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDb(amount gdclass.AudioEffectFilterFilterDB) {
+func (self class) SetDb(amount gdclass.AudioEffectFilterFilterDB) { //gd:AudioEffectFilter.set_db
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -157,7 +157,7 @@ func (self class) SetDb(amount gdclass.AudioEffectFilterFilterDB) {
 }
 
 //go:nosplit
-func (self class) GetDb() gdclass.AudioEffectFilterFilterDB {
+func (self class) GetDb() gdclass.AudioEffectFilterFilterDB { //gd:AudioEffectFilter.get_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioEffectFilterFilterDB](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectFilter.Bind_get_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -205,7 +205,7 @@ func init() {
 	})
 }
 
-type FilterDB = gdclass.AudioEffectFilterFilterDB
+type FilterDB = gdclass.AudioEffectFilterFilterDB //gd:AudioEffectFilter.FilterDB
 
 const (
 	Filter6db  FilterDB = 0

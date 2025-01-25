@@ -85,7 +85,7 @@ func (self Instance) SetMotionMirroring(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetMotionScale(scale gd.Vector2) {
+func (self class) SetMotionScale(scale gd.Vector2) { //gd:ParallaxLayer.set_motion_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -94,7 +94,7 @@ func (self class) SetMotionScale(scale gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetMotionScale() gd.Vector2 {
+func (self class) GetMotionScale() gd.Vector2 { //gd:ParallaxLayer.get_motion_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxLayer.Bind_get_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -104,7 +104,7 @@ func (self class) GetMotionScale() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetMotionOffset(offset gd.Vector2) {
+func (self class) SetMotionOffset(offset gd.Vector2) { //gd:ParallaxLayer.set_motion_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -113,7 +113,7 @@ func (self class) SetMotionOffset(offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetMotionOffset() gd.Vector2 {
+func (self class) GetMotionOffset() gd.Vector2 { //gd:ParallaxLayer.get_motion_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxLayer.Bind_get_motion_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,7 +123,7 @@ func (self class) GetMotionOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetMirroring(mirror gd.Vector2) {
+func (self class) SetMirroring(mirror gd.Vector2) { //gd:ParallaxLayer.set_mirroring
 	var frame = callframe.New()
 	callframe.Arg(frame, mirror)
 	var r_ret = callframe.Nil
@@ -132,7 +132,7 @@ func (self class) SetMirroring(mirror gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetMirroring() gd.Vector2 {
+func (self class) GetMirroring() gd.Vector2 { //gd:ParallaxLayer.get_mirroring
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParallaxLayer.Bind_get_mirroring, self.AsObject(), frame.Array(0), r_ret.Addr())

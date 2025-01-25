@@ -40,7 +40,7 @@ type Any interface {
 /*
 Returns the status indicator rectangle in screen coordinates. If this status indicator is not visible, returns an empty [Rect2].
 */
-func (self Instance) GetRect() Rect2.PositionSize {
+func (self Instance) GetRect() Rect2.PositionSize { //gd:StatusIndicator.get_rect
 	return Rect2.PositionSize(class(self).GetRect())
 }
 
@@ -95,7 +95,7 @@ func (self Instance) SetVisible(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTooltip(tooltip gd.String) {
+func (self class) SetTooltip(tooltip gd.String) { //gd:StatusIndicator.set_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tooltip))
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetTooltip(tooltip gd.String) {
 }
 
 //go:nosplit
-func (self class) GetTooltip() gd.String {
+func (self class) GetTooltip() gd.String { //gd:StatusIndicator.get_tooltip
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StatusIndicator.Bind_get_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -114,7 +114,7 @@ func (self class) GetTooltip() gd.String {
 }
 
 //go:nosplit
-func (self class) SetIcon(texture [1]gdclass.Texture2D) {
+func (self class) SetIcon(texture [1]gdclass.Texture2D) { //gd:StatusIndicator.set_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -123,7 +123,7 @@ func (self class) SetIcon(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetIcon() [1]gdclass.Texture2D {
+func (self class) GetIcon() [1]gdclass.Texture2D { //gd:StatusIndicator.get_icon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StatusIndicator.Bind_get_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -133,7 +133,7 @@ func (self class) GetIcon() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetVisible(visible bool) {
+func (self class) SetVisible(visible bool) { //gd:StatusIndicator.set_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret = callframe.Nil
@@ -142,7 +142,7 @@ func (self class) SetVisible(visible bool) {
 }
 
 //go:nosplit
-func (self class) IsVisible() bool {
+func (self class) IsVisible() bool { //gd:StatusIndicator.is_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StatusIndicator.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -152,7 +152,7 @@ func (self class) IsVisible() bool {
 }
 
 //go:nosplit
-func (self class) SetMenu(menu gd.NodePath) {
+func (self class) SetMenu(menu gd.NodePath) { //gd:StatusIndicator.set_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(menu))
 	var r_ret = callframe.Nil
@@ -161,7 +161,7 @@ func (self class) SetMenu(menu gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetMenu() gd.NodePath {
+func (self class) GetMenu() gd.NodePath { //gd:StatusIndicator.get_menu
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StatusIndicator.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func (self class) GetMenu() gd.NodePath {
 Returns the status indicator rectangle in screen coordinates. If this status indicator is not visible, returns an empty [Rect2].
 */
 //go:nosplit
-func (self class) GetRect() gd.Rect2 {
+func (self class) GetRect() gd.Rect2 { //gd:StatusIndicator.get_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StatusIndicator.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())

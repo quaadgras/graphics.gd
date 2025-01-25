@@ -60,14 +60,14 @@ type Any interface {
 Packs the given container into a binary representation. The [param value] must be either [Array] or [Dictionary], any other type will result in invalid data error.
 [b]Note:[/b] Subsequent calls to this method will overwrite the existing data.
 */
-func (self Instance) Pack(value any) error {
+func (self Instance) Pack(value any) error { //gd:PackedDataContainer.pack
 	return error(gd.ToError(class(self).Pack(gd.NewVariant(value))))
 }
 
 /*
 Returns the size of the packed container (see [method Array.size] and [method Dictionary.size]).
 */
-func (self Instance) Size() int {
+func (self Instance) Size() int { //gd:PackedDataContainer.size
 	return int(int(class(self).Size()))
 }
 
@@ -95,7 +95,7 @@ Packs the given container into a binary representation. The [param value] must b
 [b]Note:[/b] Subsequent calls to this method will overwrite the existing data.
 */
 //go:nosplit
-func (self class) Pack(value gd.Variant) gd.Error {
+func (self class) Pack(value gd.Variant) gd.Error { //gd:PackedDataContainer.pack
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -109,7 +109,7 @@ func (self class) Pack(value gd.Variant) gd.Error {
 Returns the size of the packed container (see [method Array.size] and [method Dictionary.size]).
 */
 //go:nosplit
-func (self class) Size() gd.Int {
+func (self class) Size() gd.Int { //gd:PackedDataContainer.size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedDataContainer.Bind_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -151,7 +151,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

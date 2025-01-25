@@ -66,7 +66,7 @@ func (self Instance) SetMode(value gdclass.VisualShaderNodeParticleAcceleratorMo
 }
 
 //go:nosplit
-func (self class) SetMode(mode gdclass.VisualShaderNodeParticleAcceleratorMode) {
+func (self class) SetMode(mode gdclass.VisualShaderNodeParticleAcceleratorMode) { //gd:VisualShaderNodeParticleAccelerator.set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetMode(mode gdclass.VisualShaderNodeParticleAcceleratorMode) 
 }
 
 //go:nosplit
-func (self class) GetMode() gdclass.VisualShaderNodeParticleAcceleratorMode {
+func (self class) GetMode() gdclass.VisualShaderNodeParticleAcceleratorMode { //gd:VisualShaderNodeParticleAccelerator.get_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeParticleAcceleratorMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleAccelerator.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func init() {
 	})
 }
 
-type Mode = gdclass.VisualShaderNodeParticleAcceleratorMode
+type Mode = gdclass.VisualShaderNodeParticleAcceleratorMode //gd:VisualShaderNodeParticleAccelerator.Mode
 
 const (
 	/*The particles will be accelerated based on their velocity.*/

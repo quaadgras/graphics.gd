@@ -90,7 +90,7 @@ func (self Instance) SetAbsorbent(value bool) {
 }
 
 //go:nosplit
-func (self class) SetFriction(friction gd.Float) {
+func (self class) SetFriction(friction gd.Float) { //gd:PhysicsMaterial.set_friction
 	var frame = callframe.New()
 	callframe.Arg(frame, friction)
 	var r_ret = callframe.Nil
@@ -99,7 +99,7 @@ func (self class) SetFriction(friction gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFriction() gd.Float {
+func (self class) GetFriction() gd.Float { //gd:PhysicsMaterial.get_friction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsMaterial.Bind_get_friction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -109,7 +109,7 @@ func (self class) GetFriction() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRough(rough bool) {
+func (self class) SetRough(rough bool) { //gd:PhysicsMaterial.set_rough
 	var frame = callframe.New()
 	callframe.Arg(frame, rough)
 	var r_ret = callframe.Nil
@@ -118,7 +118,7 @@ func (self class) SetRough(rough bool) {
 }
 
 //go:nosplit
-func (self class) IsRough() bool {
+func (self class) IsRough() bool { //gd:PhysicsMaterial.is_rough
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsMaterial.Bind_is_rough, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -128,7 +128,7 @@ func (self class) IsRough() bool {
 }
 
 //go:nosplit
-func (self class) SetBounce(bounce gd.Float) {
+func (self class) SetBounce(bounce gd.Float) { //gd:PhysicsMaterial.set_bounce
 	var frame = callframe.New()
 	callframe.Arg(frame, bounce)
 	var r_ret = callframe.Nil
@@ -137,7 +137,7 @@ func (self class) SetBounce(bounce gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBounce() gd.Float {
+func (self class) GetBounce() gd.Float { //gd:PhysicsMaterial.get_bounce
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsMaterial.Bind_get_bounce, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -147,7 +147,7 @@ func (self class) GetBounce() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAbsorbent(absorbent bool) {
+func (self class) SetAbsorbent(absorbent bool) { //gd:PhysicsMaterial.set_absorbent
 	var frame = callframe.New()
 	callframe.Arg(frame, absorbent)
 	var r_ret = callframe.Nil
@@ -156,7 +156,7 @@ func (self class) SetAbsorbent(absorbent bool) {
 }
 
 //go:nosplit
-func (self class) IsAbsorbent() bool {
+func (self class) IsAbsorbent() bool { //gd:PhysicsMaterial.is_absorbent
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsMaterial.Bind_is_absorbent, self.AsObject(), frame.Array(0), r_ret.Addr())

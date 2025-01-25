@@ -44,7 +44,7 @@ type Any interface {
 /*
 Clear all the added filters in the dialog.
 */
-func (self Instance) ClearFilters() {
+func (self Instance) ClearFilters() { //gd:FileDialog.clear_filters
 	class(self).ClearFilters()
 }
 
@@ -53,49 +53,49 @@ Adds a comma-delimited file name [param filter] option to the [FileDialog] with 
 A [param filter] should be of the form [code]"filename.extension"[/code], where filename and extension can be [code]*[/code] to match any string. Filters starting with [code].[/code] (i.e. empty filenames) are not allowed.
 For example, a [param filter] of [code]"*.png, *.jpg"[/code] and a [param description] of [code]"Images"[/code] results in filter text "Images (*.png, *.jpg)".
 */
-func (self Instance) AddFilter(filter string) {
+func (self Instance) AddFilter(filter string) { //gd:FileDialog.add_filter
 	class(self).AddFilter(gd.NewString(filter), gd.NewString(""))
 }
 
 /*
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
-func (self Instance) GetOptionName(option int) string {
+func (self Instance) GetOptionName(option int) string { //gd:FileDialog.get_option_name
 	return string(class(self).GetOptionName(gd.Int(option)).String())
 }
 
 /*
 Returns an array of values of the [OptionButton] with index [param option].
 */
-func (self Instance) GetOptionValues(option int) []string {
+func (self Instance) GetOptionValues(option int) []string { //gd:FileDialog.get_option_values
 	return []string(class(self).GetOptionValues(gd.Int(option)).Strings())
 }
 
 /*
 Returns the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
-func (self Instance) GetOptionDefault(option int) int {
+func (self Instance) GetOptionDefault(option int) int { //gd:FileDialog.get_option_default
 	return int(int(class(self).GetOptionDefault(gd.Int(option))))
 }
 
 /*
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
-func (self Instance) SetOptionName(option int, name string) {
+func (self Instance) SetOptionName(option int, name string) { //gd:FileDialog.set_option_name
 	class(self).SetOptionName(gd.Int(option), gd.NewString(name))
 }
 
 /*
 Sets the option values of the [OptionButton] with index [param option].
 */
-func (self Instance) SetOptionValues(option int, values []string) {
+func (self Instance) SetOptionValues(option int, values []string) { //gd:FileDialog.set_option_values
 	class(self).SetOptionValues(gd.Int(option), gd.NewPackedStringSlice(values))
 }
 
 /*
 Sets the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
-func (self Instance) SetOptionDefault(option int, default_value_index int) {
+func (self Instance) SetOptionDefault(option int, default_value_index int) { //gd:FileDialog.set_option_default
 	class(self).SetOptionDefault(gd.Int(option), gd.Int(default_value_index))
 }
 
@@ -103,14 +103,14 @@ func (self Instance) SetOptionDefault(option int, default_value_index int) {
 Adds an additional [OptionButton] to the file dialog. If [param values] is empty, a [CheckBox] is added instead.
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
-func (self Instance) AddOption(name string, values []string, default_value_index int) {
+func (self Instance) AddOption(name string, values []string, default_value_index int) { //gd:FileDialog.add_option
 	class(self).AddOption(gd.NewString(name), gd.NewPackedStringSlice(values), gd.Int(default_value_index))
 }
 
 /*
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
-func (self Instance) GetSelectedOptions() map[any]any {
+func (self Instance) GetSelectedOptions() map[any]any { //gd:FileDialog.get_selected_options
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetSelectedOptions()))
 }
 
@@ -119,7 +119,7 @@ Returns the vertical box container of the dialog, custom controls can be added t
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 [b]Note:[/b] Changes to this node are ignored by native file dialogs, use [method add_option] to add custom elements to the dialog instead.
 */
-func (self Instance) GetVbox() [1]gdclass.VBoxContainer {
+func (self Instance) GetVbox() [1]gdclass.VBoxContainer { //gd:FileDialog.get_vbox
 	return [1]gdclass.VBoxContainer(class(self).GetVbox())
 }
 
@@ -127,14 +127,14 @@ func (self Instance) GetVbox() [1]gdclass.VBoxContainer {
 Returns the LineEdit for the selected file.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetLineEdit() [1]gdclass.LineEdit {
+func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:FileDialog.get_line_edit
 	return [1]gdclass.LineEdit(class(self).GetLineEdit())
 }
 
 /*
 Clear all currently selected items in the dialog.
 */
-func (self Instance) DeselectAll() {
+func (self Instance) DeselectAll() { //gd:FileDialog.deselect_all
 	class(self).DeselectAll()
 }
 
@@ -142,7 +142,7 @@ func (self Instance) DeselectAll() {
 Invalidate and update the current dialog content list.
 [b]Note:[/b] This method does nothing on native file dialogs.
 */
-func (self Instance) Invalidate() {
+func (self Instance) Invalidate() { //gd:FileDialog.invalidate
 	class(self).Invalidate()
 }
 
@@ -256,7 +256,7 @@ func (self Instance) SetCurrentPath(value string) {
 Clear all the added filters in the dialog.
 */
 //go:nosplit
-func (self class) ClearFilters() {
+func (self class) ClearFilters() { //gd:FileDialog.clear_filters
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_clear_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -269,7 +269,7 @@ A [param filter] should be of the form [code]"filename.extension"[/code], where 
 For example, a [param filter] of [code]"*.png, *.jpg"[/code] and a [param description] of [code]"Images"[/code] results in filter text "Images (*.png, *.jpg)".
 */
 //go:nosplit
-func (self class) AddFilter(filter gd.String, description gd.String) {
+func (self class) AddFilter(filter gd.String, description gd.String) { //gd:FileDialog.add_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(filter))
 	callframe.Arg(frame, pointers.Get(description))
@@ -279,7 +279,7 @@ func (self class) AddFilter(filter gd.String, description gd.String) {
 }
 
 //go:nosplit
-func (self class) SetFilters(filters gd.PackedStringArray) {
+func (self class) SetFilters(filters gd.PackedStringArray) { //gd:FileDialog.set_filters
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(filters))
 	var r_ret = callframe.Nil
@@ -288,7 +288,7 @@ func (self class) SetFilters(filters gd.PackedStringArray) {
 }
 
 //go:nosplit
-func (self class) GetFilters() gd.PackedStringArray {
+func (self class) GetFilters() gd.PackedStringArray { //gd:FileDialog.get_filters
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -301,7 +301,7 @@ func (self class) GetFilters() gd.PackedStringArray {
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionName(option gd.Int) gd.String {
+func (self class) GetOptionName(option gd.Int) gd.String { //gd:FileDialog.get_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -315,7 +315,7 @@ func (self class) GetOptionName(option gd.Int) gd.String {
 Returns an array of values of the [OptionButton] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionValues(option gd.Int) gd.PackedStringArray {
+func (self class) GetOptionValues(option gd.Int) gd.PackedStringArray { //gd:FileDialog.get_option_values
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -329,7 +329,7 @@ func (self class) GetOptionValues(option gd.Int) gd.PackedStringArray {
 Returns the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) GetOptionDefault(option gd.Int) gd.Int {
+func (self class) GetOptionDefault(option gd.Int) gd.Int { //gd:FileDialog.get_option_default
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -343,7 +343,7 @@ func (self class) GetOptionDefault(option gd.Int) gd.Int {
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionName(option gd.Int, name gd.String) {
+func (self class) SetOptionName(option gd.Int, name gd.String) { //gd:FileDialog.set_option_name
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, pointers.Get(name))
@@ -356,7 +356,7 @@ func (self class) SetOptionName(option gd.Int, name gd.String) {
 Sets the option values of the [OptionButton] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionValues(option gd.Int, values gd.PackedStringArray) {
+func (self class) SetOptionValues(option gd.Int, values gd.PackedStringArray) { //gd:FileDialog.set_option_values
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, pointers.Get(values))
@@ -369,7 +369,7 @@ func (self class) SetOptionValues(option gd.Int, values gd.PackedStringArray) {
 Sets the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
-func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) {
+func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) { //gd:FileDialog.set_option_default
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	callframe.Arg(frame, default_value_index)
@@ -379,7 +379,7 @@ func (self class) SetOptionDefault(option gd.Int, default_value_index gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetOptionCount(count gd.Int) {
+func (self class) SetOptionCount(count gd.Int) { //gd:FileDialog.set_option_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -388,7 +388,7 @@ func (self class) SetOptionCount(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetOptionCount() gd.Int {
+func (self class) GetOptionCount() gd.Int { //gd:FileDialog.get_option_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -402,7 +402,7 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 //go:nosplit
-func (self class) AddOption(name gd.String, values gd.PackedStringArray, default_value_index gd.Int) {
+func (self class) AddOption(name gd.String, values gd.PackedStringArray, default_value_index gd.Int) { //gd:FileDialog.add_option
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(values))
@@ -416,7 +416,7 @@ func (self class) AddOption(name gd.String, values gd.PackedStringArray, default
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
 //go:nosplit
-func (self class) GetSelectedOptions() gd.Dictionary {
+func (self class) GetSelectedOptions() gd.Dictionary { //gd:FileDialog.get_selected_options
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_selected_options, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -426,7 +426,7 @@ func (self class) GetSelectedOptions() gd.Dictionary {
 }
 
 //go:nosplit
-func (self class) GetCurrentDir() gd.String {
+func (self class) GetCurrentDir() gd.String { //gd:FileDialog.get_current_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -436,7 +436,7 @@ func (self class) GetCurrentDir() gd.String {
 }
 
 //go:nosplit
-func (self class) GetCurrentFile() gd.String {
+func (self class) GetCurrentFile() gd.String { //gd:FileDialog.get_current_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -446,7 +446,7 @@ func (self class) GetCurrentFile() gd.String {
 }
 
 //go:nosplit
-func (self class) GetCurrentPath() gd.String {
+func (self class) GetCurrentPath() gd.String { //gd:FileDialog.get_current_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -456,7 +456,7 @@ func (self class) GetCurrentPath() gd.String {
 }
 
 //go:nosplit
-func (self class) SetCurrentDir(dir gd.String) {
+func (self class) SetCurrentDir(dir gd.String) { //gd:FileDialog.set_current_dir
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dir))
 	var r_ret = callframe.Nil
@@ -465,7 +465,7 @@ func (self class) SetCurrentDir(dir gd.String) {
 }
 
 //go:nosplit
-func (self class) SetCurrentFile(file gd.String) {
+func (self class) SetCurrentFile(file gd.String) { //gd:FileDialog.set_current_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
 	var r_ret = callframe.Nil
@@ -474,7 +474,7 @@ func (self class) SetCurrentFile(file gd.String) {
 }
 
 //go:nosplit
-func (self class) SetCurrentPath(path gd.String) {
+func (self class) SetCurrentPath(path gd.String) { //gd:FileDialog.set_current_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -483,7 +483,7 @@ func (self class) SetCurrentPath(path gd.String) {
 }
 
 //go:nosplit
-func (self class) SetModeOverridesTitle(override bool) {
+func (self class) SetModeOverridesTitle(override bool) { //gd:FileDialog.set_mode_overrides_title
 	var frame = callframe.New()
 	callframe.Arg(frame, override)
 	var r_ret = callframe.Nil
@@ -492,7 +492,7 @@ func (self class) SetModeOverridesTitle(override bool) {
 }
 
 //go:nosplit
-func (self class) IsModeOverridingTitle() bool {
+func (self class) IsModeOverridingTitle() bool { //gd:FileDialog.is_mode_overriding_title
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_is_mode_overriding_title, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -502,7 +502,7 @@ func (self class) IsModeOverridingTitle() bool {
 }
 
 //go:nosplit
-func (self class) SetFileMode(mode gdclass.FileDialogFileMode) {
+func (self class) SetFileMode(mode gdclass.FileDialogFileMode) { //gd:FileDialog.set_file_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -511,7 +511,7 @@ func (self class) SetFileMode(mode gdclass.FileDialogFileMode) {
 }
 
 //go:nosplit
-func (self class) GetFileMode() gdclass.FileDialogFileMode {
+func (self class) GetFileMode() gdclass.FileDialogFileMode { //gd:FileDialog.get_file_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FileDialogFileMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_file_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -526,7 +526,7 @@ Returns the vertical box container of the dialog, custom controls can be added t
 [b]Note:[/b] Changes to this node are ignored by native file dialogs, use [method add_option] to add custom elements to the dialog instead.
 */
 //go:nosplit
-func (self class) GetVbox() [1]gdclass.VBoxContainer {
+func (self class) GetVbox() [1]gdclass.VBoxContainer { //gd:FileDialog.get_vbox
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_vbox, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -540,7 +540,7 @@ Returns the LineEdit for the selected file.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 //go:nosplit
-func (self class) GetLineEdit() [1]gdclass.LineEdit {
+func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:FileDialog.get_line_edit
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -550,7 +550,7 @@ func (self class) GetLineEdit() [1]gdclass.LineEdit {
 }
 
 //go:nosplit
-func (self class) SetAccess(access gdclass.FileDialogAccess) {
+func (self class) SetAccess(access gdclass.FileDialogAccess) { //gd:FileDialog.set_access
 	var frame = callframe.New()
 	callframe.Arg(frame, access)
 	var r_ret = callframe.Nil
@@ -559,7 +559,7 @@ func (self class) SetAccess(access gdclass.FileDialogAccess) {
 }
 
 //go:nosplit
-func (self class) GetAccess() gdclass.FileDialogAccess {
+func (self class) GetAccess() gdclass.FileDialogAccess { //gd:FileDialog.get_access
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FileDialogAccess](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_access, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -569,7 +569,7 @@ func (self class) GetAccess() gdclass.FileDialogAccess {
 }
 
 //go:nosplit
-func (self class) SetRootSubfolder(dir gd.String) {
+func (self class) SetRootSubfolder(dir gd.String) { //gd:FileDialog.set_root_subfolder
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dir))
 	var r_ret = callframe.Nil
@@ -578,7 +578,7 @@ func (self class) SetRootSubfolder(dir gd.String) {
 }
 
 //go:nosplit
-func (self class) GetRootSubfolder() gd.String {
+func (self class) GetRootSubfolder() gd.String { //gd:FileDialog.get_root_subfolder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_root_subfolder, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -588,7 +588,7 @@ func (self class) GetRootSubfolder() gd.String {
 }
 
 //go:nosplit
-func (self class) SetShowHiddenFiles(show bool) {
+func (self class) SetShowHiddenFiles(show bool) { //gd:FileDialog.set_show_hidden_files
 	var frame = callframe.New()
 	callframe.Arg(frame, show)
 	var r_ret = callframe.Nil
@@ -597,7 +597,7 @@ func (self class) SetShowHiddenFiles(show bool) {
 }
 
 //go:nosplit
-func (self class) IsShowingHiddenFiles() bool {
+func (self class) IsShowingHiddenFiles() bool { //gd:FileDialog.is_showing_hidden_files
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_is_showing_hidden_files, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -607,7 +607,7 @@ func (self class) IsShowingHiddenFiles() bool {
 }
 
 //go:nosplit
-func (self class) SetUseNativeDialog(native bool) {
+func (self class) SetUseNativeDialog(native bool) { //gd:FileDialog.set_use_native_dialog
 	var frame = callframe.New()
 	callframe.Arg(frame, native)
 	var r_ret = callframe.Nil
@@ -616,7 +616,7 @@ func (self class) SetUseNativeDialog(native bool) {
 }
 
 //go:nosplit
-func (self class) GetUseNativeDialog() bool {
+func (self class) GetUseNativeDialog() bool { //gd:FileDialog.get_use_native_dialog
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_use_native_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -629,7 +629,7 @@ func (self class) GetUseNativeDialog() bool {
 Clear all currently selected items in the dialog.
 */
 //go:nosplit
-func (self class) DeselectAll() {
+func (self class) DeselectAll() { //gd:FileDialog.deselect_all
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_deselect_all, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -641,7 +641,7 @@ Invalidate and update the current dialog content list.
 [b]Note:[/b] This method does nothing on native file dialogs.
 */
 //go:nosplit
-func (self class) Invalidate() {
+func (self class) Invalidate() { //gd:FileDialog.invalidate
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_invalidate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -701,7 +701,7 @@ func init() {
 	gdclass.Register("FileDialog", func(ptr gd.Object) any { return [1]gdclass.FileDialog{*(*gdclass.FileDialog)(unsafe.Pointer(&ptr))} })
 }
 
-type FileMode = gdclass.FileDialogFileMode
+type FileMode = gdclass.FileDialogFileMode //gd:FileDialog.FileMode
 
 const (
 	/*The dialog allows selecting one, and only one file.*/
@@ -716,7 +716,7 @@ const (
 	FileModeSaveFile FileMode = 4
 )
 
-type Access = gdclass.FileDialogAccess
+type Access = gdclass.FileDialogAccess //gd:FileDialog.Access
 
 const (
 	/*The dialog only allows accessing files under the [Resource] path ([code]res://[/code]).*/

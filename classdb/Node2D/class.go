@@ -44,42 +44,42 @@ type Any interface {
 /*
 Applies a rotation to the node, in radians, starting from its current rotation.
 */
-func (self Instance) Rotate(radians Float.X) {
+func (self Instance) Rotate(radians Float.X) { //gd:Node2D.rotate
 	class(self).Rotate(gd.Float(radians))
 }
 
 /*
 Applies a local translation on the node's X axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
 */
-func (self Instance) MoveLocalX(delta Float.X) {
+func (self Instance) MoveLocalX(delta Float.X) { //gd:Node2D.move_local_x
 	class(self).MoveLocalX(gd.Float(delta), false)
 }
 
 /*
 Applies a local translation on the node's Y axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
 */
-func (self Instance) MoveLocalY(delta Float.X) {
+func (self Instance) MoveLocalY(delta Float.X) { //gd:Node2D.move_local_y
 	class(self).MoveLocalY(gd.Float(delta), false)
 }
 
 /*
 Translates the node by the given [param offset] in local coordinates.
 */
-func (self Instance) Translate(offset Vector2.XY) {
+func (self Instance) Translate(offset Vector2.XY) { //gd:Node2D.translate
 	class(self).Translate(gd.Vector2(offset))
 }
 
 /*
 Adds the [param offset] vector to the node's global position.
 */
-func (self Instance) GlobalTranslate(offset Vector2.XY) {
+func (self Instance) GlobalTranslate(offset Vector2.XY) { //gd:Node2D.global_translate
 	class(self).GlobalTranslate(gd.Vector2(offset))
 }
 
 /*
 Multiplies the current scale by the [param ratio] vector.
 */
-func (self Instance) ApplyScale(ratio Vector2.XY) {
+func (self Instance) ApplyScale(ratio Vector2.XY) { //gd:Node2D.apply_scale
 	class(self).ApplyScale(gd.Vector2(ratio))
 }
 
@@ -87,7 +87,7 @@ func (self Instance) ApplyScale(ratio Vector2.XY) {
 Rotates the node so that its local +X axis points towards the [param point], which is expected to use global coordinates.
 [param point] should not be the same as the node's position, otherwise the node always looks to the right.
 */
-func (self Instance) LookAt(point Vector2.XY) {
+func (self Instance) LookAt(point Vector2.XY) { //gd:Node2D.look_at
 	class(self).LookAt(gd.Vector2(point))
 }
 
@@ -95,28 +95,28 @@ func (self Instance) LookAt(point Vector2.XY) {
 Returns the angle between the node and the [param point] in radians.
 [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/node2d_get_angle_to.png]Illustration of the returned angle.[/url]
 */
-func (self Instance) GetAngleTo(point Vector2.XY) Float.X {
+func (self Instance) GetAngleTo(point Vector2.XY) Float.X { //gd:Node2D.get_angle_to
 	return Float.X(Float.X(class(self).GetAngleTo(gd.Vector2(point))))
 }
 
 /*
 Transforms the provided global position into a position in local coordinate space. The output will be local relative to the [Node2D] it is called on. e.g. It is appropriate for determining the positions of child nodes, but it is not appropriate for determining its own position relative to its parent.
 */
-func (self Instance) ToLocal(global_point Vector2.XY) Vector2.XY {
+func (self Instance) ToLocal(global_point Vector2.XY) Vector2.XY { //gd:Node2D.to_local
 	return Vector2.XY(class(self).ToLocal(gd.Vector2(global_point)))
 }
 
 /*
 Transforms the provided local position into a position in global coordinate space. The input is expected to be local relative to the [Node2D] it is called on. e.g. Applying this method to the positions of child nodes will correctly transform their positions into the global coordinate space, but applying it to a node's own position will give an incorrect result, as it will incorporate the node's own transformation into its global position.
 */
-func (self Instance) ToGlobal(local_point Vector2.XY) Vector2.XY {
+func (self Instance) ToGlobal(local_point Vector2.XY) Vector2.XY { //gd:Node2D.to_global
 	return Vector2.XY(class(self).ToGlobal(gd.Vector2(local_point)))
 }
 
 /*
 Returns the [Transform2D] relative to this node's parent.
 */
-func (self Instance) GetRelativeTransformToParent(parent [1]gdclass.Node) Transform2D.OriginXY {
+func (self Instance) GetRelativeTransformToParent(parent [1]gdclass.Node) Transform2D.OriginXY { //gd:Node2D.get_relative_transform_to_parent
 	return Transform2D.OriginXY(class(self).GetRelativeTransformToParent(parent))
 }
 
@@ -227,7 +227,7 @@ func (self Instance) SetGlobalTransform(value Transform2D.OriginXY) {
 }
 
 //go:nosplit
-func (self class) SetPosition(position gd.Vector2) {
+func (self class) SetPosition(position gd.Vector2) { //gd:Node2D.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -236,7 +236,7 @@ func (self class) SetPosition(position gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) SetRotation(radians gd.Float) {
+func (self class) SetRotation(radians gd.Float) { //gd:Node2D.set_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret = callframe.Nil
@@ -245,7 +245,7 @@ func (self class) SetRotation(radians gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetRotationDegrees(degrees gd.Float) {
+func (self class) SetRotationDegrees(degrees gd.Float) { //gd:Node2D.set_rotation_degrees
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -254,7 +254,7 @@ func (self class) SetRotationDegrees(degrees gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetSkew(radians gd.Float) {
+func (self class) SetSkew(radians gd.Float) { //gd:Node2D.set_skew
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret = callframe.Nil
@@ -263,7 +263,7 @@ func (self class) SetSkew(radians gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetScale(scale gd.Vector2) {
+func (self class) SetScale(scale gd.Vector2) { //gd:Node2D.set_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -272,7 +272,7 @@ func (self class) SetScale(scale gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector2 {
+func (self class) GetPosition() gd.Vector2 { //gd:Node2D.get_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -282,7 +282,7 @@ func (self class) GetPosition() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) GetRotation() gd.Float {
+func (self class) GetRotation() gd.Float { //gd:Node2D.get_rotation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -292,7 +292,7 @@ func (self class) GetRotation() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetRotationDegrees() gd.Float {
+func (self class) GetRotationDegrees() gd.Float { //gd:Node2D.get_rotation_degrees
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -302,7 +302,7 @@ func (self class) GetRotationDegrees() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetSkew() gd.Float {
+func (self class) GetSkew() gd.Float { //gd:Node2D.get_skew
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_skew, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -312,7 +312,7 @@ func (self class) GetSkew() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetScale() gd.Vector2 {
+func (self class) GetScale() gd.Vector2 { //gd:Node2D.get_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -325,7 +325,7 @@ func (self class) GetScale() gd.Vector2 {
 Applies a rotation to the node, in radians, starting from its current rotation.
 */
 //go:nosplit
-func (self class) Rotate(radians gd.Float) {
+func (self class) Rotate(radians gd.Float) { //gd:Node2D.rotate
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret = callframe.Nil
@@ -337,7 +337,7 @@ func (self class) Rotate(radians gd.Float) {
 Applies a local translation on the node's X axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
 */
 //go:nosplit
-func (self class) MoveLocalX(delta gd.Float, scaled bool) {
+func (self class) MoveLocalX(delta gd.Float, scaled bool) { //gd:Node2D.move_local_x
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, scaled)
@@ -350,7 +350,7 @@ func (self class) MoveLocalX(delta gd.Float, scaled bool) {
 Applies a local translation on the node's Y axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
 */
 //go:nosplit
-func (self class) MoveLocalY(delta gd.Float, scaled bool) {
+func (self class) MoveLocalY(delta gd.Float, scaled bool) { //gd:Node2D.move_local_y
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, scaled)
@@ -363,7 +363,7 @@ func (self class) MoveLocalY(delta gd.Float, scaled bool) {
 Translates the node by the given [param offset] in local coordinates.
 */
 //go:nosplit
-func (self class) Translate(offset gd.Vector2) {
+func (self class) Translate(offset gd.Vector2) { //gd:Node2D.translate
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -375,7 +375,7 @@ func (self class) Translate(offset gd.Vector2) {
 Adds the [param offset] vector to the node's global position.
 */
 //go:nosplit
-func (self class) GlobalTranslate(offset gd.Vector2) {
+func (self class) GlobalTranslate(offset gd.Vector2) { //gd:Node2D.global_translate
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -387,7 +387,7 @@ func (self class) GlobalTranslate(offset gd.Vector2) {
 Multiplies the current scale by the [param ratio] vector.
 */
 //go:nosplit
-func (self class) ApplyScale(ratio gd.Vector2) {
+func (self class) ApplyScale(ratio gd.Vector2) { //gd:Node2D.apply_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -396,7 +396,7 @@ func (self class) ApplyScale(ratio gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) SetGlobalPosition(position gd.Vector2) {
+func (self class) SetGlobalPosition(position gd.Vector2) { //gd:Node2D.set_global_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -405,7 +405,7 @@ func (self class) SetGlobalPosition(position gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetGlobalPosition() gd.Vector2 {
+func (self class) GetGlobalPosition() gd.Vector2 { //gd:Node2D.get_global_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -415,7 +415,7 @@ func (self class) GetGlobalPosition() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetGlobalRotation(radians gd.Float) {
+func (self class) SetGlobalRotation(radians gd.Float) { //gd:Node2D.set_global_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret = callframe.Nil
@@ -424,7 +424,7 @@ func (self class) SetGlobalRotation(radians gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetGlobalRotationDegrees(degrees gd.Float) {
+func (self class) SetGlobalRotationDegrees(degrees gd.Float) { //gd:Node2D.set_global_rotation_degrees
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -433,7 +433,7 @@ func (self class) SetGlobalRotationDegrees(degrees gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlobalRotation() gd.Float {
+func (self class) GetGlobalRotation() gd.Float { //gd:Node2D.get_global_rotation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -443,7 +443,7 @@ func (self class) GetGlobalRotation() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetGlobalRotationDegrees() gd.Float {
+func (self class) GetGlobalRotationDegrees() gd.Float { //gd:Node2D.get_global_rotation_degrees
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -453,7 +453,7 @@ func (self class) GetGlobalRotationDegrees() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlobalSkew(radians gd.Float) {
+func (self class) SetGlobalSkew(radians gd.Float) { //gd:Node2D.set_global_skew
 	var frame = callframe.New()
 	callframe.Arg(frame, radians)
 	var r_ret = callframe.Nil
@@ -462,7 +462,7 @@ func (self class) SetGlobalSkew(radians gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlobalSkew() gd.Float {
+func (self class) GetGlobalSkew() gd.Float { //gd:Node2D.get_global_skew
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_skew, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -472,7 +472,7 @@ func (self class) GetGlobalSkew() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlobalScale(scale gd.Vector2) {
+func (self class) SetGlobalScale(scale gd.Vector2) { //gd:Node2D.set_global_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -481,7 +481,7 @@ func (self class) SetGlobalScale(scale gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetGlobalScale() gd.Vector2 {
+func (self class) GetGlobalScale() gd.Vector2 { //gd:Node2D.get_global_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -491,7 +491,7 @@ func (self class) GetGlobalScale() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetTransform(xform gd.Transform2D) {
+func (self class) SetTransform(xform gd.Transform2D) { //gd:Node2D.set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	var r_ret = callframe.Nil
@@ -500,7 +500,7 @@ func (self class) SetTransform(xform gd.Transform2D) {
 }
 
 //go:nosplit
-func (self class) SetGlobalTransform(xform gd.Transform2D) {
+func (self class) SetGlobalTransform(xform gd.Transform2D) { //gd:Node2D.set_global_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	var r_ret = callframe.Nil
@@ -513,7 +513,7 @@ Rotates the node so that its local +X axis points towards the [param point], whi
 [param point] should not be the same as the node's position, otherwise the node always looks to the right.
 */
 //go:nosplit
-func (self class) LookAt(point gd.Vector2) {
+func (self class) LookAt(point gd.Vector2) { //gd:Node2D.look_at
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Nil
@@ -526,7 +526,7 @@ Returns the angle between the node and the [param point] in radians.
 [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/node2d_get_angle_to.png]Illustration of the returned angle.[/url]
 */
 //go:nosplit
-func (self class) GetAngleTo(point gd.Vector2) gd.Float {
+func (self class) GetAngleTo(point gd.Vector2) gd.Float { //gd:Node2D.get_angle_to
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -540,7 +540,7 @@ func (self class) GetAngleTo(point gd.Vector2) gd.Float {
 Transforms the provided global position into a position in local coordinate space. The output will be local relative to the [Node2D] it is called on. e.g. It is appropriate for determining the positions of child nodes, but it is not appropriate for determining its own position relative to its parent.
 */
 //go:nosplit
-func (self class) ToLocal(global_point gd.Vector2) gd.Vector2 {
+func (self class) ToLocal(global_point gd.Vector2) gd.Vector2 { //gd:Node2D.to_local
 	var frame = callframe.New()
 	callframe.Arg(frame, global_point)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -554,7 +554,7 @@ func (self class) ToLocal(global_point gd.Vector2) gd.Vector2 {
 Transforms the provided local position into a position in global coordinate space. The input is expected to be local relative to the [Node2D] it is called on. e.g. Applying this method to the positions of child nodes will correctly transform their positions into the global coordinate space, but applying it to a node's own position will give an incorrect result, as it will incorporate the node's own transformation into its global position.
 */
 //go:nosplit
-func (self class) ToGlobal(local_point gd.Vector2) gd.Vector2 {
+func (self class) ToGlobal(local_point gd.Vector2) gd.Vector2 { //gd:Node2D.to_global
 	var frame = callframe.New()
 	callframe.Arg(frame, local_point)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -568,7 +568,7 @@ func (self class) ToGlobal(local_point gd.Vector2) gd.Vector2 {
 Returns the [Transform2D] relative to this node's parent.
 */
 //go:nosplit
-func (self class) GetRelativeTransformToParent(parent [1]gdclass.Node) gd.Transform2D {
+func (self class) GetRelativeTransformToParent(parent [1]gdclass.Node) gd.Transform2D { //gd:Node2D.get_relative_transform_to_parent
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parent[0])[0])
 	var r_ret = callframe.Ret[gd.Transform2D](frame)

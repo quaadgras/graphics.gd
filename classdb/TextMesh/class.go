@@ -207,7 +207,7 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) {
+func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:TextMesh.set_horizontal_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -216,7 +216,7 @@ func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() HorizontalAlignment {
+func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:TextMesh.get_horizontal_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -226,7 +226,7 @@ func (self class) GetHorizontalAlignment() HorizontalAlignment {
 }
 
 //go:nosplit
-func (self class) SetVerticalAlignment(alignment VerticalAlignment) {
+func (self class) SetVerticalAlignment(alignment VerticalAlignment) { //gd:TextMesh.set_vertical_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -235,7 +235,7 @@ func (self class) SetVerticalAlignment(alignment VerticalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetVerticalAlignment() VerticalAlignment {
+func (self class) GetVerticalAlignment() VerticalAlignment { //gd:TextMesh.get_vertical_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[VerticalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_vertical_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -245,7 +245,7 @@ func (self class) GetVerticalAlignment() VerticalAlignment {
 }
 
 //go:nosplit
-func (self class) SetText(text gd.String) {
+func (self class) SetText(text gd.String) { //gd:TextMesh.set_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Nil
@@ -254,7 +254,7 @@ func (self class) SetText(text gd.String) {
 }
 
 //go:nosplit
-func (self class) GetText() gd.String {
+func (self class) GetText() gd.String { //gd:TextMesh.get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -264,7 +264,7 @@ func (self class) GetText() gd.String {
 }
 
 //go:nosplit
-func (self class) SetFont(font [1]gdclass.Font) {
+func (self class) SetFont(font [1]gdclass.Font) { //gd:TextMesh.set_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	var r_ret = callframe.Nil
@@ -273,7 +273,7 @@ func (self class) SetFont(font [1]gdclass.Font) {
 }
 
 //go:nosplit
-func (self class) GetFont() [1]gdclass.Font {
+func (self class) GetFont() [1]gdclass.Font { //gd:TextMesh.get_font
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_font, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -283,7 +283,7 @@ func (self class) GetFont() [1]gdclass.Font {
 }
 
 //go:nosplit
-func (self class) SetFontSize(font_size gd.Int) {
+func (self class) SetFontSize(font_size gd.Int) { //gd:TextMesh.set_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Nil
@@ -292,7 +292,7 @@ func (self class) SetFontSize(font_size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFontSize() gd.Int {
+func (self class) GetFontSize() gd.Int { //gd:TextMesh.get_font_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -302,7 +302,7 @@ func (self class) GetFontSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetLineSpacing(line_spacing gd.Float) {
+func (self class) SetLineSpacing(line_spacing gd.Float) { //gd:TextMesh.set_line_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, line_spacing)
 	var r_ret = callframe.Nil
@@ -311,7 +311,7 @@ func (self class) SetLineSpacing(line_spacing gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLineSpacing() gd.Float {
+func (self class) GetLineSpacing() gd.Float { //gd:TextMesh.get_line_spacing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_line_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -321,7 +321,7 @@ func (self class) GetLineSpacing() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) {
+func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) { //gd:TextMesh.set_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, autowrap_mode)
 	var r_ret = callframe.Nil
@@ -330,7 +330,7 @@ func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) 
 }
 
 //go:nosplit
-func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode {
+func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:TextMesh.get_autowrap_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -340,7 +340,7 @@ func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode {
 }
 
 //go:nosplit
-func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJustificationFlag) {
+func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJustificationFlag) { //gd:TextMesh.set_justification_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, justification_flags)
 	var r_ret = callframe.Nil
@@ -349,7 +349,7 @@ func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJu
 }
 
 //go:nosplit
-func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag {
+func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag { //gd:TextMesh.get_justification_flags
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerJustificationFlag](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_justification_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -359,7 +359,7 @@ func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag {
 }
 
 //go:nosplit
-func (self class) SetDepth(depth gd.Float) {
+func (self class) SetDepth(depth gd.Float) { //gd:TextMesh.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -368,7 +368,7 @@ func (self class) SetDepth(depth gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDepth() gd.Float {
+func (self class) GetDepth() gd.Float { //gd:TextMesh.get_depth
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -378,7 +378,7 @@ func (self class) GetDepth() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Float) {
+func (self class) SetWidth(width gd.Float) { //gd:TextMesh.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -387,7 +387,7 @@ func (self class) SetWidth(width gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetWidth() gd.Float {
+func (self class) GetWidth() gd.Float { //gd:TextMesh.get_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -397,7 +397,7 @@ func (self class) GetWidth() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPixelSize(pixel_size gd.Float) {
+func (self class) SetPixelSize(pixel_size gd.Float) { //gd:TextMesh.set_pixel_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pixel_size)
 	var r_ret = callframe.Nil
@@ -406,7 +406,7 @@ func (self class) SetPixelSize(pixel_size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPixelSize() gd.Float {
+func (self class) GetPixelSize() gd.Float { //gd:TextMesh.get_pixel_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_pixel_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -416,7 +416,7 @@ func (self class) GetPixelSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) {
+func (self class) SetOffset(offset gd.Vector2) { //gd:TextMesh.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -425,7 +425,7 @@ func (self class) SetOffset(offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 {
+func (self class) GetOffset() gd.Vector2 { //gd:TextMesh.get_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -435,7 +435,7 @@ func (self class) GetOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetCurveStep(curve_step gd.Float) {
+func (self class) SetCurveStep(curve_step gd.Float) { //gd:TextMesh.set_curve_step
 	var frame = callframe.New()
 	callframe.Arg(frame, curve_step)
 	var r_ret = callframe.Nil
@@ -444,7 +444,7 @@ func (self class) SetCurveStep(curve_step gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCurveStep() gd.Float {
+func (self class) GetCurveStep() gd.Float { //gd:TextMesh.get_curve_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_curve_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -454,7 +454,7 @@ func (self class) GetCurveStep() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.TextServerDirection) {
+func (self class) SetTextDirection(direction gdclass.TextServerDirection) { //gd:TextMesh.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -463,7 +463,7 @@ func (self class) SetTextDirection(direction gdclass.TextServerDirection) {
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.TextServerDirection {
+func (self class) GetTextDirection() gdclass.TextServerDirection { //gd:TextMesh.get_text_direction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -473,7 +473,7 @@ func (self class) GetTextDirection() gdclass.TextServerDirection {
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) {
+func (self class) SetLanguage(language gd.String) { //gd:TextMesh.set_language
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
 	var r_ret = callframe.Nil
@@ -482,7 +482,7 @@ func (self class) SetLanguage(language gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String {
+func (self class) GetLanguage() gd.String { //gd:TextMesh.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -492,7 +492,7 @@ func (self class) GetLanguage() gd.String {
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) {
+func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) { //gd:TextMesh.set_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
 	var r_ret = callframe.Nil
@@ -501,7 +501,7 @@ func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructu
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
+func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser { //gd:TextMesh.get_structured_text_bidi_override
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -511,7 +511,7 @@ func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTe
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) {
+func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:TextMesh.set_structured_text_bidi_override_options
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	var r_ret = callframe.Nil
@@ -520,7 +520,7 @@ func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) {
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverrideOptions() Array.Any {
+func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:TextMesh.get_structured_text_bidi_override_options
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -530,7 +530,7 @@ func (self class) GetStructuredTextBidiOverrideOptions() Array.Any {
 }
 
 //go:nosplit
-func (self class) SetUppercase(enable bool) {
+func (self class) SetUppercase(enable bool) { //gd:TextMesh.set_uppercase
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -539,7 +539,7 @@ func (self class) SetUppercase(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUppercase() bool {
+func (self class) IsUppercase() bool { //gd:TextMesh.is_uppercase
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_is_uppercase, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -145,7 +145,7 @@ func (self Instance) SetPatchControlPoints(value int) {
 }
 
 //go:nosplit
-func (self class) SetEnableDepthClamp(p_member bool) {
+func (self class) SetEnableDepthClamp(p_member bool) { //gd:RDPipelineRasterizationState.set_enable_depth_clamp
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -154,7 +154,7 @@ func (self class) SetEnableDepthClamp(p_member bool) {
 }
 
 //go:nosplit
-func (self class) GetEnableDepthClamp() bool {
+func (self class) GetEnableDepthClamp() bool { //gd:RDPipelineRasterizationState.get_enable_depth_clamp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_enable_depth_clamp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -164,7 +164,7 @@ func (self class) GetEnableDepthClamp() bool {
 }
 
 //go:nosplit
-func (self class) SetDiscardPrimitives(p_member bool) {
+func (self class) SetDiscardPrimitives(p_member bool) { //gd:RDPipelineRasterizationState.set_discard_primitives
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -173,7 +173,7 @@ func (self class) SetDiscardPrimitives(p_member bool) {
 }
 
 //go:nosplit
-func (self class) GetDiscardPrimitives() bool {
+func (self class) GetDiscardPrimitives() bool { //gd:RDPipelineRasterizationState.get_discard_primitives
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_discard_primitives, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -183,7 +183,7 @@ func (self class) GetDiscardPrimitives() bool {
 }
 
 //go:nosplit
-func (self class) SetWireframe(p_member bool) {
+func (self class) SetWireframe(p_member bool) { //gd:RDPipelineRasterizationState.set_wireframe
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -192,7 +192,7 @@ func (self class) SetWireframe(p_member bool) {
 }
 
 //go:nosplit
-func (self class) GetWireframe() bool {
+func (self class) GetWireframe() bool { //gd:RDPipelineRasterizationState.get_wireframe
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_wireframe, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -202,7 +202,7 @@ func (self class) GetWireframe() bool {
 }
 
 //go:nosplit
-func (self class) SetCullMode(p_member gdclass.RenderingDevicePolygonCullMode) {
+func (self class) SetCullMode(p_member gdclass.RenderingDevicePolygonCullMode) { //gd:RDPipelineRasterizationState.set_cull_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -211,7 +211,7 @@ func (self class) SetCullMode(p_member gdclass.RenderingDevicePolygonCullMode) {
 }
 
 //go:nosplit
-func (self class) GetCullMode() gdclass.RenderingDevicePolygonCullMode {
+func (self class) GetCullMode() gdclass.RenderingDevicePolygonCullMode { //gd:RDPipelineRasterizationState.get_cull_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDevicePolygonCullMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_cull_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -221,7 +221,7 @@ func (self class) GetCullMode() gdclass.RenderingDevicePolygonCullMode {
 }
 
 //go:nosplit
-func (self class) SetFrontFace(p_member gdclass.RenderingDevicePolygonFrontFace) {
+func (self class) SetFrontFace(p_member gdclass.RenderingDevicePolygonFrontFace) { //gd:RDPipelineRasterizationState.set_front_face
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -230,7 +230,7 @@ func (self class) SetFrontFace(p_member gdclass.RenderingDevicePolygonFrontFace)
 }
 
 //go:nosplit
-func (self class) GetFrontFace() gdclass.RenderingDevicePolygonFrontFace {
+func (self class) GetFrontFace() gdclass.RenderingDevicePolygonFrontFace { //gd:RDPipelineRasterizationState.get_front_face
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDevicePolygonFrontFace](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_front_face, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -240,7 +240,7 @@ func (self class) GetFrontFace() gdclass.RenderingDevicePolygonFrontFace {
 }
 
 //go:nosplit
-func (self class) SetDepthBiasEnabled(p_member bool) {
+func (self class) SetDepthBiasEnabled(p_member bool) { //gd:RDPipelineRasterizationState.set_depth_bias_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -249,7 +249,7 @@ func (self class) SetDepthBiasEnabled(p_member bool) {
 }
 
 //go:nosplit
-func (self class) GetDepthBiasEnabled() bool {
+func (self class) GetDepthBiasEnabled() bool { //gd:RDPipelineRasterizationState.get_depth_bias_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_depth_bias_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -259,7 +259,7 @@ func (self class) GetDepthBiasEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDepthBiasConstantFactor(p_member gd.Float) {
+func (self class) SetDepthBiasConstantFactor(p_member gd.Float) { //gd:RDPipelineRasterizationState.set_depth_bias_constant_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -268,7 +268,7 @@ func (self class) SetDepthBiasConstantFactor(p_member gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDepthBiasConstantFactor() gd.Float {
+func (self class) GetDepthBiasConstantFactor() gd.Float { //gd:RDPipelineRasterizationState.get_depth_bias_constant_factor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_depth_bias_constant_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -278,7 +278,7 @@ func (self class) GetDepthBiasConstantFactor() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDepthBiasClamp(p_member gd.Float) {
+func (self class) SetDepthBiasClamp(p_member gd.Float) { //gd:RDPipelineRasterizationState.set_depth_bias_clamp
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -287,7 +287,7 @@ func (self class) SetDepthBiasClamp(p_member gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDepthBiasClamp() gd.Float {
+func (self class) GetDepthBiasClamp() gd.Float { //gd:RDPipelineRasterizationState.get_depth_bias_clamp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_depth_bias_clamp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -297,7 +297,7 @@ func (self class) GetDepthBiasClamp() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDepthBiasSlopeFactor(p_member gd.Float) {
+func (self class) SetDepthBiasSlopeFactor(p_member gd.Float) { //gd:RDPipelineRasterizationState.set_depth_bias_slope_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -306,7 +306,7 @@ func (self class) SetDepthBiasSlopeFactor(p_member gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDepthBiasSlopeFactor() gd.Float {
+func (self class) GetDepthBiasSlopeFactor() gd.Float { //gd:RDPipelineRasterizationState.get_depth_bias_slope_factor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_depth_bias_slope_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -316,7 +316,7 @@ func (self class) GetDepthBiasSlopeFactor() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetLineWidth(p_member gd.Float) {
+func (self class) SetLineWidth(p_member gd.Float) { //gd:RDPipelineRasterizationState.set_line_width
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -325,7 +325,7 @@ func (self class) SetLineWidth(p_member gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLineWidth() gd.Float {
+func (self class) GetLineWidth() gd.Float { //gd:RDPipelineRasterizationState.get_line_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_line_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -335,7 +335,7 @@ func (self class) GetLineWidth() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPatchControlPoints(p_member gd.Int) {
+func (self class) SetPatchControlPoints(p_member gd.Int) { //gd:RDPipelineRasterizationState.set_patch_control_points
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -344,7 +344,7 @@ func (self class) SetPatchControlPoints(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPatchControlPoints() gd.Int {
+func (self class) GetPatchControlPoints() gd.Int { //gd:RDPipelineRasterizationState.get_patch_control_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineRasterizationState.Bind_get_patch_control_points, self.AsObject(), frame.Array(0), r_ret.Addr())

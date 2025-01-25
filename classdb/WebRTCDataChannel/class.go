@@ -37,42 +37,42 @@ type Any interface {
 /*
 Reserved, but not used for now.
 */
-func (self Instance) Poll() error {
+func (self Instance) Poll() error { //gd:WebRTCDataChannel.poll
 	return error(gd.ToError(class(self).Poll()))
 }
 
 /*
 Closes this data channel, notifying the other peer.
 */
-func (self Instance) Close() {
+func (self Instance) Close() { //gd:WebRTCDataChannel.close
 	class(self).Close()
 }
 
 /*
 Returns [code]true[/code] if the last received packet was transferred as text. See [member write_mode].
 */
-func (self Instance) WasStringPacket() bool {
+func (self Instance) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet
 	return bool(class(self).WasStringPacket())
 }
 
 /*
 Returns the current state of this channel, see [enum ChannelState].
 */
-func (self Instance) GetReadyState() gdclass.WebRTCDataChannelChannelState {
+func (self Instance) GetReadyState() gdclass.WebRTCDataChannelChannelState { //gd:WebRTCDataChannel.get_ready_state
 	return gdclass.WebRTCDataChannelChannelState(class(self).GetReadyState())
 }
 
 /*
 Returns the label assigned to this channel during creation.
 */
-func (self Instance) GetLabel() string {
+func (self Instance) GetLabel() string { //gd:WebRTCDataChannel.get_label
 	return string(class(self).GetLabel().String())
 }
 
 /*
 Returns [code]true[/code] if this channel was created with ordering enabled (default).
 */
-func (self Instance) IsOrdered() bool {
+func (self Instance) IsOrdered() bool { //gd:WebRTCDataChannel.is_ordered
 	return bool(class(self).IsOrdered())
 }
 
@@ -80,7 +80,7 @@ func (self Instance) IsOrdered() bool {
 Returns the ID assigned to this channel during creation (or auto-assigned during negotiation).
 If the channel is not negotiated out-of-band the ID will only be available after the connection is established (will return [code]65535[/code] until then).
 */
-func (self Instance) GetId() int {
+func (self Instance) GetId() int { //gd:WebRTCDataChannel.get_id
 	return int(int(class(self).GetId()))
 }
 
@@ -88,7 +88,7 @@ func (self Instance) GetId() int {
 Returns the [code]maxPacketLifeTime[/code] value assigned to this channel during creation.
 Will be [code]65535[/code] if not specified.
 */
-func (self Instance) GetMaxPacketLifeTime() int {
+func (self Instance) GetMaxPacketLifeTime() int { //gd:WebRTCDataChannel.get_max_packet_life_time
 	return int(int(class(self).GetMaxPacketLifeTime()))
 }
 
@@ -96,28 +96,28 @@ func (self Instance) GetMaxPacketLifeTime() int {
 Returns the [code]maxRetransmits[/code] value assigned to this channel during creation.
 Will be [code]65535[/code] if not specified.
 */
-func (self Instance) GetMaxRetransmits() int {
+func (self Instance) GetMaxRetransmits() int { //gd:WebRTCDataChannel.get_max_retransmits
 	return int(int(class(self).GetMaxRetransmits()))
 }
 
 /*
 Returns the sub-protocol assigned to this channel during creation. An empty string if not specified.
 */
-func (self Instance) GetProtocol() string {
+func (self Instance) GetProtocol() string { //gd:WebRTCDataChannel.get_protocol
 	return string(class(self).GetProtocol().String())
 }
 
 /*
 Returns [code]true[/code] if this channel was created with out-of-band configuration.
 */
-func (self Instance) IsNegotiated() bool {
+func (self Instance) IsNegotiated() bool { //gd:WebRTCDataChannel.is_negotiated
 	return bool(class(self).IsNegotiated())
 }
 
 /*
 Returns the number of bytes currently queued to be sent over this channel.
 */
-func (self Instance) GetBufferedAmount() int {
+func (self Instance) GetBufferedAmount() int { //gd:WebRTCDataChannel.get_buffered_amount
 	return int(int(class(self).GetBufferedAmount()))
 }
 
@@ -152,7 +152,7 @@ func (self Instance) SetWriteMode(value gdclass.WebRTCDataChannelWriteMode) {
 Reserved, but not used for now.
 */
 //go:nosplit
-func (self class) Poll() gd.Error {
+func (self class) Poll() gd.Error { //gd:WebRTCDataChannel.poll
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -165,7 +165,7 @@ func (self class) Poll() gd.Error {
 Closes this data channel, notifying the other peer.
 */
 //go:nosplit
-func (self class) Close() {
+func (self class) Close() { //gd:WebRTCDataChannel.close
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -176,7 +176,7 @@ func (self class) Close() {
 Returns [code]true[/code] if the last received packet was transferred as text. See [member write_mode].
 */
 //go:nosplit
-func (self class) WasStringPacket() bool {
+func (self class) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_was_string_packet, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -186,7 +186,7 @@ func (self class) WasStringPacket() bool {
 }
 
 //go:nosplit
-func (self class) SetWriteMode(write_mode gdclass.WebRTCDataChannelWriteMode) {
+func (self class) SetWriteMode(write_mode gdclass.WebRTCDataChannelWriteMode) { //gd:WebRTCDataChannel.set_write_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, write_mode)
 	var r_ret = callframe.Nil
@@ -195,7 +195,7 @@ func (self class) SetWriteMode(write_mode gdclass.WebRTCDataChannelWriteMode) {
 }
 
 //go:nosplit
-func (self class) GetWriteMode() gdclass.WebRTCDataChannelWriteMode {
+func (self class) GetWriteMode() gdclass.WebRTCDataChannelWriteMode { //gd:WebRTCDataChannel.get_write_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WebRTCDataChannelWriteMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_write_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -208,7 +208,7 @@ func (self class) GetWriteMode() gdclass.WebRTCDataChannelWriteMode {
 Returns the current state of this channel, see [enum ChannelState].
 */
 //go:nosplit
-func (self class) GetReadyState() gdclass.WebRTCDataChannelChannelState {
+func (self class) GetReadyState() gdclass.WebRTCDataChannelChannelState { //gd:WebRTCDataChannel.get_ready_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WebRTCDataChannelChannelState](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_ready_state, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -221,7 +221,7 @@ func (self class) GetReadyState() gdclass.WebRTCDataChannelChannelState {
 Returns the label assigned to this channel during creation.
 */
 //go:nosplit
-func (self class) GetLabel() gd.String {
+func (self class) GetLabel() gd.String { //gd:WebRTCDataChannel.get_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -234,7 +234,7 @@ func (self class) GetLabel() gd.String {
 Returns [code]true[/code] if this channel was created with ordering enabled (default).
 */
 //go:nosplit
-func (self class) IsOrdered() bool {
+func (self class) IsOrdered() bool { //gd:WebRTCDataChannel.is_ordered
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_is_ordered, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -248,7 +248,7 @@ Returns the ID assigned to this channel during creation (or auto-assigned during
 If the channel is not negotiated out-of-band the ID will only be available after the connection is established (will return [code]65535[/code] until then).
 */
 //go:nosplit
-func (self class) GetId() gd.Int {
+func (self class) GetId() gd.Int { //gd:WebRTCDataChannel.get_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -262,7 +262,7 @@ Returns the [code]maxPacketLifeTime[/code] value assigned to this channel during
 Will be [code]65535[/code] if not specified.
 */
 //go:nosplit
-func (self class) GetMaxPacketLifeTime() gd.Int {
+func (self class) GetMaxPacketLifeTime() gd.Int { //gd:WebRTCDataChannel.get_max_packet_life_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_max_packet_life_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -276,7 +276,7 @@ Returns the [code]maxRetransmits[/code] value assigned to this channel during cr
 Will be [code]65535[/code] if not specified.
 */
 //go:nosplit
-func (self class) GetMaxRetransmits() gd.Int {
+func (self class) GetMaxRetransmits() gd.Int { //gd:WebRTCDataChannel.get_max_retransmits
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_max_retransmits, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -289,7 +289,7 @@ func (self class) GetMaxRetransmits() gd.Int {
 Returns the sub-protocol assigned to this channel during creation. An empty string if not specified.
 */
 //go:nosplit
-func (self class) GetProtocol() gd.String {
+func (self class) GetProtocol() gd.String { //gd:WebRTCDataChannel.get_protocol
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_protocol, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -302,7 +302,7 @@ func (self class) GetProtocol() gd.String {
 Returns [code]true[/code] if this channel was created with out-of-band configuration.
 */
 //go:nosplit
-func (self class) IsNegotiated() bool {
+func (self class) IsNegotiated() bool { //gd:WebRTCDataChannel.is_negotiated
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_is_negotiated, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -315,7 +315,7 @@ func (self class) IsNegotiated() bool {
 Returns the number of bytes currently queued to be sent over this channel.
 */
 //go:nosplit
-func (self class) GetBufferedAmount() gd.Int {
+func (self class) GetBufferedAmount() gd.Int { //gd:WebRTCDataChannel.get_buffered_amount
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_buffered_amount, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -357,7 +357,7 @@ func init() {
 	})
 }
 
-type WriteMode = gdclass.WebRTCDataChannelWriteMode
+type WriteMode = gdclass.WebRTCDataChannelWriteMode //gd:WebRTCDataChannel.WriteMode
 
 const (
 	/*Tells the channel to send data over this channel as text. An external peer (non-Godot) would receive this as a string.*/
@@ -366,7 +366,7 @@ const (
 	WriteModeBinary WriteMode = 1
 )
 
-type ChannelState = gdclass.WebRTCDataChannelChannelState
+type ChannelState = gdclass.WebRTCDataChannelChannelState //gd:WebRTCDataChannel.ChannelState
 
 const (
 	/*The channel was created, but it's still trying to connect.*/
@@ -379,7 +379,7 @@ const (
 	StateClosed ChannelState = 3
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

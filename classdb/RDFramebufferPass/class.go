@@ -98,7 +98,7 @@ func (self Instance) SetDepthAttachment(value int) {
 }
 
 //go:nosplit
-func (self class) SetColorAttachments(p_member gd.PackedInt32Array) {
+func (self class) SetColorAttachments(p_member gd.PackedInt32Array) { //gd:RDFramebufferPass.set_color_attachments
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(p_member))
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetColorAttachments(p_member gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetColorAttachments() gd.PackedInt32Array {
+func (self class) GetColorAttachments() gd.PackedInt32Array { //gd:RDFramebufferPass.get_color_attachments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDFramebufferPass.Bind_get_color_attachments, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -117,7 +117,7 @@ func (self class) GetColorAttachments() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetInputAttachments(p_member gd.PackedInt32Array) {
+func (self class) SetInputAttachments(p_member gd.PackedInt32Array) { //gd:RDFramebufferPass.set_input_attachments
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(p_member))
 	var r_ret = callframe.Nil
@@ -126,7 +126,7 @@ func (self class) SetInputAttachments(p_member gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetInputAttachments() gd.PackedInt32Array {
+func (self class) GetInputAttachments() gd.PackedInt32Array { //gd:RDFramebufferPass.get_input_attachments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDFramebufferPass.Bind_get_input_attachments, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -136,7 +136,7 @@ func (self class) GetInputAttachments() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetResolveAttachments(p_member gd.PackedInt32Array) {
+func (self class) SetResolveAttachments(p_member gd.PackedInt32Array) { //gd:RDFramebufferPass.set_resolve_attachments
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(p_member))
 	var r_ret = callframe.Nil
@@ -145,7 +145,7 @@ func (self class) SetResolveAttachments(p_member gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetResolveAttachments() gd.PackedInt32Array {
+func (self class) GetResolveAttachments() gd.PackedInt32Array { //gd:RDFramebufferPass.get_resolve_attachments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDFramebufferPass.Bind_get_resolve_attachments, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -155,7 +155,7 @@ func (self class) GetResolveAttachments() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetPreserveAttachments(p_member gd.PackedInt32Array) {
+func (self class) SetPreserveAttachments(p_member gd.PackedInt32Array) { //gd:RDFramebufferPass.set_preserve_attachments
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(p_member))
 	var r_ret = callframe.Nil
@@ -164,7 +164,7 @@ func (self class) SetPreserveAttachments(p_member gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetPreserveAttachments() gd.PackedInt32Array {
+func (self class) GetPreserveAttachments() gd.PackedInt32Array { //gd:RDFramebufferPass.get_preserve_attachments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDFramebufferPass.Bind_get_preserve_attachments, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func (self class) GetPreserveAttachments() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetDepthAttachment(p_member gd.Int) {
+func (self class) SetDepthAttachment(p_member gd.Int) { //gd:RDFramebufferPass.set_depth_attachment
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -183,7 +183,7 @@ func (self class) SetDepthAttachment(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetDepthAttachment() gd.Int {
+func (self class) GetDepthAttachment() gd.Int { //gd:RDFramebufferPass.get_depth_attachment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDFramebufferPass.Bind_get_depth_attachment, self.AsObject(), frame.Array(0), r_ret.Addr())

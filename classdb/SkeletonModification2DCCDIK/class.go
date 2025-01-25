@@ -46,84 +46,84 @@ type Any interface {
 /*
 Sets the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
-func (self Instance) SetCcdikJointBone2dNode(joint_idx int, bone2d_nodepath NodePath.String) {
+func (self Instance) SetCcdikJointBone2dNode(joint_idx int, bone2d_nodepath NodePath.String) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
 	class(self).SetCcdikJointBone2dNode(gd.Int(joint_idx), gd.NewString(string(bone2d_nodepath)).NodePath())
 }
 
 /*
 Returns the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointBone2dNode(joint_idx int) NodePath.String {
+func (self Instance) GetCcdikJointBone2dNode(joint_idx int) NodePath.String { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone2d_node
 	return NodePath.String(class(self).GetCcdikJointBone2dNode(gd.Int(joint_idx)).String())
 }
 
 /*
 Sets the bone index, [param bone_idx], of the CCDIK joint at [param joint_idx]. When possible, this will also update the [code]bone2d_node[/code] of the CCDIK joint based on data provided by the linked skeleton.
 */
-func (self Instance) SetCcdikJointBoneIndex(joint_idx int, bone_idx int) {
+func (self Instance) SetCcdikJointBoneIndex(joint_idx int, bone_idx int) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone_index
 	class(self).SetCcdikJointBoneIndex(gd.Int(joint_idx), gd.Int(bone_idx))
 }
 
 /*
 Returns the index of the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointBoneIndex(joint_idx int) int {
+func (self Instance) GetCcdikJointBoneIndex(joint_idx int) int { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone_index
 	return int(int(class(self).GetCcdikJointBoneIndex(gd.Int(joint_idx))))
 }
 
 /*
 Sets whether the joint at [param joint_idx] is set to rotate from the joint, [code]true[/code], or to rotate from the tip, [code]false[/code].
 */
-func (self Instance) SetCcdikJointRotateFromJoint(joint_idx int, rotate_from_joint bool) {
+func (self Instance) SetCcdikJointRotateFromJoint(joint_idx int, rotate_from_joint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_rotate_from_joint
 	class(self).SetCcdikJointRotateFromJoint(gd.Int(joint_idx), rotate_from_joint)
 }
 
 /*
 Returns whether the joint at [param joint_idx] is set to rotate from the joint, [code]true[/code], or to rotate from the tip, [code]false[/code]. The default is to rotate from the tip.
 */
-func (self Instance) GetCcdikJointRotateFromJoint(joint_idx int) bool {
+func (self Instance) GetCcdikJointRotateFromJoint(joint_idx int) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_rotate_from_joint
 	return bool(class(self).GetCcdikJointRotateFromJoint(gd.Int(joint_idx)))
 }
 
 /*
 Determines whether angle constraints on the CCDIK joint at [param joint_idx] are enabled. When [code]true[/code], constraints will be enabled and taken into account when solving.
 */
-func (self Instance) SetCcdikJointEnableConstraint(joint_idx int, enable_constraint bool) {
+func (self Instance) SetCcdikJointEnableConstraint(joint_idx int, enable_constraint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_enable_constraint
 	class(self).SetCcdikJointEnableConstraint(gd.Int(joint_idx), enable_constraint)
 }
 
 /*
 Returns whether angle constraints on the CCDIK joint at [param joint_idx] are enabled.
 */
-func (self Instance) GetCcdikJointEnableConstraint(joint_idx int) bool {
+func (self Instance) GetCcdikJointEnableConstraint(joint_idx int) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_enable_constraint
 	return bool(class(self).GetCcdikJointEnableConstraint(gd.Int(joint_idx)))
 }
 
 /*
 Sets the minimum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) SetCcdikJointConstraintAngleMin(joint_idx int, angle_min Float.X) {
+func (self Instance) SetCcdikJointConstraintAngleMin(joint_idx int, angle_min Float.X) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_min
 	class(self).SetCcdikJointConstraintAngleMin(gd.Int(joint_idx), gd.Float(angle_min))
 }
 
 /*
 Returns the minimum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointConstraintAngleMin(joint_idx int) Float.X {
+func (self Instance) GetCcdikJointConstraintAngleMin(joint_idx int) Float.X { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_min
 	return Float.X(Float.X(class(self).GetCcdikJointConstraintAngleMin(gd.Int(joint_idx))))
 }
 
 /*
 Sets the maximum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) SetCcdikJointConstraintAngleMax(joint_idx int, angle_max Float.X) {
+func (self Instance) SetCcdikJointConstraintAngleMax(joint_idx int, angle_max Float.X) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_max
 	class(self).SetCcdikJointConstraintAngleMax(gd.Int(joint_idx), gd.Float(angle_max))
 }
 
 /*
 Returns the maximum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointConstraintAngleMax(joint_idx int) Float.X {
+func (self Instance) GetCcdikJointConstraintAngleMax(joint_idx int) Float.X { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_max
 	return Float.X(Float.X(class(self).GetCcdikJointConstraintAngleMax(gd.Int(joint_idx))))
 }
 
@@ -131,14 +131,14 @@ func (self Instance) GetCcdikJointConstraintAngleMax(joint_idx int) Float.X {
 Sets whether the CCDIK joint at [param joint_idx] uses an inverted joint constraint.
 An inverted joint constraint only constraints the CCDIK joint to the angles [i]outside of[/i] the inputted minimum and maximum angles. For this reason, it is referred to as an inverted joint constraint, as it constraints the joint to the outside of the inputted values.
 */
-func (self Instance) SetCcdikJointConstraintAngleInvert(joint_idx int, invert bool) {
+func (self Instance) SetCcdikJointConstraintAngleInvert(joint_idx int, invert bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_invert
 	class(self).SetCcdikJointConstraintAngleInvert(gd.Int(joint_idx), invert)
 }
 
 /*
 Returns whether the CCDIK joint at [param joint_idx] uses an inverted joint constraint. See [method set_ccdik_joint_constraint_angle_invert] for details.
 */
-func (self Instance) GetCcdikJointConstraintAngleInvert(joint_idx int) bool {
+func (self Instance) GetCcdikJointConstraintAngleInvert(joint_idx int) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_invert
 	return bool(class(self).GetCcdikJointConstraintAngleInvert(gd.Int(joint_idx)))
 }
 
@@ -186,7 +186,7 @@ func (self Instance) SetCcdikDataChainLength(value int) {
 }
 
 //go:nosplit
-func (self class) SetTargetNode(target_nodepath gd.NodePath) {
+func (self class) SetTargetNode(target_nodepath gd.NodePath) { //gd:SkeletonModification2DCCDIK.set_target_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(target_nodepath))
 	var r_ret = callframe.Nil
@@ -195,7 +195,7 @@ func (self class) SetTargetNode(target_nodepath gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetTargetNode() gd.NodePath {
+func (self class) GetTargetNode() gd.NodePath { //gd:SkeletonModification2DCCDIK.get_target_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -205,7 +205,7 @@ func (self class) GetTargetNode() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetTipNode(tip_nodepath gd.NodePath) {
+func (self class) SetTipNode(tip_nodepath gd.NodePath) { //gd:SkeletonModification2DCCDIK.set_tip_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tip_nodepath))
 	var r_ret = callframe.Nil
@@ -214,7 +214,7 @@ func (self class) SetTipNode(tip_nodepath gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetTipNode() gd.NodePath {
+func (self class) GetTipNode() gd.NodePath { //gd:SkeletonModification2DCCDIK.get_tip_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_tip_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -224,7 +224,7 @@ func (self class) GetTipNode() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetCcdikDataChainLength(length gd.Int) {
+func (self class) SetCcdikDataChainLength(length gd.Int) { //gd:SkeletonModification2DCCDIK.set_ccdik_data_chain_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -233,7 +233,7 @@ func (self class) SetCcdikDataChainLength(length gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCcdikDataChainLength() gd.Int {
+func (self class) GetCcdikDataChainLength() gd.Int { //gd:SkeletonModification2DCCDIK.get_ccdik_data_chain_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_data_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -246,7 +246,7 @@ func (self class) GetCcdikDataChainLength() gd.Int {
 Sets the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetCcdikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath gd.NodePath) {
+func (self class) SetCcdikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath gd.NodePath) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, pointers.Get(bone2d_nodepath))
@@ -259,7 +259,7 @@ func (self class) SetCcdikJointBone2dNode(joint_idx gd.Int, bone2d_nodepath gd.N
 Returns the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetCcdikJointBone2dNode(joint_idx gd.Int) gd.NodePath {
+func (self class) GetCcdikJointBone2dNode(joint_idx gd.Int) gd.NodePath { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -273,7 +273,7 @@ func (self class) GetCcdikJointBone2dNode(joint_idx gd.Int) gd.NodePath {
 Sets the bone index, [param bone_idx], of the CCDIK joint at [param joint_idx]. When possible, this will also update the [code]bone2d_node[/code] of the CCDIK joint based on data provided by the linked skeleton.
 */
 //go:nosplit
-func (self class) SetCcdikJointBoneIndex(joint_idx gd.Int, bone_idx gd.Int) {
+func (self class) SetCcdikJointBoneIndex(joint_idx gd.Int, bone_idx gd.Int) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone_index
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, bone_idx)
@@ -286,7 +286,7 @@ func (self class) SetCcdikJointBoneIndex(joint_idx gd.Int, bone_idx gd.Int) {
 Returns the index of the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetCcdikJointBoneIndex(joint_idx gd.Int) gd.Int {
+func (self class) GetCcdikJointBoneIndex(joint_idx gd.Int) gd.Int { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone_index
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -300,7 +300,7 @@ func (self class) GetCcdikJointBoneIndex(joint_idx gd.Int) gd.Int {
 Sets whether the joint at [param joint_idx] is set to rotate from the joint, [code]true[/code], or to rotate from the tip, [code]false[/code].
 */
 //go:nosplit
-func (self class) SetCcdikJointRotateFromJoint(joint_idx gd.Int, rotate_from_joint bool) {
+func (self class) SetCcdikJointRotateFromJoint(joint_idx gd.Int, rotate_from_joint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_rotate_from_joint
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, rotate_from_joint)
@@ -313,7 +313,7 @@ func (self class) SetCcdikJointRotateFromJoint(joint_idx gd.Int, rotate_from_joi
 Returns whether the joint at [param joint_idx] is set to rotate from the joint, [code]true[/code], or to rotate from the tip, [code]false[/code]. The default is to rotate from the tip.
 */
 //go:nosplit
-func (self class) GetCcdikJointRotateFromJoint(joint_idx gd.Int) bool {
+func (self class) GetCcdikJointRotateFromJoint(joint_idx gd.Int) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_rotate_from_joint
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -327,7 +327,7 @@ func (self class) GetCcdikJointRotateFromJoint(joint_idx gd.Int) bool {
 Determines whether angle constraints on the CCDIK joint at [param joint_idx] are enabled. When [code]true[/code], constraints will be enabled and taken into account when solving.
 */
 //go:nosplit
-func (self class) SetCcdikJointEnableConstraint(joint_idx gd.Int, enable_constraint bool) {
+func (self class) SetCcdikJointEnableConstraint(joint_idx gd.Int, enable_constraint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_enable_constraint
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, enable_constraint)
@@ -340,7 +340,7 @@ func (self class) SetCcdikJointEnableConstraint(joint_idx gd.Int, enable_constra
 Returns whether angle constraints on the CCDIK joint at [param joint_idx] are enabled.
 */
 //go:nosplit
-func (self class) GetCcdikJointEnableConstraint(joint_idx gd.Int) bool {
+func (self class) GetCcdikJointEnableConstraint(joint_idx gd.Int) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_enable_constraint
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -354,7 +354,7 @@ func (self class) GetCcdikJointEnableConstraint(joint_idx gd.Int) bool {
 Sets the minimum angle constraint for the joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetCcdikJointConstraintAngleMin(joint_idx gd.Int, angle_min gd.Float) {
+func (self class) SetCcdikJointConstraintAngleMin(joint_idx gd.Int, angle_min gd.Float) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_min
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, angle_min)
@@ -367,7 +367,7 @@ func (self class) SetCcdikJointConstraintAngleMin(joint_idx gd.Int, angle_min gd
 Returns the minimum angle constraint for the joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetCcdikJointConstraintAngleMin(joint_idx gd.Int) gd.Float {
+func (self class) GetCcdikJointConstraintAngleMin(joint_idx gd.Int) gd.Float { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_min
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -381,7 +381,7 @@ func (self class) GetCcdikJointConstraintAngleMin(joint_idx gd.Int) gd.Float {
 Sets the maximum angle constraint for the joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) SetCcdikJointConstraintAngleMax(joint_idx gd.Int, angle_max gd.Float) {
+func (self class) SetCcdikJointConstraintAngleMax(joint_idx gd.Int, angle_max gd.Float) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_max
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, angle_max)
@@ -394,7 +394,7 @@ func (self class) SetCcdikJointConstraintAngleMax(joint_idx gd.Int, angle_max gd
 Returns the maximum angle constraint for the joint at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetCcdikJointConstraintAngleMax(joint_idx gd.Int) gd.Float {
+func (self class) GetCcdikJointConstraintAngleMax(joint_idx gd.Int) gd.Float { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_max
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -409,7 +409,7 @@ Sets whether the CCDIK joint at [param joint_idx] uses an inverted joint constra
 An inverted joint constraint only constraints the CCDIK joint to the angles [i]outside of[/i] the inputted minimum and maximum angles. For this reason, it is referred to as an inverted joint constraint, as it constraints the joint to the outside of the inputted values.
 */
 //go:nosplit
-func (self class) SetCcdikJointConstraintAngleInvert(joint_idx gd.Int, invert bool) {
+func (self class) SetCcdikJointConstraintAngleInvert(joint_idx gd.Int, invert bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_invert
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, invert)
@@ -422,7 +422,7 @@ func (self class) SetCcdikJointConstraintAngleInvert(joint_idx gd.Int, invert bo
 Returns whether the CCDIK joint at [param joint_idx] uses an inverted joint constraint. See [method set_ccdik_joint_constraint_angle_invert] for details.
 */
 //go:nosplit
-func (self class) GetCcdikJointConstraintAngleInvert(joint_idx gd.Int) bool {
+func (self class) GetCcdikJointConstraintAngleInvert(joint_idx gd.Int) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_invert
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[bool](frame)

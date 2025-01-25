@@ -51,14 +51,14 @@ type Any interface {
 /*
 Opens the zip archive at the given [param path] and reads its file index.
 */
-func (self Instance) Open(path string) error {
+func (self Instance) Open(path string) error { //gd:ZIPReader.open
 	return error(gd.ToError(class(self).Open(gd.NewString(path))))
 }
 
 /*
 Closes the underlying resources used by this instance.
 */
-func (self Instance) Close() error {
+func (self Instance) Close() error { //gd:ZIPReader.close
 	return error(gd.ToError(class(self).Close()))
 }
 
@@ -66,7 +66,7 @@ func (self Instance) Close() error {
 Returns the list of names of all files in the loaded archive.
 Must be called after [method open].
 */
-func (self Instance) GetFiles() []string {
+func (self Instance) GetFiles() []string { //gd:ZIPReader.get_files
 	return []string(class(self).GetFiles().Strings())
 }
 
@@ -74,7 +74,7 @@ func (self Instance) GetFiles() []string {
 Loads the whole content of a file in the loaded zip archive into memory and returns it.
 Must be called after [method open].
 */
-func (self Instance) ReadFile(path string) []byte {
+func (self Instance) ReadFile(path string) []byte { //gd:ZIPReader.read_file
 	return []byte(class(self).ReadFile(gd.NewString(path), true).Bytes())
 }
 
@@ -82,7 +82,7 @@ func (self Instance) ReadFile(path string) []byte {
 Returns [code]true[/code] if the file exists in the loaded zip archive.
 Must be called after [method open].
 */
-func (self Instance) FileExists(path string) bool {
+func (self Instance) FileExists(path string) bool { //gd:ZIPReader.file_exists
 	return bool(class(self).FileExists(gd.NewString(path), true))
 }
 
@@ -109,7 +109,7 @@ func New() Instance {
 Opens the zip archive at the given [param path] and reads its file index.
 */
 //go:nosplit
-func (self class) Open(path gd.String) gd.Error {
+func (self class) Open(path gd.String) gd.Error { //gd:ZIPReader.open
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -123,7 +123,7 @@ func (self class) Open(path gd.String) gd.Error {
 Closes the underlying resources used by this instance.
 */
 //go:nosplit
-func (self class) Close() gd.Error {
+func (self class) Close() gd.Error { //gd:ZIPReader.close
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -137,7 +137,7 @@ Returns the list of names of all files in the loaded archive.
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) GetFiles() gd.PackedStringArray {
+func (self class) GetFiles() gd.PackedStringArray { //gd:ZIPReader.get_files
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_get_files, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -151,7 +151,7 @@ Loads the whole content of a file in the loaded zip archive into memory and retu
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) ReadFile(path gd.String, case_sensitive bool) gd.PackedByteArray {
+func (self class) ReadFile(path gd.String, case_sensitive bool) gd.PackedByteArray { //gd:ZIPReader.read_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, case_sensitive)
@@ -167,7 +167,7 @@ Returns [code]true[/code] if the file exists in the loaded zip archive.
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) FileExists(path gd.String, case_sensitive bool) bool {
+func (self class) FileExists(path gd.String, case_sensitive bool) bool { //gd:ZIPReader.file_exists
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, case_sensitive)
@@ -203,7 +203,7 @@ func init() {
 	gdclass.Register("ZIPReader", func(ptr gd.Object) any { return [1]gdclass.ZIPReader{*(*gdclass.ZIPReader)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

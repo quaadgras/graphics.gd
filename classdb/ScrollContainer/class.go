@@ -45,7 +45,7 @@ type Any interface {
 Returns the horizontal scrollbar [HScrollBar] of this [ScrollContainer].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to disable or hide a scrollbar, you can use [member horizontal_scroll_mode].
 */
-func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar {
+func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ScrollContainer.get_h_scroll_bar
 	return [1]gdclass.HScrollBar(class(self).GetHScrollBar())
 }
 
@@ -53,7 +53,7 @@ func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar {
 Returns the vertical scrollbar [VScrollBar] of this [ScrollContainer].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to disable or hide a scrollbar, you can use [member vertical_scroll_mode].
 */
-func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar {
+func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ScrollContainer.get_v_scroll_bar
 	return [1]gdclass.VScrollBar(class(self).GetVScrollBar())
 }
 
@@ -66,7 +66,7 @@ await get_tree().process_frame
 ensure_control_visible(child_node)
 [/codeblock]
 */
-func (self Instance) EnsureControlVisible(control [1]gdclass.Control) {
+func (self Instance) EnsureControlVisible(control [1]gdclass.Control) { //gd:ScrollContainer.ensure_control_visible
 	class(self).EnsureControlVisible(control)
 }
 
@@ -153,7 +153,7 @@ func (self Instance) SetScrollDeadzone(value int) {
 }
 
 //go:nosplit
-func (self class) SetHScroll(value gd.Int) {
+func (self class) SetHScroll(value gd.Int) { //gd:ScrollContainer.set_h_scroll
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetHScroll(value gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetHScroll() gd.Int {
+func (self class) GetHScroll() gd.Int { //gd:ScrollContainer.get_h_scroll
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_h_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func (self class) GetHScroll() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetVScroll(value gd.Int) {
+func (self class) SetVScroll(value gd.Int) { //gd:ScrollContainer.set_v_scroll
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -181,7 +181,7 @@ func (self class) SetVScroll(value gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetVScroll() gd.Int {
+func (self class) GetVScroll() gd.Int { //gd:ScrollContainer.get_v_scroll
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_v_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -191,7 +191,7 @@ func (self class) GetVScroll() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetHorizontalCustomStep(value gd.Float) {
+func (self class) SetHorizontalCustomStep(value gd.Float) { //gd:ScrollContainer.set_horizontal_custom_step
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -200,7 +200,7 @@ func (self class) SetHorizontalCustomStep(value gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetHorizontalCustomStep() gd.Float {
+func (self class) GetHorizontalCustomStep() gd.Float { //gd:ScrollContainer.get_horizontal_custom_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_horizontal_custom_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -210,7 +210,7 @@ func (self class) GetHorizontalCustomStep() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVerticalCustomStep(value gd.Float) {
+func (self class) SetVerticalCustomStep(value gd.Float) { //gd:ScrollContainer.set_vertical_custom_step
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -219,7 +219,7 @@ func (self class) SetVerticalCustomStep(value gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVerticalCustomStep() gd.Float {
+func (self class) GetVerticalCustomStep() gd.Float { //gd:ScrollContainer.get_vertical_custom_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_vertical_custom_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) GetVerticalCustomStep() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetHorizontalScrollMode(enable gdclass.ScrollContainerScrollMode) {
+func (self class) SetHorizontalScrollMode(enable gdclass.ScrollContainerScrollMode) { //gd:ScrollContainer.set_horizontal_scroll_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -238,7 +238,7 @@ func (self class) SetHorizontalScrollMode(enable gdclass.ScrollContainerScrollMo
 }
 
 //go:nosplit
-func (self class) GetHorizontalScrollMode() gdclass.ScrollContainerScrollMode {
+func (self class) GetHorizontalScrollMode() gdclass.ScrollContainerScrollMode { //gd:ScrollContainer.get_horizontal_scroll_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ScrollContainerScrollMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_horizontal_scroll_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -248,7 +248,7 @@ func (self class) GetHorizontalScrollMode() gdclass.ScrollContainerScrollMode {
 }
 
 //go:nosplit
-func (self class) SetVerticalScrollMode(enable gdclass.ScrollContainerScrollMode) {
+func (self class) SetVerticalScrollMode(enable gdclass.ScrollContainerScrollMode) { //gd:ScrollContainer.set_vertical_scroll_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -257,7 +257,7 @@ func (self class) SetVerticalScrollMode(enable gdclass.ScrollContainerScrollMode
 }
 
 //go:nosplit
-func (self class) GetVerticalScrollMode() gdclass.ScrollContainerScrollMode {
+func (self class) GetVerticalScrollMode() gdclass.ScrollContainerScrollMode { //gd:ScrollContainer.get_vertical_scroll_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ScrollContainerScrollMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_vertical_scroll_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -267,7 +267,7 @@ func (self class) GetVerticalScrollMode() gdclass.ScrollContainerScrollMode {
 }
 
 //go:nosplit
-func (self class) SetDeadzone(deadzone gd.Int) {
+func (self class) SetDeadzone(deadzone gd.Int) { //gd:ScrollContainer.set_deadzone
 	var frame = callframe.New()
 	callframe.Arg(frame, deadzone)
 	var r_ret = callframe.Nil
@@ -276,7 +276,7 @@ func (self class) SetDeadzone(deadzone gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetDeadzone() gd.Int {
+func (self class) GetDeadzone() gd.Int { //gd:ScrollContainer.get_deadzone
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_deadzone, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -286,7 +286,7 @@ func (self class) GetDeadzone() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFollowFocus(enabled bool) {
+func (self class) SetFollowFocus(enabled bool) { //gd:ScrollContainer.set_follow_focus
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -295,7 +295,7 @@ func (self class) SetFollowFocus(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsFollowingFocus() bool {
+func (self class) IsFollowingFocus() bool { //gd:ScrollContainer.is_following_focus
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_is_following_focus, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -309,7 +309,7 @@ Returns the horizontal scrollbar [HScrollBar] of this [ScrollContainer].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to disable or hide a scrollbar, you can use [member horizontal_scroll_mode].
 */
 //go:nosplit
-func (self class) GetHScrollBar() [1]gdclass.HScrollBar {
+func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ScrollContainer.get_h_scroll_bar
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_h_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -323,7 +323,7 @@ Returns the vertical scrollbar [VScrollBar] of this [ScrollContainer].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to disable or hide a scrollbar, you can use [member vertical_scroll_mode].
 */
 //go:nosplit
-func (self class) GetVScrollBar() [1]gdclass.VScrollBar {
+func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ScrollContainer.get_v_scroll_bar
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,7 +342,7 @@ ensure_control_visible(child_node)
 [/codeblock]
 */
 //go:nosplit
-func (self class) EnsureControlVisible(control [1]gdclass.Control) {
+func (self class) EnsureControlVisible(control [1]gdclass.Control) { //gd:ScrollContainer.ensure_control_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(control[0])[0])
 	var r_ret = callframe.Nil
@@ -397,7 +397,7 @@ func init() {
 	})
 }
 
-type ScrollMode = gdclass.ScrollContainerScrollMode
+type ScrollMode = gdclass.ScrollContainerScrollMode //gd:ScrollContainer.ScrollMode
 
 const (
 	/*Scrolling disabled, scrollbar will be invisible.*/

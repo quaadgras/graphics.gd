@@ -45,7 +45,7 @@ type Any interface {
 /*
 Returns the joint's internal [RID] from the [PhysicsServer2D].
 */
-func (self Instance) GetRid() Resource.ID {
+func (self Instance) GetRid() Resource.ID { //gd:Joint2D.get_rid
 	return Resource.ID(class(self).GetRid())
 }
 
@@ -100,7 +100,7 @@ func (self Instance) SetDisableCollision(value bool) {
 }
 
 //go:nosplit
-func (self class) SetNodeA(node gd.NodePath) {
+func (self class) SetNodeA(node gd.NodePath) { //gd:Joint2D.set_node_a
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node))
 	var r_ret = callframe.Nil
@@ -109,7 +109,7 @@ func (self class) SetNodeA(node gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetNodeA() gd.NodePath {
+func (self class) GetNodeA() gd.NodePath { //gd:Joint2D.get_node_a
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_get_node_a, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -119,7 +119,7 @@ func (self class) GetNodeA() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetNodeB(node gd.NodePath) {
+func (self class) SetNodeB(node gd.NodePath) { //gd:Joint2D.set_node_b
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node))
 	var r_ret = callframe.Nil
@@ -128,7 +128,7 @@ func (self class) SetNodeB(node gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetNodeB() gd.NodePath {
+func (self class) GetNodeB() gd.NodePath { //gd:Joint2D.get_node_b
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_get_node_b, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -138,7 +138,7 @@ func (self class) GetNodeB() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetBias(bias gd.Float) {
+func (self class) SetBias(bias gd.Float) { //gd:Joint2D.set_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -147,7 +147,7 @@ func (self class) SetBias(bias gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBias() gd.Float {
+func (self class) GetBias() gd.Float { //gd:Joint2D.get_bias
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_get_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -157,7 +157,7 @@ func (self class) GetBias() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetExcludeNodesFromCollision(enable bool) {
+func (self class) SetExcludeNodesFromCollision(enable bool) { //gd:Joint2D.set_exclude_nodes_from_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -166,7 +166,7 @@ func (self class) SetExcludeNodesFromCollision(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetExcludeNodesFromCollision() bool {
+func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint2D.get_exclude_nodes_from_collision
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_get_exclude_nodes_from_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -179,7 +179,7 @@ func (self class) GetExcludeNodesFromCollision() bool {
 Returns the joint's internal [RID] from the [PhysicsServer2D].
 */
 //go:nosplit
-func (self class) GetRid() gd.RID {
+func (self class) GetRid() gd.RID { //gd:Joint2D.get_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())

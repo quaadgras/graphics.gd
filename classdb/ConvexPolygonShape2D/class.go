@@ -45,7 +45,7 @@ type Any interface {
 /*
 Based on the set of points provided, this assigns the [member points] property using the convex hull algorithm, removing all unneeded points. See [method Geometry2D.convex_hull] for details.
 */
-func (self Instance) SetPointCloud(point_cloud []Vector2.XY) {
+func (self Instance) SetPointCloud(point_cloud []Vector2.XY) { //gd:ConvexPolygonShape2D.set_point_cloud
 	class(self).SetPointCloud(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&point_cloud))))
 }
 
@@ -80,7 +80,7 @@ func (self Instance) SetPoints(value []Vector2.XY) {
 Based on the set of points provided, this assigns the [member points] property using the convex hull algorithm, removing all unneeded points. See [method Geometry2D.convex_hull] for details.
 */
 //go:nosplit
-func (self class) SetPointCloud(point_cloud gd.PackedVector2Array) {
+func (self class) SetPointCloud(point_cloud gd.PackedVector2Array) { //gd:ConvexPolygonShape2D.set_point_cloud
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(point_cloud))
 	var r_ret = callframe.Nil
@@ -89,7 +89,7 @@ func (self class) SetPointCloud(point_cloud gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) SetPoints(points gd.PackedVector2Array) {
+func (self class) SetPoints(points gd.PackedVector2Array) { //gd:ConvexPolygonShape2D.set_points
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	var r_ret = callframe.Nil
@@ -98,7 +98,7 @@ func (self class) SetPoints(points gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetPoints() gd.PackedVector2Array {
+func (self class) GetPoints() gd.PackedVector2Array { //gd:ConvexPolygonShape2D.get_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConvexPolygonShape2D.Bind_get_points, self.AsObject(), frame.Array(0), r_ret.Addr())

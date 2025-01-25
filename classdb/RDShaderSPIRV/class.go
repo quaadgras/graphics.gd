@@ -141,7 +141,7 @@ func (self Instance) SetCompileErrorCompute(value string) {
 Sets the SPIR-V [param bytecode] for the given shader [param stage]. Equivalent to setting one of [member bytecode_compute], [member bytecode_fragment], [member bytecode_tesselation_control], [member bytecode_tesselation_evaluation], [member bytecode_vertex].
 */
 //go:nosplit
-func (self class) SetStageBytecode(stage gdclass.RenderingDeviceShaderStage, bytecode gd.PackedByteArray) {
+func (self class) SetStageBytecode(stage gdclass.RenderingDeviceShaderStage, bytecode gd.PackedByteArray) { //gd:RDShaderSPIRV.set_stage_bytecode
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	callframe.Arg(frame, pointers.Get(bytecode))
@@ -154,7 +154,7 @@ func (self class) SetStageBytecode(stage gdclass.RenderingDeviceShaderStage, byt
 Equivalent to getting one of [member bytecode_compute], [member bytecode_fragment], [member bytecode_tesselation_control], [member bytecode_tesselation_evaluation], [member bytecode_vertex].
 */
 //go:nosplit
-func (self class) GetStageBytecode(stage gdclass.RenderingDeviceShaderStage) gd.PackedByteArray {
+func (self class) GetStageBytecode(stage gdclass.RenderingDeviceShaderStage) gd.PackedByteArray { //gd:RDShaderSPIRV.get_stage_bytecode
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -168,7 +168,7 @@ func (self class) GetStageBytecode(stage gdclass.RenderingDeviceShaderStage) gd.
 Sets the compilation error message for the given shader [param stage] to [param compile_error]. Equivalent to setting one of [member compile_error_compute], [member compile_error_fragment], [member compile_error_tesselation_control], [member compile_error_tesselation_evaluation], [member compile_error_vertex].
 */
 //go:nosplit
-func (self class) SetStageCompileError(stage gdclass.RenderingDeviceShaderStage, compile_error gd.String) {
+func (self class) SetStageCompileError(stage gdclass.RenderingDeviceShaderStage, compile_error gd.String) { //gd:RDShaderSPIRV.set_stage_compile_error
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	callframe.Arg(frame, pointers.Get(compile_error))
@@ -181,7 +181,7 @@ func (self class) SetStageCompileError(stage gdclass.RenderingDeviceShaderStage,
 Returns the compilation error message for the given shader [param stage]. Equivalent to getting one of [member compile_error_compute], [member compile_error_fragment], [member compile_error_tesselation_control], [member compile_error_tesselation_evaluation], [member compile_error_vertex].
 */
 //go:nosplit
-func (self class) GetStageCompileError(stage gdclass.RenderingDeviceShaderStage) gd.String {
+func (self class) GetStageCompileError(stage gdclass.RenderingDeviceShaderStage) gd.String { //gd:RDShaderSPIRV.get_stage_compile_error
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)

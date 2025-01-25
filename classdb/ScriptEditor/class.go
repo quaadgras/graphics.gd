@@ -45,14 +45,14 @@ type Any interface {
 /*
 Returns the [ScriptEditorBase] object that the user is currently editing.
 */
-func (self Instance) GetCurrentEditor() [1]gdclass.ScriptEditorBase {
+func (self Instance) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_current_editor
 	return [1]gdclass.ScriptEditorBase(class(self).GetCurrentEditor())
 }
 
 /*
 Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
 */
-func (self Instance) GetOpenScriptEditors() [][1]gdclass.ScriptEditorBase {
+func (self Instance) GetOpenScriptEditors() [][1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_open_script_editors
 	return [][1]gdclass.ScriptEditorBase(gd.ArrayAs[[][1]gdclass.ScriptEditorBase](gd.InternalArray(class(self).GetOpenScriptEditors())))
 }
 
@@ -60,7 +60,7 @@ func (self Instance) GetOpenScriptEditors() [][1]gdclass.ScriptEditorBase {
 Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighlighter] will be available on all open scripts.
 [b]Note:[/b] Does not apply to scripts that are already opened.
 */
-func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) {
+func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.register_syntax_highlighter
 	class(self).RegisterSyntaxHighlighter(syntax_highlighter)
 }
 
@@ -68,35 +68,35 @@ func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.Edi
 Unregisters the [EditorSyntaxHighlighter] from the editor.
 [b]Note:[/b] The [EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
 */
-func (self Instance) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) {
+func (self Instance) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
 	class(self).UnregisterSyntaxHighlighter(syntax_highlighter)
 }
 
 /*
 Goes to the specified line in the current script.
 */
-func (self Instance) GotoLine(line_number int) {
+func (self Instance) GotoLine(line_number int) { //gd:ScriptEditor.goto_line
 	class(self).GotoLine(gd.Int(line_number))
 }
 
 /*
 Returns a [Script] that is currently active in editor.
 */
-func (self Instance) GetCurrentScript() [1]gdclass.Script {
+func (self Instance) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_current_script
 	return [1]gdclass.Script(class(self).GetCurrentScript())
 }
 
 /*
 Returns an array with all [Script] objects which are currently open in editor.
 */
-func (self Instance) GetOpenScripts() [][1]gdclass.Script {
+func (self Instance) GetOpenScripts() [][1]gdclass.Script { //gd:ScriptEditor.get_open_scripts
 	return [][1]gdclass.Script(gd.ArrayAs[[][1]gdclass.Script](gd.InternalArray(class(self).GetOpenScripts())))
 }
 
 /*
 Opens the script create dialog. The script will extend [param base_name]. The file extension can be omitted from [param base_path]. It will be added based on the selected scripting language.
 */
-func (self Instance) OpenScriptCreateDialog(base_name string, base_path string) {
+func (self Instance) OpenScriptCreateDialog(base_name string, base_path string) { //gd:ScriptEditor.open_script_create_dialog
 	class(self).OpenScriptCreateDialog(gd.NewString(base_name), gd.NewString(base_path))
 }
 
@@ -125,7 +125,7 @@ class_annotation:@GDScript:@export
 class_theme_item:GraphNode:panel_selected
 [/codeblock]
 */
-func (self Instance) GotoHelp(topic string) {
+func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
 	class(self).GotoHelp(gd.NewString(topic))
 }
 
@@ -151,7 +151,7 @@ func New() Instance {
 Returns the [ScriptEditorBase] object that the user is currently editing.
 */
 //go:nosplit
-func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase {
+func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_current_editor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_current_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -164,7 +164,7 @@ func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase {
 Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
 */
 //go:nosplit
-func (self class) GetOpenScriptEditors() Array.Contains[[1]gdclass.ScriptEditorBase] {
+func (self class) GetOpenScriptEditors() Array.Contains[[1]gdclass.ScriptEditorBase] { //gd:ScriptEditor.get_open_script_editors
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_open_script_editors, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -178,7 +178,7 @@ Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighligh
 [b]Note:[/b] Does not apply to scripts that are already opened.
 */
 //go:nosplit
-func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) {
+func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.register_syntax_highlighter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(syntax_highlighter[0])[0])
 	var r_ret = callframe.Nil
@@ -191,7 +191,7 @@ Unregisters the [EditorSyntaxHighlighter] from the editor.
 [b]Note:[/b] The [EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
 */
 //go:nosplit
-func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) {
+func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(syntax_highlighter[0])[0])
 	var r_ret = callframe.Nil
@@ -203,7 +203,7 @@ func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.Edit
 Goes to the specified line in the current script.
 */
 //go:nosplit
-func (self class) GotoLine(line_number gd.Int) {
+func (self class) GotoLine(line_number gd.Int) { //gd:ScriptEditor.goto_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line_number)
 	var r_ret = callframe.Nil
@@ -215,7 +215,7 @@ func (self class) GotoLine(line_number gd.Int) {
 Returns a [Script] that is currently active in editor.
 */
 //go:nosplit
-func (self class) GetCurrentScript() [1]gdclass.Script {
+func (self class) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_current_script
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_current_script, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -228,7 +228,7 @@ func (self class) GetCurrentScript() [1]gdclass.Script {
 Returns an array with all [Script] objects which are currently open in editor.
 */
 //go:nosplit
-func (self class) GetOpenScripts() Array.Contains[[1]gdclass.Script] {
+func (self class) GetOpenScripts() Array.Contains[[1]gdclass.Script] { //gd:ScriptEditor.get_open_scripts
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_open_scripts, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -241,7 +241,7 @@ func (self class) GetOpenScripts() Array.Contains[[1]gdclass.Script] {
 Opens the script create dialog. The script will extend [param base_name]. The file extension can be omitted from [param base_path]. It will be added based on the selected scripting language.
 */
 //go:nosplit
-func (self class) OpenScriptCreateDialog(base_name gd.String, base_path gd.String) {
+func (self class) OpenScriptCreateDialog(base_name gd.String, base_path gd.String) { //gd:ScriptEditor.open_script_create_dialog
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base_name))
 	callframe.Arg(frame, pointers.Get(base_path))
@@ -276,7 +276,7 @@ class_theme_item:GraphNode:panel_selected
 [/codeblock]
 */
 //go:nosplit
-func (self class) GotoHelp(topic gd.String) {
+func (self class) GotoHelp(topic gd.String) { //gd:ScriptEditor.goto_help
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(topic))
 	var r_ret = callframe.Nil

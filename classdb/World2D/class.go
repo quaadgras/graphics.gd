@@ -73,7 +73,7 @@ func (self Instance) DirectSpaceState() [1]gdclass.PhysicsDirectSpaceState2D {
 }
 
 //go:nosplit
-func (self class) GetCanvas() gd.RID {
+func (self class) GetCanvas() gd.RID { //gd:World2D.get_canvas
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World2D.Bind_get_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -83,7 +83,7 @@ func (self class) GetCanvas() gd.RID {
 }
 
 //go:nosplit
-func (self class) GetSpace() gd.RID {
+func (self class) GetSpace() gd.RID { //gd:World2D.get_space
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World2D.Bind_get_space, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -93,7 +93,7 @@ func (self class) GetSpace() gd.RID {
 }
 
 //go:nosplit
-func (self class) GetNavigationMap() gd.RID {
+func (self class) GetNavigationMap() gd.RID { //gd:World2D.get_navigation_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World2D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -103,7 +103,7 @@ func (self class) GetNavigationMap() gd.RID {
 }
 
 //go:nosplit
-func (self class) GetDirectSpaceState() [1]gdclass.PhysicsDirectSpaceState2D {
+func (self class) GetDirectSpaceState() [1]gdclass.PhysicsDirectSpaceState2D { //gd:World2D.get_direct_space_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World2D.Bind_get_direct_space_state, self.AsObject(), frame.Array(0), r_ret.Addr())

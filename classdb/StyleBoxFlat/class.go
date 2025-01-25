@@ -56,28 +56,28 @@ type Any interface {
 /*
 Sets the border width to [param width] pixels for all sides.
 */
-func (self Instance) SetBorderWidthAll(width int) {
+func (self Instance) SetBorderWidthAll(width int) { //gd:StyleBoxFlat.set_border_width_all
 	class(self).SetBorderWidthAll(gd.Int(width))
 }
 
 /*
 Returns the smallest border width out of all four borders.
 */
-func (self Instance) GetBorderWidthMin() int {
+func (self Instance) GetBorderWidthMin() int { //gd:StyleBoxFlat.get_border_width_min
 	return int(int(class(self).GetBorderWidthMin()))
 }
 
 /*
 Sets the corner radius to [param radius] pixels for all corners.
 */
-func (self Instance) SetCornerRadiusAll(radius int) {
+func (self Instance) SetCornerRadiusAll(radius int) { //gd:StyleBoxFlat.set_corner_radius_all
 	class(self).SetCornerRadiusAll(gd.Int(radius))
 }
 
 /*
 Sets the expand margin to [param size] pixels for all sides.
 */
-func (self Instance) SetExpandMarginAll(size Float.X) {
+func (self Instance) SetExpandMarginAll(size Float.X) { //gd:StyleBoxFlat.set_expand_margin_all
 	class(self).SetExpandMarginAll(gd.Float(size))
 }
 
@@ -285,7 +285,7 @@ func (self Instance) SetAntiAliasingSize(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetBgColor(color gd.Color) {
+func (self class) SetBgColor(color gd.Color) { //gd:StyleBoxFlat.set_bg_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -294,7 +294,7 @@ func (self class) SetBgColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetBgColor() gd.Color {
+func (self class) GetBgColor() gd.Color { //gd:StyleBoxFlat.get_bg_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_bg_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -304,7 +304,7 @@ func (self class) GetBgColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetBorderColor(color gd.Color) {
+func (self class) SetBorderColor(color gd.Color) { //gd:StyleBoxFlat.set_border_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -313,7 +313,7 @@ func (self class) SetBorderColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetBorderColor() gd.Color {
+func (self class) GetBorderColor() gd.Color { //gd:StyleBoxFlat.get_border_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_border_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -326,7 +326,7 @@ func (self class) GetBorderColor() gd.Color {
 Sets the border width to [param width] pixels for all sides.
 */
 //go:nosplit
-func (self class) SetBorderWidthAll(width gd.Int) {
+func (self class) SetBorderWidthAll(width gd.Int) { //gd:StyleBoxFlat.set_border_width_all
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -338,7 +338,7 @@ func (self class) SetBorderWidthAll(width gd.Int) {
 Returns the smallest border width out of all four borders.
 */
 //go:nosplit
-func (self class) GetBorderWidthMin() gd.Int {
+func (self class) GetBorderWidthMin() gd.Int { //gd:StyleBoxFlat.get_border_width_min
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_border_width_min, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -351,7 +351,7 @@ func (self class) GetBorderWidthMin() gd.Int {
 Sets the specified [enum Side]'s border width to [param width] pixels.
 */
 //go:nosplit
-func (self class) SetBorderWidth(margin Side, width gd.Int) {
+func (self class) SetBorderWidth(margin Side, width gd.Int) { //gd:StyleBoxFlat.set_border_width
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, width)
@@ -364,7 +364,7 @@ func (self class) SetBorderWidth(margin Side, width gd.Int) {
 Returns the specified [enum Side]'s border width.
 */
 //go:nosplit
-func (self class) GetBorderWidth(margin Side) gd.Int {
+func (self class) GetBorderWidth(margin Side) gd.Int { //gd:StyleBoxFlat.get_border_width
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -375,7 +375,7 @@ func (self class) GetBorderWidth(margin Side) gd.Int {
 }
 
 //go:nosplit
-func (self class) SetBorderBlend(blend bool) {
+func (self class) SetBorderBlend(blend bool) { //gd:StyleBoxFlat.set_border_blend
 	var frame = callframe.New()
 	callframe.Arg(frame, blend)
 	var r_ret = callframe.Nil
@@ -384,7 +384,7 @@ func (self class) SetBorderBlend(blend bool) {
 }
 
 //go:nosplit
-func (self class) GetBorderBlend() bool {
+func (self class) GetBorderBlend() bool { //gd:StyleBoxFlat.get_border_blend
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_border_blend, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -397,7 +397,7 @@ func (self class) GetBorderBlend() bool {
 Sets the corner radius to [param radius] pixels for all corners.
 */
 //go:nosplit
-func (self class) SetCornerRadiusAll(radius gd.Int) {
+func (self class) SetCornerRadiusAll(radius gd.Int) { //gd:StyleBoxFlat.set_corner_radius_all
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -409,7 +409,7 @@ func (self class) SetCornerRadiusAll(radius gd.Int) {
 Sets the corner radius to [param radius] pixels for the given [param corner]. See [enum Corner] for possible values.
 */
 //go:nosplit
-func (self class) SetCornerRadius(corner Corner, radius gd.Int) {
+func (self class) SetCornerRadius(corner Corner, radius gd.Int) { //gd:StyleBoxFlat.set_corner_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, corner)
 	callframe.Arg(frame, radius)
@@ -422,7 +422,7 @@ func (self class) SetCornerRadius(corner Corner, radius gd.Int) {
 Returns the given [param corner]'s radius. See [enum Corner] for possible values.
 */
 //go:nosplit
-func (self class) GetCornerRadius(corner Corner) gd.Int {
+func (self class) GetCornerRadius(corner Corner) gd.Int { //gd:StyleBoxFlat.get_corner_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, corner)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -436,7 +436,7 @@ func (self class) GetCornerRadius(corner Corner) gd.Int {
 Sets the expand margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetExpandMargin(margin Side, size gd.Float) {
+func (self class) SetExpandMargin(margin Side, size gd.Float) { //gd:StyleBoxFlat.set_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -449,7 +449,7 @@ func (self class) SetExpandMargin(margin Side, size gd.Float) {
 Sets the expand margin to [param size] pixels for all sides.
 */
 //go:nosplit
-func (self class) SetExpandMarginAll(size gd.Float) {
+func (self class) SetExpandMarginAll(size gd.Float) { //gd:StyleBoxFlat.set_expand_margin_all
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -461,7 +461,7 @@ func (self class) SetExpandMarginAll(size gd.Float) {
 Returns the size of the specified [enum Side]'s expand margin.
 */
 //go:nosplit
-func (self class) GetExpandMargin(margin Side) gd.Float {
+func (self class) GetExpandMargin(margin Side) gd.Float { //gd:StyleBoxFlat.get_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -472,7 +472,7 @@ func (self class) GetExpandMargin(margin Side) gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDrawCenter(draw_center bool) {
+func (self class) SetDrawCenter(draw_center bool) { //gd:StyleBoxFlat.set_draw_center
 	var frame = callframe.New()
 	callframe.Arg(frame, draw_center)
 	var r_ret = callframe.Nil
@@ -481,7 +481,7 @@ func (self class) SetDrawCenter(draw_center bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawCenterEnabled() bool {
+func (self class) IsDrawCenterEnabled() bool { //gd:StyleBoxFlat.is_draw_center_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_is_draw_center_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -491,7 +491,7 @@ func (self class) IsDrawCenterEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetSkew(skew gd.Vector2) {
+func (self class) SetSkew(skew gd.Vector2) { //gd:StyleBoxFlat.set_skew
 	var frame = callframe.New()
 	callframe.Arg(frame, skew)
 	var r_ret = callframe.Nil
@@ -500,7 +500,7 @@ func (self class) SetSkew(skew gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetSkew() gd.Vector2 {
+func (self class) GetSkew() gd.Vector2 { //gd:StyleBoxFlat.get_skew
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_skew, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -510,7 +510,7 @@ func (self class) GetSkew() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetShadowColor(color gd.Color) {
+func (self class) SetShadowColor(color gd.Color) { //gd:StyleBoxFlat.set_shadow_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -519,7 +519,7 @@ func (self class) SetShadowColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetShadowColor() gd.Color {
+func (self class) GetShadowColor() gd.Color { //gd:StyleBoxFlat.get_shadow_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_shadow_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -529,7 +529,7 @@ func (self class) GetShadowColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetShadowSize(size gd.Int) {
+func (self class) SetShadowSize(size gd.Int) { //gd:StyleBoxFlat.set_shadow_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -538,7 +538,7 @@ func (self class) SetShadowSize(size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetShadowSize() gd.Int {
+func (self class) GetShadowSize() gd.Int { //gd:StyleBoxFlat.get_shadow_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_shadow_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -548,7 +548,7 @@ func (self class) GetShadowSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetShadowOffset(offset gd.Vector2) {
+func (self class) SetShadowOffset(offset gd.Vector2) { //gd:StyleBoxFlat.set_shadow_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -557,7 +557,7 @@ func (self class) SetShadowOffset(offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetShadowOffset() gd.Vector2 {
+func (self class) GetShadowOffset() gd.Vector2 { //gd:StyleBoxFlat.get_shadow_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_shadow_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -567,7 +567,7 @@ func (self class) GetShadowOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetAntiAliased(anti_aliased bool) {
+func (self class) SetAntiAliased(anti_aliased bool) { //gd:StyleBoxFlat.set_anti_aliased
 	var frame = callframe.New()
 	callframe.Arg(frame, anti_aliased)
 	var r_ret = callframe.Nil
@@ -576,7 +576,7 @@ func (self class) SetAntiAliased(anti_aliased bool) {
 }
 
 //go:nosplit
-func (self class) IsAntiAliased() bool {
+func (self class) IsAntiAliased() bool { //gd:StyleBoxFlat.is_anti_aliased
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_is_anti_aliased, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -586,7 +586,7 @@ func (self class) IsAntiAliased() bool {
 }
 
 //go:nosplit
-func (self class) SetAaSize(size gd.Float) {
+func (self class) SetAaSize(size gd.Float) { //gd:StyleBoxFlat.set_aa_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -595,7 +595,7 @@ func (self class) SetAaSize(size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAaSize() gd.Float {
+func (self class) GetAaSize() gd.Float { //gd:StyleBoxFlat.get_aa_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_aa_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -605,7 +605,7 @@ func (self class) GetAaSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCornerDetail(detail gd.Int) {
+func (self class) SetCornerDetail(detail gd.Int) { //gd:StyleBoxFlat.set_corner_detail
 	var frame = callframe.New()
 	callframe.Arg(frame, detail)
 	var r_ret = callframe.Nil
@@ -614,7 +614,7 @@ func (self class) SetCornerDetail(detail gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCornerDetail() gd.Int {
+func (self class) GetCornerDetail() gd.Int { //gd:StyleBoxFlat.get_corner_detail
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxFlat.Bind_get_corner_detail, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -44,7 +44,7 @@ type Any interface {
 /*
 Returns the [RID] owned by this SkinReference, as returned by [method RenderingServer.skeleton_create].
 */
-func (self Instance) GetSkeleton() Resource.ID {
+func (self Instance) GetSkeleton() Resource.ID { //gd:SkinReference.get_skeleton
 	return Resource.ID(class(self).GetSkeleton())
 }
 
@@ -52,7 +52,7 @@ func (self Instance) GetSkeleton() Resource.ID {
 Returns the [Skin] connected to this SkinReference. In the case of [MeshInstance3D] with no [member MeshInstance3D.skin] assigned, this will reference an internal default [Skin] owned by that [MeshInstance3D].
 Note that a single [Skin] may have more than one [SkinReference] in the case that it is shared by meshes across multiple [Skeleton3D] nodes.
 */
-func (self Instance) GetSkin() [1]gdclass.Skin {
+func (self Instance) GetSkin() [1]gdclass.Skin { //gd:SkinReference.get_skin
 	return [1]gdclass.Skin(class(self).GetSkin())
 }
 
@@ -79,7 +79,7 @@ func New() Instance {
 Returns the [RID] owned by this SkinReference, as returned by [method RenderingServer.skeleton_create].
 */
 //go:nosplit
-func (self class) GetSkeleton() gd.RID {
+func (self class) GetSkeleton() gd.RID { //gd:SkinReference.get_skeleton
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkinReference.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -93,7 +93,7 @@ Returns the [Skin] connected to this SkinReference. In the case of [MeshInstance
 Note that a single [Skin] may have more than one [SkinReference] in the case that it is shared by meshes across multiple [Skeleton3D] nodes.
 */
 //go:nosplit
-func (self class) GetSkin() [1]gdclass.Skin {
+func (self class) GetSkin() [1]gdclass.Skin { //gd:SkinReference.get_skin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkinReference.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Addr())

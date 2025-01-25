@@ -42,35 +42,35 @@ type Any interface {
 /*
 A function that is called automatically when the [Skeleton3D] is updated. This function is where the [BoneAttachment3D] node updates its position so it is correctly bound when it is [i]not[/i] set to override the bone pose.
 */
-func (self Instance) OnSkeletonUpdate() {
+func (self Instance) OnSkeletonUpdate() { //gd:BoneAttachment3D.on_skeleton_update
 	class(self).OnSkeletonUpdate()
 }
 
 /*
 Sets whether the BoneAttachment3D node will use an external [Skeleton3D] node rather than attempting to use its parent node as the [Skeleton3D]. When set to [code]true[/code], the BoneAttachment3D node will use the external [Skeleton3D] node set in [method set_external_skeleton].
 */
-func (self Instance) SetUseExternalSkeleton(use_external_skeleton bool) {
+func (self Instance) SetUseExternalSkeleton(use_external_skeleton bool) { //gd:BoneAttachment3D.set_use_external_skeleton
 	class(self).SetUseExternalSkeleton(use_external_skeleton)
 }
 
 /*
 Returns whether the BoneAttachment3D node is using an external [Skeleton3D] rather than attempting to use its parent node as the [Skeleton3D].
 */
-func (self Instance) GetUseExternalSkeleton() bool {
+func (self Instance) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_use_external_skeleton
 	return bool(class(self).GetUseExternalSkeleton())
 }
 
 /*
 Sets the [NodePath] to the external skeleton that the BoneAttachment3D node should use. See [method set_use_external_skeleton] to enable the external [Skeleton3D] node.
 */
-func (self Instance) SetExternalSkeleton(external_skeleton NodePath.String) {
+func (self Instance) SetExternalSkeleton(external_skeleton NodePath.String) { //gd:BoneAttachment3D.set_external_skeleton
 	class(self).SetExternalSkeleton(gd.NewString(string(external_skeleton)).NodePath())
 }
 
 /*
 Returns the [NodePath] to the external [Skeleton3D] node, if one has been set.
 */
-func (self Instance) GetExternalSkeleton() NodePath.String {
+func (self Instance) GetExternalSkeleton() NodePath.String { //gd:BoneAttachment3D.get_external_skeleton
 	return NodePath.String(class(self).GetExternalSkeleton().String())
 }
 
@@ -117,7 +117,7 @@ func (self Instance) SetOverridePose(value bool) {
 }
 
 //go:nosplit
-func (self class) SetBoneName(bone_name gd.String) {
+func (self class) SetBoneName(bone_name gd.String) { //gd:BoneAttachment3D.set_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bone_name))
 	var r_ret = callframe.Nil
@@ -126,7 +126,7 @@ func (self class) SetBoneName(bone_name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetBoneName() gd.String {
+func (self class) GetBoneName() gd.String { //gd:BoneAttachment3D.get_bone_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -136,7 +136,7 @@ func (self class) GetBoneName() gd.String {
 }
 
 //go:nosplit
-func (self class) SetBoneIdx(bone_idx gd.Int) {
+func (self class) SetBoneIdx(bone_idx gd.Int) { //gd:BoneAttachment3D.set_bone_idx
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -145,7 +145,7 @@ func (self class) SetBoneIdx(bone_idx gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBoneIdx() gd.Int {
+func (self class) GetBoneIdx() gd.Int { //gd:BoneAttachment3D.get_bone_idx
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_get_bone_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -158,7 +158,7 @@ func (self class) GetBoneIdx() gd.Int {
 A function that is called automatically when the [Skeleton3D] is updated. This function is where the [BoneAttachment3D] node updates its position so it is correctly bound when it is [i]not[/i] set to override the bone pose.
 */
 //go:nosplit
-func (self class) OnSkeletonUpdate() {
+func (self class) OnSkeletonUpdate() { //gd:BoneAttachment3D.on_skeleton_update
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_on_skeleton_update, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -166,7 +166,7 @@ func (self class) OnSkeletonUpdate() {
 }
 
 //go:nosplit
-func (self class) SetOverridePose(override_pose bool) {
+func (self class) SetOverridePose(override_pose bool) { //gd:BoneAttachment3D.set_override_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, override_pose)
 	var r_ret = callframe.Nil
@@ -175,7 +175,7 @@ func (self class) SetOverridePose(override_pose bool) {
 }
 
 //go:nosplit
-func (self class) GetOverridePose() bool {
+func (self class) GetOverridePose() bool { //gd:BoneAttachment3D.get_override_pose
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_get_override_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -188,7 +188,7 @@ func (self class) GetOverridePose() bool {
 Sets whether the BoneAttachment3D node will use an external [Skeleton3D] node rather than attempting to use its parent node as the [Skeleton3D]. When set to [code]true[/code], the BoneAttachment3D node will use the external [Skeleton3D] node set in [method set_external_skeleton].
 */
 //go:nosplit
-func (self class) SetUseExternalSkeleton(use_external_skeleton bool) {
+func (self class) SetUseExternalSkeleton(use_external_skeleton bool) { //gd:BoneAttachment3D.set_use_external_skeleton
 	var frame = callframe.New()
 	callframe.Arg(frame, use_external_skeleton)
 	var r_ret = callframe.Nil
@@ -200,7 +200,7 @@ func (self class) SetUseExternalSkeleton(use_external_skeleton bool) {
 Returns whether the BoneAttachment3D node is using an external [Skeleton3D] rather than attempting to use its parent node as the [Skeleton3D].
 */
 //go:nosplit
-func (self class) GetUseExternalSkeleton() bool {
+func (self class) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_use_external_skeleton
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_get_use_external_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -213,7 +213,7 @@ func (self class) GetUseExternalSkeleton() bool {
 Sets the [NodePath] to the external skeleton that the BoneAttachment3D node should use. See [method set_use_external_skeleton] to enable the external [Skeleton3D] node.
 */
 //go:nosplit
-func (self class) SetExternalSkeleton(external_skeleton gd.NodePath) {
+func (self class) SetExternalSkeleton(external_skeleton gd.NodePath) { //gd:BoneAttachment3D.set_external_skeleton
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(external_skeleton))
 	var r_ret = callframe.Nil
@@ -225,7 +225,7 @@ func (self class) SetExternalSkeleton(external_skeleton gd.NodePath) {
 Returns the [NodePath] to the external [Skeleton3D] node, if one has been set.
 */
 //go:nosplit
-func (self class) GetExternalSkeleton() gd.NodePath {
+func (self class) GetExternalSkeleton() gd.NodePath { //gd:BoneAttachment3D.get_external_skeleton
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneAttachment3D.Bind_get_external_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())

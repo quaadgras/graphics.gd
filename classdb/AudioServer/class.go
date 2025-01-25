@@ -39,7 +39,7 @@ func singleton() {
 /*
 Removes the bus at index [param index].
 */
-func RemoveBus(index int) {
+func RemoveBus(index int) { //gd:AudioServer.remove_bus
 	once.Do(singleton)
 	class(self).RemoveBus(gd.Int(index))
 }
@@ -47,7 +47,7 @@ func RemoveBus(index int) {
 /*
 Adds a bus at [param at_position].
 */
-func AddBus() {
+func AddBus() { //gd:AudioServer.add_bus
 	once.Do(singleton)
 	class(self).AddBus(gd.Int(-1))
 }
@@ -55,7 +55,7 @@ func AddBus() {
 /*
 Moves the bus from index [param index] to index [param to_index].
 */
-func MoveBus(index int, to_index int) {
+func MoveBus(index int, to_index int) { //gd:AudioServer.move_bus
 	once.Do(singleton)
 	class(self).MoveBus(gd.Int(index), gd.Int(to_index))
 }
@@ -63,7 +63,7 @@ func MoveBus(index int, to_index int) {
 /*
 Sets the name of the bus at index [param bus_idx] to [param name].
 */
-func SetBusName(bus_idx int, name string) {
+func SetBusName(bus_idx int, name string) { //gd:AudioServer.set_bus_name
 	once.Do(singleton)
 	class(self).SetBusName(gd.Int(bus_idx), gd.NewString(name))
 }
@@ -71,7 +71,7 @@ func SetBusName(bus_idx int, name string) {
 /*
 Returns the name of the bus with the index [param bus_idx].
 */
-func GetBusName(bus_idx int) string {
+func GetBusName(bus_idx int) string { //gd:AudioServer.get_bus_name
 	once.Do(singleton)
 	return string(class(self).GetBusName(gd.Int(bus_idx)).String())
 }
@@ -79,7 +79,7 @@ func GetBusName(bus_idx int) string {
 /*
 Returns the index of the bus with the name [param bus_name]. Returns [code]-1[/code] if no bus with the specified name exist.
 */
-func GetBusIndex(bus_name string) int {
+func GetBusIndex(bus_name string) int { //gd:AudioServer.get_bus_index
 	once.Do(singleton)
 	return int(int(class(self).GetBusIndex(gd.NewStringName(bus_name))))
 }
@@ -87,7 +87,7 @@ func GetBusIndex(bus_name string) int {
 /*
 Returns the number of channels of the bus at index [param bus_idx].
 */
-func GetBusChannels(bus_idx int) int {
+func GetBusChannels(bus_idx int) int { //gd:AudioServer.get_bus_channels
 	once.Do(singleton)
 	return int(int(class(self).GetBusChannels(gd.Int(bus_idx))))
 }
@@ -95,7 +95,7 @@ func GetBusChannels(bus_idx int) int {
 /*
 Sets the volume of the bus at index [param bus_idx] to [param volume_db].
 */
-func SetBusVolumeDb(bus_idx int, volume_db Float.X) {
+func SetBusVolumeDb(bus_idx int, volume_db Float.X) { //gd:AudioServer.set_bus_volume_db
 	once.Do(singleton)
 	class(self).SetBusVolumeDb(gd.Int(bus_idx), gd.Float(volume_db))
 }
@@ -103,7 +103,7 @@ func SetBusVolumeDb(bus_idx int, volume_db Float.X) {
 /*
 Returns the volume of the bus at index [param bus_idx] in dB.
 */
-func GetBusVolumeDb(bus_idx int) Float.X {
+func GetBusVolumeDb(bus_idx int) Float.X { //gd:AudioServer.get_bus_volume_db
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetBusVolumeDb(gd.Int(bus_idx))))
 }
@@ -111,7 +111,7 @@ func GetBusVolumeDb(bus_idx int) Float.X {
 /*
 Connects the output of the bus at [param bus_idx] to the bus named [param send].
 */
-func SetBusSend(bus_idx int, send string) {
+func SetBusSend(bus_idx int, send string) { //gd:AudioServer.set_bus_send
 	once.Do(singleton)
 	class(self).SetBusSend(gd.Int(bus_idx), gd.NewStringName(send))
 }
@@ -119,7 +119,7 @@ func SetBusSend(bus_idx int, send string) {
 /*
 Returns the name of the bus that the bus at index [param bus_idx] sends to.
 */
-func GetBusSend(bus_idx int) string {
+func GetBusSend(bus_idx int) string { //gd:AudioServer.get_bus_send
 	once.Do(singleton)
 	return string(class(self).GetBusSend(gd.Int(bus_idx)).String())
 }
@@ -127,7 +127,7 @@ func GetBusSend(bus_idx int) string {
 /*
 If [code]true[/code], the bus at index [param bus_idx] is in solo mode.
 */
-func SetBusSolo(bus_idx int, enable bool) {
+func SetBusSolo(bus_idx int, enable bool) { //gd:AudioServer.set_bus_solo
 	once.Do(singleton)
 	class(self).SetBusSolo(gd.Int(bus_idx), enable)
 }
@@ -135,7 +135,7 @@ func SetBusSolo(bus_idx int, enable bool) {
 /*
 If [code]true[/code], the bus at index [param bus_idx] is in solo mode.
 */
-func IsBusSolo(bus_idx int) bool {
+func IsBusSolo(bus_idx int) bool { //gd:AudioServer.is_bus_solo
 	once.Do(singleton)
 	return bool(class(self).IsBusSolo(gd.Int(bus_idx)))
 }
@@ -143,7 +143,7 @@ func IsBusSolo(bus_idx int) bool {
 /*
 If [code]true[/code], the bus at index [param bus_idx] is muted.
 */
-func SetBusMute(bus_idx int, enable bool) {
+func SetBusMute(bus_idx int, enable bool) { //gd:AudioServer.set_bus_mute
 	once.Do(singleton)
 	class(self).SetBusMute(gd.Int(bus_idx), enable)
 }
@@ -151,7 +151,7 @@ func SetBusMute(bus_idx int, enable bool) {
 /*
 If [code]true[/code], the bus at index [param bus_idx] is muted.
 */
-func IsBusMute(bus_idx int) bool {
+func IsBusMute(bus_idx int) bool { //gd:AudioServer.is_bus_mute
 	once.Do(singleton)
 	return bool(class(self).IsBusMute(gd.Int(bus_idx)))
 }
@@ -159,7 +159,7 @@ func IsBusMute(bus_idx int) bool {
 /*
 If [code]true[/code], the bus at index [param bus_idx] is bypassing effects.
 */
-func SetBusBypassEffects(bus_idx int, enable bool) {
+func SetBusBypassEffects(bus_idx int, enable bool) { //gd:AudioServer.set_bus_bypass_effects
 	once.Do(singleton)
 	class(self).SetBusBypassEffects(gd.Int(bus_idx), enable)
 }
@@ -167,7 +167,7 @@ func SetBusBypassEffects(bus_idx int, enable bool) {
 /*
 If [code]true[/code], the bus at index [param bus_idx] is bypassing effects.
 */
-func IsBusBypassingEffects(bus_idx int) bool {
+func IsBusBypassingEffects(bus_idx int) bool { //gd:AudioServer.is_bus_bypassing_effects
 	once.Do(singleton)
 	return bool(class(self).IsBusBypassingEffects(gd.Int(bus_idx)))
 }
@@ -175,7 +175,7 @@ func IsBusBypassingEffects(bus_idx int) bool {
 /*
 Adds an [AudioEffect] effect to the bus [param bus_idx] at [param at_position].
 */
-func AddBusEffect(bus_idx int, effect [1]gdclass.AudioEffect) {
+func AddBusEffect(bus_idx int, effect [1]gdclass.AudioEffect) { //gd:AudioServer.add_bus_effect
 	once.Do(singleton)
 	class(self).AddBusEffect(gd.Int(bus_idx), effect, gd.Int(-1))
 }
@@ -183,7 +183,7 @@ func AddBusEffect(bus_idx int, effect [1]gdclass.AudioEffect) {
 /*
 Removes the effect at index [param effect_idx] from the bus at index [param bus_idx].
 */
-func RemoveBusEffect(bus_idx int, effect_idx int) {
+func RemoveBusEffect(bus_idx int, effect_idx int) { //gd:AudioServer.remove_bus_effect
 	once.Do(singleton)
 	class(self).RemoveBusEffect(gd.Int(bus_idx), gd.Int(effect_idx))
 }
@@ -191,7 +191,7 @@ func RemoveBusEffect(bus_idx int, effect_idx int) {
 /*
 Returns the number of effects on the bus at [param bus_idx].
 */
-func GetBusEffectCount(bus_idx int) int {
+func GetBusEffectCount(bus_idx int) int { //gd:AudioServer.get_bus_effect_count
 	once.Do(singleton)
 	return int(int(class(self).GetBusEffectCount(gd.Int(bus_idx))))
 }
@@ -199,7 +199,7 @@ func GetBusEffectCount(bus_idx int) int {
 /*
 Returns the [AudioEffect] at position [param effect_idx] in bus [param bus_idx].
 */
-func GetBusEffect(bus_idx int, effect_idx int) [1]gdclass.AudioEffect {
+func GetBusEffect(bus_idx int, effect_idx int) [1]gdclass.AudioEffect { //gd:AudioServer.get_bus_effect
 	once.Do(singleton)
 	return [1]gdclass.AudioEffect(class(self).GetBusEffect(gd.Int(bus_idx), gd.Int(effect_idx)))
 }
@@ -207,7 +207,7 @@ func GetBusEffect(bus_idx int, effect_idx int) [1]gdclass.AudioEffect {
 /*
 Returns the [AudioEffectInstance] assigned to the given bus and effect indices (and optionally channel).
 */
-func GetBusEffectInstance(bus_idx int, effect_idx int) [1]gdclass.AudioEffectInstance {
+func GetBusEffectInstance(bus_idx int, effect_idx int) [1]gdclass.AudioEffectInstance { //gd:AudioServer.get_bus_effect_instance
 	once.Do(singleton)
 	return [1]gdclass.AudioEffectInstance(class(self).GetBusEffectInstance(gd.Int(bus_idx), gd.Int(effect_idx), gd.Int(0)))
 }
@@ -215,7 +215,7 @@ func GetBusEffectInstance(bus_idx int, effect_idx int) [1]gdclass.AudioEffectIns
 /*
 Swaps the position of two effects in bus [param bus_idx].
 */
-func SwapBusEffects(bus_idx int, effect_idx int, by_effect_idx int) {
+func SwapBusEffects(bus_idx int, effect_idx int, by_effect_idx int) { //gd:AudioServer.swap_bus_effects
 	once.Do(singleton)
 	class(self).SwapBusEffects(gd.Int(bus_idx), gd.Int(effect_idx), gd.Int(by_effect_idx))
 }
@@ -223,7 +223,7 @@ func SwapBusEffects(bus_idx int, effect_idx int, by_effect_idx int) {
 /*
 If [code]true[/code], the effect at index [param effect_idx] on the bus at index [param bus_idx] is enabled.
 */
-func SetBusEffectEnabled(bus_idx int, effect_idx int, enabled bool) {
+func SetBusEffectEnabled(bus_idx int, effect_idx int, enabled bool) { //gd:AudioServer.set_bus_effect_enabled
 	once.Do(singleton)
 	class(self).SetBusEffectEnabled(gd.Int(bus_idx), gd.Int(effect_idx), enabled)
 }
@@ -231,7 +231,7 @@ func SetBusEffectEnabled(bus_idx int, effect_idx int, enabled bool) {
 /*
 If [code]true[/code], the effect at index [param effect_idx] on the bus at index [param bus_idx] is enabled.
 */
-func IsBusEffectEnabled(bus_idx int, effect_idx int) bool {
+func IsBusEffectEnabled(bus_idx int, effect_idx int) bool { //gd:AudioServer.is_bus_effect_enabled
 	once.Do(singleton)
 	return bool(class(self).IsBusEffectEnabled(gd.Int(bus_idx), gd.Int(effect_idx)))
 }
@@ -239,7 +239,7 @@ func IsBusEffectEnabled(bus_idx int, effect_idx int) bool {
 /*
 Returns the peak volume of the left speaker at bus index [param bus_idx] and channel index [param channel].
 */
-func GetBusPeakVolumeLeftDb(bus_idx int, channel int) Float.X {
+func GetBusPeakVolumeLeftDb(bus_idx int, channel int) Float.X { //gd:AudioServer.get_bus_peak_volume_left_db
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetBusPeakVolumeLeftDb(gd.Int(bus_idx), gd.Int(channel))))
 }
@@ -247,7 +247,7 @@ func GetBusPeakVolumeLeftDb(bus_idx int, channel int) Float.X {
 /*
 Returns the peak volume of the right speaker at bus index [param bus_idx] and channel index [param channel].
 */
-func GetBusPeakVolumeRightDb(bus_idx int, channel int) Float.X {
+func GetBusPeakVolumeRightDb(bus_idx int, channel int) Float.X { //gd:AudioServer.get_bus_peak_volume_right_db
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetBusPeakVolumeRightDb(gd.Int(bus_idx), gd.Int(channel))))
 }
@@ -256,7 +256,7 @@ func GetBusPeakVolumeRightDb(bus_idx int, channel int) Float.X {
 Locks the audio driver's main loop.
 [b]Note:[/b] Remember to unlock it afterwards.
 */
-func Lock() {
+func Lock() { //gd:AudioServer.lock
 	once.Do(singleton)
 	class(self).Lock()
 }
@@ -264,7 +264,7 @@ func Lock() {
 /*
 Unlocks the audio driver's main loop. (After locking it, you should always unlock it.)
 */
-func Unlock() {
+func Unlock() { //gd:AudioServer.unlock
 	once.Do(singleton)
 	class(self).Unlock()
 }
@@ -272,7 +272,7 @@ func Unlock() {
 /*
 Returns the speaker configuration.
 */
-func GetSpeakerMode() gdclass.AudioServerSpeakerMode {
+func GetSpeakerMode() gdclass.AudioServerSpeakerMode { //gd:AudioServer.get_speaker_mode
 	once.Do(singleton)
 	return gdclass.AudioServerSpeakerMode(class(self).GetSpeakerMode())
 }
@@ -280,7 +280,7 @@ func GetSpeakerMode() gdclass.AudioServerSpeakerMode {
 /*
 Returns the sample rate at the output of the [AudioServer].
 */
-func GetMixRate() Float.X {
+func GetMixRate() Float.X { //gd:AudioServer.get_mix_rate
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetMixRate()))
 }
@@ -288,7 +288,7 @@ func GetMixRate() Float.X {
 /*
 Returns the names of all audio output devices detected on the system.
 */
-func GetOutputDeviceList() []string {
+func GetOutputDeviceList() []string { //gd:AudioServer.get_output_device_list
 	once.Do(singleton)
 	return []string(class(self).GetOutputDeviceList().Strings())
 }
@@ -296,7 +296,7 @@ func GetOutputDeviceList() []string {
 /*
 Returns the relative time until the next mix occurs.
 */
-func GetTimeToNextMix() Float.X {
+func GetTimeToNextMix() Float.X { //gd:AudioServer.get_time_to_next_mix
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetTimeToNextMix()))
 }
@@ -304,7 +304,7 @@ func GetTimeToNextMix() Float.X {
 /*
 Returns the relative time since the last mix occurred.
 */
-func GetTimeSinceLastMix() Float.X {
+func GetTimeSinceLastMix() Float.X { //gd:AudioServer.get_time_since_last_mix
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetTimeSinceLastMix()))
 }
@@ -313,7 +313,7 @@ func GetTimeSinceLastMix() Float.X {
 Returns the audio driver's effective output latency. This is based on [member ProjectSettings.audio/driver/output_latency], but the exact returned value will differ depending on the operating system and audio driver.
 [b]Note:[/b] This can be expensive; it is not recommended to call [method get_output_latency] every frame.
 */
-func GetOutputLatency() Float.X {
+func GetOutputLatency() Float.X { //gd:AudioServer.get_output_latency
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetOutputLatency()))
 }
@@ -322,7 +322,7 @@ func GetOutputLatency() Float.X {
 Returns the names of all audio input devices detected on the system.
 [b]Note:[/b] [member ProjectSettings.audio/driver/enable_input] must be [code]true[/code] for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
 */
-func GetInputDeviceList() []string {
+func GetInputDeviceList() []string { //gd:AudioServer.get_input_device_list
 	once.Do(singleton)
 	return []string(class(self).GetInputDeviceList().Strings())
 }
@@ -330,7 +330,7 @@ func GetInputDeviceList() []string {
 /*
 Overwrites the currently used [AudioBusLayout].
 */
-func SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) {
+func SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) { //gd:AudioServer.set_bus_layout
 	once.Do(singleton)
 	class(self).SetBusLayout(bus_layout)
 }
@@ -338,7 +338,7 @@ func SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) {
 /*
 Generates an [AudioBusLayout] using the available buses and effects.
 */
-func GenerateBusLayout() [1]gdclass.AudioBusLayout {
+func GenerateBusLayout() [1]gdclass.AudioBusLayout { //gd:AudioServer.generate_bus_layout
 	once.Do(singleton)
 	return [1]gdclass.AudioBusLayout(class(self).GenerateBusLayout())
 }
@@ -347,7 +347,7 @@ func GenerateBusLayout() [1]gdclass.AudioBusLayout {
 If set to [code]true[/code], all instances of [AudioStreamPlayback] will call [method AudioStreamPlayback._tag_used_streams] every mix step.
 [b]Note:[/b] This is enabled by default in the editor, as it is used by editor plugins for the audio stream previews.
 */
-func SetEnableTaggingUsedAudioStreams(enable bool) {
+func SetEnableTaggingUsedAudioStreams(enable bool) { //gd:AudioServer.set_enable_tagging_used_audio_streams
 	once.Do(singleton)
 	class(self).SetEnableTaggingUsedAudioStreams(enable)
 }
@@ -356,7 +356,7 @@ func SetEnableTaggingUsedAudioStreams(enable bool) {
 If [code]true[/code], the stream is registered as a sample. The engine will not have to register it before playing the sample.
 If [code]false[/code], the stream will have to be registered before playing it. To prevent lag spikes, register the stream as sample with [method register_stream_as_sample].
 */
-func IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool {
+func IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool { //gd:AudioServer.is_stream_registered_as_sample
 	once.Do(singleton)
 	return bool(class(self).IsStreamRegisteredAsSample(stream))
 }
@@ -365,7 +365,7 @@ func IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool {
 Forces the registration of a stream as a sample.
 [b]Note:[/b] Lag spikes may occur when calling this method, especially on single-threaded builds. It is suggested to call this method while loading assets, where the lag spike could be masked, instead of registering the sample right before it needs to be played.
 */
-func RegisterStreamAsSample(stream [1]gdclass.AudioStream) {
+func RegisterStreamAsSample(stream [1]gdclass.AudioStream) { //gd:AudioServer.register_stream_as_sample
 	once.Do(singleton)
 	class(self).RegisterStreamAsSample(stream)
 }
@@ -413,7 +413,7 @@ func SetPlaybackSpeedScale(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetBusCount(amount gd.Int) {
+func (self class) SetBusCount(amount gd.Int) { //gd:AudioServer.set_bus_count
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -422,7 +422,7 @@ func (self class) SetBusCount(amount gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBusCount() gd.Int {
+func (self class) GetBusCount() gd.Int { //gd:AudioServer.get_bus_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -435,7 +435,7 @@ func (self class) GetBusCount() gd.Int {
 Removes the bus at index [param index].
 */
 //go:nosplit
-func (self class) RemoveBus(index gd.Int) {
+func (self class) RemoveBus(index gd.Int) { //gd:AudioServer.remove_bus
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -447,7 +447,7 @@ func (self class) RemoveBus(index gd.Int) {
 Adds a bus at [param at_position].
 */
 //go:nosplit
-func (self class) AddBus(at_position gd.Int) {
+func (self class) AddBus(at_position gd.Int) { //gd:AudioServer.add_bus
 	var frame = callframe.New()
 	callframe.Arg(frame, at_position)
 	var r_ret = callframe.Nil
@@ -459,7 +459,7 @@ func (self class) AddBus(at_position gd.Int) {
 Moves the bus from index [param index] to index [param to_index].
 */
 //go:nosplit
-func (self class) MoveBus(index gd.Int, to_index gd.Int) {
+func (self class) MoveBus(index gd.Int, to_index gd.Int) { //gd:AudioServer.move_bus
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, to_index)
@@ -472,7 +472,7 @@ func (self class) MoveBus(index gd.Int, to_index gd.Int) {
 Sets the name of the bus at index [param bus_idx] to [param name].
 */
 //go:nosplit
-func (self class) SetBusName(bus_idx gd.Int, name gd.String) {
+func (self class) SetBusName(bus_idx gd.Int, name gd.String) { //gd:AudioServer.set_bus_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, pointers.Get(name))
@@ -485,7 +485,7 @@ func (self class) SetBusName(bus_idx gd.Int, name gd.String) {
 Returns the name of the bus with the index [param bus_idx].
 */
 //go:nosplit
-func (self class) GetBusName(bus_idx gd.Int) gd.String {
+func (self class) GetBusName(bus_idx gd.Int) gd.String { //gd:AudioServer.get_bus_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -499,7 +499,7 @@ func (self class) GetBusName(bus_idx gd.Int) gd.String {
 Returns the index of the bus with the name [param bus_name]. Returns [code]-1[/code] if no bus with the specified name exist.
 */
 //go:nosplit
-func (self class) GetBusIndex(bus_name gd.StringName) gd.Int {
+func (self class) GetBusIndex(bus_name gd.StringName) gd.Int { //gd:AudioServer.get_bus_index
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bus_name))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -513,7 +513,7 @@ func (self class) GetBusIndex(bus_name gd.StringName) gd.Int {
 Returns the number of channels of the bus at index [param bus_idx].
 */
 //go:nosplit
-func (self class) GetBusChannels(bus_idx gd.Int) gd.Int {
+func (self class) GetBusChannels(bus_idx gd.Int) gd.Int { //gd:AudioServer.get_bus_channels
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -527,7 +527,7 @@ func (self class) GetBusChannels(bus_idx gd.Int) gd.Int {
 Sets the volume of the bus at index [param bus_idx] to [param volume_db].
 */
 //go:nosplit
-func (self class) SetBusVolumeDb(bus_idx gd.Int, volume_db gd.Float) {
+func (self class) SetBusVolumeDb(bus_idx gd.Int, volume_db gd.Float) { //gd:AudioServer.set_bus_volume_db
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, volume_db)
@@ -540,7 +540,7 @@ func (self class) SetBusVolumeDb(bus_idx gd.Int, volume_db gd.Float) {
 Returns the volume of the bus at index [param bus_idx] in dB.
 */
 //go:nosplit
-func (self class) GetBusVolumeDb(bus_idx gd.Int) gd.Float {
+func (self class) GetBusVolumeDb(bus_idx gd.Int) gd.Float { //gd:AudioServer.get_bus_volume_db
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -554,7 +554,7 @@ func (self class) GetBusVolumeDb(bus_idx gd.Int) gd.Float {
 Connects the output of the bus at [param bus_idx] to the bus named [param send].
 */
 //go:nosplit
-func (self class) SetBusSend(bus_idx gd.Int, send gd.StringName) {
+func (self class) SetBusSend(bus_idx gd.Int, send gd.StringName) { //gd:AudioServer.set_bus_send
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, pointers.Get(send))
@@ -567,7 +567,7 @@ func (self class) SetBusSend(bus_idx gd.Int, send gd.StringName) {
 Returns the name of the bus that the bus at index [param bus_idx] sends to.
 */
 //go:nosplit
-func (self class) GetBusSend(bus_idx gd.Int) gd.StringName {
+func (self class) GetBusSend(bus_idx gd.Int) gd.StringName { //gd:AudioServer.get_bus_send
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -581,7 +581,7 @@ func (self class) GetBusSend(bus_idx gd.Int) gd.StringName {
 If [code]true[/code], the bus at index [param bus_idx] is in solo mode.
 */
 //go:nosplit
-func (self class) SetBusSolo(bus_idx gd.Int, enable bool) {
+func (self class) SetBusSolo(bus_idx gd.Int, enable bool) { //gd:AudioServer.set_bus_solo
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, enable)
@@ -594,7 +594,7 @@ func (self class) SetBusSolo(bus_idx gd.Int, enable bool) {
 If [code]true[/code], the bus at index [param bus_idx] is in solo mode.
 */
 //go:nosplit
-func (self class) IsBusSolo(bus_idx gd.Int) bool {
+func (self class) IsBusSolo(bus_idx gd.Int) bool { //gd:AudioServer.is_bus_solo
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -608,7 +608,7 @@ func (self class) IsBusSolo(bus_idx gd.Int) bool {
 If [code]true[/code], the bus at index [param bus_idx] is muted.
 */
 //go:nosplit
-func (self class) SetBusMute(bus_idx gd.Int, enable bool) {
+func (self class) SetBusMute(bus_idx gd.Int, enable bool) { //gd:AudioServer.set_bus_mute
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, enable)
@@ -621,7 +621,7 @@ func (self class) SetBusMute(bus_idx gd.Int, enable bool) {
 If [code]true[/code], the bus at index [param bus_idx] is muted.
 */
 //go:nosplit
-func (self class) IsBusMute(bus_idx gd.Int) bool {
+func (self class) IsBusMute(bus_idx gd.Int) bool { //gd:AudioServer.is_bus_mute
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -635,7 +635,7 @@ func (self class) IsBusMute(bus_idx gd.Int) bool {
 If [code]true[/code], the bus at index [param bus_idx] is bypassing effects.
 */
 //go:nosplit
-func (self class) SetBusBypassEffects(bus_idx gd.Int, enable bool) {
+func (self class) SetBusBypassEffects(bus_idx gd.Int, enable bool) { //gd:AudioServer.set_bus_bypass_effects
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, enable)
@@ -648,7 +648,7 @@ func (self class) SetBusBypassEffects(bus_idx gd.Int, enable bool) {
 If [code]true[/code], the bus at index [param bus_idx] is bypassing effects.
 */
 //go:nosplit
-func (self class) IsBusBypassingEffects(bus_idx gd.Int) bool {
+func (self class) IsBusBypassingEffects(bus_idx gd.Int) bool { //gd:AudioServer.is_bus_bypassing_effects
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -662,7 +662,7 @@ func (self class) IsBusBypassingEffects(bus_idx gd.Int) bool {
 Adds an [AudioEffect] effect to the bus [param bus_idx] at [param at_position].
 */
 //go:nosplit
-func (self class) AddBusEffect(bus_idx gd.Int, effect [1]gdclass.AudioEffect, at_position gd.Int) {
+func (self class) AddBusEffect(bus_idx gd.Int, effect [1]gdclass.AudioEffect, at_position gd.Int) { //gd:AudioServer.add_bus_effect
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, pointers.Get(effect[0])[0])
@@ -676,7 +676,7 @@ func (self class) AddBusEffect(bus_idx gd.Int, effect [1]gdclass.AudioEffect, at
 Removes the effect at index [param effect_idx] from the bus at index [param bus_idx].
 */
 //go:nosplit
-func (self class) RemoveBusEffect(bus_idx gd.Int, effect_idx gd.Int) {
+func (self class) RemoveBusEffect(bus_idx gd.Int, effect_idx gd.Int) { //gd:AudioServer.remove_bus_effect
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
@@ -689,7 +689,7 @@ func (self class) RemoveBusEffect(bus_idx gd.Int, effect_idx gd.Int) {
 Returns the number of effects on the bus at [param bus_idx].
 */
 //go:nosplit
-func (self class) GetBusEffectCount(bus_idx gd.Int) gd.Int {
+func (self class) GetBusEffectCount(bus_idx gd.Int) gd.Int { //gd:AudioServer.get_bus_effect_count
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -703,7 +703,7 @@ func (self class) GetBusEffectCount(bus_idx gd.Int) gd.Int {
 Returns the [AudioEffect] at position [param effect_idx] in bus [param bus_idx].
 */
 //go:nosplit
-func (self class) GetBusEffect(bus_idx gd.Int, effect_idx gd.Int) [1]gdclass.AudioEffect {
+func (self class) GetBusEffect(bus_idx gd.Int, effect_idx gd.Int) [1]gdclass.AudioEffect { //gd:AudioServer.get_bus_effect
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
@@ -718,7 +718,7 @@ func (self class) GetBusEffect(bus_idx gd.Int, effect_idx gd.Int) [1]gdclass.Aud
 Returns the [AudioEffectInstance] assigned to the given bus and effect indices (and optionally channel).
 */
 //go:nosplit
-func (self class) GetBusEffectInstance(bus_idx gd.Int, effect_idx gd.Int, channel gd.Int) [1]gdclass.AudioEffectInstance {
+func (self class) GetBusEffectInstance(bus_idx gd.Int, effect_idx gd.Int, channel gd.Int) [1]gdclass.AudioEffectInstance { //gd:AudioServer.get_bus_effect_instance
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
@@ -734,7 +734,7 @@ func (self class) GetBusEffectInstance(bus_idx gd.Int, effect_idx gd.Int, channe
 Swaps the position of two effects in bus [param bus_idx].
 */
 //go:nosplit
-func (self class) SwapBusEffects(bus_idx gd.Int, effect_idx gd.Int, by_effect_idx gd.Int) {
+func (self class) SwapBusEffects(bus_idx gd.Int, effect_idx gd.Int, by_effect_idx gd.Int) { //gd:AudioServer.swap_bus_effects
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
@@ -748,7 +748,7 @@ func (self class) SwapBusEffects(bus_idx gd.Int, effect_idx gd.Int, by_effect_id
 If [code]true[/code], the effect at index [param effect_idx] on the bus at index [param bus_idx] is enabled.
 */
 //go:nosplit
-func (self class) SetBusEffectEnabled(bus_idx gd.Int, effect_idx gd.Int, enabled bool) {
+func (self class) SetBusEffectEnabled(bus_idx gd.Int, effect_idx gd.Int, enabled bool) { //gd:AudioServer.set_bus_effect_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
@@ -762,7 +762,7 @@ func (self class) SetBusEffectEnabled(bus_idx gd.Int, effect_idx gd.Int, enabled
 If [code]true[/code], the effect at index [param effect_idx] on the bus at index [param bus_idx] is enabled.
 */
 //go:nosplit
-func (self class) IsBusEffectEnabled(bus_idx gd.Int, effect_idx gd.Int) bool {
+func (self class) IsBusEffectEnabled(bus_idx gd.Int, effect_idx gd.Int) bool { //gd:AudioServer.is_bus_effect_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, effect_idx)
@@ -777,7 +777,7 @@ func (self class) IsBusEffectEnabled(bus_idx gd.Int, effect_idx gd.Int) bool {
 Returns the peak volume of the left speaker at bus index [param bus_idx] and channel index [param channel].
 */
 //go:nosplit
-func (self class) GetBusPeakVolumeLeftDb(bus_idx gd.Int, channel gd.Int) gd.Float {
+func (self class) GetBusPeakVolumeLeftDb(bus_idx gd.Int, channel gd.Int) gd.Float { //gd:AudioServer.get_bus_peak_volume_left_db
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, channel)
@@ -792,7 +792,7 @@ func (self class) GetBusPeakVolumeLeftDb(bus_idx gd.Int, channel gd.Int) gd.Floa
 Returns the peak volume of the right speaker at bus index [param bus_idx] and channel index [param channel].
 */
 //go:nosplit
-func (self class) GetBusPeakVolumeRightDb(bus_idx gd.Int, channel gd.Int) gd.Float {
+func (self class) GetBusPeakVolumeRightDb(bus_idx gd.Int, channel gd.Int) gd.Float { //gd:AudioServer.get_bus_peak_volume_right_db
 	var frame = callframe.New()
 	callframe.Arg(frame, bus_idx)
 	callframe.Arg(frame, channel)
@@ -804,7 +804,7 @@ func (self class) GetBusPeakVolumeRightDb(bus_idx gd.Int, channel gd.Int) gd.Flo
 }
 
 //go:nosplit
-func (self class) SetPlaybackSpeedScale(scale gd.Float) {
+func (self class) SetPlaybackSpeedScale(scale gd.Float) { //gd:AudioServer.set_playback_speed_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -813,7 +813,7 @@ func (self class) SetPlaybackSpeedScale(scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPlaybackSpeedScale() gd.Float {
+func (self class) GetPlaybackSpeedScale() gd.Float { //gd:AudioServer.get_playback_speed_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_playback_speed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -827,7 +827,7 @@ Locks the audio driver's main loop.
 [b]Note:[/b] Remember to unlock it afterwards.
 */
 //go:nosplit
-func (self class) Lock() {
+func (self class) Lock() { //gd:AudioServer.lock
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_lock, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -838,7 +838,7 @@ func (self class) Lock() {
 Unlocks the audio driver's main loop. (After locking it, you should always unlock it.)
 */
 //go:nosplit
-func (self class) Unlock() {
+func (self class) Unlock() { //gd:AudioServer.unlock
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_unlock, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -849,7 +849,7 @@ func (self class) Unlock() {
 Returns the speaker configuration.
 */
 //go:nosplit
-func (self class) GetSpeakerMode() gdclass.AudioServerSpeakerMode {
+func (self class) GetSpeakerMode() gdclass.AudioServerSpeakerMode { //gd:AudioServer.get_speaker_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioServerSpeakerMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_speaker_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -862,7 +862,7 @@ func (self class) GetSpeakerMode() gdclass.AudioServerSpeakerMode {
 Returns the sample rate at the output of the [AudioServer].
 */
 //go:nosplit
-func (self class) GetMixRate() gd.Float {
+func (self class) GetMixRate() gd.Float { //gd:AudioServer.get_mix_rate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_mix_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -875,7 +875,7 @@ func (self class) GetMixRate() gd.Float {
 Returns the names of all audio output devices detected on the system.
 */
 //go:nosplit
-func (self class) GetOutputDeviceList() gd.PackedStringArray {
+func (self class) GetOutputDeviceList() gd.PackedStringArray { //gd:AudioServer.get_output_device_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_device_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -885,7 +885,7 @@ func (self class) GetOutputDeviceList() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) GetOutputDevice() gd.String {
+func (self class) GetOutputDevice() gd.String { //gd:AudioServer.get_output_device
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_device, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -895,7 +895,7 @@ func (self class) GetOutputDevice() gd.String {
 }
 
 //go:nosplit
-func (self class) SetOutputDevice(name gd.String) {
+func (self class) SetOutputDevice(name gd.String) { //gd:AudioServer.set_output_device
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -907,7 +907,7 @@ func (self class) SetOutputDevice(name gd.String) {
 Returns the relative time until the next mix occurs.
 */
 //go:nosplit
-func (self class) GetTimeToNextMix() gd.Float {
+func (self class) GetTimeToNextMix() gd.Float { //gd:AudioServer.get_time_to_next_mix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_time_to_next_mix, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -920,7 +920,7 @@ func (self class) GetTimeToNextMix() gd.Float {
 Returns the relative time since the last mix occurred.
 */
 //go:nosplit
-func (self class) GetTimeSinceLastMix() gd.Float {
+func (self class) GetTimeSinceLastMix() gd.Float { //gd:AudioServer.get_time_since_last_mix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_time_since_last_mix, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -934,7 +934,7 @@ Returns the audio driver's effective output latency. This is based on [member Pr
 [b]Note:[/b] This can be expensive; it is not recommended to call [method get_output_latency] every frame.
 */
 //go:nosplit
-func (self class) GetOutputLatency() gd.Float {
+func (self class) GetOutputLatency() gd.Float { //gd:AudioServer.get_output_latency
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_output_latency, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -948,7 +948,7 @@ Returns the names of all audio input devices detected on the system.
 [b]Note:[/b] [member ProjectSettings.audio/driver/enable_input] must be [code]true[/code] for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
 */
 //go:nosplit
-func (self class) GetInputDeviceList() gd.PackedStringArray {
+func (self class) GetInputDeviceList() gd.PackedStringArray { //gd:AudioServer.get_input_device_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_input_device_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -958,7 +958,7 @@ func (self class) GetInputDeviceList() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) GetInputDevice() gd.String {
+func (self class) GetInputDevice() gd.String { //gd:AudioServer.get_input_device
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_input_device, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -968,7 +968,7 @@ func (self class) GetInputDevice() gd.String {
 }
 
 //go:nosplit
-func (self class) SetInputDevice(name gd.String) {
+func (self class) SetInputDevice(name gd.String) { //gd:AudioServer.set_input_device
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -980,7 +980,7 @@ func (self class) SetInputDevice(name gd.String) {
 Overwrites the currently used [AudioBusLayout].
 */
 //go:nosplit
-func (self class) SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) {
+func (self class) SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) { //gd:AudioServer.set_bus_layout
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bus_layout[0])[0])
 	var r_ret = callframe.Nil
@@ -992,7 +992,7 @@ func (self class) SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) {
 Generates an [AudioBusLayout] using the available buses and effects.
 */
 //go:nosplit
-func (self class) GenerateBusLayout() [1]gdclass.AudioBusLayout {
+func (self class) GenerateBusLayout() [1]gdclass.AudioBusLayout { //gd:AudioServer.generate_bus_layout
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_generate_bus_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1006,7 +1006,7 @@ If set to [code]true[/code], all instances of [AudioStreamPlayback] will call [m
 [b]Note:[/b] This is enabled by default in the editor, as it is used by editor plugins for the audio stream previews.
 */
 //go:nosplit
-func (self class) SetEnableTaggingUsedAudioStreams(enable bool) {
+func (self class) SetEnableTaggingUsedAudioStreams(enable bool) { //gd:AudioServer.set_enable_tagging_used_audio_streams
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1019,7 +1019,7 @@ If [code]true[/code], the stream is registered as a sample. The engine will not 
 If [code]false[/code], the stream will have to be registered before playing it. To prevent lag spikes, register the stream as sample with [method register_stream_as_sample].
 */
 //go:nosplit
-func (self class) IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool {
+func (self class) IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool { //gd:AudioServer.is_stream_registered_as_sample
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
@@ -1034,7 +1034,7 @@ Forces the registration of a stream as a sample.
 [b]Note:[/b] Lag spikes may occur when calling this method, especially on single-threaded builds. It is suggested to call this method while loading assets, where the lag spike could be masked, instead of registering the sample right before it needs to be played.
 */
 //go:nosplit
-func (self class) RegisterStreamAsSample(stream [1]gdclass.AudioStream) {
+func (self class) RegisterStreamAsSample(stream [1]gdclass.AudioStream) { //gd:AudioServer.register_stream_as_sample
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	var r_ret = callframe.Nil
@@ -1059,7 +1059,7 @@ func init() {
 	gdclass.Register("AudioServer", func(ptr gd.Object) any { return [1]gdclass.AudioServer{*(*gdclass.AudioServer)(unsafe.Pointer(&ptr))} })
 }
 
-type SpeakerMode = gdclass.AudioServerSpeakerMode
+type SpeakerMode = gdclass.AudioServerSpeakerMode //gd:AudioServer.SpeakerMode
 
 const (
 	/*Two or fewer speakers were detected.*/
@@ -1072,7 +1072,7 @@ const (
 	SpeakerSurround71 SpeakerMode = 3
 )
 
-type PlaybackType = gdclass.AudioServerPlaybackType
+type PlaybackType = gdclass.AudioServerPlaybackType //gd:AudioServer.PlaybackType
 
 const (
 	/*The playback will be considered of the type declared at [member ProjectSettings.audio/general/default_playback_type].*/

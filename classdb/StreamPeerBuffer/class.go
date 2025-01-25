@@ -41,42 +41,42 @@ type Any interface {
 /*
 Moves the cursor to the specified position. [param position] must be a valid index of [member data_array].
 */
-func (self Instance) SeekTo(position int) {
+func (self Instance) SeekTo(position int) { //gd:StreamPeerBuffer.seek
 	class(self).SeekTo(gd.Int(position))
 }
 
 /*
 Returns the size of [member data_array].
 */
-func (self Instance) GetSize() int {
+func (self Instance) GetSize() int { //gd:StreamPeerBuffer.get_size
 	return int(int(class(self).GetSize()))
 }
 
 /*
 Returns the current cursor position.
 */
-func (self Instance) GetPosition() int {
+func (self Instance) GetPosition() int { //gd:StreamPeerBuffer.get_position
 	return int(int(class(self).GetPosition()))
 }
 
 /*
 Resizes the [member data_array]. This [i]doesn't[/i] update the cursor.
 */
-func (self Instance) Resize(size int) {
+func (self Instance) Resize(size int) { //gd:StreamPeerBuffer.resize
 	class(self).Resize(gd.Int(size))
 }
 
 /*
 Clears the [member data_array] and resets the cursor.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:StreamPeerBuffer.clear
 	class(self).Clear()
 }
 
 /*
 Returns a new [StreamPeerBuffer] with the same [member data_array] content.
 */
-func (self Instance) Duplicate() [1]gdclass.StreamPeerBuffer {
+func (self Instance) Duplicate() [1]gdclass.StreamPeerBuffer { //gd:StreamPeerBuffer.duplicate
 	return [1]gdclass.StreamPeerBuffer(class(self).Duplicate())
 }
 
@@ -111,7 +111,7 @@ func (self Instance) SetDataArray(value []byte) {
 Moves the cursor to the specified position. [param position] must be a valid index of [member data_array].
 */
 //go:nosplit
-func (self class) SeekTo(position gd.Int) {
+func (self class) SeekTo(position gd.Int) { //gd:StreamPeerBuffer.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -123,7 +123,7 @@ func (self class) SeekTo(position gd.Int) {
 Returns the size of [member data_array].
 */
 //go:nosplit
-func (self class) GetSize() gd.Int {
+func (self class) GetSize() gd.Int { //gd:StreamPeerBuffer.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -136,7 +136,7 @@ func (self class) GetSize() gd.Int {
 Returns the current cursor position.
 */
 //go:nosplit
-func (self class) GetPosition() gd.Int {
+func (self class) GetPosition() gd.Int { //gd:StreamPeerBuffer.get_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ func (self class) GetPosition() gd.Int {
 Resizes the [member data_array]. This [i]doesn't[/i] update the cursor.
 */
 //go:nosplit
-func (self class) Resize(size gd.Int) {
+func (self class) Resize(size gd.Int) { //gd:StreamPeerBuffer.resize
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -158,7 +158,7 @@ func (self class) Resize(size gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetDataArray(data gd.PackedByteArray) {
+func (self class) SetDataArray(data gd.PackedByteArray) { //gd:StreamPeerBuffer.set_data_array
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Nil
@@ -167,7 +167,7 @@ func (self class) SetDataArray(data gd.PackedByteArray) {
 }
 
 //go:nosplit
-func (self class) GetDataArray() gd.PackedByteArray {
+func (self class) GetDataArray() gd.PackedByteArray { //gd:StreamPeerBuffer.get_data_array
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_get_data_array, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -180,7 +180,7 @@ func (self class) GetDataArray() gd.PackedByteArray {
 Clears the [member data_array] and resets the cursor.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:StreamPeerBuffer.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -191,7 +191,7 @@ func (self class) Clear() {
 Returns a new [StreamPeerBuffer] with the same [member data_array] content.
 */
 //go:nosplit
-func (self class) Duplicate() [1]gdclass.StreamPeerBuffer {
+func (self class) Duplicate() [1]gdclass.StreamPeerBuffer { //gd:StreamPeerBuffer.duplicate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerBuffer.Bind_duplicate, self.AsObject(), frame.Array(0), r_ret.Addr())

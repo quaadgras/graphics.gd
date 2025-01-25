@@ -42,21 +42,21 @@ type Any interface {
 /*
 Returns [code]true[/code] if there is a [member multiplayer_peer] set.
 */
-func (self Instance) HasMultiplayerPeer() bool {
+func (self Instance) HasMultiplayerPeer() bool { //gd:MultiplayerAPI.has_multiplayer_peer
 	return bool(class(self).HasMultiplayerPeer())
 }
 
 /*
 Returns the unique peer ID of this MultiplayerAPI's [member multiplayer_peer].
 */
-func (self Instance) GetUniqueId() int {
+func (self Instance) GetUniqueId() int { //gd:MultiplayerAPI.get_unique_id
 	return int(int(class(self).GetUniqueId()))
 }
 
 /*
 Returns [code]true[/code] if this MultiplayerAPI's [member multiplayer_peer] is valid and in server mode (listening for connections).
 */
-func (self Instance) IsServer() bool {
+func (self Instance) IsServer() bool { //gd:MultiplayerAPI.is_server
 	return bool(class(self).IsServer())
 }
 
@@ -64,7 +64,7 @@ func (self Instance) IsServer() bool {
 Returns the sender's peer ID for the RPC currently being executed.
 [b]Note:[/b] This method returns [code]0[/code] when called outside of an RPC. As such, the original peer ID may be lost when code execution is delayed (such as with GDScript's [code]await[/code] keyword).
 */
-func (self Instance) GetRemoteSenderId() int {
+func (self Instance) GetRemoteSenderId() int { //gd:MultiplayerAPI.get_remote_sender_id
 	return int(int(class(self).GetRemoteSenderId()))
 }
 
@@ -72,7 +72,7 @@ func (self Instance) GetRemoteSenderId() int {
 Method used for polling the MultiplayerAPI. You only need to worry about this if you set [member SceneTree.multiplayer_poll] to [code]false[/code]. By default, [SceneTree] will poll its MultiplayerAPI(s) for you.
 [b]Note:[/b] This method results in RPCs being called, so they will be executed in the same context of this function (e.g. [code]_process[/code], [code]physics[/code], [Thread]).
 */
-func (self Instance) Poll() error {
+func (self Instance) Poll() error { //gd:MultiplayerAPI.poll
 	return error(gd.ToError(class(self).Poll()))
 }
 
@@ -80,7 +80,7 @@ func (self Instance) Poll() error {
 Sends an RPC to the target [param peer]. The given [param method] will be called on the remote [param object] with the provided [param arguments]. The RPC may also be called locally depending on the implementation and RPC configuration. See [method Node.rpc] and [method Node.rpc_config].
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
-func (self Instance) Rpc(peer int, obj Object.Instance, method string) error {
+func (self Instance) Rpc(peer int, obj Object.Instance, method string) error { //gd:MultiplayerAPI.rpc
 	return error(gd.ToError(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), Array.Nil)))
 }
 
@@ -88,7 +88,7 @@ func (self Instance) Rpc(peer int, obj Object.Instance, method string) error {
 Notifies the MultiplayerAPI of a new [param configuration] for the given [param object]. This method is used internally by [SceneTree] to configure the root path for this MultiplayerAPI (passing [code]null[/code] and a valid [NodePath] as [param configuration]). This method can be further used by MultiplayerAPI implementations to provide additional features, refer to specific implementation (e.g. [SceneMultiplayer]) for details on how they use it.
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
-func (self Instance) ObjectConfigurationAdd(obj Object.Instance, configuration any) error {
+func (self Instance) ObjectConfigurationAdd(obj Object.Instance, configuration any) error { //gd:MultiplayerAPI.object_configuration_add
 	return error(gd.ToError(class(self).ObjectConfigurationAdd(obj, gd.NewVariant(configuration))))
 }
 
@@ -96,21 +96,21 @@ func (self Instance) ObjectConfigurationAdd(obj Object.Instance, configuration a
 Notifies the MultiplayerAPI to remove a [param configuration] for the given [param object]. This method is used internally by [SceneTree] to configure the root path for this MultiplayerAPI (passing [code]null[/code] and an empty [NodePath] as [param configuration]). This method can be further used by MultiplayerAPI implementations to provide additional features, refer to specific implementation (e.g. [SceneMultiplayer]) for details on how they use it.
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
-func (self Instance) ObjectConfigurationRemove(obj Object.Instance, configuration any) error {
+func (self Instance) ObjectConfigurationRemove(obj Object.Instance, configuration any) error { //gd:MultiplayerAPI.object_configuration_remove
 	return error(gd.ToError(class(self).ObjectConfigurationRemove(obj, gd.NewVariant(configuration))))
 }
 
 /*
 Returns the peer IDs of all connected peers of this MultiplayerAPI's [member multiplayer_peer].
 */
-func (self Instance) GetPeers() []int32 {
+func (self Instance) GetPeers() []int32 { //gd:MultiplayerAPI.get_peers
 	return []int32(class(self).GetPeers().AsSlice())
 }
 
 /*
 Sets the default MultiplayerAPI implementation class. This method can be used by modules and extensions to configure which implementation will be used by [SceneTree] when the engine starts.
 */
-func SetDefaultInterface(interface_name string) {
+func SetDefaultInterface(interface_name string) { //gd:MultiplayerAPI.set_default_interface
 	self := Instance{}
 	class(self).SetDefaultInterface(gd.NewStringName(interface_name))
 }
@@ -118,7 +118,7 @@ func SetDefaultInterface(interface_name string) {
 /*
 Returns the default MultiplayerAPI implementation class name. This is usually [code]"SceneMultiplayer"[/code] when [SceneMultiplayer] is available. See [method set_default_interface].
 */
-func GetDefaultInterface() string {
+func GetDefaultInterface() string { //gd:MultiplayerAPI.get_default_interface
 	self := Instance{}
 	return string(class(self).GetDefaultInterface().String())
 }
@@ -126,7 +126,7 @@ func GetDefaultInterface() string {
 /*
 Returns a new instance of the default MultiplayerAPI.
 */
-func CreateDefaultInterface() [1]gdclass.MultiplayerAPI {
+func CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:MultiplayerAPI.create_default_interface
 	self := Instance{}
 	return [1]gdclass.MultiplayerAPI(class(self).CreateDefaultInterface())
 }
@@ -162,7 +162,7 @@ func (self Instance) SetMultiplayerPeer(value [1]gdclass.MultiplayerPeer) {
 Returns [code]true[/code] if there is a [member multiplayer_peer] set.
 */
 //go:nosplit
-func (self class) HasMultiplayerPeer() bool {
+func (self class) HasMultiplayerPeer() bool { //gd:MultiplayerAPI.has_multiplayer_peer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_has_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func (self class) HasMultiplayerPeer() bool {
 }
 
 //go:nosplit
-func (self class) GetMultiplayerPeer() [1]gdclass.MultiplayerPeer {
+func (self class) GetMultiplayerPeer() [1]gdclass.MultiplayerPeer { //gd:MultiplayerAPI.get_multiplayer_peer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_multiplayer_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -182,7 +182,7 @@ func (self class) GetMultiplayerPeer() [1]gdclass.MultiplayerPeer {
 }
 
 //go:nosplit
-func (self class) SetMultiplayerPeer(peer [1]gdclass.MultiplayerPeer) {
+func (self class) SetMultiplayerPeer(peer [1]gdclass.MultiplayerPeer) { //gd:MultiplayerAPI.set_multiplayer_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(peer[0])[0])
 	var r_ret = callframe.Nil
@@ -194,7 +194,7 @@ func (self class) SetMultiplayerPeer(peer [1]gdclass.MultiplayerPeer) {
 Returns the unique peer ID of this MultiplayerAPI's [member multiplayer_peer].
 */
 //go:nosplit
-func (self class) GetUniqueId() gd.Int {
+func (self class) GetUniqueId() gd.Int { //gd:MultiplayerAPI.get_unique_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -207,7 +207,7 @@ func (self class) GetUniqueId() gd.Int {
 Returns [code]true[/code] if this MultiplayerAPI's [member multiplayer_peer] is valid and in server mode (listening for connections).
 */
 //go:nosplit
-func (self class) IsServer() bool {
+func (self class) IsServer() bool { //gd:MultiplayerAPI.is_server
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_is_server, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -221,7 +221,7 @@ Returns the sender's peer ID for the RPC currently being executed.
 [b]Note:[/b] This method returns [code]0[/code] when called outside of an RPC. As such, the original peer ID may be lost when code execution is delayed (such as with GDScript's [code]await[/code] keyword).
 */
 //go:nosplit
-func (self class) GetRemoteSenderId() gd.Int {
+func (self class) GetRemoteSenderId() gd.Int { //gd:MultiplayerAPI.get_remote_sender_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_remote_sender_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -235,7 +235,7 @@ Method used for polling the MultiplayerAPI. You only need to worry about this if
 [b]Note:[/b] This method results in RPCs being called, so they will be executed in the same context of this function (e.g. [code]_process[/code], [code]physics[/code], [Thread]).
 */
 //go:nosplit
-func (self class) Poll() gd.Error {
+func (self class) Poll() gd.Error { //gd:MultiplayerAPI.poll
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -249,7 +249,7 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 //go:nosplit
-func (self class) Rpc(peer gd.Int, obj [1]gd.Object, method gd.StringName, arguments Array.Any) gd.Error {
+func (self class) Rpc(peer gd.Int, obj [1]gd.Object, method gd.StringName, arguments Array.Any) gd.Error { //gd:MultiplayerAPI.rpc
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
@@ -267,7 +267,7 @@ Notifies the MultiplayerAPI of a new [param configuration] for the given [param 
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 //go:nosplit
-func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration gd.Variant) gd.Error {
+func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration gd.Variant) gd.Error { //gd:MultiplayerAPI.object_configuration_add
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(configuration))
@@ -283,7 +283,7 @@ Notifies the MultiplayerAPI to remove a [param configuration] for the given [par
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 //go:nosplit
-func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration gd.Variant) gd.Error {
+func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration gd.Variant) gd.Error { //gd:MultiplayerAPI.object_configuration_remove
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(configuration))
@@ -298,7 +298,7 @@ func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration gd.V
 Returns the peer IDs of all connected peers of this MultiplayerAPI's [member multiplayer_peer].
 */
 //go:nosplit
-func (self class) GetPeers() gd.PackedInt32Array {
+func (self class) GetPeers() gd.PackedInt32Array { //gd:MultiplayerAPI.get_peers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -311,7 +311,7 @@ func (self class) GetPeers() gd.PackedInt32Array {
 Sets the default MultiplayerAPI implementation class. This method can be used by modules and extensions to configure which implementation will be used by [SceneTree] when the engine starts.
 */
 //go:nosplit
-func (self class) SetDefaultInterface(interface_name gd.StringName) {
+func (self class) SetDefaultInterface(interface_name gd.StringName) { //gd:MultiplayerAPI.set_default_interface
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(interface_name))
 	var r_ret = callframe.Nil
@@ -323,7 +323,7 @@ func (self class) SetDefaultInterface(interface_name gd.StringName) {
 Returns the default MultiplayerAPI implementation class name. This is usually [code]"SceneMultiplayer"[/code] when [SceneMultiplayer] is available. See [method set_default_interface].
 */
 //go:nosplit
-func (self class) GetDefaultInterface() gd.StringName {
+func (self class) GetDefaultInterface() gd.StringName { //gd:MultiplayerAPI.get_default_interface
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_default_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -336,7 +336,7 @@ func (self class) GetDefaultInterface() gd.StringName {
 Returns a new instance of the default MultiplayerAPI.
 */
 //go:nosplit
-func (self class) CreateDefaultInterface() [1]gdclass.MultiplayerAPI {
+func (self class) CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:MultiplayerAPI.create_default_interface
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_create_default_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -392,7 +392,7 @@ func init() {
 	})
 }
 
-type RPCMode = gdclass.MultiplayerAPIRPCMode
+type RPCMode = gdclass.MultiplayerAPIRPCMode //gd:MultiplayerAPI.RPCMode
 
 const (
 	/*Used with [method Node.rpc_config] to disable a method or property for all RPC calls, making it unavailable. Default for all methods.*/
@@ -403,7 +403,7 @@ const (
 	RpcModeAuthority RPCMode = 2
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

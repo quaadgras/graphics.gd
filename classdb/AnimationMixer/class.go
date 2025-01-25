@@ -96,28 +96,28 @@ global_library.add_animation("animation_name", animation_resource)
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) AddAnimationLibrary(name string, library [1]gdclass.AnimationLibrary) error {
+func (self Instance) AddAnimationLibrary(name string, library [1]gdclass.AnimationLibrary) error { //gd:AnimationMixer.add_animation_library
 	return error(gd.ToError(class(self).AddAnimationLibrary(gd.NewStringName(name), library)))
 }
 
 /*
 Removes the [AnimationLibrary] associated with the key [param name].
 */
-func (self Instance) RemoveAnimationLibrary(name string) {
+func (self Instance) RemoveAnimationLibrary(name string) { //gd:AnimationMixer.remove_animation_library
 	class(self).RemoveAnimationLibrary(gd.NewStringName(name))
 }
 
 /*
 Moves the [AnimationLibrary] associated with the key [param name] to the key [param newname].
 */
-func (self Instance) RenameAnimationLibrary(name string, newname string) {
+func (self Instance) RenameAnimationLibrary(name string, newname string) { //gd:AnimationMixer.rename_animation_library
 	class(self).RenameAnimationLibrary(gd.NewStringName(name), gd.NewStringName(newname))
 }
 
 /*
 Returns [code]true[/code] if the [AnimationMixer] stores an [AnimationLibrary] with key [param name].
 */
-func (self Instance) HasAnimationLibrary(name string) bool {
+func (self Instance) HasAnimationLibrary(name string) bool { //gd:AnimationMixer.has_animation_library
 	return bool(class(self).HasAnimationLibrary(gd.NewStringName(name)))
 }
 
@@ -125,35 +125,35 @@ func (self Instance) HasAnimationLibrary(name string) bool {
 Returns the first [AnimationLibrary] with key [param name] or [code]null[/code] if not found.
 To get the [AnimationMixer]'s global animation library, use [code]get_animation_library("")[/code].
 */
-func (self Instance) GetAnimationLibrary(name string) [1]gdclass.AnimationLibrary {
+func (self Instance) GetAnimationLibrary(name string) [1]gdclass.AnimationLibrary { //gd:AnimationMixer.get_animation_library
 	return [1]gdclass.AnimationLibrary(class(self).GetAnimationLibrary(gd.NewStringName(name)))
 }
 
 /*
 Returns the list of stored library keys.
 */
-func (self Instance) GetAnimationLibraryList() []string {
+func (self Instance) GetAnimationLibraryList() []string { //gd:AnimationMixer.get_animation_library_list
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAnimationLibraryList())))
 }
 
 /*
 Returns [code]true[/code] if the [AnimationMixer] stores an [Animation] with key [param name].
 */
-func (self Instance) HasAnimation(name string) bool {
+func (self Instance) HasAnimation(name string) bool { //gd:AnimationMixer.has_animation
 	return bool(class(self).HasAnimation(gd.NewStringName(name)))
 }
 
 /*
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
-func (self Instance) GetAnimation(name string) [1]gdclass.Animation {
+func (self Instance) GetAnimation(name string) [1]gdclass.Animation { //gd:AnimationMixer.get_animation
 	return [1]gdclass.Animation(class(self).GetAnimation(gd.NewStringName(name)))
 }
 
 /*
 Returns the list of stored animation keys.
 */
-func (self Instance) GetAnimationList() []string {
+func (self Instance) GetAnimationList() []string { //gd:AnimationMixer.get_animation_list
 	return []string(class(self).GetAnimationList().Strings())
 }
 
@@ -192,7 +192,7 @@ func _process(delta):
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetRootMotionPosition() Vector3.XYZ {
+func (self Instance) GetRootMotionPosition() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position
 	return Vector3.XYZ(class(self).GetRootMotionPosition())
 }
 
@@ -212,7 +212,7 @@ func _process(delta):
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetRootMotionRotation() Quaternion.IJKX {
+func (self Instance) GetRootMotionRotation() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation
 	return Quaternion.IJKX(class(self).GetRootMotionRotation())
 }
 
@@ -238,7 +238,7 @@ func _process(delta):
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetRootMotionScale() Vector3.XYZ {
+func (self Instance) GetRootMotionScale() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale
 	return Vector3.XYZ(class(self).GetRootMotionScale())
 }
 
@@ -263,7 +263,7 @@ func _process(delta):
 [/codeblocks]
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
-func (self Instance) GetRootMotionPositionAccumulator() Vector3.XYZ {
+func (self Instance) GetRootMotionPositionAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position_accumulator
 	return Vector3.XYZ(class(self).GetRootMotionPositionAccumulator())
 }
 
@@ -289,7 +289,7 @@ func _process(delta):
 [/codeblocks]
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
-func (self Instance) GetRootMotionRotationAccumulator() Quaternion.IJKX {
+func (self Instance) GetRootMotionRotationAccumulator() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation_accumulator
 	return Quaternion.IJKX(class(self).GetRootMotionRotationAccumulator())
 }
 
@@ -313,21 +313,21 @@ func _process(delta):
 [/codeblocks]
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
-func (self Instance) GetRootMotionScaleAccumulator() Vector3.XYZ {
+func (self Instance) GetRootMotionScaleAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale_accumulator
 	return Vector3.XYZ(class(self).GetRootMotionScaleAccumulator())
 }
 
 /*
 [AnimationMixer] caches animated nodes. It may not notice if a node disappears; [method clear_caches] forces it to update the cache again.
 */
-func (self Instance) ClearCaches() {
+func (self Instance) ClearCaches() { //gd:AnimationMixer.clear_caches
 	class(self).ClearCaches()
 }
 
 /*
 Manually advance the animations by the specified time (in seconds).
 */
-func (self Instance) Advance(delta Float.X) {
+func (self Instance) Advance(delta Float.X) { //gd:AnimationMixer.advance
 	class(self).Advance(gd.Float(delta))
 }
 
@@ -336,21 +336,21 @@ If the animation track specified by [param name] has an option [constant Animati
 After this it will interpolate with current animation blending result during the playback process for the time specified by [param duration], working like a crossfade.
 You can specify [param trans_type] as the curve for the interpolation. For better results, it may be appropriate to specify [constant Tween.TRANS_LINEAR] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [constant Tween.TRANS_QUAD] for cases where the key value changes linearly.
 */
-func (self Instance) Capture(name string, duration Float.X) {
+func (self Instance) Capture(name string, duration Float.X) { //gd:AnimationMixer.capture
 	class(self).Capture(gd.NewStringName(name), gd.Float(duration), 0, 0)
 }
 
 /*
 Returns the key of [param animation] or an empty [StringName] if not found.
 */
-func (self Instance) FindAnimation(animation [1]gdclass.Animation) string {
+func (self Instance) FindAnimation(animation [1]gdclass.Animation) string { //gd:AnimationMixer.find_animation
 	return string(class(self).FindAnimation(animation).String())
 }
 
 /*
 Returns the key for the [AnimationLibrary] that contains [param animation] or an empty [StringName] if not found.
 */
-func (self Instance) FindAnimationLibrary(animation [1]gdclass.Animation) string {
+func (self Instance) FindAnimationLibrary(animation [1]gdclass.Animation) string { //gd:AnimationMixer.find_animation_library
 	return string(class(self).FindAnimationLibrary(animation).String())
 }
 
@@ -482,7 +482,7 @@ global_library.add_animation("animation_name", animation_resource)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) AddAnimationLibrary(name gd.StringName, library [1]gdclass.AnimationLibrary) gd.Error {
+func (self class) AddAnimationLibrary(name gd.StringName, library [1]gdclass.AnimationLibrary) gd.Error { //gd:AnimationMixer.add_animation_library
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(library[0])[0])
@@ -497,7 +497,7 @@ func (self class) AddAnimationLibrary(name gd.StringName, library [1]gdclass.Ani
 Removes the [AnimationLibrary] associated with the key [param name].
 */
 //go:nosplit
-func (self class) RemoveAnimationLibrary(name gd.StringName) {
+func (self class) RemoveAnimationLibrary(name gd.StringName) { //gd:AnimationMixer.remove_animation_library
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -509,7 +509,7 @@ func (self class) RemoveAnimationLibrary(name gd.StringName) {
 Moves the [AnimationLibrary] associated with the key [param name] to the key [param newname].
 */
 //go:nosplit
-func (self class) RenameAnimationLibrary(name gd.StringName, newname gd.StringName) {
+func (self class) RenameAnimationLibrary(name gd.StringName, newname gd.StringName) { //gd:AnimationMixer.rename_animation_library
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(newname))
@@ -522,7 +522,7 @@ func (self class) RenameAnimationLibrary(name gd.StringName, newname gd.StringNa
 Returns [code]true[/code] if the [AnimationMixer] stores an [AnimationLibrary] with key [param name].
 */
 //go:nosplit
-func (self class) HasAnimationLibrary(name gd.StringName) bool {
+func (self class) HasAnimationLibrary(name gd.StringName) bool { //gd:AnimationMixer.has_animation_library
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -537,7 +537,7 @@ Returns the first [AnimationLibrary] with key [param name] or [code]null[/code] 
 To get the [AnimationMixer]'s global animation library, use [code]get_animation_library("")[/code].
 */
 //go:nosplit
-func (self class) GetAnimationLibrary(name gd.StringName) [1]gdclass.AnimationLibrary {
+func (self class) GetAnimationLibrary(name gd.StringName) [1]gdclass.AnimationLibrary { //gd:AnimationMixer.get_animation_library
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -551,7 +551,7 @@ func (self class) GetAnimationLibrary(name gd.StringName) [1]gdclass.AnimationLi
 Returns the list of stored library keys.
 */
 //go:nosplit
-func (self class) GetAnimationLibraryList() Array.Contains[gd.StringName] {
+func (self class) GetAnimationLibraryList() Array.Contains[gd.StringName] { //gd:AnimationMixer.get_animation_library_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation_library_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -564,7 +564,7 @@ func (self class) GetAnimationLibraryList() Array.Contains[gd.StringName] {
 Returns [code]true[/code] if the [AnimationMixer] stores an [Animation] with key [param name].
 */
 //go:nosplit
-func (self class) HasAnimation(name gd.StringName) bool {
+func (self class) HasAnimation(name gd.StringName) bool { //gd:AnimationMixer.has_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -578,7 +578,7 @@ func (self class) HasAnimation(name gd.StringName) bool {
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
 //go:nosplit
-func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation {
+func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation { //gd:AnimationMixer.get_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -592,7 +592,7 @@ func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation {
 Returns the list of stored animation keys.
 */
 //go:nosplit
-func (self class) GetAnimationList() gd.PackedStringArray {
+func (self class) GetAnimationList() gd.PackedStringArray { //gd:AnimationMixer.get_animation_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -602,7 +602,7 @@ func (self class) GetAnimationList() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) SetActive(active bool) {
+func (self class) SetActive(active bool) { //gd:AnimationMixer.set_active
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	var r_ret = callframe.Nil
@@ -611,7 +611,7 @@ func (self class) SetActive(active bool) {
 }
 
 //go:nosplit
-func (self class) IsActive() bool {
+func (self class) IsActive() bool { //gd:AnimationMixer.is_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -621,7 +621,7 @@ func (self class) IsActive() bool {
 }
 
 //go:nosplit
-func (self class) SetDeterministic(deterministic bool) {
+func (self class) SetDeterministic(deterministic bool) { //gd:AnimationMixer.set_deterministic
 	var frame = callframe.New()
 	callframe.Arg(frame, deterministic)
 	var r_ret = callframe.Nil
@@ -630,7 +630,7 @@ func (self class) SetDeterministic(deterministic bool) {
 }
 
 //go:nosplit
-func (self class) IsDeterministic() bool {
+func (self class) IsDeterministic() bool { //gd:AnimationMixer.is_deterministic
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_is_deterministic, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -640,7 +640,7 @@ func (self class) IsDeterministic() bool {
 }
 
 //go:nosplit
-func (self class) SetRootNode(path gd.NodePath) {
+func (self class) SetRootNode(path gd.NodePath) { //gd:AnimationMixer.set_root_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -649,7 +649,7 @@ func (self class) SetRootNode(path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetRootNode() gd.NodePath {
+func (self class) GetRootNode() gd.NodePath { //gd:AnimationMixer.get_root_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -659,7 +659,7 @@ func (self class) GetRootNode() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetCallbackModeProcess(mode gdclass.AnimationMixerAnimationCallbackModeProcess) {
+func (self class) SetCallbackModeProcess(mode gdclass.AnimationMixerAnimationCallbackModeProcess) { //gd:AnimationMixer.set_callback_mode_process
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -668,7 +668,7 @@ func (self class) SetCallbackModeProcess(mode gdclass.AnimationMixerAnimationCal
 }
 
 //go:nosplit
-func (self class) GetCallbackModeProcess() gdclass.AnimationMixerAnimationCallbackModeProcess {
+func (self class) GetCallbackModeProcess() gdclass.AnimationMixerAnimationCallbackModeProcess { //gd:AnimationMixer.get_callback_mode_process
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationMixerAnimationCallbackModeProcess](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -678,7 +678,7 @@ func (self class) GetCallbackModeProcess() gdclass.AnimationMixerAnimationCallba
 }
 
 //go:nosplit
-func (self class) SetCallbackModeMethod(mode gdclass.AnimationMixerAnimationCallbackModeMethod) {
+func (self class) SetCallbackModeMethod(mode gdclass.AnimationMixerAnimationCallbackModeMethod) { //gd:AnimationMixer.set_callback_mode_method
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -687,7 +687,7 @@ func (self class) SetCallbackModeMethod(mode gdclass.AnimationMixerAnimationCall
 }
 
 //go:nosplit
-func (self class) GetCallbackModeMethod() gdclass.AnimationMixerAnimationCallbackModeMethod {
+func (self class) GetCallbackModeMethod() gdclass.AnimationMixerAnimationCallbackModeMethod { //gd:AnimationMixer.get_callback_mode_method
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationMixerAnimationCallbackModeMethod](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_method, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -697,7 +697,7 @@ func (self class) GetCallbackModeMethod() gdclass.AnimationMixerAnimationCallbac
 }
 
 //go:nosplit
-func (self class) SetCallbackModeDiscrete(mode gdclass.AnimationMixerAnimationCallbackModeDiscrete) {
+func (self class) SetCallbackModeDiscrete(mode gdclass.AnimationMixerAnimationCallbackModeDiscrete) { //gd:AnimationMixer.set_callback_mode_discrete
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -706,7 +706,7 @@ func (self class) SetCallbackModeDiscrete(mode gdclass.AnimationMixerAnimationCa
 }
 
 //go:nosplit
-func (self class) GetCallbackModeDiscrete() gdclass.AnimationMixerAnimationCallbackModeDiscrete {
+func (self class) GetCallbackModeDiscrete() gdclass.AnimationMixerAnimationCallbackModeDiscrete { //gd:AnimationMixer.get_callback_mode_discrete
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationMixerAnimationCallbackModeDiscrete](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_discrete, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -716,7 +716,7 @@ func (self class) GetCallbackModeDiscrete() gdclass.AnimationMixerAnimationCallb
 }
 
 //go:nosplit
-func (self class) SetAudioMaxPolyphony(max_polyphony gd.Int) {
+func (self class) SetAudioMaxPolyphony(max_polyphony gd.Int) { //gd:AnimationMixer.set_audio_max_polyphony
 	var frame = callframe.New()
 	callframe.Arg(frame, max_polyphony)
 	var r_ret = callframe.Nil
@@ -725,7 +725,7 @@ func (self class) SetAudioMaxPolyphony(max_polyphony gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetAudioMaxPolyphony() gd.Int {
+func (self class) GetAudioMaxPolyphony() gd.Int { //gd:AnimationMixer.get_audio_max_polyphony
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_audio_max_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -735,7 +735,7 @@ func (self class) GetAudioMaxPolyphony() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetRootMotionTrack(path gd.NodePath) {
+func (self class) SetRootMotionTrack(path gd.NodePath) { //gd:AnimationMixer.set_root_motion_track
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -744,7 +744,7 @@ func (self class) SetRootMotionTrack(path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetRootMotionTrack() gd.NodePath {
+func (self class) GetRootMotionTrack() gd.NodePath { //gd:AnimationMixer.get_root_motion_track
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_track, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -785,7 +785,7 @@ func _process(delta):
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetRootMotionPosition() gd.Vector3 {
+func (self class) GetRootMotionPosition() gd.Vector3 { //gd:AnimationMixer.get_root_motion_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -809,7 +809,7 @@ func _process(delta):
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetRootMotionRotation() gd.Quaternion {
+func (self class) GetRootMotionRotation() gd.Quaternion { //gd:AnimationMixer.get_root_motion_rotation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Quaternion](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -839,7 +839,7 @@ func _process(delta):
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetRootMotionScale() gd.Vector3 {
+func (self class) GetRootMotionScale() gd.Vector3 { //gd:AnimationMixer.get_root_motion_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -868,7 +868,7 @@ func _process(delta):
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
 //go:nosplit
-func (self class) GetRootMotionPositionAccumulator() gd.Vector3 {
+func (self class) GetRootMotionPositionAccumulator() gd.Vector3 { //gd:AnimationMixer.get_root_motion_position_accumulator
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position_accumulator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -898,7 +898,7 @@ func _process(delta):
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
 //go:nosplit
-func (self class) GetRootMotionRotationAccumulator() gd.Quaternion {
+func (self class) GetRootMotionRotationAccumulator() gd.Quaternion { //gd:AnimationMixer.get_root_motion_rotation_accumulator
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Quaternion](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation_accumulator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -926,7 +926,7 @@ func _process(delta):
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
 //go:nosplit
-func (self class) GetRootMotionScaleAccumulator() gd.Vector3 {
+func (self class) GetRootMotionScaleAccumulator() gd.Vector3 { //gd:AnimationMixer.get_root_motion_scale_accumulator
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale_accumulator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -939,7 +939,7 @@ func (self class) GetRootMotionScaleAccumulator() gd.Vector3 {
 [AnimationMixer] caches animated nodes. It may not notice if a node disappears; [method clear_caches] forces it to update the cache again.
 */
 //go:nosplit
-func (self class) ClearCaches() {
+func (self class) ClearCaches() { //gd:AnimationMixer.clear_caches
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_clear_caches, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -950,7 +950,7 @@ func (self class) ClearCaches() {
 Manually advance the animations by the specified time (in seconds).
 */
 //go:nosplit
-func (self class) Advance(delta gd.Float) {
+func (self class) Advance(delta gd.Float) { //gd:AnimationMixer.advance
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	var r_ret = callframe.Nil
@@ -964,7 +964,7 @@ After this it will interpolate with current animation blending result during the
 You can specify [param trans_type] as the curve for the interpolation. For better results, it may be appropriate to specify [constant Tween.TRANS_LINEAR] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [constant Tween.TRANS_QUAD] for cases where the key value changes linearly.
 */
 //go:nosplit
-func (self class) Capture(name gd.StringName, duration gd.Float, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) {
+func (self class) Capture(name gd.StringName, duration gd.Float, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationMixer.capture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, duration)
@@ -976,7 +976,7 @@ func (self class) Capture(name gd.StringName, duration gd.Float, trans_type gdcl
 }
 
 //go:nosplit
-func (self class) SetResetOnSaveEnabled(enabled bool) {
+func (self class) SetResetOnSaveEnabled(enabled bool) { //gd:AnimationMixer.set_reset_on_save_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -985,7 +985,7 @@ func (self class) SetResetOnSaveEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsResetOnSaveEnabled() bool {
+func (self class) IsResetOnSaveEnabled() bool { //gd:AnimationMixer.is_reset_on_save_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_is_reset_on_save_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -998,7 +998,7 @@ func (self class) IsResetOnSaveEnabled() bool {
 Returns the key of [param animation] or an empty [StringName] if not found.
 */
 //go:nosplit
-func (self class) FindAnimation(animation [1]gdclass.Animation) gd.StringName {
+func (self class) FindAnimation(animation [1]gdclass.Animation) gd.StringName { //gd:AnimationMixer.find_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(animation[0])[0])
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1012,7 +1012,7 @@ func (self class) FindAnimation(animation [1]gdclass.Animation) gd.StringName {
 Returns the key for the [AnimationLibrary] that contains [param animation] or an empty [StringName] if not found.
 */
 //go:nosplit
-func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) gd.StringName {
+func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) gd.StringName { //gd:AnimationMixer.find_animation_library
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(animation[0])[0])
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1077,7 +1077,7 @@ func init() {
 	})
 }
 
-type AnimationCallbackModeProcess = gdclass.AnimationMixerAnimationCallbackModeProcess
+type AnimationCallbackModeProcess = gdclass.AnimationMixerAnimationCallbackModeProcess //gd:AnimationMixer.AnimationCallbackModeProcess
 
 const (
 	/*Process animation during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]). This is especially useful when animating physics bodies.*/
@@ -1088,7 +1088,7 @@ const (
 	AnimationCallbackModeProcessManual AnimationCallbackModeProcess = 2
 )
 
-type AnimationCallbackModeMethod = gdclass.AnimationMixerAnimationCallbackModeMethod
+type AnimationCallbackModeMethod = gdclass.AnimationMixerAnimationCallbackModeMethod //gd:AnimationMixer.AnimationCallbackModeMethod
 
 const (
 	/*Batch method calls during the animation process, then do the calls after events are processed. This avoids bugs involving deleting nodes or modifying the AnimationPlayer while playing.*/
@@ -1097,7 +1097,7 @@ const (
 	AnimationCallbackModeMethodImmediate AnimationCallbackModeMethod = 1
 )
 
-type AnimationCallbackModeDiscrete = gdclass.AnimationMixerAnimationCallbackModeDiscrete
+type AnimationCallbackModeDiscrete = gdclass.AnimationMixerAnimationCallbackModeDiscrete //gd:AnimationMixer.AnimationCallbackModeDiscrete
 
 const (
 	/*An [constant Animation.UPDATE_DISCRETE] track value takes precedence when blending [constant Animation.UPDATE_CONTINUOUS] or [constant Animation.UPDATE_CAPTURE] track values and [constant Animation.UPDATE_DISCRETE] track values.*/
@@ -1109,7 +1109,7 @@ const (
 	AnimationCallbackModeDiscreteForceContinuous AnimationCallbackModeDiscrete = 2
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -43,42 +43,42 @@ If [param bind_address] is set as [code]"*"[/code] (default), the server will li
 If [param bind_address] is set as [code]"0.0.0.0"[/code] (for IPv4) or [code]"::"[/code] (for IPv6), the server will listen on all available addresses matching that IP type.
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
 */
-func (self Instance) Listen(port int) error {
+func (self Instance) Listen(port int) error { //gd:TCPServer.listen
 	return error(gd.ToError(class(self).Listen(gd.Int(port), gd.NewString("*"))))
 }
 
 /*
 Returns [code]true[/code] if a connection is available for taking.
 */
-func (self Instance) IsConnectionAvailable() bool {
+func (self Instance) IsConnectionAvailable() bool { //gd:TCPServer.is_connection_available
 	return bool(class(self).IsConnectionAvailable())
 }
 
 /*
 Returns [code]true[/code] if the server is currently listening for connections.
 */
-func (self Instance) IsListening() bool {
+func (self Instance) IsListening() bool { //gd:TCPServer.is_listening
 	return bool(class(self).IsListening())
 }
 
 /*
 Returns the local port this server is listening to.
 */
-func (self Instance) GetLocalPort() int {
+func (self Instance) GetLocalPort() int { //gd:TCPServer.get_local_port
 	return int(int(class(self).GetLocalPort()))
 }
 
 /*
 If a connection is available, returns a StreamPeerTCP with the connection.
 */
-func (self Instance) TakeConnection() [1]gdclass.StreamPeerTCP {
+func (self Instance) TakeConnection() [1]gdclass.StreamPeerTCP { //gd:TCPServer.take_connection
 	return [1]gdclass.StreamPeerTCP(class(self).TakeConnection())
 }
 
 /*
 Stops listening.
 */
-func (self Instance) Stop() {
+func (self Instance) Stop() { //gd:TCPServer.stop
 	class(self).Stop()
 }
 
@@ -108,7 +108,7 @@ If [param bind_address] is set as [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
 */
 //go:nosplit
-func (self class) Listen(port gd.Int, bind_address gd.String) gd.Error {
+func (self class) Listen(port gd.Int, bind_address gd.String) gd.Error { //gd:TCPServer.listen
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(bind_address))
@@ -123,7 +123,7 @@ func (self class) Listen(port gd.Int, bind_address gd.String) gd.Error {
 Returns [code]true[/code] if a connection is available for taking.
 */
 //go:nosplit
-func (self class) IsConnectionAvailable() bool {
+func (self class) IsConnectionAvailable() bool { //gd:TCPServer.is_connection_available
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_is_connection_available, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -136,7 +136,7 @@ func (self class) IsConnectionAvailable() bool {
 Returns [code]true[/code] if the server is currently listening for connections.
 */
 //go:nosplit
-func (self class) IsListening() bool {
+func (self class) IsListening() bool { //gd:TCPServer.is_listening
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_is_listening, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ func (self class) IsListening() bool {
 Returns the local port this server is listening to.
 */
 //go:nosplit
-func (self class) GetLocalPort() gd.Int {
+func (self class) GetLocalPort() gd.Int { //gd:TCPServer.get_local_port
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -162,7 +162,7 @@ func (self class) GetLocalPort() gd.Int {
 If a connection is available, returns a StreamPeerTCP with the connection.
 */
 //go:nosplit
-func (self class) TakeConnection() [1]gdclass.StreamPeerTCP {
+func (self class) TakeConnection() [1]gdclass.StreamPeerTCP { //gd:TCPServer.take_connection
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -175,7 +175,7 @@ func (self class) TakeConnection() [1]gdclass.StreamPeerTCP {
 Stops listening.
 */
 //go:nosplit
-func (self class) Stop() {
+func (self class) Stop() { //gd:TCPServer.stop
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -207,7 +207,7 @@ func init() {
 	gdclass.Register("TCPServer", func(ptr gd.Object) any { return [1]gdclass.TCPServer{*(*gdclass.TCPServer)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

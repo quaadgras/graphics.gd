@@ -43,21 +43,21 @@ type Any interface {
 Sets the [PhysicalBone2D] node at [param joint_idx].
 [b]Note:[/b] This is just the index used for this modification, not the bone index used in the [Skeleton2D].
 */
-func (self Instance) SetPhysicalBoneNode(joint_idx int, physicalbone2d_node NodePath.String) {
+func (self Instance) SetPhysicalBoneNode(joint_idx int, physicalbone2d_node NodePath.String) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
 	class(self).SetPhysicalBoneNode(gd.Int(joint_idx), gd.NewString(string(physicalbone2d_node)).NodePath())
 }
 
 /*
 Returns the [PhysicalBone2D] node at [param joint_idx].
 */
-func (self Instance) GetPhysicalBoneNode(joint_idx int) NodePath.String {
+func (self Instance) GetPhysicalBoneNode(joint_idx int) NodePath.String { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
 	return NodePath.String(class(self).GetPhysicalBoneNode(gd.Int(joint_idx)).String())
 }
 
 /*
 Empties the list of [PhysicalBone2D] nodes and populates it with all [PhysicalBone2D] nodes that are children of the [Skeleton2D].
 */
-func (self Instance) FetchPhysicalBones() {
+func (self Instance) FetchPhysicalBones() { //gd:SkeletonModification2DPhysicalBones.fetch_physical_bones
 	class(self).FetchPhysicalBones()
 }
 
@@ -65,7 +65,7 @@ func (self Instance) FetchPhysicalBones() {
 Tell the [PhysicalBone2D] nodes to start simulating and interacting with the physics world.
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to start simulating.
 */
-func (self Instance) StartSimulation() {
+func (self Instance) StartSimulation() { //gd:SkeletonModification2DPhysicalBones.start_simulation
 	class(self).StartSimulation(gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
 }
 
@@ -73,7 +73,7 @@ func (self Instance) StartSimulation() {
 Tell the [PhysicalBone2D] nodes to stop simulating and interacting with the physics world.
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to stop simulating.
 */
-func (self Instance) StopSimulation() {
+func (self Instance) StopSimulation() { //gd:SkeletonModification2DPhysicalBones.stop_simulation
 	class(self).StopSimulation(gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
 }
 
@@ -105,7 +105,7 @@ func (self Instance) SetPhysicalBoneChainLength(value int) {
 }
 
 //go:nosplit
-func (self class) SetPhysicalBoneChainLength(length gd.Int) {
+func (self class) SetPhysicalBoneChainLength(length gd.Int) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_chain_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -114,7 +114,7 @@ func (self class) SetPhysicalBoneChainLength(length gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPhysicalBoneChainLength() gd.Int {
+func (self class) GetPhysicalBoneChainLength() gd.Int { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_chain_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -128,7 +128,7 @@ Sets the [PhysicalBone2D] node at [param joint_idx].
 [b]Note:[/b] This is just the index used for this modification, not the bone index used in the [Skeleton2D].
 */
 //go:nosplit
-func (self class) SetPhysicalBoneNode(joint_idx gd.Int, physicalbone2d_node gd.NodePath) {
+func (self class) SetPhysicalBoneNode(joint_idx gd.Int, physicalbone2d_node gd.NodePath) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	callframe.Arg(frame, pointers.Get(physicalbone2d_node))
@@ -141,7 +141,7 @@ func (self class) SetPhysicalBoneNode(joint_idx gd.Int, physicalbone2d_node gd.N
 Returns the [PhysicalBone2D] node at [param joint_idx].
 */
 //go:nosplit
-func (self class) GetPhysicalBoneNode(joint_idx gd.Int) gd.NodePath {
+func (self class) GetPhysicalBoneNode(joint_idx gd.Int) gd.NodePath { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -155,7 +155,7 @@ func (self class) GetPhysicalBoneNode(joint_idx gd.Int) gd.NodePath {
 Empties the list of [PhysicalBone2D] nodes and populates it with all [PhysicalBone2D] nodes that are children of the [Skeleton2D].
 */
 //go:nosplit
-func (self class) FetchPhysicalBones() {
+func (self class) FetchPhysicalBones() { //gd:SkeletonModification2DPhysicalBones.fetch_physical_bones
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_fetch_physical_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -167,7 +167,7 @@ Tell the [PhysicalBone2D] nodes to start simulating and interacting with the phy
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to start simulating.
 */
 //go:nosplit
-func (self class) StartSimulation(bones Array.Contains[gd.StringName]) {
+func (self class) StartSimulation(bones Array.Contains[gd.StringName]) { //gd:SkeletonModification2DPhysicalBones.start_simulation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(bones)))
 	var r_ret = callframe.Nil
@@ -180,7 +180,7 @@ Tell the [PhysicalBone2D] nodes to stop simulating and interacting with the phys
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to stop simulating.
 */
 //go:nosplit
-func (self class) StopSimulation(bones Array.Contains[gd.StringName]) {
+func (self class) StopSimulation(bones Array.Contains[gd.StringName]) { //gd:SkeletonModification2DPhysicalBones.stop_simulation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(bones)))
 	var r_ret = callframe.Nil

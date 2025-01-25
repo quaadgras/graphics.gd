@@ -66,7 +66,7 @@ func (self Instance) SetFunction(value gdclass.VisualShaderNodeIntFuncFunction) 
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeIntFuncFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeIntFuncFunction) { //gd:VisualShaderNodeIntFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeIntFuncFunction) {
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeIntFuncFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeIntFuncFunction { //gd:VisualShaderNodeIntFunc.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeIntFuncFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -125,7 +125,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeIntFuncFunction
+type Function = gdclass.VisualShaderNodeIntFuncFunction //gd:VisualShaderNodeIntFunc.Function
 
 const (
 	/*Returns the absolute value of the parameter. Translates to [code]abs(x)[/code] in the Godot Shader Language.*/

@@ -71,7 +71,7 @@ func (Instance) _process_modification(impl func(ptr unsafe.Pointer)) (cb gd.Exte
 /*
 Get parent [Skeleton3D] node if found.
 */
-func (self Instance) GetSkeleton() [1]gdclass.Skeleton3D {
+func (self Instance) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonModifier3D.get_skeleton
 	return [1]gdclass.Skeleton3D(class(self).GetSkeleton())
 }
 
@@ -124,7 +124,7 @@ func (class) _process_modification(impl func(ptr unsafe.Pointer)) (cb gd.Extensi
 Get parent [Skeleton3D] node if found.
 */
 //go:nosplit
-func (self class) GetSkeleton() [1]gdclass.Skeleton3D {
+func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonModifier3D.get_skeleton
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModifier3D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,7 +134,7 @@ func (self class) GetSkeleton() [1]gdclass.Skeleton3D {
 }
 
 //go:nosplit
-func (self class) SetActive(active bool) {
+func (self class) SetActive(active bool) { //gd:SkeletonModifier3D.set_active
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	var r_ret = callframe.Nil
@@ -143,7 +143,7 @@ func (self class) SetActive(active bool) {
 }
 
 //go:nosplit
-func (self class) IsActive() bool {
+func (self class) IsActive() bool { //gd:SkeletonModifier3D.is_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModifier3D.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -153,7 +153,7 @@ func (self class) IsActive() bool {
 }
 
 //go:nosplit
-func (self class) SetInfluence(influence gd.Float) {
+func (self class) SetInfluence(influence gd.Float) { //gd:SkeletonModifier3D.set_influence
 	var frame = callframe.New()
 	callframe.Arg(frame, influence)
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetInfluence(influence gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetInfluence() gd.Float {
+func (self class) GetInfluence() gd.Float { //gd:SkeletonModifier3D.get_influence
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModifier3D.Bind_get_influence, self.AsObject(), frame.Array(0), r_ret.Addr())

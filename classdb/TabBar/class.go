@@ -44,35 +44,35 @@ type Any interface {
 /*
 Returns the previously active tab index.
 */
-func (self Instance) GetPreviousTab() int {
+func (self Instance) GetPreviousTab() int { //gd:TabBar.get_previous_tab
 	return int(int(class(self).GetPreviousTab()))
 }
 
 /*
 Selects the first available tab with lower index than the currently selected. Returns [code]true[/code] if tab selection changed.
 */
-func (self Instance) SelectPreviousAvailable() bool {
+func (self Instance) SelectPreviousAvailable() bool { //gd:TabBar.select_previous_available
 	return bool(class(self).SelectPreviousAvailable())
 }
 
 /*
 Selects the first available tab with greater index than the currently selected. Returns [code]true[/code] if tab selection changed.
 */
-func (self Instance) SelectNextAvailable() bool {
+func (self Instance) SelectNextAvailable() bool { //gd:TabBar.select_next_available
 	return bool(class(self).SelectNextAvailable())
 }
 
 /*
 Sets a [param title] for the tab at index [param tab_idx].
 */
-func (self Instance) SetTabTitle(tab_idx int, title string) {
+func (self Instance) SetTabTitle(tab_idx int, title string) { //gd:TabBar.set_tab_title
 	class(self).SetTabTitle(gd.Int(tab_idx), gd.NewString(title))
 }
 
 /*
 Returns the title of the tab at index [param tab_idx].
 */
-func (self Instance) GetTabTitle(tab_idx int) string {
+func (self Instance) GetTabTitle(tab_idx int) string { //gd:TabBar.get_tab_title
 	return string(class(self).GetTabTitle(gd.Int(tab_idx)).String())
 }
 
@@ -80,189 +80,189 @@ func (self Instance) GetTabTitle(tab_idx int) string {
 Sets a [param tooltip] for tab at index [param tab_idx].
 [b]Note:[/b] By default, if the [param tooltip] is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign [code]" "[/code] as the [param tooltip] text.
 */
-func (self Instance) SetTabTooltip(tab_idx int, tooltip string) {
+func (self Instance) SetTabTooltip(tab_idx int, tooltip string) { //gd:TabBar.set_tab_tooltip
 	class(self).SetTabTooltip(gd.Int(tab_idx), gd.NewString(tooltip))
 }
 
 /*
 Returns the tooltip text of the tab at index [param tab_idx].
 */
-func (self Instance) GetTabTooltip(tab_idx int) string {
+func (self Instance) GetTabTooltip(tab_idx int) string { //gd:TabBar.get_tab_tooltip
 	return string(class(self).GetTabTooltip(gd.Int(tab_idx)).String())
 }
 
 /*
 Sets tab title base writing direction.
 */
-func (self Instance) SetTabTextDirection(tab_idx int, direction gdclass.ControlTextDirection) {
+func (self Instance) SetTabTextDirection(tab_idx int, direction gdclass.ControlTextDirection) { //gd:TabBar.set_tab_text_direction
 	class(self).SetTabTextDirection(gd.Int(tab_idx), direction)
 }
 
 /*
 Returns tab title text base writing direction.
 */
-func (self Instance) GetTabTextDirection(tab_idx int) gdclass.ControlTextDirection {
+func (self Instance) GetTabTextDirection(tab_idx int) gdclass.ControlTextDirection { //gd:TabBar.get_tab_text_direction
 	return gdclass.ControlTextDirection(class(self).GetTabTextDirection(gd.Int(tab_idx)))
 }
 
 /*
 Sets language code of tab title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
-func (self Instance) SetTabLanguage(tab_idx int, language string) {
+func (self Instance) SetTabLanguage(tab_idx int, language string) { //gd:TabBar.set_tab_language
 	class(self).SetTabLanguage(gd.Int(tab_idx), gd.NewString(language))
 }
 
 /*
 Returns tab title language code.
 */
-func (self Instance) GetTabLanguage(tab_idx int) string {
+func (self Instance) GetTabLanguage(tab_idx int) string { //gd:TabBar.get_tab_language
 	return string(class(self).GetTabLanguage(gd.Int(tab_idx)).String())
 }
 
 /*
 Sets an [param icon] for the tab at index [param tab_idx].
 */
-func (self Instance) SetTabIcon(tab_idx int, icon [1]gdclass.Texture2D) {
+func (self Instance) SetTabIcon(tab_idx int, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_icon
 	class(self).SetTabIcon(gd.Int(tab_idx), icon)
 }
 
 /*
 Returns the icon for the tab at index [param tab_idx] or [code]null[/code] if the tab has no icon.
 */
-func (self Instance) GetTabIcon(tab_idx int) [1]gdclass.Texture2D {
+func (self Instance) GetTabIcon(tab_idx int) [1]gdclass.Texture2D { //gd:TabBar.get_tab_icon
 	return [1]gdclass.Texture2D(class(self).GetTabIcon(gd.Int(tab_idx)))
 }
 
 /*
 Sets the maximum allowed width of the icon for the tab at index [param tab_idx]. This limit is applied on top of the default size of the icon and on top of [theme_item icon_max_width]. The height is adjusted according to the icon's ratio.
 */
-func (self Instance) SetTabIconMaxWidth(tab_idx int, width int) {
+func (self Instance) SetTabIconMaxWidth(tab_idx int, width int) { //gd:TabBar.set_tab_icon_max_width
 	class(self).SetTabIconMaxWidth(gd.Int(tab_idx), gd.Int(width))
 }
 
 /*
 Returns the maximum allowed width of the icon for the tab at index [param tab_idx].
 */
-func (self Instance) GetTabIconMaxWidth(tab_idx int) int {
+func (self Instance) GetTabIconMaxWidth(tab_idx int) int { //gd:TabBar.get_tab_icon_max_width
 	return int(int(class(self).GetTabIconMaxWidth(gd.Int(tab_idx))))
 }
 
 /*
 Sets an [param icon] for the button of the tab at index [param tab_idx] (located to the right, before the close button), making it visible and clickable (See [signal tab_button_pressed]). Giving it a [code]null[/code] value will hide the button.
 */
-func (self Instance) SetTabButtonIcon(tab_idx int, icon [1]gdclass.Texture2D) {
+func (self Instance) SetTabButtonIcon(tab_idx int, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_button_icon
 	class(self).SetTabButtonIcon(gd.Int(tab_idx), icon)
 }
 
 /*
 Returns the icon for the right button of the tab at index [param tab_idx] or [code]null[/code] if the right button has no icon.
 */
-func (self Instance) GetTabButtonIcon(tab_idx int) [1]gdclass.Texture2D {
+func (self Instance) GetTabButtonIcon(tab_idx int) [1]gdclass.Texture2D { //gd:TabBar.get_tab_button_icon
 	return [1]gdclass.Texture2D(class(self).GetTabButtonIcon(gd.Int(tab_idx)))
 }
 
 /*
 If [param disabled] is [code]true[/code], disables the tab at index [param tab_idx], making it non-interactable.
 */
-func (self Instance) SetTabDisabled(tab_idx int, disabled bool) {
+func (self Instance) SetTabDisabled(tab_idx int, disabled bool) { //gd:TabBar.set_tab_disabled
 	class(self).SetTabDisabled(gd.Int(tab_idx), disabled)
 }
 
 /*
 Returns [code]true[/code] if the tab at index [param tab_idx] is disabled.
 */
-func (self Instance) IsTabDisabled(tab_idx int) bool {
+func (self Instance) IsTabDisabled(tab_idx int) bool { //gd:TabBar.is_tab_disabled
 	return bool(class(self).IsTabDisabled(gd.Int(tab_idx)))
 }
 
 /*
 If [param hidden] is [code]true[/code], hides the tab at index [param tab_idx], making it disappear from the tab area.
 */
-func (self Instance) SetTabHidden(tab_idx int, hidden bool) {
+func (self Instance) SetTabHidden(tab_idx int, hidden bool) { //gd:TabBar.set_tab_hidden
 	class(self).SetTabHidden(gd.Int(tab_idx), hidden)
 }
 
 /*
 Returns [code]true[/code] if the tab at index [param tab_idx] is hidden.
 */
-func (self Instance) IsTabHidden(tab_idx int) bool {
+func (self Instance) IsTabHidden(tab_idx int) bool { //gd:TabBar.is_tab_hidden
 	return bool(class(self).IsTabHidden(gd.Int(tab_idx)))
 }
 
 /*
 Sets the metadata value for the tab at index [param tab_idx], which can be retrieved later using [method get_tab_metadata].
 */
-func (self Instance) SetTabMetadata(tab_idx int, metadata any) {
+func (self Instance) SetTabMetadata(tab_idx int, metadata any) { //gd:TabBar.set_tab_metadata
 	class(self).SetTabMetadata(gd.Int(tab_idx), gd.NewVariant(metadata))
 }
 
 /*
 Returns the metadata value set to the tab at index [param tab_idx] using [method set_tab_metadata]. If no metadata was previously set, returns [code]null[/code] by default.
 */
-func (self Instance) GetTabMetadata(tab_idx int) any {
+func (self Instance) GetTabMetadata(tab_idx int) any { //gd:TabBar.get_tab_metadata
 	return any(class(self).GetTabMetadata(gd.Int(tab_idx)).Interface())
 }
 
 /*
 Removes the tab at index [param tab_idx].
 */
-func (self Instance) RemoveTab(tab_idx int) {
+func (self Instance) RemoveTab(tab_idx int) { //gd:TabBar.remove_tab
 	class(self).RemoveTab(gd.Int(tab_idx))
 }
 
 /*
 Adds a new tab.
 */
-func (self Instance) AddTab() {
+func (self Instance) AddTab() { //gd:TabBar.add_tab
 	class(self).AddTab(gd.NewString(""), [1][1]gdclass.Texture2D{}[0])
 }
 
 /*
 Returns the index of the tab at local coordinates [param point]. Returns [code]-1[/code] if the point is outside the control boundaries or if there's no tab at the queried position.
 */
-func (self Instance) GetTabIdxAtPoint(point Vector2.XY) int {
+func (self Instance) GetTabIdxAtPoint(point Vector2.XY) int { //gd:TabBar.get_tab_idx_at_point
 	return int(int(class(self).GetTabIdxAtPoint(gd.Vector2(point))))
 }
 
 /*
 Returns the number of hidden tabs offsetted to the left.
 */
-func (self Instance) GetTabOffset() int {
+func (self Instance) GetTabOffset() int { //gd:TabBar.get_tab_offset
 	return int(int(class(self).GetTabOffset()))
 }
 
 /*
 Returns [code]true[/code] if the offset buttons (the ones that appear when there's not enough space for all tabs) are visible.
 */
-func (self Instance) GetOffsetButtonsVisible() bool {
+func (self Instance) GetOffsetButtonsVisible() bool { //gd:TabBar.get_offset_buttons_visible
 	return bool(class(self).GetOffsetButtonsVisible())
 }
 
 /*
 Moves the scroll view to make the tab visible.
 */
-func (self Instance) EnsureTabVisible(idx int) {
+func (self Instance) EnsureTabVisible(idx int) { //gd:TabBar.ensure_tab_visible
 	class(self).EnsureTabVisible(gd.Int(idx))
 }
 
 /*
 Returns tab [Rect2] with local position and size.
 */
-func (self Instance) GetTabRect(tab_idx int) Rect2.PositionSize {
+func (self Instance) GetTabRect(tab_idx int) Rect2.PositionSize { //gd:TabBar.get_tab_rect
 	return Rect2.PositionSize(class(self).GetTabRect(gd.Int(tab_idx)))
 }
 
 /*
 Moves a tab from [param from] to [param to].
 */
-func (self Instance) MoveTab(from int, to int) {
+func (self Instance) MoveTab(from int, to int) { //gd:TabBar.move_tab
 	class(self).MoveTab(gd.Int(from), gd.Int(to))
 }
 
 /*
 Clears all tabs.
 */
-func (self Instance) ClearTabs() {
+func (self Instance) ClearTabs() { //gd:TabBar.clear_tabs
 	class(self).ClearTabs()
 }
 
@@ -381,7 +381,7 @@ func (self Instance) SetTabCount(value int) {
 }
 
 //go:nosplit
-func (self class) SetTabCount(count gd.Int) {
+func (self class) SetTabCount(count gd.Int) { //gd:TabBar.set_tab_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -390,7 +390,7 @@ func (self class) SetTabCount(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetTabCount() gd.Int {
+func (self class) GetTabCount() gd.Int { //gd:TabBar.get_tab_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -400,7 +400,7 @@ func (self class) GetTabCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCurrentTab(tab_idx gd.Int) {
+func (self class) SetCurrentTab(tab_idx gd.Int) { //gd:TabBar.set_current_tab
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Nil
@@ -409,7 +409,7 @@ func (self class) SetCurrentTab(tab_idx gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCurrentTab() gd.Int {
+func (self class) GetCurrentTab() gd.Int { //gd:TabBar.get_current_tab
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_current_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -422,7 +422,7 @@ func (self class) GetCurrentTab() gd.Int {
 Returns the previously active tab index.
 */
 //go:nosplit
-func (self class) GetPreviousTab() gd.Int {
+func (self class) GetPreviousTab() gd.Int { //gd:TabBar.get_previous_tab
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_previous_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -435,7 +435,7 @@ func (self class) GetPreviousTab() gd.Int {
 Selects the first available tab with lower index than the currently selected. Returns [code]true[/code] if tab selection changed.
 */
 //go:nosplit
-func (self class) SelectPreviousAvailable() bool {
+func (self class) SelectPreviousAvailable() bool { //gd:TabBar.select_previous_available
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_select_previous_available, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -448,7 +448,7 @@ func (self class) SelectPreviousAvailable() bool {
 Selects the first available tab with greater index than the currently selected. Returns [code]true[/code] if tab selection changed.
 */
 //go:nosplit
-func (self class) SelectNextAvailable() bool {
+func (self class) SelectNextAvailable() bool { //gd:TabBar.select_next_available
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_select_next_available, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -461,7 +461,7 @@ func (self class) SelectNextAvailable() bool {
 Sets a [param title] for the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) SetTabTitle(tab_idx gd.Int, title gd.String) {
+func (self class) SetTabTitle(tab_idx gd.Int, title gd.String) { //gd:TabBar.set_tab_title
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, pointers.Get(title))
@@ -474,7 +474,7 @@ func (self class) SetTabTitle(tab_idx gd.Int, title gd.String) {
 Returns the title of the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) GetTabTitle(tab_idx gd.Int) gd.String {
+func (self class) GetTabTitle(tab_idx gd.Int) gd.String { //gd:TabBar.get_tab_title
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -489,7 +489,7 @@ Sets a [param tooltip] for tab at index [param tab_idx].
 [b]Note:[/b] By default, if the [param tooltip] is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign [code]" "[/code] as the [param tooltip] text.
 */
 //go:nosplit
-func (self class) SetTabTooltip(tab_idx gd.Int, tooltip gd.String) {
+func (self class) SetTabTooltip(tab_idx gd.Int, tooltip gd.String) { //gd:TabBar.set_tab_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, pointers.Get(tooltip))
@@ -502,7 +502,7 @@ func (self class) SetTabTooltip(tab_idx gd.Int, tooltip gd.String) {
 Returns the tooltip text of the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) GetTabTooltip(tab_idx gd.Int) gd.String {
+func (self class) GetTabTooltip(tab_idx gd.Int) gd.String { //gd:TabBar.get_tab_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -516,7 +516,7 @@ func (self class) GetTabTooltip(tab_idx gd.Int) gd.String {
 Sets tab title base writing direction.
 */
 //go:nosplit
-func (self class) SetTabTextDirection(tab_idx gd.Int, direction gdclass.ControlTextDirection) {
+func (self class) SetTabTextDirection(tab_idx gd.Int, direction gdclass.ControlTextDirection) { //gd:TabBar.set_tab_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, direction)
@@ -529,7 +529,7 @@ func (self class) SetTabTextDirection(tab_idx gd.Int, direction gdclass.ControlT
 Returns tab title text base writing direction.
 */
 //go:nosplit
-func (self class) GetTabTextDirection(tab_idx gd.Int) gdclass.ControlTextDirection {
+func (self class) GetTabTextDirection(tab_idx gd.Int) gdclass.ControlTextDirection { //gd:TabBar.get_tab_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
@@ -543,7 +543,7 @@ func (self class) GetTabTextDirection(tab_idx gd.Int) gdclass.ControlTextDirecti
 Sets language code of tab title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 //go:nosplit
-func (self class) SetTabLanguage(tab_idx gd.Int, language gd.String) {
+func (self class) SetTabLanguage(tab_idx gd.Int, language gd.String) { //gd:TabBar.set_tab_language
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, pointers.Get(language))
@@ -556,7 +556,7 @@ func (self class) SetTabLanguage(tab_idx gd.Int, language gd.String) {
 Returns tab title language code.
 */
 //go:nosplit
-func (self class) GetTabLanguage(tab_idx gd.Int) gd.String {
+func (self class) GetTabLanguage(tab_idx gd.Int) gd.String { //gd:TabBar.get_tab_language
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -570,7 +570,7 @@ func (self class) GetTabLanguage(tab_idx gd.Int) gd.String {
 Sets an [param icon] for the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) SetTabIcon(tab_idx gd.Int, icon [1]gdclass.Texture2D) {
+func (self class) SetTabIcon(tab_idx gd.Int, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -583,7 +583,7 @@ func (self class) SetTabIcon(tab_idx gd.Int, icon [1]gdclass.Texture2D) {
 Returns the icon for the tab at index [param tab_idx] or [code]null[/code] if the tab has no icon.
 */
 //go:nosplit
-func (self class) GetTabIcon(tab_idx gd.Int) [1]gdclass.Texture2D {
+func (self class) GetTabIcon(tab_idx gd.Int) [1]gdclass.Texture2D { //gd:TabBar.get_tab_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -597,7 +597,7 @@ func (self class) GetTabIcon(tab_idx gd.Int) [1]gdclass.Texture2D {
 Sets the maximum allowed width of the icon for the tab at index [param tab_idx]. This limit is applied on top of the default size of the icon and on top of [theme_item icon_max_width]. The height is adjusted according to the icon's ratio.
 */
 //go:nosplit
-func (self class) SetTabIconMaxWidth(tab_idx gd.Int, width gd.Int) {
+func (self class) SetTabIconMaxWidth(tab_idx gd.Int, width gd.Int) { //gd:TabBar.set_tab_icon_max_width
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, width)
@@ -610,7 +610,7 @@ func (self class) SetTabIconMaxWidth(tab_idx gd.Int, width gd.Int) {
 Returns the maximum allowed width of the icon for the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) GetTabIconMaxWidth(tab_idx gd.Int) gd.Int {
+func (self class) GetTabIconMaxWidth(tab_idx gd.Int) gd.Int { //gd:TabBar.get_tab_icon_max_width
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -624,7 +624,7 @@ func (self class) GetTabIconMaxWidth(tab_idx gd.Int) gd.Int {
 Sets an [param icon] for the button of the tab at index [param tab_idx] (located to the right, before the close button), making it visible and clickable (See [signal tab_button_pressed]). Giving it a [code]null[/code] value will hide the button.
 */
 //go:nosplit
-func (self class) SetTabButtonIcon(tab_idx gd.Int, icon [1]gdclass.Texture2D) {
+func (self class) SetTabButtonIcon(tab_idx gd.Int, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_button_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -637,7 +637,7 @@ func (self class) SetTabButtonIcon(tab_idx gd.Int, icon [1]gdclass.Texture2D) {
 Returns the icon for the right button of the tab at index [param tab_idx] or [code]null[/code] if the right button has no icon.
 */
 //go:nosplit
-func (self class) GetTabButtonIcon(tab_idx gd.Int) [1]gdclass.Texture2D {
+func (self class) GetTabButtonIcon(tab_idx gd.Int) [1]gdclass.Texture2D { //gd:TabBar.get_tab_button_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -651,7 +651,7 @@ func (self class) GetTabButtonIcon(tab_idx gd.Int) [1]gdclass.Texture2D {
 If [param disabled] is [code]true[/code], disables the tab at index [param tab_idx], making it non-interactable.
 */
 //go:nosplit
-func (self class) SetTabDisabled(tab_idx gd.Int, disabled bool) {
+func (self class) SetTabDisabled(tab_idx gd.Int, disabled bool) { //gd:TabBar.set_tab_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, disabled)
@@ -664,7 +664,7 @@ func (self class) SetTabDisabled(tab_idx gd.Int, disabled bool) {
 Returns [code]true[/code] if the tab at index [param tab_idx] is disabled.
 */
 //go:nosplit
-func (self class) IsTabDisabled(tab_idx gd.Int) bool {
+func (self class) IsTabDisabled(tab_idx gd.Int) bool { //gd:TabBar.is_tab_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -678,7 +678,7 @@ func (self class) IsTabDisabled(tab_idx gd.Int) bool {
 If [param hidden] is [code]true[/code], hides the tab at index [param tab_idx], making it disappear from the tab area.
 */
 //go:nosplit
-func (self class) SetTabHidden(tab_idx gd.Int, hidden bool) {
+func (self class) SetTabHidden(tab_idx gd.Int, hidden bool) { //gd:TabBar.set_tab_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, hidden)
@@ -691,7 +691,7 @@ func (self class) SetTabHidden(tab_idx gd.Int, hidden bool) {
 Returns [code]true[/code] if the tab at index [param tab_idx] is hidden.
 */
 //go:nosplit
-func (self class) IsTabHidden(tab_idx gd.Int) bool {
+func (self class) IsTabHidden(tab_idx gd.Int) bool { //gd:TabBar.is_tab_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -705,7 +705,7 @@ func (self class) IsTabHidden(tab_idx gd.Int) bool {
 Sets the metadata value for the tab at index [param tab_idx], which can be retrieved later using [method get_tab_metadata].
 */
 //go:nosplit
-func (self class) SetTabMetadata(tab_idx gd.Int, metadata gd.Variant) {
+func (self class) SetTabMetadata(tab_idx gd.Int, metadata gd.Variant) { //gd:TabBar.set_tab_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, pointers.Get(metadata))
@@ -718,7 +718,7 @@ func (self class) SetTabMetadata(tab_idx gd.Int, metadata gd.Variant) {
 Returns the metadata value set to the tab at index [param tab_idx] using [method set_tab_metadata]. If no metadata was previously set, returns [code]null[/code] by default.
 */
 //go:nosplit
-func (self class) GetTabMetadata(tab_idx gd.Int) gd.Variant {
+func (self class) GetTabMetadata(tab_idx gd.Int) gd.Variant { //gd:TabBar.get_tab_metadata
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -732,7 +732,7 @@ func (self class) GetTabMetadata(tab_idx gd.Int) gd.Variant {
 Removes the tab at index [param tab_idx].
 */
 //go:nosplit
-func (self class) RemoveTab(tab_idx gd.Int) {
+func (self class) RemoveTab(tab_idx gd.Int) { //gd:TabBar.remove_tab
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Nil
@@ -744,7 +744,7 @@ func (self class) RemoveTab(tab_idx gd.Int) {
 Adds a new tab.
 */
 //go:nosplit
-func (self class) AddTab(title gd.String, icon [1]gdclass.Texture2D) {
+func (self class) AddTab(title gd.String, icon [1]gdclass.Texture2D) { //gd:TabBar.add_tab
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -757,7 +757,7 @@ func (self class) AddTab(title gd.String, icon [1]gdclass.Texture2D) {
 Returns the index of the tab at local coordinates [param point]. Returns [code]-1[/code] if the point is outside the control boundaries or if there's no tab at the queried position.
 */
 //go:nosplit
-func (self class) GetTabIdxAtPoint(point gd.Vector2) gd.Int {
+func (self class) GetTabIdxAtPoint(point gd.Vector2) gd.Int { //gd:TabBar.get_tab_idx_at_point
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -768,7 +768,7 @@ func (self class) GetTabIdxAtPoint(point gd.Vector2) gd.Int {
 }
 
 //go:nosplit
-func (self class) SetTabAlignment(alignment gdclass.TabBarAlignmentMode) {
+func (self class) SetTabAlignment(alignment gdclass.TabBarAlignmentMode) { //gd:TabBar.set_tab_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -777,7 +777,7 @@ func (self class) SetTabAlignment(alignment gdclass.TabBarAlignmentMode) {
 }
 
 //go:nosplit
-func (self class) GetTabAlignment() gdclass.TabBarAlignmentMode {
+func (self class) GetTabAlignment() gdclass.TabBarAlignmentMode { //gd:TabBar.get_tab_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TabBarAlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -787,7 +787,7 @@ func (self class) GetTabAlignment() gdclass.TabBarAlignmentMode {
 }
 
 //go:nosplit
-func (self class) SetClipTabs(clip_tabs bool) {
+func (self class) SetClipTabs(clip_tabs bool) { //gd:TabBar.set_clip_tabs
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_tabs)
 	var r_ret = callframe.Nil
@@ -796,7 +796,7 @@ func (self class) SetClipTabs(clip_tabs bool) {
 }
 
 //go:nosplit
-func (self class) GetClipTabs() bool {
+func (self class) GetClipTabs() bool { //gd:TabBar.get_clip_tabs
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_clip_tabs, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -809,7 +809,7 @@ func (self class) GetClipTabs() bool {
 Returns the number of hidden tabs offsetted to the left.
 */
 //go:nosplit
-func (self class) GetTabOffset() gd.Int {
+func (self class) GetTabOffset() gd.Int { //gd:TabBar.get_tab_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -822,7 +822,7 @@ func (self class) GetTabOffset() gd.Int {
 Returns [code]true[/code] if the offset buttons (the ones that appear when there's not enough space for all tabs) are visible.
 */
 //go:nosplit
-func (self class) GetOffsetButtonsVisible() bool {
+func (self class) GetOffsetButtonsVisible() bool { //gd:TabBar.get_offset_buttons_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_offset_buttons_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -835,7 +835,7 @@ func (self class) GetOffsetButtonsVisible() bool {
 Moves the scroll view to make the tab visible.
 */
 //go:nosplit
-func (self class) EnsureTabVisible(idx gd.Int) {
+func (self class) EnsureTabVisible(idx gd.Int) { //gd:TabBar.ensure_tab_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Nil
@@ -847,7 +847,7 @@ func (self class) EnsureTabVisible(idx gd.Int) {
 Returns tab [Rect2] with local position and size.
 */
 //go:nosplit
-func (self class) GetTabRect(tab_idx gd.Int) gd.Rect2 {
+func (self class) GetTabRect(tab_idx gd.Int) gd.Rect2 { //gd:TabBar.get_tab_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	var r_ret = callframe.Ret[gd.Rect2](frame)
@@ -861,7 +861,7 @@ func (self class) GetTabRect(tab_idx gd.Int) gd.Rect2 {
 Moves a tab from [param from] to [param to].
 */
 //go:nosplit
-func (self class) MoveTab(from gd.Int, to gd.Int) {
+func (self class) MoveTab(from gd.Int, to gd.Int) { //gd:TabBar.move_tab
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -871,7 +871,7 @@ func (self class) MoveTab(from gd.Int, to gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetTabCloseDisplayPolicy(policy gdclass.TabBarCloseButtonDisplayPolicy) {
+func (self class) SetTabCloseDisplayPolicy(policy gdclass.TabBarCloseButtonDisplayPolicy) { //gd:TabBar.set_tab_close_display_policy
 	var frame = callframe.New()
 	callframe.Arg(frame, policy)
 	var r_ret = callframe.Nil
@@ -880,7 +880,7 @@ func (self class) SetTabCloseDisplayPolicy(policy gdclass.TabBarCloseButtonDispl
 }
 
 //go:nosplit
-func (self class) GetTabCloseDisplayPolicy() gdclass.TabBarCloseButtonDisplayPolicy {
+func (self class) GetTabCloseDisplayPolicy() gdclass.TabBarCloseButtonDisplayPolicy { //gd:TabBar.get_tab_close_display_policy
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TabBarCloseButtonDisplayPolicy](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_close_display_policy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -890,7 +890,7 @@ func (self class) GetTabCloseDisplayPolicy() gdclass.TabBarCloseButtonDisplayPol
 }
 
 //go:nosplit
-func (self class) SetMaxTabWidth(width gd.Int) {
+func (self class) SetMaxTabWidth(width gd.Int) { //gd:TabBar.set_max_tab_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -899,7 +899,7 @@ func (self class) SetMaxTabWidth(width gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMaxTabWidth() gd.Int {
+func (self class) GetMaxTabWidth() gd.Int { //gd:TabBar.get_max_tab_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_max_tab_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -909,7 +909,7 @@ func (self class) GetMaxTabWidth() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetScrollingEnabled(enabled bool) {
+func (self class) SetScrollingEnabled(enabled bool) { //gd:TabBar.set_scrolling_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -918,7 +918,7 @@ func (self class) SetScrollingEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetScrollingEnabled() bool {
+func (self class) GetScrollingEnabled() bool { //gd:TabBar.get_scrolling_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_scrolling_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -928,7 +928,7 @@ func (self class) GetScrollingEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDragToRearrangeEnabled(enabled bool) {
+func (self class) SetDragToRearrangeEnabled(enabled bool) { //gd:TabBar.set_drag_to_rearrange_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -937,7 +937,7 @@ func (self class) SetDragToRearrangeEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetDragToRearrangeEnabled() bool {
+func (self class) GetDragToRearrangeEnabled() bool { //gd:TabBar.get_drag_to_rearrange_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_drag_to_rearrange_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -947,7 +947,7 @@ func (self class) GetDragToRearrangeEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetTabsRearrangeGroup(group_id gd.Int) {
+func (self class) SetTabsRearrangeGroup(group_id gd.Int) { //gd:TabBar.set_tabs_rearrange_group
 	var frame = callframe.New()
 	callframe.Arg(frame, group_id)
 	var r_ret = callframe.Nil
@@ -956,7 +956,7 @@ func (self class) SetTabsRearrangeGroup(group_id gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetTabsRearrangeGroup() gd.Int {
+func (self class) GetTabsRearrangeGroup() gd.Int { //gd:TabBar.get_tabs_rearrange_group
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tabs_rearrange_group, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -966,7 +966,7 @@ func (self class) GetTabsRearrangeGroup() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetScrollToSelected(enabled bool) {
+func (self class) SetScrollToSelected(enabled bool) { //gd:TabBar.set_scroll_to_selected
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -975,7 +975,7 @@ func (self class) SetScrollToSelected(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetScrollToSelected() bool {
+func (self class) GetScrollToSelected() bool { //gd:TabBar.get_scroll_to_selected
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_scroll_to_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -985,7 +985,7 @@ func (self class) GetScrollToSelected() bool {
 }
 
 //go:nosplit
-func (self class) SetSelectWithRmb(enabled bool) {
+func (self class) SetSelectWithRmb(enabled bool) { //gd:TabBar.set_select_with_rmb
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -994,7 +994,7 @@ func (self class) SetSelectWithRmb(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetSelectWithRmb() bool {
+func (self class) GetSelectWithRmb() bool { //gd:TabBar.get_select_with_rmb
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_select_with_rmb, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1004,7 +1004,7 @@ func (self class) GetSelectWithRmb() bool {
 }
 
 //go:nosplit
-func (self class) SetDeselectEnabled(enabled bool) {
+func (self class) SetDeselectEnabled(enabled bool) { //gd:TabBar.set_deselect_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1013,7 +1013,7 @@ func (self class) SetDeselectEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetDeselectEnabled() bool {
+func (self class) GetDeselectEnabled() bool { //gd:TabBar.get_deselect_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_deselect_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1026,7 +1026,7 @@ func (self class) GetDeselectEnabled() bool {
 Clears all tabs.
 */
 //go:nosplit
-func (self class) ClearTabs() {
+func (self class) ClearTabs() { //gd:TabBar.clear_tabs
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_clear_tabs, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1096,7 +1096,7 @@ func init() {
 	gdclass.Register("TabBar", func(ptr gd.Object) any { return [1]gdclass.TabBar{*(*gdclass.TabBar)(unsafe.Pointer(&ptr))} })
 }
 
-type AlignmentMode = gdclass.TabBarAlignmentMode
+type AlignmentMode = gdclass.TabBarAlignmentMode //gd:TabBar.AlignmentMode
 
 const (
 	/*Places tabs to the left.*/
@@ -1109,7 +1109,7 @@ const (
 	AlignmentMax AlignmentMode = 3
 )
 
-type CloseButtonDisplayPolicy = gdclass.TabBarCloseButtonDisplayPolicy
+type CloseButtonDisplayPolicy = gdclass.TabBarCloseButtonDisplayPolicy //gd:TabBar.CloseButtonDisplayPolicy
 
 const (
 	/*Never show the close buttons.*/

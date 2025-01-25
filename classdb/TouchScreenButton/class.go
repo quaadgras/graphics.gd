@@ -44,7 +44,7 @@ type Any interface {
 /*
 Returns [code]true[/code] if this button is currently pressed.
 */
-func (self Instance) IsPressed() bool {
+func (self Instance) IsPressed() bool { //gd:TouchScreenButton.is_pressed
 	return bool(class(self).IsPressed())
 }
 
@@ -139,7 +139,7 @@ func (self Instance) SetVisibilityMode(value gdclass.TouchScreenButtonVisibility
 }
 
 //go:nosplit
-func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) {
+func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) { //gd:TouchScreenButton.set_texture_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -148,7 +148,7 @@ func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTextureNormal() [1]gdclass.Texture2D {
+func (self class) GetTextureNormal() [1]gdclass.Texture2D { //gd:TouchScreenButton.get_texture_normal
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_texture_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -158,7 +158,7 @@ func (self class) GetTextureNormal() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) {
+func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) { //gd:TouchScreenButton.set_texture_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -167,7 +167,7 @@ func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexturePressed() [1]gdclass.Texture2D {
+func (self class) GetTexturePressed() [1]gdclass.Texture2D { //gd:TouchScreenButton.get_texture_pressed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_texture_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -177,7 +177,7 @@ func (self class) GetTexturePressed() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetBitmask(bitmask [1]gdclass.BitMap) {
+func (self class) SetBitmask(bitmask [1]gdclass.BitMap) { //gd:TouchScreenButton.set_bitmask
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bitmask[0])[0])
 	var r_ret = callframe.Nil
@@ -186,7 +186,7 @@ func (self class) SetBitmask(bitmask [1]gdclass.BitMap) {
 }
 
 //go:nosplit
-func (self class) GetBitmask() [1]gdclass.BitMap {
+func (self class) GetBitmask() [1]gdclass.BitMap { //gd:TouchScreenButton.get_bitmask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_bitmask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -196,7 +196,7 @@ func (self class) GetBitmask() [1]gdclass.BitMap {
 }
 
 //go:nosplit
-func (self class) SetShape(shape [1]gdclass.Shape2D) {
+func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:TouchScreenButton.set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape[0])[0])
 	var r_ret = callframe.Nil
@@ -205,7 +205,7 @@ func (self class) SetShape(shape [1]gdclass.Shape2D) {
 }
 
 //go:nosplit
-func (self class) GetShape() [1]gdclass.Shape2D {
+func (self class) GetShape() [1]gdclass.Shape2D { //gd:TouchScreenButton.get_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -215,7 +215,7 @@ func (self class) GetShape() [1]gdclass.Shape2D {
 }
 
 //go:nosplit
-func (self class) SetShapeCentered(b bool) {
+func (self class) SetShapeCentered(b bool) { //gd:TouchScreenButton.set_shape_centered
 	var frame = callframe.New()
 	callframe.Arg(frame, b)
 	var r_ret = callframe.Nil
@@ -224,7 +224,7 @@ func (self class) SetShapeCentered(b bool) {
 }
 
 //go:nosplit
-func (self class) IsShapeCentered() bool {
+func (self class) IsShapeCentered() bool { //gd:TouchScreenButton.is_shape_centered
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_is_shape_centered, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -234,7 +234,7 @@ func (self class) IsShapeCentered() bool {
 }
 
 //go:nosplit
-func (self class) SetShapeVisible(b bool) {
+func (self class) SetShapeVisible(b bool) { //gd:TouchScreenButton.set_shape_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, b)
 	var r_ret = callframe.Nil
@@ -243,7 +243,7 @@ func (self class) SetShapeVisible(b bool) {
 }
 
 //go:nosplit
-func (self class) IsShapeVisible() bool {
+func (self class) IsShapeVisible() bool { //gd:TouchScreenButton.is_shape_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_is_shape_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -253,7 +253,7 @@ func (self class) IsShapeVisible() bool {
 }
 
 //go:nosplit
-func (self class) SetAction(action gd.String) {
+func (self class) SetAction(action gd.String) { //gd:TouchScreenButton.set_action
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Nil
@@ -262,7 +262,7 @@ func (self class) SetAction(action gd.String) {
 }
 
 //go:nosplit
-func (self class) GetAction() gd.String {
+func (self class) GetAction() gd.String { //gd:TouchScreenButton.get_action
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_action, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -272,7 +272,7 @@ func (self class) GetAction() gd.String {
 }
 
 //go:nosplit
-func (self class) SetVisibilityMode(mode gdclass.TouchScreenButtonVisibilityMode) {
+func (self class) SetVisibilityMode(mode gdclass.TouchScreenButtonVisibilityMode) { //gd:TouchScreenButton.set_visibility_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -281,7 +281,7 @@ func (self class) SetVisibilityMode(mode gdclass.TouchScreenButtonVisibilityMode
 }
 
 //go:nosplit
-func (self class) GetVisibilityMode() gdclass.TouchScreenButtonVisibilityMode {
+func (self class) GetVisibilityMode() gdclass.TouchScreenButtonVisibilityMode { //gd:TouchScreenButton.get_visibility_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TouchScreenButtonVisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_get_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -291,7 +291,7 @@ func (self class) GetVisibilityMode() gdclass.TouchScreenButtonVisibilityMode {
 }
 
 //go:nosplit
-func (self class) SetPassbyPress(enabled bool) {
+func (self class) SetPassbyPress(enabled bool) { //gd:TouchScreenButton.set_passby_press
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -300,7 +300,7 @@ func (self class) SetPassbyPress(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsPassbyPressEnabled() bool {
+func (self class) IsPassbyPressEnabled() bool { //gd:TouchScreenButton.is_passby_press_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_is_passby_press_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -313,7 +313,7 @@ func (self class) IsPassbyPressEnabled() bool {
 Returns [code]true[/code] if this button is currently pressed.
 */
 //go:nosplit
-func (self class) IsPressed() bool {
+func (self class) IsPressed() bool { //gd:TouchScreenButton.is_pressed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TouchScreenButton.Bind_is_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -361,7 +361,7 @@ func init() {
 	})
 }
 
-type VisibilityMode = gdclass.TouchScreenButtonVisibilityMode
+type VisibilityMode = gdclass.TouchScreenButtonVisibilityMode //gd:TouchScreenButton.VisibilityMode
 
 const (
 	/*Always visible.*/

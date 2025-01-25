@@ -41,7 +41,7 @@ type Any interface {
 /*
 Create a new GLTFCamera instance from the given Godot [Camera3D] node.
 */
-func FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera {
+func FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
 	self := Instance{}
 	return [1]gdclass.GLTFCamera(class(self).FromNode(camera_node))
 }
@@ -49,14 +49,14 @@ func FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera {
 /*
 Converts this GLTFCamera instance into a Godot [Camera3D] node.
 */
-func (self Instance) ToNode() [1]gdclass.Camera3D {
+func (self Instance) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node
 	return [1]gdclass.Camera3D(class(self).ToNode())
 }
 
 /*
 Creates a new GLTFCamera instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFCamera {
+func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_dictionary
 	self := Instance{}
 	return [1]gdclass.GLTFCamera(class(self).FromDictionary(gd.NewVariant(dictionary).Interface().(gd.Dictionary)))
 }
@@ -64,7 +64,7 @@ func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFCamera {
 /*
 Serializes this GLTFCamera instance into a [Dictionary].
 */
-func (self Instance) ToDictionary() map[any]any {
+func (self Instance) ToDictionary() map[any]any { //gd:GLTFCamera.to_dictionary
 	return map[any]any(gd.DictionaryAs[any, any](class(self).ToDictionary()))
 }
 
@@ -131,7 +131,7 @@ func (self Instance) SetDepthNear(value Float.X) {
 Create a new GLTFCamera instance from the given Godot [Camera3D] node.
 */
 //go:nosplit
-func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera {
+func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(camera_node[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -145,7 +145,7 @@ func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamer
 Converts this GLTFCamera instance into a Godot [Camera3D] node.
 */
 //go:nosplit
-func (self class) ToNode() [1]gdclass.Camera3D {
+func (self class) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_to_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -158,7 +158,7 @@ func (self class) ToNode() [1]gdclass.Camera3D {
 Creates a new GLTFCamera instance by parsing the given [Dictionary].
 */
 //go:nosplit
-func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFCamera {
+func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_dictionary
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -172,7 +172,7 @@ func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFCamera
 Serializes this GLTFCamera instance into a [Dictionary].
 */
 //go:nosplit
-func (self class) ToDictionary() gd.Dictionary {
+func (self class) ToDictionary() gd.Dictionary { //gd:GLTFCamera.to_dictionary
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_to_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -182,7 +182,7 @@ func (self class) ToDictionary() gd.Dictionary {
 }
 
 //go:nosplit
-func (self class) GetPerspective() bool {
+func (self class) GetPerspective() bool { //gd:GLTFCamera.get_perspective
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_get_perspective, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -192,7 +192,7 @@ func (self class) GetPerspective() bool {
 }
 
 //go:nosplit
-func (self class) SetPerspective(perspective bool) {
+func (self class) SetPerspective(perspective bool) { //gd:GLTFCamera.set_perspective
 	var frame = callframe.New()
 	callframe.Arg(frame, perspective)
 	var r_ret = callframe.Nil
@@ -201,7 +201,7 @@ func (self class) SetPerspective(perspective bool) {
 }
 
 //go:nosplit
-func (self class) GetFov() gd.Float {
+func (self class) GetFov() gd.Float { //gd:GLTFCamera.get_fov
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_get_fov, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func (self class) GetFov() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFov(fov gd.Float) {
+func (self class) SetFov(fov gd.Float) { //gd:GLTFCamera.set_fov
 	var frame = callframe.New()
 	callframe.Arg(frame, fov)
 	var r_ret = callframe.Nil
@@ -220,7 +220,7 @@ func (self class) SetFov(fov gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSizeMag() gd.Float {
+func (self class) GetSizeMag() gd.Float { //gd:GLTFCamera.get_size_mag
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_get_size_mag, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -230,7 +230,7 @@ func (self class) GetSizeMag() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSizeMag(size_mag gd.Float) {
+func (self class) SetSizeMag(size_mag gd.Float) { //gd:GLTFCamera.set_size_mag
 	var frame = callframe.New()
 	callframe.Arg(frame, size_mag)
 	var r_ret = callframe.Nil
@@ -239,7 +239,7 @@ func (self class) SetSizeMag(size_mag gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDepthFar() gd.Float {
+func (self class) GetDepthFar() gd.Float { //gd:GLTFCamera.get_depth_far
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_get_depth_far, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -249,7 +249,7 @@ func (self class) GetDepthFar() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDepthFar(zdepth_far gd.Float) {
+func (self class) SetDepthFar(zdepth_far gd.Float) { //gd:GLTFCamera.set_depth_far
 	var frame = callframe.New()
 	callframe.Arg(frame, zdepth_far)
 	var r_ret = callframe.Nil
@@ -258,7 +258,7 @@ func (self class) SetDepthFar(zdepth_far gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDepthNear() gd.Float {
+func (self class) GetDepthNear() gd.Float { //gd:GLTFCamera.get_depth_near
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFCamera.Bind_get_depth_near, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -268,7 +268,7 @@ func (self class) GetDepthNear() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDepthNear(zdepth_near gd.Float) {
+func (self class) SetDepthNear(zdepth_near gd.Float) { //gd:GLTFCamera.set_depth_near
 	var frame = callframe.New()
 	callframe.Arg(frame, zdepth_near)
 	var r_ret = callframe.Nil

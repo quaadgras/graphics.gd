@@ -79,7 +79,7 @@ func (self Instance) SetMaterial(value [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) {
+func (self class) SetSize(size gd.Vector3) { //gd:CSGBox3D.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -88,7 +88,7 @@ func (self class) SetSize(size gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 {
+func (self class) GetSize() gd.Vector3 { //gd:CSGBox3D.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGBox3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -98,7 +98,7 @@ func (self class) GetSize() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetMaterial(material [1]gdclass.Material) {
+func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGBox3D.set_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) GetMaterial() [1]gdclass.Material {
+func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGBox3D.get_material
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGBox3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())

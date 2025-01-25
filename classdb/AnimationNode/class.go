@@ -219,56 +219,56 @@ func (Instance) _has_filter(impl func(ptr unsafe.Pointer) bool) (cb gd.Extension
 /*
 Adds an input to the animation node. This is only useful for animation nodes created for use in an [AnimationNodeBlendTree]. If the addition fails, returns [code]false[/code].
 */
-func (self Instance) AddInput(name string) bool {
+func (self Instance) AddInput(name string) bool { //gd:AnimationNode.add_input
 	return bool(class(self).AddInput(gd.NewString(name)))
 }
 
 /*
 Removes an input, call this only when inactive.
 */
-func (self Instance) RemoveInput(index int) {
+func (self Instance) RemoveInput(index int) { //gd:AnimationNode.remove_input
 	class(self).RemoveInput(gd.Int(index))
 }
 
 /*
 Sets the name of the input at the given [param input] index. If the setting fails, returns [code]false[/code].
 */
-func (self Instance) SetInputName(input int, name string) bool {
+func (self Instance) SetInputName(input int, name string) bool { //gd:AnimationNode.set_input_name
 	return bool(class(self).SetInputName(gd.Int(input), gd.NewString(name)))
 }
 
 /*
 Gets the name of an input by index.
 */
-func (self Instance) GetInputName(input int) string {
+func (self Instance) GetInputName(input int) string { //gd:AnimationNode.get_input_name
 	return string(class(self).GetInputName(gd.Int(input)).String())
 }
 
 /*
 Amount of inputs in this animation node, only useful for animation nodes that go into [AnimationNodeBlendTree].
 */
-func (self Instance) GetInputCount() int {
+func (self Instance) GetInputCount() int { //gd:AnimationNode.get_input_count
 	return int(int(class(self).GetInputCount()))
 }
 
 /*
 Returns the input index which corresponds to [param name]. If not found, returns [code]-1[/code].
 */
-func (self Instance) FindInput(name string) int {
+func (self Instance) FindInput(name string) int { //gd:AnimationNode.find_input
 	return int(int(class(self).FindInput(gd.NewString(name))))
 }
 
 /*
 Adds or removes a path for the filter.
 */
-func (self Instance) SetFilterPath(path NodePath.String, enable bool) {
+func (self Instance) SetFilterPath(path NodePath.String, enable bool) { //gd:AnimationNode.set_filter_path
 	class(self).SetFilterPath(gd.NewString(string(path)).NodePath(), enable)
 }
 
 /*
 Returns whether the given path is filtered.
 */
-func (self Instance) IsPathFiltered(path NodePath.String) bool {
+func (self Instance) IsPathFiltered(path NodePath.String) bool { //gd:AnimationNode.is_path_filtered
 	return bool(class(self).IsPathFiltered(gd.NewString(string(path)).NodePath()))
 }
 
@@ -276,35 +276,35 @@ func (self Instance) IsPathFiltered(path NodePath.String) bool {
 Blend an animation by [param blend] amount (name must be valid in the linked [AnimationPlayer]). A [param time] and [param delta] may be passed, as well as whether [param seeked] happened.
 A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
 */
-func (self Instance) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X) {
+func (self Instance) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X) { //gd:AnimationNode.blend_animation
 	class(self).BlendAnimation(gd.NewStringName(animation), gd.Float(time), gd.Float(delta), seeked, is_external_seeking, gd.Float(blend), 0)
 }
 
 /*
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
-func (self Instance) BlendNode(name string, node [1]gdclass.AnimationNode, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X {
+func (self Instance) BlendNode(name string, node [1]gdclass.AnimationNode, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X { //gd:AnimationNode.blend_node
 	return Float.X(Float.X(class(self).BlendNode(gd.NewStringName(name), node, gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
 }
 
 /*
 Blend an input. This is only useful for animation nodes created for an [AnimationNodeBlendTree]. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute. A filter mode may be optionally passed (see [enum FilterAction] for options).
 */
-func (self Instance) BlendInput(input_index int, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X {
+func (self Instance) BlendInput(input_index int, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X { //gd:AnimationNode.blend_input
 	return Float.X(Float.X(class(self).BlendInput(gd.Int(input_index), gd.Float(time), seek, is_external_seeking, gd.Float(blend), 0, true, false)))
 }
 
 /*
 Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
 */
-func (self Instance) SetParameter(name string, value any) {
+func (self Instance) SetParameter(name string, value any) { //gd:AnimationNode.set_parameter
 	class(self).SetParameter(gd.NewStringName(name), gd.NewVariant(value))
 }
 
 /*
 Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
-func (self Instance) GetParameter(name string) any {
+func (self Instance) GetParameter(name string) any { //gd:AnimationNode.get_parameter
 	return any(class(self).GetParameter(gd.NewStringName(name)).Interface())
 }
 
@@ -468,7 +468,7 @@ func (class) _has_filter(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionCla
 Adds an input to the animation node. This is only useful for animation nodes created for use in an [AnimationNodeBlendTree]. If the addition fails, returns [code]false[/code].
 */
 //go:nosplit
-func (self class) AddInput(name gd.String) bool {
+func (self class) AddInput(name gd.String) bool { //gd:AnimationNode.add_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -482,7 +482,7 @@ func (self class) AddInput(name gd.String) bool {
 Removes an input, call this only when inactive.
 */
 //go:nosplit
-func (self class) RemoveInput(index gd.Int) {
+func (self class) RemoveInput(index gd.Int) { //gd:AnimationNode.remove_input
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -494,7 +494,7 @@ func (self class) RemoveInput(index gd.Int) {
 Sets the name of the input at the given [param input] index. If the setting fails, returns [code]false[/code].
 */
 //go:nosplit
-func (self class) SetInputName(input gd.Int, name gd.String) bool {
+func (self class) SetInputName(input gd.Int, name gd.String) bool { //gd:AnimationNode.set_input_name
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	callframe.Arg(frame, pointers.Get(name))
@@ -509,7 +509,7 @@ func (self class) SetInputName(input gd.Int, name gd.String) bool {
 Gets the name of an input by index.
 */
 //go:nosplit
-func (self class) GetInputName(input gd.Int) gd.String {
+func (self class) GetInputName(input gd.Int) gd.String { //gd:AnimationNode.get_input_name
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -523,7 +523,7 @@ func (self class) GetInputName(input gd.Int) gd.String {
 Amount of inputs in this animation node, only useful for animation nodes that go into [AnimationNodeBlendTree].
 */
 //go:nosplit
-func (self class) GetInputCount() gd.Int {
+func (self class) GetInputCount() gd.Int { //gd:AnimationNode.get_input_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_get_input_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -536,7 +536,7 @@ func (self class) GetInputCount() gd.Int {
 Returns the input index which corresponds to [param name]. If not found, returns [code]-1[/code].
 */
 //go:nosplit
-func (self class) FindInput(name gd.String) gd.Int {
+func (self class) FindInput(name gd.String) gd.Int { //gd:AnimationNode.find_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -550,7 +550,7 @@ func (self class) FindInput(name gd.String) gd.Int {
 Adds or removes a path for the filter.
 */
 //go:nosplit
-func (self class) SetFilterPath(path gd.NodePath, enable bool) {
+func (self class) SetFilterPath(path gd.NodePath, enable bool) { //gd:AnimationNode.set_filter_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, enable)
@@ -563,7 +563,7 @@ func (self class) SetFilterPath(path gd.NodePath, enable bool) {
 Returns whether the given path is filtered.
 */
 //go:nosplit
-func (self class) IsPathFiltered(path gd.NodePath) bool {
+func (self class) IsPathFiltered(path gd.NodePath) bool { //gd:AnimationNode.is_path_filtered
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
@@ -574,7 +574,7 @@ func (self class) IsPathFiltered(path gd.NodePath) bool {
 }
 
 //go:nosplit
-func (self class) SetFilterEnabled(enable bool) {
+func (self class) SetFilterEnabled(enable bool) { //gd:AnimationNode.set_filter_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -583,7 +583,7 @@ func (self class) SetFilterEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsFilterEnabled() bool {
+func (self class) IsFilterEnabled() bool { //gd:AnimationNode.is_filter_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNode.Bind_is_filter_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -597,7 +597,7 @@ Blend an animation by [param blend] amount (name must be valid in the linked [An
 A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
 */
 //go:nosplit
-func (self class) BlendAnimation(animation gd.StringName, time gd.Float, delta gd.Float, seeked bool, is_external_seeking bool, blend gd.Float, looped_flag gdclass.AnimationLoopedFlag) {
+func (self class) BlendAnimation(animation gd.StringName, time gd.Float, delta gd.Float, seeked bool, is_external_seeking bool, blend gd.Float, looped_flag gdclass.AnimationLoopedFlag) { //gd:AnimationNode.blend_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(animation))
 	callframe.Arg(frame, time)
@@ -615,7 +615,7 @@ func (self class) BlendAnimation(animation gd.StringName, time gd.Float, delta g
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
 //go:nosplit
-func (self class) BlendNode(name gd.StringName, node [1]gdclass.AnimationNode, time gd.Float, seek bool, is_external_seeking bool, blend gd.Float, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) gd.Float {
+func (self class) BlendNode(name gd.StringName, node [1]gdclass.AnimationNode, time gd.Float, seek bool, is_external_seeking bool, blend gd.Float, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) gd.Float { //gd:AnimationNode.blend_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(node[0])[0])
@@ -637,7 +637,7 @@ func (self class) BlendNode(name gd.StringName, node [1]gdclass.AnimationNode, t
 Blend an input. This is only useful for animation nodes created for an [AnimationNodeBlendTree]. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute. A filter mode may be optionally passed (see [enum FilterAction] for options).
 */
 //go:nosplit
-func (self class) BlendInput(input_index gd.Int, time gd.Float, seek bool, is_external_seeking bool, blend gd.Float, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) gd.Float {
+func (self class) BlendInput(input_index gd.Int, time gd.Float, seek bool, is_external_seeking bool, blend gd.Float, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) gd.Float { //gd:AnimationNode.blend_input
 	var frame = callframe.New()
 	callframe.Arg(frame, input_index)
 	callframe.Arg(frame, time)
@@ -658,7 +658,7 @@ func (self class) BlendInput(input_index gd.Int, time gd.Float, seek bool, is_ex
 Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
 */
 //go:nosplit
-func (self class) SetParameter(name gd.StringName, value gd.Variant) {
+func (self class) SetParameter(name gd.StringName, value gd.Variant) { //gd:AnimationNode.set_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(value))
@@ -671,7 +671,7 @@ func (self class) SetParameter(name gd.StringName, value gd.Variant) {
 Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 //go:nosplit
-func (self class) GetParameter(name gd.StringName) gd.Variant {
+func (self class) GetParameter(name gd.StringName) gd.Variant { //gd:AnimationNode.get_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -758,7 +758,7 @@ func init() {
 	})
 }
 
-type FilterAction = gdclass.AnimationNodeFilterAction
+type FilterAction = gdclass.AnimationNodeFilterAction //gd:AnimationNode.FilterAction
 
 const (
 	/*Do not use filtering.*/

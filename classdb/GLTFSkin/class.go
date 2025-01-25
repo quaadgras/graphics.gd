@@ -135,7 +135,7 @@ func (self Instance) SetGodotSkin(value [1]gdclass.Skin) {
 }
 
 //go:nosplit
-func (self class) GetSkinRoot() gd.Int {
+func (self class) GetSkinRoot() gd.Int { //gd:GLTFSkin.get_skin_root
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_skin_root, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -145,7 +145,7 @@ func (self class) GetSkinRoot() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSkinRoot(skin_root gd.Int) {
+func (self class) SetSkinRoot(skin_root gd.Int) { //gd:GLTFSkin.set_skin_root
 	var frame = callframe.New()
 	callframe.Arg(frame, skin_root)
 	var r_ret = callframe.Nil
@@ -154,7 +154,7 @@ func (self class) SetSkinRoot(skin_root gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetJointsOriginal() gd.PackedInt32Array {
+func (self class) GetJointsOriginal() gd.PackedInt32Array { //gd:GLTFSkin.get_joints_original
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_joints_original, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -164,7 +164,7 @@ func (self class) GetJointsOriginal() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetJointsOriginal(joints_original gd.PackedInt32Array) {
+func (self class) SetJointsOriginal(joints_original gd.PackedInt32Array) { //gd:GLTFSkin.set_joints_original
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(joints_original))
 	var r_ret = callframe.Nil
@@ -173,7 +173,7 @@ func (self class) SetJointsOriginal(joints_original gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetInverseBinds() Array.Contains[gd.Transform3D] {
+func (self class) GetInverseBinds() Array.Contains[gd.Transform3D] { //gd:GLTFSkin.get_inverse_binds
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_inverse_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -183,7 +183,7 @@ func (self class) GetInverseBinds() Array.Contains[gd.Transform3D] {
 }
 
 //go:nosplit
-func (self class) SetInverseBinds(inverse_binds Array.Contains[gd.Transform3D]) {
+func (self class) SetInverseBinds(inverse_binds Array.Contains[gd.Transform3D]) { //gd:GLTFSkin.set_inverse_binds
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(inverse_binds)))
 	var r_ret = callframe.Nil
@@ -192,7 +192,7 @@ func (self class) SetInverseBinds(inverse_binds Array.Contains[gd.Transform3D]) 
 }
 
 //go:nosplit
-func (self class) GetJoints() gd.PackedInt32Array {
+func (self class) GetJoints() gd.PackedInt32Array { //gd:GLTFSkin.get_joints
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_joints, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -202,7 +202,7 @@ func (self class) GetJoints() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetJoints(joints gd.PackedInt32Array) {
+func (self class) SetJoints(joints gd.PackedInt32Array) { //gd:GLTFSkin.set_joints
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(joints))
 	var r_ret = callframe.Nil
@@ -211,7 +211,7 @@ func (self class) SetJoints(joints gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetNonJoints() gd.PackedInt32Array {
+func (self class) GetNonJoints() gd.PackedInt32Array { //gd:GLTFSkin.get_non_joints
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_non_joints, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -221,7 +221,7 @@ func (self class) GetNonJoints() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetNonJoints(non_joints gd.PackedInt32Array) {
+func (self class) SetNonJoints(non_joints gd.PackedInt32Array) { //gd:GLTFSkin.set_non_joints
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(non_joints))
 	var r_ret = callframe.Nil
@@ -230,7 +230,7 @@ func (self class) SetNonJoints(non_joints gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetRoots() gd.PackedInt32Array {
+func (self class) GetRoots() gd.PackedInt32Array { //gd:GLTFSkin.get_roots
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_roots, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -240,7 +240,7 @@ func (self class) GetRoots() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetRoots(roots gd.PackedInt32Array) {
+func (self class) SetRoots(roots gd.PackedInt32Array) { //gd:GLTFSkin.set_roots
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(roots))
 	var r_ret = callframe.Nil
@@ -249,7 +249,7 @@ func (self class) SetRoots(roots gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetSkeleton() gd.Int {
+func (self class) GetSkeleton() gd.Int { //gd:GLTFSkin.get_skeleton
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -259,7 +259,7 @@ func (self class) GetSkeleton() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSkeleton(skeleton gd.Int) {
+func (self class) SetSkeleton(skeleton gd.Int) { //gd:GLTFSkin.set_skeleton
 	var frame = callframe.New()
 	callframe.Arg(frame, skeleton)
 	var r_ret = callframe.Nil
@@ -268,7 +268,7 @@ func (self class) SetSkeleton(skeleton gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetJointIToBoneI() gd.Dictionary {
+func (self class) GetJointIToBoneI() gd.Dictionary { //gd:GLTFSkin.get_joint_i_to_bone_i
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_joint_i_to_bone_i, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -278,7 +278,7 @@ func (self class) GetJointIToBoneI() gd.Dictionary {
 }
 
 //go:nosplit
-func (self class) SetJointIToBoneI(joint_i_to_bone_i gd.Dictionary) {
+func (self class) SetJointIToBoneI(joint_i_to_bone_i gd.Dictionary) { //gd:GLTFSkin.set_joint_i_to_bone_i
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(joint_i_to_bone_i))
 	var r_ret = callframe.Nil
@@ -287,7 +287,7 @@ func (self class) SetJointIToBoneI(joint_i_to_bone_i gd.Dictionary) {
 }
 
 //go:nosplit
-func (self class) GetJointIToName() gd.Dictionary {
+func (self class) GetJointIToName() gd.Dictionary { //gd:GLTFSkin.get_joint_i_to_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_joint_i_to_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -297,7 +297,7 @@ func (self class) GetJointIToName() gd.Dictionary {
 }
 
 //go:nosplit
-func (self class) SetJointIToName(joint_i_to_name gd.Dictionary) {
+func (self class) SetJointIToName(joint_i_to_name gd.Dictionary) { //gd:GLTFSkin.set_joint_i_to_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(joint_i_to_name))
 	var r_ret = callframe.Nil
@@ -306,7 +306,7 @@ func (self class) SetJointIToName(joint_i_to_name gd.Dictionary) {
 }
 
 //go:nosplit
-func (self class) GetGodotSkin() [1]gdclass.Skin {
+func (self class) GetGodotSkin() [1]gdclass.Skin { //gd:GLTFSkin.get_godot_skin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_godot_skin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -316,7 +316,7 @@ func (self class) GetGodotSkin() [1]gdclass.Skin {
 }
 
 //go:nosplit
-func (self class) SetGodotSkin(godot_skin [1]gdclass.Skin) {
+func (self class) SetGodotSkin(godot_skin [1]gdclass.Skin) { //gd:GLTFSkin.set_godot_skin
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(godot_skin[0])[0])
 	var r_ret = callframe.Nil

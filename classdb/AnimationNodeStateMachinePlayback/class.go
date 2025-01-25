@@ -54,7 +54,7 @@ Transitions from the current state to another one, following the shortest path.
 If the path does not connect from the current state, the animation will play after the state teleports.
 If [param reset_on_teleport] is [code]true[/code], the animation is played from the beginning when the travel cause a teleportation.
 */
-func (self Instance) Travel(to_node string) {
+func (self Instance) Travel(to_node string) { //gd:AnimationNodeStateMachinePlayback.travel
 	class(self).Travel(gd.NewStringName(to_node), true)
 }
 
@@ -62,28 +62,28 @@ func (self Instance) Travel(to_node string) {
 Starts playing the given animation.
 If [param reset] is [code]true[/code], the animation is played from the beginning.
 */
-func (self Instance) Start(node string) {
+func (self Instance) Start(node string) { //gd:AnimationNodeStateMachinePlayback.start
 	class(self).Start(gd.NewStringName(node), true)
 }
 
 /*
 If there is a next path by travel or auto advance, immediately transitions from the current state to the next state.
 */
-func (self Instance) Next() {
+func (self Instance) Next() { //gd:AnimationNodeStateMachinePlayback.next
 	class(self).Next()
 }
 
 /*
 Stops the currently playing animation.
 */
-func (self Instance) Stop() {
+func (self Instance) Stop() { //gd:AnimationNodeStateMachinePlayback.stop
 	class(self).Stop()
 }
 
 /*
 Returns [code]true[/code] if an animation is playing.
 */
-func (self Instance) IsPlaying() bool {
+func (self Instance) IsPlaying() bool { //gd:AnimationNodeStateMachinePlayback.is_playing
 	return bool(class(self).IsPlaying())
 }
 
@@ -91,14 +91,14 @@ func (self Instance) IsPlaying() bool {
 Returns the currently playing animation state.
 [b]Note:[/b] When using a cross-fade, the current state changes to the next state immediately after the cross-fade begins.
 */
-func (self Instance) GetCurrentNode() string {
+func (self Instance) GetCurrentNode() string { //gd:AnimationNodeStateMachinePlayback.get_current_node
 	return string(class(self).GetCurrentNode().String())
 }
 
 /*
 Returns the playback position within the current animation state.
 */
-func (self Instance) GetCurrentPlayPosition() Float.X {
+func (self Instance) GetCurrentPlayPosition() Float.X { //gd:AnimationNodeStateMachinePlayback.get_current_play_position
 	return Float.X(Float.X(class(self).GetCurrentPlayPosition()))
 }
 
@@ -106,21 +106,21 @@ func (self Instance) GetCurrentPlayPosition() Float.X {
 Returns the current state length.
 [b]Note:[/b] It is possible that any [AnimationRootNode] can be nodes as well as animations. This means that there can be multiple animations within a single state. Which animation length has priority depends on the nodes connected inside it. Also, if a transition does not reset, the remaining length at that point will be returned.
 */
-func (self Instance) GetCurrentLength() Float.X {
+func (self Instance) GetCurrentLength() Float.X { //gd:AnimationNodeStateMachinePlayback.get_current_length
 	return Float.X(Float.X(class(self).GetCurrentLength()))
 }
 
 /*
 Returns the starting state of currently fading animation.
 */
-func (self Instance) GetFadingFromNode() string {
+func (self Instance) GetFadingFromNode() string { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
 	return string(class(self).GetFadingFromNode().String())
 }
 
 /*
 Returns the current travel path as computed internally by the A* algorithm.
 */
-func (self Instance) GetTravelPath() []string {
+func (self Instance) GetTravelPath() []string { //gd:AnimationNodeStateMachinePlayback.get_travel_path
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetTravelPath())))
 }
 
@@ -149,7 +149,7 @@ If the path does not connect from the current state, the animation will play aft
 If [param reset_on_teleport] is [code]true[/code], the animation is played from the beginning when the travel cause a teleportation.
 */
 //go:nosplit
-func (self class) Travel(to_node gd.StringName, reset_on_teleport bool) {
+func (self class) Travel(to_node gd.StringName, reset_on_teleport bool) { //gd:AnimationNodeStateMachinePlayback.travel
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(to_node))
 	callframe.Arg(frame, reset_on_teleport)
@@ -163,7 +163,7 @@ Starts playing the given animation.
 If [param reset] is [code]true[/code], the animation is played from the beginning.
 */
 //go:nosplit
-func (self class) Start(node gd.StringName, reset bool) {
+func (self class) Start(node gd.StringName, reset bool) { //gd:AnimationNodeStateMachinePlayback.start
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node))
 	callframe.Arg(frame, reset)
@@ -176,7 +176,7 @@ func (self class) Start(node gd.StringName, reset bool) {
 If there is a next path by travel or auto advance, immediately transitions from the current state to the next state.
 */
 //go:nosplit
-func (self class) Next() {
+func (self class) Next() { //gd:AnimationNodeStateMachinePlayback.next
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_next, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -187,7 +187,7 @@ func (self class) Next() {
 Stops the currently playing animation.
 */
 //go:nosplit
-func (self class) Stop() {
+func (self class) Stop() { //gd:AnimationNodeStateMachinePlayback.stop
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -198,7 +198,7 @@ func (self class) Stop() {
 Returns [code]true[/code] if an animation is playing.
 */
 //go:nosplit
-func (self class) IsPlaying() bool {
+func (self class) IsPlaying() bool { //gd:AnimationNodeStateMachinePlayback.is_playing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -212,7 +212,7 @@ Returns the currently playing animation state.
 [b]Note:[/b] When using a cross-fade, the current state changes to the next state immediately after the cross-fade begins.
 */
 //go:nosplit
-func (self class) GetCurrentNode() gd.StringName {
+func (self class) GetCurrentNode() gd.StringName { //gd:AnimationNodeStateMachinePlayback.get_current_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -225,7 +225,7 @@ func (self class) GetCurrentNode() gd.StringName {
 Returns the playback position within the current animation state.
 */
 //go:nosplit
-func (self class) GetCurrentPlayPosition() gd.Float {
+func (self class) GetCurrentPlayPosition() gd.Float { //gd:AnimationNodeStateMachinePlayback.get_current_play_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_play_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -239,7 +239,7 @@ Returns the current state length.
 [b]Note:[/b] It is possible that any [AnimationRootNode] can be nodes as well as animations. This means that there can be multiple animations within a single state. Which animation length has priority depends on the nodes connected inside it. Also, if a transition does not reset, the remaining length at that point will be returned.
 */
 //go:nosplit
-func (self class) GetCurrentLength() gd.Float {
+func (self class) GetCurrentLength() gd.Float { //gd:AnimationNodeStateMachinePlayback.get_current_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -252,7 +252,7 @@ func (self class) GetCurrentLength() gd.Float {
 Returns the starting state of currently fading animation.
 */
 //go:nosplit
-func (self class) GetFadingFromNode() gd.StringName {
+func (self class) GetFadingFromNode() gd.StringName { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_fading_from_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -265,7 +265,7 @@ func (self class) GetFadingFromNode() gd.StringName {
 Returns the current travel path as computed internally by the A* algorithm.
 */
 //go:nosplit
-func (self class) GetTravelPath() Array.Contains[gd.StringName] {
+func (self class) GetTravelPath() Array.Contains[gd.StringName] { //gd:AnimationNodeStateMachinePlayback.get_travel_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_travel_path, self.AsObject(), frame.Array(0), r_ret.Addr())

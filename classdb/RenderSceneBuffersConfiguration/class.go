@@ -131,7 +131,7 @@ func (self Instance) SetTextureMipmapBias(value Float.X) {
 }
 
 //go:nosplit
-func (self class) GetRenderTarget() gd.RID {
+func (self class) GetRenderTarget() gd.RID { //gd:RenderSceneBuffersConfiguration.get_render_target
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_render_target, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -141,7 +141,7 @@ func (self class) GetRenderTarget() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetRenderTarget(render_target gd.RID) {
+func (self class) SetRenderTarget(render_target gd.RID) { //gd:RenderSceneBuffersConfiguration.set_render_target
 	var frame = callframe.New()
 	callframe.Arg(frame, render_target)
 	var r_ret = callframe.Nil
@@ -150,7 +150,7 @@ func (self class) SetRenderTarget(render_target gd.RID) {
 }
 
 //go:nosplit
-func (self class) GetInternalSize() gd.Vector2i {
+func (self class) GetInternalSize() gd.Vector2i { //gd:RenderSceneBuffersConfiguration.get_internal_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_internal_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -160,7 +160,7 @@ func (self class) GetInternalSize() gd.Vector2i {
 }
 
 //go:nosplit
-func (self class) SetInternalSize(internal_size gd.Vector2i) {
+func (self class) SetInternalSize(internal_size gd.Vector2i) { //gd:RenderSceneBuffersConfiguration.set_internal_size
 	var frame = callframe.New()
 	callframe.Arg(frame, internal_size)
 	var r_ret = callframe.Nil
@@ -169,7 +169,7 @@ func (self class) SetInternalSize(internal_size gd.Vector2i) {
 }
 
 //go:nosplit
-func (self class) GetTargetSize() gd.Vector2i {
+func (self class) GetTargetSize() gd.Vector2i { //gd:RenderSceneBuffersConfiguration.get_target_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_target_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -179,7 +179,7 @@ func (self class) GetTargetSize() gd.Vector2i {
 }
 
 //go:nosplit
-func (self class) SetTargetSize(target_size gd.Vector2i) {
+func (self class) SetTargetSize(target_size gd.Vector2i) { //gd:RenderSceneBuffersConfiguration.set_target_size
 	var frame = callframe.New()
 	callframe.Arg(frame, target_size)
 	var r_ret = callframe.Nil
@@ -188,7 +188,7 @@ func (self class) SetTargetSize(target_size gd.Vector2i) {
 }
 
 //go:nosplit
-func (self class) GetViewCount() gd.Int {
+func (self class) GetViewCount() gd.Int { //gd:RenderSceneBuffersConfiguration.get_view_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_view_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -198,7 +198,7 @@ func (self class) GetViewCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetViewCount(view_count gd.Int) {
+func (self class) SetViewCount(view_count gd.Int) { //gd:RenderSceneBuffersConfiguration.set_view_count
 	var frame = callframe.New()
 	callframe.Arg(frame, view_count)
 	var r_ret = callframe.Nil
@@ -207,7 +207,7 @@ func (self class) SetViewCount(view_count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetScaling3dMode() gdclass.RenderingServerViewportScaling3DMode {
+func (self class) GetScaling3dMode() gdclass.RenderingServerViewportScaling3DMode { //gd:RenderSceneBuffersConfiguration.get_scaling_3d_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingServerViewportScaling3DMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -217,7 +217,7 @@ func (self class) GetScaling3dMode() gdclass.RenderingServerViewportScaling3DMod
 }
 
 //go:nosplit
-func (self class) SetScaling3dMode(scaling_3d_mode gdclass.RenderingServerViewportScaling3DMode) {
+func (self class) SetScaling3dMode(scaling_3d_mode gdclass.RenderingServerViewportScaling3DMode) { //gd:RenderSceneBuffersConfiguration.set_scaling_3d_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, scaling_3d_mode)
 	var r_ret = callframe.Nil
@@ -226,7 +226,7 @@ func (self class) SetScaling3dMode(scaling_3d_mode gdclass.RenderingServerViewpo
 }
 
 //go:nosplit
-func (self class) GetMsaa3d() gdclass.RenderingServerViewportMSAA {
+func (self class) GetMsaa3d() gdclass.RenderingServerViewportMSAA { //gd:RenderSceneBuffersConfiguration.get_msaa_3d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingServerViewportMSAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -236,7 +236,7 @@ func (self class) GetMsaa3d() gdclass.RenderingServerViewportMSAA {
 }
 
 //go:nosplit
-func (self class) SetMsaa3d(msaa_3d gdclass.RenderingServerViewportMSAA) {
+func (self class) SetMsaa3d(msaa_3d gdclass.RenderingServerViewportMSAA) { //gd:RenderSceneBuffersConfiguration.set_msaa_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, msaa_3d)
 	var r_ret = callframe.Nil
@@ -245,7 +245,7 @@ func (self class) SetMsaa3d(msaa_3d gdclass.RenderingServerViewportMSAA) {
 }
 
 //go:nosplit
-func (self class) GetScreenSpaceAa() gdclass.RenderingServerViewportScreenSpaceAA {
+func (self class) GetScreenSpaceAa() gdclass.RenderingServerViewportScreenSpaceAA { //gd:RenderSceneBuffersConfiguration.get_screen_space_aa
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingServerViewportScreenSpaceAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -255,7 +255,7 @@ func (self class) GetScreenSpaceAa() gdclass.RenderingServerViewportScreenSpaceA
 }
 
 //go:nosplit
-func (self class) SetScreenSpaceAa(screen_space_aa gdclass.RenderingServerViewportScreenSpaceAA) {
+func (self class) SetScreenSpaceAa(screen_space_aa gdclass.RenderingServerViewportScreenSpaceAA) { //gd:RenderSceneBuffersConfiguration.set_screen_space_aa
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_space_aa)
 	var r_ret = callframe.Nil
@@ -264,7 +264,7 @@ func (self class) SetScreenSpaceAa(screen_space_aa gdclass.RenderingServerViewpo
 }
 
 //go:nosplit
-func (self class) GetFsrSharpness() gd.Float {
+func (self class) GetFsrSharpness() gd.Float { //gd:RenderSceneBuffersConfiguration.get_fsr_sharpness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_fsr_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -274,7 +274,7 @@ func (self class) GetFsrSharpness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFsrSharpness(fsr_sharpness gd.Float) {
+func (self class) SetFsrSharpness(fsr_sharpness gd.Float) { //gd:RenderSceneBuffersConfiguration.set_fsr_sharpness
 	var frame = callframe.New()
 	callframe.Arg(frame, fsr_sharpness)
 	var r_ret = callframe.Nil
@@ -283,7 +283,7 @@ func (self class) SetFsrSharpness(fsr_sharpness gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTextureMipmapBias() gd.Float {
+func (self class) GetTextureMipmapBias() gd.Float { //gd:RenderSceneBuffersConfiguration.get_texture_mipmap_bias
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_texture_mipmap_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -293,7 +293,7 @@ func (self class) GetTextureMipmapBias() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTextureMipmapBias(texture_mipmap_bias gd.Float) {
+func (self class) SetTextureMipmapBias(texture_mipmap_bias gd.Float) { //gd:RenderSceneBuffersConfiguration.set_texture_mipmap_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_mipmap_bias)
 	var r_ret = callframe.Nil

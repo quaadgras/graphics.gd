@@ -48,14 +48,14 @@ type Any interface {
 /*
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetBakeMaskValue(layer_number int, value bool) {
+func (self Instance) SetBakeMaskValue(layer_number int, value bool) { //gd:OccluderInstance3D.set_bake_mask_value
 	class(self).SetBakeMaskValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetBakeMaskValue(layer_number int) bool {
+func (self Instance) GetBakeMaskValue(layer_number int) bool { //gd:OccluderInstance3D.get_bake_mask_value
 	return bool(class(self).GetBakeMaskValue(gd.Int(layer_number)))
 }
 
@@ -102,7 +102,7 @@ func (self Instance) SetBakeSimplificationDistance(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetBakeMask(mask gd.Int) {
+func (self class) SetBakeMask(mask gd.Int) { //gd:OccluderInstance3D.set_bake_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -111,7 +111,7 @@ func (self class) SetBakeMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBakeMask() gd.Int {
+func (self class) GetBakeMask() gd.Int { //gd:OccluderInstance3D.get_bake_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -124,7 +124,7 @@ func (self class) GetBakeMask() gd.Int {
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) {
+func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) { //gd:OccluderInstance3D.set_bake_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -137,7 +137,7 @@ func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetBakeMaskValue(layer_number gd.Int) bool {
+func (self class) GetBakeMaskValue(layer_number gd.Int) bool { //gd:OccluderInstance3D.get_bake_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -148,7 +148,7 @@ func (self class) GetBakeMaskValue(layer_number gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) SetBakeSimplificationDistance(simplification_distance gd.Float) {
+func (self class) SetBakeSimplificationDistance(simplification_distance gd.Float) { //gd:OccluderInstance3D.set_bake_simplification_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, simplification_distance)
 	var r_ret = callframe.Nil
@@ -157,7 +157,7 @@ func (self class) SetBakeSimplificationDistance(simplification_distance gd.Float
 }
 
 //go:nosplit
-func (self class) GetBakeSimplificationDistance() gd.Float {
+func (self class) GetBakeSimplificationDistance() gd.Float { //gd:OccluderInstance3D.get_bake_simplification_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_simplification_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -167,7 +167,7 @@ func (self class) GetBakeSimplificationDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetOccluder(occluder [1]gdclass.Occluder3D) {
+func (self class) SetOccluder(occluder [1]gdclass.Occluder3D) { //gd:OccluderInstance3D.set_occluder
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(occluder[0])[0])
 	var r_ret = callframe.Nil
@@ -176,7 +176,7 @@ func (self class) SetOccluder(occluder [1]gdclass.Occluder3D) {
 }
 
 //go:nosplit
-func (self class) GetOccluder() [1]gdclass.Occluder3D {
+func (self class) GetOccluder() [1]gdclass.Occluder3D { //gd:OccluderInstance3D.get_occluder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_occluder, self.AsObject(), frame.Array(0), r_ret.Addr())

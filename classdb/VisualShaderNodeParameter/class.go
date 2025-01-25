@@ -74,7 +74,7 @@ func (self Instance) SetQualifier(value gdclass.VisualShaderNodeParameterQualifi
 }
 
 //go:nosplit
-func (self class) SetParameterName(name gd.String) {
+func (self class) SetParameterName(name gd.String) { //gd:VisualShaderNodeParameter.set_parameter_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -83,7 +83,7 @@ func (self class) SetParameterName(name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetParameterName() gd.String {
+func (self class) GetParameterName() gd.String { //gd:VisualShaderNodeParameter.get_parameter_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParameter.Bind_get_parameter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -93,7 +93,7 @@ func (self class) GetParameterName() gd.String {
 }
 
 //go:nosplit
-func (self class) SetQualifier(qualifier gdclass.VisualShaderNodeParameterQualifier) {
+func (self class) SetQualifier(qualifier gdclass.VisualShaderNodeParameterQualifier) { //gd:VisualShaderNodeParameter.set_qualifier
 	var frame = callframe.New()
 	callframe.Arg(frame, qualifier)
 	var r_ret = callframe.Nil
@@ -102,7 +102,7 @@ func (self class) SetQualifier(qualifier gdclass.VisualShaderNodeParameterQualif
 }
 
 //go:nosplit
-func (self class) GetQualifier() gdclass.VisualShaderNodeParameterQualifier {
+func (self class) GetQualifier() gdclass.VisualShaderNodeParameterQualifier { //gd:VisualShaderNodeParameter.get_qualifier
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeParameterQualifier](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParameter.Bind_get_qualifier, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func init() {
 	})
 }
 
-type Qualifier = gdclass.VisualShaderNodeParameterQualifier
+type Qualifier = gdclass.VisualShaderNodeParameterQualifier //gd:VisualShaderNodeParameter.Qualifier
 
 const (
 	/*The parameter will be tied to the [ShaderMaterial] using this shader.*/

@@ -92,7 +92,7 @@ func (self Instance) SetDamping(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetLength(length gd.Float) {
+func (self class) SetLength(length gd.Float) { //gd:DampedSpringJoint2D.set_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -101,7 +101,7 @@ func (self class) SetLength(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLength() gd.Float {
+func (self class) GetLength() gd.Float { //gd:DampedSpringJoint2D.get_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DampedSpringJoint2D.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -111,7 +111,7 @@ func (self class) GetLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRestLength(rest_length gd.Float) {
+func (self class) SetRestLength(rest_length gd.Float) { //gd:DampedSpringJoint2D.set_rest_length
 	var frame = callframe.New()
 	callframe.Arg(frame, rest_length)
 	var r_ret = callframe.Nil
@@ -120,7 +120,7 @@ func (self class) SetRestLength(rest_length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRestLength() gd.Float {
+func (self class) GetRestLength() gd.Float { //gd:DampedSpringJoint2D.get_rest_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DampedSpringJoint2D.Bind_get_rest_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,7 +130,7 @@ func (self class) GetRestLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetStiffness(stiffness gd.Float) {
+func (self class) SetStiffness(stiffness gd.Float) { //gd:DampedSpringJoint2D.set_stiffness
 	var frame = callframe.New()
 	callframe.Arg(frame, stiffness)
 	var r_ret = callframe.Nil
@@ -139,7 +139,7 @@ func (self class) SetStiffness(stiffness gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetStiffness() gd.Float {
+func (self class) GetStiffness() gd.Float { //gd:DampedSpringJoint2D.get_stiffness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DampedSpringJoint2D.Bind_get_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ func (self class) GetStiffness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDamping(damping gd.Float) {
+func (self class) SetDamping(damping gd.Float) { //gd:DampedSpringJoint2D.set_damping
 	var frame = callframe.New()
 	callframe.Arg(frame, damping)
 	var r_ret = callframe.Nil
@@ -158,7 +158,7 @@ func (self class) SetDamping(damping gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDamping() gd.Float {
+func (self class) GetDamping() gd.Float { //gd:DampedSpringJoint2D.get_damping
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DampedSpringJoint2D.Bind_get_damping, self.AsObject(), frame.Array(0), r_ret.Addr())

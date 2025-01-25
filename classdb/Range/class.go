@@ -70,21 +70,21 @@ func (Instance) _value_changed(impl func(ptr unsafe.Pointer, new_value Float.X))
 /*
 Sets the [Range]'s current value to the specified [param value], without emitting the [signal value_changed] signal.
 */
-func (self Instance) SetValueNoSignal(value Float.X) {
+func (self Instance) SetValueNoSignal(value Float.X) { //gd:Range.set_value_no_signal
 	class(self).SetValueNoSignal(gd.Float(value))
 }
 
 /*
 Binds two [Range]s together along with any ranges previously grouped with either of them. When any of range's member variables change, it will share the new value with all other ranges in its group.
 */
-func (self Instance) Share(with [1]gdclass.Node) {
+func (self Instance) Share(with [1]gdclass.Node) { //gd:Range.share
 	class(self).Share(with)
 }
 
 /*
 Stops the [Range] from sharing its member variables with any other.
 */
-func (self Instance) Unshare() {
+func (self Instance) Unshare() { //gd:Range.unshare
 	class(self).Unshare()
 }
 
@@ -199,7 +199,7 @@ func (class) _value_changed(impl func(ptr unsafe.Pointer, new_value gd.Float)) (
 }
 
 //go:nosplit
-func (self class) GetValue() gd.Float {
+func (self class) GetValue() gd.Float { //gd:Range.get_value
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_value, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -209,7 +209,7 @@ func (self class) GetValue() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetMin() gd.Float {
+func (self class) GetMin() gd.Float { //gd:Range.get_min
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -219,7 +219,7 @@ func (self class) GetMin() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetMax() gd.Float {
+func (self class) GetMax() gd.Float { //gd:Range.get_max
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) GetMax() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetStep() gd.Float {
+func (self class) GetStep() gd.Float { //gd:Range.get_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -239,7 +239,7 @@ func (self class) GetStep() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetPage() gd.Float {
+func (self class) GetPage() gd.Float { //gd:Range.get_page
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_page, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -249,7 +249,7 @@ func (self class) GetPage() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetAsRatio() gd.Float {
+func (self class) GetAsRatio() gd.Float { //gd:Range.get_as_ratio
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_as_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -259,7 +259,7 @@ func (self class) GetAsRatio() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetValue(value gd.Float) {
+func (self class) SetValue(value gd.Float) { //gd:Range.set_value
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -271,7 +271,7 @@ func (self class) SetValue(value gd.Float) {
 Sets the [Range]'s current value to the specified [param value], without emitting the [signal value_changed] signal.
 */
 //go:nosplit
-func (self class) SetValueNoSignal(value gd.Float) {
+func (self class) SetValueNoSignal(value gd.Float) { //gd:Range.set_value_no_signal
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -280,7 +280,7 @@ func (self class) SetValueNoSignal(value gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetMin(minimum gd.Float) {
+func (self class) SetMin(minimum gd.Float) { //gd:Range.set_min
 	var frame = callframe.New()
 	callframe.Arg(frame, minimum)
 	var r_ret = callframe.Nil
@@ -289,7 +289,7 @@ func (self class) SetMin(minimum gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetMax(maximum gd.Float) {
+func (self class) SetMax(maximum gd.Float) { //gd:Range.set_max
 	var frame = callframe.New()
 	callframe.Arg(frame, maximum)
 	var r_ret = callframe.Nil
@@ -298,7 +298,7 @@ func (self class) SetMax(maximum gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetStep(step gd.Float) {
+func (self class) SetStep(step gd.Float) { //gd:Range.set_step
 	var frame = callframe.New()
 	callframe.Arg(frame, step)
 	var r_ret = callframe.Nil
@@ -307,7 +307,7 @@ func (self class) SetStep(step gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetPage(pagesize gd.Float) {
+func (self class) SetPage(pagesize gd.Float) { //gd:Range.set_page
 	var frame = callframe.New()
 	callframe.Arg(frame, pagesize)
 	var r_ret = callframe.Nil
@@ -316,7 +316,7 @@ func (self class) SetPage(pagesize gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetAsRatio(value gd.Float) {
+func (self class) SetAsRatio(value gd.Float) { //gd:Range.set_as_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -325,7 +325,7 @@ func (self class) SetAsRatio(value gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetUseRoundedValues(enabled bool) {
+func (self class) SetUseRoundedValues(enabled bool) { //gd:Range.set_use_rounded_values
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -334,7 +334,7 @@ func (self class) SetUseRoundedValues(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingRoundedValues() bool {
+func (self class) IsUsingRoundedValues() bool { //gd:Range.is_using_rounded_values
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_is_using_rounded_values, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -344,7 +344,7 @@ func (self class) IsUsingRoundedValues() bool {
 }
 
 //go:nosplit
-func (self class) SetExpRatio(enabled bool) {
+func (self class) SetExpRatio(enabled bool) { //gd:Range.set_exp_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -353,7 +353,7 @@ func (self class) SetExpRatio(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsRatioExp() bool {
+func (self class) IsRatioExp() bool { //gd:Range.is_ratio_exp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_is_ratio_exp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -363,7 +363,7 @@ func (self class) IsRatioExp() bool {
 }
 
 //go:nosplit
-func (self class) SetAllowGreater(allow bool) {
+func (self class) SetAllowGreater(allow bool) { //gd:Range.set_allow_greater
 	var frame = callframe.New()
 	callframe.Arg(frame, allow)
 	var r_ret = callframe.Nil
@@ -372,7 +372,7 @@ func (self class) SetAllowGreater(allow bool) {
 }
 
 //go:nosplit
-func (self class) IsGreaterAllowed() bool {
+func (self class) IsGreaterAllowed() bool { //gd:Range.is_greater_allowed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_is_greater_allowed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -382,7 +382,7 @@ func (self class) IsGreaterAllowed() bool {
 }
 
 //go:nosplit
-func (self class) SetAllowLesser(allow bool) {
+func (self class) SetAllowLesser(allow bool) { //gd:Range.set_allow_lesser
 	var frame = callframe.New()
 	callframe.Arg(frame, allow)
 	var r_ret = callframe.Nil
@@ -391,7 +391,7 @@ func (self class) SetAllowLesser(allow bool) {
 }
 
 //go:nosplit
-func (self class) IsLesserAllowed() bool {
+func (self class) IsLesserAllowed() bool { //gd:Range.is_lesser_allowed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_is_lesser_allowed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -404,7 +404,7 @@ func (self class) IsLesserAllowed() bool {
 Binds two [Range]s together along with any ranges previously grouped with either of them. When any of range's member variables change, it will share the new value with all other ranges in its group.
 */
 //go:nosplit
-func (self class) Share(with [1]gdclass.Node) {
+func (self class) Share(with [1]gdclass.Node) { //gd:Range.share
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(with[0])[0])
 	var r_ret = callframe.Nil
@@ -416,7 +416,7 @@ func (self class) Share(with [1]gdclass.Node) {
 Stops the [Range] from sharing its member variables with any other.
 */
 //go:nosplit
-func (self class) Unshare() {
+func (self class) Unshare() { //gd:Range.unshare
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_unshare, self.AsObject(), frame.Array(0), r_ret.Addr())

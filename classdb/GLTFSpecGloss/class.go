@@ -99,7 +99,7 @@ func (self Instance) SetSpecGlossImg(value [1]gdclass.Image) {
 }
 
 //go:nosplit
-func (self class) GetDiffuseImg() [1]gdclass.Image {
+func (self class) GetDiffuseImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_diffuse_img
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSpecGloss.Bind_get_diffuse_img, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -109,7 +109,7 @@ func (self class) GetDiffuseImg() [1]gdclass.Image {
 }
 
 //go:nosplit
-func (self class) SetDiffuseImg(diffuse_img [1]gdclass.Image) {
+func (self class) SetDiffuseImg(diffuse_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_diffuse_img
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(diffuse_img[0])[0])
 	var r_ret = callframe.Nil
@@ -118,7 +118,7 @@ func (self class) SetDiffuseImg(diffuse_img [1]gdclass.Image) {
 }
 
 //go:nosplit
-func (self class) GetDiffuseFactor() gd.Color {
+func (self class) GetDiffuseFactor() gd.Color { //gd:GLTFSpecGloss.get_diffuse_factor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSpecGloss.Bind_get_diffuse_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -128,7 +128,7 @@ func (self class) GetDiffuseFactor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetDiffuseFactor(diffuse_factor gd.Color) {
+func (self class) SetDiffuseFactor(diffuse_factor gd.Color) { //gd:GLTFSpecGloss.set_diffuse_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, diffuse_factor)
 	var r_ret = callframe.Nil
@@ -137,7 +137,7 @@ func (self class) SetDiffuseFactor(diffuse_factor gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetGlossFactor() gd.Float {
+func (self class) GetGlossFactor() gd.Float { //gd:GLTFSpecGloss.get_gloss_factor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSpecGloss.Bind_get_gloss_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -147,7 +147,7 @@ func (self class) GetGlossFactor() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlossFactor(gloss_factor gd.Float) {
+func (self class) SetGlossFactor(gloss_factor gd.Float) { //gd:GLTFSpecGloss.set_gloss_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, gloss_factor)
 	var r_ret = callframe.Nil
@@ -156,7 +156,7 @@ func (self class) SetGlossFactor(gloss_factor gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSpecularFactor() gd.Color {
+func (self class) GetSpecularFactor() gd.Color { //gd:GLTFSpecGloss.get_specular_factor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSpecGloss.Bind_get_specular_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -166,7 +166,7 @@ func (self class) GetSpecularFactor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetSpecularFactor(specular_factor gd.Color) {
+func (self class) SetSpecularFactor(specular_factor gd.Color) { //gd:GLTFSpecGloss.set_specular_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, specular_factor)
 	var r_ret = callframe.Nil
@@ -175,7 +175,7 @@ func (self class) SetSpecularFactor(specular_factor gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetSpecGlossImg() [1]gdclass.Image {
+func (self class) GetSpecGlossImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_spec_gloss_img
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSpecGloss.Bind_get_spec_gloss_img, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -185,7 +185,7 @@ func (self class) GetSpecGlossImg() [1]gdclass.Image {
 }
 
 //go:nosplit
-func (self class) SetSpecGlossImg(spec_gloss_img [1]gdclass.Image) {
+func (self class) SetSpecGlossImg(spec_gloss_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_spec_gloss_img
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(spec_gloss_img[0])[0])
 	var r_ret = callframe.Nil

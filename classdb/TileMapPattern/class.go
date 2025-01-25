@@ -42,70 +42,70 @@ type Any interface {
 /*
 Sets the tile identifiers for the cell at coordinates [param coords]. See [method TileMap.set_cell].
 */
-func (self Instance) SetCell(coords Vector2i.XY) {
+func (self Instance) SetCell(coords Vector2i.XY) { //gd:TileMapPattern.set_cell
 	class(self).SetCell(gd.Vector2i(coords), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1))
 }
 
 /*
 Returns whether the pattern has a tile at the given coordinates.
 */
-func (self Instance) HasCell(coords Vector2i.XY) bool {
+func (self Instance) HasCell(coords Vector2i.XY) bool { //gd:TileMapPattern.has_cell
 	return bool(class(self).HasCell(gd.Vector2i(coords)))
 }
 
 /*
 Remove the cell at the given coordinates.
 */
-func (self Instance) RemoveCell(coords Vector2i.XY, update_size bool) {
+func (self Instance) RemoveCell(coords Vector2i.XY, update_size bool) { //gd:TileMapPattern.remove_cell
 	class(self).RemoveCell(gd.Vector2i(coords), update_size)
 }
 
 /*
 Returns the tile source ID of the cell at [param coords].
 */
-func (self Instance) GetCellSourceId(coords Vector2i.XY) int {
+func (self Instance) GetCellSourceId(coords Vector2i.XY) int { //gd:TileMapPattern.get_cell_source_id
 	return int(int(class(self).GetCellSourceId(gd.Vector2i(coords))))
 }
 
 /*
 Returns the tile atlas coordinates ID of the cell at [param coords].
 */
-func (self Instance) GetCellAtlasCoords(coords Vector2i.XY) Vector2i.XY {
+func (self Instance) GetCellAtlasCoords(coords Vector2i.XY) Vector2i.XY { //gd:TileMapPattern.get_cell_atlas_coords
 	return Vector2i.XY(class(self).GetCellAtlasCoords(gd.Vector2i(coords)))
 }
 
 /*
 Returns the tile alternative ID of the cell at [param coords].
 */
-func (self Instance) GetCellAlternativeTile(coords Vector2i.XY) int {
+func (self Instance) GetCellAlternativeTile(coords Vector2i.XY) int { //gd:TileMapPattern.get_cell_alternative_tile
 	return int(int(class(self).GetCellAlternativeTile(gd.Vector2i(coords))))
 }
 
 /*
 Returns the list of used cell coordinates in the pattern.
 */
-func (self Instance) GetUsedCells() []Vector2i.XY {
+func (self Instance) GetUsedCells() []Vector2i.XY { //gd:TileMapPattern.get_used_cells
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetUsedCells())))
 }
 
 /*
 Returns the size, in cells, of the pattern.
 */
-func (self Instance) GetSize() Vector2i.XY {
+func (self Instance) GetSize() Vector2i.XY { //gd:TileMapPattern.get_size
 	return Vector2i.XY(class(self).GetSize())
 }
 
 /*
 Sets the size of the pattern.
 */
-func (self Instance) SetSize(size Vector2i.XY) {
+func (self Instance) SetSize(size Vector2i.XY) { //gd:TileMapPattern.set_size
 	class(self).SetSize(gd.Vector2i(size))
 }
 
 /*
 Returns whether the pattern is empty or not.
 */
-func (self Instance) IsEmpty() bool {
+func (self Instance) IsEmpty() bool { //gd:TileMapPattern.is_empty
 	return bool(class(self).IsEmpty())
 }
 
@@ -132,7 +132,7 @@ func New() Instance {
 Sets the tile identifiers for the cell at coordinates [param coords]. See [method TileMap.set_cell].
 */
 //go:nosplit
-func (self class) SetCell(coords gd.Vector2i, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) {
+func (self class) SetCell(coords gd.Vector2i, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) { //gd:TileMapPattern.set_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, source_id)
@@ -147,7 +147,7 @@ func (self class) SetCell(coords gd.Vector2i, source_id gd.Int, atlas_coords gd.
 Returns whether the pattern has a tile at the given coordinates.
 */
 //go:nosplit
-func (self class) HasCell(coords gd.Vector2i) bool {
+func (self class) HasCell(coords gd.Vector2i) bool { //gd:TileMapPattern.has_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[bool](frame)
@@ -161,7 +161,7 @@ func (self class) HasCell(coords gd.Vector2i) bool {
 Remove the cell at the given coordinates.
 */
 //go:nosplit
-func (self class) RemoveCell(coords gd.Vector2i, update_size bool) {
+func (self class) RemoveCell(coords gd.Vector2i, update_size bool) { //gd:TileMapPattern.remove_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, update_size)
@@ -174,7 +174,7 @@ func (self class) RemoveCell(coords gd.Vector2i, update_size bool) {
 Returns the tile source ID of the cell at [param coords].
 */
 //go:nosplit
-func (self class) GetCellSourceId(coords gd.Vector2i) gd.Int {
+func (self class) GetCellSourceId(coords gd.Vector2i) gd.Int { //gd:TileMapPattern.get_cell_source_id
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -188,7 +188,7 @@ func (self class) GetCellSourceId(coords gd.Vector2i) gd.Int {
 Returns the tile atlas coordinates ID of the cell at [param coords].
 */
 //go:nosplit
-func (self class) GetCellAtlasCoords(coords gd.Vector2i) gd.Vector2i {
+func (self class) GetCellAtlasCoords(coords gd.Vector2i) gd.Vector2i { //gd:TileMapPattern.get_cell_atlas_coords
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -202,7 +202,7 @@ func (self class) GetCellAtlasCoords(coords gd.Vector2i) gd.Vector2i {
 Returns the tile alternative ID of the cell at [param coords].
 */
 //go:nosplit
-func (self class) GetCellAlternativeTile(coords gd.Vector2i) gd.Int {
+func (self class) GetCellAlternativeTile(coords gd.Vector2i) gd.Int { //gd:TileMapPattern.get_cell_alternative_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -216,7 +216,7 @@ func (self class) GetCellAlternativeTile(coords gd.Vector2i) gd.Int {
 Returns the list of used cell coordinates in the pattern.
 */
 //go:nosplit
-func (self class) GetUsedCells() Array.Contains[gd.Vector2i] {
+func (self class) GetUsedCells() Array.Contains[gd.Vector2i] { //gd:TileMapPattern.get_used_cells
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapPattern.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) GetUsedCells() Array.Contains[gd.Vector2i] {
 Returns the size, in cells, of the pattern.
 */
 //go:nosplit
-func (self class) GetSize() gd.Vector2i {
+func (self class) GetSize() gd.Vector2i { //gd:TileMapPattern.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapPattern.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -242,7 +242,7 @@ func (self class) GetSize() gd.Vector2i {
 Sets the size of the pattern.
 */
 //go:nosplit
-func (self class) SetSize(size gd.Vector2i) {
+func (self class) SetSize(size gd.Vector2i) { //gd:TileMapPattern.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -254,7 +254,7 @@ func (self class) SetSize(size gd.Vector2i) {
 Returns whether the pattern is empty or not.
 */
 //go:nosplit
-func (self class) IsEmpty() bool {
+func (self class) IsEmpty() bool { //gd:TileMapPattern.is_empty
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapPattern.Bind_is_empty, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -49,56 +49,56 @@ type Any interface {
 /*
 Returns the [RID] of this region on the [NavigationServer3D]. Combined with [method NavigationServer3D.map_get_closest_point_owner] can be used to identify the [NavigationRegion3D] closest to a point on the merged navigation map.
 */
-func (self Instance) GetRid() Resource.ID {
+func (self Instance) GetRid() Resource.ID { //gd:NavigationRegion3D.get_rid
 	return Resource.ID(class(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 */
-func (self Instance) SetNavigationMap(navigation_map Resource.ID) {
+func (self Instance) SetNavigationMap(navigation_map Resource.ID) { //gd:NavigationRegion3D.set_navigation_map
 	class(self).SetNavigationMap(navigation_map)
 }
 
 /*
 Returns the current navigation map [RID] used by this region.
 */
-func (self Instance) GetNavigationMap() Resource.ID {
+func (self Instance) GetNavigationMap() Resource.ID { //gd:NavigationRegion3D.get_navigation_map
 	return Resource.ID(class(self).GetNavigationMap())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetNavigationLayerValue(layer_number int, value bool) {
+func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationRegion3D.set_navigation_layer_value
 	class(self).SetNavigationLayerValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetNavigationLayerValue(layer_number int) bool {
+func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:NavigationRegion3D.get_navigation_layer_value
 	return bool(class(self).GetNavigationLayerValue(gd.Int(layer_number)))
 }
 
 /*
 Returns the [RID] of this region on the [NavigationServer3D].
 */
-func (self Instance) GetRegionRid() Resource.ID {
+func (self Instance) GetRegionRid() Resource.ID { //gd:NavigationRegion3D.get_region_rid
 	return Resource.ID(class(self).GetRegionRid())
 }
 
 /*
 Bakes the [NavigationMesh]. If [param on_thread] is set to [code]true[/code] (default), the baking is done on a separate thread. Baking on separate thread is useful because navigation baking is not a cheap operation. When it is completed, it automatically sets the new [NavigationMesh]. Please note that baking on separate thread may be very slow if geometry is parsed from meshes as async access to each mesh involves heavy synchronization. Also, please note that baking on a separate thread is automatically disabled on operating systems that cannot use threads (such as Web with threads disabled).
 */
-func (self Instance) BakeNavigationMesh() {
+func (self Instance) BakeNavigationMesh() { //gd:NavigationRegion3D.bake_navigation_mesh
 	class(self).BakeNavigationMesh(true)
 }
 
 /*
 Returns [code]true[/code] when the [NavigationMesh] is being baked on a background thread.
 */
-func (self Instance) IsBaking() bool {
+func (self Instance) IsBaking() bool { //gd:NavigationRegion3D.is_baking
 	return bool(class(self).IsBaking())
 }
 
@@ -172,7 +172,7 @@ func (self Instance) SetTravelCost(value Float.X) {
 Returns the [RID] of this region on the [NavigationServer3D]. Combined with [method NavigationServer3D.map_get_closest_point_owner] can be used to identify the [NavigationRegion3D] closest to a point on the merged navigation map.
 */
 //go:nosplit
-func (self class) GetRid() gd.RID {
+func (self class) GetRid() gd.RID { //gd:NavigationRegion3D.get_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -182,7 +182,7 @@ func (self class) GetRid() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) {
+func (self class) SetNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationRegion3D.set_navigation_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -191,7 +191,7 @@ func (self class) SetNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) {
 }
 
 //go:nosplit
-func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh {
+func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh { //gd:NavigationRegion3D.get_navigation_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -201,7 +201,7 @@ func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh {
 }
 
 //go:nosplit
-func (self class) SetEnabled(enabled bool) {
+func (self class) SetEnabled(enabled bool) { //gd:NavigationRegion3D.set_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -210,7 +210,7 @@ func (self class) SetEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsEnabled() bool {
+func (self class) IsEnabled() bool { //gd:NavigationRegion3D.is_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -223,7 +223,7 @@ func (self class) IsEnabled() bool {
 Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 */
 //go:nosplit
-func (self class) SetNavigationMap(navigation_map gd.RID) {
+func (self class) SetNavigationMap(navigation_map gd.RID) { //gd:NavigationRegion3D.set_navigation_map
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_map)
 	var r_ret = callframe.Nil
@@ -235,7 +235,7 @@ func (self class) SetNavigationMap(navigation_map gd.RID) {
 Returns the current navigation map [RID] used by this region.
 */
 //go:nosplit
-func (self class) GetNavigationMap() gd.RID {
+func (self class) GetNavigationMap() gd.RID { //gd:NavigationRegion3D.get_navigation_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -245,7 +245,7 @@ func (self class) GetNavigationMap() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetUseEdgeConnections(enabled bool) {
+func (self class) SetUseEdgeConnections(enabled bool) { //gd:NavigationRegion3D.set_use_edge_connections
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -254,7 +254,7 @@ func (self class) SetUseEdgeConnections(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetUseEdgeConnections() bool {
+func (self class) GetUseEdgeConnections() bool { //gd:NavigationRegion3D.get_use_edge_connections
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_use_edge_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -264,7 +264,7 @@ func (self class) GetUseEdgeConnections() bool {
 }
 
 //go:nosplit
-func (self class) SetNavigationLayers(navigation_layers gd.Int) {
+func (self class) SetNavigationLayers(navigation_layers gd.Int) { //gd:NavigationRegion3D.set_navigation_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_layers)
 	var r_ret = callframe.Nil
@@ -273,7 +273,7 @@ func (self class) SetNavigationLayers(navigation_layers gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetNavigationLayers() gd.Int {
+func (self class) GetNavigationLayers() gd.Int { //gd:NavigationRegion3D.get_navigation_layers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -286,7 +286,7 @@ func (self class) GetNavigationLayers() gd.Int {
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetNavigationLayerValue(layer_number gd.Int, value bool) {
+func (self class) SetNavigationLayerValue(layer_number gd.Int, value bool) { //gd:NavigationRegion3D.set_navigation_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -299,7 +299,7 @@ func (self class) SetNavigationLayerValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetNavigationLayerValue(layer_number gd.Int) bool {
+func (self class) GetNavigationLayerValue(layer_number gd.Int) bool { //gd:NavigationRegion3D.get_navigation_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -313,7 +313,7 @@ func (self class) GetNavigationLayerValue(layer_number gd.Int) bool {
 Returns the [RID] of this region on the [NavigationServer3D].
 */
 //go:nosplit
-func (self class) GetRegionRid() gd.RID {
+func (self class) GetRegionRid() gd.RID { //gd:NavigationRegion3D.get_region_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_region_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -323,7 +323,7 @@ func (self class) GetRegionRid() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetEnterCost(enter_cost gd.Float) {
+func (self class) SetEnterCost(enter_cost gd.Float) { //gd:NavigationRegion3D.set_enter_cost
 	var frame = callframe.New()
 	callframe.Arg(frame, enter_cost)
 	var r_ret = callframe.Nil
@@ -332,7 +332,7 @@ func (self class) SetEnterCost(enter_cost gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEnterCost() gd.Float {
+func (self class) GetEnterCost() gd.Float { //gd:NavigationRegion3D.get_enter_cost
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_enter_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,7 +342,7 @@ func (self class) GetEnterCost() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTravelCost(travel_cost gd.Float) {
+func (self class) SetTravelCost(travel_cost gd.Float) { //gd:NavigationRegion3D.set_travel_cost
 	var frame = callframe.New()
 	callframe.Arg(frame, travel_cost)
 	var r_ret = callframe.Nil
@@ -351,7 +351,7 @@ func (self class) SetTravelCost(travel_cost gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTravelCost() gd.Float {
+func (self class) GetTravelCost() gd.Float { //gd:NavigationRegion3D.get_travel_cost
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_get_travel_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -364,7 +364,7 @@ func (self class) GetTravelCost() gd.Float {
 Bakes the [NavigationMesh]. If [param on_thread] is set to [code]true[/code] (default), the baking is done on a separate thread. Baking on separate thread is useful because navigation baking is not a cheap operation. When it is completed, it automatically sets the new [NavigationMesh]. Please note that baking on separate thread may be very slow if geometry is parsed from meshes as async access to each mesh involves heavy synchronization. Also, please note that baking on a separate thread is automatically disabled on operating systems that cannot use threads (such as Web with threads disabled).
 */
 //go:nosplit
-func (self class) BakeNavigationMesh(on_thread bool) {
+func (self class) BakeNavigationMesh(on_thread bool) { //gd:NavigationRegion3D.bake_navigation_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, on_thread)
 	var r_ret = callframe.Nil
@@ -376,7 +376,7 @@ func (self class) BakeNavigationMesh(on_thread bool) {
 Returns [code]true[/code] when the [NavigationMesh] is being baked on a background thread.
 */
 //go:nosplit
-func (self class) IsBaking() bool {
+func (self class) IsBaking() bool { //gd:NavigationRegion3D.is_baking
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion3D.Bind_is_baking, self.AsObject(), frame.Array(0), r_ret.Addr())

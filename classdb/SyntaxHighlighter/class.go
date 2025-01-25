@@ -117,7 +117,7 @@ The return [Dictionary] is column number to [Dictionary]. The column number note
 [/codeblock]
 This will color columns 0-4 red, and columns 5-eol in green.
 */
-func (self Instance) GetLineSyntaxHighlighting(line int) map[any]any {
+func (self Instance) GetLineSyntaxHighlighting(line int) map[any]any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetLineSyntaxHighlighting(gd.Int(line))))
 }
 
@@ -125,7 +125,7 @@ func (self Instance) GetLineSyntaxHighlighting(line int) map[any]any {
 Clears then updates the [SyntaxHighlighter] caches. Override [method _update_cache] for a callback.
 [b]Note:[/b] This is called automatically when the associated [TextEdit] node, updates its own cache.
 */
-func (self Instance) UpdateCache() {
+func (self Instance) UpdateCache() { //gd:SyntaxHighlighter.update_cache
 	class(self).UpdateCache()
 }
 
@@ -133,14 +133,14 @@ func (self Instance) UpdateCache() {
 Clears all cached syntax highlighting data.
 Then calls overridable method [method _clear_highlighting_cache].
 */
-func (self Instance) ClearHighlightingCache() {
+func (self Instance) ClearHighlightingCache() { //gd:SyntaxHighlighter.clear_highlighting_cache
 	class(self).ClearHighlightingCache()
 }
 
 /*
 Returns the associated [TextEdit] node.
 */
-func (self Instance) GetTextEdit() [1]gdclass.TextEdit {
+func (self Instance) GetTextEdit() [1]gdclass.TextEdit { //gd:SyntaxHighlighter.get_text_edit
 	return [1]gdclass.TextEdit(class(self).GetTextEdit())
 }
 
@@ -219,7 +219,7 @@ var color_map = {
 This will color columns 0-4 red, and columns 5-eol in green.
 */
 //go:nosplit
-func (self class) GetLineSyntaxHighlighting(line gd.Int) gd.Dictionary {
+func (self class) GetLineSyntaxHighlighting(line gd.Int) gd.Dictionary { //gd:SyntaxHighlighter.get_line_syntax_highlighting
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -234,7 +234,7 @@ Clears then updates the [SyntaxHighlighter] caches. Override [method _update_cac
 [b]Note:[/b] This is called automatically when the associated [TextEdit] node, updates its own cache.
 */
 //go:nosplit
-func (self class) UpdateCache() {
+func (self class) UpdateCache() { //gd:SyntaxHighlighter.update_cache
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SyntaxHighlighter.Bind_update_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -246,7 +246,7 @@ Clears all cached syntax highlighting data.
 Then calls overridable method [method _clear_highlighting_cache].
 */
 //go:nosplit
-func (self class) ClearHighlightingCache() {
+func (self class) ClearHighlightingCache() { //gd:SyntaxHighlighter.clear_highlighting_cache
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SyntaxHighlighter.Bind_clear_highlighting_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -257,7 +257,7 @@ func (self class) ClearHighlightingCache() {
 Returns the associated [TextEdit] node.
 */
 //go:nosplit
-func (self class) GetTextEdit() [1]gdclass.TextEdit {
+func (self class) GetTextEdit() [1]gdclass.TextEdit { //gd:SyntaxHighlighter.get_text_edit
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SyntaxHighlighter.Bind_get_text_edit, self.AsObject(), frame.Array(0), r_ret.Addr())

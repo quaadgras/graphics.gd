@@ -41,7 +41,7 @@ type Any interface {
 /*
 Loads the buffer view data from the buffer referenced by this buffer view in the given [GLTFState]. Interleaved data with a byte stride is not yet supported by this method. The data is returned as a [PackedByteArray].
 */
-func (self Instance) LoadBufferViewData(state [1]gdclass.GLTFState) []byte {
+func (self Instance) LoadBufferViewData(state [1]gdclass.GLTFState) []byte { //gd:GLTFBufferView.load_buffer_view_data
 	return []byte(class(self).LoadBufferViewData(state).Bytes())
 }
 
@@ -116,7 +116,7 @@ func (self Instance) SetVertexAttributes(value bool) {
 Loads the buffer view data from the buffer referenced by this buffer view in the given [GLTFState]. Interleaved data with a byte stride is not yet supported by this method. The data is returned as a [PackedByteArray].
 */
 //go:nosplit
-func (self class) LoadBufferViewData(state [1]gdclass.GLTFState) gd.PackedByteArray {
+func (self class) LoadBufferViewData(state [1]gdclass.GLTFState) gd.PackedByteArray { //gd:GLTFBufferView.load_buffer_view_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -127,7 +127,7 @@ func (self class) LoadBufferViewData(state [1]gdclass.GLTFState) gd.PackedByteAr
 }
 
 //go:nosplit
-func (self class) GetBuffer() gd.Int {
+func (self class) GetBuffer() gd.Int { //gd:GLTFBufferView.get_buffer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -137,7 +137,7 @@ func (self class) GetBuffer() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetBuffer(buffer gd.Int) {
+func (self class) SetBuffer(buffer gd.Int) { //gd:GLTFBufferView.set_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer)
 	var r_ret = callframe.Nil
@@ -146,7 +146,7 @@ func (self class) SetBuffer(buffer gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetByteOffset() gd.Int {
+func (self class) GetByteOffset() gd.Int { //gd:GLTFBufferView.get_byte_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -156,7 +156,7 @@ func (self class) GetByteOffset() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetByteOffset(byte_offset gd.Int) {
+func (self class) SetByteOffset(byte_offset gd.Int) { //gd:GLTFBufferView.set_byte_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_offset)
 	var r_ret = callframe.Nil
@@ -165,7 +165,7 @@ func (self class) SetByteOffset(byte_offset gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetByteLength() gd.Int {
+func (self class) GetByteLength() gd.Int { //gd:GLTFBufferView.get_byte_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_byte_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -175,7 +175,7 @@ func (self class) GetByteLength() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetByteLength(byte_length gd.Int) {
+func (self class) SetByteLength(byte_length gd.Int) { //gd:GLTFBufferView.set_byte_length
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_length)
 	var r_ret = callframe.Nil
@@ -184,7 +184,7 @@ func (self class) SetByteLength(byte_length gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetByteStride() gd.Int {
+func (self class) GetByteStride() gd.Int { //gd:GLTFBufferView.get_byte_stride
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_byte_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -194,7 +194,7 @@ func (self class) GetByteStride() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetByteStride(byte_stride gd.Int) {
+func (self class) SetByteStride(byte_stride gd.Int) { //gd:GLTFBufferView.set_byte_stride
 	var frame = callframe.New()
 	callframe.Arg(frame, byte_stride)
 	var r_ret = callframe.Nil
@@ -203,7 +203,7 @@ func (self class) SetByteStride(byte_stride gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetIndices() bool {
+func (self class) GetIndices() bool { //gd:GLTFBufferView.get_indices
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_indices, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -213,7 +213,7 @@ func (self class) GetIndices() bool {
 }
 
 //go:nosplit
-func (self class) SetIndices(indices bool) {
+func (self class) SetIndices(indices bool) { //gd:GLTFBufferView.set_indices
 	var frame = callframe.New()
 	callframe.Arg(frame, indices)
 	var r_ret = callframe.Nil
@@ -222,7 +222,7 @@ func (self class) SetIndices(indices bool) {
 }
 
 //go:nosplit
-func (self class) GetVertexAttributes() bool {
+func (self class) GetVertexAttributes() bool { //gd:GLTFBufferView.get_vertex_attributes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_vertex_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -232,7 +232,7 @@ func (self class) GetVertexAttributes() bool {
 }
 
 //go:nosplit
-func (self class) SetVertexAttributes(is_attributes bool) {
+func (self class) SetVertexAttributes(is_attributes bool) { //gd:GLTFBufferView.set_vertex_attributes
 	var frame = callframe.New()
 	callframe.Arg(frame, is_attributes)
 	var r_ret = callframe.Nil

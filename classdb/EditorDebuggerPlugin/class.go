@@ -196,7 +196,7 @@ func (Instance) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script [1]
 /*
 Returns the [EditorDebuggerSession] with the given [param id].
 */
-func (self Instance) GetSession(id int) [1]gdclass.EditorDebuggerSession {
+func (self Instance) GetSession(id int) [1]gdclass.EditorDebuggerSession { //gd:EditorDebuggerPlugin.get_session
 	return [1]gdclass.EditorDebuggerSession(class(self).GetSession(gd.Int(id)))
 }
 
@@ -204,7 +204,7 @@ func (self Instance) GetSession(id int) [1]gdclass.EditorDebuggerSession {
 Returns an array of [EditorDebuggerSession] currently available to this debugger plugin.
 [b]Note:[/b] Sessions in the array may be inactive, check their state via [method EditorDebuggerSession.is_active].
 */
-func (self Instance) GetSessions() []any {
+func (self Instance) GetSessions() []any { //gd:EditorDebuggerPlugin.get_sessions
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSessions())))
 }
 
@@ -315,7 +315,7 @@ func (class) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script [1]gdc
 Returns the [EditorDebuggerSession] with the given [param id].
 */
 //go:nosplit
-func (self class) GetSession(id gd.Int) [1]gdclass.EditorDebuggerSession {
+func (self class) GetSession(id gd.Int) [1]gdclass.EditorDebuggerSession { //gd:EditorDebuggerPlugin.get_session
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -330,7 +330,7 @@ Returns an array of [EditorDebuggerSession] currently available to this debugger
 [b]Note:[/b] Sessions in the array may be inactive, check their state via [method EditorDebuggerSession.is_active].
 */
 //go:nosplit
-func (self class) GetSessions() Array.Any {
+func (self class) GetSessions() Array.Any { //gd:EditorDebuggerPlugin.get_sessions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_sessions, self.AsObject(), frame.Array(0), r_ret.Addr())

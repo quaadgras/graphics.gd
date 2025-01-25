@@ -39,7 +39,7 @@ type Any interface {
 /*
 Returns the BPM of the playlist, which can vary depending on the clip being played.
 */
-func (self Instance) GetBpm() Float.X {
+func (self Instance) GetBpm() Float.X { //gd:AudioStreamPlaylist.get_bpm
 	return Float.X(Float.X(class(self).GetBpm()))
 }
 
@@ -607,7 +607,7 @@ func (self Instance) SetStream63(value [1]gdclass.AudioStream) {
 }
 
 //go:nosplit
-func (self class) SetStreamCount(stream_count gd.Int) {
+func (self class) SetStreamCount(stream_count gd.Int) { //gd:AudioStreamPlaylist.set_stream_count
 	var frame = callframe.New()
 	callframe.Arg(frame, stream_count)
 	var r_ret = callframe.Nil
@@ -616,7 +616,7 @@ func (self class) SetStreamCount(stream_count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetStreamCount() gd.Int {
+func (self class) GetStreamCount() gd.Int { //gd:AudioStreamPlaylist.get_stream_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaylist.Bind_get_stream_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -629,7 +629,7 @@ func (self class) GetStreamCount() gd.Int {
 Returns the BPM of the playlist, which can vary depending on the clip being played.
 */
 //go:nosplit
-func (self class) GetBpm() gd.Float {
+func (self class) GetBpm() gd.Float { //gd:AudioStreamPlaylist.get_bpm
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaylist.Bind_get_bpm, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -642,7 +642,7 @@ func (self class) GetBpm() gd.Float {
 Sets the stream at playback position index.
 */
 //go:nosplit
-func (self class) SetListStream(stream_index gd.Int, audio_stream [1]gdclass.AudioStream) {
+func (self class) SetListStream(stream_index gd.Int, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamPlaylist.set_list_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, stream_index)
 	callframe.Arg(frame, pointers.Get(audio_stream[0])[0])
@@ -655,7 +655,7 @@ func (self class) SetListStream(stream_index gd.Int, audio_stream [1]gdclass.Aud
 Returns the stream at playback position index.
 */
 //go:nosplit
-func (self class) GetListStream(stream_index gd.Int) [1]gdclass.AudioStream {
+func (self class) GetListStream(stream_index gd.Int) [1]gdclass.AudioStream { //gd:AudioStreamPlaylist.get_list_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, stream_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -666,7 +666,7 @@ func (self class) GetListStream(stream_index gd.Int) [1]gdclass.AudioStream {
 }
 
 //go:nosplit
-func (self class) SetShuffle(shuffle bool) {
+func (self class) SetShuffle(shuffle bool) { //gd:AudioStreamPlaylist.set_shuffle
 	var frame = callframe.New()
 	callframe.Arg(frame, shuffle)
 	var r_ret = callframe.Nil
@@ -675,7 +675,7 @@ func (self class) SetShuffle(shuffle bool) {
 }
 
 //go:nosplit
-func (self class) GetShuffle() bool {
+func (self class) GetShuffle() bool { //gd:AudioStreamPlaylist.get_shuffle
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaylist.Bind_get_shuffle, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -685,7 +685,7 @@ func (self class) GetShuffle() bool {
 }
 
 //go:nosplit
-func (self class) SetFadeTime(dec gd.Float) {
+func (self class) SetFadeTime(dec gd.Float) { //gd:AudioStreamPlaylist.set_fade_time
 	var frame = callframe.New()
 	callframe.Arg(frame, dec)
 	var r_ret = callframe.Nil
@@ -694,7 +694,7 @@ func (self class) SetFadeTime(dec gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFadeTime() gd.Float {
+func (self class) GetFadeTime() gd.Float { //gd:AudioStreamPlaylist.get_fade_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaylist.Bind_get_fade_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -704,7 +704,7 @@ func (self class) GetFadeTime() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetLoop(loop bool) {
+func (self class) SetLoop(loop bool) { //gd:AudioStreamPlaylist.set_loop
 	var frame = callframe.New()
 	callframe.Arg(frame, loop)
 	var r_ret = callframe.Nil
@@ -713,7 +713,7 @@ func (self class) SetLoop(loop bool) {
 }
 
 //go:nosplit
-func (self class) HasLoop() bool {
+func (self class) HasLoop() bool { //gd:AudioStreamPlaylist.has_loop
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaylist.Bind_has_loop, self.AsObject(), frame.Array(0), r_ret.Addr())

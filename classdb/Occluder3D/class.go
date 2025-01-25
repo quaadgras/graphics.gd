@@ -42,14 +42,14 @@ type Any interface {
 /*
 Returns the occluder shape's vertex positions.
 */
-func (self Instance) GetVertices() []Vector3.XYZ {
+func (self Instance) GetVertices() []Vector3.XYZ { //gd:Occluder3D.get_vertices
 	return []Vector3.XYZ(class(self).GetVertices().AsSlice())
 }
 
 /*
 Returns the occluder shape's vertex indices.
 */
-func (self Instance) GetIndices() []int32 {
+func (self Instance) GetIndices() []int32 { //gd:Occluder3D.get_indices
 	return []int32(class(self).GetIndices().AsSlice())
 }
 
@@ -76,7 +76,7 @@ func New() Instance {
 Returns the occluder shape's vertex positions.
 */
 //go:nosplit
-func (self class) GetVertices() gd.PackedVector3Array {
+func (self class) GetVertices() gd.PackedVector3Array { //gd:Occluder3D.get_vertices
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Occluder3D.Bind_get_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -89,7 +89,7 @@ func (self class) GetVertices() gd.PackedVector3Array {
 Returns the occluder shape's vertex indices.
 */
 //go:nosplit
-func (self class) GetIndices() gd.PackedInt32Array {
+func (self class) GetIndices() gd.PackedInt32Array { //gd:Occluder3D.get_indices
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Occluder3D.Bind_get_indices, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -950,7 +950,7 @@ func (self Instance) SetSubEmitterKeepVelocity(value bool) {
 }
 
 //go:nosplit
-func (self class) SetDirection(degrees gd.Vector3) {
+func (self class) SetDirection(degrees gd.Vector3) { //gd:ParticleProcessMaterial.set_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -959,7 +959,7 @@ func (self class) SetDirection(degrees gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetDirection() gd.Vector3 {
+func (self class) GetDirection() gd.Vector3 { //gd:ParticleProcessMaterial.get_direction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -969,7 +969,7 @@ func (self class) GetDirection() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetInheritVelocityRatio(ratio gd.Float) {
+func (self class) SetInheritVelocityRatio(ratio gd.Float) { //gd:ParticleProcessMaterial.set_inherit_velocity_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -978,7 +978,7 @@ func (self class) SetInheritVelocityRatio(ratio gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetInheritVelocityRatio() gd.Float {
+func (self class) GetInheritVelocityRatio() gd.Float { //gd:ParticleProcessMaterial.get_inherit_velocity_ratio
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_inherit_velocity_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -988,7 +988,7 @@ func (self class) GetInheritVelocityRatio() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSpread(degrees gd.Float) {
+func (self class) SetSpread(degrees gd.Float) { //gd:ParticleProcessMaterial.set_spread
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -997,7 +997,7 @@ func (self class) SetSpread(degrees gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSpread() gd.Float {
+func (self class) GetSpread() gd.Float { //gd:ParticleProcessMaterial.get_spread
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_spread, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1007,7 +1007,7 @@ func (self class) GetSpread() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFlatness(amount gd.Float) {
+func (self class) SetFlatness(amount gd.Float) { //gd:ParticleProcessMaterial.set_flatness
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1016,7 +1016,7 @@ func (self class) SetFlatness(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFlatness() gd.Float {
+func (self class) GetFlatness() gd.Float { //gd:ParticleProcessMaterial.get_flatness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_flatness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1030,7 +1030,7 @@ Sets the minimum and maximum values of the given [param param].
 The [code]x[/code] component of the argument vector corresponds to minimum and the [code]y[/code] component corresponds to maximum.
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.ParticleProcessMaterialParameter, value gd.Vector2) {
+func (self class) SetParam(param gdclass.ParticleProcessMaterialParameter, value gd.Vector2) { //gd:ParticleProcessMaterial.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -1044,7 +1044,7 @@ Returns the minimum and maximum values of the given [param param] as a vector.
 The [code]x[/code] component of the returned vector corresponds to minimum and the [code]y[/code] component corresponds to maximum.
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.ParticleProcessMaterialParameter) gd.Vector2 {
+func (self class) GetParam(param gdclass.ParticleProcessMaterialParameter) gd.Vector2 { //gd:ParticleProcessMaterial.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -1058,7 +1058,7 @@ func (self class) GetParam(param gdclass.ParticleProcessMaterialParameter) gd.Ve
 Sets the minimum value range for the given parameter.
 */
 //go:nosplit
-func (self class) SetParamMin(param gdclass.ParticleProcessMaterialParameter, value gd.Float) {
+func (self class) SetParamMin(param gdclass.ParticleProcessMaterialParameter, value gd.Float) { //gd:ParticleProcessMaterial.set_param_min
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -1071,7 +1071,7 @@ func (self class) SetParamMin(param gdclass.ParticleProcessMaterialParameter, va
 Returns the minimum value range for the given parameter.
 */
 //go:nosplit
-func (self class) GetParamMin(param gdclass.ParticleProcessMaterialParameter) gd.Float {
+func (self class) GetParamMin(param gdclass.ParticleProcessMaterialParameter) gd.Float { //gd:ParticleProcessMaterial.get_param_min
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -1085,7 +1085,7 @@ func (self class) GetParamMin(param gdclass.ParticleProcessMaterialParameter) gd
 Sets the maximum value range for the given parameter.
 */
 //go:nosplit
-func (self class) SetParamMax(param gdclass.ParticleProcessMaterialParameter, value gd.Float) {
+func (self class) SetParamMax(param gdclass.ParticleProcessMaterialParameter, value gd.Float) { //gd:ParticleProcessMaterial.set_param_max
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -1098,7 +1098,7 @@ func (self class) SetParamMax(param gdclass.ParticleProcessMaterialParameter, va
 Returns the maximum value range for the given parameter.
 */
 //go:nosplit
-func (self class) GetParamMax(param gdclass.ParticleProcessMaterialParameter) gd.Float {
+func (self class) GetParamMax(param gdclass.ParticleProcessMaterialParameter) gd.Float { //gd:ParticleProcessMaterial.get_param_max
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -1112,7 +1112,7 @@ func (self class) GetParamMax(param gdclass.ParticleProcessMaterialParameter) gd
 Sets the [Texture2D] for the specified [enum Parameter].
 */
 //go:nosplit
-func (self class) SetParamTexture(param gdclass.ParticleProcessMaterialParameter, texture [1]gdclass.Texture2D) {
+func (self class) SetParamTexture(param gdclass.ParticleProcessMaterialParameter, texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_param_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -1125,7 +1125,7 @@ func (self class) SetParamTexture(param gdclass.ParticleProcessMaterialParameter
 Returns the [Texture2D] used by the specified parameter.
 */
 //go:nosplit
-func (self class) GetParamTexture(param gdclass.ParticleProcessMaterialParameter) [1]gdclass.Texture2D {
+func (self class) GetParamTexture(param gdclass.ParticleProcessMaterialParameter) [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_param_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1136,7 +1136,7 @@ func (self class) GetParamTexture(param gdclass.ParticleProcessMaterialParameter
 }
 
 //go:nosplit
-func (self class) SetColor(color gd.Color) {
+func (self class) SetColor(color gd.Color) { //gd:ParticleProcessMaterial.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -1145,7 +1145,7 @@ func (self class) SetColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetColor() gd.Color {
+func (self class) GetColor() gd.Color { //gd:ParticleProcessMaterial.get_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1155,7 +1155,7 @@ func (self class) GetColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetColorRamp(ramp [1]gdclass.Texture2D) {
+func (self class) SetColorRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_color_ramp
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(ramp[0])[0])
 	var r_ret = callframe.Nil
@@ -1164,7 +1164,7 @@ func (self class) SetColorRamp(ramp [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetColorRamp() [1]gdclass.Texture2D {
+func (self class) GetColorRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_color_ramp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_color_ramp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1174,7 +1174,7 @@ func (self class) GetColorRamp() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetAlphaCurve(curve [1]gdclass.Texture2D) {
+func (self class) SetAlphaCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_alpha_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -1183,7 +1183,7 @@ func (self class) SetAlphaCurve(curve [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetAlphaCurve() [1]gdclass.Texture2D {
+func (self class) GetAlphaCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_alpha_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_alpha_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1193,7 +1193,7 @@ func (self class) GetAlphaCurve() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetEmissionCurve(curve [1]gdclass.Texture2D) {
+func (self class) SetEmissionCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -1202,7 +1202,7 @@ func (self class) SetEmissionCurve(curve [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetEmissionCurve() [1]gdclass.Texture2D {
+func (self class) GetEmissionCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1212,7 +1212,7 @@ func (self class) GetEmissionCurve() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetColorInitialRamp(ramp [1]gdclass.Texture2D) {
+func (self class) SetColorInitialRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_color_initial_ramp
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(ramp[0])[0])
 	var r_ret = callframe.Nil
@@ -1221,7 +1221,7 @@ func (self class) SetColorInitialRamp(ramp [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetColorInitialRamp() [1]gdclass.Texture2D {
+func (self class) GetColorInitialRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_color_initial_ramp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_color_initial_ramp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1231,7 +1231,7 @@ func (self class) GetColorInitialRamp() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetVelocityLimitCurve(curve [1]gdclass.Texture2D) {
+func (self class) SetVelocityLimitCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_velocity_limit_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -1240,7 +1240,7 @@ func (self class) SetVelocityLimitCurve(curve [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetVelocityLimitCurve() [1]gdclass.Texture2D {
+func (self class) GetVelocityLimitCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_velocity_limit_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_velocity_limit_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1253,7 +1253,7 @@ func (self class) GetVelocityLimitCurve() [1]gdclass.Texture2D {
 If [code]true[/code], enables the specified particle flag. See [enum ParticleFlags] for options.
 */
 //go:nosplit
-func (self class) SetParticleFlag(particle_flag gdclass.ParticleProcessMaterialParticleFlags, enable bool) {
+func (self class) SetParticleFlag(particle_flag gdclass.ParticleProcessMaterialParticleFlags, enable bool) { //gd:ParticleProcessMaterial.set_particle_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, particle_flag)
 	callframe.Arg(frame, enable)
@@ -1266,7 +1266,7 @@ func (self class) SetParticleFlag(particle_flag gdclass.ParticleProcessMaterialP
 Returns [code]true[/code] if the specified particle flag is enabled. See [enum ParticleFlags] for options.
 */
 //go:nosplit
-func (self class) GetParticleFlag(particle_flag gdclass.ParticleProcessMaterialParticleFlags) bool {
+func (self class) GetParticleFlag(particle_flag gdclass.ParticleProcessMaterialParticleFlags) bool { //gd:ParticleProcessMaterial.get_particle_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, particle_flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1277,7 +1277,7 @@ func (self class) GetParticleFlag(particle_flag gdclass.ParticleProcessMaterialP
 }
 
 //go:nosplit
-func (self class) SetVelocityPivot(pivot gd.Vector3) {
+func (self class) SetVelocityPivot(pivot gd.Vector3) { //gd:ParticleProcessMaterial.set_velocity_pivot
 	var frame = callframe.New()
 	callframe.Arg(frame, pivot)
 	var r_ret = callframe.Nil
@@ -1286,7 +1286,7 @@ func (self class) SetVelocityPivot(pivot gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetVelocityPivot() gd.Vector3 {
+func (self class) GetVelocityPivot() gd.Vector3 { //gd:ParticleProcessMaterial.get_velocity_pivot
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_velocity_pivot, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1296,7 +1296,7 @@ func (self class) GetVelocityPivot() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetEmissionShape(shape gdclass.ParticleProcessMaterialEmissionShape) {
+func (self class) SetEmissionShape(shape gdclass.ParticleProcessMaterialEmissionShape) { //gd:ParticleProcessMaterial.set_emission_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -1305,7 +1305,7 @@ func (self class) SetEmissionShape(shape gdclass.ParticleProcessMaterialEmission
 }
 
 //go:nosplit
-func (self class) GetEmissionShape() gdclass.ParticleProcessMaterialEmissionShape {
+func (self class) GetEmissionShape() gdclass.ParticleProcessMaterialEmissionShape { //gd:ParticleProcessMaterial.get_emission_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ParticleProcessMaterialEmissionShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1315,7 +1315,7 @@ func (self class) GetEmissionShape() gdclass.ParticleProcessMaterialEmissionShap
 }
 
 //go:nosplit
-func (self class) SetEmissionSphereRadius(radius gd.Float) {
+func (self class) SetEmissionSphereRadius(radius gd.Float) { //gd:ParticleProcessMaterial.set_emission_sphere_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -1324,7 +1324,7 @@ func (self class) SetEmissionSphereRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEmissionSphereRadius() gd.Float {
+func (self class) GetEmissionSphereRadius() gd.Float { //gd:ParticleProcessMaterial.get_emission_sphere_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_sphere_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1334,7 +1334,7 @@ func (self class) GetEmissionSphereRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEmissionBoxExtents(extents gd.Vector3) {
+func (self class) SetEmissionBoxExtents(extents gd.Vector3) { //gd:ParticleProcessMaterial.set_emission_box_extents
 	var frame = callframe.New()
 	callframe.Arg(frame, extents)
 	var r_ret = callframe.Nil
@@ -1343,7 +1343,7 @@ func (self class) SetEmissionBoxExtents(extents gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetEmissionBoxExtents() gd.Vector3 {
+func (self class) GetEmissionBoxExtents() gd.Vector3 { //gd:ParticleProcessMaterial.get_emission_box_extents
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_box_extents, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1353,7 +1353,7 @@ func (self class) GetEmissionBoxExtents() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetEmissionPointTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetEmissionPointTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_point_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -1362,7 +1362,7 @@ func (self class) SetEmissionPointTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetEmissionPointTexture() [1]gdclass.Texture2D {
+func (self class) GetEmissionPointTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_point_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_point_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1372,7 +1372,7 @@ func (self class) GetEmissionPointTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetEmissionNormalTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetEmissionNormalTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_normal_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -1381,7 +1381,7 @@ func (self class) SetEmissionNormalTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetEmissionNormalTexture() [1]gdclass.Texture2D {
+func (self class) GetEmissionNormalTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_normal_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_normal_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1391,7 +1391,7 @@ func (self class) GetEmissionNormalTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetEmissionColorTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetEmissionColorTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_color_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -1400,7 +1400,7 @@ func (self class) SetEmissionColorTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetEmissionColorTexture() [1]gdclass.Texture2D {
+func (self class) GetEmissionColorTexture() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_emission_color_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_color_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1410,7 +1410,7 @@ func (self class) GetEmissionColorTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetEmissionPointCount(point_count gd.Int) {
+func (self class) SetEmissionPointCount(point_count gd.Int) { //gd:ParticleProcessMaterial.set_emission_point_count
 	var frame = callframe.New()
 	callframe.Arg(frame, point_count)
 	var r_ret = callframe.Nil
@@ -1419,7 +1419,7 @@ func (self class) SetEmissionPointCount(point_count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetEmissionPointCount() gd.Int {
+func (self class) GetEmissionPointCount() gd.Int { //gd:ParticleProcessMaterial.get_emission_point_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1429,7 +1429,7 @@ func (self class) GetEmissionPointCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetEmissionRingAxis(axis gd.Vector3) {
+func (self class) SetEmissionRingAxis(axis gd.Vector3) { //gd:ParticleProcessMaterial.set_emission_ring_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Nil
@@ -1438,7 +1438,7 @@ func (self class) SetEmissionRingAxis(axis gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetEmissionRingAxis() gd.Vector3 {
+func (self class) GetEmissionRingAxis() gd.Vector3 { //gd:ParticleProcessMaterial.get_emission_ring_axis
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_ring_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1448,7 +1448,7 @@ func (self class) GetEmissionRingAxis() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetEmissionRingHeight(height gd.Float) {
+func (self class) SetEmissionRingHeight(height gd.Float) { //gd:ParticleProcessMaterial.set_emission_ring_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -1457,7 +1457,7 @@ func (self class) SetEmissionRingHeight(height gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEmissionRingHeight() gd.Float {
+func (self class) GetEmissionRingHeight() gd.Float { //gd:ParticleProcessMaterial.get_emission_ring_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_ring_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1467,7 +1467,7 @@ func (self class) GetEmissionRingHeight() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEmissionRingRadius(radius gd.Float) {
+func (self class) SetEmissionRingRadius(radius gd.Float) { //gd:ParticleProcessMaterial.set_emission_ring_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -1476,7 +1476,7 @@ func (self class) SetEmissionRingRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEmissionRingRadius() gd.Float {
+func (self class) GetEmissionRingRadius() gd.Float { //gd:ParticleProcessMaterial.get_emission_ring_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_ring_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1486,7 +1486,7 @@ func (self class) GetEmissionRingRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEmissionRingInnerRadius(inner_radius gd.Float) {
+func (self class) SetEmissionRingInnerRadius(inner_radius gd.Float) { //gd:ParticleProcessMaterial.set_emission_ring_inner_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, inner_radius)
 	var r_ret = callframe.Nil
@@ -1495,7 +1495,7 @@ func (self class) SetEmissionRingInnerRadius(inner_radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEmissionRingInnerRadius() gd.Float {
+func (self class) GetEmissionRingInnerRadius() gd.Float { //gd:ParticleProcessMaterial.get_emission_ring_inner_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_ring_inner_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1505,7 +1505,7 @@ func (self class) GetEmissionRingInnerRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEmissionShapeOffset(emission_shape_offset gd.Vector3) {
+func (self class) SetEmissionShapeOffset(emission_shape_offset gd.Vector3) { //gd:ParticleProcessMaterial.set_emission_shape_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, emission_shape_offset)
 	var r_ret = callframe.Nil
@@ -1514,7 +1514,7 @@ func (self class) SetEmissionShapeOffset(emission_shape_offset gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetEmissionShapeOffset() gd.Vector3 {
+func (self class) GetEmissionShapeOffset() gd.Vector3 { //gd:ParticleProcessMaterial.get_emission_shape_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_shape_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1524,7 +1524,7 @@ func (self class) GetEmissionShapeOffset() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetEmissionShapeScale(emission_shape_scale gd.Vector3) {
+func (self class) SetEmissionShapeScale(emission_shape_scale gd.Vector3) { //gd:ParticleProcessMaterial.set_emission_shape_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, emission_shape_scale)
 	var r_ret = callframe.Nil
@@ -1533,7 +1533,7 @@ func (self class) SetEmissionShapeScale(emission_shape_scale gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetEmissionShapeScale() gd.Vector3 {
+func (self class) GetEmissionShapeScale() gd.Vector3 { //gd:ParticleProcessMaterial.get_emission_shape_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_shape_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1543,7 +1543,7 @@ func (self class) GetEmissionShapeScale() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) GetTurbulenceEnabled() bool {
+func (self class) GetTurbulenceEnabled() bool { //gd:ParticleProcessMaterial.get_turbulence_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_turbulence_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1553,7 +1553,7 @@ func (self class) GetTurbulenceEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetTurbulenceEnabled(turbulence_enabled bool) {
+func (self class) SetTurbulenceEnabled(turbulence_enabled bool) { //gd:ParticleProcessMaterial.set_turbulence_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, turbulence_enabled)
 	var r_ret = callframe.Nil
@@ -1562,7 +1562,7 @@ func (self class) SetTurbulenceEnabled(turbulence_enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetTurbulenceNoiseStrength() gd.Float {
+func (self class) GetTurbulenceNoiseStrength() gd.Float { //gd:ParticleProcessMaterial.get_turbulence_noise_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_turbulence_noise_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1572,7 +1572,7 @@ func (self class) GetTurbulenceNoiseStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTurbulenceNoiseStrength(turbulence_noise_strength gd.Float) {
+func (self class) SetTurbulenceNoiseStrength(turbulence_noise_strength gd.Float) { //gd:ParticleProcessMaterial.set_turbulence_noise_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, turbulence_noise_strength)
 	var r_ret = callframe.Nil
@@ -1581,7 +1581,7 @@ func (self class) SetTurbulenceNoiseStrength(turbulence_noise_strength gd.Float)
 }
 
 //go:nosplit
-func (self class) GetTurbulenceNoiseScale() gd.Float {
+func (self class) GetTurbulenceNoiseScale() gd.Float { //gd:ParticleProcessMaterial.get_turbulence_noise_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_turbulence_noise_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1591,7 +1591,7 @@ func (self class) GetTurbulenceNoiseScale() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTurbulenceNoiseScale(turbulence_noise_scale gd.Float) {
+func (self class) SetTurbulenceNoiseScale(turbulence_noise_scale gd.Float) { //gd:ParticleProcessMaterial.set_turbulence_noise_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, turbulence_noise_scale)
 	var r_ret = callframe.Nil
@@ -1600,7 +1600,7 @@ func (self class) SetTurbulenceNoiseScale(turbulence_noise_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTurbulenceNoiseSpeedRandom() gd.Float {
+func (self class) GetTurbulenceNoiseSpeedRandom() gd.Float { //gd:ParticleProcessMaterial.get_turbulence_noise_speed_random
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_turbulence_noise_speed_random, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1610,7 +1610,7 @@ func (self class) GetTurbulenceNoiseSpeedRandom() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTurbulenceNoiseSpeedRandom(turbulence_noise_speed_random gd.Float) {
+func (self class) SetTurbulenceNoiseSpeedRandom(turbulence_noise_speed_random gd.Float) { //gd:ParticleProcessMaterial.set_turbulence_noise_speed_random
 	var frame = callframe.New()
 	callframe.Arg(frame, turbulence_noise_speed_random)
 	var r_ret = callframe.Nil
@@ -1619,7 +1619,7 @@ func (self class) SetTurbulenceNoiseSpeedRandom(turbulence_noise_speed_random gd
 }
 
 //go:nosplit
-func (self class) GetTurbulenceNoiseSpeed() gd.Vector3 {
+func (self class) GetTurbulenceNoiseSpeed() gd.Vector3 { //gd:ParticleProcessMaterial.get_turbulence_noise_speed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_turbulence_noise_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1629,7 +1629,7 @@ func (self class) GetTurbulenceNoiseSpeed() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetTurbulenceNoiseSpeed(turbulence_noise_speed gd.Vector3) {
+func (self class) SetTurbulenceNoiseSpeed(turbulence_noise_speed gd.Vector3) { //gd:ParticleProcessMaterial.set_turbulence_noise_speed
 	var frame = callframe.New()
 	callframe.Arg(frame, turbulence_noise_speed)
 	var r_ret = callframe.Nil
@@ -1638,7 +1638,7 @@ func (self class) SetTurbulenceNoiseSpeed(turbulence_noise_speed gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetGravity() gd.Vector3 {
+func (self class) GetGravity() gd.Vector3 { //gd:ParticleProcessMaterial.get_gravity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1648,7 +1648,7 @@ func (self class) GetGravity() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetGravity(accel_vec gd.Vector3) {
+func (self class) SetGravity(accel_vec gd.Vector3) { //gd:ParticleProcessMaterial.set_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, accel_vec)
 	var r_ret = callframe.Nil
@@ -1657,7 +1657,7 @@ func (self class) SetGravity(accel_vec gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) SetLifetimeRandomness(randomness gd.Float) {
+func (self class) SetLifetimeRandomness(randomness gd.Float) { //gd:ParticleProcessMaterial.set_lifetime_randomness
 	var frame = callframe.New()
 	callframe.Arg(frame, randomness)
 	var r_ret = callframe.Nil
@@ -1666,7 +1666,7 @@ func (self class) SetLifetimeRandomness(randomness gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLifetimeRandomness() gd.Float {
+func (self class) GetLifetimeRandomness() gd.Float { //gd:ParticleProcessMaterial.get_lifetime_randomness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_lifetime_randomness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1676,7 +1676,7 @@ func (self class) GetLifetimeRandomness() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetSubEmitterMode() gdclass.ParticleProcessMaterialSubEmitterMode {
+func (self class) GetSubEmitterMode() gdclass.ParticleProcessMaterialSubEmitterMode { //gd:ParticleProcessMaterial.get_sub_emitter_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ParticleProcessMaterialSubEmitterMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_sub_emitter_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1686,7 +1686,7 @@ func (self class) GetSubEmitterMode() gdclass.ParticleProcessMaterialSubEmitterM
 }
 
 //go:nosplit
-func (self class) SetSubEmitterMode(mode gdclass.ParticleProcessMaterialSubEmitterMode) {
+func (self class) SetSubEmitterMode(mode gdclass.ParticleProcessMaterialSubEmitterMode) { //gd:ParticleProcessMaterial.set_sub_emitter_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1695,7 +1695,7 @@ func (self class) SetSubEmitterMode(mode gdclass.ParticleProcessMaterialSubEmitt
 }
 
 //go:nosplit
-func (self class) GetSubEmitterFrequency() gd.Float {
+func (self class) GetSubEmitterFrequency() gd.Float { //gd:ParticleProcessMaterial.get_sub_emitter_frequency
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_sub_emitter_frequency, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1705,7 +1705,7 @@ func (self class) GetSubEmitterFrequency() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSubEmitterFrequency(hz gd.Float) {
+func (self class) SetSubEmitterFrequency(hz gd.Float) { //gd:ParticleProcessMaterial.set_sub_emitter_frequency
 	var frame = callframe.New()
 	callframe.Arg(frame, hz)
 	var r_ret = callframe.Nil
@@ -1714,7 +1714,7 @@ func (self class) SetSubEmitterFrequency(hz gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSubEmitterAmountAtEnd() gd.Int {
+func (self class) GetSubEmitterAmountAtEnd() gd.Int { //gd:ParticleProcessMaterial.get_sub_emitter_amount_at_end
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_sub_emitter_amount_at_end, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1724,7 +1724,7 @@ func (self class) GetSubEmitterAmountAtEnd() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSubEmitterAmountAtEnd(amount gd.Int) {
+func (self class) SetSubEmitterAmountAtEnd(amount gd.Int) { //gd:ParticleProcessMaterial.set_sub_emitter_amount_at_end
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1733,7 +1733,7 @@ func (self class) SetSubEmitterAmountAtEnd(amount gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSubEmitterAmountAtCollision() gd.Int {
+func (self class) GetSubEmitterAmountAtCollision() gd.Int { //gd:ParticleProcessMaterial.get_sub_emitter_amount_at_collision
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_sub_emitter_amount_at_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1743,7 +1743,7 @@ func (self class) GetSubEmitterAmountAtCollision() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSubEmitterAmountAtCollision(amount gd.Int) {
+func (self class) SetSubEmitterAmountAtCollision(amount gd.Int) { //gd:ParticleProcessMaterial.set_sub_emitter_amount_at_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1752,7 +1752,7 @@ func (self class) SetSubEmitterAmountAtCollision(amount gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSubEmitterKeepVelocity() bool {
+func (self class) GetSubEmitterKeepVelocity() bool { //gd:ParticleProcessMaterial.get_sub_emitter_keep_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_sub_emitter_keep_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1762,7 +1762,7 @@ func (self class) GetSubEmitterKeepVelocity() bool {
 }
 
 //go:nosplit
-func (self class) SetSubEmitterKeepVelocity(enable bool) {
+func (self class) SetSubEmitterKeepVelocity(enable bool) { //gd:ParticleProcessMaterial.set_sub_emitter_keep_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1771,7 +1771,7 @@ func (self class) SetSubEmitterKeepVelocity(enable bool) {
 }
 
 //go:nosplit
-func (self class) SetAttractorInteractionEnabled(enabled bool) {
+func (self class) SetAttractorInteractionEnabled(enabled bool) { //gd:ParticleProcessMaterial.set_attractor_interaction_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1780,7 +1780,7 @@ func (self class) SetAttractorInteractionEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsAttractorInteractionEnabled() bool {
+func (self class) IsAttractorInteractionEnabled() bool { //gd:ParticleProcessMaterial.is_attractor_interaction_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_is_attractor_interaction_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1790,7 +1790,7 @@ func (self class) IsAttractorInteractionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetCollisionMode(mode gdclass.ParticleProcessMaterialCollisionMode) {
+func (self class) SetCollisionMode(mode gdclass.ParticleProcessMaterialCollisionMode) { //gd:ParticleProcessMaterial.set_collision_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1799,7 +1799,7 @@ func (self class) SetCollisionMode(mode gdclass.ParticleProcessMaterialCollision
 }
 
 //go:nosplit
-func (self class) GetCollisionMode() gdclass.ParticleProcessMaterialCollisionMode {
+func (self class) GetCollisionMode() gdclass.ParticleProcessMaterialCollisionMode { //gd:ParticleProcessMaterial.get_collision_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ParticleProcessMaterialCollisionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_collision_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1809,7 +1809,7 @@ func (self class) GetCollisionMode() gdclass.ParticleProcessMaterialCollisionMod
 }
 
 //go:nosplit
-func (self class) SetCollisionUseScale(radius bool) {
+func (self class) SetCollisionUseScale(radius bool) { //gd:ParticleProcessMaterial.set_collision_use_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -1818,7 +1818,7 @@ func (self class) SetCollisionUseScale(radius bool) {
 }
 
 //go:nosplit
-func (self class) IsCollisionUsingScale() bool {
+func (self class) IsCollisionUsingScale() bool { //gd:ParticleProcessMaterial.is_collision_using_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_is_collision_using_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1828,7 +1828,7 @@ func (self class) IsCollisionUsingScale() bool {
 }
 
 //go:nosplit
-func (self class) SetCollisionFriction(friction gd.Float) {
+func (self class) SetCollisionFriction(friction gd.Float) { //gd:ParticleProcessMaterial.set_collision_friction
 	var frame = callframe.New()
 	callframe.Arg(frame, friction)
 	var r_ret = callframe.Nil
@@ -1837,7 +1837,7 @@ func (self class) SetCollisionFriction(friction gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCollisionFriction() gd.Float {
+func (self class) GetCollisionFriction() gd.Float { //gd:ParticleProcessMaterial.get_collision_friction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_collision_friction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1847,7 +1847,7 @@ func (self class) GetCollisionFriction() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCollisionBounce(bounce gd.Float) {
+func (self class) SetCollisionBounce(bounce gd.Float) { //gd:ParticleProcessMaterial.set_collision_bounce
 	var frame = callframe.New()
 	callframe.Arg(frame, bounce)
 	var r_ret = callframe.Nil
@@ -1856,7 +1856,7 @@ func (self class) SetCollisionBounce(bounce gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCollisionBounce() gd.Float {
+func (self class) GetCollisionBounce() gd.Float { //gd:ParticleProcessMaterial.get_collision_bounce
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_collision_bounce, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1906,7 +1906,7 @@ func init() {
 	})
 }
 
-type Parameter = gdclass.ParticleProcessMaterialParameter
+type Parameter = gdclass.ParticleProcessMaterialParameter //gd:ParticleProcessMaterial.Parameter
 
 const (
 	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set initial velocity properties.*/
@@ -1949,7 +1949,7 @@ const (
 	ParamTurbInfluenceOverLife Parameter = 12
 )
 
-type ParticleFlags = gdclass.ParticleProcessMaterialParticleFlags
+type ParticleFlags = gdclass.ParticleProcessMaterialParticleFlags //gd:ParticleProcessMaterial.ParticleFlags
 
 const (
 	/*Use with [method set_particle_flag] to set [member particle_flag_align_y].*/
@@ -1963,7 +1963,7 @@ const (
 	ParticleFlagMax ParticleFlags = 4
 )
 
-type EmissionShape = gdclass.ParticleProcessMaterialEmissionShape
+type EmissionShape = gdclass.ParticleProcessMaterialEmissionShape //gd:ParticleProcessMaterial.EmissionShape
 
 const (
 	/*All particles will be emitted from a single point.*/
@@ -1984,7 +1984,7 @@ const (
 	EmissionShapeMax EmissionShape = 7
 )
 
-type SubEmitterMode = gdclass.ParticleProcessMaterialSubEmitterMode
+type SubEmitterMode = gdclass.ParticleProcessMaterialSubEmitterMode //gd:ParticleProcessMaterial.SubEmitterMode
 
 const (
 	SubEmitterDisabled    SubEmitterMode = 0
@@ -1995,7 +1995,7 @@ const (
 	SubEmitterMax SubEmitterMode = 4
 )
 
-type CollisionMode = gdclass.ParticleProcessMaterialCollisionMode
+type CollisionMode = gdclass.ParticleProcessMaterialCollisionMode //gd:ParticleProcessMaterial.CollisionMode
 
 const (
 	/*No collision for particles. Particles will go through [GPUParticlesCollision3D] nodes.*/

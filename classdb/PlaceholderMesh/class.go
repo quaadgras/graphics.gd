@@ -65,7 +65,7 @@ func (self Instance) SetAabb(value AABB.PositionSize) {
 }
 
 //go:nosplit
-func (self class) SetAabb(aabb gd.AABB) {
+func (self class) SetAabb(aabb gd.AABB) { //gd:PlaceholderMesh.set_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
 	var r_ret = callframe.Nil

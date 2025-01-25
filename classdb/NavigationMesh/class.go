@@ -43,42 +43,42 @@ type Any interface {
 /*
 Based on [param value], enables or disables the specified layer in the [member geometry_collision_mask], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) {
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:NavigationMesh.set_collision_mask_value
 	class(self).SetCollisionMaskValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member geometry_collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetCollisionMaskValue(layer_number int) bool {
+func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:NavigationMesh.get_collision_mask_value
 	return bool(class(self).GetCollisionMaskValue(gd.Int(layer_number)))
 }
 
 /*
 Adds a polygon using the indices of the vertices you get when calling [method get_vertices].
 */
-func (self Instance) AddPolygon(polygon []int32) {
+func (self Instance) AddPolygon(polygon []int32) { //gd:NavigationMesh.add_polygon
 	class(self).AddPolygon(gd.NewPackedInt32Slice(polygon))
 }
 
 /*
 Returns the number of polygons in the navigation mesh.
 */
-func (self Instance) GetPolygonCount() int {
+func (self Instance) GetPolygonCount() int { //gd:NavigationMesh.get_polygon_count
 	return int(int(class(self).GetPolygonCount()))
 }
 
 /*
 Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
 */
-func (self Instance) GetPolygon(idx int) []int32 {
+func (self Instance) GetPolygon(idx int) []int32 { //gd:NavigationMesh.get_polygon
 	return []int32(class(self).GetPolygon(gd.Int(idx)).AsSlice())
 }
 
 /*
 Clears the array of polygons, but it doesn't clear the array of vertices.
 */
-func (self Instance) ClearPolygons() {
+func (self Instance) ClearPolygons() { //gd:NavigationMesh.clear_polygons
 	class(self).ClearPolygons()
 }
 
@@ -86,14 +86,14 @@ func (self Instance) ClearPolygons() {
 Initializes the navigation mesh by setting the vertices and indices according to a [Mesh].
 [b]Note:[/b] The given [param mesh] must be of type [constant Mesh.PRIMITIVE_TRIANGLES] and have an index array.
 */
-func (self Instance) CreateFromMesh(mesh [1]gdclass.Mesh) {
+func (self Instance) CreateFromMesh(mesh [1]gdclass.Mesh) { //gd:NavigationMesh.create_from_mesh
 	class(self).CreateFromMesh(mesh)
 }
 
 /*
 Clears the internal arrays for vertices and polygon indices.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:NavigationMesh.clear
 	class(self).Clear()
 }
 
@@ -317,7 +317,7 @@ func (self Instance) SetFilterBakingAabbOffset(value Vector3.XYZ) {
 }
 
 //go:nosplit
-func (self class) SetSamplePartitionType(sample_partition_type gdclass.NavigationMeshSamplePartitionType) {
+func (self class) SetSamplePartitionType(sample_partition_type gdclass.NavigationMeshSamplePartitionType) { //gd:NavigationMesh.set_sample_partition_type
 	var frame = callframe.New()
 	callframe.Arg(frame, sample_partition_type)
 	var r_ret = callframe.Nil
@@ -326,7 +326,7 @@ func (self class) SetSamplePartitionType(sample_partition_type gdclass.Navigatio
 }
 
 //go:nosplit
-func (self class) GetSamplePartitionType() gdclass.NavigationMeshSamplePartitionType {
+func (self class) GetSamplePartitionType() gdclass.NavigationMeshSamplePartitionType { //gd:NavigationMesh.get_sample_partition_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationMeshSamplePartitionType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_sample_partition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -336,7 +336,7 @@ func (self class) GetSamplePartitionType() gdclass.NavigationMeshSamplePartition
 }
 
 //go:nosplit
-func (self class) SetParsedGeometryType(geometry_type gdclass.NavigationMeshParsedGeometryType) {
+func (self class) SetParsedGeometryType(geometry_type gdclass.NavigationMeshParsedGeometryType) { //gd:NavigationMesh.set_parsed_geometry_type
 	var frame = callframe.New()
 	callframe.Arg(frame, geometry_type)
 	var r_ret = callframe.Nil
@@ -345,7 +345,7 @@ func (self class) SetParsedGeometryType(geometry_type gdclass.NavigationMeshPars
 }
 
 //go:nosplit
-func (self class) GetParsedGeometryType() gdclass.NavigationMeshParsedGeometryType {
+func (self class) GetParsedGeometryType() gdclass.NavigationMeshParsedGeometryType { //gd:NavigationMesh.get_parsed_geometry_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationMeshParsedGeometryType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_parsed_geometry_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -355,7 +355,7 @@ func (self class) GetParsedGeometryType() gdclass.NavigationMeshParsedGeometryTy
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(mask gd.Int) {
+func (self class) SetCollisionMask(mask gd.Int) { //gd:NavigationMesh.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -364,7 +364,7 @@ func (self class) SetCollisionMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int {
+func (self class) GetCollisionMask() gd.Int { //gd:NavigationMesh.get_collision_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -377,7 +377,7 @@ func (self class) GetCollisionMask() gd.Int {
 Based on [param value], enables or disables the specified layer in the [member geometry_collision_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
+func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:NavigationMesh.set_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -390,7 +390,7 @@ func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member geometry_collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
+func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:NavigationMesh.get_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -401,7 +401,7 @@ func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) SetSourceGeometryMode(mask gdclass.NavigationMeshSourceGeometryMode) {
+func (self class) SetSourceGeometryMode(mask gdclass.NavigationMeshSourceGeometryMode) { //gd:NavigationMesh.set_source_geometry_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -410,7 +410,7 @@ func (self class) SetSourceGeometryMode(mask gdclass.NavigationMeshSourceGeometr
 }
 
 //go:nosplit
-func (self class) GetSourceGeometryMode() gdclass.NavigationMeshSourceGeometryMode {
+func (self class) GetSourceGeometryMode() gdclass.NavigationMeshSourceGeometryMode { //gd:NavigationMesh.get_source_geometry_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationMeshSourceGeometryMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_source_geometry_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -420,7 +420,7 @@ func (self class) GetSourceGeometryMode() gdclass.NavigationMeshSourceGeometryMo
 }
 
 //go:nosplit
-func (self class) SetSourceGroupName(mask gd.StringName) {
+func (self class) SetSourceGroupName(mask gd.StringName) { //gd:NavigationMesh.set_source_group_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mask))
 	var r_ret = callframe.Nil
@@ -429,7 +429,7 @@ func (self class) SetSourceGroupName(mask gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetSourceGroupName() gd.StringName {
+func (self class) GetSourceGroupName() gd.StringName { //gd:NavigationMesh.get_source_group_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_source_group_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -439,7 +439,7 @@ func (self class) GetSourceGroupName() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetCellSize(cell_size gd.Float) {
+func (self class) SetCellSize(cell_size gd.Float) { //gd:NavigationMesh.set_cell_size
 	var frame = callframe.New()
 	callframe.Arg(frame, cell_size)
 	var r_ret = callframe.Nil
@@ -448,7 +448,7 @@ func (self class) SetCellSize(cell_size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCellSize() gd.Float {
+func (self class) GetCellSize() gd.Float { //gd:NavigationMesh.get_cell_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_cell_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -458,7 +458,7 @@ func (self class) GetCellSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCellHeight(cell_height gd.Float) {
+func (self class) SetCellHeight(cell_height gd.Float) { //gd:NavigationMesh.set_cell_height
 	var frame = callframe.New()
 	callframe.Arg(frame, cell_height)
 	var r_ret = callframe.Nil
@@ -467,7 +467,7 @@ func (self class) SetCellHeight(cell_height gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCellHeight() gd.Float {
+func (self class) GetCellHeight() gd.Float { //gd:NavigationMesh.get_cell_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_cell_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -477,7 +477,7 @@ func (self class) GetCellHeight() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBorderSize(border_size gd.Float) {
+func (self class) SetBorderSize(border_size gd.Float) { //gd:NavigationMesh.set_border_size
 	var frame = callframe.New()
 	callframe.Arg(frame, border_size)
 	var r_ret = callframe.Nil
@@ -486,7 +486,7 @@ func (self class) SetBorderSize(border_size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBorderSize() gd.Float {
+func (self class) GetBorderSize() gd.Float { //gd:NavigationMesh.get_border_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_border_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -496,7 +496,7 @@ func (self class) GetBorderSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAgentHeight(agent_height gd.Float) {
+func (self class) SetAgentHeight(agent_height gd.Float) { //gd:NavigationMesh.set_agent_height
 	var frame = callframe.New()
 	callframe.Arg(frame, agent_height)
 	var r_ret = callframe.Nil
@@ -505,7 +505,7 @@ func (self class) SetAgentHeight(agent_height gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAgentHeight() gd.Float {
+func (self class) GetAgentHeight() gd.Float { //gd:NavigationMesh.get_agent_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_agent_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -515,7 +515,7 @@ func (self class) GetAgentHeight() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAgentRadius(agent_radius gd.Float) {
+func (self class) SetAgentRadius(agent_radius gd.Float) { //gd:NavigationMesh.set_agent_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, agent_radius)
 	var r_ret = callframe.Nil
@@ -524,7 +524,7 @@ func (self class) SetAgentRadius(agent_radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAgentRadius() gd.Float {
+func (self class) GetAgentRadius() gd.Float { //gd:NavigationMesh.get_agent_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_agent_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -534,7 +534,7 @@ func (self class) GetAgentRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAgentMaxClimb(agent_max_climb gd.Float) {
+func (self class) SetAgentMaxClimb(agent_max_climb gd.Float) { //gd:NavigationMesh.set_agent_max_climb
 	var frame = callframe.New()
 	callframe.Arg(frame, agent_max_climb)
 	var r_ret = callframe.Nil
@@ -543,7 +543,7 @@ func (self class) SetAgentMaxClimb(agent_max_climb gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAgentMaxClimb() gd.Float {
+func (self class) GetAgentMaxClimb() gd.Float { //gd:NavigationMesh.get_agent_max_climb
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_agent_max_climb, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -553,7 +553,7 @@ func (self class) GetAgentMaxClimb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAgentMaxSlope(agent_max_slope gd.Float) {
+func (self class) SetAgentMaxSlope(agent_max_slope gd.Float) { //gd:NavigationMesh.set_agent_max_slope
 	var frame = callframe.New()
 	callframe.Arg(frame, agent_max_slope)
 	var r_ret = callframe.Nil
@@ -562,7 +562,7 @@ func (self class) SetAgentMaxSlope(agent_max_slope gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAgentMaxSlope() gd.Float {
+func (self class) GetAgentMaxSlope() gd.Float { //gd:NavigationMesh.get_agent_max_slope
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_agent_max_slope, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -572,7 +572,7 @@ func (self class) GetAgentMaxSlope() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRegionMinSize(region_min_size gd.Float) {
+func (self class) SetRegionMinSize(region_min_size gd.Float) { //gd:NavigationMesh.set_region_min_size
 	var frame = callframe.New()
 	callframe.Arg(frame, region_min_size)
 	var r_ret = callframe.Nil
@@ -581,7 +581,7 @@ func (self class) SetRegionMinSize(region_min_size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRegionMinSize() gd.Float {
+func (self class) GetRegionMinSize() gd.Float { //gd:NavigationMesh.get_region_min_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_region_min_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -591,7 +591,7 @@ func (self class) GetRegionMinSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRegionMergeSize(region_merge_size gd.Float) {
+func (self class) SetRegionMergeSize(region_merge_size gd.Float) { //gd:NavigationMesh.set_region_merge_size
 	var frame = callframe.New()
 	callframe.Arg(frame, region_merge_size)
 	var r_ret = callframe.Nil
@@ -600,7 +600,7 @@ func (self class) SetRegionMergeSize(region_merge_size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRegionMergeSize() gd.Float {
+func (self class) GetRegionMergeSize() gd.Float { //gd:NavigationMesh.get_region_merge_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_region_merge_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -610,7 +610,7 @@ func (self class) GetRegionMergeSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEdgeMaxLength(edge_max_length gd.Float) {
+func (self class) SetEdgeMaxLength(edge_max_length gd.Float) { //gd:NavigationMesh.set_edge_max_length
 	var frame = callframe.New()
 	callframe.Arg(frame, edge_max_length)
 	var r_ret = callframe.Nil
@@ -619,7 +619,7 @@ func (self class) SetEdgeMaxLength(edge_max_length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEdgeMaxLength() gd.Float {
+func (self class) GetEdgeMaxLength() gd.Float { //gd:NavigationMesh.get_edge_max_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_edge_max_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -629,7 +629,7 @@ func (self class) GetEdgeMaxLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEdgeMaxError(edge_max_error gd.Float) {
+func (self class) SetEdgeMaxError(edge_max_error gd.Float) { //gd:NavigationMesh.set_edge_max_error
 	var frame = callframe.New()
 	callframe.Arg(frame, edge_max_error)
 	var r_ret = callframe.Nil
@@ -638,7 +638,7 @@ func (self class) SetEdgeMaxError(edge_max_error gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEdgeMaxError() gd.Float {
+func (self class) GetEdgeMaxError() gd.Float { //gd:NavigationMesh.get_edge_max_error
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_edge_max_error, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -648,7 +648,7 @@ func (self class) GetEdgeMaxError() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVerticesPerPolygon(vertices_per_polygon gd.Float) {
+func (self class) SetVerticesPerPolygon(vertices_per_polygon gd.Float) { //gd:NavigationMesh.set_vertices_per_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, vertices_per_polygon)
 	var r_ret = callframe.Nil
@@ -657,7 +657,7 @@ func (self class) SetVerticesPerPolygon(vertices_per_polygon gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVerticesPerPolygon() gd.Float {
+func (self class) GetVerticesPerPolygon() gd.Float { //gd:NavigationMesh.get_vertices_per_polygon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_vertices_per_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -667,7 +667,7 @@ func (self class) GetVerticesPerPolygon() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDetailSampleDistance(detail_sample_dist gd.Float) {
+func (self class) SetDetailSampleDistance(detail_sample_dist gd.Float) { //gd:NavigationMesh.set_detail_sample_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, detail_sample_dist)
 	var r_ret = callframe.Nil
@@ -676,7 +676,7 @@ func (self class) SetDetailSampleDistance(detail_sample_dist gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDetailSampleDistance() gd.Float {
+func (self class) GetDetailSampleDistance() gd.Float { //gd:NavigationMesh.get_detail_sample_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_detail_sample_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -686,7 +686,7 @@ func (self class) GetDetailSampleDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDetailSampleMaxError(detail_sample_max_error gd.Float) {
+func (self class) SetDetailSampleMaxError(detail_sample_max_error gd.Float) { //gd:NavigationMesh.set_detail_sample_max_error
 	var frame = callframe.New()
 	callframe.Arg(frame, detail_sample_max_error)
 	var r_ret = callframe.Nil
@@ -695,7 +695,7 @@ func (self class) SetDetailSampleMaxError(detail_sample_max_error gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDetailSampleMaxError() gd.Float {
+func (self class) GetDetailSampleMaxError() gd.Float { //gd:NavigationMesh.get_detail_sample_max_error
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_detail_sample_max_error, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -705,7 +705,7 @@ func (self class) GetDetailSampleMaxError() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFilterLowHangingObstacles(filter_low_hanging_obstacles bool) {
+func (self class) SetFilterLowHangingObstacles(filter_low_hanging_obstacles bool) { //gd:NavigationMesh.set_filter_low_hanging_obstacles
 	var frame = callframe.New()
 	callframe.Arg(frame, filter_low_hanging_obstacles)
 	var r_ret = callframe.Nil
@@ -714,7 +714,7 @@ func (self class) SetFilterLowHangingObstacles(filter_low_hanging_obstacles bool
 }
 
 //go:nosplit
-func (self class) GetFilterLowHangingObstacles() bool {
+func (self class) GetFilterLowHangingObstacles() bool { //gd:NavigationMesh.get_filter_low_hanging_obstacles
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_filter_low_hanging_obstacles, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -724,7 +724,7 @@ func (self class) GetFilterLowHangingObstacles() bool {
 }
 
 //go:nosplit
-func (self class) SetFilterLedgeSpans(filter_ledge_spans bool) {
+func (self class) SetFilterLedgeSpans(filter_ledge_spans bool) { //gd:NavigationMesh.set_filter_ledge_spans
 	var frame = callframe.New()
 	callframe.Arg(frame, filter_ledge_spans)
 	var r_ret = callframe.Nil
@@ -733,7 +733,7 @@ func (self class) SetFilterLedgeSpans(filter_ledge_spans bool) {
 }
 
 //go:nosplit
-func (self class) GetFilterLedgeSpans() bool {
+func (self class) GetFilterLedgeSpans() bool { //gd:NavigationMesh.get_filter_ledge_spans
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_filter_ledge_spans, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -743,7 +743,7 @@ func (self class) GetFilterLedgeSpans() bool {
 }
 
 //go:nosplit
-func (self class) SetFilterWalkableLowHeightSpans(filter_walkable_low_height_spans bool) {
+func (self class) SetFilterWalkableLowHeightSpans(filter_walkable_low_height_spans bool) { //gd:NavigationMesh.set_filter_walkable_low_height_spans
 	var frame = callframe.New()
 	callframe.Arg(frame, filter_walkable_low_height_spans)
 	var r_ret = callframe.Nil
@@ -752,7 +752,7 @@ func (self class) SetFilterWalkableLowHeightSpans(filter_walkable_low_height_spa
 }
 
 //go:nosplit
-func (self class) GetFilterWalkableLowHeightSpans() bool {
+func (self class) GetFilterWalkableLowHeightSpans() bool { //gd:NavigationMesh.get_filter_walkable_low_height_spans
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_filter_walkable_low_height_spans, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -762,7 +762,7 @@ func (self class) GetFilterWalkableLowHeightSpans() bool {
 }
 
 //go:nosplit
-func (self class) SetFilterBakingAabb(baking_aabb gd.AABB) {
+func (self class) SetFilterBakingAabb(baking_aabb gd.AABB) { //gd:NavigationMesh.set_filter_baking_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, baking_aabb)
 	var r_ret = callframe.Nil
@@ -771,7 +771,7 @@ func (self class) SetFilterBakingAabb(baking_aabb gd.AABB) {
 }
 
 //go:nosplit
-func (self class) GetFilterBakingAabb() gd.AABB {
+func (self class) GetFilterBakingAabb() gd.AABB { //gd:NavigationMesh.get_filter_baking_aabb
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_filter_baking_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -781,7 +781,7 @@ func (self class) GetFilterBakingAabb() gd.AABB {
 }
 
 //go:nosplit
-func (self class) SetFilterBakingAabbOffset(baking_aabb_offset gd.Vector3) {
+func (self class) SetFilterBakingAabbOffset(baking_aabb_offset gd.Vector3) { //gd:NavigationMesh.set_filter_baking_aabb_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, baking_aabb_offset)
 	var r_ret = callframe.Nil
@@ -790,7 +790,7 @@ func (self class) SetFilterBakingAabbOffset(baking_aabb_offset gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetFilterBakingAabbOffset() gd.Vector3 {
+func (self class) GetFilterBakingAabbOffset() gd.Vector3 { //gd:NavigationMesh.get_filter_baking_aabb_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_filter_baking_aabb_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -803,7 +803,7 @@ func (self class) GetFilterBakingAabbOffset() gd.Vector3 {
 Sets the vertices that can be then indexed to create polygons with the [method add_polygon] method.
 */
 //go:nosplit
-func (self class) SetVertices(vertices gd.PackedVector3Array) {
+func (self class) SetVertices(vertices gd.PackedVector3Array) { //gd:NavigationMesh.set_vertices
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(vertices))
 	var r_ret = callframe.Nil
@@ -815,7 +815,7 @@ func (self class) SetVertices(vertices gd.PackedVector3Array) {
 Returns a [PackedVector3Array] containing all the vertices being used to create the polygons.
 */
 //go:nosplit
-func (self class) GetVertices() gd.PackedVector3Array {
+func (self class) GetVertices() gd.PackedVector3Array { //gd:NavigationMesh.get_vertices
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_vertices, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -828,7 +828,7 @@ func (self class) GetVertices() gd.PackedVector3Array {
 Adds a polygon using the indices of the vertices you get when calling [method get_vertices].
 */
 //go:nosplit
-func (self class) AddPolygon(polygon gd.PackedInt32Array) {
+func (self class) AddPolygon(polygon gd.PackedInt32Array) { //gd:NavigationMesh.add_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Nil
@@ -840,7 +840,7 @@ func (self class) AddPolygon(polygon gd.PackedInt32Array) {
 Returns the number of polygons in the navigation mesh.
 */
 //go:nosplit
-func (self class) GetPolygonCount() gd.Int {
+func (self class) GetPolygonCount() gd.Int { //gd:NavigationMesh.get_polygon_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_polygon_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -853,7 +853,7 @@ func (self class) GetPolygonCount() gd.Int {
 Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
 */
 //go:nosplit
-func (self class) GetPolygon(idx gd.Int) gd.PackedInt32Array {
+func (self class) GetPolygon(idx gd.Int) gd.PackedInt32Array { //gd:NavigationMesh.get_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -867,7 +867,7 @@ func (self class) GetPolygon(idx gd.Int) gd.PackedInt32Array {
 Clears the array of polygons, but it doesn't clear the array of vertices.
 */
 //go:nosplit
-func (self class) ClearPolygons() {
+func (self class) ClearPolygons() { //gd:NavigationMesh.clear_polygons
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_clear_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -879,7 +879,7 @@ Initializes the navigation mesh by setting the vertices and indices according to
 [b]Note:[/b] The given [param mesh] must be of type [constant Mesh.PRIMITIVE_TRIANGLES] and have an index array.
 */
 //go:nosplit
-func (self class) CreateFromMesh(mesh [1]gdclass.Mesh) {
+func (self class) CreateFromMesh(mesh [1]gdclass.Mesh) { //gd:NavigationMesh.create_from_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -891,7 +891,7 @@ func (self class) CreateFromMesh(mesh [1]gdclass.Mesh) {
 Clears the internal arrays for vertices and polygon indices.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:NavigationMesh.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -931,7 +931,7 @@ func init() {
 	})
 }
 
-type SamplePartitionType = gdclass.NavigationMeshSamplePartitionType
+type SamplePartitionType = gdclass.NavigationMeshSamplePartitionType //gd:NavigationMesh.SamplePartitionType
 
 const (
 	/*Watershed partitioning. Generally the best choice if you precompute the navigation mesh, use this if you have large open areas.*/
@@ -944,7 +944,7 @@ const (
 	SamplePartitionMax SamplePartitionType = 3
 )
 
-type ParsedGeometryType = gdclass.NavigationMeshParsedGeometryType
+type ParsedGeometryType = gdclass.NavigationMeshParsedGeometryType //gd:NavigationMesh.ParsedGeometryType
 
 const (
 	/*Parses mesh instances as geometry. This includes [MeshInstance3D], [CSGShape3D], and [GridMap] nodes.*/
@@ -957,7 +957,7 @@ const (
 	ParsedGeometryMax ParsedGeometryType = 3
 )
 
-type SourceGeometryMode = gdclass.NavigationMeshSourceGeometryMode
+type SourceGeometryMode = gdclass.NavigationMeshSourceGeometryMode //gd:NavigationMesh.SourceGeometryMode
 
 const (
 	/*Scans the child nodes of the root node recursively for geometry.*/

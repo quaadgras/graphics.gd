@@ -43,14 +43,14 @@ type Any interface {
 /*
 Creates the [ImageTexture3D] with specified [param width], [param height], and [param depth]. See [enum Image.Format] for [param format] options. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for the [ImageTexture3D].
 */
-func (self Instance) Create(format gdclass.ImageFormat, width int, height int, depth int, use_mipmaps bool, data [][1]gdclass.Image) error {
+func (self Instance) Create(format gdclass.ImageFormat, width int, height int, depth int, use_mipmaps bool, data [][1]gdclass.Image) error { //gd:ImageTexture3D.create
 	return error(gd.ToError(class(self).Create(format, gd.Int(width), gd.Int(height), gd.Int(depth), use_mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))))
 }
 
 /*
 Replaces the texture's existing data with the layers specified in [param data]. The size of [param data] must match the parameters that were used for [method create]. In other words, the texture cannot be resized or have its format changed by calling [method update].
 */
-func (self Instance) Update(data [][1]gdclass.Image) {
+func (self Instance) Update(data [][1]gdclass.Image) { //gd:ImageTexture3D.update
 	class(self).Update(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))
 }
 
@@ -77,7 +77,7 @@ func New() Instance {
 Creates the [ImageTexture3D] with specified [param width], [param height], and [param depth]. See [enum Image.Format] for [param format] options. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for the [ImageTexture3D].
 */
 //go:nosplit
-func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int, depth gd.Int, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) gd.Error {
+func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int, depth gd.Int, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) gd.Error { //gd:ImageTexture3D.create
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, width)
@@ -96,7 +96,7 @@ func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int
 Replaces the texture's existing data with the layers specified in [param data]. The size of [param data] must match the parameters that were used for [method create]. In other words, the texture cannot be resized or have its format changed by calling [method update].
 */
 //go:nosplit
-func (self class) Update(data Array.Contains[[1]gdclass.Image]) {
+func (self class) Update(data Array.Contains[[1]gdclass.Image]) { //gd:ImageTexture3D.update
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
@@ -147,7 +147,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

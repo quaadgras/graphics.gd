@@ -67,7 +67,7 @@ func (self Instance) SetSize(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector2) {
+func (self class) SetSize(size gd.Vector2) { //gd:PlaceholderTexture2D.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil

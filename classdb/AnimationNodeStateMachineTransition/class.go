@@ -131,7 +131,7 @@ func (self Instance) SetAdvanceExpression(value string) {
 }
 
 //go:nosplit
-func (self class) SetSwitchMode(mode gdclass.AnimationNodeStateMachineTransitionSwitchMode) {
+func (self class) SetSwitchMode(mode gdclass.AnimationNodeStateMachineTransitionSwitchMode) { //gd:AnimationNodeStateMachineTransition.set_switch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -140,7 +140,7 @@ func (self class) SetSwitchMode(mode gdclass.AnimationNodeStateMachineTransition
 }
 
 //go:nosplit
-func (self class) GetSwitchMode() gdclass.AnimationNodeStateMachineTransitionSwitchMode {
+func (self class) GetSwitchMode() gdclass.AnimationNodeStateMachineTransitionSwitchMode { //gd:AnimationNodeStateMachineTransition.get_switch_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationNodeStateMachineTransitionSwitchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_switch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -150,7 +150,7 @@ func (self class) GetSwitchMode() gdclass.AnimationNodeStateMachineTransitionSwi
 }
 
 //go:nosplit
-func (self class) SetAdvanceMode(mode gdclass.AnimationNodeStateMachineTransitionAdvanceMode) {
+func (self class) SetAdvanceMode(mode gdclass.AnimationNodeStateMachineTransitionAdvanceMode) { //gd:AnimationNodeStateMachineTransition.set_advance_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -159,7 +159,7 @@ func (self class) SetAdvanceMode(mode gdclass.AnimationNodeStateMachineTransitio
 }
 
 //go:nosplit
-func (self class) GetAdvanceMode() gdclass.AnimationNodeStateMachineTransitionAdvanceMode {
+func (self class) GetAdvanceMode() gdclass.AnimationNodeStateMachineTransitionAdvanceMode { //gd:AnimationNodeStateMachineTransition.get_advance_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationNodeStateMachineTransitionAdvanceMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -169,7 +169,7 @@ func (self class) GetAdvanceMode() gdclass.AnimationNodeStateMachineTransitionAd
 }
 
 //go:nosplit
-func (self class) SetAdvanceCondition(name gd.StringName) {
+func (self class) SetAdvanceCondition(name gd.StringName) { //gd:AnimationNodeStateMachineTransition.set_advance_condition
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -178,7 +178,7 @@ func (self class) SetAdvanceCondition(name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetAdvanceCondition() gd.StringName {
+func (self class) GetAdvanceCondition() gd.StringName { //gd:AnimationNodeStateMachineTransition.get_advance_condition
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_condition, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -188,7 +188,7 @@ func (self class) GetAdvanceCondition() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetXfadeTime(secs gd.Float) {
+func (self class) SetXfadeTime(secs gd.Float) { //gd:AnimationNodeStateMachineTransition.set_xfade_time
 	var frame = callframe.New()
 	callframe.Arg(frame, secs)
 	var r_ret = callframe.Nil
@@ -197,7 +197,7 @@ func (self class) SetXfadeTime(secs gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetXfadeTime() gd.Float {
+func (self class) GetXfadeTime() gd.Float { //gd:AnimationNodeStateMachineTransition.get_xfade_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_xfade_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -207,7 +207,7 @@ func (self class) GetXfadeTime() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetXfadeCurve(curve [1]gdclass.Curve) {
+func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeStateMachineTransition.set_xfade_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -216,7 +216,7 @@ func (self class) SetXfadeCurve(curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetXfadeCurve() [1]gdclass.Curve {
+func (self class) GetXfadeCurve() [1]gdclass.Curve { //gd:AnimationNodeStateMachineTransition.get_xfade_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_xfade_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -226,7 +226,7 @@ func (self class) GetXfadeCurve() [1]gdclass.Curve {
 }
 
 //go:nosplit
-func (self class) SetBreakLoopAtEnd(enable bool) {
+func (self class) SetBreakLoopAtEnd(enable bool) { //gd:AnimationNodeStateMachineTransition.set_break_loop_at_end
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -235,7 +235,7 @@ func (self class) SetBreakLoopAtEnd(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsLoopBrokenAtEnd() bool {
+func (self class) IsLoopBrokenAtEnd() bool { //gd:AnimationNodeStateMachineTransition.is_loop_broken_at_end
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_is_loop_broken_at_end, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -245,7 +245,7 @@ func (self class) IsLoopBrokenAtEnd() bool {
 }
 
 //go:nosplit
-func (self class) SetReset(reset bool) {
+func (self class) SetReset(reset bool) { //gd:AnimationNodeStateMachineTransition.set_reset
 	var frame = callframe.New()
 	callframe.Arg(frame, reset)
 	var r_ret = callframe.Nil
@@ -254,7 +254,7 @@ func (self class) SetReset(reset bool) {
 }
 
 //go:nosplit
-func (self class) IsReset() bool {
+func (self class) IsReset() bool { //gd:AnimationNodeStateMachineTransition.is_reset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_is_reset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -264,7 +264,7 @@ func (self class) IsReset() bool {
 }
 
 //go:nosplit
-func (self class) SetPriority(priority gd.Int) {
+func (self class) SetPriority(priority gd.Int) { //gd:AnimationNodeStateMachineTransition.set_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -273,7 +273,7 @@ func (self class) SetPriority(priority gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPriority() gd.Int {
+func (self class) GetPriority() gd.Int { //gd:AnimationNodeStateMachineTransition.get_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -283,7 +283,7 @@ func (self class) GetPriority() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetAdvanceExpression(text gd.String) {
+func (self class) SetAdvanceExpression(text gd.String) { //gd:AnimationNodeStateMachineTransition.set_advance_expression
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Nil
@@ -292,7 +292,7 @@ func (self class) SetAdvanceExpression(text gd.String) {
 }
 
 //go:nosplit
-func (self class) GetAdvanceExpression() gd.String {
+func (self class) GetAdvanceExpression() gd.String { //gd:AnimationNodeStateMachineTransition.get_advance_expression
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_expression, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,7 +342,7 @@ func init() {
 	})
 }
 
-type SwitchMode = gdclass.AnimationNodeStateMachineTransitionSwitchMode
+type SwitchMode = gdclass.AnimationNodeStateMachineTransitionSwitchMode //gd:AnimationNodeStateMachineTransition.SwitchMode
 
 const (
 	/*Switch to the next state immediately. The current state will end and blend into the beginning of the new one.*/
@@ -353,7 +353,7 @@ const (
 	SwitchModeAtEnd SwitchMode = 2
 )
 
-type AdvanceMode = gdclass.AnimationNodeStateMachineTransitionAdvanceMode
+type AdvanceMode = gdclass.AnimationNodeStateMachineTransitionAdvanceMode //gd:AnimationNodeStateMachineTransition.AdvanceMode
 
 const (
 	/*Don't use this transition.*/

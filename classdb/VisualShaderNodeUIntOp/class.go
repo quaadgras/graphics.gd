@@ -66,7 +66,7 @@ func (self Instance) SetOperator(value gdclass.VisualShaderNodeUIntOpOperator) {
 }
 
 //go:nosplit
-func (self class) SetOperator(op gdclass.VisualShaderNodeUIntOpOperator) {
+func (self class) SetOperator(op gdclass.VisualShaderNodeUIntOpOperator) { //gd:VisualShaderNodeUIntOp.set_operator
 	var frame = callframe.New()
 	callframe.Arg(frame, op)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetOperator(op gdclass.VisualShaderNodeUIntOpOperator) {
 }
 
 //go:nosplit
-func (self class) GetOperator() gdclass.VisualShaderNodeUIntOpOperator {
+func (self class) GetOperator() gdclass.VisualShaderNodeUIntOpOperator { //gd:VisualShaderNodeUIntOp.get_operator
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeUIntOpOperator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeUIntOp.Bind_get_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -125,7 +125,7 @@ func init() {
 	})
 }
 
-type Operator = gdclass.VisualShaderNodeUIntOpOperator
+type Operator = gdclass.VisualShaderNodeUIntOpOperator //gd:VisualShaderNodeUIntOp.Operator
 
 const (
 	/*Sums two numbers using [code]a + b[/code].*/

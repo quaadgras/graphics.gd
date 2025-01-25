@@ -42,14 +42,14 @@ type Any interface {
 /*
 Returns [code]true[/code] if the script can be instantiated.
 */
-func (self Instance) CanInstantiate() bool {
+func (self Instance) CanInstantiate() bool { //gd:Script.can_instantiate
 	return bool(class(self).CanInstantiate())
 }
 
 /*
 Returns [code]true[/code] if [param base_object] is an instance of this script.
 */
-func (self Instance) InstanceHas(base_object Object.Instance) bool {
+func (self Instance) InstanceHas(base_object Object.Instance) bool { //gd:Script.instance_has
 	return bool(class(self).InstanceHas(base_object))
 }
 
@@ -57,28 +57,28 @@ func (self Instance) InstanceHas(base_object Object.Instance) bool {
 Returns [code]true[/code] if the script contains non-empty source code.
 [b]Note:[/b] If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [method can_instantiate].
 */
-func (self Instance) HasSourceCode() bool {
+func (self Instance) HasSourceCode() bool { //gd:Script.has_source_code
 	return bool(class(self).HasSourceCode())
 }
 
 /*
 Reloads the script's class implementation. Returns an error code.
 */
-func (self Instance) Reload() error {
+func (self Instance) Reload() error { //gd:Script.reload
 	return error(gd.ToError(class(self).Reload(false)))
 }
 
 /*
 Returns the script directly inherited by this script.
 */
-func (self Instance) GetBaseScript() [1]gdclass.Script {
+func (self Instance) GetBaseScript() [1]gdclass.Script { //gd:Script.get_base_script
 	return [1]gdclass.Script(class(self).GetBaseScript())
 }
 
 /*
 Returns the script's base type.
 */
-func (self Instance) GetInstanceBaseType() string {
+func (self Instance) GetInstanceBaseType() string { //gd:Script.get_instance_base_type
 	return string(class(self).GetInstanceBaseType().String())
 }
 
@@ -100,63 +100,63 @@ public partial class MyNode : Node
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetGlobalName() string {
+func (self Instance) GetGlobalName() string { //gd:Script.get_global_name
 	return string(class(self).GetGlobalName().String())
 }
 
 /*
 Returns [code]true[/code] if the script, or a base class, defines a signal with the given name.
 */
-func (self Instance) HasScriptSignal(signal_name string) bool {
+func (self Instance) HasScriptSignal(signal_name string) bool { //gd:Script.has_script_signal
 	return bool(class(self).HasScriptSignal(gd.NewStringName(signal_name)))
 }
 
 /*
 Returns the list of properties in this [Script].
 */
-func (self Instance) GetScriptPropertyList() []map[any]any {
+func (self Instance) GetScriptPropertyList() []map[any]any { //gd:Script.get_script_property_list
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetScriptPropertyList())))
 }
 
 /*
 Returns the list of methods in this [Script].
 */
-func (self Instance) GetScriptMethodList() []map[any]any {
+func (self Instance) GetScriptMethodList() []map[any]any { //gd:Script.get_script_method_list
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetScriptMethodList())))
 }
 
 /*
 Returns the list of user signals defined in this [Script].
 */
-func (self Instance) GetScriptSignalList() []map[any]any {
+func (self Instance) GetScriptSignalList() []map[any]any { //gd:Script.get_script_signal_list
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetScriptSignalList())))
 }
 
 /*
 Returns a dictionary containing constant names and their values.
 */
-func (self Instance) GetScriptConstantMap() map[any]any {
+func (self Instance) GetScriptConstantMap() map[any]any { //gd:Script.get_script_constant_map
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetScriptConstantMap()))
 }
 
 /*
 Returns the default value of the specified property.
 */
-func (self Instance) GetPropertyDefaultValue(property string) any {
+func (self Instance) GetPropertyDefaultValue(property string) any { //gd:Script.get_property_default_value
 	return any(class(self).GetPropertyDefaultValue(gd.NewStringName(property)).Interface())
 }
 
 /*
 Returns [code]true[/code] if the script is a tool script. A tool script can run in the editor.
 */
-func (self Instance) IsTool() bool {
+func (self Instance) IsTool() bool { //gd:Script.is_tool
 	return bool(class(self).IsTool())
 }
 
 /*
 Returns [code]true[/code] if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
 */
-func (self Instance) IsAbstract() bool {
+func (self Instance) IsAbstract() bool { //gd:Script.is_abstract
 	return bool(class(self).IsAbstract())
 }
 
@@ -191,7 +191,7 @@ func (self Instance) SetSourceCode(value string) {
 Returns [code]true[/code] if the script can be instantiated.
 */
 //go:nosplit
-func (self class) CanInstantiate() bool {
+func (self class) CanInstantiate() bool { //gd:Script.can_instantiate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_can_instantiate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -204,7 +204,7 @@ func (self class) CanInstantiate() bool {
 Returns [code]true[/code] if [param base_object] is an instance of this script.
 */
 //go:nosplit
-func (self class) InstanceHas(base_object [1]gd.Object) bool {
+func (self class) InstanceHas(base_object [1]gd.Object) bool { //gd:Script.instance_has
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base_object[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
@@ -219,7 +219,7 @@ Returns [code]true[/code] if the script contains non-empty source code.
 [b]Note:[/b] If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [method can_instantiate].
 */
 //go:nosplit
-func (self class) HasSourceCode() bool {
+func (self class) HasSourceCode() bool { //gd:Script.has_source_code
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_has_source_code, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) HasSourceCode() bool {
 }
 
 //go:nosplit
-func (self class) GetSourceCode() gd.String {
+func (self class) GetSourceCode() gd.String { //gd:Script.get_source_code
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_source_code, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -239,7 +239,7 @@ func (self class) GetSourceCode() gd.String {
 }
 
 //go:nosplit
-func (self class) SetSourceCode(source gd.String) {
+func (self class) SetSourceCode(source gd.String) { //gd:Script.set_source_code
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(source))
 	var r_ret = callframe.Nil
@@ -251,7 +251,7 @@ func (self class) SetSourceCode(source gd.String) {
 Reloads the script's class implementation. Returns an error code.
 */
 //go:nosplit
-func (self class) Reload(keep_state bool) gd.Error {
+func (self class) Reload(keep_state bool) gd.Error { //gd:Script.reload
 	var frame = callframe.New()
 	callframe.Arg(frame, keep_state)
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -265,7 +265,7 @@ func (self class) Reload(keep_state bool) gd.Error {
 Returns the script directly inherited by this script.
 */
 //go:nosplit
-func (self class) GetBaseScript() [1]gdclass.Script {
+func (self class) GetBaseScript() [1]gdclass.Script { //gd:Script.get_base_script
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_base_script, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -278,7 +278,7 @@ func (self class) GetBaseScript() [1]gdclass.Script {
 Returns the script's base type.
 */
 //go:nosplit
-func (self class) GetInstanceBaseType() gd.StringName {
+func (self class) GetInstanceBaseType() gd.StringName { //gd:Script.get_instance_base_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_instance_base_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -306,7 +306,7 @@ public partial class MyNode : Node
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetGlobalName() gd.StringName {
+func (self class) GetGlobalName() gd.StringName { //gd:Script.get_global_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_global_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -319,7 +319,7 @@ func (self class) GetGlobalName() gd.StringName {
 Returns [code]true[/code] if the script, or a base class, defines a signal with the given name.
 */
 //go:nosplit
-func (self class) HasScriptSignal(signal_name gd.StringName) bool {
+func (self class) HasScriptSignal(signal_name gd.StringName) bool { //gd:Script.has_script_signal
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(signal_name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -333,7 +333,7 @@ func (self class) HasScriptSignal(signal_name gd.StringName) bool {
 Returns the list of properties in this [Script].
 */
 //go:nosplit
-func (self class) GetScriptPropertyList() Array.Contains[gd.Dictionary] {
+func (self class) GetScriptPropertyList() Array.Contains[gd.Dictionary] { //gd:Script.get_script_property_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_property_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -346,7 +346,7 @@ func (self class) GetScriptPropertyList() Array.Contains[gd.Dictionary] {
 Returns the list of methods in this [Script].
 */
 //go:nosplit
-func (self class) GetScriptMethodList() Array.Contains[gd.Dictionary] {
+func (self class) GetScriptMethodList() Array.Contains[gd.Dictionary] { //gd:Script.get_script_method_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_method_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -359,7 +359,7 @@ func (self class) GetScriptMethodList() Array.Contains[gd.Dictionary] {
 Returns the list of user signals defined in this [Script].
 */
 //go:nosplit
-func (self class) GetScriptSignalList() Array.Contains[gd.Dictionary] {
+func (self class) GetScriptSignalList() Array.Contains[gd.Dictionary] { //gd:Script.get_script_signal_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_signal_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -372,7 +372,7 @@ func (self class) GetScriptSignalList() Array.Contains[gd.Dictionary] {
 Returns a dictionary containing constant names and their values.
 */
 //go:nosplit
-func (self class) GetScriptConstantMap() gd.Dictionary {
+func (self class) GetScriptConstantMap() gd.Dictionary { //gd:Script.get_script_constant_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_constant_map, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -385,7 +385,7 @@ func (self class) GetScriptConstantMap() gd.Dictionary {
 Returns the default value of the specified property.
 */
 //go:nosplit
-func (self class) GetPropertyDefaultValue(property gd.StringName) gd.Variant {
+func (self class) GetPropertyDefaultValue(property gd.StringName) gd.Variant { //gd:Script.get_property_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -399,7 +399,7 @@ func (self class) GetPropertyDefaultValue(property gd.StringName) gd.Variant {
 Returns [code]true[/code] if the script is a tool script. A tool script can run in the editor.
 */
 //go:nosplit
-func (self class) IsTool() bool {
+func (self class) IsTool() bool { //gd:Script.is_tool
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_is_tool, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -412,7 +412,7 @@ func (self class) IsTool() bool {
 Returns [code]true[/code] if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
 */
 //go:nosplit
-func (self class) IsAbstract() bool {
+func (self class) IsAbstract() bool { //gd:Script.is_abstract
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_is_abstract, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -452,7 +452,7 @@ func init() {
 	gdclass.Register("Script", func(ptr gd.Object) any { return [1]gdclass.Script{*(*gdclass.Script)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

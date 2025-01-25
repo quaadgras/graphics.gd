@@ -175,7 +175,7 @@ func (self Instance) SetOversampling(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetAntialiasing(antialiasing gdclass.TextServerFontAntialiasing) {
+func (self class) SetAntialiasing(antialiasing gdclass.TextServerFontAntialiasing) { //gd:SystemFont.set_antialiasing
 	var frame = callframe.New()
 	callframe.Arg(frame, antialiasing)
 	var r_ret = callframe.Nil
@@ -184,7 +184,7 @@ func (self class) SetAntialiasing(antialiasing gdclass.TextServerFontAntialiasin
 }
 
 //go:nosplit
-func (self class) GetAntialiasing() gdclass.TextServerFontAntialiasing {
+func (self class) GetAntialiasing() gdclass.TextServerFontAntialiasing { //gd:SystemFont.get_antialiasing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerFontAntialiasing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -194,7 +194,7 @@ func (self class) GetAntialiasing() gdclass.TextServerFontAntialiasing {
 }
 
 //go:nosplit
-func (self class) SetDisableEmbeddedBitmaps(disable_embedded_bitmaps bool) {
+func (self class) SetDisableEmbeddedBitmaps(disable_embedded_bitmaps bool) { //gd:SystemFont.set_disable_embedded_bitmaps
 	var frame = callframe.New()
 	callframe.Arg(frame, disable_embedded_bitmaps)
 	var r_ret = callframe.Nil
@@ -203,7 +203,7 @@ func (self class) SetDisableEmbeddedBitmaps(disable_embedded_bitmaps bool) {
 }
 
 //go:nosplit
-func (self class) GetDisableEmbeddedBitmaps() bool {
+func (self class) GetDisableEmbeddedBitmaps() bool { //gd:SystemFont.get_disable_embedded_bitmaps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_disable_embedded_bitmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -213,7 +213,7 @@ func (self class) GetDisableEmbeddedBitmaps() bool {
 }
 
 //go:nosplit
-func (self class) SetGenerateMipmaps(generate_mipmaps bool) {
+func (self class) SetGenerateMipmaps(generate_mipmaps bool) { //gd:SystemFont.set_generate_mipmaps
 	var frame = callframe.New()
 	callframe.Arg(frame, generate_mipmaps)
 	var r_ret = callframe.Nil
@@ -222,7 +222,7 @@ func (self class) SetGenerateMipmaps(generate_mipmaps bool) {
 }
 
 //go:nosplit
-func (self class) GetGenerateMipmaps() bool {
+func (self class) GetGenerateMipmaps() bool { //gd:SystemFont.get_generate_mipmaps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_generate_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -232,7 +232,7 @@ func (self class) GetGenerateMipmaps() bool {
 }
 
 //go:nosplit
-func (self class) SetAllowSystemFallback(allow_system_fallback bool) {
+func (self class) SetAllowSystemFallback(allow_system_fallback bool) { //gd:SystemFont.set_allow_system_fallback
 	var frame = callframe.New()
 	callframe.Arg(frame, allow_system_fallback)
 	var r_ret = callframe.Nil
@@ -241,7 +241,7 @@ func (self class) SetAllowSystemFallback(allow_system_fallback bool) {
 }
 
 //go:nosplit
-func (self class) IsAllowSystemFallback() bool {
+func (self class) IsAllowSystemFallback() bool { //gd:SystemFont.is_allow_system_fallback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_is_allow_system_fallback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -251,7 +251,7 @@ func (self class) IsAllowSystemFallback() bool {
 }
 
 //go:nosplit
-func (self class) SetForceAutohinter(force_autohinter bool) {
+func (self class) SetForceAutohinter(force_autohinter bool) { //gd:SystemFont.set_force_autohinter
 	var frame = callframe.New()
 	callframe.Arg(frame, force_autohinter)
 	var r_ret = callframe.Nil
@@ -260,7 +260,7 @@ func (self class) SetForceAutohinter(force_autohinter bool) {
 }
 
 //go:nosplit
-func (self class) IsForceAutohinter() bool {
+func (self class) IsForceAutohinter() bool { //gd:SystemFont.is_force_autohinter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_is_force_autohinter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -270,7 +270,7 @@ func (self class) IsForceAutohinter() bool {
 }
 
 //go:nosplit
-func (self class) SetHinting(hinting gdclass.TextServerHinting) {
+func (self class) SetHinting(hinting gdclass.TextServerHinting) { //gd:SystemFont.set_hinting
 	var frame = callframe.New()
 	callframe.Arg(frame, hinting)
 	var r_ret = callframe.Nil
@@ -279,7 +279,7 @@ func (self class) SetHinting(hinting gdclass.TextServerHinting) {
 }
 
 //go:nosplit
-func (self class) GetHinting() gdclass.TextServerHinting {
+func (self class) GetHinting() gdclass.TextServerHinting { //gd:SystemFont.get_hinting
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerHinting](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_hinting, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -289,7 +289,7 @@ func (self class) GetHinting() gdclass.TextServerHinting {
 }
 
 //go:nosplit
-func (self class) SetSubpixelPositioning(subpixel_positioning gdclass.TextServerSubpixelPositioning) {
+func (self class) SetSubpixelPositioning(subpixel_positioning gdclass.TextServerSubpixelPositioning) { //gd:SystemFont.set_subpixel_positioning
 	var frame = callframe.New()
 	callframe.Arg(frame, subpixel_positioning)
 	var r_ret = callframe.Nil
@@ -298,7 +298,7 @@ func (self class) SetSubpixelPositioning(subpixel_positioning gdclass.TextServer
 }
 
 //go:nosplit
-func (self class) GetSubpixelPositioning() gdclass.TextServerSubpixelPositioning {
+func (self class) GetSubpixelPositioning() gdclass.TextServerSubpixelPositioning { //gd:SystemFont.get_subpixel_positioning
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerSubpixelPositioning](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -308,7 +308,7 @@ func (self class) GetSubpixelPositioning() gdclass.TextServerSubpixelPositioning
 }
 
 //go:nosplit
-func (self class) SetMultichannelSignedDistanceField(msdf bool) {
+func (self class) SetMultichannelSignedDistanceField(msdf bool) { //gd:SystemFont.set_multichannel_signed_distance_field
 	var frame = callframe.New()
 	callframe.Arg(frame, msdf)
 	var r_ret = callframe.Nil
@@ -317,7 +317,7 @@ func (self class) SetMultichannelSignedDistanceField(msdf bool) {
 }
 
 //go:nosplit
-func (self class) IsMultichannelSignedDistanceField() bool {
+func (self class) IsMultichannelSignedDistanceField() bool { //gd:SystemFont.is_multichannel_signed_distance_field
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_is_multichannel_signed_distance_field, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -327,7 +327,7 @@ func (self class) IsMultichannelSignedDistanceField() bool {
 }
 
 //go:nosplit
-func (self class) SetMsdfPixelRange(msdf_pixel_range gd.Int) {
+func (self class) SetMsdfPixelRange(msdf_pixel_range gd.Int) { //gd:SystemFont.set_msdf_pixel_range
 	var frame = callframe.New()
 	callframe.Arg(frame, msdf_pixel_range)
 	var r_ret = callframe.Nil
@@ -336,7 +336,7 @@ func (self class) SetMsdfPixelRange(msdf_pixel_range gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMsdfPixelRange() gd.Int {
+func (self class) GetMsdfPixelRange() gd.Int { //gd:SystemFont.get_msdf_pixel_range
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -346,7 +346,7 @@ func (self class) GetMsdfPixelRange() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMsdfSize(msdf_size gd.Int) {
+func (self class) SetMsdfSize(msdf_size gd.Int) { //gd:SystemFont.set_msdf_size
 	var frame = callframe.New()
 	callframe.Arg(frame, msdf_size)
 	var r_ret = callframe.Nil
@@ -355,7 +355,7 @@ func (self class) SetMsdfSize(msdf_size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMsdfSize() gd.Int {
+func (self class) GetMsdfSize() gd.Int { //gd:SystemFont.get_msdf_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_msdf_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -365,7 +365,7 @@ func (self class) GetMsdfSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetOversampling(oversampling gd.Float) {
+func (self class) SetOversampling(oversampling gd.Float) { //gd:SystemFont.set_oversampling
 	var frame = callframe.New()
 	callframe.Arg(frame, oversampling)
 	var r_ret = callframe.Nil
@@ -374,7 +374,7 @@ func (self class) SetOversampling(oversampling gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetOversampling() gd.Float {
+func (self class) GetOversampling() gd.Float { //gd:SystemFont.get_oversampling
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_oversampling, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -384,7 +384,7 @@ func (self class) GetOversampling() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetFontNames() gd.PackedStringArray {
+func (self class) GetFontNames() gd.PackedStringArray { //gd:SystemFont.get_font_names
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_font_names, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -394,7 +394,7 @@ func (self class) GetFontNames() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) SetFontNames(names gd.PackedStringArray) {
+func (self class) SetFontNames(names gd.PackedStringArray) { //gd:SystemFont.set_font_names
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(names))
 	var r_ret = callframe.Nil
@@ -403,7 +403,7 @@ func (self class) SetFontNames(names gd.PackedStringArray) {
 }
 
 //go:nosplit
-func (self class) GetFontItalic() bool {
+func (self class) GetFontItalic() bool { //gd:SystemFont.get_font_italic
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_font_italic, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -413,7 +413,7 @@ func (self class) GetFontItalic() bool {
 }
 
 //go:nosplit
-func (self class) SetFontItalic(italic bool) {
+func (self class) SetFontItalic(italic bool) { //gd:SystemFont.set_font_italic
 	var frame = callframe.New()
 	callframe.Arg(frame, italic)
 	var r_ret = callframe.Nil
@@ -422,7 +422,7 @@ func (self class) SetFontItalic(italic bool) {
 }
 
 //go:nosplit
-func (self class) SetFontWeight(weight gd.Int) {
+func (self class) SetFontWeight(weight gd.Int) { //gd:SystemFont.set_font_weight
 	var frame = callframe.New()
 	callframe.Arg(frame, weight)
 	var r_ret = callframe.Nil
@@ -431,7 +431,7 @@ func (self class) SetFontWeight(weight gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetFontStretch(stretch gd.Int) {
+func (self class) SetFontStretch(stretch gd.Int) { //gd:SystemFont.set_font_stretch
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch)
 	var r_ret = callframe.Nil

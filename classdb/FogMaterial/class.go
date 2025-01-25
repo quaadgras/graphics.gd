@@ -109,7 +109,7 @@ func (self Instance) SetDensityTexture(value [1]gdclass.Texture3D) {
 }
 
 //go:nosplit
-func (self class) SetDensity(density gd.Float) {
+func (self class) SetDensity(density gd.Float) { //gd:FogMaterial.set_density
 	var frame = callframe.New()
 	callframe.Arg(frame, density)
 	var r_ret = callframe.Nil
@@ -118,7 +118,7 @@ func (self class) SetDensity(density gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDensity() gd.Float {
+func (self class) GetDensity() gd.Float { //gd:FogMaterial.get_density
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_density, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -128,7 +128,7 @@ func (self class) GetDensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAlbedo(albedo gd.Color) {
+func (self class) SetAlbedo(albedo gd.Color) { //gd:FogMaterial.set_albedo
 	var frame = callframe.New()
 	callframe.Arg(frame, albedo)
 	var r_ret = callframe.Nil
@@ -137,7 +137,7 @@ func (self class) SetAlbedo(albedo gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetAlbedo() gd.Color {
+func (self class) GetAlbedo() gd.Color { //gd:FogMaterial.get_albedo
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -147,7 +147,7 @@ func (self class) GetAlbedo() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetEmission(emission gd.Color) {
+func (self class) SetEmission(emission gd.Color) { //gd:FogMaterial.set_emission
 	var frame = callframe.New()
 	callframe.Arg(frame, emission)
 	var r_ret = callframe.Nil
@@ -156,7 +156,7 @@ func (self class) SetEmission(emission gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetEmission() gd.Color {
+func (self class) GetEmission() gd.Color { //gd:FogMaterial.get_emission
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -166,7 +166,7 @@ func (self class) GetEmission() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetHeightFalloff(height_falloff gd.Float) {
+func (self class) SetHeightFalloff(height_falloff gd.Float) { //gd:FogMaterial.set_height_falloff
 	var frame = callframe.New()
 	callframe.Arg(frame, height_falloff)
 	var r_ret = callframe.Nil
@@ -175,7 +175,7 @@ func (self class) SetHeightFalloff(height_falloff gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetHeightFalloff() gd.Float {
+func (self class) GetHeightFalloff() gd.Float { //gd:FogMaterial.get_height_falloff
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_height_falloff, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -185,7 +185,7 @@ func (self class) GetHeightFalloff() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEdgeFade(edge_fade gd.Float) {
+func (self class) SetEdgeFade(edge_fade gd.Float) { //gd:FogMaterial.set_edge_fade
 	var frame = callframe.New()
 	callframe.Arg(frame, edge_fade)
 	var r_ret = callframe.Nil
@@ -194,7 +194,7 @@ func (self class) SetEdgeFade(edge_fade gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEdgeFade() gd.Float {
+func (self class) GetEdgeFade() gd.Float { //gd:FogMaterial.get_edge_fade
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_edge_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -204,7 +204,7 @@ func (self class) GetEdgeFade() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) {
+func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) { //gd:FogMaterial.set_density_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(density_texture[0])[0])
 	var r_ret = callframe.Nil
@@ -213,7 +213,7 @@ func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) {
 }
 
 //go:nosplit
-func (self class) GetDensityTexture() [1]gdclass.Texture3D {
+func (self class) GetDensityTexture() [1]gdclass.Texture3D { //gd:FogMaterial.get_density_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_density_texture, self.AsObject(), frame.Array(0), r_ret.Addr())

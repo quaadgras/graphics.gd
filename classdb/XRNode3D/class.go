@@ -42,21 +42,21 @@ type Any interface {
 /*
 Returns [code]true[/code] if the [member tracker] has been registered and the [member pose] is being tracked.
 */
-func (self Instance) GetIsActive() bool {
+func (self Instance) GetIsActive() bool { //gd:XRNode3D.get_is_active
 	return bool(class(self).GetIsActive())
 }
 
 /*
 Returns [code]true[/code] if the [member tracker] has current tracking data for the [member pose] being tracked.
 */
-func (self Instance) GetHasTrackingData() bool {
+func (self Instance) GetHasTrackingData() bool { //gd:XRNode3D.get_has_tracking_data
 	return bool(class(self).GetHasTrackingData())
 }
 
 /*
 Returns the [XRPose] containing the current state of the pose being tracked. This gives access to additional properties of this pose.
 */
-func (self Instance) GetPose() [1]gdclass.XRPose {
+func (self Instance) GetPose() [1]gdclass.XRPose { //gd:XRNode3D.get_pose
 	return [1]gdclass.XRPose(class(self).GetPose())
 }
 
@@ -68,7 +68,7 @@ Triggers a haptic pulse on a device associated with this interface.
 [param duration_sec] is the duration of the pulse in seconds.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
-func (self Instance) TriggerHapticPulse(action_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) {
+func (self Instance) TriggerHapticPulse(action_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) { //gd:XRNode3D.trigger_haptic_pulse
 	class(self).TriggerHapticPulse(gd.NewString(action_name), gd.Float(frequency), gd.Float(amplitude), gd.Float(duration_sec), gd.Float(delay_sec))
 }
 
@@ -115,7 +115,7 @@ func (self Instance) SetShowWhenTracked(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTracker(tracker_name gd.StringName) {
+func (self class) SetTracker(tracker_name gd.StringName) { //gd:XRNode3D.set_tracker
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tracker_name))
 	var r_ret = callframe.Nil
@@ -124,7 +124,7 @@ func (self class) SetTracker(tracker_name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetTracker() gd.StringName {
+func (self class) GetTracker() gd.StringName { //gd:XRNode3D.get_tracker
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,7 +134,7 @@ func (self class) GetTracker() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetPoseName(pose gd.StringName) {
+func (self class) SetPoseName(pose gd.StringName) { //gd:XRNode3D.set_pose_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pose))
 	var r_ret = callframe.Nil
@@ -143,7 +143,7 @@ func (self class) SetPoseName(pose gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetPoseName() gd.StringName {
+func (self class) GetPoseName() gd.StringName { //gd:XRNode3D.get_pose_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -153,7 +153,7 @@ func (self class) GetPoseName() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetShowWhenTracked(show bool) {
+func (self class) SetShowWhenTracked(show bool) { //gd:XRNode3D.set_show_when_tracked
 	var frame = callframe.New()
 	callframe.Arg(frame, show)
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetShowWhenTracked(show bool) {
 }
 
 //go:nosplit
-func (self class) GetShowWhenTracked() bool {
+func (self class) GetShowWhenTracked() bool { //gd:XRNode3D.get_show_when_tracked
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_show_when_tracked, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -175,7 +175,7 @@ func (self class) GetShowWhenTracked() bool {
 Returns [code]true[/code] if the [member tracker] has been registered and the [member pose] is being tracked.
 */
 //go:nosplit
-func (self class) GetIsActive() bool {
+func (self class) GetIsActive() bool { //gd:XRNode3D.get_is_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -188,7 +188,7 @@ func (self class) GetIsActive() bool {
 Returns [code]true[/code] if the [member tracker] has current tracking data for the [member pose] being tracked.
 */
 //go:nosplit
-func (self class) GetHasTrackingData() bool {
+func (self class) GetHasTrackingData() bool { //gd:XRNode3D.get_has_tracking_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -201,7 +201,7 @@ func (self class) GetHasTrackingData() bool {
 Returns the [XRPose] containing the current state of the pose being tracked. This gives access to additional properties of this pose.
 */
 //go:nosplit
-func (self class) GetPose() [1]gdclass.XRPose {
+func (self class) GetPose() [1]gdclass.XRPose { //gd:XRNode3D.get_pose
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -219,7 +219,7 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 //go:nosplit
-func (self class) TriggerHapticPulse(action_name gd.String, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float) {
+func (self class) TriggerHapticPulse(action_name gd.String, frequency gd.Float, amplitude gd.Float, duration_sec gd.Float, delay_sec gd.Float) { //gd:XRNode3D.trigger_haptic_pulse
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action_name))
 	callframe.Arg(frame, frequency)

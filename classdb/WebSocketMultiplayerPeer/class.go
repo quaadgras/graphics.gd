@@ -44,35 +44,35 @@ type Any interface {
 Starts a new multiplayer client connecting to the given [param url]. TLS certificates will be verified against the hostname when connecting using the [code]wss://[/code] protocol. You can pass the optional [param tls_client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
-func (self Instance) CreateClient(url string) error {
+func (self Instance) CreateClient(url string) error { //gd:WebSocketMultiplayerPeer.create_client
 	return error(gd.ToError(class(self).CreateClient(gd.NewString(url), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
-func (self Instance) CreateServer(port int) error {
+func (self Instance) CreateServer(port int) error { //gd:WebSocketMultiplayerPeer.create_server
 	return error(gd.ToError(class(self).CreateServer(gd.Int(port), gd.NewString("*"), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
 Returns the [WebSocketPeer] associated to the given [param peer_id].
 */
-func (self Instance) GetPeer(peer_id int) [1]gdclass.WebSocketPeer {
+func (self Instance) GetPeer(peer_id int) [1]gdclass.WebSocketPeer { //gd:WebSocketMultiplayerPeer.get_peer
 	return [1]gdclass.WebSocketPeer(class(self).GetPeer(gd.Int(peer_id)))
 }
 
 /*
 Returns the IP address of the given peer.
 */
-func (self Instance) GetPeerAddress(id int) string {
+func (self Instance) GetPeerAddress(id int) string { //gd:WebSocketMultiplayerPeer.get_peer_address
 	return string(class(self).GetPeerAddress(gd.Int(id)).String())
 }
 
 /*
 Returns the remote port of the given peer.
 */
-func (self Instance) GetPeerPort(id int) int {
+func (self Instance) GetPeerPort(id int) int { //gd:WebSocketMultiplayerPeer.get_peer_port
 	return int(int(class(self).GetPeerPort(gd.Int(id))))
 }
 
@@ -148,7 +148,7 @@ Starts a new multiplayer client connecting to the given [param url]. TLS certifi
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
 //go:nosplit
-func (self class) CreateClient(url gd.String, tls_client_options [1]gdclass.TLSOptions) gd.Error {
+func (self class) CreateClient(url gd.String, tls_client_options [1]gdclass.TLSOptions) gd.Error { //gd:WebSocketMultiplayerPeer.create_client
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(url))
 	callframe.Arg(frame, pointers.Get(tls_client_options[0])[0])
@@ -163,7 +163,7 @@ func (self class) CreateClient(url gd.String, tls_client_options [1]gdclass.TLSO
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) CreateServer(port gd.Int, bind_address gd.String, tls_server_options [1]gdclass.TLSOptions) gd.Error {
+func (self class) CreateServer(port gd.Int, bind_address gd.String, tls_server_options [1]gdclass.TLSOptions) gd.Error { //gd:WebSocketMultiplayerPeer.create_server
 	var frame = callframe.New()
 	callframe.Arg(frame, port)
 	callframe.Arg(frame, pointers.Get(bind_address))
@@ -179,7 +179,7 @@ func (self class) CreateServer(port gd.Int, bind_address gd.String, tls_server_o
 Returns the [WebSocketPeer] associated to the given [param peer_id].
 */
 //go:nosplit
-func (self class) GetPeer(peer_id gd.Int) [1]gdclass.WebSocketPeer {
+func (self class) GetPeer(peer_id gd.Int) [1]gdclass.WebSocketPeer { //gd:WebSocketMultiplayerPeer.get_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -193,7 +193,7 @@ func (self class) GetPeer(peer_id gd.Int) [1]gdclass.WebSocketPeer {
 Returns the IP address of the given peer.
 */
 //go:nosplit
-func (self class) GetPeerAddress(id gd.Int) gd.String {
+func (self class) GetPeerAddress(id gd.Int) gd.String { //gd:WebSocketMultiplayerPeer.get_peer_address
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -207,7 +207,7 @@ func (self class) GetPeerAddress(id gd.Int) gd.String {
 Returns the remote port of the given peer.
 */
 //go:nosplit
-func (self class) GetPeerPort(id gd.Int) gd.Int {
+func (self class) GetPeerPort(id gd.Int) gd.Int { //gd:WebSocketMultiplayerPeer.get_peer_port
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -218,7 +218,7 @@ func (self class) GetPeerPort(id gd.Int) gd.Int {
 }
 
 //go:nosplit
-func (self class) GetSupportedProtocols() gd.PackedStringArray {
+func (self class) GetSupportedProtocols() gd.PackedStringArray { //gd:WebSocketMultiplayerPeer.get_supported_protocols
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_supported_protocols, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -228,7 +228,7 @@ func (self class) GetSupportedProtocols() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) SetSupportedProtocols(protocols gd.PackedStringArray) {
+func (self class) SetSupportedProtocols(protocols gd.PackedStringArray) { //gd:WebSocketMultiplayerPeer.set_supported_protocols
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(protocols))
 	var r_ret = callframe.Nil
@@ -237,7 +237,7 @@ func (self class) SetSupportedProtocols(protocols gd.PackedStringArray) {
 }
 
 //go:nosplit
-func (self class) GetHandshakeHeaders() gd.PackedStringArray {
+func (self class) GetHandshakeHeaders() gd.PackedStringArray { //gd:WebSocketMultiplayerPeer.get_handshake_headers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_handshake_headers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -247,7 +247,7 @@ func (self class) GetHandshakeHeaders() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) SetHandshakeHeaders(protocols gd.PackedStringArray) {
+func (self class) SetHandshakeHeaders(protocols gd.PackedStringArray) { //gd:WebSocketMultiplayerPeer.set_handshake_headers
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(protocols))
 	var r_ret = callframe.Nil
@@ -256,7 +256,7 @@ func (self class) SetHandshakeHeaders(protocols gd.PackedStringArray) {
 }
 
 //go:nosplit
-func (self class) GetInboundBufferSize() gd.Int {
+func (self class) GetInboundBufferSize() gd.Int { //gd:WebSocketMultiplayerPeer.get_inbound_buffer_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_inbound_buffer_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -266,7 +266,7 @@ func (self class) GetInboundBufferSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetInboundBufferSize(buffer_size gd.Int) {
+func (self class) SetInboundBufferSize(buffer_size gd.Int) { //gd:WebSocketMultiplayerPeer.set_inbound_buffer_size
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
 	var r_ret = callframe.Nil
@@ -275,7 +275,7 @@ func (self class) SetInboundBufferSize(buffer_size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetOutboundBufferSize() gd.Int {
+func (self class) GetOutboundBufferSize() gd.Int { //gd:WebSocketMultiplayerPeer.get_outbound_buffer_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_outbound_buffer_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -285,7 +285,7 @@ func (self class) GetOutboundBufferSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetOutboundBufferSize(buffer_size gd.Int) {
+func (self class) SetOutboundBufferSize(buffer_size gd.Int) { //gd:WebSocketMultiplayerPeer.set_outbound_buffer_size
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
 	var r_ret = callframe.Nil
@@ -294,7 +294,7 @@ func (self class) SetOutboundBufferSize(buffer_size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetHandshakeTimeout() gd.Float {
+func (self class) GetHandshakeTimeout() gd.Float { //gd:WebSocketMultiplayerPeer.get_handshake_timeout
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_handshake_timeout, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -304,7 +304,7 @@ func (self class) GetHandshakeTimeout() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetHandshakeTimeout(timeout gd.Float) {
+func (self class) SetHandshakeTimeout(timeout gd.Float) { //gd:WebSocketMultiplayerPeer.set_handshake_timeout
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	var r_ret = callframe.Nil
@@ -313,7 +313,7 @@ func (self class) SetHandshakeTimeout(timeout gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetMaxQueuedPackets(max_queued_packets gd.Int) {
+func (self class) SetMaxQueuedPackets(max_queued_packets gd.Int) { //gd:WebSocketMultiplayerPeer.set_max_queued_packets
 	var frame = callframe.New()
 	callframe.Arg(frame, max_queued_packets)
 	var r_ret = callframe.Nil
@@ -322,7 +322,7 @@ func (self class) SetMaxQueuedPackets(max_queued_packets gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMaxQueuedPackets() gd.Int {
+func (self class) GetMaxQueuedPackets() gd.Int { //gd:WebSocketMultiplayerPeer.get_max_queued_packets
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_max_queued_packets, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -372,7 +372,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -46,21 +46,21 @@ type Any interface {
 /*
 Sets the given [param path] as currently selected, ensuring that the selected file/directory is visible.
 */
-func (self Instance) NavigateToPath(path string) {
+func (self Instance) NavigateToPath(path string) { //gd:FileSystemDock.navigate_to_path
 	class(self).NavigateToPath(gd.NewString(path))
 }
 
 /*
 Registers a new [EditorResourceTooltipPlugin].
 */
-func (self Instance) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) {
+func (self Instance) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
 	class(self).AddResourceTooltipPlugin(plugin)
 }
 
 /*
 Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously added.
 */
-func (self Instance) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) {
+func (self Instance) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
 	class(self).RemoveResourceTooltipPlugin(plugin)
 }
 
@@ -86,7 +86,7 @@ func New() Instance {
 Sets the given [param path] as currently selected, ensuring that the selected file/directory is visible.
 */
 //go:nosplit
-func (self class) NavigateToPath(path gd.String) {
+func (self class) NavigateToPath(path gd.String) { //gd:FileSystemDock.navigate_to_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -98,7 +98,7 @@ func (self class) NavigateToPath(path gd.String) {
 Registers a new [EditorResourceTooltipPlugin].
 */
 //go:nosplit
-func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) {
+func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
 	var r_ret = callframe.Nil
@@ -110,7 +110,7 @@ func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceToolt
 Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously added.
 */
 //go:nosplit
-func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) {
+func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
 	var r_ret = callframe.Nil

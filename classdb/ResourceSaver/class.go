@@ -42,7 +42,7 @@ The [param flags] bitmask can be specified to customize the save behavior using 
 Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
-func Save(resource [1]gdclass.Resource) error {
+func Save(resource [1]gdclass.Resource) error { //gd:ResourceSaver.save
 	once.Do(singleton)
 	return error(gd.ToError(class(self).Save(resource, gd.NewString(""), 0)))
 }
@@ -50,7 +50,7 @@ func Save(resource [1]gdclass.Resource) error {
 /*
 Returns the list of extensions available for saving a resource of a given type.
 */
-func GetRecognizedExtensions(atype [1]gdclass.Resource) []string {
+func GetRecognizedExtensions(atype [1]gdclass.Resource) []string { //gd:ResourceSaver.get_recognized_extensions
 	once.Do(singleton)
 	return []string(class(self).GetRecognizedExtensions(atype).Strings())
 }
@@ -59,7 +59,7 @@ func GetRecognizedExtensions(atype [1]gdclass.Resource) []string {
 Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [method save].
 This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
 */
-func AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) {
+func AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.add_resource_format_saver
 	once.Do(singleton)
 	class(self).AddResourceFormatSaver(format_saver, false)
 }
@@ -67,7 +67,7 @@ func AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) {
 /*
 Unregisters the given [ResourceFormatSaver].
 */
-func RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) {
+func RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.remove_resource_format_saver
 	once.Do(singleton)
 	class(self).RemoveResourceFormatSaver(format_saver)
 }
@@ -89,7 +89,7 @@ Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
 //go:nosplit
-func (self class) Save(resource [1]gdclass.Resource, path gd.String, flags gdclass.ResourceSaverSaverFlags) gd.Error {
+func (self class) Save(resource [1]gdclass.Resource, path gd.String, flags gdclass.ResourceSaverSaverFlags) gd.Error { //gd:ResourceSaver.save
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
 	callframe.Arg(frame, pointers.Get(path))
@@ -105,7 +105,7 @@ func (self class) Save(resource [1]gdclass.Resource, path gd.String, flags gdcla
 Returns the list of extensions available for saving a resource of a given type.
 */
 //go:nosplit
-func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) gd.PackedStringArray {
+func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) gd.PackedStringArray { //gd:ResourceSaver.get_recognized_extensions
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(atype[0])[0])
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -120,7 +120,7 @@ Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFo
 This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
 */
 //go:nosplit
-func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) {
+func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(format_saver[0])[0])
 	callframe.Arg(frame, at_front)
@@ -133,7 +133,7 @@ func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatS
 Unregisters the given [ResourceFormatSaver].
 */
 //go:nosplit
-func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) {
+func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.remove_resource_format_saver
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(format_saver[0])[0])
 	var r_ret = callframe.Nil
@@ -152,7 +152,7 @@ func init() {
 	})
 }
 
-type SaverFlags = gdclass.ResourceSaverSaverFlags
+type SaverFlags = gdclass.ResourceSaverSaverFlags //gd:ResourceSaver.SaverFlags
 
 const (
 	/*No resource saving option.*/
@@ -173,7 +173,7 @@ const (
 	FlagReplaceSubresourcePaths SaverFlags = 64
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

@@ -66,7 +66,7 @@ func (self Instance) SetOpType(value gdclass.VisualShaderNodeMultiplyAddOpType) 
 }
 
 //go:nosplit
-func (self class) SetOpType(atype gdclass.VisualShaderNodeMultiplyAddOpType) {
+func (self class) SetOpType(atype gdclass.VisualShaderNodeMultiplyAddOpType) { //gd:VisualShaderNodeMultiplyAdd.set_op_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetOpType(atype gdclass.VisualShaderNodeMultiplyAddOpType) {
 }
 
 //go:nosplit
-func (self class) GetOpType() gdclass.VisualShaderNodeMultiplyAddOpType {
+func (self class) GetOpType() gdclass.VisualShaderNodeMultiplyAddOpType { //gd:VisualShaderNodeMultiplyAdd.get_op_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeMultiplyAddOpType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeMultiplyAdd.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func init() {
 	})
 }
 
-type OpType = gdclass.VisualShaderNodeMultiplyAddOpType
+type OpType = gdclass.VisualShaderNodeMultiplyAddOpType //gd:VisualShaderNodeMultiplyAdd.OpType
 
 const (
 	/*A floating-point scalar type.*/

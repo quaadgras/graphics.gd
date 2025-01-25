@@ -238,7 +238,7 @@ func (Instance) _get_closest_point_to_object_volume(impl func(ptr unsafe.Pointer
 		gd.UnsafeSet(p_back, gd.Vector3(ret))
 	}
 }
-func (self Instance) IsBodyExcludedFromQuery(body Resource.ID) bool {
+func (self Instance) IsBodyExcludedFromQuery(body Resource.ID) bool { //gd:PhysicsDirectSpaceState3DExtension.is_body_excluded_from_query
 	return bool(class(self).IsBodyExcludedFromQuery(body))
 }
 
@@ -425,7 +425,7 @@ func (class) _get_closest_point_to_object_volume(impl func(ptr unsafe.Pointer, o
 }
 
 //go:nosplit
-func (self class) IsBodyExcludedFromQuery(body gd.RID) bool {
+func (self class) IsBodyExcludedFromQuery(body gd.RID) bool { //gd:PhysicsDirectSpaceState3DExtension.is_body_excluded_from_query
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[bool](frame)

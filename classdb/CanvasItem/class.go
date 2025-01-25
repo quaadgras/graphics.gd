@@ -77,7 +77,7 @@ func (Instance) _draw(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVi
 /*
 Returns the canvas item RID used by [RenderingServer] for this item.
 */
-func (self Instance) GetCanvasItem() Resource.ID {
+func (self Instance) GetCanvasItem() Resource.ID { //gd:CanvasItem.get_canvas_item
 	return Resource.ID(class(self).GetCanvasItem())
 }
 
@@ -85,28 +85,28 @@ func (self Instance) GetCanvasItem() Resource.ID {
 Returns [code]true[/code] if the node is present in the [SceneTree], its [member visible] property is [code]true[/code] and all its ancestors are also visible. If any ancestor is hidden, this node will not be visible in the scene tree, and is therefore not drawn (see [method _draw]).
 Visibility is checked only in parent nodes that inherit from [CanvasItem], [CanvasLayer], and [Window]. If the parent is of any other type (such as [Node], [AnimationPlayer], or [Node3D]), it is assumed to be visible.
 */
-func (self Instance) IsVisibleInTree() bool {
+func (self Instance) IsVisibleInTree() bool { //gd:CanvasItem.is_visible_in_tree
 	return bool(class(self).IsVisibleInTree())
 }
 
 /*
 Show the [CanvasItem] if it's currently hidden. This is equivalent to setting [member visible] to [code]true[/code]. For controls that inherit [Popup], the correct way to make them visible is to call one of the multiple [code]popup*()[/code] functions instead.
 */
-func (self Instance) Show() {
+func (self Instance) Show() { //gd:CanvasItem.show
 	class(self).Show()
 }
 
 /*
 Hide the [CanvasItem] if it's currently visible. This is equivalent to setting [member visible] to [code]false[/code].
 */
-func (self Instance) Hide() {
+func (self Instance) Hide() { //gd:CanvasItem.hide
 	class(self).Hide()
 }
 
 /*
 Queues the [CanvasItem] to redraw. During idle time, if [CanvasItem] is visible, [constant NOTIFICATION_DRAW] is sent and [method _draw] is called. This only occurs [b]once[/b] per frame, even if this method has been called multiple times.
 */
-func (self Instance) QueueRedraw() {
+func (self Instance) QueueRedraw() { //gd:CanvasItem.queue_redraw
 	class(self).QueueRedraw()
 }
 
@@ -114,7 +114,7 @@ func (self Instance) QueueRedraw() {
 Moves this node to display on top of its siblings.
 Internally, the node is moved to the bottom of parent's child list. The method has no effect on nodes without a parent.
 */
-func (self Instance) MoveToFront() {
+func (self Instance) MoveToFront() { //gd:CanvasItem.move_to_front
 	class(self).MoveToFront()
 }
 
@@ -122,7 +122,7 @@ func (self Instance) MoveToFront() {
 Draws a line from a 2D point to another, with a given color and width. It can be optionally antialiased. See also [method draw_multiline] and [method draw_polyline].
 If [param width] is negative, then a two-point primitive will be drawn instead of a four-point one. This means that when the CanvasItem is scaled, the line will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
-func (self Instance) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) {
+func (self Instance) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_line
 	class(self).DrawLine(gd.Vector2(from), gd.Vector2(to), gd.Color(color), gd.Float(-1.0), false)
 }
 
@@ -132,7 +132,7 @@ If [param width] is negative, then a two-point primitives will be drawn instead 
 If [param antialiased] is [code]true[/code], half transparent "feathers" will be attached to the boundary, making outlines smooth.
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
-func (self Instance) DrawDashedLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) {
+func (self Instance) DrawDashedLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_dashed_line
 	class(self).DrawDashedLine(gd.Vector2(from), gd.Vector2(to), gd.Color(color), gd.Float(-1.0), gd.Float(2.0), true, false)
 }
 
@@ -140,7 +140,7 @@ func (self Instance) DrawDashedLine(from Vector2.XY, to Vector2.XY, color Color.
 Draws interconnected line segments with a uniform [param color] and [param width] and optional antialiasing (supported only for positive [param width]). When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline] instead. See also [method draw_polygon].
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
-func (self Instance) DrawPolyline(points []Vector2.XY, color Color.RGBA) {
+func (self Instance) DrawPolyline(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_polyline
 	class(self).DrawPolyline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.Color(color), gd.Float(-1.0), false)
 }
 
@@ -148,7 +148,7 @@ func (self Instance) DrawPolyline(points []Vector2.XY, color Color.RGBA) {
 Draws interconnected line segments with a uniform [param width], point-by-point coloring, and optional antialiasing (supported only for positive [param width]). Colors assigned to line points match by index between [param points] and [param colors], i.e. each line segment is filled with a gradient between the colors of the endpoints. When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline_colors] instead. See also [method draw_polygon].
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
-func (self Instance) DrawPolylineColors(points []Vector2.XY, colors []Color.RGBA) {
+func (self Instance) DrawPolylineColors(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_polyline_colors
 	class(self).DrawPolylineColors(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
 }
 
@@ -157,7 +157,7 @@ Draws an unfilled arc between the given angles with a uniform [param color] and 
 If [param width] is negative, it will be ignored and the arc will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 The arc is drawn from [param start_angle] towards the value of [param end_angle] so in clockwise direction if [code]start_angle < end_angle[/code] and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of [param start_angle] and [param end_angle] is greater than [constant @GDScript.TAU] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
 */
-func (self Instance) DrawArc(center Vector2.XY, radius Float.X, start_angle Float.X, end_angle Float.X, point_count int, color Color.RGBA) {
+func (self Instance) DrawArc(center Vector2.XY, radius Float.X, start_angle Float.X, end_angle Float.X, point_count int, color Color.RGBA) { //gd:CanvasItem.draw_arc
 	class(self).DrawArc(gd.Vector2(center), gd.Float(radius), gd.Float(start_angle), gd.Float(end_angle), gd.Int(point_count), gd.Color(color), gd.Float(-1.0), false)
 }
 
@@ -166,7 +166,7 @@ Draws multiple disconnected lines with a uniform [param width] and [param color]
 If [param width] is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
-func (self Instance) DrawMultiline(points []Vector2.XY, color Color.RGBA) {
+func (self Instance) DrawMultiline(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_multiline
 	class(self).DrawMultiline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.Color(color), gd.Float(-1.0), false)
 }
 
@@ -175,7 +175,7 @@ Draws multiple disconnected lines with a uniform [param width] and segment-by-se
 If [param width] is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
-func (self Instance) DrawMultilineColors(points []Vector2.XY, colors []Color.RGBA) {
+func (self Instance) DrawMultilineColors(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_multiline_colors
 	class(self).DrawMultilineColors(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.Float(-1.0), false)
 }
 
@@ -186,7 +186,7 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 [b]Note:[/b] [param width] is only effective if [param filled] is [code]false[/code].
 [b]Note:[/b] Unfilled rectangles drawn with a negative [param width] may not display perfectly. For example, corners may be missing or brighter due to overlapping lines (for a translucent [param color]).
 */
-func (self Instance) DrawRect(rect Rect2.PositionSize, color Color.RGBA) {
+func (self Instance) DrawRect(rect Rect2.PositionSize, color Color.RGBA) { //gd:CanvasItem.draw_rect
 	class(self).DrawRect(gd.Rect2(rect), gd.Color(color), true, gd.Float(-1.0), false)
 }
 
@@ -197,28 +197,28 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 If [param antialiased] is [code]true[/code], half transparent "feathers" will be attached to the boundary, making outlines smooth.
 [b]Note:[/b] [param width] is only effective if [param filled] is [code]false[/code].
 */
-func (self Instance) DrawCircle(position Vector2.XY, radius Float.X, color Color.RGBA) {
+func (self Instance) DrawCircle(position Vector2.XY, radius Float.X, color Color.RGBA) { //gd:CanvasItem.draw_circle
 	class(self).DrawCircle(gd.Vector2(position), gd.Float(radius), gd.Color(color), true, gd.Float(-1.0), false)
 }
 
 /*
 Draws a texture at a given position.
 */
-func (self Instance) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY) {
+func (self Instance) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY) { //gd:CanvasItem.draw_texture
 	class(self).DrawTexture(texture, gd.Vector2(position), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a textured rectangle at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_rect] and [method draw_texture_rect_region].
 */
-func (self Instance) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, tile bool) {
+func (self Instance) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, tile bool) { //gd:CanvasItem.draw_texture_rect
 	class(self).DrawTextureRect(texture, gd.Rect2(rect), tile, gd.Color(gd.Color{1, 1, 1, 1}), false)
 }
 
 /*
 Draws a textured rectangle from a texture's region (specified by [param src_rect]) at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_texture_rect].
 */
-func (self Instance) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) {
+func (self Instance) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_texture_rect_region
 	class(self).DrawTextureRectRegion(texture, gd.Rect2(rect), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), false, true)
 }
 
@@ -227,7 +227,7 @@ Draws a textured rectangle region of the multi-channel signed distance field tex
 If [param outline] is positive, each alpha channel value of pixel in region is set to maximum value of true distance in the [param outline] radius.
 Value of the [param pixel_range] should the same that was used during distance field texture generation.
 */
-func (self Instance) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) {
+func (self Instance) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_msdf_texture_rect_region
 	class(self).DrawMsdfTextureRectRegion(texture, gd.Rect2(rect), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}), gd.Float(0.0), gd.Float(4.0), gd.Float(1.0))
 }
 
@@ -241,35 +241,35 @@ dst.b = texture.b * modulate.b * modulate.a + dst.b * (1.0 - texture.b * modulat
 dst.a = modulate.a + dst.a * (1.0 - modulate.a);
 [/codeblock]
 */
-func (self Instance) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) {
+func (self Instance) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_lcd_texture_rect_region
 	class(self).DrawLcdTextureRectRegion(texture, gd.Rect2(rect), gd.Rect2(src_rect), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a styled rectangle.
 */
-func (self Instance) DrawStyleBox(style_box [1]gdclass.StyleBox, rect Rect2.PositionSize) {
+func (self Instance) DrawStyleBox(style_box [1]gdclass.StyleBox, rect Rect2.PositionSize) { //gd:CanvasItem.draw_style_box
 	class(self).DrawStyleBox(style_box, gd.Rect2(rect))
 }
 
 /*
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. See also [method draw_line], [method draw_polyline], [method draw_polygon], and [method draw_rect].
 */
-func (self Instance) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY) {
+func (self Instance) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY) { //gd:CanvasItem.draw_primitive
 	class(self).DrawPrimitive(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&uvs))), [1][1]gdclass.Texture2D{}[0])
 }
 
 /*
 Draws a solid polygon of any number of points, convex or concave. Unlike [method draw_colored_polygon], each point's color can be changed individually. See also [method draw_polyline] and [method draw_polyline_colors]. If you need more flexibility (such as being able to use bones), use [method RenderingServer.canvas_item_add_triangle_array] instead.
 */
-func (self Instance) DrawPolygon(points []Vector2.XY, colors []Color.RGBA) {
+func (self Instance) DrawPolygon(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_polygon
 	class(self).DrawPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedColorSlice(*(*[]gd.Color)(unsafe.Pointer(&colors))), gd.NewPackedVector2Slice(nil), [1][1]gdclass.Texture2D{}[0])
 }
 
 /*
 Draws a colored polygon of any number of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
 */
-func (self Instance) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA) {
+func (self Instance) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_colored_polygon
 	class(self).DrawColoredPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.Color(color), gd.NewPackedVector2Slice(nil), [1][1]gdclass.Texture2D{}[0])
 }
 
@@ -296,56 +296,56 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 [/codeblocks]
 See also [method Font.draw_string].
 */
-func (self Instance) DrawString(font [1]gdclass.Font, pos Vector2.XY, text string) {
+func (self Instance) DrawString(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string
 	class(self).DrawString(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Instance) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text string) {
+func (self Instance) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string
 	class(self).DrawMultilineString(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Instance) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) {
+func (self Instance) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string_outline
 	class(self).DrawStringOutline(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Instance) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) {
+func (self Instance) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string_outline
 	class(self).DrawMultilineStringOutline(font, gd.Vector2(pos), gd.NewString(text), 0, gd.Float(-1), gd.Int(16), gd.Int(-1), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
 Draws a string first character using a custom font.
 */
-func (self Instance) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char string) {
+func (self Instance) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char
 	class(self).DrawChar(font, gd.Vector2(pos), gd.NewString(char), gd.Int(16), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a string first character outline using a custom font.
 */
-func (self Instance) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char string) {
+func (self Instance) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char_outline
 	class(self).DrawCharOutline(font, gd.Vector2(pos), gd.NewString(char), gd.Int(16), gd.Int(-1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation.
 */
-func (self Instance) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D) {
+func (self Instance) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_mesh
 	class(self).DrawMesh(mesh, texture, gd.Transform2D(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a [MultiMesh] in 2D with the provided texture. See [MultiMeshInstance2D] for related documentation.
 */
-func (self Instance) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdclass.Texture2D) {
+func (self Instance) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_multimesh
 	class(self).DrawMultimesh(multimesh, texture)
 }
 
@@ -353,70 +353,70 @@ func (self Instance) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gd
 Sets a custom transform for drawing via components. Anything drawn afterwards will be transformed by this.
 [b]Note:[/b] [member FontFile.oversampling] does [i]not[/i] take [param scale] into account. This means that scaling up/down will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated. To ensure text remains crisp regardless of scale, you can enable MSDF font rendering by enabling [member ProjectSettings.gui/theme/default_font_multichannel_signed_distance_field] (applies to the default project font only), or enabling [b]Multichannel Signed Distance Field[/b] in the import options of a DynamicFont for custom fonts. On system fonts, [member SystemFont.multichannel_signed_distance_field] can be enabled in the inspector.
 */
-func (self Instance) DrawSetTransform(position Vector2.XY) {
+func (self Instance) DrawSetTransform(position Vector2.XY) { //gd:CanvasItem.draw_set_transform
 	class(self).DrawSetTransform(gd.Vector2(position), gd.Float(0.0), gd.Vector2(gd.Vector2{1, 1}))
 }
 
 /*
 Sets a custom transform for drawing via matrix. Anything drawn afterwards will be transformed by this.
 */
-func (self Instance) DrawSetTransformMatrix(xform Transform2D.OriginXY) {
+func (self Instance) DrawSetTransformMatrix(xform Transform2D.OriginXY) { //gd:CanvasItem.draw_set_transform_matrix
 	class(self).DrawSetTransformMatrix(gd.Transform2D(xform))
 }
 
 /*
 Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
 */
-func (self Instance) DrawAnimationSlice(animation_length Float.X, slice_begin Float.X, slice_end Float.X) {
+func (self Instance) DrawAnimationSlice(animation_length Float.X, slice_begin Float.X, slice_end Float.X) { //gd:CanvasItem.draw_animation_slice
 	class(self).DrawAnimationSlice(gd.Float(animation_length), gd.Float(slice_begin), gd.Float(slice_end), gd.Float(0.0))
 }
 
 /*
 After submitting all animations slices via [method draw_animation_slice], this function can be used to revert drawing to its default state (all subsequent drawing commands will be visible). If you don't care about this particular use case, usage of this function after submitting the slices is not required.
 */
-func (self Instance) DrawEndAnimation() {
+func (self Instance) DrawEndAnimation() { //gd:CanvasItem.draw_end_animation
 	class(self).DrawEndAnimation()
 }
 
 /*
 Returns the transform matrix of this item.
 */
-func (self Instance) GetTransform() Transform2D.OriginXY {
+func (self Instance) GetTransform() Transform2D.OriginXY { //gd:CanvasItem.get_transform
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
 /*
 Returns the global transform matrix of this item, i.e. the combined transform up to the topmost [CanvasItem] node. The topmost item is a [CanvasItem] that either has no parent, has non-[CanvasItem] parent or it has [member top_level] enabled.
 */
-func (self Instance) GetGlobalTransform() Transform2D.OriginXY {
+func (self Instance) GetGlobalTransform() Transform2D.OriginXY { //gd:CanvasItem.get_global_transform
 	return Transform2D.OriginXY(class(self).GetGlobalTransform())
 }
 
 /*
 Returns the transform from the local coordinate system of this [CanvasItem] to the [Viewport]s coordinate system.
 */
-func (self Instance) GetGlobalTransformWithCanvas() Transform2D.OriginXY {
+func (self Instance) GetGlobalTransformWithCanvas() Transform2D.OriginXY { //gd:CanvasItem.get_global_transform_with_canvas
 	return Transform2D.OriginXY(class(self).GetGlobalTransformWithCanvas())
 }
 
 /*
 Returns the transform from the coordinate system of the canvas, this item is in, to the [Viewport]s embedders coordinate system.
 */
-func (self Instance) GetViewportTransform() Transform2D.OriginXY {
+func (self Instance) GetViewportTransform() Transform2D.OriginXY { //gd:CanvasItem.get_viewport_transform
 	return Transform2D.OriginXY(class(self).GetViewportTransform())
 }
 
 /*
 Returns the viewport's boundaries as a [Rect2].
 */
-func (self Instance) GetViewportRect() Rect2.PositionSize {
+func (self Instance) GetViewportRect() Rect2.PositionSize { //gd:CanvasItem.get_viewport_rect
 	return Rect2.PositionSize(class(self).GetViewportRect())
 }
 
 /*
 Returns the transform from the coordinate system of the canvas, this item is in, to the [Viewport]s coordinate system.
 */
-func (self Instance) GetCanvasTransform() Transform2D.OriginXY {
+func (self Instance) GetCanvasTransform() Transform2D.OriginXY { //gd:CanvasItem.get_canvas_transform
 	return Transform2D.OriginXY(class(self).GetCanvasTransform())
 }
 
@@ -424,14 +424,14 @@ func (self Instance) GetCanvasTransform() Transform2D.OriginXY {
 Returns the transform of this [CanvasItem] in global screen coordinates (i.e. taking window position into account). Mostly useful for editor plugins.
 Equals to [method get_global_transform] if the window is embedded (see [member Viewport.gui_embed_subwindows]).
 */
-func (self Instance) GetScreenTransform() Transform2D.OriginXY {
+func (self Instance) GetScreenTransform() Transform2D.OriginXY { //gd:CanvasItem.get_screen_transform
 	return Transform2D.OriginXY(class(self).GetScreenTransform())
 }
 
 /*
 Returns the mouse's position in this [CanvasItem] using the local coordinate system of this [CanvasItem].
 */
-func (self Instance) GetLocalMousePosition() Vector2.XY {
+func (self Instance) GetLocalMousePosition() Vector2.XY { //gd:CanvasItem.get_local_mouse_position
 	return Vector2.XY(class(self).GetLocalMousePosition())
 }
 
@@ -439,91 +439,91 @@ func (self Instance) GetLocalMousePosition() Vector2.XY {
 Returns the mouse's position in the [CanvasLayer] that this [CanvasItem] is in using the coordinate system of the [CanvasLayer].
 [b]Note:[/b] For screen-space coordinates (e.g. when using a non-embedded [Popup]), you can use [method DisplayServer.mouse_get_position].
 */
-func (self Instance) GetGlobalMousePosition() Vector2.XY {
+func (self Instance) GetGlobalMousePosition() Vector2.XY { //gd:CanvasItem.get_global_mouse_position
 	return Vector2.XY(class(self).GetGlobalMousePosition())
 }
 
 /*
 Returns the [RID] of the [World2D] canvas where this item is in.
 */
-func (self Instance) GetCanvas() Resource.ID {
+func (self Instance) GetCanvas() Resource.ID { //gd:CanvasItem.get_canvas
 	return Resource.ID(class(self).GetCanvas())
 }
 
 /*
 Returns the [CanvasLayer] that contains this node, or [code]null[/code] if the node is not in any [CanvasLayer].
 */
-func (self Instance) GetCanvasLayerNode() [1]gdclass.CanvasLayer {
+func (self Instance) GetCanvasLayerNode() [1]gdclass.CanvasLayer { //gd:CanvasItem.get_canvas_layer_node
 	return [1]gdclass.CanvasLayer(class(self).GetCanvasLayerNode())
 }
 
 /*
 Returns the [World2D] where this item is in.
 */
-func (self Instance) GetWorld2d() [1]gdclass.World2D {
+func (self Instance) GetWorld2d() [1]gdclass.World2D { //gd:CanvasItem.get_world_2d
 	return [1]gdclass.World2D(class(self).GetWorld2d())
 }
 
 /*
 If [param enable] is [code]true[/code], this node will receive [constant NOTIFICATION_LOCAL_TRANSFORM_CHANGED] when its local transform changes.
 */
-func (self Instance) SetNotifyLocalTransform(enable bool) {
+func (self Instance) SetNotifyLocalTransform(enable bool) { //gd:CanvasItem.set_notify_local_transform
 	class(self).SetNotifyLocalTransform(enable)
 }
 
 /*
 Returns [code]true[/code] if local transform notifications are communicated to children.
 */
-func (self Instance) IsLocalTransformNotificationEnabled() bool {
+func (self Instance) IsLocalTransformNotificationEnabled() bool { //gd:CanvasItem.is_local_transform_notification_enabled
 	return bool(class(self).IsLocalTransformNotificationEnabled())
 }
 
 /*
 If [param enable] is [code]true[/code], this node will receive [constant NOTIFICATION_TRANSFORM_CHANGED] when its global transform changes.
 */
-func (self Instance) SetNotifyTransform(enable bool) {
+func (self Instance) SetNotifyTransform(enable bool) { //gd:CanvasItem.set_notify_transform
 	class(self).SetNotifyTransform(enable)
 }
 
 /*
 Returns [code]true[/code] if global transform notifications are communicated to children.
 */
-func (self Instance) IsTransformNotificationEnabled() bool {
+func (self Instance) IsTransformNotificationEnabled() bool { //gd:CanvasItem.is_transform_notification_enabled
 	return bool(class(self).IsTransformNotificationEnabled())
 }
 
 /*
 Forces the transform to update. Transform changes in physics are not instant for performance reasons. Transforms are accumulated and then set. Use this if you need an up-to-date transform when doing physics operations.
 */
-func (self Instance) ForceUpdateTransform() {
+func (self Instance) ForceUpdateTransform() { //gd:CanvasItem.force_update_transform
 	class(self).ForceUpdateTransform()
 }
 
 /*
 Assigns [param screen_point] as this node's new local transform.
 */
-func (self Instance) MakeCanvasPositionLocal(screen_point Vector2.XY) Vector2.XY {
+func (self Instance) MakeCanvasPositionLocal(screen_point Vector2.XY) Vector2.XY { //gd:CanvasItem.make_canvas_position_local
 	return Vector2.XY(class(self).MakeCanvasPositionLocal(gd.Vector2(screen_point)))
 }
 
 /*
 Transformations issued by [param event]'s inputs are applied in local space instead of global space.
 */
-func (self Instance) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEvent {
+func (self Instance) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEvent { //gd:CanvasItem.make_input_local
 	return [1]gdclass.InputEvent(class(self).MakeInputLocal(event))
 }
 
 /*
 Set/clear individual bits on the rendering visibility layer. This simplifies editing this [CanvasItem]'s visibility layer.
 */
-func (self Instance) SetVisibilityLayerBit(layer int, enabled bool) {
+func (self Instance) SetVisibilityLayerBit(layer int, enabled bool) { //gd:CanvasItem.set_visibility_layer_bit
 	class(self).SetVisibilityLayerBit(gd.Int(layer), enabled)
 }
 
 /*
 Returns an individual bit on the rendering visibility layer.
 */
-func (self Instance) GetVisibilityLayerBit(layer int) bool {
+func (self Instance) GetVisibilityLayerBit(layer int) bool { //gd:CanvasItem.get_visibility_layer_bit
 	return bool(class(self).GetVisibilityLayerBit(gd.Int(layer)))
 }
 
@@ -680,7 +680,7 @@ func (class) _draw(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtu
 Returns the canvas item RID used by [RenderingServer] for this item.
 */
 //go:nosplit
-func (self class) GetCanvasItem() gd.RID {
+func (self class) GetCanvasItem() gd.RID { //gd:CanvasItem.get_canvas_item
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_item, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -690,7 +690,7 @@ func (self class) GetCanvasItem() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetVisible(visible bool) {
+func (self class) SetVisible(visible bool) { //gd:CanvasItem.set_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret = callframe.Nil
@@ -699,7 +699,7 @@ func (self class) SetVisible(visible bool) {
 }
 
 //go:nosplit
-func (self class) IsVisible() bool {
+func (self class) IsVisible() bool { //gd:CanvasItem.is_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -713,7 +713,7 @@ Returns [code]true[/code] if the node is present in the [SceneTree], its [member
 Visibility is checked only in parent nodes that inherit from [CanvasItem], [CanvasLayer], and [Window]. If the parent is of any other type (such as [Node], [AnimationPlayer], or [Node3D]), it is assumed to be visible.
 */
 //go:nosplit
-func (self class) IsVisibleInTree() bool {
+func (self class) IsVisibleInTree() bool { //gd:CanvasItem.is_visible_in_tree
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_visible_in_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -726,7 +726,7 @@ func (self class) IsVisibleInTree() bool {
 Show the [CanvasItem] if it's currently hidden. This is equivalent to setting [member visible] to [code]true[/code]. For controls that inherit [Popup], the correct way to make them visible is to call one of the multiple [code]popup*()[/code] functions instead.
 */
 //go:nosplit
-func (self class) Show() {
+func (self class) Show() { //gd:CanvasItem.show
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_show, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -737,7 +737,7 @@ func (self class) Show() {
 Hide the [CanvasItem] if it's currently visible. This is equivalent to setting [member visible] to [code]false[/code].
 */
 //go:nosplit
-func (self class) Hide() {
+func (self class) Hide() { //gd:CanvasItem.hide
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_hide, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -748,7 +748,7 @@ func (self class) Hide() {
 Queues the [CanvasItem] to redraw. During idle time, if [CanvasItem] is visible, [constant NOTIFICATION_DRAW] is sent and [method _draw] is called. This only occurs [b]once[/b] per frame, even if this method has been called multiple times.
 */
 //go:nosplit
-func (self class) QueueRedraw() {
+func (self class) QueueRedraw() { //gd:CanvasItem.queue_redraw
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_queue_redraw, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -760,7 +760,7 @@ Moves this node to display on top of its siblings.
 Internally, the node is moved to the bottom of parent's child list. The method has no effect on nodes without a parent.
 */
 //go:nosplit
-func (self class) MoveToFront() {
+func (self class) MoveToFront() { //gd:CanvasItem.move_to_front
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_move_to_front, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -768,7 +768,7 @@ func (self class) MoveToFront() {
 }
 
 //go:nosplit
-func (self class) SetAsTopLevel(enable bool) {
+func (self class) SetAsTopLevel(enable bool) { //gd:CanvasItem.set_as_top_level
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -777,7 +777,7 @@ func (self class) SetAsTopLevel(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSetAsTopLevel() bool {
+func (self class) IsSetAsTopLevel() bool { //gd:CanvasItem.is_set_as_top_level
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -787,7 +787,7 @@ func (self class) IsSetAsTopLevel() bool {
 }
 
 //go:nosplit
-func (self class) SetLightMask(light_mask gd.Int) {
+func (self class) SetLightMask(light_mask gd.Int) { //gd:CanvasItem.set_light_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, light_mask)
 	var r_ret = callframe.Nil
@@ -796,7 +796,7 @@ func (self class) SetLightMask(light_mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetLightMask() gd.Int {
+func (self class) GetLightMask() gd.Int { //gd:CanvasItem.get_light_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -806,7 +806,7 @@ func (self class) GetLightMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetModulate(modulate gd.Color) {
+func (self class) SetModulate(modulate gd.Color) { //gd:CanvasItem.set_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, modulate)
 	var r_ret = callframe.Nil
@@ -815,7 +815,7 @@ func (self class) SetModulate(modulate gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetModulate() gd.Color {
+func (self class) GetModulate() gd.Color { //gd:CanvasItem.get_modulate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -825,7 +825,7 @@ func (self class) GetModulate() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetSelfModulate(self_modulate gd.Color) {
+func (self class) SetSelfModulate(self_modulate gd.Color) { //gd:CanvasItem.set_self_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, self_modulate)
 	var r_ret = callframe.Nil
@@ -834,7 +834,7 @@ func (self class) SetSelfModulate(self_modulate gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetSelfModulate() gd.Color {
+func (self class) GetSelfModulate() gd.Color { //gd:CanvasItem.get_self_modulate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_self_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -844,7 +844,7 @@ func (self class) GetSelfModulate() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetZIndex(z_index gd.Int) {
+func (self class) SetZIndex(z_index gd.Int) { //gd:CanvasItem.set_z_index
 	var frame = callframe.New()
 	callframe.Arg(frame, z_index)
 	var r_ret = callframe.Nil
@@ -853,7 +853,7 @@ func (self class) SetZIndex(z_index gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetZIndex() gd.Int {
+func (self class) GetZIndex() gd.Int { //gd:CanvasItem.get_z_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -863,7 +863,7 @@ func (self class) GetZIndex() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetZAsRelative(enable bool) {
+func (self class) SetZAsRelative(enable bool) { //gd:CanvasItem.set_z_as_relative
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -872,7 +872,7 @@ func (self class) SetZAsRelative(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsZRelative() bool {
+func (self class) IsZRelative() bool { //gd:CanvasItem.is_z_relative
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_z_relative, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -882,7 +882,7 @@ func (self class) IsZRelative() bool {
 }
 
 //go:nosplit
-func (self class) SetYSortEnabled(enabled bool) {
+func (self class) SetYSortEnabled(enabled bool) { //gd:CanvasItem.set_y_sort_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -891,7 +891,7 @@ func (self class) SetYSortEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsYSortEnabled() bool {
+func (self class) IsYSortEnabled() bool { //gd:CanvasItem.is_y_sort_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -901,7 +901,7 @@ func (self class) IsYSortEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDrawBehindParent(enable bool) {
+func (self class) SetDrawBehindParent(enable bool) { //gd:CanvasItem.set_draw_behind_parent
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -910,7 +910,7 @@ func (self class) SetDrawBehindParent(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawBehindParentEnabled() bool {
+func (self class) IsDrawBehindParentEnabled() bool { //gd:CanvasItem.is_draw_behind_parent_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_draw_behind_parent_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -924,7 +924,7 @@ Draws a line from a 2D point to another, with a given color and width. It can be
 If [param width] is negative, then a two-point primitive will be drawn instead of a four-point one. This means that when the CanvasItem is scaled, the line will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 //go:nosplit
-func (self class) DrawLine(from gd.Vector2, to gd.Vector2, color gd.Color, width gd.Float, antialiased bool) {
+func (self class) DrawLine(from gd.Vector2, to gd.Vector2, color gd.Color, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_line
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -943,7 +943,7 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 //go:nosplit
-func (self class) DrawDashedLine(from gd.Vector2, to gd.Vector2, color gd.Color, width gd.Float, dash gd.Float, aligned bool, antialiased bool) {
+func (self class) DrawDashedLine(from gd.Vector2, to gd.Vector2, color gd.Color, width gd.Float, dash gd.Float, aligned bool, antialiased bool) { //gd:CanvasItem.draw_dashed_line
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -962,7 +962,7 @@ Draws interconnected line segments with a uniform [param color] and [param width
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 //go:nosplit
-func (self class) DrawPolyline(points gd.PackedVector2Array, color gd.Color, width gd.Float, antialiased bool) {
+func (self class) DrawPolyline(points gd.PackedVector2Array, color gd.Color, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_polyline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, color)
@@ -978,7 +978,7 @@ Draws interconnected line segments with a uniform [param width], point-by-point 
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 //go:nosplit
-func (self class) DrawPolylineColors(points gd.PackedVector2Array, colors gd.PackedColorArray, width gd.Float, antialiased bool) {
+func (self class) DrawPolylineColors(points gd.PackedVector2Array, colors gd.PackedColorArray, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_polyline_colors
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, pointers.Get(colors))
@@ -995,7 +995,7 @@ If [param width] is negative, it will be ignored and the arc will be drawn using
 The arc is drawn from [param start_angle] towards the value of [param end_angle] so in clockwise direction if [code]start_angle < end_angle[/code] and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of [param start_angle] and [param end_angle] is greater than [constant @GDScript.TAU] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
 */
 //go:nosplit
-func (self class) DrawArc(center gd.Vector2, radius gd.Float, start_angle gd.Float, end_angle gd.Float, point_count gd.Int, color gd.Color, width gd.Float, antialiased bool) {
+func (self class) DrawArc(center gd.Vector2, radius gd.Float, start_angle gd.Float, end_angle gd.Float, point_count gd.Int, color gd.Color, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_arc
 	var frame = callframe.New()
 	callframe.Arg(frame, center)
 	callframe.Arg(frame, radius)
@@ -1016,7 +1016,7 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 //go:nosplit
-func (self class) DrawMultiline(points gd.PackedVector2Array, color gd.Color, width gd.Float, antialiased bool) {
+func (self class) DrawMultiline(points gd.PackedVector2Array, color gd.Color, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_multiline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, color)
@@ -1033,7 +1033,7 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 //go:nosplit
-func (self class) DrawMultilineColors(points gd.PackedVector2Array, colors gd.PackedColorArray, width gd.Float, antialiased bool) {
+func (self class) DrawMultilineColors(points gd.PackedVector2Array, colors gd.PackedColorArray, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_multiline_colors
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, pointers.Get(colors))
@@ -1052,7 +1052,7 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 [b]Note:[/b] Unfilled rectangles drawn with a negative [param width] may not display perfectly. For example, corners may be missing or brighter due to overlapping lines (for a translucent [param color]).
 */
 //go:nosplit
-func (self class) DrawRect(rect gd.Rect2, color gd.Color, filled bool, width gd.Float, antialiased bool) {
+func (self class) DrawRect(rect gd.Rect2, color gd.Color, filled bool, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	callframe.Arg(frame, color)
@@ -1072,7 +1072,7 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 [b]Note:[/b] [param width] is only effective if [param filled] is [code]false[/code].
 */
 //go:nosplit
-func (self class) DrawCircle(position gd.Vector2, radius gd.Float, color gd.Color, filled bool, width gd.Float, antialiased bool) {
+func (self class) DrawCircle(position gd.Vector2, radius gd.Float, color gd.Color, filled bool, width gd.Float, antialiased bool) { //gd:CanvasItem.draw_circle
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, radius)
@@ -1089,7 +1089,7 @@ func (self class) DrawCircle(position gd.Vector2, radius gd.Float, color gd.Colo
 Draws a texture at a given position.
 */
 //go:nosplit
-func (self class) DrawTexture(texture [1]gdclass.Texture2D, position gd.Vector2, modulate gd.Color) {
+func (self class) DrawTexture(texture [1]gdclass.Texture2D, position gd.Vector2, modulate gd.Color) { //gd:CanvasItem.draw_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, position)
@@ -1103,7 +1103,7 @@ func (self class) DrawTexture(texture [1]gdclass.Texture2D, position gd.Vector2,
 Draws a textured rectangle at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_rect] and [method draw_texture_rect_region].
 */
 //go:nosplit
-func (self class) DrawTextureRect(texture [1]gdclass.Texture2D, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool) {
+func (self class) DrawTextureRect(texture [1]gdclass.Texture2D, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool) { //gd:CanvasItem.draw_texture_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, rect)
@@ -1119,7 +1119,7 @@ func (self class) DrawTextureRect(texture [1]gdclass.Texture2D, rect gd.Rect2, t
 Draws a textured rectangle from a texture's region (specified by [param src_rect]) at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_texture_rect].
 */
 //go:nosplit
-func (self class) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool) {
+func (self class) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool) { //gd:CanvasItem.draw_texture_rect_region
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, rect)
@@ -1138,7 +1138,7 @@ If [param outline] is positive, each alpha channel value of pixel in region is s
 Value of the [param pixel_range] should the same that was used during distance field texture generation.
 */
 //go:nosplit
-func (self class) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, outline gd.Float, pixel_range gd.Float, scale gd.Float) {
+func (self class) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, outline gd.Float, pixel_range gd.Float, scale gd.Float) { //gd:CanvasItem.draw_msdf_texture_rect_region
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, rect)
@@ -1163,7 +1163,7 @@ dst.a = modulate.a + dst.a * (1.0 - modulate.a);
 [/codeblock]
 */
 //go:nosplit
-func (self class) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color) {
+func (self class) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color) { //gd:CanvasItem.draw_lcd_texture_rect_region
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, rect)
@@ -1178,7 +1178,7 @@ func (self class) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect gd
 Draws a styled rectangle.
 */
 //go:nosplit
-func (self class) DrawStyleBox(style_box [1]gdclass.StyleBox, rect gd.Rect2) {
+func (self class) DrawStyleBox(style_box [1]gdclass.StyleBox, rect gd.Rect2) { //gd:CanvasItem.draw_style_box
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(style_box[0])[0])
 	callframe.Arg(frame, rect)
@@ -1191,7 +1191,7 @@ func (self class) DrawStyleBox(style_box [1]gdclass.StyleBox, rect gd.Rect2) {
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. See also [method draw_line], [method draw_polyline], [method draw_polygon], and [method draw_rect].
 */
 //go:nosplit
-func (self class) DrawPrimitive(points gd.PackedVector2Array, colors gd.PackedColorArray, uvs gd.PackedVector2Array, texture [1]gdclass.Texture2D) {
+func (self class) DrawPrimitive(points gd.PackedVector2Array, colors gd.PackedColorArray, uvs gd.PackedVector2Array, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_primitive
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, pointers.Get(colors))
@@ -1206,7 +1206,7 @@ func (self class) DrawPrimitive(points gd.PackedVector2Array, colors gd.PackedCo
 Draws a solid polygon of any number of points, convex or concave. Unlike [method draw_colored_polygon], each point's color can be changed individually. See also [method draw_polyline] and [method draw_polyline_colors]. If you need more flexibility (such as being able to use bones), use [method RenderingServer.canvas_item_add_triangle_array] instead.
 */
 //go:nosplit
-func (self class) DrawPolygon(points gd.PackedVector2Array, colors gd.PackedColorArray, uvs gd.PackedVector2Array, texture [1]gdclass.Texture2D) {
+func (self class) DrawPolygon(points gd.PackedVector2Array, colors gd.PackedColorArray, uvs gd.PackedVector2Array, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, pointers.Get(colors))
@@ -1221,7 +1221,7 @@ func (self class) DrawPolygon(points gd.PackedVector2Array, colors gd.PackedColo
 Draws a colored polygon of any number of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
 */
 //go:nosplit
-func (self class) DrawColoredPolygon(points gd.PackedVector2Array, color gd.Color, uvs gd.PackedVector2Array, texture [1]gdclass.Texture2D) {
+func (self class) DrawColoredPolygon(points gd.PackedVector2Array, color gd.Color, uvs gd.PackedVector2Array, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_colored_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, color)
@@ -1256,7 +1256,7 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 See also [method Font.draw_string].
 */
 //go:nosplit
-func (self class) DrawString(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) {
+func (self class) DrawString(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1277,7 +1277,7 @@ func (self class) DrawString(font [1]gdclass.Font, pos gd.Vector2, text gd.Strin
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawMultilineString(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) {
+func (self class) DrawMultilineString(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1300,7 +1300,7 @@ func (self class) DrawMultilineString(font [1]gdclass.Font, pos gd.Vector2, text
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawStringOutline(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) {
+func (self class) DrawStringOutline(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, size gd.Int, modulate gd.Color, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1322,7 +1322,7 @@ func (self class) DrawStringOutline(font [1]gdclass.Font, pos gd.Vector2, text g
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, size gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) {
+func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos gd.Vector2, text gd.String, alignment HorizontalAlignment, width gd.Float, font_size gd.Int, max_lines gd.Int, size gd.Int, modulate gd.Color, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1346,7 +1346,7 @@ func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos gd.Vector
 Draws a string first character using a custom font.
 */
 //go:nosplit
-func (self class) DrawChar(font [1]gdclass.Font, pos gd.Vector2, char gd.String, font_size gd.Int, modulate gd.Color) {
+func (self class) DrawChar(font [1]gdclass.Font, pos gd.Vector2, char gd.String, font_size gd.Int, modulate gd.Color) { //gd:CanvasItem.draw_char
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1362,7 +1362,7 @@ func (self class) DrawChar(font [1]gdclass.Font, pos gd.Vector2, char gd.String,
 Draws a string first character outline using a custom font.
 */
 //go:nosplit
-func (self class) DrawCharOutline(font [1]gdclass.Font, pos gd.Vector2, char gd.String, font_size gd.Int, size gd.Int, modulate gd.Color) {
+func (self class) DrawCharOutline(font [1]gdclass.Font, pos gd.Vector2, char gd.String, font_size gd.Int, size gd.Int, modulate gd.Color) { //gd:CanvasItem.draw_char_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1379,7 +1379,7 @@ func (self class) DrawCharOutline(font [1]gdclass.Font, pos gd.Vector2, char gd.
 Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation.
 */
 //go:nosplit
-func (self class) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, transform gd.Transform2D, modulate gd.Color) {
+func (self class) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, transform gd.Transform2D, modulate gd.Color) { //gd:CanvasItem.draw_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -1394,7 +1394,7 @@ func (self class) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, t
 Draws a [MultiMesh] in 2D with the provided texture. See [MultiMeshInstance2D] for related documentation.
 */
 //go:nosplit
-func (self class) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdclass.Texture2D) {
+func (self class) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_multimesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(multimesh[0])[0])
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -1408,7 +1408,7 @@ Sets a custom transform for drawing via components. Anything drawn afterwards wi
 [b]Note:[/b] [member FontFile.oversampling] does [i]not[/i] take [param scale] into account. This means that scaling up/down will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated. To ensure text remains crisp regardless of scale, you can enable MSDF font rendering by enabling [member ProjectSettings.gui/theme/default_font_multichannel_signed_distance_field] (applies to the default project font only), or enabling [b]Multichannel Signed Distance Field[/b] in the import options of a DynamicFont for custom fonts. On system fonts, [member SystemFont.multichannel_signed_distance_field] can be enabled in the inspector.
 */
 //go:nosplit
-func (self class) DrawSetTransform(position gd.Vector2, rotation gd.Float, scale gd.Vector2) {
+func (self class) DrawSetTransform(position gd.Vector2, rotation gd.Float, scale gd.Vector2) { //gd:CanvasItem.draw_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, rotation)
@@ -1422,7 +1422,7 @@ func (self class) DrawSetTransform(position gd.Vector2, rotation gd.Float, scale
 Sets a custom transform for drawing via matrix. Anything drawn afterwards will be transformed by this.
 */
 //go:nosplit
-func (self class) DrawSetTransformMatrix(xform gd.Transform2D) {
+func (self class) DrawSetTransformMatrix(xform gd.Transform2D) { //gd:CanvasItem.draw_set_transform_matrix
 	var frame = callframe.New()
 	callframe.Arg(frame, xform)
 	var r_ret = callframe.Nil
@@ -1434,7 +1434,7 @@ func (self class) DrawSetTransformMatrix(xform gd.Transform2D) {
 Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
 */
 //go:nosplit
-func (self class) DrawAnimationSlice(animation_length gd.Float, slice_begin gd.Float, slice_end gd.Float, offset gd.Float) {
+func (self class) DrawAnimationSlice(animation_length gd.Float, slice_begin gd.Float, slice_end gd.Float, offset gd.Float) { //gd:CanvasItem.draw_animation_slice
 	var frame = callframe.New()
 	callframe.Arg(frame, animation_length)
 	callframe.Arg(frame, slice_begin)
@@ -1449,7 +1449,7 @@ func (self class) DrawAnimationSlice(animation_length gd.Float, slice_begin gd.F
 After submitting all animations slices via [method draw_animation_slice], this function can be used to revert drawing to its default state (all subsequent drawing commands will be visible). If you don't care about this particular use case, usage of this function after submitting the slices is not required.
 */
 //go:nosplit
-func (self class) DrawEndAnimation() {
+func (self class) DrawEndAnimation() { //gd:CanvasItem.draw_end_animation
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_end_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1460,7 +1460,7 @@ func (self class) DrawEndAnimation() {
 Returns the transform matrix of this item.
 */
 //go:nosplit
-func (self class) GetTransform() gd.Transform2D {
+func (self class) GetTransform() gd.Transform2D { //gd:CanvasItem.get_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1473,7 +1473,7 @@ func (self class) GetTransform() gd.Transform2D {
 Returns the global transform matrix of this item, i.e. the combined transform up to the topmost [CanvasItem] node. The topmost item is a [CanvasItem] that either has no parent, has non-[CanvasItem] parent or it has [member top_level] enabled.
 */
 //go:nosplit
-func (self class) GetGlobalTransform() gd.Transform2D {
+func (self class) GetGlobalTransform() gd.Transform2D { //gd:CanvasItem.get_global_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1486,7 +1486,7 @@ func (self class) GetGlobalTransform() gd.Transform2D {
 Returns the transform from the local coordinate system of this [CanvasItem] to the [Viewport]s coordinate system.
 */
 //go:nosplit
-func (self class) GetGlobalTransformWithCanvas() gd.Transform2D {
+func (self class) GetGlobalTransformWithCanvas() gd.Transform2D { //gd:CanvasItem.get_global_transform_with_canvas
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_transform_with_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1499,7 +1499,7 @@ func (self class) GetGlobalTransformWithCanvas() gd.Transform2D {
 Returns the transform from the coordinate system of the canvas, this item is in, to the [Viewport]s embedders coordinate system.
 */
 //go:nosplit
-func (self class) GetViewportTransform() gd.Transform2D {
+func (self class) GetViewportTransform() gd.Transform2D { //gd:CanvasItem.get_viewport_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_viewport_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1512,7 +1512,7 @@ func (self class) GetViewportTransform() gd.Transform2D {
 Returns the viewport's boundaries as a [Rect2].
 */
 //go:nosplit
-func (self class) GetViewportRect() gd.Rect2 {
+func (self class) GetViewportRect() gd.Rect2 { //gd:CanvasItem.get_viewport_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_viewport_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1525,7 +1525,7 @@ func (self class) GetViewportRect() gd.Rect2 {
 Returns the transform from the coordinate system of the canvas, this item is in, to the [Viewport]s coordinate system.
 */
 //go:nosplit
-func (self class) GetCanvasTransform() gd.Transform2D {
+func (self class) GetCanvasTransform() gd.Transform2D { //gd:CanvasItem.get_canvas_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1539,7 +1539,7 @@ Returns the transform of this [CanvasItem] in global screen coordinates (i.e. ta
 Equals to [method get_global_transform] if the window is embedded (see [member Viewport.gui_embed_subwindows]).
 */
 //go:nosplit
-func (self class) GetScreenTransform() gd.Transform2D {
+func (self class) GetScreenTransform() gd.Transform2D { //gd:CanvasItem.get_screen_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_screen_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1552,7 +1552,7 @@ func (self class) GetScreenTransform() gd.Transform2D {
 Returns the mouse's position in this [CanvasItem] using the local coordinate system of this [CanvasItem].
 */
 //go:nosplit
-func (self class) GetLocalMousePosition() gd.Vector2 {
+func (self class) GetLocalMousePosition() gd.Vector2 { //gd:CanvasItem.get_local_mouse_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_local_mouse_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1566,7 +1566,7 @@ Returns the mouse's position in the [CanvasLayer] that this [CanvasItem] is in u
 [b]Note:[/b] For screen-space coordinates (e.g. when using a non-embedded [Popup]), you can use [method DisplayServer.mouse_get_position].
 */
 //go:nosplit
-func (self class) GetGlobalMousePosition() gd.Vector2 {
+func (self class) GetGlobalMousePosition() gd.Vector2 { //gd:CanvasItem.get_global_mouse_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_mouse_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1579,7 +1579,7 @@ func (self class) GetGlobalMousePosition() gd.Vector2 {
 Returns the [RID] of the [World2D] canvas where this item is in.
 */
 //go:nosplit
-func (self class) GetCanvas() gd.RID {
+func (self class) GetCanvas() gd.RID { //gd:CanvasItem.get_canvas
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1592,7 +1592,7 @@ func (self class) GetCanvas() gd.RID {
 Returns the [CanvasLayer] that contains this node, or [code]null[/code] if the node is not in any [CanvasLayer].
 */
 //go:nosplit
-func (self class) GetCanvasLayerNode() [1]gdclass.CanvasLayer {
+func (self class) GetCanvasLayerNode() [1]gdclass.CanvasLayer { //gd:CanvasItem.get_canvas_layer_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_layer_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1605,7 +1605,7 @@ func (self class) GetCanvasLayerNode() [1]gdclass.CanvasLayer {
 Returns the [World2D] where this item is in.
 */
 //go:nosplit
-func (self class) GetWorld2d() [1]gdclass.World2D {
+func (self class) GetWorld2d() [1]gdclass.World2D { //gd:CanvasItem.get_world_2d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1615,7 +1615,7 @@ func (self class) GetWorld2d() [1]gdclass.World2D {
 }
 
 //go:nosplit
-func (self class) SetMaterial(material [1]gdclass.Material) {
+func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CanvasItem.set_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	var r_ret = callframe.Nil
@@ -1624,7 +1624,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) GetMaterial() [1]gdclass.Material {
+func (self class) GetMaterial() [1]gdclass.Material { //gd:CanvasItem.get_material
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1634,7 +1634,7 @@ func (self class) GetMaterial() [1]gdclass.Material {
 }
 
 //go:nosplit
-func (self class) SetUseParentMaterial(enable bool) {
+func (self class) SetUseParentMaterial(enable bool) { //gd:CanvasItem.set_use_parent_material
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1643,7 +1643,7 @@ func (self class) SetUseParentMaterial(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetUseParentMaterial() bool {
+func (self class) GetUseParentMaterial() bool { //gd:CanvasItem.get_use_parent_material
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1656,7 +1656,7 @@ func (self class) GetUseParentMaterial() bool {
 If [param enable] is [code]true[/code], this node will receive [constant NOTIFICATION_LOCAL_TRANSFORM_CHANGED] when its local transform changes.
 */
 //go:nosplit
-func (self class) SetNotifyLocalTransform(enable bool) {
+func (self class) SetNotifyLocalTransform(enable bool) { //gd:CanvasItem.set_notify_local_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1668,7 +1668,7 @@ func (self class) SetNotifyLocalTransform(enable bool) {
 Returns [code]true[/code] if local transform notifications are communicated to children.
 */
 //go:nosplit
-func (self class) IsLocalTransformNotificationEnabled() bool {
+func (self class) IsLocalTransformNotificationEnabled() bool { //gd:CanvasItem.is_local_transform_notification_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_local_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1681,7 +1681,7 @@ func (self class) IsLocalTransformNotificationEnabled() bool {
 If [param enable] is [code]true[/code], this node will receive [constant NOTIFICATION_TRANSFORM_CHANGED] when its global transform changes.
 */
 //go:nosplit
-func (self class) SetNotifyTransform(enable bool) {
+func (self class) SetNotifyTransform(enable bool) { //gd:CanvasItem.set_notify_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1693,7 +1693,7 @@ func (self class) SetNotifyTransform(enable bool) {
 Returns [code]true[/code] if global transform notifications are communicated to children.
 */
 //go:nosplit
-func (self class) IsTransformNotificationEnabled() bool {
+func (self class) IsTransformNotificationEnabled() bool { //gd:CanvasItem.is_transform_notification_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1706,7 +1706,7 @@ func (self class) IsTransformNotificationEnabled() bool {
 Forces the transform to update. Transform changes in physics are not instant for performance reasons. Transforms are accumulated and then set. Use this if you need an up-to-date transform when doing physics operations.
 */
 //go:nosplit
-func (self class) ForceUpdateTransform() {
+func (self class) ForceUpdateTransform() { //gd:CanvasItem.force_update_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_force_update_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1717,7 +1717,7 @@ func (self class) ForceUpdateTransform() {
 Assigns [param screen_point] as this node's new local transform.
 */
 //go:nosplit
-func (self class) MakeCanvasPositionLocal(screen_point gd.Vector2) gd.Vector2 {
+func (self class) MakeCanvasPositionLocal(screen_point gd.Vector2) gd.Vector2 { //gd:CanvasItem.make_canvas_position_local
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_point)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -1731,7 +1731,7 @@ func (self class) MakeCanvasPositionLocal(screen_point gd.Vector2) gd.Vector2 {
 Transformations issued by [param event]'s inputs are applied in local space instead of global space.
 */
 //go:nosplit
-func (self class) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEvent {
+func (self class) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEvent { //gd:CanvasItem.make_input_local
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(event[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1742,7 +1742,7 @@ func (self class) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEv
 }
 
 //go:nosplit
-func (self class) SetVisibilityLayer(layer gd.Int) {
+func (self class) SetVisibilityLayer(layer gd.Int) { //gd:CanvasItem.set_visibility_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -1751,7 +1751,7 @@ func (self class) SetVisibilityLayer(layer gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetVisibilityLayer() gd.Int {
+func (self class) GetVisibilityLayer() gd.Int { //gd:CanvasItem.get_visibility_layer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_visibility_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1764,7 +1764,7 @@ func (self class) GetVisibilityLayer() gd.Int {
 Set/clear individual bits on the rendering visibility layer. This simplifies editing this [CanvasItem]'s visibility layer.
 */
 //go:nosplit
-func (self class) SetVisibilityLayerBit(layer gd.Int, enabled bool) {
+func (self class) SetVisibilityLayerBit(layer gd.Int, enabled bool) { //gd:CanvasItem.set_visibility_layer_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, enabled)
@@ -1777,7 +1777,7 @@ func (self class) SetVisibilityLayerBit(layer gd.Int, enabled bool) {
 Returns an individual bit on the rendering visibility layer.
 */
 //go:nosplit
-func (self class) GetVisibilityLayerBit(layer gd.Int) bool {
+func (self class) GetVisibilityLayerBit(layer gd.Int) bool { //gd:CanvasItem.get_visibility_layer_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1788,7 +1788,7 @@ func (self class) GetVisibilityLayerBit(layer gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) SetTextureFilter(mode gdclass.CanvasItemTextureFilter) {
+func (self class) SetTextureFilter(mode gdclass.CanvasItemTextureFilter) { //gd:CanvasItem.set_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1797,7 +1797,7 @@ func (self class) SetTextureFilter(mode gdclass.CanvasItemTextureFilter) {
 }
 
 //go:nosplit
-func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter {
+func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter { //gd:CanvasItem.get_texture_filter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemTextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1807,7 +1807,7 @@ func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter {
 }
 
 //go:nosplit
-func (self class) SetTextureRepeat(mode gdclass.CanvasItemTextureRepeat) {
+func (self class) SetTextureRepeat(mode gdclass.CanvasItemTextureRepeat) { //gd:CanvasItem.set_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1816,7 +1816,7 @@ func (self class) SetTextureRepeat(mode gdclass.CanvasItemTextureRepeat) {
 }
 
 //go:nosplit
-func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat {
+func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat { //gd:CanvasItem.get_texture_repeat
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemTextureRepeat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1826,7 +1826,7 @@ func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat {
 }
 
 //go:nosplit
-func (self class) SetClipChildrenMode(mode gdclass.CanvasItemClipChildrenMode) {
+func (self class) SetClipChildrenMode(mode gdclass.CanvasItemClipChildrenMode) { //gd:CanvasItem.set_clip_children_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1835,7 +1835,7 @@ func (self class) SetClipChildrenMode(mode gdclass.CanvasItemClipChildrenMode) {
 }
 
 //go:nosplit
-func (self class) GetClipChildrenMode() gdclass.CanvasItemClipChildrenMode {
+func (self class) GetClipChildrenMode() gdclass.CanvasItemClipChildrenMode { //gd:CanvasItem.get_clip_children_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemClipChildrenMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_clip_children_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1885,7 +1885,7 @@ func init() {
 	gdclass.Register("CanvasItem", func(ptr gd.Object) any { return [1]gdclass.CanvasItem{*(*gdclass.CanvasItem)(unsafe.Pointer(&ptr))} })
 }
 
-type TextureFilter = gdclass.CanvasItemTextureFilter
+type TextureFilter = gdclass.CanvasItemTextureFilter //gd:CanvasItem.TextureFilter
 
 const (
 	/*The [CanvasItem] will inherit the filter from its parent.*/
@@ -1910,7 +1910,7 @@ const (
 	TextureFilterMax TextureFilter = 7
 )
 
-type TextureRepeat = gdclass.CanvasItemTextureRepeat
+type TextureRepeat = gdclass.CanvasItemTextureRepeat //gd:CanvasItem.TextureRepeat
 
 const (
 	/*The [CanvasItem] will inherit the filter from its parent.*/
@@ -1925,7 +1925,7 @@ const (
 	TextureRepeatMax TextureRepeat = 4
 )
 
-type ClipChildrenMode = gdclass.CanvasItemClipChildrenMode
+type ClipChildrenMode = gdclass.CanvasItemClipChildrenMode //gd:CanvasItem.ClipChildrenMode
 
 const (
 	/*Child draws over parent and is not clipped.*/

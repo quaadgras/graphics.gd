@@ -116,7 +116,7 @@ func (self Instance) SetLoopMode(value gdclass.AnimationLoopMode) {
 }
 
 //go:nosplit
-func (self class) SetAnimation(name gd.StringName) {
+func (self class) SetAnimation(name gd.StringName) { //gd:AnimationNodeAnimation.set_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -125,7 +125,7 @@ func (self class) SetAnimation(name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetAnimation() gd.StringName {
+func (self class) GetAnimation() gd.StringName { //gd:AnimationNodeAnimation.get_animation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func (self class) GetAnimation() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetPlayMode(mode gdclass.AnimationNodeAnimationPlayMode) {
+func (self class) SetPlayMode(mode gdclass.AnimationNodeAnimationPlayMode) { //gd:AnimationNodeAnimation.set_play_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetPlayMode(mode gdclass.AnimationNodeAnimationPlayMode) {
 }
 
 //go:nosplit
-func (self class) GetPlayMode() gdclass.AnimationNodeAnimationPlayMode {
+func (self class) GetPlayMode() gdclass.AnimationNodeAnimationPlayMode { //gd:AnimationNodeAnimation.get_play_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationNodeAnimationPlayMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_play_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func (self class) GetPlayMode() gdclass.AnimationNodeAnimationPlayMode {
 }
 
 //go:nosplit
-func (self class) SetUseCustomTimeline(use_custom_timeline bool) {
+func (self class) SetUseCustomTimeline(use_custom_timeline bool) { //gd:AnimationNodeAnimation.set_use_custom_timeline
 	var frame = callframe.New()
 	callframe.Arg(frame, use_custom_timeline)
 	var r_ret = callframe.Nil
@@ -163,7 +163,7 @@ func (self class) SetUseCustomTimeline(use_custom_timeline bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingCustomTimeline() bool {
+func (self class) IsUsingCustomTimeline() bool { //gd:AnimationNodeAnimation.is_using_custom_timeline
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_is_using_custom_timeline, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func (self class) IsUsingCustomTimeline() bool {
 }
 
 //go:nosplit
-func (self class) SetTimelineLength(timeline_length gd.Float) {
+func (self class) SetTimelineLength(timeline_length gd.Float) { //gd:AnimationNodeAnimation.set_timeline_length
 	var frame = callframe.New()
 	callframe.Arg(frame, timeline_length)
 	var r_ret = callframe.Nil
@@ -182,7 +182,7 @@ func (self class) SetTimelineLength(timeline_length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTimelineLength() gd.Float {
+func (self class) GetTimelineLength() gd.Float { //gd:AnimationNodeAnimation.get_timeline_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_timeline_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -192,7 +192,7 @@ func (self class) GetTimelineLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetStretchTimeScale(stretch_time_scale bool) {
+func (self class) SetStretchTimeScale(stretch_time_scale bool) { //gd:AnimationNodeAnimation.set_stretch_time_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch_time_scale)
 	var r_ret = callframe.Nil
@@ -201,7 +201,7 @@ func (self class) SetStretchTimeScale(stretch_time_scale bool) {
 }
 
 //go:nosplit
-func (self class) IsStretchingTimeScale() bool {
+func (self class) IsStretchingTimeScale() bool { //gd:AnimationNodeAnimation.is_stretching_time_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_is_stretching_time_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func (self class) IsStretchingTimeScale() bool {
 }
 
 //go:nosplit
-func (self class) SetStartOffset(start_offset gd.Float) {
+func (self class) SetStartOffset(start_offset gd.Float) { //gd:AnimationNodeAnimation.set_start_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, start_offset)
 	var r_ret = callframe.Nil
@@ -220,7 +220,7 @@ func (self class) SetStartOffset(start_offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetStartOffset() gd.Float {
+func (self class) GetStartOffset() gd.Float { //gd:AnimationNodeAnimation.get_start_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_start_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -230,7 +230,7 @@ func (self class) GetStartOffset() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) {
+func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) { //gd:AnimationNodeAnimation.set_loop_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_mode)
 	var r_ret = callframe.Nil
@@ -239,7 +239,7 @@ func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) {
 }
 
 //go:nosplit
-func (self class) GetLoopMode() gdclass.AnimationLoopMode {
+func (self class) GetLoopMode() gdclass.AnimationLoopMode { //gd:AnimationNodeAnimation.get_loop_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationLoopMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_loop_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -295,7 +295,7 @@ func init() {
 	})
 }
 
-type PlayMode = gdclass.AnimationNodeAnimationPlayMode
+type PlayMode = gdclass.AnimationNodeAnimationPlayMode //gd:AnimationNodeAnimation.PlayMode
 
 const (
 	/*Plays animation in forward direction.*/

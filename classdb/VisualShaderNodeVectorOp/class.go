@@ -67,7 +67,7 @@ func (self Instance) SetOperator(value gdclass.VisualShaderNodeVectorOpOperator)
 }
 
 //go:nosplit
-func (self class) SetOperator(op gdclass.VisualShaderNodeVectorOpOperator) {
+func (self class) SetOperator(op gdclass.VisualShaderNodeVectorOpOperator) { //gd:VisualShaderNodeVectorOp.set_operator
 	var frame = callframe.New()
 	callframe.Arg(frame, op)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetOperator(op gdclass.VisualShaderNodeVectorOpOperator) {
 }
 
 //go:nosplit
-func (self class) GetOperator() gdclass.VisualShaderNodeVectorOpOperator {
+func (self class) GetOperator() gdclass.VisualShaderNodeVectorOpOperator { //gd:VisualShaderNodeVectorOp.get_operator
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeVectorOpOperator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVectorOp.Bind_get_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -132,7 +132,7 @@ func init() {
 	})
 }
 
-type Operator = gdclass.VisualShaderNodeVectorOpOperator
+type Operator = gdclass.VisualShaderNodeVectorOpOperator //gd:VisualShaderNodeVectorOp.Operator
 
 const (
 	/*Adds two vectors.*/

@@ -41,7 +41,7 @@ type Any interface {
 /*
 Generates and sets an optimized translation from the given [Translation] resource.
 */
-func (self Instance) Generate(from [1]gdclass.Translation) {
+func (self Instance) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
 	class(self).Generate(from)
 }
 
@@ -68,7 +68,7 @@ func New() Instance {
 Generates and sets an optimized translation from the given [Translation] resource.
 */
 //go:nosplit
-func (self class) Generate(from [1]gdclass.Translation) {
+func (self class) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from[0])[0])
 	var r_ret = callframe.Nil

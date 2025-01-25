@@ -100,7 +100,7 @@ func (self Instance) SetDebugColor(value Color.RGBA) {
 }
 
 //go:nosplit
-func (self class) SetShape(shape [1]gdclass.Shape2D) {
+func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:CollisionShape2D.set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape[0])[0])
 	var r_ret = callframe.Nil
@@ -109,7 +109,7 @@ func (self class) SetShape(shape [1]gdclass.Shape2D) {
 }
 
 //go:nosplit
-func (self class) GetShape() [1]gdclass.Shape2D {
+func (self class) GetShape() [1]gdclass.Shape2D { //gd:CollisionShape2D.get_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape2D.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -119,7 +119,7 @@ func (self class) GetShape() [1]gdclass.Shape2D {
 }
 
 //go:nosplit
-func (self class) SetDisabled(disabled bool) {
+func (self class) SetDisabled(disabled bool) { //gd:CollisionShape2D.set_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, disabled)
 	var r_ret = callframe.Nil
@@ -128,7 +128,7 @@ func (self class) SetDisabled(disabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDisabled() bool {
+func (self class) IsDisabled() bool { //gd:CollisionShape2D.is_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape2D.Bind_is_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -138,7 +138,7 @@ func (self class) IsDisabled() bool {
 }
 
 //go:nosplit
-func (self class) SetOneWayCollision(enabled bool) {
+func (self class) SetOneWayCollision(enabled bool) { //gd:CollisionShape2D.set_one_way_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -147,7 +147,7 @@ func (self class) SetOneWayCollision(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsOneWayCollisionEnabled() bool {
+func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionShape2D.is_one_way_collision_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape2D.Bind_is_one_way_collision_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -157,7 +157,7 @@ func (self class) IsOneWayCollisionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetOneWayCollisionMargin(margin gd.Float) {
+func (self class) SetOneWayCollisionMargin(margin gd.Float) { //gd:CollisionShape2D.set_one_way_collision_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -166,7 +166,7 @@ func (self class) SetOneWayCollisionMargin(margin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetOneWayCollisionMargin() gd.Float {
+func (self class) GetOneWayCollisionMargin() gd.Float { //gd:CollisionShape2D.get_one_way_collision_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape2D.Bind_get_one_way_collision_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -176,7 +176,7 @@ func (self class) GetOneWayCollisionMargin() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDebugColor(color gd.Color) {
+func (self class) SetDebugColor(color gd.Color) { //gd:CollisionShape2D.set_debug_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -185,7 +185,7 @@ func (self class) SetDebugColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetDebugColor() gd.Color {
+func (self class) GetDebugColor() gd.Color { //gd:CollisionShape2D.get_debug_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape2D.Bind_get_debug_color, self.AsObject(), frame.Array(0), r_ret.Addr())

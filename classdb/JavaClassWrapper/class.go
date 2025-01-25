@@ -40,7 +40,7 @@ func singleton() {
 Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type that Godot can interact with.
 [b]Note:[/b] This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
 */
-func Wrap(name string) [1]gdclass.JavaClass {
+func Wrap(name string) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
 	once.Do(singleton)
 	return [1]gdclass.JavaClass(class(self).Wrap(gd.NewString(name)))
 }
@@ -60,7 +60,7 @@ Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type tha
 [b]Note:[/b] This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
 */
 //go:nosplit
-func (self class) Wrap(name gd.String) [1]gdclass.JavaClass {
+func (self class) Wrap(name gd.String) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

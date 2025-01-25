@@ -40,7 +40,7 @@ func singleton() {
 /*
 Returns the [CameraFeed] corresponding to the camera with the given [param index].
 */
-func GetFeed(index int) [1]gdclass.CameraFeed {
+func GetFeed(index int) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
 	once.Do(singleton)
 	return [1]gdclass.CameraFeed(class(self).GetFeed(gd.Int(index)))
 }
@@ -48,7 +48,7 @@ func GetFeed(index int) [1]gdclass.CameraFeed {
 /*
 Returns the number of [CameraFeed]s registered.
 */
-func GetFeedCount() int {
+func GetFeedCount() int { //gd:CameraServer.get_feed_count
 	once.Do(singleton)
 	return int(int(class(self).GetFeedCount()))
 }
@@ -56,7 +56,7 @@ func GetFeedCount() int {
 /*
 Returns an array of [CameraFeed]s.
 */
-func Feeds() [][1]gdclass.CameraFeed {
+func Feeds() [][1]gdclass.CameraFeed { //gd:CameraServer.feeds
 	once.Do(singleton)
 	return [][1]gdclass.CameraFeed(gd.ArrayAs[[][1]gdclass.CameraFeed](gd.InternalArray(class(self).Feeds())))
 }
@@ -64,7 +64,7 @@ func Feeds() [][1]gdclass.CameraFeed {
 /*
 Adds the camera [param feed] to the camera server.
 */
-func AddFeed(feed [1]gdclass.CameraFeed) {
+func AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
 	once.Do(singleton)
 	class(self).AddFeed(feed)
 }
@@ -72,7 +72,7 @@ func AddFeed(feed [1]gdclass.CameraFeed) {
 /*
 Removes the specified camera [param feed].
 */
-func RemoveFeed(feed [1]gdclass.CameraFeed) {
+func RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
 	once.Do(singleton)
 	class(self).RemoveFeed(feed)
 }
@@ -91,7 +91,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns the [CameraFeed] corresponding to the camera with the given [param index].
 */
 //go:nosplit
-func (self class) GetFeed(index gd.Int) [1]gdclass.CameraFeed {
+func (self class) GetFeed(index gd.Int) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -105,7 +105,7 @@ func (self class) GetFeed(index gd.Int) [1]gdclass.CameraFeed {
 Returns the number of [CameraFeed]s registered.
 */
 //go:nosplit
-func (self class) GetFeedCount() gd.Int {
+func (self class) GetFeedCount() gd.Int { //gd:CameraServer.get_feed_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_get_feed_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -118,7 +118,7 @@ func (self class) GetFeedCount() gd.Int {
 Returns an array of [CameraFeed]s.
 */
 //go:nosplit
-func (self class) Feeds() Array.Contains[[1]gdclass.CameraFeed] {
+func (self class) Feeds() Array.Contains[[1]gdclass.CameraFeed] { //gd:CameraServer.feeds
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_feeds, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -131,7 +131,7 @@ func (self class) Feeds() Array.Contains[[1]gdclass.CameraFeed] {
 Adds the camera [param feed] to the camera server.
 */
 //go:nosplit
-func (self class) AddFeed(feed [1]gdclass.CameraFeed) {
+func (self class) AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(feed[0])[0])
 	var r_ret = callframe.Nil
@@ -143,7 +143,7 @@ func (self class) AddFeed(feed [1]gdclass.CameraFeed) {
 Removes the specified camera [param feed].
 */
 //go:nosplit
-func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) {
+func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(feed[0])[0])
 	var r_ret = callframe.Nil
@@ -170,7 +170,7 @@ func init() {
 	})
 }
 
-type FeedImage = gdclass.CameraServerFeedImage
+type FeedImage = gdclass.CameraServerFeedImage //gd:CameraServer.FeedImage
 
 const (
 	/*The RGBA camera image.*/

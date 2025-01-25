@@ -39,7 +39,7 @@ func singleton() {
 /*
 Returns the fraction through the current physics tick we are at the time of rendering the frame. This can be used to implement fixed timestep interpolation.
 */
-func GetPhysicsInterpolationFraction() Float.X {
+func GetPhysicsInterpolationFraction() Float.X { //gd:Engine.get_physics_interpolation_fraction
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetPhysicsInterpolationFraction()))
 }
@@ -48,7 +48,7 @@ func GetPhysicsInterpolationFraction() Float.X {
 Returns the total number of frames drawn since the engine started.
 [b]Note:[/b] On headless platforms, or if rendering is disabled with [code]--disable-render-loop[/code] via command line, this method always returns [code]0[/code]. See also [method get_process_frames].
 */
-func GetFramesDrawn() int {
+func GetFramesDrawn() int { //gd:Engine.get_frames_drawn
 	once.Do(singleton)
 	return int(int(class(self).GetFramesDrawn()))
 }
@@ -56,7 +56,7 @@ func GetFramesDrawn() int {
 /*
 Returns the average frames rendered every second (FPS), also known as the framerate.
 */
-func GetFramesPerSecond() Float.X {
+func GetFramesPerSecond() Float.X { //gd:Engine.get_frames_per_second
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetFramesPerSecond()))
 }
@@ -87,7 +87,7 @@ public override void _PhysicsProcess(double delta)
 [/csharp]
 [/codeblocks]
 */
-func GetPhysicsFrames() int {
+func GetPhysicsFrames() int { //gd:Engine.get_physics_frames
 	once.Do(singleton)
 	return int(int(class(self).GetPhysicsFrames()))
 }
@@ -118,7 +118,7 @@ public override void _Process(double delta)
 [/csharp]
 [/codeblocks]
 */
-func GetProcessFrames() int {
+func GetProcessFrames() int { //gd:Engine.get_process_frames
 	once.Do(singleton)
 	return int(int(class(self).GetProcessFrames()))
 }
@@ -127,7 +127,7 @@ func GetProcessFrames() int {
 Returns the instance of the [MainLoop]. This is usually the main [SceneTree] and is the same as [method Node.get_tree].
 [b]Note:[/b] The type instantiated as the main loop can changed with [member ProjectSettings.application/run/main_loop_type].
 */
-func GetMainLoop() [1]gdclass.MainLoop {
+func GetMainLoop() [1]gdclass.MainLoop { //gd:Engine.get_main_loop
 	once.Do(singleton)
 	return [1]gdclass.MainLoop(class(self).GetMainLoop())
 }
@@ -172,7 +172,7 @@ else
 [/csharp]
 [/codeblocks]
 */
-func GetVersionInfo() map[any]any {
+func GetVersionInfo() map[any]any { //gd:Engine.get_version_info
 	once.Do(singleton)
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetVersionInfo()))
 }
@@ -180,7 +180,7 @@ func GetVersionInfo() map[any]any {
 /*
 Returns the engine author information as a [Dictionary], where each entry is an [Array] of strings with the names of notable contributors to the Godot Engine: [code]lead_developers[/code], [code]founders[/code], [code]project_managers[/code], and [code]developers[/code].
 */
-func GetAuthorInfo() map[any]any {
+func GetAuthorInfo() map[any]any { //gd:Engine.get_author_info
 	once.Do(singleton)
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetAuthorInfo()))
 }
@@ -192,7 +192,7 @@ Every [Dictionary] contains a [code]name[/code] identifier, and a [code]parts[/c
 - [code]copyright[/code] - [Array] of owners of this component;
 - [code]license[/code] - The license applied to this component (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]" or "[url=https://creativecommons.org/licenses/by/4.0/]CC-BY-4.0[/url]").
 */
-func GetCopyrightInfo() []map[any]any {
+func GetCopyrightInfo() []map[any]any { //gd:Engine.get_copyright_info
 	once.Do(singleton)
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetCopyrightInfo())))
 }
@@ -201,7 +201,7 @@ func GetCopyrightInfo() []map[any]any {
 Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of strings:
 {[code]platinum_sponsors[/code], [code]gold_sponsors[/code], [code]silver_sponsors[/code], [code]bronze_sponsors[/code], [code]mini_sponsors[/code], [code]gold_donors[/code], [code]silver_donors[/code], [code]bronze_donors[/code]}
 */
-func GetDonorInfo() map[any]any {
+func GetDonorInfo() map[any]any { //gd:Engine.get_donor_info
 	once.Do(singleton)
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetDonorInfo()))
 }
@@ -209,7 +209,7 @@ func GetDonorInfo() map[any]any {
 /*
 Returns a [Dictionary] of licenses used by Godot and included third party components. Each entry is a license name (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]") and its associated text.
 */
-func GetLicenseInfo() map[any]any {
+func GetLicenseInfo() map[any]any { //gd:Engine.get_license_info
 	once.Do(singleton)
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetLicenseInfo()))
 }
@@ -217,7 +217,7 @@ func GetLicenseInfo() map[any]any {
 /*
 Returns the full Godot license text.
 */
-func GetLicenseText() string {
+func GetLicenseText() string { //gd:Engine.get_license_text
 	once.Do(singleton)
 	return string(class(self).GetLicenseText().String())
 }
@@ -249,7 +249,7 @@ else
 [/codeblocks]
 [b]Note:[/b] This method does [i]not[/i] return the name of the system's CPU architecture (like [method OS.get_processor_name]). For example, when running an [code]x86_32[/code] Godot binary on an [code]x86_64[/code] system, the returned value will still be [code]"x86_32"[/code].
 */
-func GetArchitectureName() string {
+func GetArchitectureName() string { //gd:Engine.get_architecture_name
 	once.Do(singleton)
 	return string(class(self).GetArchitectureName().String())
 }
@@ -273,7 +273,7 @@ func _physics_process(delta):
 
 [/codeblock]
 */
-func IsInPhysicsFrame() bool {
+func IsInPhysicsFrame() bool { //gd:Engine.is_in_physics_frame
 	once.Do(singleton)
 	return bool(class(self).IsInPhysicsFrame())
 }
@@ -296,7 +296,7 @@ GD.Print(Engine.HasSingleton("Unknown"));     // Prints false
 [/codeblocks]
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
-func HasSingleton(name string) bool {
+func HasSingleton(name string) bool { //gd:Engine.has_singleton
 	once.Do(singleton)
 	return bool(class(self).HasSingleton(gd.NewStringName(name)))
 }
@@ -305,7 +305,7 @@ func HasSingleton(name string) bool {
 Returns the global singleton with the given [param name], or [code]null[/code] if it does not exist. Often used for plugins. See also [method has_singleton] and [method get_singleton_list].
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
-func GetSingleton(name string) Object.Instance {
+func GetSingleton(name string) Object.Instance { //gd:Engine.get_singleton
 	once.Do(singleton)
 	return Object.Instance(class(self).GetSingleton(gd.NewStringName(name)))
 }
@@ -313,7 +313,7 @@ func GetSingleton(name string) Object.Instance {
 /*
 Registers the given [Object] [param instance] as a singleton, available globally under [param name]. Useful for plugins.
 */
-func RegisterSingleton(name string, instance Object.Instance) {
+func RegisterSingleton(name string, instance Object.Instance) { //gd:Engine.register_singleton
 	once.Do(singleton)
 	class(self).RegisterSingleton(gd.NewStringName(name), instance)
 }
@@ -321,7 +321,7 @@ func RegisterSingleton(name string, instance Object.Instance) {
 /*
 Removes the singleton registered under [param name]. The singleton object is [i]not[/i] freed. Only works with user-defined singletons registered with [method register_singleton].
 */
-func UnregisterSingleton(name string) {
+func UnregisterSingleton(name string) { //gd:Engine.unregister_singleton
 	once.Do(singleton)
 	class(self).UnregisterSingleton(gd.NewStringName(name))
 }
@@ -329,7 +329,7 @@ func UnregisterSingleton(name string) {
 /*
 Returns a list of names of all available global singletons. See also [method get_singleton].
 */
-func GetSingletonList() []string {
+func GetSingletonList() []string { //gd:Engine.get_singleton_list
 	once.Do(singleton)
 	return []string(class(self).GetSingletonList().Strings())
 }
@@ -341,7 +341,7 @@ Returns:
 - [constant ERR_UNAVAILABLE] if [code]ScriptServer[/code] has reached the limit and cannot register any new language;
 - [constant ERR_ALREADY_EXISTS] if [code]ScriptServer[/code] already contains a language with similar extension/name/type.
 */
-func RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) error {
+func RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) error { //gd:Engine.register_script_language
 	once.Do(singleton)
 	return error(gd.ToError(class(self).RegisterScriptLanguage(language)))
 }
@@ -352,7 +352,7 @@ Returns:
 - [constant OK] on success;
 - [constant ERR_DOES_NOT_EXIST] if the language is not registered in [code]ScriptServer[/code].
 */
-func UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) error {
+func UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) error { //gd:Engine.unregister_script_language
 	once.Do(singleton)
 	return error(gd.ToError(class(self).UnregisterScriptLanguage(language)))
 }
@@ -360,7 +360,7 @@ func UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) error {
 /*
 Returns the number of available script languages. Use with [method get_script_language].
 */
-func GetScriptLanguageCount() int {
+func GetScriptLanguageCount() int { //gd:Engine.get_script_language_count
 	once.Do(singleton)
 	return int(int(class(self).GetScriptLanguageCount()))
 }
@@ -368,7 +368,7 @@ func GetScriptLanguageCount() int {
 /*
 Returns an instance of a [ScriptLanguage] with the given [param index].
 */
-func GetScriptLanguage(index int) [1]gdclass.ScriptLanguage {
+func GetScriptLanguage(index int) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
 	once.Do(singleton)
 	return [1]gdclass.ScriptLanguage(class(self).GetScriptLanguage(gd.Int(index)))
 }
@@ -400,7 +400,7 @@ else
 See [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]Running code in the editor[/url] in the documentation for more information.
 [b]Note:[/b] To detect whether the script is running on an editor [i]build[/i] (such as when pressing [kbd]F5[/kbd]), use [method OS.has_feature] with the [code]"editor"[/code] argument instead. [code]OS.has_feature("editor")[/code] evaluate to [code]true[/code] both when the script is running in the editor and when running the project from the editor, but returns [code]false[/code] when run from an exported project.
 */
-func IsEditorHint() bool {
+func IsEditorHint() bool { //gd:Engine.is_editor_hint
 	once.Do(singleton)
 	return bool(class(self).IsEditorHint())
 }
@@ -408,7 +408,7 @@ func IsEditorHint() bool {
 /*
 Returns the path to the [MovieWriter]'s output file, or an empty string if the engine wasn't started in Movie Maker mode. The default path can be changed in [member ProjectSettings.editor/movie_writer/movie_file].
 */
-func GetWriteMoviePath() string {
+func GetWriteMoviePath() string { //gd:Engine.get_write_movie_path
 	once.Do(singleton)
 	return string(class(self).GetWriteMoviePath().String())
 }
@@ -472,7 +472,7 @@ func SetPhysicsJitterFix(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second gd.Int) {
+func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second gd.Int) { //gd:Engine.set_physics_ticks_per_second
 	var frame = callframe.New()
 	callframe.Arg(frame, physics_ticks_per_second)
 	var r_ret = callframe.Nil
@@ -481,7 +481,7 @@ func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPhysicsTicksPerSecond() gd.Int {
+func (self class) GetPhysicsTicksPerSecond() gd.Int { //gd:Engine.get_physics_ticks_per_second
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_physics_ticks_per_second, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -491,7 +491,7 @@ func (self class) GetPhysicsTicksPerSecond() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps gd.Int) {
+func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps gd.Int) { //gd:Engine.set_max_physics_steps_per_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, max_physics_steps)
 	var r_ret = callframe.Nil
@@ -500,7 +500,7 @@ func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMaxPhysicsStepsPerFrame() gd.Int {
+func (self class) GetMaxPhysicsStepsPerFrame() gd.Int { //gd:Engine.get_max_physics_steps_per_frame
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_max_physics_steps_per_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -510,7 +510,7 @@ func (self class) GetMaxPhysicsStepsPerFrame() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetPhysicsJitterFix(physics_jitter_fix gd.Float) {
+func (self class) SetPhysicsJitterFix(physics_jitter_fix gd.Float) { //gd:Engine.set_physics_jitter_fix
 	var frame = callframe.New()
 	callframe.Arg(frame, physics_jitter_fix)
 	var r_ret = callframe.Nil
@@ -519,7 +519,7 @@ func (self class) SetPhysicsJitterFix(physics_jitter_fix gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPhysicsJitterFix() gd.Float {
+func (self class) GetPhysicsJitterFix() gd.Float { //gd:Engine.get_physics_jitter_fix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_physics_jitter_fix, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -532,7 +532,7 @@ func (self class) GetPhysicsJitterFix() gd.Float {
 Returns the fraction through the current physics tick we are at the time of rendering the frame. This can be used to implement fixed timestep interpolation.
 */
 //go:nosplit
-func (self class) GetPhysicsInterpolationFraction() gd.Float {
+func (self class) GetPhysicsInterpolationFraction() gd.Float { //gd:Engine.get_physics_interpolation_fraction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_physics_interpolation_fraction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -542,7 +542,7 @@ func (self class) GetPhysicsInterpolationFraction() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMaxFps(max_fps gd.Int) {
+func (self class) SetMaxFps(max_fps gd.Int) { //gd:Engine.set_max_fps
 	var frame = callframe.New()
 	callframe.Arg(frame, max_fps)
 	var r_ret = callframe.Nil
@@ -551,7 +551,7 @@ func (self class) SetMaxFps(max_fps gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMaxFps() gd.Int {
+func (self class) GetMaxFps() gd.Int { //gd:Engine.get_max_fps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_max_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -561,7 +561,7 @@ func (self class) GetMaxFps() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetTimeScale(time_scale gd.Float) {
+func (self class) SetTimeScale(time_scale gd.Float) { //gd:Engine.set_time_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, time_scale)
 	var r_ret = callframe.Nil
@@ -570,7 +570,7 @@ func (self class) SetTimeScale(time_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTimeScale() gd.Float {
+func (self class) GetTimeScale() gd.Float { //gd:Engine.get_time_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_time_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -584,7 +584,7 @@ Returns the total number of frames drawn since the engine started.
 [b]Note:[/b] On headless platforms, or if rendering is disabled with [code]--disable-render-loop[/code] via command line, this method always returns [code]0[/code]. See also [method get_process_frames].
 */
 //go:nosplit
-func (self class) GetFramesDrawn() gd.Int {
+func (self class) GetFramesDrawn() gd.Int { //gd:Engine.get_frames_drawn
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_frames_drawn, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -597,7 +597,7 @@ func (self class) GetFramesDrawn() gd.Int {
 Returns the average frames rendered every second (FPS), also known as the framerate.
 */
 //go:nosplit
-func (self class) GetFramesPerSecond() gd.Float {
+func (self class) GetFramesPerSecond() gd.Float { //gd:Engine.get_frames_per_second
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_frames_per_second, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -629,7 +629,7 @@ public override void _PhysicsProcess(double delta)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetPhysicsFrames() gd.Int {
+func (self class) GetPhysicsFrames() gd.Int { //gd:Engine.get_physics_frames
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_physics_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -661,7 +661,7 @@ public override void _Process(double delta)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetProcessFrames() gd.Int {
+func (self class) GetProcessFrames() gd.Int { //gd:Engine.get_process_frames
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_process_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -675,7 +675,7 @@ Returns the instance of the [MainLoop]. This is usually the main [SceneTree] and
 [b]Note:[/b] The type instantiated as the main loop can changed with [member ProjectSettings.application/run/main_loop_type].
 */
 //go:nosplit
-func (self class) GetMainLoop() [1]gdclass.MainLoop {
+func (self class) GetMainLoop() [1]gdclass.MainLoop { //gd:Engine.get_main_loop
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_main_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -717,7 +717,7 @@ else
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetVersionInfo() gd.Dictionary {
+func (self class) GetVersionInfo() gd.Dictionary { //gd:Engine.get_version_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_version_info, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -730,7 +730,7 @@ func (self class) GetVersionInfo() gd.Dictionary {
 Returns the engine author information as a [Dictionary], where each entry is an [Array] of strings with the names of notable contributors to the Godot Engine: [code]lead_developers[/code], [code]founders[/code], [code]project_managers[/code], and [code]developers[/code].
 */
 //go:nosplit
-func (self class) GetAuthorInfo() gd.Dictionary {
+func (self class) GetAuthorInfo() gd.Dictionary { //gd:Engine.get_author_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_author_info, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -747,7 +747,7 @@ Every [Dictionary] contains a [code]name[/code] identifier, and a [code]parts[/c
 - [code]license[/code] - The license applied to this component (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]" or "[url=https://creativecommons.org/licenses/by/4.0/]CC-BY-4.0[/url]").
 */
 //go:nosplit
-func (self class) GetCopyrightInfo() Array.Contains[gd.Dictionary] {
+func (self class) GetCopyrightInfo() Array.Contains[gd.Dictionary] { //gd:Engine.get_copyright_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_copyright_info, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -761,7 +761,7 @@ Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of s
 {[code]platinum_sponsors[/code], [code]gold_sponsors[/code], [code]silver_sponsors[/code], [code]bronze_sponsors[/code], [code]mini_sponsors[/code], [code]gold_donors[/code], [code]silver_donors[/code], [code]bronze_donors[/code]}
 */
 //go:nosplit
-func (self class) GetDonorInfo() gd.Dictionary {
+func (self class) GetDonorInfo() gd.Dictionary { //gd:Engine.get_donor_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_donor_info, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -774,7 +774,7 @@ func (self class) GetDonorInfo() gd.Dictionary {
 Returns a [Dictionary] of licenses used by Godot and included third party components. Each entry is a license name (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]") and its associated text.
 */
 //go:nosplit
-func (self class) GetLicenseInfo() gd.Dictionary {
+func (self class) GetLicenseInfo() gd.Dictionary { //gd:Engine.get_license_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_license_info, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -787,7 +787,7 @@ func (self class) GetLicenseInfo() gd.Dictionary {
 Returns the full Godot license text.
 */
 //go:nosplit
-func (self class) GetLicenseText() gd.String {
+func (self class) GetLicenseText() gd.String { //gd:Engine.get_license_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_license_text, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -816,7 +816,7 @@ else
 [b]Note:[/b] This method does [i]not[/i] return the name of the system's CPU architecture (like [method OS.get_processor_name]). For example, when running an [code]x86_32[/code] Godot binary on an [code]x86_64[/code] system, the returned value will still be [code]"x86_32"[/code].
 */
 //go:nosplit
-func (self class) GetArchitectureName() gd.String {
+func (self class) GetArchitectureName() gd.String { //gd:Engine.get_architecture_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_architecture_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -841,7 +841,7 @@ func _physics_process(delta):
 [/codeblock]
 */
 //go:nosplit
-func (self class) IsInPhysicsFrame() bool {
+func (self class) IsInPhysicsFrame() bool { //gd:Engine.is_in_physics_frame
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_is_in_physics_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -869,7 +869,7 @@ GD.Print(Engine.HasSingleton("Unknown"));     // Prints false
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
 //go:nosplit
-func (self class) HasSingleton(name gd.StringName) bool {
+func (self class) HasSingleton(name gd.StringName) bool { //gd:Engine.has_singleton
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -884,7 +884,7 @@ Returns the global singleton with the given [param name], or [code]null[/code] i
 [b]Note:[/b] Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
 //go:nosplit
-func (self class) GetSingleton(name gd.StringName) [1]gd.Object {
+func (self class) GetSingleton(name gd.StringName) [1]gd.Object { //gd:Engine.get_singleton
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -898,7 +898,7 @@ func (self class) GetSingleton(name gd.StringName) [1]gd.Object {
 Registers the given [Object] [param instance] as a singleton, available globally under [param name]. Useful for plugins.
 */
 //go:nosplit
-func (self class) RegisterSingleton(name gd.StringName, instance [1]gd.Object) {
+func (self class) RegisterSingleton(name gd.StringName, instance [1]gd.Object) { //gd:Engine.register_singleton
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(instance[0].AsObject()[0]))
@@ -911,7 +911,7 @@ func (self class) RegisterSingleton(name gd.StringName, instance [1]gd.Object) {
 Removes the singleton registered under [param name]. The singleton object is [i]not[/i] freed. Only works with user-defined singletons registered with [method register_singleton].
 */
 //go:nosplit
-func (self class) UnregisterSingleton(name gd.StringName) {
+func (self class) UnregisterSingleton(name gd.StringName) { //gd:Engine.unregister_singleton
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -923,7 +923,7 @@ func (self class) UnregisterSingleton(name gd.StringName) {
 Returns a list of names of all available global singletons. See also [method get_singleton].
 */
 //go:nosplit
-func (self class) GetSingletonList() gd.PackedStringArray {
+func (self class) GetSingletonList() gd.PackedStringArray { //gd:Engine.get_singleton_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_singleton_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -940,7 +940,7 @@ Returns:
 - [constant ERR_ALREADY_EXISTS] if [code]ScriptServer[/code] already contains a language with similar extension/name/type.
 */
 //go:nosplit
-func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) gd.Error {
+func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) gd.Error { //gd:Engine.register_script_language
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(language[0].AsObject()[0]))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -957,7 +957,7 @@ Returns:
 - [constant ERR_DOES_NOT_EXIST] if the language is not registered in [code]ScriptServer[/code].
 */
 //go:nosplit
-func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) gd.Error {
+func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) gd.Error { //gd:Engine.unregister_script_language
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -971,7 +971,7 @@ func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) g
 Returns the number of available script languages. Use with [method get_script_language].
 */
 //go:nosplit
-func (self class) GetScriptLanguageCount() gd.Int {
+func (self class) GetScriptLanguageCount() gd.Int { //gd:Engine.get_script_language_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_script_language_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -984,7 +984,7 @@ func (self class) GetScriptLanguageCount() gd.Int {
 Returns an instance of a [ScriptLanguage] with the given [param index].
 */
 //go:nosplit
-func (self class) GetScriptLanguage(index gd.Int) [1]gdclass.ScriptLanguage {
+func (self class) GetScriptLanguage(index gd.Int) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1014,7 +1014,7 @@ See [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]Running cod
 [b]Note:[/b] To detect whether the script is running on an editor [i]build[/i] (such as when pressing [kbd]F5[/kbd]), use [method OS.has_feature] with the [code]"editor"[/code] argument instead. [code]OS.has_feature("editor")[/code] evaluate to [code]true[/code] both when the script is running in the editor and when running the project from the editor, but returns [code]false[/code] when run from an exported project.
 */
 //go:nosplit
-func (self class) IsEditorHint() bool {
+func (self class) IsEditorHint() bool { //gd:Engine.is_editor_hint
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_is_editor_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1027,7 +1027,7 @@ func (self class) IsEditorHint() bool {
 Returns the path to the [MovieWriter]'s output file, or an empty string if the engine wasn't started in Movie Maker mode. The default path can be changed in [member ProjectSettings.editor/movie_writer/movie_file].
 */
 //go:nosplit
-func (self class) GetWriteMoviePath() gd.String {
+func (self class) GetWriteMoviePath() gd.String { //gd:Engine.get_write_movie_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_write_movie_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1037,7 +1037,7 @@ func (self class) GetWriteMoviePath() gd.String {
 }
 
 //go:nosplit
-func (self class) SetPrintErrorMessages(enabled bool) {
+func (self class) SetPrintErrorMessages(enabled bool) { //gd:Engine.set_print_error_messages
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1046,7 +1046,7 @@ func (self class) SetPrintErrorMessages(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsPrintingErrorMessages() bool {
+func (self class) IsPrintingErrorMessages() bool { //gd:Engine.is_printing_error_messages
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_is_printing_error_messages, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1064,7 +1064,7 @@ func init() {
 	gdclass.Register("Engine", func(ptr gd.Object) any { return [1]gdclass.Engine{*(*gdclass.Engine)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

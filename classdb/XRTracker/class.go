@@ -80,7 +80,7 @@ func (self Instance) SetDescription(value string) {
 }
 
 //go:nosplit
-func (self class) GetTrackerType() gdclass.XRServerTrackerType {
+func (self class) GetTrackerType() gdclass.XRServerTrackerType { //gd:XRTracker.get_tracker_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRServerTrackerType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_get_tracker_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -90,7 +90,7 @@ func (self class) GetTrackerType() gdclass.XRServerTrackerType {
 }
 
 //go:nosplit
-func (self class) SetTrackerType(atype gdclass.XRServerTrackerType) {
+func (self class) SetTrackerType(atype gdclass.XRServerTrackerType) { //gd:XRTracker.set_tracker_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -99,7 +99,7 @@ func (self class) SetTrackerType(atype gdclass.XRServerTrackerType) {
 }
 
 //go:nosplit
-func (self class) GetTrackerName() gd.StringName {
+func (self class) GetTrackerName() gd.StringName { //gd:XRTracker.get_tracker_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_get_tracker_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -109,7 +109,7 @@ func (self class) GetTrackerName() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetTrackerName(name gd.StringName) {
+func (self class) SetTrackerName(name gd.StringName) { //gd:XRTracker.set_tracker_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -118,7 +118,7 @@ func (self class) SetTrackerName(name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetTrackerDesc() gd.String {
+func (self class) GetTrackerDesc() gd.String { //gd:XRTracker.get_tracker_desc
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_get_tracker_desc, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -128,7 +128,7 @@ func (self class) GetTrackerDesc() gd.String {
 }
 
 //go:nosplit
-func (self class) SetTrackerDesc(description gd.String) {
+func (self class) SetTrackerDesc(description gd.String) { //gd:XRTracker.set_tracker_desc
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(description))
 	var r_ret = callframe.Nil

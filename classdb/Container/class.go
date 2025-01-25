@@ -97,14 +97,14 @@ func (Instance) _get_allowed_size_flags_vertical(impl func(ptr unsafe.Pointer) [
 /*
 Queue resort of the contained children. This is called automatically anyway, but can be called upon request.
 */
-func (self Instance) QueueSort() {
+func (self Instance) QueueSort() { //gd:Container.queue_sort
 	class(self).QueueSort()
 }
 
 /*
 Fit a child control in a given rect. This is mainly a helper for creating custom container classes.
 */
-func (self Instance) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) {
+func (self Instance) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
 	class(self).FitChildInRect(child, gd.Rect2(rect))
 }
 
@@ -164,7 +164,7 @@ func (class) _get_allowed_size_flags_vertical(impl func(ptr unsafe.Pointer) gd.P
 Queue resort of the contained children. This is called automatically anyway, but can be called upon request.
 */
 //go:nosplit
-func (self class) QueueSort() {
+func (self class) QueueSort() { //gd:Container.queue_sort
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Container.Bind_queue_sort, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -175,7 +175,7 @@ func (self class) QueueSort() {
 Fit a child control in a given rect. This is mainly a helper for creating custom container classes.
 */
 //go:nosplit
-func (self class) FitChildInRect(child [1]gdclass.Control, rect gd.Rect2) {
+func (self class) FitChildInRect(child [1]gdclass.Control, rect gd.Rect2) { //gd:Container.fit_child_in_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(child[0])[0])
 	callframe.Arg(frame, rect)

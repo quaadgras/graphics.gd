@@ -91,7 +91,7 @@ func (self Instance) SetFallbackSegments(value int) {
 }
 
 //go:nosplit
-func (self class) SetRadius(radius gd.Float) {
+func (self class) SetRadius(radius gd.Float) { //gd:OpenXRCompositionLayerCylinder.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -100,7 +100,7 @@ func (self class) SetRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float {
+func (self class) GetRadius() gd.Float { //gd:OpenXRCompositionLayerCylinder.get_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -110,7 +110,7 @@ func (self class) GetRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAspectRatio(aspect_ratio gd.Float) {
+func (self class) SetAspectRatio(aspect_ratio gd.Float) { //gd:OpenXRCompositionLayerCylinder.set_aspect_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, aspect_ratio)
 	var r_ret = callframe.Nil
@@ -119,7 +119,7 @@ func (self class) SetAspectRatio(aspect_ratio gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAspectRatio() gd.Float {
+func (self class) GetAspectRatio() gd.Float { //gd:OpenXRCompositionLayerCylinder.get_aspect_ratio
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_get_aspect_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -129,7 +129,7 @@ func (self class) GetAspectRatio() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCentralAngle(angle gd.Float) {
+func (self class) SetCentralAngle(angle gd.Float) { //gd:OpenXRCompositionLayerCylinder.set_central_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
 	var r_ret = callframe.Nil
@@ -138,7 +138,7 @@ func (self class) SetCentralAngle(angle gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCentralAngle() gd.Float {
+func (self class) GetCentralAngle() gd.Float { //gd:OpenXRCompositionLayerCylinder.get_central_angle
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_get_central_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -148,7 +148,7 @@ func (self class) GetCentralAngle() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFallbackSegments(segments gd.Int) {
+func (self class) SetFallbackSegments(segments gd.Int) { //gd:OpenXRCompositionLayerCylinder.set_fallback_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, segments)
 	var r_ret = callframe.Nil
@@ -157,7 +157,7 @@ func (self class) SetFallbackSegments(segments gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFallbackSegments() gd.Int {
+func (self class) GetFallbackSegments() gd.Int { //gd:OpenXRCompositionLayerCylinder.get_fallback_segments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_get_fallback_segments, self.AsObject(), frame.Array(0), r_ret.Addr())

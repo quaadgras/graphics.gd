@@ -42,14 +42,14 @@ type Any interface {
 /*
 Sets the [SkeletonModificationStack2D] that this modification is holding. This modification stack will then be executed when this modification is executed.
 */
-func (self Instance) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) {
+func (self Instance) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:SkeletonModification2DStackHolder.set_held_modification_stack
 	class(self).SetHeldModificationStack(held_modification_stack)
 }
 
 /*
 Returns the [SkeletonModificationStack2D] that this modification is holding.
 */
-func (self Instance) GetHeldModificationStack() [1]gdclass.SkeletonModificationStack2D {
+func (self Instance) GetHeldModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2DStackHolder.get_held_modification_stack
 	return [1]gdclass.SkeletonModificationStack2D(class(self).GetHeldModificationStack())
 }
 
@@ -76,7 +76,7 @@ func New() Instance {
 Sets the [SkeletonModificationStack2D] that this modification is holding. This modification stack will then be executed when this modification is executed.
 */
 //go:nosplit
-func (self class) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) {
+func (self class) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:SkeletonModification2DStackHolder.set_held_modification_stack
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(held_modification_stack[0])[0])
 	var r_ret = callframe.Nil
@@ -88,7 +88,7 @@ func (self class) SetHeldModificationStack(held_modification_stack [1]gdclass.Sk
 Returns the [SkeletonModificationStack2D] that this modification is holding.
 */
 //go:nosplit
-func (self class) GetHeldModificationStack() [1]gdclass.SkeletonModificationStack2D {
+func (self class) GetHeldModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2DStackHolder.get_held_modification_stack
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_get_held_modification_stack, self.AsObject(), frame.Array(0), r_ret.Addr())

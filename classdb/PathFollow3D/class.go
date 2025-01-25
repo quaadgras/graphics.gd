@@ -44,7 +44,7 @@ type Any interface {
 /*
 Correct the [param transform]. [param rotation_mode] implicitly specifies how posture (forward, up and sideway direction) is calculated.
 */
-func CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode gdclass.PathFollow3DRotationMode) Transform3D.BasisOrigin {
+func CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode gdclass.PathFollow3DRotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
 	self := Instance{}
 	return Transform3D.BasisOrigin(class(self).CorrectPosture(gd.Transform3D(transform), rotation_mode))
 }
@@ -140,7 +140,7 @@ func (self Instance) SetTiltEnabled(value bool) {
 }
 
 //go:nosplit
-func (self class) SetProgress(progress gd.Float) {
+func (self class) SetProgress(progress gd.Float) { //gd:PathFollow3D.set_progress
 	var frame = callframe.New()
 	callframe.Arg(frame, progress)
 	var r_ret = callframe.Nil
@@ -149,7 +149,7 @@ func (self class) SetProgress(progress gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetProgress() gd.Float {
+func (self class) GetProgress() gd.Float { //gd:PathFollow3D.get_progress
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_progress, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -159,7 +159,7 @@ func (self class) GetProgress() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetHOffset(h_offset gd.Float) {
+func (self class) SetHOffset(h_offset gd.Float) { //gd:PathFollow3D.set_h_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, h_offset)
 	var r_ret = callframe.Nil
@@ -168,7 +168,7 @@ func (self class) SetHOffset(h_offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetHOffset() gd.Float {
+func (self class) GetHOffset() gd.Float { //gd:PathFollow3D.get_h_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_h_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -178,7 +178,7 @@ func (self class) GetHOffset() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVOffset(v_offset gd.Float) {
+func (self class) SetVOffset(v_offset gd.Float) { //gd:PathFollow3D.set_v_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, v_offset)
 	var r_ret = callframe.Nil
@@ -187,7 +187,7 @@ func (self class) SetVOffset(v_offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVOffset() gd.Float {
+func (self class) GetVOffset() gd.Float { //gd:PathFollow3D.get_v_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_v_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -197,7 +197,7 @@ func (self class) GetVOffset() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetProgressRatio(ratio gd.Float) {
+func (self class) SetProgressRatio(ratio gd.Float) { //gd:PathFollow3D.set_progress_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -206,7 +206,7 @@ func (self class) SetProgressRatio(ratio gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetProgressRatio() gd.Float {
+func (self class) GetProgressRatio() gd.Float { //gd:PathFollow3D.get_progress_ratio
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_progress_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -216,7 +216,7 @@ func (self class) GetProgressRatio() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRotationMode(rotation_mode gdclass.PathFollow3DRotationMode) {
+func (self class) SetRotationMode(rotation_mode gdclass.PathFollow3DRotationMode) { //gd:PathFollow3D.set_rotation_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, rotation_mode)
 	var r_ret = callframe.Nil
@@ -225,7 +225,7 @@ func (self class) SetRotationMode(rotation_mode gdclass.PathFollow3DRotationMode
 }
 
 //go:nosplit
-func (self class) GetRotationMode() gdclass.PathFollow3DRotationMode {
+func (self class) GetRotationMode() gdclass.PathFollow3DRotationMode { //gd:PathFollow3D.get_rotation_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.PathFollow3DRotationMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_rotation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -235,7 +235,7 @@ func (self class) GetRotationMode() gdclass.PathFollow3DRotationMode {
 }
 
 //go:nosplit
-func (self class) SetCubicInterpolation(enabled bool) {
+func (self class) SetCubicInterpolation(enabled bool) { //gd:PathFollow3D.set_cubic_interpolation
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -244,7 +244,7 @@ func (self class) SetCubicInterpolation(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetCubicInterpolation() bool {
+func (self class) GetCubicInterpolation() bool { //gd:PathFollow3D.get_cubic_interpolation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_cubic_interpolation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -254,7 +254,7 @@ func (self class) GetCubicInterpolation() bool {
 }
 
 //go:nosplit
-func (self class) SetUseModelFront(enabled bool) {
+func (self class) SetUseModelFront(enabled bool) { //gd:PathFollow3D.set_use_model_front
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -263,7 +263,7 @@ func (self class) SetUseModelFront(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingModelFront() bool {
+func (self class) IsUsingModelFront() bool { //gd:PathFollow3D.is_using_model_front
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_is_using_model_front, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -273,7 +273,7 @@ func (self class) IsUsingModelFront() bool {
 }
 
 //go:nosplit
-func (self class) SetLoop(loop bool) {
+func (self class) SetLoop(loop bool) { //gd:PathFollow3D.set_loop
 	var frame = callframe.New()
 	callframe.Arg(frame, loop)
 	var r_ret = callframe.Nil
@@ -282,7 +282,7 @@ func (self class) SetLoop(loop bool) {
 }
 
 //go:nosplit
-func (self class) HasLoop() bool {
+func (self class) HasLoop() bool { //gd:PathFollow3D.has_loop
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_has_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -292,7 +292,7 @@ func (self class) HasLoop() bool {
 }
 
 //go:nosplit
-func (self class) SetTiltEnabled(enabled bool) {
+func (self class) SetTiltEnabled(enabled bool) { //gd:PathFollow3D.set_tilt_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -301,7 +301,7 @@ func (self class) SetTiltEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsTiltEnabled() bool {
+func (self class) IsTiltEnabled() bool { //gd:PathFollow3D.is_tilt_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_is_tilt_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -314,7 +314,7 @@ func (self class) IsTiltEnabled() bool {
 Correct the [param transform]. [param rotation_mode] implicitly specifies how posture (forward, up and sideway direction) is calculated.
 */
 //go:nosplit
-func (self class) CorrectPosture(transform gd.Transform3D, rotation_mode gdclass.PathFollow3DRotationMode) gd.Transform3D {
+func (self class) CorrectPosture(transform gd.Transform3D, rotation_mode gdclass.PathFollow3DRotationMode) gd.Transform3D { //gd:PathFollow3D.correct_posture
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	callframe.Arg(frame, rotation_mode)
@@ -350,7 +350,7 @@ func init() {
 	})
 }
 
-type RotationMode = gdclass.PathFollow3DRotationMode
+type RotationMode = gdclass.PathFollow3DRotationMode //gd:PathFollow3D.RotationMode
 
 const (
 	/*Forbids the PathFollow3D to rotate.*/

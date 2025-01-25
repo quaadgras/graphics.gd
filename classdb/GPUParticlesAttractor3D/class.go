@@ -94,7 +94,7 @@ func (self Instance) SetCullMask(value int) {
 }
 
 //go:nosplit
-func (self class) SetCullMask(mask gd.Int) {
+func (self class) SetCullMask(mask gd.Int) { //gd:GPUParticlesAttractor3D.set_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -103,7 +103,7 @@ func (self class) SetCullMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCullMask() gd.Int {
+func (self class) GetCullMask() gd.Int { //gd:GPUParticlesAttractor3D.get_cull_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -113,7 +113,7 @@ func (self class) GetCullMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetStrength(strength gd.Float) {
+func (self class) SetStrength(strength gd.Float) { //gd:GPUParticlesAttractor3D.set_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -122,7 +122,7 @@ func (self class) SetStrength(strength gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetStrength() gd.Float {
+func (self class) GetStrength() gd.Float { //gd:GPUParticlesAttractor3D.get_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -132,7 +132,7 @@ func (self class) GetStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAttenuation(attenuation gd.Float) {
+func (self class) SetAttenuation(attenuation gd.Float) { //gd:GPUParticlesAttractor3D.set_attenuation
 	var frame = callframe.New()
 	callframe.Arg(frame, attenuation)
 	var r_ret = callframe.Nil
@@ -141,7 +141,7 @@ func (self class) SetAttenuation(attenuation gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAttenuation() gd.Float {
+func (self class) GetAttenuation() gd.Float { //gd:GPUParticlesAttractor3D.get_attenuation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_attenuation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -151,7 +151,7 @@ func (self class) GetAttenuation() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDirectionality(amount gd.Float) {
+func (self class) SetDirectionality(amount gd.Float) { //gd:GPUParticlesAttractor3D.set_directionality
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -160,7 +160,7 @@ func (self class) SetDirectionality(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDirectionality() gd.Float {
+func (self class) GetDirectionality() gd.Float { //gd:GPUParticlesAttractor3D.get_directionality
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_directionality, self.AsObject(), frame.Array(0), r_ret.Addr())

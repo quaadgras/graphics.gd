@@ -100,7 +100,7 @@ func (self Instance) SetSelected(value bool) {
 }
 
 //go:nosplit
-func (self class) SetResizable(resizable bool) {
+func (self class) SetResizable(resizable bool) { //gd:GraphElement.set_resizable
 	var frame = callframe.New()
 	callframe.Arg(frame, resizable)
 	var r_ret = callframe.Nil
@@ -109,7 +109,7 @@ func (self class) SetResizable(resizable bool) {
 }
 
 //go:nosplit
-func (self class) IsResizable() bool {
+func (self class) IsResizable() bool { //gd:GraphElement.is_resizable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphElement.Bind_is_resizable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -119,7 +119,7 @@ func (self class) IsResizable() bool {
 }
 
 //go:nosplit
-func (self class) SetDraggable(draggable bool) {
+func (self class) SetDraggable(draggable bool) { //gd:GraphElement.set_draggable
 	var frame = callframe.New()
 	callframe.Arg(frame, draggable)
 	var r_ret = callframe.Nil
@@ -128,7 +128,7 @@ func (self class) SetDraggable(draggable bool) {
 }
 
 //go:nosplit
-func (self class) IsDraggable() bool {
+func (self class) IsDraggable() bool { //gd:GraphElement.is_draggable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphElement.Bind_is_draggable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -138,7 +138,7 @@ func (self class) IsDraggable() bool {
 }
 
 //go:nosplit
-func (self class) SetSelectable(selectable bool) {
+func (self class) SetSelectable(selectable bool) { //gd:GraphElement.set_selectable
 	var frame = callframe.New()
 	callframe.Arg(frame, selectable)
 	var r_ret = callframe.Nil
@@ -147,7 +147,7 @@ func (self class) SetSelectable(selectable bool) {
 }
 
 //go:nosplit
-func (self class) IsSelectable() bool {
+func (self class) IsSelectable() bool { //gd:GraphElement.is_selectable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphElement.Bind_is_selectable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -157,7 +157,7 @@ func (self class) IsSelectable() bool {
 }
 
 //go:nosplit
-func (self class) SetSelected(selected bool) {
+func (self class) SetSelected(selected bool) { //gd:GraphElement.set_selected
 	var frame = callframe.New()
 	callframe.Arg(frame, selected)
 	var r_ret = callframe.Nil
@@ -166,7 +166,7 @@ func (self class) SetSelected(selected bool) {
 }
 
 //go:nosplit
-func (self class) IsSelected() bool {
+func (self class) IsSelected() bool { //gd:GraphElement.is_selected
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphElement.Bind_is_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -176,7 +176,7 @@ func (self class) IsSelected() bool {
 }
 
 //go:nosplit
-func (self class) SetPositionOffset(offset gd.Vector2) {
+func (self class) SetPositionOffset(offset gd.Vector2) { //gd:GraphElement.set_position_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -185,7 +185,7 @@ func (self class) SetPositionOffset(offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetPositionOffset() gd.Vector2 {
+func (self class) GetPositionOffset() gd.Vector2 { //gd:GraphElement.get_position_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphElement.Bind_get_position_offset, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -210,14 +210,14 @@ func (Instance) _get_parameter(impl func(ptr unsafe.Pointer, name string) any) (
 /*
 Associates [AudioSamplePlayback] to this [AudioStreamPlayback] for playing back the audio sample of this stream.
 */
-func (self Instance) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) {
+func (self Instance) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) { //gd:AudioStreamPlayback.set_sample_playback
 	class(self).SetSamplePlayback(playback_sample)
 }
 
 /*
 Returns the [AudioSamplePlayback] associated with this [AudioStreamPlayback] for playing back the audio sample of this stream.
 */
-func (self Instance) GetSamplePlayback() [1]gdclass.AudioSamplePlayback {
+func (self Instance) GetSamplePlayback() [1]gdclass.AudioSamplePlayback { //gd:AudioStreamPlayback.get_sample_playback
 	return [1]gdclass.AudioSamplePlayback(class(self).GetSamplePlayback())
 }
 
@@ -371,7 +371,7 @@ func (class) _get_parameter(impl func(ptr unsafe.Pointer, name gd.StringName) gd
 Associates [AudioSamplePlayback] to this [AudioStreamPlayback] for playing back the audio sample of this stream.
 */
 //go:nosplit
-func (self class) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) {
+func (self class) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) { //gd:AudioStreamPlayback.set_sample_playback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(playback_sample[0])[0])
 	var r_ret = callframe.Nil
@@ -383,7 +383,7 @@ func (self class) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayba
 Returns the [AudioSamplePlayback] associated with this [AudioStreamPlayback] for playing back the audio sample of this stream.
 */
 //go:nosplit
-func (self class) GetSamplePlayback() [1]gdclass.AudioSamplePlayback {
+func (self class) GetSamplePlayback() [1]gdclass.AudioSamplePlayback { //gd:AudioStreamPlayback.get_sample_playback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayback.Bind_get_sample_playback, self.AsObject(), frame.Array(0), r_ret.Addr())

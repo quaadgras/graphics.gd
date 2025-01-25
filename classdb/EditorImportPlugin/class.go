@@ -472,7 +472,7 @@ func (Instance) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.
 /*
 This function can only be called during the [method _import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the [param custom_options]. Additionally, in cases where multiple importers can handle a file, the [param custom_importer] can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. [param generator_parameters] defines optional extra metadata which will be stored as [code skip-lint]generator_parameters[/code] in the [code]remap[/code] section of the [code].import[/code] file, for example to store a md5 hash of the source data.
 */
-func (self Instance) AppendImportExternalResource(path string) error {
+func (self Instance) AppendImportExternalResource(path string) error { //gd:EditorImportPlugin.append_import_external_resource
 	return error(gd.ToError(class(self).AppendImportExternalResource(gd.NewString(path), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))))
 }
 
@@ -728,7 +728,7 @@ func (class) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.Ext
 This function can only be called during the [method _import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the [param custom_options]. Additionally, in cases where multiple importers can handle a file, the [param custom_importer] can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. [param generator_parameters] defines optional extra metadata which will be stored as [code skip-lint]generator_parameters[/code] in the [code]remap[/code] section of the [code].import[/code] file, for example to store a md5 hash of the source data.
 */
 //go:nosplit
-func (self class) AppendImportExternalResource(path gd.String, custom_options gd.Dictionary, custom_importer gd.String, generator_parameters gd.Variant) gd.Error {
+func (self class) AppendImportExternalResource(path gd.String, custom_options gd.Dictionary, custom_importer gd.String, generator_parameters gd.Variant) gd.Error { //gd:EditorImportPlugin.append_import_external_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(custom_options))
@@ -826,7 +826,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

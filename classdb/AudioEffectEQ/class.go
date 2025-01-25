@@ -42,21 +42,21 @@ type Any interface {
 /*
 Sets band's gain at the specified index, in dB.
 */
-func (self Instance) SetBandGainDb(band_idx int, volume_db Float.X) {
+func (self Instance) SetBandGainDb(band_idx int, volume_db Float.X) { //gd:AudioEffectEQ.set_band_gain_db
 	class(self).SetBandGainDb(gd.Int(band_idx), gd.Float(volume_db))
 }
 
 /*
 Returns the band's gain at the specified index, in dB.
 */
-func (self Instance) GetBandGainDb(band_idx int) Float.X {
+func (self Instance) GetBandGainDb(band_idx int) Float.X { //gd:AudioEffectEQ.get_band_gain_db
 	return Float.X(Float.X(class(self).GetBandGainDb(gd.Int(band_idx))))
 }
 
 /*
 Returns the number of bands of the equalizer.
 */
-func (self Instance) GetBandCount() int {
+func (self Instance) GetBandCount() int { //gd:AudioEffectEQ.get_band_count
 	return int(int(class(self).GetBandCount()))
 }
 
@@ -83,7 +83,7 @@ func New() Instance {
 Sets band's gain at the specified index, in dB.
 */
 //go:nosplit
-func (self class) SetBandGainDb(band_idx gd.Int, volume_db gd.Float) {
+func (self class) SetBandGainDb(band_idx gd.Int, volume_db gd.Float) { //gd:AudioEffectEQ.set_band_gain_db
 	var frame = callframe.New()
 	callframe.Arg(frame, band_idx)
 	callframe.Arg(frame, volume_db)
@@ -96,7 +96,7 @@ func (self class) SetBandGainDb(band_idx gd.Int, volume_db gd.Float) {
 Returns the band's gain at the specified index, in dB.
 */
 //go:nosplit
-func (self class) GetBandGainDb(band_idx gd.Int) gd.Float {
+func (self class) GetBandGainDb(band_idx gd.Int) gd.Float { //gd:AudioEffectEQ.get_band_gain_db
 	var frame = callframe.New()
 	callframe.Arg(frame, band_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -110,7 +110,7 @@ func (self class) GetBandGainDb(band_idx gd.Int) gd.Float {
 Returns the number of bands of the equalizer.
 */
 //go:nosplit
-func (self class) GetBandCount() gd.Int {
+func (self class) GetBandCount() gd.Int { //gd:AudioEffectEQ.get_band_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_get_band_count, self.AsObject(), frame.Array(0), r_ret.Addr())

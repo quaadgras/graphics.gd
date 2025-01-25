@@ -110,28 +110,28 @@ type Any interface {
 /*
 Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [member Node.owner].
 */
-func (self Instance) Pack(path [1]gdclass.Node) error {
+func (self Instance) Pack(path [1]gdclass.Node) error { //gd:PackedScene.pack
 	return error(gd.ToError(class(self).Pack(path)))
 }
 
 /*
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
-func (self Instance) Instantiate() [1]gdclass.Node {
+func (self Instance) Instantiate() [1]gdclass.Node { //gd:PackedScene.instantiate
 	return [1]gdclass.Node(class(self).Instantiate(0))
 }
 
 /*
 Returns [code]true[/code] if the scene file has nodes.
 */
-func (self Instance) CanInstantiate() bool {
+func (self Instance) CanInstantiate() bool { //gd:PackedScene.can_instantiate
 	return bool(class(self).CanInstantiate())
 }
 
 /*
 Returns the [SceneState] representing the scene file contents.
 */
-func (self Instance) GetState() [1]gdclass.SceneState {
+func (self Instance) GetState() [1]gdclass.SceneState { //gd:PackedScene.get_state
 	return [1]gdclass.SceneState(class(self).GetState())
 }
 
@@ -158,7 +158,7 @@ func New() Instance {
 Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [member Node.owner].
 */
 //go:nosplit
-func (self class) Pack(path [1]gdclass.Node) gd.Error {
+func (self class) Pack(path [1]gdclass.Node) gd.Error { //gd:PackedScene.pack
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -172,7 +172,7 @@ func (self class) Pack(path [1]gdclass.Node) gd.Error {
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
 //go:nosplit
-func (self class) Instantiate(edit_state gdclass.PackedSceneGenEditState) [1]gdclass.Node {
+func (self class) Instantiate(edit_state gdclass.PackedSceneGenEditState) [1]gdclass.Node { //gd:PackedScene.instantiate
 	var frame = callframe.New()
 	callframe.Arg(frame, edit_state)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -186,7 +186,7 @@ func (self class) Instantiate(edit_state gdclass.PackedSceneGenEditState) [1]gdc
 Returns [code]true[/code] if the scene file has nodes.
 */
 //go:nosplit
-func (self class) CanInstantiate() bool {
+func (self class) CanInstantiate() bool { //gd:PackedScene.can_instantiate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_can_instantiate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -199,7 +199,7 @@ func (self class) CanInstantiate() bool {
 Returns the [SceneState] representing the scene file contents.
 */
 //go:nosplit
-func (self class) GetState() [1]gdclass.SceneState {
+func (self class) GetState() [1]gdclass.SceneState { //gd:PackedScene.get_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedScene.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -239,7 +239,7 @@ func init() {
 	gdclass.Register("PackedScene", func(ptr gd.Object) any { return [1]gdclass.PackedScene{*(*gdclass.PackedScene)(unsafe.Pointer(&ptr))} })
 }
 
-type GenEditState = gdclass.PackedSceneGenEditState
+type GenEditState = gdclass.PackedSceneGenEditState //gd:PackedScene.GenEditState
 
 const (
 	/*If passed to [method instantiate], blocks edits to the scene state.*/
@@ -255,7 +255,7 @@ const (
 	GenEditStateMainInherited GenEditState = 3
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

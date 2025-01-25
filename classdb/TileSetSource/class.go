@@ -45,21 +45,21 @@ type Any interface {
 /*
 Returns how many tiles this atlas source defines (not including alternative tiles).
 */
-func (self Instance) GetTilesCount() int {
+func (self Instance) GetTilesCount() int { //gd:TileSetSource.get_tiles_count
 	return int(int(class(self).GetTilesCount()))
 }
 
 /*
 Returns the tile coordinates ID of the tile with index [param index].
 */
-func (self Instance) GetTileId(index int) Vector2i.XY {
+func (self Instance) GetTileId(index int) Vector2i.XY { //gd:TileSetSource.get_tile_id
 	return Vector2i.XY(class(self).GetTileId(gd.Int(index)))
 }
 
 /*
 Returns if this atlas has a tile with coordinates ID [param atlas_coords].
 */
-func (self Instance) HasTile(atlas_coords Vector2i.XY) bool {
+func (self Instance) HasTile(atlas_coords Vector2i.XY) bool { //gd:TileSetSource.has_tile
 	return bool(class(self).HasTile(gd.Vector2i(atlas_coords)))
 }
 
@@ -68,21 +68,21 @@ Returns the number of alternatives tiles for the coordinates ID [param atlas_coo
 For [TileSetAtlasSource], this always return at least 1, as the base tile with ID 0 is always part of the alternatives list.
 Returns -1 if there is not tile at the given coords.
 */
-func (self Instance) GetAlternativeTilesCount(atlas_coords Vector2i.XY) int {
+func (self Instance) GetAlternativeTilesCount(atlas_coords Vector2i.XY) int { //gd:TileSetSource.get_alternative_tiles_count
 	return int(int(class(self).GetAlternativeTilesCount(gd.Vector2i(atlas_coords))))
 }
 
 /*
 Returns the alternative ID for the tile with coordinates ID [param atlas_coords] at index [param index].
 */
-func (self Instance) GetAlternativeTileId(atlas_coords Vector2i.XY, index int) int {
+func (self Instance) GetAlternativeTileId(atlas_coords Vector2i.XY, index int) int { //gd:TileSetSource.get_alternative_tile_id
 	return int(int(class(self).GetAlternativeTileId(gd.Vector2i(atlas_coords), gd.Int(index))))
 }
 
 /*
 Returns if the base tile at coordinates [param atlas_coords] has an alternative with ID [param alternative_tile].
 */
-func (self Instance) HasAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int) bool {
+func (self Instance) HasAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int) bool { //gd:TileSetSource.has_alternative_tile
 	return bool(class(self).HasAlternativeTile(gd.Vector2i(atlas_coords), gd.Int(alternative_tile)))
 }
 
@@ -109,7 +109,7 @@ func New() Instance {
 Returns how many tiles this atlas source defines (not including alternative tiles).
 */
 //go:nosplit
-func (self class) GetTilesCount() gd.Int {
+func (self class) GetTilesCount() gd.Int { //gd:TileSetSource.get_tiles_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_tiles_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -122,7 +122,7 @@ func (self class) GetTilesCount() gd.Int {
 Returns the tile coordinates ID of the tile with index [param index].
 */
 //go:nosplit
-func (self class) GetTileId(index gd.Int) gd.Vector2i {
+func (self class) GetTileId(index gd.Int) gd.Vector2i { //gd:TileSetSource.get_tile_id
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -136,7 +136,7 @@ func (self class) GetTileId(index gd.Int) gd.Vector2i {
 Returns if this atlas has a tile with coordinates ID [param atlas_coords].
 */
 //go:nosplit
-func (self class) HasTile(atlas_coords gd.Vector2i) bool {
+func (self class) HasTile(atlas_coords gd.Vector2i) bool { //gd:TileSetSource.has_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[bool](frame)
@@ -152,7 +152,7 @@ For [TileSetAtlasSource], this always return at least 1, as the base tile with I
 Returns -1 if there is not tile at the given coords.
 */
 //go:nosplit
-func (self class) GetAlternativeTilesCount(atlas_coords gd.Vector2i) gd.Int {
+func (self class) GetAlternativeTilesCount(atlas_coords gd.Vector2i) gd.Int { //gd:TileSetSource.get_alternative_tiles_count
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -166,7 +166,7 @@ func (self class) GetAlternativeTilesCount(atlas_coords gd.Vector2i) gd.Int {
 Returns the alternative ID for the tile with coordinates ID [param atlas_coords] at index [param index].
 */
 //go:nosplit
-func (self class) GetAlternativeTileId(atlas_coords gd.Vector2i, index gd.Int) gd.Int {
+func (self class) GetAlternativeTileId(atlas_coords gd.Vector2i, index gd.Int) gd.Int { //gd:TileSetSource.get_alternative_tile_id
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, index)
@@ -181,7 +181,7 @@ func (self class) GetAlternativeTileId(atlas_coords gd.Vector2i, index gd.Int) g
 Returns if the base tile at coordinates [param atlas_coords] has an alternative with ID [param alternative_tile].
 */
 //go:nosplit
-func (self class) HasAlternativeTile(atlas_coords gd.Vector2i, alternative_tile gd.Int) bool {
+func (self class) HasAlternativeTile(atlas_coords gd.Vector2i, alternative_tile gd.Int) bool { //gd:TileSetSource.has_alternative_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, alternative_tile)

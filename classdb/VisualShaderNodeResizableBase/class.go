@@ -67,7 +67,7 @@ func (self Instance) SetSize(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector2) {
+func (self class) SetSize(size gd.Vector2) { //gd:VisualShaderNodeResizableBase.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetSize(size gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector2 {
+func (self class) GetSize() gd.Vector2 { //gd:VisualShaderNodeResizableBase.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeResizableBase.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())

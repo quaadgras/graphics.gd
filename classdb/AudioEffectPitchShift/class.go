@@ -83,7 +83,7 @@ func (self Instance) SetFftSize(value gdclass.AudioEffectPitchShiftFFTSize) {
 }
 
 //go:nosplit
-func (self class) SetPitchScale(rate gd.Float) {
+func (self class) SetPitchScale(rate gd.Float) { //gd:AudioEffectPitchShift.set_pitch_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, rate)
 	var r_ret = callframe.Nil
@@ -92,7 +92,7 @@ func (self class) SetPitchScale(rate gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPitchScale() gd.Float {
+func (self class) GetPitchScale() gd.Float { //gd:AudioEffectPitchShift.get_pitch_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPitchShift.Bind_get_pitch_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -102,7 +102,7 @@ func (self class) GetPitchScale() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetOversampling(amount gd.Int) {
+func (self class) SetOversampling(amount gd.Int) { //gd:AudioEffectPitchShift.set_oversampling
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -111,7 +111,7 @@ func (self class) SetOversampling(amount gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetOversampling() gd.Int {
+func (self class) GetOversampling() gd.Int { //gd:AudioEffectPitchShift.get_oversampling
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPitchShift.Bind_get_oversampling, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -121,7 +121,7 @@ func (self class) GetOversampling() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFftSize(size gdclass.AudioEffectPitchShiftFFTSize) {
+func (self class) SetFftSize(size gdclass.AudioEffectPitchShiftFFTSize) { //gd:AudioEffectPitchShift.set_fft_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -130,7 +130,7 @@ func (self class) SetFftSize(size gdclass.AudioEffectPitchShiftFFTSize) {
 }
 
 //go:nosplit
-func (self class) GetFftSize() gdclass.AudioEffectPitchShiftFFTSize {
+func (self class) GetFftSize() gdclass.AudioEffectPitchShiftFFTSize { //gd:AudioEffectPitchShift.get_fft_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioEffectPitchShiftFFTSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPitchShift.Bind_get_fft_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -178,7 +178,7 @@ func init() {
 	})
 }
 
-type FFTSize = gdclass.AudioEffectPitchShiftFFTSize
+type FFTSize = gdclass.AudioEffectPitchShiftFFTSize //gd:AudioEffectPitchShift.FFTSize
 
 const (
 	/*Use a buffer of 256 samples for the Fast Fourier transform. Lowest latency, but least stable over time.*/

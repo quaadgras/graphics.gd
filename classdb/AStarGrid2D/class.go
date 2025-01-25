@@ -115,21 +115,21 @@ func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY,
 /*
 Returns [code]true[/code] if the [param x] and [param y] is a valid grid coordinate (id), i.e. if it is inside [member region]. Equivalent to [code]region.has_point(Vector2i(x, y))[/code].
 */
-func (self Instance) IsInBounds(x int, y int) bool {
+func (self Instance) IsInBounds(x int, y int) bool { //gd:AStarGrid2D.is_in_bounds
 	return bool(class(self).IsInBounds(gd.Int(x), gd.Int(y)))
 }
 
 /*
 Returns [code]true[/code] if the [param id] vector is a valid grid coordinate, i.e. if it is inside [member region]. Equivalent to [code]region.has_point(id)[/code].
 */
-func (self Instance) IsInBoundsv(id Vector2i.XY) bool {
+func (self Instance) IsInBoundsv(id Vector2i.XY) bool { //gd:AStarGrid2D.is_in_boundsv
 	return bool(class(self).IsInBoundsv(gd.Vector2i(id)))
 }
 
 /*
 Indicates that the grid parameters were changed and [method update] needs to be called.
 */
-func (self Instance) IsDirty() bool {
+func (self Instance) IsDirty() bool { //gd:AStarGrid2D.is_dirty
 	return bool(class(self).IsDirty())
 }
 
@@ -137,7 +137,7 @@ func (self Instance) IsDirty() bool {
 Updates the internal state of the grid according to the parameters to prepare it to search the path. Needs to be called if parameters like [member region], [member cell_size] or [member offset] are changed. [method is_dirty] will return [code]true[/code] if this is the case and this needs to be called.
 [b]Note:[/b] All point data (solidity and weight scale) will be cleared.
 */
-func (self Instance) Update() {
+func (self Instance) Update() { //gd:AStarGrid2D.update
 	class(self).Update()
 }
 
@@ -145,14 +145,14 @@ func (self Instance) Update() {
 Disables or enables the specified point for pathfinding. Useful for making an obstacle. By default, all points are enabled.
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
-func (self Instance) SetPointSolid(id Vector2i.XY) {
+func (self Instance) SetPointSolid(id Vector2i.XY) { //gd:AStarGrid2D.set_point_solid
 	class(self).SetPointSolid(gd.Vector2i(id), true)
 }
 
 /*
 Returns [code]true[/code] if a point is disabled for pathfinding. By default, all points are enabled.
 */
-func (self Instance) IsPointSolid(id Vector2i.XY) bool {
+func (self Instance) IsPointSolid(id Vector2i.XY) bool { //gd:AStarGrid2D.is_point_solid
 	return bool(class(self).IsPointSolid(gd.Vector2i(id)))
 }
 
@@ -160,14 +160,14 @@ func (self Instance) IsPointSolid(id Vector2i.XY) bool {
 Sets the [param weight_scale] for the point with the given [param id]. The [param weight_scale] is multiplied by the result of [method _compute_cost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
-func (self Instance) SetPointWeightScale(id Vector2i.XY, weight_scale Float.X) {
+func (self Instance) SetPointWeightScale(id Vector2i.XY, weight_scale Float.X) { //gd:AStarGrid2D.set_point_weight_scale
 	class(self).SetPointWeightScale(gd.Vector2i(id), gd.Float(weight_scale))
 }
 
 /*
 Returns the weight scale of the point associated with the given [param id].
 */
-func (self Instance) GetPointWeightScale(id Vector2i.XY) Float.X {
+func (self Instance) GetPointWeightScale(id Vector2i.XY) Float.X { //gd:AStarGrid2D.get_point_weight_scale
 	return Float.X(Float.X(class(self).GetPointWeightScale(gd.Vector2i(id))))
 }
 
@@ -175,7 +175,7 @@ func (self Instance) GetPointWeightScale(id Vector2i.XY) Float.X {
 Fills the given [param region] on the grid with the specified value for the solid flag.
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
-func (self Instance) FillSolidRegion(region Rect2i.PositionSize) {
+func (self Instance) FillSolidRegion(region Rect2i.PositionSize) { //gd:AStarGrid2D.fill_solid_region
 	class(self).FillSolidRegion(gd.Rect2i(region), true)
 }
 
@@ -183,21 +183,21 @@ func (self Instance) FillSolidRegion(region Rect2i.PositionSize) {
 Fills the given [param region] on the grid with the specified value for the weight scale.
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
-func (self Instance) FillWeightScaleRegion(region Rect2i.PositionSize, weight_scale Float.X) {
+func (self Instance) FillWeightScaleRegion(region Rect2i.PositionSize, weight_scale Float.X) { //gd:AStarGrid2D.fill_weight_scale_region
 	class(self).FillWeightScaleRegion(gd.Rect2i(region), gd.Float(weight_scale))
 }
 
 /*
 Clears the grid and sets the [member region] to [code]Rect2i(0, 0, 0, 0)[/code].
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:AStarGrid2D.clear
 	class(self).Clear()
 }
 
 /*
 Returns the position of the point associated with the given [param id].
 */
-func (self Instance) GetPointPosition(id Vector2i.XY) Vector2.XY {
+func (self Instance) GetPointPosition(id Vector2i.XY) Vector2.XY { //gd:AStarGrid2D.get_point_position
 	return Vector2.XY(class(self).GetPointPosition(gd.Vector2i(id)))
 }
 
@@ -206,7 +206,7 @@ Returns an array with the points that are in the path found by [AStarGrid2D] bet
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
-func (self Instance) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2.XY {
+func (self Instance) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2.XY { //gd:AStarGrid2D.get_point_path
 	return []Vector2.XY(class(self).GetPointPath(gd.Vector2i(from_id), gd.Vector2i(to_id), false).AsSlice())
 }
 
@@ -214,7 +214,7 @@ func (self Instance) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vect
 Returns an array with the IDs of the points that form the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 */
-func (self Instance) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2i.XY {
+func (self Instance) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2i.XY { //gd:AStarGrid2D.get_id_path
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetIdPath(gd.Vector2i(from_id), gd.Vector2i(to_id), false))))
 }
 
@@ -342,7 +342,7 @@ func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id gd.Vector2i, to
 }
 
 //go:nosplit
-func (self class) SetRegion(region gd.Rect2i) {
+func (self class) SetRegion(region gd.Rect2i) { //gd:AStarGrid2D.set_region
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
 	var r_ret = callframe.Nil
@@ -351,7 +351,7 @@ func (self class) SetRegion(region gd.Rect2i) {
 }
 
 //go:nosplit
-func (self class) GetRegion() gd.Rect2i {
+func (self class) GetRegion() gd.Rect2i { //gd:AStarGrid2D.get_region
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -361,7 +361,7 @@ func (self class) GetRegion() gd.Rect2i {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector2i) {
+func (self class) SetSize(size gd.Vector2i) { //gd:AStarGrid2D.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -370,7 +370,7 @@ func (self class) SetSize(size gd.Vector2i) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector2i {
+func (self class) GetSize() gd.Vector2i { //gd:AStarGrid2D.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -380,7 +380,7 @@ func (self class) GetSize() gd.Vector2i {
 }
 
 //go:nosplit
-func (self class) SetOffset(offset gd.Vector2) {
+func (self class) SetOffset(offset gd.Vector2) { //gd:AStarGrid2D.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -389,7 +389,7 @@ func (self class) SetOffset(offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 {
+func (self class) GetOffset() gd.Vector2 { //gd:AStarGrid2D.get_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -399,7 +399,7 @@ func (self class) GetOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetCellSize(cell_size gd.Vector2) {
+func (self class) SetCellSize(cell_size gd.Vector2) { //gd:AStarGrid2D.set_cell_size
 	var frame = callframe.New()
 	callframe.Arg(frame, cell_size)
 	var r_ret = callframe.Nil
@@ -408,7 +408,7 @@ func (self class) SetCellSize(cell_size gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetCellSize() gd.Vector2 {
+func (self class) GetCellSize() gd.Vector2 { //gd:AStarGrid2D.get_cell_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_cell_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -418,7 +418,7 @@ func (self class) GetCellSize() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetCellShape(cell_shape gdclass.AStarGrid2DCellShape) {
+func (self class) SetCellShape(cell_shape gdclass.AStarGrid2DCellShape) { //gd:AStarGrid2D.set_cell_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, cell_shape)
 	var r_ret = callframe.Nil
@@ -427,7 +427,7 @@ func (self class) SetCellShape(cell_shape gdclass.AStarGrid2DCellShape) {
 }
 
 //go:nosplit
-func (self class) GetCellShape() gdclass.AStarGrid2DCellShape {
+func (self class) GetCellShape() gdclass.AStarGrid2DCellShape { //gd:AStarGrid2D.get_cell_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AStarGrid2DCellShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_cell_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -440,7 +440,7 @@ func (self class) GetCellShape() gdclass.AStarGrid2DCellShape {
 Returns [code]true[/code] if the [param x] and [param y] is a valid grid coordinate (id), i.e. if it is inside [member region]. Equivalent to [code]region.has_point(Vector2i(x, y))[/code].
 */
 //go:nosplit
-func (self class) IsInBounds(x gd.Int, y gd.Int) bool {
+func (self class) IsInBounds(x gd.Int, y gd.Int) bool { //gd:AStarGrid2D.is_in_bounds
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
@@ -455,7 +455,7 @@ func (self class) IsInBounds(x gd.Int, y gd.Int) bool {
 Returns [code]true[/code] if the [param id] vector is a valid grid coordinate, i.e. if it is inside [member region]. Equivalent to [code]region.has_point(id)[/code].
 */
 //go:nosplit
-func (self class) IsInBoundsv(id gd.Vector2i) bool {
+func (self class) IsInBoundsv(id gd.Vector2i) bool { //gd:AStarGrid2D.is_in_boundsv
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -469,7 +469,7 @@ func (self class) IsInBoundsv(id gd.Vector2i) bool {
 Indicates that the grid parameters were changed and [method update] needs to be called.
 */
 //go:nosplit
-func (self class) IsDirty() bool {
+func (self class) IsDirty() bool { //gd:AStarGrid2D.is_dirty
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_dirty, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -483,7 +483,7 @@ Updates the internal state of the grid according to the parameters to prepare it
 [b]Note:[/b] All point data (solidity and weight scale) will be cleared.
 */
 //go:nosplit
-func (self class) Update() {
+func (self class) Update() { //gd:AStarGrid2D.update
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -491,7 +491,7 @@ func (self class) Update() {
 }
 
 //go:nosplit
-func (self class) SetJumpingEnabled(enabled bool) {
+func (self class) SetJumpingEnabled(enabled bool) { //gd:AStarGrid2D.set_jumping_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -500,7 +500,7 @@ func (self class) SetJumpingEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsJumpingEnabled() bool {
+func (self class) IsJumpingEnabled() bool { //gd:AStarGrid2D.is_jumping_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_is_jumping_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -510,7 +510,7 @@ func (self class) IsJumpingEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDiagonalMode(mode gdclass.AStarGrid2DDiagonalMode) {
+func (self class) SetDiagonalMode(mode gdclass.AStarGrid2DDiagonalMode) { //gd:AStarGrid2D.set_diagonal_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -519,7 +519,7 @@ func (self class) SetDiagonalMode(mode gdclass.AStarGrid2DDiagonalMode) {
 }
 
 //go:nosplit
-func (self class) GetDiagonalMode() gdclass.AStarGrid2DDiagonalMode {
+func (self class) GetDiagonalMode() gdclass.AStarGrid2DDiagonalMode { //gd:AStarGrid2D.get_diagonal_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AStarGrid2DDiagonalMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_diagonal_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -529,7 +529,7 @@ func (self class) GetDiagonalMode() gdclass.AStarGrid2DDiagonalMode {
 }
 
 //go:nosplit
-func (self class) SetDefaultComputeHeuristic(heuristic gdclass.AStarGrid2DHeuristic) {
+func (self class) SetDefaultComputeHeuristic(heuristic gdclass.AStarGrid2DHeuristic) { //gd:AStarGrid2D.set_default_compute_heuristic
 	var frame = callframe.New()
 	callframe.Arg(frame, heuristic)
 	var r_ret = callframe.Nil
@@ -538,7 +538,7 @@ func (self class) SetDefaultComputeHeuristic(heuristic gdclass.AStarGrid2DHeuris
 }
 
 //go:nosplit
-func (self class) GetDefaultComputeHeuristic() gdclass.AStarGrid2DHeuristic {
+func (self class) GetDefaultComputeHeuristic() gdclass.AStarGrid2DHeuristic { //gd:AStarGrid2D.get_default_compute_heuristic
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AStarGrid2DHeuristic](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_default_compute_heuristic, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -548,7 +548,7 @@ func (self class) GetDefaultComputeHeuristic() gdclass.AStarGrid2DHeuristic {
 }
 
 //go:nosplit
-func (self class) SetDefaultEstimateHeuristic(heuristic gdclass.AStarGrid2DHeuristic) {
+func (self class) SetDefaultEstimateHeuristic(heuristic gdclass.AStarGrid2DHeuristic) { //gd:AStarGrid2D.set_default_estimate_heuristic
 	var frame = callframe.New()
 	callframe.Arg(frame, heuristic)
 	var r_ret = callframe.Nil
@@ -557,7 +557,7 @@ func (self class) SetDefaultEstimateHeuristic(heuristic gdclass.AStarGrid2DHeuri
 }
 
 //go:nosplit
-func (self class) GetDefaultEstimateHeuristic() gdclass.AStarGrid2DHeuristic {
+func (self class) GetDefaultEstimateHeuristic() gdclass.AStarGrid2DHeuristic { //gd:AStarGrid2D.get_default_estimate_heuristic
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AStarGrid2DHeuristic](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_default_estimate_heuristic, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -571,7 +571,7 @@ Disables or enables the specified point for pathfinding. Useful for making an ob
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
 //go:nosplit
-func (self class) SetPointSolid(id gd.Vector2i, solid bool) {
+func (self class) SetPointSolid(id gd.Vector2i, solid bool) { //gd:AStarGrid2D.set_point_solid
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, solid)
@@ -584,7 +584,7 @@ func (self class) SetPointSolid(id gd.Vector2i, solid bool) {
 Returns [code]true[/code] if a point is disabled for pathfinding. By default, all points are enabled.
 */
 //go:nosplit
-func (self class) IsPointSolid(id gd.Vector2i) bool {
+func (self class) IsPointSolid(id gd.Vector2i) bool { //gd:AStarGrid2D.is_point_solid
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -599,7 +599,7 @@ Sets the [param weight_scale] for the point with the given [param id]. The [para
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
 //go:nosplit
-func (self class) SetPointWeightScale(id gd.Vector2i, weight_scale gd.Float) {
+func (self class) SetPointWeightScale(id gd.Vector2i, weight_scale gd.Float) { //gd:AStarGrid2D.set_point_weight_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, weight_scale)
@@ -612,7 +612,7 @@ func (self class) SetPointWeightScale(id gd.Vector2i, weight_scale gd.Float) {
 Returns the weight scale of the point associated with the given [param id].
 */
 //go:nosplit
-func (self class) GetPointWeightScale(id gd.Vector2i) gd.Float {
+func (self class) GetPointWeightScale(id gd.Vector2i) gd.Float { //gd:AStarGrid2D.get_point_weight_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -627,7 +627,7 @@ Fills the given [param region] on the grid with the specified value for the soli
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
 //go:nosplit
-func (self class) FillSolidRegion(region gd.Rect2i, solid bool) {
+func (self class) FillSolidRegion(region gd.Rect2i, solid bool) { //gd:AStarGrid2D.fill_solid_region
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
 	callframe.Arg(frame, solid)
@@ -641,7 +641,7 @@ Fills the given [param region] on the grid with the specified value for the weig
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
 //go:nosplit
-func (self class) FillWeightScaleRegion(region gd.Rect2i, weight_scale gd.Float) {
+func (self class) FillWeightScaleRegion(region gd.Rect2i, weight_scale gd.Float) { //gd:AStarGrid2D.fill_weight_scale_region
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
 	callframe.Arg(frame, weight_scale)
@@ -654,7 +654,7 @@ func (self class) FillWeightScaleRegion(region gd.Rect2i, weight_scale gd.Float)
 Clears the grid and sets the [member region] to [code]Rect2i(0, 0, 0, 0)[/code].
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:AStarGrid2D.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -665,7 +665,7 @@ func (self class) Clear() {
 Returns the position of the point associated with the given [param id].
 */
 //go:nosplit
-func (self class) GetPointPosition(id gd.Vector2i) gd.Vector2 {
+func (self class) GetPointPosition(id gd.Vector2i) gd.Vector2 { //gd:AStarGrid2D.get_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -681,7 +681,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 */
 //go:nosplit
-func (self class) GetPointPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_partial_path bool) gd.PackedVector2Array {
+func (self class) GetPointPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_partial_path bool) gd.PackedVector2Array { //gd:AStarGrid2D.get_point_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)
@@ -698,7 +698,7 @@ Returns an array with the IDs of the points that form the path found by AStar2D 
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 */
 //go:nosplit
-func (self class) GetIdPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_partial_path bool) Array.Contains[gd.Vector2i] {
+func (self class) GetIdPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_partial_path bool) Array.Contains[gd.Vector2i] { //gd:AStarGrid2D.get_id_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)
@@ -743,7 +743,7 @@ func init() {
 	gdclass.Register("AStarGrid2D", func(ptr gd.Object) any { return [1]gdclass.AStarGrid2D{*(*gdclass.AStarGrid2D)(unsafe.Pointer(&ptr))} })
 }
 
-type Heuristic = gdclass.AStarGrid2DHeuristic
+type Heuristic = gdclass.AStarGrid2DHeuristic //gd:AStarGrid2D.Heuristic
 
 const (
 	/*The [url=https://en.wikipedia.org/wiki/Euclidean_distance]Euclidean heuristic[/url] to be used for the pathfinding using the following formula:
@@ -781,7 +781,7 @@ const (
 	HeuristicMax Heuristic = 4
 )
 
-type DiagonalMode = gdclass.AStarGrid2DDiagonalMode
+type DiagonalMode = gdclass.AStarGrid2DDiagonalMode //gd:AStarGrid2D.DiagonalMode
 
 const (
 	/*The pathfinding algorithm will ignore solid neighbors around the target cell and allow passing using diagonals.*/
@@ -796,7 +796,7 @@ const (
 	DiagonalModeMax DiagonalMode = 4
 )
 
-type CellShape = gdclass.AStarGrid2DCellShape
+type CellShape = gdclass.AStarGrid2DCellShape //gd:AStarGrid2D.CellShape
 
 const (
 	/*Rectangular cell shape.*/

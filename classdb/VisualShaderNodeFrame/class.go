@@ -45,14 +45,14 @@ type Any interface {
 /*
 Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.attach_node_to_frame] method instead.
 */
-func (self Instance) AddAttachedNode(node int) {
+func (self Instance) AddAttachedNode(node int) { //gd:VisualShaderNodeFrame.add_attached_node
 	class(self).AddAttachedNode(gd.Int(node))
 }
 
 /*
 Removes a node from the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.detach_node_from_frame] method instead.
 */
-func (self Instance) RemoveAttachedNode(node int) {
+func (self Instance) RemoveAttachedNode(node int) { //gd:VisualShaderNodeFrame.remove_attached_node
 	class(self).RemoveAttachedNode(gd.Int(node))
 }
 
@@ -116,7 +116,7 @@ func (self Instance) SetAttachedNodes(value []int32) {
 }
 
 //go:nosplit
-func (self class) SetTitle(title gd.String) {
+func (self class) SetTitle(title gd.String) { //gd:VisualShaderNodeFrame.set_title
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	var r_ret = callframe.Nil
@@ -125,7 +125,7 @@ func (self class) SetTitle(title gd.String) {
 }
 
 //go:nosplit
-func (self class) GetTitle() gd.String {
+func (self class) GetTitle() gd.String { //gd:VisualShaderNodeFrame.get_title
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func (self class) GetTitle() gd.String {
 }
 
 //go:nosplit
-func (self class) SetTintColorEnabled(enable bool) {
+func (self class) SetTintColorEnabled(enable bool) { //gd:VisualShaderNodeFrame.set_tint_color_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetTintColorEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsTintColorEnabled() bool {
+func (self class) IsTintColorEnabled() bool { //gd:VisualShaderNodeFrame.is_tint_color_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_is_tint_color_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func (self class) IsTintColorEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetTintColor(color gd.Color) {
+func (self class) SetTintColor(color gd.Color) { //gd:VisualShaderNodeFrame.set_tint_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -163,7 +163,7 @@ func (self class) SetTintColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetTintColor() gd.Color {
+func (self class) GetTintColor() gd.Color { //gd:VisualShaderNodeFrame.get_tint_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_get_tint_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func (self class) GetTintColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetAutoshrinkEnabled(enable bool) {
+func (self class) SetAutoshrinkEnabled(enable bool) { //gd:VisualShaderNodeFrame.set_autoshrink_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -182,7 +182,7 @@ func (self class) SetAutoshrinkEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsAutoshrinkEnabled() bool {
+func (self class) IsAutoshrinkEnabled() bool { //gd:VisualShaderNodeFrame.is_autoshrink_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_is_autoshrink_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -195,7 +195,7 @@ func (self class) IsAutoshrinkEnabled() bool {
 Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.attach_node_to_frame] method instead.
 */
 //go:nosplit
-func (self class) AddAttachedNode(node gd.Int) {
+func (self class) AddAttachedNode(node gd.Int) { //gd:VisualShaderNodeFrame.add_attached_node
 	var frame = callframe.New()
 	callframe.Arg(frame, node)
 	var r_ret = callframe.Nil
@@ -207,7 +207,7 @@ func (self class) AddAttachedNode(node gd.Int) {
 Removes a node from the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.detach_node_from_frame] method instead.
 */
 //go:nosplit
-func (self class) RemoveAttachedNode(node gd.Int) {
+func (self class) RemoveAttachedNode(node gd.Int) { //gd:VisualShaderNodeFrame.remove_attached_node
 	var frame = callframe.New()
 	callframe.Arg(frame, node)
 	var r_ret = callframe.Nil
@@ -216,7 +216,7 @@ func (self class) RemoveAttachedNode(node gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetAttachedNodes(attached_nodes gd.PackedInt32Array) {
+func (self class) SetAttachedNodes(attached_nodes gd.PackedInt32Array) { //gd:VisualShaderNodeFrame.set_attached_nodes
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(attached_nodes))
 	var r_ret = callframe.Nil
@@ -225,7 +225,7 @@ func (self class) SetAttachedNodes(attached_nodes gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetAttachedNodes() gd.PackedInt32Array {
+func (self class) GetAttachedNodes() gd.PackedInt32Array { //gd:VisualShaderNodeFrame.get_attached_nodes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFrame.Bind_get_attached_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -125,7 +125,7 @@ func (self Instance) SetCurve(value [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) SetRadius(radius gd.Float) {
+func (self class) SetRadius(radius gd.Float) { //gd:TubeTrailMesh.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -134,7 +134,7 @@ func (self class) SetRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float {
+func (self class) GetRadius() gd.Float { //gd:TubeTrailMesh.get_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TubeTrailMesh.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -144,7 +144,7 @@ func (self class) GetRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRadialSteps(radial_steps gd.Int) {
+func (self class) SetRadialSteps(radial_steps gd.Int) { //gd:TubeTrailMesh.set_radial_steps
 	var frame = callframe.New()
 	callframe.Arg(frame, radial_steps)
 	var r_ret = callframe.Nil
@@ -153,7 +153,7 @@ func (self class) SetRadialSteps(radial_steps gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRadialSteps() gd.Int {
+func (self class) GetRadialSteps() gd.Int { //gd:TubeTrailMesh.get_radial_steps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TubeTrailMesh.Bind_get_radial_steps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -163,7 +163,7 @@ func (self class) GetRadialSteps() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSections(sections gd.Int) {
+func (self class) SetSections(sections gd.Int) { //gd:TubeTrailMesh.set_sections
 	var frame = callframe.New()
 	callframe.Arg(frame, sections)
 	var r_ret = callframe.Nil
@@ -172,7 +172,7 @@ func (self class) SetSections(sections gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSections() gd.Int {
+func (self class) GetSections() gd.Int { //gd:TubeTrailMesh.get_sections
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TubeTrailMesh.Bind_get_sections, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -182,7 +182,7 @@ func (self class) GetSections() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSectionLength(section_length gd.Float) {
+func (self class) SetSectionLength(section_length gd.Float) { //gd:TubeTrailMesh.set_section_length
 	var frame = callframe.New()
 	callframe.Arg(frame, section_length)
 	var r_ret = callframe.Nil
@@ -191,7 +191,7 @@ func (self class) SetSectionLength(section_length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSectionLength() gd.Float {
+func (self class) GetSectionLength() gd.Float { //gd:TubeTrailMesh.get_section_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TubeTrailMesh.Bind_get_section_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -201,7 +201,7 @@ func (self class) GetSectionLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSectionRings(section_rings gd.Int) {
+func (self class) SetSectionRings(section_rings gd.Int) { //gd:TubeTrailMesh.set_section_rings
 	var frame = callframe.New()
 	callframe.Arg(frame, section_rings)
 	var r_ret = callframe.Nil
@@ -210,7 +210,7 @@ func (self class) SetSectionRings(section_rings gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSectionRings() gd.Int {
+func (self class) GetSectionRings() gd.Int { //gd:TubeTrailMesh.get_section_rings
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TubeTrailMesh.Bind_get_section_rings, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -220,7 +220,7 @@ func (self class) GetSectionRings() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCapTop(cap_top bool) {
+func (self class) SetCapTop(cap_top bool) { //gd:TubeTrailMesh.set_cap_top
 	var frame = callframe.New()
 	callframe.Arg(frame, cap_top)
 	var r_ret = callframe.Nil
@@ -229,7 +229,7 @@ func (self class) SetCapTop(cap_top bool) {
 }
 
 //go:nosplit
-func (self class) IsCapTop() bool {
+func (self class) IsCapTop() bool { //gd:TubeTrailMesh.is_cap_top
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TubeTrailMesh.Bind_is_cap_top, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -239,7 +239,7 @@ func (self class) IsCapTop() bool {
 }
 
 //go:nosplit
-func (self class) SetCapBottom(cap_bottom bool) {
+func (self class) SetCapBottom(cap_bottom bool) { //gd:TubeTrailMesh.set_cap_bottom
 	var frame = callframe.New()
 	callframe.Arg(frame, cap_bottom)
 	var r_ret = callframe.Nil
@@ -248,7 +248,7 @@ func (self class) SetCapBottom(cap_bottom bool) {
 }
 
 //go:nosplit
-func (self class) IsCapBottom() bool {
+func (self class) IsCapBottom() bool { //gd:TubeTrailMesh.is_cap_bottom
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TubeTrailMesh.Bind_is_cap_bottom, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -258,7 +258,7 @@ func (self class) IsCapBottom() bool {
 }
 
 //go:nosplit
-func (self class) SetCurve(curve [1]gdclass.Curve) {
+func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:TubeTrailMesh.set_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -267,7 +267,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetCurve() [1]gdclass.Curve {
+func (self class) GetCurve() [1]gdclass.Curve { //gd:TubeTrailMesh.get_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TubeTrailMesh.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Addr())

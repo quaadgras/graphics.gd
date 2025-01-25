@@ -88,7 +88,7 @@ type Any interface {
 Parses the expression and returns an [enum Error] code.
 You can optionally specify names of variables that may appear in the expression with [param input_names], so that you can bind them when it gets executed.
 */
-func (self Instance) Parse(expression string) error {
+func (self Instance) Parse(expression string) error { //gd:Expression.parse
 	return error(gd.ToError(class(self).Parse(gd.NewString(expression), gd.NewPackedStringSlice([1][]string{}[0]))))
 }
 
@@ -96,21 +96,21 @@ func (self Instance) Parse(expression string) error {
 Executes the expression that was previously parsed by [method parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [method has_execute_failed].
 If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
 */
-func (self Instance) Execute() any {
+func (self Instance) Execute() any { //gd:Expression.execute
 	return any(class(self).Execute(Array.Nil, [1]Object.Instance{}[0], true, false).Interface())
 }
 
 /*
 Returns [code]true[/code] if [method execute] has failed.
 */
-func (self Instance) HasExecuteFailed() bool {
+func (self Instance) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
 	return bool(class(self).HasExecuteFailed())
 }
 
 /*
 Returns the error text if [method parse] or [method execute] has failed.
 */
-func (self Instance) GetErrorText() string {
+func (self Instance) GetErrorText() string { //gd:Expression.get_error_text
 	return string(class(self).GetErrorText().String())
 }
 
@@ -138,7 +138,7 @@ Parses the expression and returns an [enum Error] code.
 You can optionally specify names of variables that may appear in the expression with [param input_names], so that you can bind them when it gets executed.
 */
 //go:nosplit
-func (self class) Parse(expression gd.String, input_names gd.PackedStringArray) gd.Error {
+func (self class) Parse(expression gd.String, input_names gd.PackedStringArray) gd.Error { //gd:Expression.parse
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expression))
 	callframe.Arg(frame, pointers.Get(input_names))
@@ -154,7 +154,7 @@ Executes the expression that was previously parsed by [method parse] and returns
 If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
 */
 //go:nosplit
-func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_error bool, const_calls_only bool) gd.Variant {
+func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_error bool, const_calls_only bool) gd.Variant { //gd:Expression.execute
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(inputs)))
 	callframe.Arg(frame, pointers.Get(base_instance[0])[0])
@@ -171,7 +171,7 @@ func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_err
 Returns [code]true[/code] if [method execute] has failed.
 */
 //go:nosplit
-func (self class) HasExecuteFailed() bool {
+func (self class) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_has_execute_failed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -184,7 +184,7 @@ func (self class) HasExecuteFailed() bool {
 Returns the error text if [method parse] or [method execute] has failed.
 */
 //go:nosplit
-func (self class) GetErrorText() gd.String {
+func (self class) GetErrorText() gd.String { //gd:Expression.get_error_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_get_error_text, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -218,7 +218,7 @@ func init() {
 	gdclass.Register("Expression", func(ptr gd.Object) any { return [1]gdclass.Expression{*(*gdclass.Expression)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

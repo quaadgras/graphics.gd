@@ -76,7 +76,7 @@ func (self Instance) SetInitialOffset(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetLength(length gd.Float) {
+func (self class) SetLength(length gd.Float) { //gd:GrooveJoint2D.set_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -85,7 +85,7 @@ func (self class) SetLength(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLength() gd.Float {
+func (self class) GetLength() gd.Float { //gd:GrooveJoint2D.get_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GrooveJoint2D.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) GetLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetInitialOffset(offset gd.Float) {
+func (self class) SetInitialOffset(offset gd.Float) { //gd:GrooveJoint2D.set_initial_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetInitialOffset(offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetInitialOffset() gd.Float {
+func (self class) GetInitialOffset() gd.Float { //gd:GrooveJoint2D.get_initial_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GrooveJoint2D.Bind_get_initial_offset, self.AsObject(), frame.Array(0), r_ret.Addr())

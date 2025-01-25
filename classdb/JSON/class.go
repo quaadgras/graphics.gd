@@ -114,7 +114,7 @@ The [param indent] parameter controls if and how something is indented; its cont
 }
 [/codeblock]
 */
-func Stringify(data any) string {
+func Stringify(data any) string { //gd:JSON.stringify
 	self := Instance{}
 	return string(class(self).Stringify(gd.NewVariant(data), gd.NewString(""), true, false).String())
 }
@@ -122,7 +122,7 @@ func Stringify(data any) string {
 /*
 Attempts to parse the [param json_string] provided and returns the parsed data. Returns [code]null[/code] if parse failed.
 */
-func ParseString(json_string string) any {
+func ParseString(json_string string) any { //gd:JSON.parse_string
 	self := Instance{}
 	return any(class(self).ParseString(gd.NewString(json_string)).Interface())
 }
@@ -133,28 +133,28 @@ Returns an [enum Error]. If the parse was successful, it returns [constant OK] a
 Non-static variant of [method parse_string], if you want custom error handling.
 The optional [param keep_text] argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [method get_parsed_text] function and is used when saving the resource (instead of generating new text from [member data]).
 */
-func (self Instance) Parse(json_text string) error {
+func (self Instance) Parse(json_text string) error { //gd:JSON.parse
 	return error(gd.ToError(class(self).Parse(gd.NewString(json_text), false)))
 }
 
 /*
 Return the text parsed by [method parse] (requires passing [code]keep_text[/code] to [method parse]).
 */
-func (self Instance) GetParsedText() string {
+func (self Instance) GetParsedText() string { //gd:JSON.get_parsed_text
 	return string(class(self).GetParsedText().String())
 }
 
 /*
 Returns [code]0[/code] if the last call to [method parse] was successful, or the line number where the parse failed.
 */
-func (self Instance) GetErrorLine() int {
+func (self Instance) GetErrorLine() int { //gd:JSON.get_error_line
 	return int(int(class(self).GetErrorLine()))
 }
 
 /*
 Returns an empty string if the last call to [method parse] was successful, or the error message if it failed.
 */
-func (self Instance) GetErrorMessage() string {
+func (self Instance) GetErrorMessage() string { //gd:JSON.get_error_message
 	return string(class(self).GetErrorMessage().String())
 }
 
@@ -229,7 +229,7 @@ The [param indent] parameter controls if and how something is indented; its cont
 [/codeblock]
 */
 //go:nosplit
-func (self class) Stringify(data gd.Variant, indent gd.String, sort_keys bool, full_precision bool) gd.String {
+func (self class) Stringify(data gd.Variant, indent gd.String, sort_keys bool, full_precision bool) gd.String { //gd:JSON.stringify
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	callframe.Arg(frame, pointers.Get(indent))
@@ -246,7 +246,7 @@ func (self class) Stringify(data gd.Variant, indent gd.String, sort_keys bool, f
 Attempts to parse the [param json_string] provided and returns the parsed data. Returns [code]null[/code] if parse failed.
 */
 //go:nosplit
-func (self class) ParseString(json_string gd.String) gd.Variant {
+func (self class) ParseString(json_string gd.String) gd.Variant { //gd:JSON.parse_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(json_string))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -263,7 +263,7 @@ Non-static variant of [method parse_string], if you want custom error handling.
 The optional [param keep_text] argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [method get_parsed_text] function and is used when saving the resource (instead of generating new text from [member data]).
 */
 //go:nosplit
-func (self class) Parse(json_text gd.String, keep_text bool) gd.Error {
+func (self class) Parse(json_text gd.String, keep_text bool) gd.Error { //gd:JSON.parse
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(json_text))
 	callframe.Arg(frame, keep_text)
@@ -275,7 +275,7 @@ func (self class) Parse(json_text gd.String, keep_text bool) gd.Error {
 }
 
 //go:nosplit
-func (self class) GetData() gd.Variant {
+func (self class) GetData() gd.Variant { //gd:JSON.get_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -285,7 +285,7 @@ func (self class) GetData() gd.Variant {
 }
 
 //go:nosplit
-func (self class) SetData(data gd.Variant) {
+func (self class) SetData(data gd.Variant) { //gd:JSON.set_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Nil
@@ -297,7 +297,7 @@ func (self class) SetData(data gd.Variant) {
 Return the text parsed by [method parse] (requires passing [code]keep_text[/code] to [method parse]).
 */
 //go:nosplit
-func (self class) GetParsedText() gd.String {
+func (self class) GetParsedText() gd.String { //gd:JSON.get_parsed_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_parsed_text, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -310,7 +310,7 @@ func (self class) GetParsedText() gd.String {
 Returns [code]0[/code] if the last call to [method parse] was successful, or the line number where the parse failed.
 */
 //go:nosplit
-func (self class) GetErrorLine() gd.Int {
+func (self class) GetErrorLine() gd.Int { //gd:JSON.get_error_line
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_error_line, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -323,7 +323,7 @@ func (self class) GetErrorLine() gd.Int {
 Returns an empty string if the last call to [method parse] was successful, or the error message if it failed.
 */
 //go:nosplit
-func (self class) GetErrorMessage() gd.String {
+func (self class) GetErrorMessage() gd.String { //gd:JSON.get_error_message
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_get_error_message, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -363,7 +363,7 @@ func init() {
 	gdclass.Register("JSON", func(ptr gd.Object) any { return [1]gdclass.JSON{*(*gdclass.JSON)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

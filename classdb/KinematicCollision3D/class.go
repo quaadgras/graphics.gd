@@ -43,98 +43,98 @@ type Any interface {
 /*
 Returns the moving object's travel before collision.
 */
-func (self Instance) GetTravel() Vector3.XYZ {
+func (self Instance) GetTravel() Vector3.XYZ { //gd:KinematicCollision3D.get_travel
 	return Vector3.XYZ(class(self).GetTravel())
 }
 
 /*
 Returns the moving object's remaining movement vector.
 */
-func (self Instance) GetRemainder() Vector3.XYZ {
+func (self Instance) GetRemainder() Vector3.XYZ { //gd:KinematicCollision3D.get_remainder
 	return Vector3.XYZ(class(self).GetRemainder())
 }
 
 /*
 Returns the colliding body's length of overlap along the collision normal.
 */
-func (self Instance) GetDepth() Float.X {
+func (self Instance) GetDepth() Float.X { //gd:KinematicCollision3D.get_depth
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
 /*
 Returns the number of detected collisions.
 */
-func (self Instance) GetCollisionCount() int {
+func (self Instance) GetCollisionCount() int { //gd:KinematicCollision3D.get_collision_count
 	return int(int(class(self).GetCollisionCount()))
 }
 
 /*
 Returns the point of collision in global coordinates given a collision index (the deepest collision by default).
 */
-func (self Instance) GetPosition() Vector3.XYZ {
+func (self Instance) GetPosition() Vector3.XYZ { //gd:KinematicCollision3D.get_position
 	return Vector3.XYZ(class(self).GetPosition(gd.Int(0)))
 }
 
 /*
 Returns the colliding body's shape's normal at the point of collision given a collision index (the deepest collision by default).
 */
-func (self Instance) GetNormal() Vector3.XYZ {
+func (self Instance) GetNormal() Vector3.XYZ { //gd:KinematicCollision3D.get_normal
 	return Vector3.XYZ(class(self).GetNormal(gd.Int(0)))
 }
 
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive.
 */
-func (self Instance) GetAngle() Float.X {
+func (self Instance) GetAngle() Float.X { //gd:KinematicCollision3D.get_angle
 	return Float.X(Float.X(class(self).GetAngle(gd.Int(0), gd.Vector3(gd.Vector3{0, 1, 0}))))
 }
 
 /*
 Returns the moving object's colliding shape given a collision index (the deepest collision by default).
 */
-func (self Instance) GetLocalShape() Object.Instance {
+func (self Instance) GetLocalShape() Object.Instance { //gd:KinematicCollision3D.get_local_shape
 	return Object.Instance(class(self).GetLocalShape(gd.Int(0)))
 }
 
 /*
 Returns the colliding body's attached [Object] given a collision index (the deepest collision by default).
 */
-func (self Instance) GetCollider() Object.Instance {
+func (self Instance) GetCollider() Object.Instance { //gd:KinematicCollision3D.get_collider
 	return Object.Instance(class(self).GetCollider(gd.Int(0)))
 }
 
 /*
 Returns the unique instance ID of the colliding body's attached [Object] given a collision index (the deepest collision by default). See [method Object.get_instance_id].
 */
-func (self Instance) GetColliderId() int {
+func (self Instance) GetColliderId() int { //gd:KinematicCollision3D.get_collider_id
 	return int(int(class(self).GetColliderId(gd.Int(0))))
 }
 
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer3D] given a collision index (the deepest collision by default).
 */
-func (self Instance) GetColliderRid() Resource.ID {
+func (self Instance) GetColliderRid() Resource.ID { //gd:KinematicCollision3D.get_collider_rid
 	return Resource.ID(class(self).GetColliderRid(gd.Int(0)))
 }
 
 /*
 Returns the colliding body's shape given a collision index (the deepest collision by default).
 */
-func (self Instance) GetColliderShape() Object.Instance {
+func (self Instance) GetColliderShape() Object.Instance { //gd:KinematicCollision3D.get_collider_shape
 	return Object.Instance(class(self).GetColliderShape(gd.Int(0)))
 }
 
 /*
 Returns the colliding body's shape index given a collision index (the deepest collision by default). See [CollisionObject3D].
 */
-func (self Instance) GetColliderShapeIndex() int {
+func (self Instance) GetColliderShapeIndex() int { //gd:KinematicCollision3D.get_collider_shape_index
 	return int(int(class(self).GetColliderShapeIndex(gd.Int(0))))
 }
 
 /*
 Returns the colliding body's velocity given a collision index (the deepest collision by default).
 */
-func (self Instance) GetColliderVelocity() Vector3.XYZ {
+func (self Instance) GetColliderVelocity() Vector3.XYZ { //gd:KinematicCollision3D.get_collider_velocity
 	return Vector3.XYZ(class(self).GetColliderVelocity(gd.Int(0)))
 }
 
@@ -161,7 +161,7 @@ func New() Instance {
 Returns the moving object's travel before collision.
 */
 //go:nosplit
-func (self class) GetTravel() gd.Vector3 {
+func (self class) GetTravel() gd.Vector3 { //gd:KinematicCollision3D.get_travel
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_travel, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func (self class) GetTravel() gd.Vector3 {
 Returns the moving object's remaining movement vector.
 */
 //go:nosplit
-func (self class) GetRemainder() gd.Vector3 {
+func (self class) GetRemainder() gd.Vector3 { //gd:KinematicCollision3D.get_remainder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_remainder, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -187,7 +187,7 @@ func (self class) GetRemainder() gd.Vector3 {
 Returns the colliding body's length of overlap along the collision normal.
 */
 //go:nosplit
-func (self class) GetDepth() gd.Float {
+func (self class) GetDepth() gd.Float { //gd:KinematicCollision3D.get_depth
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -200,7 +200,7 @@ func (self class) GetDepth() gd.Float {
 Returns the number of detected collisions.
 */
 //go:nosplit
-func (self class) GetCollisionCount() gd.Int {
+func (self class) GetCollisionCount() gd.Int { //gd:KinematicCollision3D.get_collision_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_collision_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -213,7 +213,7 @@ func (self class) GetCollisionCount() gd.Int {
 Returns the point of collision in global coordinates given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetPosition(collision_index gd.Int) gd.Vector3 {
+func (self class) GetPosition(collision_index gd.Int) gd.Vector3 { //gd:KinematicCollision3D.get_position
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -227,7 +227,7 @@ func (self class) GetPosition(collision_index gd.Int) gd.Vector3 {
 Returns the colliding body's shape's normal at the point of collision given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetNormal(collision_index gd.Int) gd.Vector3 {
+func (self class) GetNormal(collision_index gd.Int) gd.Vector3 { //gd:KinematicCollision3D.get_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -241,7 +241,7 @@ func (self class) GetNormal(collision_index gd.Int) gd.Vector3 {
 Returns the collision angle according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive.
 */
 //go:nosplit
-func (self class) GetAngle(collision_index gd.Int, up_direction gd.Vector3) gd.Float {
+func (self class) GetAngle(collision_index gd.Int, up_direction gd.Vector3) gd.Float { //gd:KinematicCollision3D.get_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	callframe.Arg(frame, up_direction)
@@ -256,7 +256,7 @@ func (self class) GetAngle(collision_index gd.Int, up_direction gd.Vector3) gd.F
 Returns the moving object's colliding shape given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetLocalShape(collision_index gd.Int) [1]gd.Object {
+func (self class) GetLocalShape(collision_index gd.Int) [1]gd.Object { //gd:KinematicCollision3D.get_local_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -270,7 +270,7 @@ func (self class) GetLocalShape(collision_index gd.Int) [1]gd.Object {
 Returns the colliding body's attached [Object] given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetCollider(collision_index gd.Int) [1]gd.Object {
+func (self class) GetCollider(collision_index gd.Int) [1]gd.Object { //gd:KinematicCollision3D.get_collider
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -284,7 +284,7 @@ func (self class) GetCollider(collision_index gd.Int) [1]gd.Object {
 Returns the unique instance ID of the colliding body's attached [Object] given a collision index (the deepest collision by default). See [method Object.get_instance_id].
 */
 //go:nosplit
-func (self class) GetColliderId(collision_index gd.Int) gd.Int {
+func (self class) GetColliderId(collision_index gd.Int) gd.Int { //gd:KinematicCollision3D.get_collider_id
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -298,7 +298,7 @@ func (self class) GetColliderId(collision_index gd.Int) gd.Int {
 Returns the colliding body's [RID] used by the [PhysicsServer3D] given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetColliderRid(collision_index gd.Int) gd.RID {
+func (self class) GetColliderRid(collision_index gd.Int) gd.RID { //gd:KinematicCollision3D.get_collider_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -312,7 +312,7 @@ func (self class) GetColliderRid(collision_index gd.Int) gd.RID {
 Returns the colliding body's shape given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetColliderShape(collision_index gd.Int) [1]gd.Object {
+func (self class) GetColliderShape(collision_index gd.Int) [1]gd.Object { //gd:KinematicCollision3D.get_collider_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -326,7 +326,7 @@ func (self class) GetColliderShape(collision_index gd.Int) [1]gd.Object {
 Returns the colliding body's shape index given a collision index (the deepest collision by default). See [CollisionObject3D].
 */
 //go:nosplit
-func (self class) GetColliderShapeIndex(collision_index gd.Int) gd.Int {
+func (self class) GetColliderShapeIndex(collision_index gd.Int) gd.Int { //gd:KinematicCollision3D.get_collider_shape_index
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -340,7 +340,7 @@ func (self class) GetColliderShapeIndex(collision_index gd.Int) gd.Int {
 Returns the colliding body's velocity given a collision index (the deepest collision by default).
 */
 //go:nosplit
-func (self class) GetColliderVelocity(collision_index gd.Int) gd.Vector3 {
+func (self class) GetColliderVelocity(collision_index gd.Int) gd.Vector3 { //gd:KinematicCollision3D.get_collider_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.Vector3](frame)

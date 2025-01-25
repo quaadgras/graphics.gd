@@ -177,7 +177,7 @@ func (self Instance) SetAmbientColorEnergy(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetIntensity(intensity gd.Float) {
+func (self class) SetIntensity(intensity gd.Float) { //gd:ReflectionProbe.set_intensity
 	var frame = callframe.New()
 	callframe.Arg(frame, intensity)
 	var r_ret = callframe.Nil
@@ -186,7 +186,7 @@ func (self class) SetIntensity(intensity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetIntensity() gd.Float {
+func (self class) GetIntensity() gd.Float { //gd:ReflectionProbe.get_intensity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -196,7 +196,7 @@ func (self class) GetIntensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAmbientMode(ambient gdclass.ReflectionProbeAmbientMode) {
+func (self class) SetAmbientMode(ambient gdclass.ReflectionProbeAmbientMode) { //gd:ReflectionProbe.set_ambient_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, ambient)
 	var r_ret = callframe.Nil
@@ -205,7 +205,7 @@ func (self class) SetAmbientMode(ambient gdclass.ReflectionProbeAmbientMode) {
 }
 
 //go:nosplit
-func (self class) GetAmbientMode() gdclass.ReflectionProbeAmbientMode {
+func (self class) GetAmbientMode() gdclass.ReflectionProbeAmbientMode { //gd:ReflectionProbe.get_ambient_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ReflectionProbeAmbientMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -215,7 +215,7 @@ func (self class) GetAmbientMode() gdclass.ReflectionProbeAmbientMode {
 }
 
 //go:nosplit
-func (self class) SetAmbientColor(ambient gd.Color) {
+func (self class) SetAmbientColor(ambient gd.Color) { //gd:ReflectionProbe.set_ambient_color
 	var frame = callframe.New()
 	callframe.Arg(frame, ambient)
 	var r_ret = callframe.Nil
@@ -224,7 +224,7 @@ func (self class) SetAmbientColor(ambient gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetAmbientColor() gd.Color {
+func (self class) GetAmbientColor() gd.Color { //gd:ReflectionProbe.get_ambient_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -234,7 +234,7 @@ func (self class) GetAmbientColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetAmbientColorEnergy(ambient_energy gd.Float) {
+func (self class) SetAmbientColorEnergy(ambient_energy gd.Float) { //gd:ReflectionProbe.set_ambient_color_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, ambient_energy)
 	var r_ret = callframe.Nil
@@ -243,7 +243,7 @@ func (self class) SetAmbientColorEnergy(ambient_energy gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAmbientColorEnergy() gd.Float {
+func (self class) GetAmbientColorEnergy() gd.Float { //gd:ReflectionProbe.get_ambient_color_energy
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_color_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -253,7 +253,7 @@ func (self class) GetAmbientColorEnergy() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMaxDistance(max_distance gd.Float) {
+func (self class) SetMaxDistance(max_distance gd.Float) { //gd:ReflectionProbe.set_max_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, max_distance)
 	var r_ret = callframe.Nil
@@ -262,7 +262,7 @@ func (self class) SetMaxDistance(max_distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMaxDistance() gd.Float {
+func (self class) GetMaxDistance() gd.Float { //gd:ReflectionProbe.get_max_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -272,7 +272,7 @@ func (self class) GetMaxDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMeshLodThreshold(ratio gd.Float) {
+func (self class) SetMeshLodThreshold(ratio gd.Float) { //gd:ReflectionProbe.set_mesh_lod_threshold
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -281,7 +281,7 @@ func (self class) SetMeshLodThreshold(ratio gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMeshLodThreshold() gd.Float {
+func (self class) GetMeshLodThreshold() gd.Float { //gd:ReflectionProbe.get_mesh_lod_threshold
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_mesh_lod_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -291,7 +291,7 @@ func (self class) GetMeshLodThreshold() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) {
+func (self class) SetSize(size gd.Vector3) { //gd:ReflectionProbe.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -300,7 +300,7 @@ func (self class) SetSize(size gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 {
+func (self class) GetSize() gd.Vector3 { //gd:ReflectionProbe.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -310,7 +310,7 @@ func (self class) GetSize() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetOriginOffset(origin_offset gd.Vector3) {
+func (self class) SetOriginOffset(origin_offset gd.Vector3) { //gd:ReflectionProbe.set_origin_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, origin_offset)
 	var r_ret = callframe.Nil
@@ -319,7 +319,7 @@ func (self class) SetOriginOffset(origin_offset gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetOriginOffset() gd.Vector3 {
+func (self class) GetOriginOffset() gd.Vector3 { //gd:ReflectionProbe.get_origin_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_origin_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -329,7 +329,7 @@ func (self class) GetOriginOffset() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetAsInterior(enable bool) {
+func (self class) SetAsInterior(enable bool) { //gd:ReflectionProbe.set_as_interior
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -338,7 +338,7 @@ func (self class) SetAsInterior(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSetAsInterior() bool {
+func (self class) IsSetAsInterior() bool { //gd:ReflectionProbe.is_set_as_interior
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_is_set_as_interior, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -348,7 +348,7 @@ func (self class) IsSetAsInterior() bool {
 }
 
 //go:nosplit
-func (self class) SetEnableBoxProjection(enable bool) {
+func (self class) SetEnableBoxProjection(enable bool) { //gd:ReflectionProbe.set_enable_box_projection
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -357,7 +357,7 @@ func (self class) SetEnableBoxProjection(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsBoxProjectionEnabled() bool {
+func (self class) IsBoxProjectionEnabled() bool { //gd:ReflectionProbe.is_box_projection_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_is_box_projection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -367,7 +367,7 @@ func (self class) IsBoxProjectionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetEnableShadows(enable bool) {
+func (self class) SetEnableShadows(enable bool) { //gd:ReflectionProbe.set_enable_shadows
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -376,7 +376,7 @@ func (self class) SetEnableShadows(enable bool) {
 }
 
 //go:nosplit
-func (self class) AreShadowsEnabled() bool {
+func (self class) AreShadowsEnabled() bool { //gd:ReflectionProbe.are_shadows_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_are_shadows_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -386,7 +386,7 @@ func (self class) AreShadowsEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetCullMask(layers gd.Int) {
+func (self class) SetCullMask(layers gd.Int) { //gd:ReflectionProbe.set_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, layers)
 	var r_ret = callframe.Nil
@@ -395,7 +395,7 @@ func (self class) SetCullMask(layers gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCullMask() gd.Int {
+func (self class) GetCullMask() gd.Int { //gd:ReflectionProbe.get_cull_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -405,7 +405,7 @@ func (self class) GetCullMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetReflectionMask(layers gd.Int) {
+func (self class) SetReflectionMask(layers gd.Int) { //gd:ReflectionProbe.set_reflection_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, layers)
 	var r_ret = callframe.Nil
@@ -414,7 +414,7 @@ func (self class) SetReflectionMask(layers gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetReflectionMask() gd.Int {
+func (self class) GetReflectionMask() gd.Int { //gd:ReflectionProbe.get_reflection_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_reflection_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -424,7 +424,7 @@ func (self class) GetReflectionMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetUpdateMode(mode gdclass.ReflectionProbeUpdateMode) {
+func (self class) SetUpdateMode(mode gdclass.ReflectionProbeUpdateMode) { //gd:ReflectionProbe.set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -433,7 +433,7 @@ func (self class) SetUpdateMode(mode gdclass.ReflectionProbeUpdateMode) {
 }
 
 //go:nosplit
-func (self class) GetUpdateMode() gdclass.ReflectionProbeUpdateMode {
+func (self class) GetUpdateMode() gdclass.ReflectionProbeUpdateMode { //gd:ReflectionProbe.get_update_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ReflectionProbeUpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -473,7 +473,7 @@ func init() {
 	})
 }
 
-type UpdateMode = gdclass.ReflectionProbeUpdateMode
+type UpdateMode = gdclass.ReflectionProbeUpdateMode //gd:ReflectionProbe.UpdateMode
 
 const (
 	/*Update the probe once on the next frame (recommended for most objects). The corresponding radiance map will be generated over the following six frames. This takes more time to update than [constant UPDATE_ALWAYS], but it has a lower performance cost and can result in higher-quality reflections. The ReflectionProbe is updated when its transform changes, but not when nearby geometry changes. You can force a [ReflectionProbe] update by moving the [ReflectionProbe] slightly in any direction.*/
@@ -482,7 +482,7 @@ const (
 	UpdateAlways UpdateMode = 1
 )
 
-type AmbientMode = gdclass.ReflectionProbeAmbientMode
+type AmbientMode = gdclass.ReflectionProbeAmbientMode //gd:ReflectionProbe.AmbientMode
 
 const (
 	/*Do not apply any ambient lighting inside the [ReflectionProbe]'s box defined by its [member size].*/

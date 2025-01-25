@@ -54,21 +54,21 @@ type Any interface {
 /*
 Creates a new PCK file with the name [param pck_name]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_name] (even though it's not required).
 */
-func (self Instance) PckStart(pck_name string) error {
+func (self Instance) PckStart(pck_name string) error { //gd:PCKPacker.pck_start
 	return error(gd.ToError(class(self).PckStart(gd.NewString(pck_name), gd.Int(32), gd.NewString("0000000000000000000000000000000000000000000000000000000000000000"), false)))
 }
 
 /*
 Adds the [param source_path] file to the current PCK package at the [param pck_path] internal path (should start with [code]res://[/code]).
 */
-func (self Instance) AddFile(pck_path string, source_path string) error {
+func (self Instance) AddFile(pck_path string, source_path string) error { //gd:PCKPacker.add_file
 	return error(gd.ToError(class(self).AddFile(gd.NewString(pck_path), gd.NewString(source_path), false)))
 }
 
 /*
 Writes the files specified using all [method add_file] calls since the last flush. If [param verbose] is [code]true[/code], a list of files added will be printed to the console for easier debugging.
 */
-func (self Instance) Flush() error {
+func (self Instance) Flush() error { //gd:PCKPacker.flush
 	return error(gd.ToError(class(self).Flush(false)))
 }
 
@@ -95,7 +95,7 @@ func New() Instance {
 Creates a new PCK file with the name [param pck_name]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_name] (even though it's not required).
 */
 //go:nosplit
-func (self class) PckStart(pck_name gd.String, alignment gd.Int, key gd.String, encrypt_directory bool) gd.Error {
+func (self class) PckStart(pck_name gd.String, alignment gd.Int, key gd.String, encrypt_directory bool) gd.Error { //gd:PCKPacker.pck_start
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pck_name))
 	callframe.Arg(frame, alignment)
@@ -112,7 +112,7 @@ func (self class) PckStart(pck_name gd.String, alignment gd.Int, key gd.String, 
 Adds the [param source_path] file to the current PCK package at the [param pck_path] internal path (should start with [code]res://[/code]).
 */
 //go:nosplit
-func (self class) AddFile(pck_path gd.String, source_path gd.String, encrypt bool) gd.Error {
+func (self class) AddFile(pck_path gd.String, source_path gd.String, encrypt bool) gd.Error { //gd:PCKPacker.add_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pck_path))
 	callframe.Arg(frame, pointers.Get(source_path))
@@ -128,7 +128,7 @@ func (self class) AddFile(pck_path gd.String, source_path gd.String, encrypt boo
 Writes the files specified using all [method add_file] calls since the last flush. If [param verbose] is [code]true[/code], a list of files added will be printed to the console for easier debugging.
 */
 //go:nosplit
-func (self class) Flush(verbose bool) gd.Error {
+func (self class) Flush(verbose bool) gd.Error { //gd:PCKPacker.flush
 	var frame = callframe.New()
 	callframe.Arg(frame, verbose)
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -163,7 +163,7 @@ func init() {
 	gdclass.Register("PCKPacker", func(ptr gd.Object) any { return [1]gdclass.PCKPacker{*(*gdclass.PCKPacker)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

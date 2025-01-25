@@ -83,7 +83,7 @@ func (self Instance) SetSurround(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetPanPullout(amount gd.Float) {
+func (self class) SetPanPullout(amount gd.Float) { //gd:AudioEffectStereoEnhance.set_pan_pullout
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -92,7 +92,7 @@ func (self class) SetPanPullout(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPanPullout() gd.Float {
+func (self class) GetPanPullout() gd.Float { //gd:AudioEffectStereoEnhance.get_pan_pullout
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectStereoEnhance.Bind_get_pan_pullout, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -102,7 +102,7 @@ func (self class) GetPanPullout() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTimePullout(amount gd.Float) {
+func (self class) SetTimePullout(amount gd.Float) { //gd:AudioEffectStereoEnhance.set_time_pullout
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -111,7 +111,7 @@ func (self class) SetTimePullout(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTimePullout() gd.Float {
+func (self class) GetTimePullout() gd.Float { //gd:AudioEffectStereoEnhance.get_time_pullout
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectStereoEnhance.Bind_get_time_pullout, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -121,7 +121,7 @@ func (self class) GetTimePullout() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSurround(amount gd.Float) {
+func (self class) SetSurround(amount gd.Float) { //gd:AudioEffectStereoEnhance.set_surround
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -130,7 +130,7 @@ func (self class) SetSurround(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSurround() gd.Float {
+func (self class) GetSurround() gd.Float { //gd:AudioEffectStereoEnhance.get_surround
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectStereoEnhance.Bind_get_surround, self.AsObject(), frame.Array(0), r_ret.Addr())

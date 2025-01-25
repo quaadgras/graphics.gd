@@ -42,7 +42,7 @@ type Any interface {
 /*
 Create a new GLTFLight instance from the given Godot [Light3D] node.
 */
-func FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight {
+func FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight { //gd:GLTFLight.from_node
 	self := Instance{}
 	return [1]gdclass.GLTFLight(class(self).FromNode(light_node))
 }
@@ -50,14 +50,14 @@ func FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight {
 /*
 Converts this GLTFLight instance into a Godot [Light3D] node.
 */
-func (self Instance) ToNode() [1]gdclass.Light3D {
+func (self Instance) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node
 	return [1]gdclass.Light3D(class(self).ToNode())
 }
 
 /*
 Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFLight {
+func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
 	self := Instance{}
 	return [1]gdclass.GLTFLight(class(self).FromDictionary(gd.NewVariant(dictionary).Interface().(gd.Dictionary)))
 }
@@ -65,13 +65,13 @@ func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFLight {
 /*
 Serializes this GLTFLight instance into a [Dictionary].
 */
-func (self Instance) ToDictionary() map[any]any {
+func (self Instance) ToDictionary() map[any]any { //gd:GLTFLight.to_dictionary
 	return map[any]any(gd.DictionaryAs[any, any](class(self).ToDictionary()))
 }
-func (self Instance) GetAdditionalData(extension_name string) any {
+func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFLight.get_additional_data
 	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
 }
-func (self Instance) SetAdditionalData(extension_name string, additional_data any) {
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFLight.set_additional_data
 	class(self).SetAdditionalData(gd.NewStringName(extension_name), gd.NewVariant(additional_data))
 }
 
@@ -146,7 +146,7 @@ func (self Instance) SetOuterConeAngle(value Float.X) {
 Create a new GLTFLight instance from the given Godot [Light3D] node.
 */
 //go:nosplit
-func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight {
+func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight { //gd:GLTFLight.from_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(light_node[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -160,7 +160,7 @@ func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight {
 Converts this GLTFLight instance into a Godot [Light3D] node.
 */
 //go:nosplit
-func (self class) ToNode() [1]gdclass.Light3D {
+func (self class) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_to_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func (self class) ToNode() [1]gdclass.Light3D {
 Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
 //go:nosplit
-func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFLight {
+func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(dictionary))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -187,7 +187,7 @@ func (self class) FromDictionary(dictionary gd.Dictionary) [1]gdclass.GLTFLight 
 Serializes this GLTFLight instance into a [Dictionary].
 */
 //go:nosplit
-func (self class) ToDictionary() gd.Dictionary {
+func (self class) ToDictionary() gd.Dictionary { //gd:GLTFLight.to_dictionary
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_to_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -197,7 +197,7 @@ func (self class) ToDictionary() gd.Dictionary {
 }
 
 //go:nosplit
-func (self class) GetColor() gd.Color {
+func (self class) GetColor() gd.Color { //gd:GLTFLight.get_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -207,7 +207,7 @@ func (self class) GetColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetColor(color gd.Color) {
+func (self class) SetColor(color gd.Color) { //gd:GLTFLight.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -216,7 +216,7 @@ func (self class) SetColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetIntensity() gd.Float {
+func (self class) GetIntensity() gd.Float { //gd:GLTFLight.get_intensity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_get_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -226,7 +226,7 @@ func (self class) GetIntensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetIntensity(intensity gd.Float) {
+func (self class) SetIntensity(intensity gd.Float) { //gd:GLTFLight.set_intensity
 	var frame = callframe.New()
 	callframe.Arg(frame, intensity)
 	var r_ret = callframe.Nil
@@ -235,7 +235,7 @@ func (self class) SetIntensity(intensity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLightType() gd.String {
+func (self class) GetLightType() gd.String { //gd:GLTFLight.get_light_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_get_light_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -245,7 +245,7 @@ func (self class) GetLightType() gd.String {
 }
 
 //go:nosplit
-func (self class) SetLightType(light_type gd.String) {
+func (self class) SetLightType(light_type gd.String) { //gd:GLTFLight.set_light_type
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(light_type))
 	var r_ret = callframe.Nil
@@ -254,7 +254,7 @@ func (self class) SetLightType(light_type gd.String) {
 }
 
 //go:nosplit
-func (self class) GetRange() gd.Float {
+func (self class) GetRange() gd.Float { //gd:GLTFLight.get_range
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_get_range, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -264,7 +264,7 @@ func (self class) GetRange() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRange(arange gd.Float) {
+func (self class) SetRange(arange gd.Float) { //gd:GLTFLight.set_range
 	var frame = callframe.New()
 	callframe.Arg(frame, arange)
 	var r_ret = callframe.Nil
@@ -273,7 +273,7 @@ func (self class) SetRange(arange gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetInnerConeAngle() gd.Float {
+func (self class) GetInnerConeAngle() gd.Float { //gd:GLTFLight.get_inner_cone_angle
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_get_inner_cone_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -283,7 +283,7 @@ func (self class) GetInnerConeAngle() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetInnerConeAngle(inner_cone_angle gd.Float) {
+func (self class) SetInnerConeAngle(inner_cone_angle gd.Float) { //gd:GLTFLight.set_inner_cone_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, inner_cone_angle)
 	var r_ret = callframe.Nil
@@ -292,7 +292,7 @@ func (self class) SetInnerConeAngle(inner_cone_angle gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetOuterConeAngle() gd.Float {
+func (self class) GetOuterConeAngle() gd.Float { //gd:GLTFLight.get_outer_cone_angle
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_get_outer_cone_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -302,7 +302,7 @@ func (self class) GetOuterConeAngle() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetOuterConeAngle(outer_cone_angle gd.Float) {
+func (self class) SetOuterConeAngle(outer_cone_angle gd.Float) { //gd:GLTFLight.set_outer_cone_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, outer_cone_angle)
 	var r_ret = callframe.Nil
@@ -311,7 +311,7 @@ func (self class) SetOuterConeAngle(outer_cone_angle gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
+func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant { //gd:GLTFLight.get_additional_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -322,7 +322,7 @@ func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
 }
 
 //go:nosplit
-func (self class) SetAdditionalData(extension_name gd.StringName, additional_data gd.Variant) {
+func (self class) SetAdditionalData(extension_name gd.StringName, additional_data gd.Variant) { //gd:GLTFLight.set_additional_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	callframe.Arg(frame, pointers.Get(additional_data))

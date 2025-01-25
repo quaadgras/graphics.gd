@@ -555,27 +555,27 @@ func (Instance) _get_velocity_texture(impl func(ptr unsafe.Pointer) Resource.ID)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (self Instance) GetColorTexture() Resource.ID {
+func (self Instance) GetColorTexture() Resource.ID { //gd:XRInterfaceExtension.get_color_texture
 	return Resource.ID(class(self).GetColorTexture())
 }
-func (self Instance) GetDepthTexture() Resource.ID {
+func (self Instance) GetDepthTexture() Resource.ID { //gd:XRInterfaceExtension.get_depth_texture
 	return Resource.ID(class(self).GetDepthTexture())
 }
-func (self Instance) GetVelocityTexture() Resource.ID {
+func (self Instance) GetVelocityTexture() Resource.ID { //gd:XRInterfaceExtension.get_velocity_texture
 	return Resource.ID(class(self).GetVelocityTexture())
 }
 
 /*
 Blits our render results to screen optionally applying lens distortion. This can only be called while processing [code]_commit_views[/code].
 */
-func (self Instance) AddBlit(render_target Resource.ID, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int, apply_lens_distortion bool, eye_center Vector2.XY, k1 Float.X, k2 Float.X, upscale Float.X, aspect_ratio Float.X) {
+func (self Instance) AddBlit(render_target Resource.ID, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int, apply_lens_distortion bool, eye_center Vector2.XY, k1 Float.X, k2 Float.X, upscale Float.X, aspect_ratio Float.X) { //gd:XRInterfaceExtension.add_blit
 	class(self).AddBlit(render_target, gd.Rect2(src_rect), gd.Rect2i(dst_rect), use_layer, gd.Int(layer), apply_lens_distortion, gd.Vector2(eye_center), gd.Float(k1), gd.Float(k2), gd.Float(upscale), gd.Float(aspect_ratio))
 }
 
 /*
 Returns a valid [RID] for a texture to which we should render the current frame if supported by the interface.
 */
-func (self Instance) GetRenderTargetTexture(render_target Resource.ID) Resource.ID {
+func (self Instance) GetRenderTargetTexture(render_target Resource.ID) Resource.ID { //gd:XRInterfaceExtension.get_render_target_texture
 	return Resource.ID(class(self).GetRenderTargetTexture(render_target))
 }
 
@@ -998,7 +998,7 @@ func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) gd.RID) (cb gd.
 }
 
 //go:nosplit
-func (self class) GetColorTexture() gd.RID {
+func (self class) GetColorTexture() gd.RID { //gd:XRInterfaceExtension.get_color_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_color_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1008,7 +1008,7 @@ func (self class) GetColorTexture() gd.RID {
 }
 
 //go:nosplit
-func (self class) GetDepthTexture() gd.RID {
+func (self class) GetDepthTexture() gd.RID { //gd:XRInterfaceExtension.get_depth_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_depth_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1018,7 +1018,7 @@ func (self class) GetDepthTexture() gd.RID {
 }
 
 //go:nosplit
-func (self class) GetVelocityTexture() gd.RID {
+func (self class) GetVelocityTexture() gd.RID { //gd:XRInterfaceExtension.get_velocity_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_velocity_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1031,7 +1031,7 @@ func (self class) GetVelocityTexture() gd.RID {
 Blits our render results to screen optionally applying lens distortion. This can only be called while processing [code]_commit_views[/code].
 */
 //go:nosplit
-func (self class) AddBlit(render_target gd.RID, src_rect gd.Rect2, dst_rect gd.Rect2i, use_layer bool, layer gd.Int, apply_lens_distortion bool, eye_center gd.Vector2, k1 gd.Float, k2 gd.Float, upscale gd.Float, aspect_ratio gd.Float) {
+func (self class) AddBlit(render_target gd.RID, src_rect gd.Rect2, dst_rect gd.Rect2i, use_layer bool, layer gd.Int, apply_lens_distortion bool, eye_center gd.Vector2, k1 gd.Float, k2 gd.Float, upscale gd.Float, aspect_ratio gd.Float) { //gd:XRInterfaceExtension.add_blit
 	var frame = callframe.New()
 	callframe.Arg(frame, render_target)
 	callframe.Arg(frame, src_rect)
@@ -1053,7 +1053,7 @@ func (self class) AddBlit(render_target gd.RID, src_rect gd.Rect2, dst_rect gd.R
 Returns a valid [RID] for a texture to which we should render the current frame if supported by the interface.
 */
 //go:nosplit
-func (self class) GetRenderTargetTexture(render_target gd.RID) gd.RID {
+func (self class) GetRenderTargetTexture(render_target gd.RID) gd.RID { //gd:XRInterfaceExtension.get_render_target_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, render_target)
 	var r_ret = callframe.Ret[gd.RID](frame)

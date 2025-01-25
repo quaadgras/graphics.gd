@@ -69,7 +69,7 @@ func (self Instance) SetSyncToPhysics(value bool) {
 }
 
 //go:nosplit
-func (self class) SetSyncToPhysics(enable bool) {
+func (self class) SetSyncToPhysics(enable bool) { //gd:AnimatableBody3D.set_sync_to_physics
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -78,7 +78,7 @@ func (self class) SetSyncToPhysics(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSyncToPhysicsEnabled() bool {
+func (self class) IsSyncToPhysicsEnabled() bool { //gd:AnimatableBody3D.is_sync_to_physics_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimatableBody3D.Bind_is_sync_to_physics_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())

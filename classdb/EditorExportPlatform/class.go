@@ -40,7 +40,7 @@ type Any interface {
 /*
 Returns the name of the export operating system handled by this [EditorExportPlatform] class, as a friendly string. Possible return values are [code]Windows[/code], [code]Linux[/code], [code]macOS[/code], [code]Android[/code], [code]iOS[/code], and [code]Web[/code].
 */
-func (self Instance) GetOsName() string {
+func (self Instance) GetOsName() string { //gd:EditorExportPlatform.get_os_name
 	return string(class(self).GetOsName().String())
 }
 
@@ -67,7 +67,7 @@ func New() Instance {
 Returns the name of the export operating system handled by this [EditorExportPlatform] class, as a friendly string. Possible return values are [code]Windows[/code], [code]Linux[/code], [code]macOS[/code], [code]Android[/code], [code]iOS[/code], and [code]Web[/code].
 */
 //go:nosplit
-func (self class) GetOsName() gd.String {
+func (self class) GetOsName() gd.String { //gd:EditorExportPlatform.get_os_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlatform.Bind_get_os_name, self.AsObject(), frame.Array(0), r_ret.Addr())

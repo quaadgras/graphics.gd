@@ -44,7 +44,7 @@ type Any interface {
 /*
 Clears text paragraph (removes text and inline objects).
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:TextParagraph.clear
 	class(self).Clear()
 }
 
@@ -52,217 +52,217 @@ func (self Instance) Clear() {
 Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (self Instance) SetBidiOverride(override []any) {
+func (self Instance) SetBidiOverride(override []any) { //gd:TextParagraph.set_bidi_override
 	class(self).SetBidiOverride(gd.EngineArrayFromSlice(override))
 }
 
 /*
 Sets drop cap, overrides previously set drop cap. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
-func (self Instance) SetDropcap(text string, font [1]gdclass.Font, font_size int) bool {
+func (self Instance) SetDropcap(text string, font [1]gdclass.Font, font_size int) bool { //gd:TextParagraph.set_dropcap
 	return bool(class(self).SetDropcap(gd.NewString(text), font, gd.Int(font_size), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.NewString("")))
 }
 
 /*
 Removes dropcap.
 */
-func (self Instance) ClearDropcap() {
+func (self Instance) ClearDropcap() { //gd:TextParagraph.clear_dropcap
 	class(self).ClearDropcap()
 }
 
 /*
 Adds text span and font to draw it.
 */
-func (self Instance) AddString(text string, font [1]gdclass.Font, font_size int) bool {
+func (self Instance) AddString(text string, font [1]gdclass.Font, font_size int) bool { //gd:TextParagraph.add_string
 	return bool(class(self).AddString(gd.NewString(text), font, gd.Int(font_size), gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 /*
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (self Instance) AddObject(key any, size Vector2.XY) bool {
+func (self Instance) AddObject(key any, size Vector2.XY) bool { //gd:TextParagraph.add_object
 	return bool(class(self).AddObject(gd.NewVariant(key), gd.Vector2(size), 5, gd.Int(1), gd.Float(0.0)))
 }
 
 /*
 Sets new size and alignment of embedded object.
 */
-func (self Instance) ResizeObject(key any, size Vector2.XY) bool {
+func (self Instance) ResizeObject(key any, size Vector2.XY) bool { //gd:TextParagraph.resize_object
 	return bool(class(self).ResizeObject(gd.NewVariant(key), gd.Vector2(size), 5, gd.Float(0.0)))
 }
 
 /*
 Aligns paragraph to the given tab-stops.
 */
-func (self Instance) TabAlign(tab_stops []float32) {
+func (self Instance) TabAlign(tab_stops []float32) { //gd:TextParagraph.tab_align
 	class(self).TabAlign(gd.NewPackedFloat32Slice(tab_stops))
 }
 
 /*
 Returns the size of the bounding box of the paragraph, without line breaks.
 */
-func (self Instance) GetNonWrappedSize() Vector2.XY {
+func (self Instance) GetNonWrappedSize() Vector2.XY { //gd:TextParagraph.get_non_wrapped_size
 	return Vector2.XY(class(self).GetNonWrappedSize())
 }
 
 /*
 Returns the size of the bounding box of the paragraph.
 */
-func (self Instance) GetSize() Vector2.XY {
+func (self Instance) GetSize() Vector2.XY { //gd:TextParagraph.get_size
 	return Vector2.XY(class(self).GetSize())
 }
 
 /*
 Returns TextServer full string buffer RID.
 */
-func (self Instance) GetRid() Resource.ID {
+func (self Instance) GetRid() Resource.ID { //gd:TextParagraph.get_rid
 	return Resource.ID(class(self).GetRid())
 }
 
 /*
 Returns TextServer line buffer RID.
 */
-func (self Instance) GetLineRid(line int) Resource.ID {
+func (self Instance) GetLineRid(line int) Resource.ID { //gd:TextParagraph.get_line_rid
 	return Resource.ID(class(self).GetLineRid(gd.Int(line)))
 }
 
 /*
 Returns drop cap text buffer RID.
 */
-func (self Instance) GetDropcapRid() Resource.ID {
+func (self Instance) GetDropcapRid() Resource.ID { //gd:TextParagraph.get_dropcap_rid
 	return Resource.ID(class(self).GetDropcapRid())
 }
 
 /*
 Returns number of lines in the paragraph.
 */
-func (self Instance) GetLineCount() int {
+func (self Instance) GetLineCount() int { //gd:TextParagraph.get_line_count
 	return int(int(class(self).GetLineCount()))
 }
 
 /*
 Returns array of inline objects in the line.
 */
-func (self Instance) GetLineObjects(line int) []any {
+func (self Instance) GetLineObjects(line int) []any { //gd:TextParagraph.get_line_objects
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetLineObjects(gd.Int(line)))))
 }
 
 /*
 Returns bounding rectangle of the inline object.
 */
-func (self Instance) GetLineObjectRect(line int, key any) Rect2.PositionSize {
+func (self Instance) GetLineObjectRect(line int, key any) Rect2.PositionSize { //gd:TextParagraph.get_line_object_rect
 	return Rect2.PositionSize(class(self).GetLineObjectRect(gd.Int(line), gd.NewVariant(key)))
 }
 
 /*
 Returns size of the bounding box of the line of text. Returned size is rounded up.
 */
-func (self Instance) GetLineSize(line int) Vector2.XY {
+func (self Instance) GetLineSize(line int) Vector2.XY { //gd:TextParagraph.get_line_size
 	return Vector2.XY(class(self).GetLineSize(gd.Int(line)))
 }
 
 /*
 Returns character range of the line.
 */
-func (self Instance) GetLineRange(line int) Vector2i.XY {
+func (self Instance) GetLineRange(line int) Vector2i.XY { //gd:TextParagraph.get_line_range
 	return Vector2i.XY(class(self).GetLineRange(gd.Int(line)))
 }
 
 /*
 Returns the text line ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 */
-func (self Instance) GetLineAscent(line int) Float.X {
+func (self Instance) GetLineAscent(line int) Float.X { //gd:TextParagraph.get_line_ascent
 	return Float.X(Float.X(class(self).GetLineAscent(gd.Int(line))))
 }
 
 /*
 Returns the text line descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 */
-func (self Instance) GetLineDescent(line int) Float.X {
+func (self Instance) GetLineDescent(line int) Float.X { //gd:TextParagraph.get_line_descent
 	return Float.X(Float.X(class(self).GetLineDescent(gd.Int(line))))
 }
 
 /*
 Returns width (for horizontal layout) or height (for vertical) of the line of text.
 */
-func (self Instance) GetLineWidth(line int) Float.X {
+func (self Instance) GetLineWidth(line int) Float.X { //gd:TextParagraph.get_line_width
 	return Float.X(Float.X(class(self).GetLineWidth(gd.Int(line))))
 }
 
 /*
 Returns pixel offset of the underline below the baseline.
 */
-func (self Instance) GetLineUnderlinePosition(line int) Float.X {
+func (self Instance) GetLineUnderlinePosition(line int) Float.X { //gd:TextParagraph.get_line_underline_position
 	return Float.X(Float.X(class(self).GetLineUnderlinePosition(gd.Int(line))))
 }
 
 /*
 Returns thickness of the underline.
 */
-func (self Instance) GetLineUnderlineThickness(line int) Float.X {
+func (self Instance) GetLineUnderlineThickness(line int) Float.X { //gd:TextParagraph.get_line_underline_thickness
 	return Float.X(Float.X(class(self).GetLineUnderlineThickness(gd.Int(line))))
 }
 
 /*
 Returns drop cap bounding box size.
 */
-func (self Instance) GetDropcapSize() Vector2.XY {
+func (self Instance) GetDropcapSize() Vector2.XY { //gd:TextParagraph.get_dropcap_size
 	return Vector2.XY(class(self).GetDropcapSize())
 }
 
 /*
 Returns number of lines used by dropcap.
 */
-func (self Instance) GetDropcapLines() int {
+func (self Instance) GetDropcapLines() int { //gd:TextParagraph.get_dropcap_lines
 	return int(int(class(self).GetDropcapLines()))
 }
 
 /*
 Draw all lines of the text and drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) Draw(canvas Resource.ID, pos Vector2.XY) {
+func (self Instance) Draw(canvas Resource.ID, pos Vector2.XY) { //gd:TextParagraph.draw
 	class(self).Draw(canvas, gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawOutline(canvas Resource.ID, pos Vector2.XY) {
+func (self Instance) DrawOutline(canvas Resource.ID, pos Vector2.XY) { //gd:TextParagraph.draw_outline
 	class(self).DrawOutline(canvas, gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw single line of text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawLine(canvas Resource.ID, pos Vector2.XY, line int) {
+func (self Instance) DrawLine(canvas Resource.ID, pos Vector2.XY, line int) { //gd:TextParagraph.draw_line
 	class(self).DrawLine(canvas, gd.Vector2(pos), gd.Int(line), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw outline of the single line of text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawLineOutline(canvas Resource.ID, pos Vector2.XY, line int) {
+func (self Instance) DrawLineOutline(canvas Resource.ID, pos Vector2.XY, line int) { //gd:TextParagraph.draw_line_outline
 	class(self).DrawLineOutline(canvas, gd.Vector2(pos), gd.Int(line), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawDropcap(canvas Resource.ID, pos Vector2.XY) {
+func (self Instance) DrawDropcap(canvas Resource.ID, pos Vector2.XY) { //gd:TextParagraph.draw_dropcap
 	class(self).DrawDropcap(canvas, gd.Vector2(pos), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draw drop cap outline into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
-func (self Instance) DrawDropcapOutline(canvas Resource.ID, pos Vector2.XY) {
+func (self Instance) DrawDropcapOutline(canvas Resource.ID, pos Vector2.XY) { //gd:TextParagraph.draw_dropcap_outline
 	class(self).DrawDropcapOutline(canvas, gd.Vector2(pos), gd.Int(1), gd.Color(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Returns caret character offset at the specified coordinates. This function always returns a valid position.
 */
-func (self Instance) HitTest(coords Vector2.XY) int {
+func (self Instance) HitTest(coords Vector2.XY) int { //gd:TextParagraph.hit_test
 	return int(int(class(self).HitTest(gd.Vector2(coords))))
 }
 
@@ -385,7 +385,7 @@ func (self Instance) SetMaxLinesVisible(value int) {
 Clears text paragraph (removes text and inline objects).
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:TextParagraph.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -393,7 +393,7 @@ func (self class) Clear() {
 }
 
 //go:nosplit
-func (self class) SetDirection(direction gdclass.TextServerDirection) {
+func (self class) SetDirection(direction gdclass.TextServerDirection) { //gd:TextParagraph.set_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -402,7 +402,7 @@ func (self class) SetDirection(direction gdclass.TextServerDirection) {
 }
 
 //go:nosplit
-func (self class) GetDirection() gdclass.TextServerDirection {
+func (self class) GetDirection() gdclass.TextServerDirection { //gd:TextParagraph.get_direction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -412,7 +412,7 @@ func (self class) GetDirection() gdclass.TextServerDirection {
 }
 
 //go:nosplit
-func (self class) SetCustomPunctuation(custom_punctuation gd.String) {
+func (self class) SetCustomPunctuation(custom_punctuation gd.String) { //gd:TextParagraph.set_custom_punctuation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(custom_punctuation))
 	var r_ret = callframe.Nil
@@ -421,7 +421,7 @@ func (self class) SetCustomPunctuation(custom_punctuation gd.String) {
 }
 
 //go:nosplit
-func (self class) GetCustomPunctuation() gd.String {
+func (self class) GetCustomPunctuation() gd.String { //gd:TextParagraph.get_custom_punctuation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_custom_punctuation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -431,7 +431,7 @@ func (self class) GetCustomPunctuation() gd.String {
 }
 
 //go:nosplit
-func (self class) SetOrientation(orientation gdclass.TextServerOrientation) {
+func (self class) SetOrientation(orientation gdclass.TextServerOrientation) { //gd:TextParagraph.set_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, orientation)
 	var r_ret = callframe.Nil
@@ -440,7 +440,7 @@ func (self class) SetOrientation(orientation gdclass.TextServerOrientation) {
 }
 
 //go:nosplit
-func (self class) GetOrientation() gdclass.TextServerOrientation {
+func (self class) GetOrientation() gdclass.TextServerOrientation { //gd:TextParagraph.get_orientation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerOrientation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -450,7 +450,7 @@ func (self class) GetOrientation() gdclass.TextServerOrientation {
 }
 
 //go:nosplit
-func (self class) SetPreserveInvalid(enabled bool) {
+func (self class) SetPreserveInvalid(enabled bool) { //gd:TextParagraph.set_preserve_invalid
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -459,7 +459,7 @@ func (self class) SetPreserveInvalid(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetPreserveInvalid() bool {
+func (self class) GetPreserveInvalid() bool { //gd:TextParagraph.get_preserve_invalid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_preserve_invalid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -469,7 +469,7 @@ func (self class) GetPreserveInvalid() bool {
 }
 
 //go:nosplit
-func (self class) SetPreserveControl(enabled bool) {
+func (self class) SetPreserveControl(enabled bool) { //gd:TextParagraph.set_preserve_control
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -478,7 +478,7 @@ func (self class) SetPreserveControl(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetPreserveControl() bool {
+func (self class) GetPreserveControl() bool { //gd:TextParagraph.get_preserve_control
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_preserve_control, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -492,7 +492,7 @@ Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
 //go:nosplit
-func (self class) SetBidiOverride(override Array.Any) {
+func (self class) SetBidiOverride(override Array.Any) { //gd:TextParagraph.set_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(override)))
 	var r_ret = callframe.Nil
@@ -504,7 +504,7 @@ func (self class) SetBidiOverride(override Array.Any) {
 Sets drop cap, overrides previously set drop cap. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 //go:nosplit
-func (self class) SetDropcap(text gd.String, font [1]gdclass.Font, font_size gd.Int, dropcap_margins gd.Rect2, language gd.String) bool {
+func (self class) SetDropcap(text gd.String, font [1]gdclass.Font, font_size gd.Int, dropcap_margins gd.Rect2, language gd.String) bool { //gd:TextParagraph.set_dropcap
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, pointers.Get(font[0])[0])
@@ -522,7 +522,7 @@ func (self class) SetDropcap(text gd.String, font [1]gdclass.Font, font_size gd.
 Removes dropcap.
 */
 //go:nosplit
-func (self class) ClearDropcap() {
+func (self class) ClearDropcap() { //gd:TextParagraph.clear_dropcap
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_clear_dropcap, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -533,7 +533,7 @@ func (self class) ClearDropcap() {
 Adds text span and font to draw it.
 */
 //go:nosplit
-func (self class) AddString(text gd.String, font [1]gdclass.Font, font_size gd.Int, language gd.String, meta gd.Variant) bool {
+func (self class) AddString(text gd.String, font [1]gdclass.Font, font_size gd.Int, language gd.String, meta gd.Variant) bool { //gd:TextParagraph.add_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, pointers.Get(font[0])[0])
@@ -551,7 +551,7 @@ func (self class) AddString(text gd.String, font [1]gdclass.Font, font_size gd.I
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
 //go:nosplit
-func (self class) AddObject(key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length gd.Int, baseline gd.Float) bool {
+func (self class) AddObject(key gd.Variant, size gd.Vector2, inline_align InlineAlignment, length gd.Int, baseline gd.Float) bool { //gd:TextParagraph.add_object
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, size)
@@ -569,7 +569,7 @@ func (self class) AddObject(key gd.Variant, size gd.Vector2, inline_align Inline
 Sets new size and alignment of embedded object.
 */
 //go:nosplit
-func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline gd.Float) bool {
+func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align InlineAlignment, baseline gd.Float) bool { //gd:TextParagraph.resize_object
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key))
 	callframe.Arg(frame, size)
@@ -583,7 +583,7 @@ func (self class) ResizeObject(key gd.Variant, size gd.Vector2, inline_align Inl
 }
 
 //go:nosplit
-func (self class) SetAlignment(alignment HorizontalAlignment) {
+func (self class) SetAlignment(alignment HorizontalAlignment) { //gd:TextParagraph.set_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -592,7 +592,7 @@ func (self class) SetAlignment(alignment HorizontalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetAlignment() HorizontalAlignment {
+func (self class) GetAlignment() HorizontalAlignment { //gd:TextParagraph.get_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -605,7 +605,7 @@ func (self class) GetAlignment() HorizontalAlignment {
 Aligns paragraph to the given tab-stops.
 */
 //go:nosplit
-func (self class) TabAlign(tab_stops gd.PackedFloat32Array) {
+func (self class) TabAlign(tab_stops gd.PackedFloat32Array) { //gd:TextParagraph.tab_align
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tab_stops))
 	var r_ret = callframe.Nil
@@ -614,7 +614,7 @@ func (self class) TabAlign(tab_stops gd.PackedFloat32Array) {
 }
 
 //go:nosplit
-func (self class) SetBreakFlags(flags gdclass.TextServerLineBreakFlag) {
+func (self class) SetBreakFlags(flags gdclass.TextServerLineBreakFlag) { //gd:TextParagraph.set_break_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -623,7 +623,7 @@ func (self class) SetBreakFlags(flags gdclass.TextServerLineBreakFlag) {
 }
 
 //go:nosplit
-func (self class) GetBreakFlags() gdclass.TextServerLineBreakFlag {
+func (self class) GetBreakFlags() gdclass.TextServerLineBreakFlag { //gd:TextParagraph.get_break_flags
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerLineBreakFlag](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_break_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -633,7 +633,7 @@ func (self class) GetBreakFlags() gdclass.TextServerLineBreakFlag {
 }
 
 //go:nosplit
-func (self class) SetJustificationFlags(flags gdclass.TextServerJustificationFlag) {
+func (self class) SetJustificationFlags(flags gdclass.TextServerJustificationFlag) { //gd:TextParagraph.set_justification_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -642,7 +642,7 @@ func (self class) SetJustificationFlags(flags gdclass.TextServerJustificationFla
 }
 
 //go:nosplit
-func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag {
+func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag { //gd:TextParagraph.get_justification_flags
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerJustificationFlag](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_justification_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -652,7 +652,7 @@ func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag {
 }
 
 //go:nosplit
-func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOverrunBehavior) {
+func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:TextParagraph.set_text_overrun_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, overrun_behavior)
 	var r_ret = callframe.Nil
@@ -661,7 +661,7 @@ func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOver
 }
 
 //go:nosplit
-func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior {
+func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior { //gd:TextParagraph.get_text_overrun_behavior
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -671,7 +671,7 @@ func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior {
 }
 
 //go:nosplit
-func (self class) SetEllipsisChar(char gd.String) {
+func (self class) SetEllipsisChar(char gd.String) { //gd:TextParagraph.set_ellipsis_char
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(char))
 	var r_ret = callframe.Nil
@@ -680,7 +680,7 @@ func (self class) SetEllipsisChar(char gd.String) {
 }
 
 //go:nosplit
-func (self class) GetEllipsisChar() gd.String {
+func (self class) GetEllipsisChar() gd.String { //gd:TextParagraph.get_ellipsis_char
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_ellipsis_char, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -690,7 +690,7 @@ func (self class) GetEllipsisChar() gd.String {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Float) {
+func (self class) SetWidth(width gd.Float) { //gd:TextParagraph.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -699,7 +699,7 @@ func (self class) SetWidth(width gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetWidth() gd.Float {
+func (self class) GetWidth() gd.Float { //gd:TextParagraph.get_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -712,7 +712,7 @@ func (self class) GetWidth() gd.Float {
 Returns the size of the bounding box of the paragraph, without line breaks.
 */
 //go:nosplit
-func (self class) GetNonWrappedSize() gd.Vector2 {
+func (self class) GetNonWrappedSize() gd.Vector2 { //gd:TextParagraph.get_non_wrapped_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_non_wrapped_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -725,7 +725,7 @@ func (self class) GetNonWrappedSize() gd.Vector2 {
 Returns the size of the bounding box of the paragraph.
 */
 //go:nosplit
-func (self class) GetSize() gd.Vector2 {
+func (self class) GetSize() gd.Vector2 { //gd:TextParagraph.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -738,7 +738,7 @@ func (self class) GetSize() gd.Vector2 {
 Returns TextServer full string buffer RID.
 */
 //go:nosplit
-func (self class) GetRid() gd.RID {
+func (self class) GetRid() gd.RID { //gd:TextParagraph.get_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -751,7 +751,7 @@ func (self class) GetRid() gd.RID {
 Returns TextServer line buffer RID.
 */
 //go:nosplit
-func (self class) GetLineRid(line gd.Int) gd.RID {
+func (self class) GetLineRid(line gd.Int) gd.RID { //gd:TextParagraph.get_line_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -765,7 +765,7 @@ func (self class) GetLineRid(line gd.Int) gd.RID {
 Returns drop cap text buffer RID.
 */
 //go:nosplit
-func (self class) GetDropcapRid() gd.RID {
+func (self class) GetDropcapRid() gd.RID { //gd:TextParagraph.get_dropcap_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_dropcap_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -778,7 +778,7 @@ func (self class) GetDropcapRid() gd.RID {
 Returns number of lines in the paragraph.
 */
 //go:nosplit
-func (self class) GetLineCount() gd.Int {
+func (self class) GetLineCount() gd.Int { //gd:TextParagraph.get_line_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -788,7 +788,7 @@ func (self class) GetLineCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMaxLinesVisible(max_lines_visible gd.Int) {
+func (self class) SetMaxLinesVisible(max_lines_visible gd.Int) { //gd:TextParagraph.set_max_lines_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, max_lines_visible)
 	var r_ret = callframe.Nil
@@ -797,7 +797,7 @@ func (self class) SetMaxLinesVisible(max_lines_visible gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMaxLinesVisible() gd.Int {
+func (self class) GetMaxLinesVisible() gd.Int { //gd:TextParagraph.get_max_lines_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_max_lines_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -810,7 +810,7 @@ func (self class) GetMaxLinesVisible() gd.Int {
 Returns array of inline objects in the line.
 */
 //go:nosplit
-func (self class) GetLineObjects(line gd.Int) Array.Any {
+func (self class) GetLineObjects(line gd.Int) Array.Any { //gd:TextParagraph.get_line_objects
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -824,7 +824,7 @@ func (self class) GetLineObjects(line gd.Int) Array.Any {
 Returns bounding rectangle of the inline object.
 */
 //go:nosplit
-func (self class) GetLineObjectRect(line gd.Int, key gd.Variant) gd.Rect2 {
+func (self class) GetLineObjectRect(line gd.Int, key gd.Variant) gd.Rect2 { //gd:TextParagraph.get_line_object_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(key))
@@ -839,7 +839,7 @@ func (self class) GetLineObjectRect(line gd.Int, key gd.Variant) gd.Rect2 {
 Returns size of the bounding box of the line of text. Returned size is rounded up.
 */
 //go:nosplit
-func (self class) GetLineSize(line gd.Int) gd.Vector2 {
+func (self class) GetLineSize(line gd.Int) gd.Vector2 { //gd:TextParagraph.get_line_size
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -853,7 +853,7 @@ func (self class) GetLineSize(line gd.Int) gd.Vector2 {
 Returns character range of the line.
 */
 //go:nosplit
-func (self class) GetLineRange(line gd.Int) gd.Vector2i {
+func (self class) GetLineRange(line gd.Int) gd.Vector2i { //gd:TextParagraph.get_line_range
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -867,7 +867,7 @@ func (self class) GetLineRange(line gd.Int) gd.Vector2i {
 Returns the text line ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 */
 //go:nosplit
-func (self class) GetLineAscent(line gd.Int) gd.Float {
+func (self class) GetLineAscent(line gd.Int) gd.Float { //gd:TextParagraph.get_line_ascent
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -881,7 +881,7 @@ func (self class) GetLineAscent(line gd.Int) gd.Float {
 Returns the text line descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 */
 //go:nosplit
-func (self class) GetLineDescent(line gd.Int) gd.Float {
+func (self class) GetLineDescent(line gd.Int) gd.Float { //gd:TextParagraph.get_line_descent
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -895,7 +895,7 @@ func (self class) GetLineDescent(line gd.Int) gd.Float {
 Returns width (for horizontal layout) or height (for vertical) of the line of text.
 */
 //go:nosplit
-func (self class) GetLineWidth(line gd.Int) gd.Float {
+func (self class) GetLineWidth(line gd.Int) gd.Float { //gd:TextParagraph.get_line_width
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -909,7 +909,7 @@ func (self class) GetLineWidth(line gd.Int) gd.Float {
 Returns pixel offset of the underline below the baseline.
 */
 //go:nosplit
-func (self class) GetLineUnderlinePosition(line gd.Int) gd.Float {
+func (self class) GetLineUnderlinePosition(line gd.Int) gd.Float { //gd:TextParagraph.get_line_underline_position
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -923,7 +923,7 @@ func (self class) GetLineUnderlinePosition(line gd.Int) gd.Float {
 Returns thickness of the underline.
 */
 //go:nosplit
-func (self class) GetLineUnderlineThickness(line gd.Int) gd.Float {
+func (self class) GetLineUnderlineThickness(line gd.Int) gd.Float { //gd:TextParagraph.get_line_underline_thickness
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -937,7 +937,7 @@ func (self class) GetLineUnderlineThickness(line gd.Int) gd.Float {
 Returns drop cap bounding box size.
 */
 //go:nosplit
-func (self class) GetDropcapSize() gd.Vector2 {
+func (self class) GetDropcapSize() gd.Vector2 { //gd:TextParagraph.get_dropcap_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_dropcap_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -950,7 +950,7 @@ func (self class) GetDropcapSize() gd.Vector2 {
 Returns number of lines used by dropcap.
 */
 //go:nosplit
-func (self class) GetDropcapLines() gd.Int {
+func (self class) GetDropcapLines() gd.Int { //gd:TextParagraph.get_dropcap_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextParagraph.Bind_get_dropcap_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -963,7 +963,7 @@ func (self class) GetDropcapLines() gd.Int {
 Draw all lines of the text and drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 //go:nosplit
-func (self class) Draw(canvas gd.RID, pos gd.Vector2, color gd.Color, dc_color gd.Color) {
+func (self class) Draw(canvas gd.RID, pos gd.Vector2, color gd.Color, dc_color gd.Color) { //gd:TextParagraph.draw
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, pos)
@@ -978,7 +978,7 @@ func (self class) Draw(canvas gd.RID, pos gd.Vector2, color gd.Color, dc_color g
 Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 //go:nosplit
-func (self class) DrawOutline(canvas gd.RID, pos gd.Vector2, outline_size gd.Int, color gd.Color, dc_color gd.Color) {
+func (self class) DrawOutline(canvas gd.RID, pos gd.Vector2, outline_size gd.Int, color gd.Color, dc_color gd.Color) { //gd:TextParagraph.draw_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, pos)
@@ -994,7 +994,7 @@ func (self class) DrawOutline(canvas gd.RID, pos gd.Vector2, outline_size gd.Int
 Draw single line of text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 //go:nosplit
-func (self class) DrawLine(canvas gd.RID, pos gd.Vector2, line gd.Int, color gd.Color) {
+func (self class) DrawLine(canvas gd.RID, pos gd.Vector2, line gd.Int, color gd.Color) { //gd:TextParagraph.draw_line
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, pos)
@@ -1009,7 +1009,7 @@ func (self class) DrawLine(canvas gd.RID, pos gd.Vector2, line gd.Int, color gd.
 Draw outline of the single line of text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 //go:nosplit
-func (self class) DrawLineOutline(canvas gd.RID, pos gd.Vector2, line gd.Int, outline_size gd.Int, color gd.Color) {
+func (self class) DrawLineOutline(canvas gd.RID, pos gd.Vector2, line gd.Int, outline_size gd.Int, color gd.Color) { //gd:TextParagraph.draw_line_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, pos)
@@ -1025,7 +1025,7 @@ func (self class) DrawLineOutline(canvas gd.RID, pos gd.Vector2, line gd.Int, ou
 Draw drop cap into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 //go:nosplit
-func (self class) DrawDropcap(canvas gd.RID, pos gd.Vector2, color gd.Color) {
+func (self class) DrawDropcap(canvas gd.RID, pos gd.Vector2, color gd.Color) { //gd:TextParagraph.draw_dropcap
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, pos)
@@ -1039,7 +1039,7 @@ func (self class) DrawDropcap(canvas gd.RID, pos gd.Vector2, color gd.Color) {
 Draw drop cap outline into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 //go:nosplit
-func (self class) DrawDropcapOutline(canvas gd.RID, pos gd.Vector2, outline_size gd.Int, color gd.Color) {
+func (self class) DrawDropcapOutline(canvas gd.RID, pos gd.Vector2, outline_size gd.Int, color gd.Color) { //gd:TextParagraph.draw_dropcap_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas)
 	callframe.Arg(frame, pos)
@@ -1054,7 +1054,7 @@ func (self class) DrawDropcapOutline(canvas gd.RID, pos gd.Vector2, outline_size
 Returns caret character offset at the specified coordinates. This function always returns a valid position.
 */
 //go:nosplit
-func (self class) HitTest(coords gd.Vector2) gd.Int {
+func (self class) HitTest(coords gd.Vector2) gd.Int { //gd:TextParagraph.hit_test
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[gd.Int](frame)

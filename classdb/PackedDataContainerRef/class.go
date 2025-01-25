@@ -61,7 +61,7 @@ type Any interface {
 /*
 Returns the size of the packed container (see [method Array.size] and [method Dictionary.size]).
 */
-func (self Instance) Size() int {
+func (self Instance) Size() int { //gd:PackedDataContainerRef.size
 	return int(int(class(self).Size()))
 }
 
@@ -88,7 +88,7 @@ func New() Instance {
 Returns the size of the packed container (see [method Array.size] and [method Dictionary.size]).
 */
 //go:nosplit
-func (self class) Size() gd.Int {
+func (self class) Size() gd.Int { //gd:PackedDataContainerRef.size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PackedDataContainerRef.Bind_size, self.AsObject(), frame.Array(0), r_ret.Addr())

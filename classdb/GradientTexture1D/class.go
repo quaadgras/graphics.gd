@@ -79,7 +79,7 @@ func (self Instance) SetUseHdr(value bool) {
 }
 
 //go:nosplit
-func (self class) SetGradient(gradient [1]gdclass.Gradient) {
+func (self class) SetGradient(gradient [1]gdclass.Gradient) { //gd:GradientTexture1D.set_gradient
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gradient[0])[0])
 	var r_ret = callframe.Nil
@@ -88,7 +88,7 @@ func (self class) SetGradient(gradient [1]gdclass.Gradient) {
 }
 
 //go:nosplit
-func (self class) GetGradient() [1]gdclass.Gradient {
+func (self class) GetGradient() [1]gdclass.Gradient { //gd:GradientTexture1D.get_gradient
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture1D.Bind_get_gradient, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -98,7 +98,7 @@ func (self class) GetGradient() [1]gdclass.Gradient {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Int) {
+func (self class) SetWidth(width gd.Int) { //gd:GradientTexture1D.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetWidth(width gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetUseHdr(enabled bool) {
+func (self class) SetUseHdr(enabled bool) { //gd:GradientTexture1D.set_use_hdr
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -116,7 +116,7 @@ func (self class) SetUseHdr(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingHdr() bool {
+func (self class) IsUsingHdr() bool { //gd:GradientTexture1D.is_using_hdr
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture1D.Bind_is_using_hdr, self.AsObject(), frame.Array(0), r_ret.Addr())

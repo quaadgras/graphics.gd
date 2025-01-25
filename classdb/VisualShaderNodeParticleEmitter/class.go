@@ -66,7 +66,7 @@ func (self Instance) SetMode2d(value bool) {
 }
 
 //go:nosplit
-func (self class) SetMode2d(enabled bool) {
+func (self class) SetMode2d(enabled bool) { //gd:VisualShaderNodeParticleEmitter.set_mode_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetMode2d(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsMode2d() bool {
+func (self class) IsMode2d() bool { //gd:VisualShaderNodeParticleEmitter.is_mode_2d
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleEmitter.Bind_is_mode_2d, self.AsObject(), frame.Array(0), r_ret.Addr())

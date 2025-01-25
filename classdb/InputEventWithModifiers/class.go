@@ -43,14 +43,14 @@ type Any interface {
 On macOS, returns [code]true[/code] if [kbd]Meta[/kbd] ([kbd]Cmd[/kbd]) is pressed.
 On other platforms, returns [code]true[/code] if [kbd]Ctrl[/kbd] is pressed.
 */
-func (self Instance) IsCommandOrControlPressed() bool {
+func (self Instance) IsCommandOrControlPressed() bool { //gd:InputEventWithModifiers.is_command_or_control_pressed
 	return bool(class(self).IsCommandOrControlPressed())
 }
 
 /*
 Returns the keycode combination of modifier keys.
 */
-func (self Instance) GetModifiersMask() KeyModifierMask {
+func (self Instance) GetModifiersMask() KeyModifierMask { //gd:InputEventWithModifiers.get_modifiers_mask
 	return KeyModifierMask(class(self).GetModifiersMask())
 }
 
@@ -114,7 +114,7 @@ func (self Instance) SetMetaPressed(value bool) {
 }
 
 //go:nosplit
-func (self class) SetCommandOrControlAutoremap(enable bool) {
+func (self class) SetCommandOrControlAutoremap(enable bool) { //gd:InputEventWithModifiers.set_command_or_control_autoremap
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -123,7 +123,7 @@ func (self class) SetCommandOrControlAutoremap(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCommandOrControlAutoremap() bool {
+func (self class) IsCommandOrControlAutoremap() bool { //gd:InputEventWithModifiers.is_command_or_control_autoremap
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventWithModifiers.Bind_is_command_or_control_autoremap, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -137,7 +137,7 @@ On macOS, returns [code]true[/code] if [kbd]Meta[/kbd] ([kbd]Cmd[/kbd]) is press
 On other platforms, returns [code]true[/code] if [kbd]Ctrl[/kbd] is pressed.
 */
 //go:nosplit
-func (self class) IsCommandOrControlPressed() bool {
+func (self class) IsCommandOrControlPressed() bool { //gd:InputEventWithModifiers.is_command_or_control_pressed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventWithModifiers.Bind_is_command_or_control_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -147,7 +147,7 @@ func (self class) IsCommandOrControlPressed() bool {
 }
 
 //go:nosplit
-func (self class) SetAltPressed(pressed bool) {
+func (self class) SetAltPressed(pressed bool) { //gd:InputEventWithModifiers.set_alt_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -156,7 +156,7 @@ func (self class) SetAltPressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) IsAltPressed() bool {
+func (self class) IsAltPressed() bool { //gd:InputEventWithModifiers.is_alt_pressed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventWithModifiers.Bind_is_alt_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -166,7 +166,7 @@ func (self class) IsAltPressed() bool {
 }
 
 //go:nosplit
-func (self class) SetShiftPressed(pressed bool) {
+func (self class) SetShiftPressed(pressed bool) { //gd:InputEventWithModifiers.set_shift_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -175,7 +175,7 @@ func (self class) SetShiftPressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) IsShiftPressed() bool {
+func (self class) IsShiftPressed() bool { //gd:InputEventWithModifiers.is_shift_pressed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventWithModifiers.Bind_is_shift_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -185,7 +185,7 @@ func (self class) IsShiftPressed() bool {
 }
 
 //go:nosplit
-func (self class) SetCtrlPressed(pressed bool) {
+func (self class) SetCtrlPressed(pressed bool) { //gd:InputEventWithModifiers.set_ctrl_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -194,7 +194,7 @@ func (self class) SetCtrlPressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) IsCtrlPressed() bool {
+func (self class) IsCtrlPressed() bool { //gd:InputEventWithModifiers.is_ctrl_pressed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventWithModifiers.Bind_is_ctrl_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -204,7 +204,7 @@ func (self class) IsCtrlPressed() bool {
 }
 
 //go:nosplit
-func (self class) SetMetaPressed(pressed bool) {
+func (self class) SetMetaPressed(pressed bool) { //gd:InputEventWithModifiers.set_meta_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -213,7 +213,7 @@ func (self class) SetMetaPressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) IsMetaPressed() bool {
+func (self class) IsMetaPressed() bool { //gd:InputEventWithModifiers.is_meta_pressed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventWithModifiers.Bind_is_meta_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -226,7 +226,7 @@ func (self class) IsMetaPressed() bool {
 Returns the keycode combination of modifier keys.
 */
 //go:nosplit
-func (self class) GetModifiersMask() KeyModifierMask {
+func (self class) GetModifiersMask() KeyModifierMask { //gd:InputEventWithModifiers.get_modifiers_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[KeyModifierMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventWithModifiers.Bind_get_modifiers_mask, self.AsObject(), frame.Array(0), r_ret.Addr())

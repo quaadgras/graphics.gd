@@ -68,7 +68,7 @@ func (self Instance) SetDescription(value string) {
 }
 
 //go:nosplit
-func (self class) SetDescription(description gd.String) {
+func (self class) SetDescription(description gd.String) { //gd:VisualShaderNodeComment.set_description
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(description))
 	var r_ret = callframe.Nil
@@ -77,7 +77,7 @@ func (self class) SetDescription(description gd.String) {
 }
 
 //go:nosplit
-func (self class) GetDescription() gd.String {
+func (self class) GetDescription() gd.String { //gd:VisualShaderNodeComment.get_description
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeComment.Bind_get_description, self.AsObject(), frame.Array(0), r_ret.Addr())

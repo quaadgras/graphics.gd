@@ -39,7 +39,7 @@ func singleton() {
 /*
 Registers a [TextServer] interface.
 */
-func AddInterface(intf [1]gdclass.TextServer) {
+func AddInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.add_interface
 	once.Do(singleton)
 	class(self).AddInterface(intf)
 }
@@ -47,7 +47,7 @@ func AddInterface(intf [1]gdclass.TextServer) {
 /*
 Returns the number of interfaces currently registered.
 */
-func GetInterfaceCount() int {
+func GetInterfaceCount() int { //gd:TextServerManager.get_interface_count
 	once.Do(singleton)
 	return int(int(class(self).GetInterfaceCount()))
 }
@@ -55,7 +55,7 @@ func GetInterfaceCount() int {
 /*
 Removes an interface. All fonts and shaped text caches should be freed before removing an interface.
 */
-func RemoveInterface(intf [1]gdclass.TextServer) {
+func RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.remove_interface
 	once.Do(singleton)
 	class(self).RemoveInterface(intf)
 }
@@ -63,7 +63,7 @@ func RemoveInterface(intf [1]gdclass.TextServer) {
 /*
 Returns the interface registered at a given index.
 */
-func GetInterface(idx int) [1]gdclass.TextServer {
+func GetInterface(idx int) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
 	once.Do(singleton)
 	return [1]gdclass.TextServer(class(self).GetInterface(gd.Int(idx)))
 }
@@ -71,7 +71,7 @@ func GetInterface(idx int) [1]gdclass.TextServer {
 /*
 Returns a list of available interfaces, with the index and name of each interface.
 */
-func GetInterfaces() []map[any]any {
+func GetInterfaces() []map[any]any { //gd:TextServerManager.get_interfaces
 	once.Do(singleton)
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetInterfaces())))
 }
@@ -79,7 +79,7 @@ func GetInterfaces() []map[any]any {
 /*
 Finds an interface by its [param name].
 */
-func FindInterface(name string) [1]gdclass.TextServer {
+func FindInterface(name string) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
 	once.Do(singleton)
 	return [1]gdclass.TextServer(class(self).FindInterface(gd.NewString(name)))
 }
@@ -87,7 +87,7 @@ func FindInterface(name string) [1]gdclass.TextServer {
 /*
 Sets the primary [TextServer] interface.
 */
-func SetPrimaryInterface(index [1]gdclass.TextServer) {
+func SetPrimaryInterface(index [1]gdclass.TextServer) { //gd:TextServerManager.set_primary_interface
 	once.Do(singleton)
 	class(self).SetPrimaryInterface(index)
 }
@@ -95,7 +95,7 @@ func SetPrimaryInterface(index [1]gdclass.TextServer) {
 /*
 Returns the primary [TextServer] interface currently in use.
 */
-func GetPrimaryInterface() [1]gdclass.TextServer {
+func GetPrimaryInterface() [1]gdclass.TextServer { //gd:TextServerManager.get_primary_interface
 	once.Do(singleton)
 	return [1]gdclass.TextServer(class(self).GetPrimaryInterface())
 }
@@ -114,7 +114,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Registers a [TextServer] interface.
 */
 //go:nosplit
-func (self class) AddInterface(intf [1]gdclass.TextServer) {
+func (self class) AddInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.add_interface
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(intf[0])[0])
 	var r_ret = callframe.Nil
@@ -126,7 +126,7 @@ func (self class) AddInterface(intf [1]gdclass.TextServer) {
 Returns the number of interfaces currently registered.
 */
 //go:nosplit
-func (self class) GetInterfaceCount() gd.Int {
+func (self class) GetInterfaceCount() gd.Int { //gd:TextServerManager.get_interface_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -139,7 +139,7 @@ func (self class) GetInterfaceCount() gd.Int {
 Removes an interface. All fonts and shaped text caches should be freed before removing an interface.
 */
 //go:nosplit
-func (self class) RemoveInterface(intf [1]gdclass.TextServer) {
+func (self class) RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.remove_interface
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(intf[0])[0])
 	var r_ret = callframe.Nil
@@ -151,7 +151,7 @@ func (self class) RemoveInterface(intf [1]gdclass.TextServer) {
 Returns the interface registered at a given index.
 */
 //go:nosplit
-func (self class) GetInterface(idx gd.Int) [1]gdclass.TextServer {
+func (self class) GetInterface(idx gd.Int) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -165,7 +165,7 @@ func (self class) GetInterface(idx gd.Int) [1]gdclass.TextServer {
 Returns a list of available interfaces, with the index and name of each interface.
 */
 //go:nosplit
-func (self class) GetInterfaces() Array.Contains[gd.Dictionary] {
+func (self class) GetInterfaces() Array.Contains[gd.Dictionary] { //gd:TextServerManager.get_interfaces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -178,7 +178,7 @@ func (self class) GetInterfaces() Array.Contains[gd.Dictionary] {
 Finds an interface by its [param name].
 */
 //go:nosplit
-func (self class) FindInterface(name gd.String) [1]gdclass.TextServer {
+func (self class) FindInterface(name gd.String) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -192,7 +192,7 @@ func (self class) FindInterface(name gd.String) [1]gdclass.TextServer {
 Sets the primary [TextServer] interface.
 */
 //go:nosplit
-func (self class) SetPrimaryInterface(index [1]gdclass.TextServer) {
+func (self class) SetPrimaryInterface(index [1]gdclass.TextServer) { //gd:TextServerManager.set_primary_interface
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(index[0])[0])
 	var r_ret = callframe.Nil
@@ -204,7 +204,7 @@ func (self class) SetPrimaryInterface(index [1]gdclass.TextServer) {
 Returns the primary [TextServer] interface currently in use.
 */
 //go:nosplit
-func (self class) GetPrimaryInterface() [1]gdclass.TextServer {
+func (self class) GetPrimaryInterface() [1]gdclass.TextServer { //gd:TextServerManager.get_primary_interface
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Addr())

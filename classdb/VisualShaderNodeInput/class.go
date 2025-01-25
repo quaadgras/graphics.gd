@@ -41,7 +41,7 @@ type Any interface {
 /*
 Returns a translated name of the current constant in the Godot Shader Language. E.g. [code]"ALBEDO"[/code] if the [member input_name] equal to [code]"albedo"[/code].
 */
-func (self Instance) GetInputRealName() string {
+func (self Instance) GetInputRealName() string { //gd:VisualShaderNodeInput.get_input_real_name
 	return string(class(self).GetInputRealName().String())
 }
 
@@ -73,7 +73,7 @@ func (self Instance) SetInputName(value string) {
 }
 
 //go:nosplit
-func (self class) SetInputName(name gd.String) {
+func (self class) SetInputName(name gd.String) { //gd:VisualShaderNodeInput.set_input_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -82,7 +82,7 @@ func (self class) SetInputName(name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetInputName() gd.String {
+func (self class) GetInputName() gd.String { //gd:VisualShaderNodeInput.get_input_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeInput.Bind_get_input_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) GetInputName() gd.String {
 Returns a translated name of the current constant in the Godot Shader Language. E.g. [code]"ALBEDO"[/code] if the [member input_name] equal to [code]"albedo"[/code].
 */
 //go:nosplit
-func (self class) GetInputRealName() gd.String {
+func (self class) GetInputRealName() gd.String { //gd:VisualShaderNodeInput.get_input_real_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeInput.Bind_get_input_real_name, self.AsObject(), frame.Array(0), r_ret.Addr())

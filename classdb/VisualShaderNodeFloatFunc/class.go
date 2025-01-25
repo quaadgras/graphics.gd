@@ -66,7 +66,7 @@ func (self Instance) SetFunction(value gdclass.VisualShaderNodeFloatFuncFunction
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeFloatFuncFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeFloatFuncFunction) { //gd:VisualShaderNodeFloatFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeFloatFuncFunction) {
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeFloatFuncFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeFloatFuncFunction { //gd:VisualShaderNodeFloatFunc.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeFloatFuncFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeFloatFuncFunction
+type Function = gdclass.VisualShaderNodeFloatFuncFunction //gd:VisualShaderNodeFloatFunc.Function
 
 const (
 	/*Returns the sine of the parameter. Translates to [code]sin(x)[/code] in the Godot Shader Language.*/

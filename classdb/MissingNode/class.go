@@ -81,7 +81,7 @@ func (self Instance) SetRecordingProperties(value bool) {
 }
 
 //go:nosplit
-func (self class) SetOriginalClass(name gd.String) {
+func (self class) SetOriginalClass(name gd.String) { //gd:MissingNode.set_original_class
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -90,7 +90,7 @@ func (self class) SetOriginalClass(name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetOriginalClass() gd.String {
+func (self class) GetOriginalClass() gd.String { //gd:MissingNode.get_original_class
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingNode.Bind_get_original_class, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -100,7 +100,7 @@ func (self class) GetOriginalClass() gd.String {
 }
 
 //go:nosplit
-func (self class) SetOriginalScene(name gd.String) {
+func (self class) SetOriginalScene(name gd.String) { //gd:MissingNode.set_original_scene
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -109,7 +109,7 @@ func (self class) SetOriginalScene(name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetOriginalScene() gd.String {
+func (self class) GetOriginalScene() gd.String { //gd:MissingNode.get_original_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingNode.Bind_get_original_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -119,7 +119,7 @@ func (self class) GetOriginalScene() gd.String {
 }
 
 //go:nosplit
-func (self class) SetRecordingProperties(enable bool) {
+func (self class) SetRecordingProperties(enable bool) { //gd:MissingNode.set_recording_properties
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -128,7 +128,7 @@ func (self class) SetRecordingProperties(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsRecordingProperties() bool {
+func (self class) IsRecordingProperties() bool { //gd:MissingNode.is_recording_properties
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingNode.Bind_is_recording_properties, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -70,7 +70,7 @@ func (self Instance) SetSampler(value int) {
 }
 
 //go:nosplit
-func (self class) GetSrcImage() gd.Int {
+func (self class) GetSrcImage() gd.Int { //gd:GLTFTexture.get_src_image
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_get_src_image, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -80,7 +80,7 @@ func (self class) GetSrcImage() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSrcImage(src_image gd.Int) {
+func (self class) SetSrcImage(src_image gd.Int) { //gd:GLTFTexture.set_src_image
 	var frame = callframe.New()
 	callframe.Arg(frame, src_image)
 	var r_ret = callframe.Nil
@@ -89,7 +89,7 @@ func (self class) SetSrcImage(src_image gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSampler() gd.Int {
+func (self class) GetSampler() gd.Int { //gd:GLTFTexture.get_sampler
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTexture.Bind_get_sampler, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -99,7 +99,7 @@ func (self class) GetSampler() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSampler(sampler gd.Int) {
+func (self class) SetSampler(sampler gd.Int) { //gd:GLTFTexture.set_sampler
 	var frame = callframe.New()
 	callframe.Arg(frame, sampler)
 	var r_ret = callframe.Nil

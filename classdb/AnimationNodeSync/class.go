@@ -66,7 +66,7 @@ func (self Instance) SetSync(value bool) {
 }
 
 //go:nosplit
-func (self class) SetUseSync(enable bool) {
+func (self class) SetUseSync(enable bool) { //gd:AnimationNodeSync.set_use_sync
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetUseSync(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingSync() bool {
+func (self class) IsUsingSync() bool { //gd:AnimationNodeSync.is_using_sync
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeSync.Bind_is_using_sync, self.AsObject(), frame.Array(0), r_ret.Addr())

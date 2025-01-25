@@ -83,7 +83,7 @@ func (self Instance) SetRelease(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetCeilingDb(ceiling gd.Float) {
+func (self class) SetCeilingDb(ceiling gd.Float) { //gd:AudioEffectHardLimiter.set_ceiling_db
 	var frame = callframe.New()
 	callframe.Arg(frame, ceiling)
 	var r_ret = callframe.Nil
@@ -92,7 +92,7 @@ func (self class) SetCeilingDb(ceiling gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCeilingDb() gd.Float {
+func (self class) GetCeilingDb() gd.Float { //gd:AudioEffectHardLimiter.get_ceiling_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectHardLimiter.Bind_get_ceiling_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -102,7 +102,7 @@ func (self class) GetCeilingDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPreGainDb(p_pre_gain gd.Float) {
+func (self class) SetPreGainDb(p_pre_gain gd.Float) { //gd:AudioEffectHardLimiter.set_pre_gain_db
 	var frame = callframe.New()
 	callframe.Arg(frame, p_pre_gain)
 	var r_ret = callframe.Nil
@@ -111,7 +111,7 @@ func (self class) SetPreGainDb(p_pre_gain gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPreGainDb() gd.Float {
+func (self class) GetPreGainDb() gd.Float { //gd:AudioEffectHardLimiter.get_pre_gain_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectHardLimiter.Bind_get_pre_gain_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -121,7 +121,7 @@ func (self class) GetPreGainDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRelease(p_release gd.Float) {
+func (self class) SetRelease(p_release gd.Float) { //gd:AudioEffectHardLimiter.set_release
 	var frame = callframe.New()
 	callframe.Arg(frame, p_release)
 	var r_ret = callframe.Nil
@@ -130,7 +130,7 @@ func (self class) SetRelease(p_release gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRelease() gd.Float {
+func (self class) GetRelease() gd.Float { //gd:AudioEffectHardLimiter.get_release
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectHardLimiter.Bind_get_release, self.AsObject(), frame.Array(0), r_ret.Addr())

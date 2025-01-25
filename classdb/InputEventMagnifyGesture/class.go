@@ -71,7 +71,7 @@ func (self Instance) SetFactor(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetFactor(factor gd.Float) {
+func (self class) SetFactor(factor gd.Float) { //gd:InputEventMagnifyGesture.set_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, factor)
 	var r_ret = callframe.Nil
@@ -80,7 +80,7 @@ func (self class) SetFactor(factor gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFactor() gd.Float {
+func (self class) GetFactor() gd.Float { //gd:InputEventMagnifyGesture.get_factor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMagnifyGesture.Bind_get_factor, self.AsObject(), frame.Array(0), r_ret.Addr())

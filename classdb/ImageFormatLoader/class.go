@@ -83,7 +83,7 @@ func init() {
 	})
 }
 
-type LoaderFlags = gdclass.ImageFormatLoaderLoaderFlags
+type LoaderFlags = gdclass.ImageFormatLoaderLoaderFlags //gd:ImageFormatLoader.LoaderFlags
 
 const (
 	FlagNone          LoaderFlags = 0

@@ -42,7 +42,7 @@ type Any interface {
 Returns a skeleton bone name is mapped to [param profile_bone_name].
 In the retargeting process, the returned bone name is the bone name of the source skeleton.
 */
-func (self Instance) GetSkeletonBoneName(profile_bone_name string) string {
+func (self Instance) GetSkeletonBoneName(profile_bone_name string) string { //gd:BoneMap.get_skeleton_bone_name
 	return string(class(self).GetSkeletonBoneName(gd.NewStringName(profile_bone_name)).String())
 }
 
@@ -50,7 +50,7 @@ func (self Instance) GetSkeletonBoneName(profile_bone_name string) string {
 Maps a skeleton bone name to [param profile_bone_name].
 In the retargeting process, the setting bone name is the bone name of the source skeleton.
 */
-func (self Instance) SetSkeletonBoneName(profile_bone_name string, skeleton_bone_name string) {
+func (self Instance) SetSkeletonBoneName(profile_bone_name string, skeleton_bone_name string) { //gd:BoneMap.set_skeleton_bone_name
 	class(self).SetSkeletonBoneName(gd.NewStringName(profile_bone_name), gd.NewStringName(skeleton_bone_name))
 }
 
@@ -58,7 +58,7 @@ func (self Instance) SetSkeletonBoneName(profile_bone_name string, skeleton_bone
 Returns a profile bone name having [param skeleton_bone_name]. If not found, an empty [StringName] will be returned.
 In the retargeting process, the returned bone name is the bone name of the target skeleton.
 */
-func (self Instance) FindProfileBoneName(skeleton_bone_name string) string {
+func (self Instance) FindProfileBoneName(skeleton_bone_name string) string { //gd:BoneMap.find_profile_bone_name
 	return string(class(self).FindProfileBoneName(gd.NewStringName(skeleton_bone_name)).String())
 }
 
@@ -90,7 +90,7 @@ func (self Instance) SetProfile(value [1]gdclass.SkeletonProfile) {
 }
 
 //go:nosplit
-func (self class) GetProfile() [1]gdclass.SkeletonProfile {
+func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:BoneMap.get_profile
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoneMap.Bind_get_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -100,7 +100,7 @@ func (self class) GetProfile() [1]gdclass.SkeletonProfile {
 }
 
 //go:nosplit
-func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) {
+func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:BoneMap.set_profile
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profile[0])[0])
 	var r_ret = callframe.Nil
@@ -113,7 +113,7 @@ Returns a skeleton bone name is mapped to [param profile_bone_name].
 In the retargeting process, the returned bone name is the bone name of the source skeleton.
 */
 //go:nosplit
-func (self class) GetSkeletonBoneName(profile_bone_name gd.StringName) gd.StringName {
+func (self class) GetSkeletonBoneName(profile_bone_name gd.StringName) gd.StringName { //gd:BoneMap.get_skeleton_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profile_bone_name))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -128,7 +128,7 @@ Maps a skeleton bone name to [param profile_bone_name].
 In the retargeting process, the setting bone name is the bone name of the source skeleton.
 */
 //go:nosplit
-func (self class) SetSkeletonBoneName(profile_bone_name gd.StringName, skeleton_bone_name gd.StringName) {
+func (self class) SetSkeletonBoneName(profile_bone_name gd.StringName, skeleton_bone_name gd.StringName) { //gd:BoneMap.set_skeleton_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profile_bone_name))
 	callframe.Arg(frame, pointers.Get(skeleton_bone_name))
@@ -142,7 +142,7 @@ Returns a profile bone name having [param skeleton_bone_name]. If not found, an 
 In the retargeting process, the returned bone name is the bone name of the target skeleton.
 */
 //go:nosplit
-func (self class) FindProfileBoneName(skeleton_bone_name gd.StringName) gd.StringName {
+func (self class) FindProfileBoneName(skeleton_bone_name gd.StringName) gd.StringName { //gd:BoneMap.find_profile_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(skeleton_bone_name))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)

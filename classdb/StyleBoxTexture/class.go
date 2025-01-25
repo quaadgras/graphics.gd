@@ -44,14 +44,14 @@ type Any interface {
 /*
 Sets the margin to [param size] pixels for all sides.
 */
-func (self Instance) SetTextureMarginAll(size Float.X) {
+func (self Instance) SetTextureMarginAll(size Float.X) { //gd:StyleBoxTexture.set_texture_margin_all
 	class(self).SetTextureMarginAll(gd.Float(size))
 }
 
 /*
 Sets the expand margin to [param size] pixels for all sides.
 */
-func (self Instance) SetExpandMarginAll(size Float.X) {
+func (self Instance) SetExpandMarginAll(size Float.X) { //gd:StyleBoxTexture.set_expand_margin_all
 	class(self).SetExpandMarginAll(gd.Float(size))
 }
 
@@ -187,7 +187,7 @@ func (self Instance) SetDrawCenter(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:StyleBoxTexture.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -196,7 +196,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture2D {
+func (self class) GetTexture() [1]gdclass.Texture2D { //gd:StyleBoxTexture.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -209,7 +209,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D {
 Sets the margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetTextureMargin(margin Side, size gd.Float) {
+func (self class) SetTextureMargin(margin Side, size gd.Float) { //gd:StyleBoxTexture.set_texture_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -222,7 +222,7 @@ func (self class) SetTextureMargin(margin Side, size gd.Float) {
 Sets the margin to [param size] pixels for all sides.
 */
 //go:nosplit
-func (self class) SetTextureMarginAll(size gd.Float) {
+func (self class) SetTextureMarginAll(size gd.Float) { //gd:StyleBoxTexture.set_texture_margin_all
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -234,7 +234,7 @@ func (self class) SetTextureMarginAll(size gd.Float) {
 Returns the margin size of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetTextureMargin(margin Side) gd.Float {
+func (self class) GetTextureMargin(margin Side) gd.Float { //gd:StyleBoxTexture.get_texture_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -248,7 +248,7 @@ func (self class) GetTextureMargin(margin Side) gd.Float {
 Sets the expand margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetExpandMargin(margin Side, size gd.Float) {
+func (self class) SetExpandMargin(margin Side, size gd.Float) { //gd:StyleBoxTexture.set_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -261,7 +261,7 @@ func (self class) SetExpandMargin(margin Side, size gd.Float) {
 Sets the expand margin to [param size] pixels for all sides.
 */
 //go:nosplit
-func (self class) SetExpandMarginAll(size gd.Float) {
+func (self class) SetExpandMarginAll(size gd.Float) { //gd:StyleBoxTexture.set_expand_margin_all
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -273,7 +273,7 @@ func (self class) SetExpandMarginAll(size gd.Float) {
 Returns the expand margin size of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetExpandMargin(margin Side) gd.Float {
+func (self class) GetExpandMargin(margin Side) gd.Float { //gd:StyleBoxTexture.get_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -284,7 +284,7 @@ func (self class) GetExpandMargin(margin Side) gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRegionRect(region gd.Rect2) {
+func (self class) SetRegionRect(region gd.Rect2) { //gd:StyleBoxTexture.set_region_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
 	var r_ret = callframe.Nil
@@ -293,7 +293,7 @@ func (self class) SetRegionRect(region gd.Rect2) {
 }
 
 //go:nosplit
-func (self class) GetRegionRect() gd.Rect2 {
+func (self class) GetRegionRect() gd.Rect2 { //gd:StyleBoxTexture.get_region_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_region_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -303,7 +303,7 @@ func (self class) GetRegionRect() gd.Rect2 {
 }
 
 //go:nosplit
-func (self class) SetDrawCenter(enable bool) {
+func (self class) SetDrawCenter(enable bool) { //gd:StyleBoxTexture.set_draw_center
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -312,7 +312,7 @@ func (self class) SetDrawCenter(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawCenterEnabled() bool {
+func (self class) IsDrawCenterEnabled() bool { //gd:StyleBoxTexture.is_draw_center_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_is_draw_center_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -322,7 +322,7 @@ func (self class) IsDrawCenterEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetModulate(color gd.Color) {
+func (self class) SetModulate(color gd.Color) { //gd:StyleBoxTexture.set_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -331,7 +331,7 @@ func (self class) SetModulate(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetModulate() gd.Color {
+func (self class) GetModulate() gd.Color { //gd:StyleBoxTexture.get_modulate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -341,7 +341,7 @@ func (self class) GetModulate() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetHAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMode) {
+func (self class) SetHAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMode) { //gd:StyleBoxTexture.set_h_axis_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -350,7 +350,7 @@ func (self class) SetHAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMod
 }
 
 //go:nosplit
-func (self class) GetHAxisStretchMode() gdclass.StyleBoxTextureAxisStretchMode {
+func (self class) GetHAxisStretchMode() gdclass.StyleBoxTextureAxisStretchMode { //gd:StyleBoxTexture.get_h_axis_stretch_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.StyleBoxTextureAxisStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_h_axis_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -360,7 +360,7 @@ func (self class) GetHAxisStretchMode() gdclass.StyleBoxTextureAxisStretchMode {
 }
 
 //go:nosplit
-func (self class) SetVAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMode) {
+func (self class) SetVAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMode) { //gd:StyleBoxTexture.set_v_axis_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -369,7 +369,7 @@ func (self class) SetVAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMod
 }
 
 //go:nosplit
-func (self class) GetVAxisStretchMode() gdclass.StyleBoxTextureAxisStretchMode {
+func (self class) GetVAxisStretchMode() gdclass.StyleBoxTextureAxisStretchMode { //gd:StyleBoxTexture.get_v_axis_stretch_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.StyleBoxTextureAxisStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_v_axis_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -417,7 +417,7 @@ func init() {
 	})
 }
 
-type AxisStretchMode = gdclass.StyleBoxTextureAxisStretchMode
+type AxisStretchMode = gdclass.StyleBoxTextureAxisStretchMode //gd:StyleBoxTexture.AxisStretchMode
 
 const (
 	/*Stretch the stylebox's texture. This results in visible distortion unless the texture size matches the stylebox's size perfectly.*/

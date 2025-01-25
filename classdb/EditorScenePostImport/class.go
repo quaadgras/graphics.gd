@@ -126,7 +126,7 @@ func (Instance) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node
 /*
 Returns the source file path which got imported (e.g. [code]res://scene.dae[/code]).
 */
-func (self Instance) GetSourceFile() string {
+func (self Instance) GetSourceFile() string { //gd:EditorScenePostImport.get_source_file
 	return string(class(self).GetSourceFile().String())
 }
 
@@ -172,7 +172,7 @@ func (class) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) [
 Returns the source file path which got imported (e.g. [code]res://scene.dae[/code]).
 */
 //go:nosplit
-func (self class) GetSourceFile() gd.String {
+func (self class) GetSourceFile() gd.String { //gd:EditorScenePostImport.get_source_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScenePostImport.Bind_get_source_file, self.AsObject(), frame.Array(0), r_ret.Addr())

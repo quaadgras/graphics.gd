@@ -82,7 +82,7 @@ func (self Instance) SetPolygon(value []Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetClosed(closed bool) {
+func (self class) SetClosed(closed bool) { //gd:OccluderPolygon2D.set_closed
 	var frame = callframe.New()
 	callframe.Arg(frame, closed)
 	var r_ret = callframe.Nil
@@ -91,7 +91,7 @@ func (self class) SetClosed(closed bool) {
 }
 
 //go:nosplit
-func (self class) IsClosed() bool {
+func (self class) IsClosed() bool { //gd:OccluderPolygon2D.is_closed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderPolygon2D.Bind_is_closed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) IsClosed() bool {
 }
 
 //go:nosplit
-func (self class) SetCullMode(cull_mode gdclass.OccluderPolygon2DCullMode) {
+func (self class) SetCullMode(cull_mode gdclass.OccluderPolygon2DCullMode) { //gd:OccluderPolygon2D.set_cull_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, cull_mode)
 	var r_ret = callframe.Nil
@@ -110,7 +110,7 @@ func (self class) SetCullMode(cull_mode gdclass.OccluderPolygon2DCullMode) {
 }
 
 //go:nosplit
-func (self class) GetCullMode() gdclass.OccluderPolygon2DCullMode {
+func (self class) GetCullMode() gdclass.OccluderPolygon2DCullMode { //gd:OccluderPolygon2D.get_cull_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.OccluderPolygon2DCullMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderPolygon2D.Bind_get_cull_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func (self class) GetCullMode() gdclass.OccluderPolygon2DCullMode {
 }
 
 //go:nosplit
-func (self class) SetPolygon(polygon gd.PackedVector2Array) {
+func (self class) SetPolygon(polygon gd.PackedVector2Array) { //gd:OccluderPolygon2D.set_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetPolygon(polygon gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetPolygon() gd.PackedVector2Array {
+func (self class) GetPolygon() gd.PackedVector2Array { //gd:OccluderPolygon2D.get_polygon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderPolygon2D.Bind_get_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -171,7 +171,7 @@ func init() {
 	})
 }
 
-type CullMode = gdclass.OccluderPolygon2DCullMode
+type CullMode = gdclass.OccluderPolygon2DCullMode //gd:OccluderPolygon2D.CullMode
 
 const (
 	/*Culling is disabled. See [member cull_mode].*/

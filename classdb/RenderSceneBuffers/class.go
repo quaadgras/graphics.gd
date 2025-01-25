@@ -40,7 +40,7 @@ type Any interface {
 /*
 This method is called by the rendering server when the associated viewports configuration is changed. It will discard the old buffers and recreate the internal buffers used.
 */
-func (self Instance) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) {
+func (self Instance) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
 	class(self).Configure(config)
 }
 
@@ -67,7 +67,7 @@ func New() Instance {
 This method is called by the rendering server when the associated viewports configuration is changed. It will discard the old buffers and recreate the internal buffers used.
 */
 //go:nosplit
-func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) {
+func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(config[0])[0])
 	var r_ret = callframe.Nil

@@ -42,7 +42,7 @@ type Any interface {
 Queue a resource file located at [param path] for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
-func (self Instance) QueueResourcePreview(path string, receiver Object.Instance, receiver_func string, userdata any) {
+func (self Instance) QueueResourcePreview(path string, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_resource_preview
 	class(self).QueueResourcePreview(gd.NewString(path), receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
 }
 
@@ -50,28 +50,28 @@ func (self Instance) QueueResourcePreview(path string, receiver Object.Instance,
 Queue the [param resource] being edited for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
-func (self Instance) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver Object.Instance, receiver_func string, userdata any) {
+func (self Instance) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_edited_resource_preview
 	class(self).QueueEditedResourcePreview(resource, receiver, gd.NewStringName(receiver_func), gd.NewVariant(userdata))
 }
 
 /*
 Create an own, custom preview generator.
 */
-func (self Instance) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) {
+func (self Instance) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
 	class(self).AddPreviewGenerator(generator)
 }
 
 /*
 Removes a custom preview generator.
 */
-func (self Instance) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) {
+func (self Instance) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
 	class(self).RemovePreviewGenerator(generator)
 }
 
 /*
 Check if the resource changed, if so, it will be invalidated and the corresponding signal emitted.
 */
-func (self Instance) CheckForInvalidation(path string) {
+func (self Instance) CheckForInvalidation(path string) { //gd:EditorResourcePreview.check_for_invalidation
 	class(self).CheckForInvalidation(gd.NewString(path))
 }
 
@@ -98,7 +98,7 @@ Queue a resource file located at [param path] for preview. Once the preview is r
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 //go:nosplit
-func (self class) QueueResourcePreview(path gd.String, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) {
+func (self class) QueueResourcePreview(path gd.String, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) { //gd:EditorResourcePreview.queue_resource_preview
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0]))
@@ -114,7 +114,7 @@ Queue the [param resource] being edited for preview. Once the preview is ready, 
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be null.
 */
 //go:nosplit
-func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) {
+func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func gd.StringName, userdata gd.Variant) { //gd:EditorResourcePreview.queue_edited_resource_preview
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0]))
@@ -129,7 +129,7 @@ func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, recei
 Create an own, custom preview generator.
 */
 //go:nosplit
-func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) {
+func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(generator[0])[0])
 	var r_ret = callframe.Nil
@@ -141,7 +141,7 @@ func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreview
 Removes a custom preview generator.
 */
 //go:nosplit
-func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) {
+func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(generator[0])[0])
 	var r_ret = callframe.Nil
@@ -153,7 +153,7 @@ func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePrev
 Check if the resource changed, if so, it will be invalidated and the corresponding signal emitted.
 */
 //go:nosplit
-func (self class) CheckForInvalidation(path gd.String) {
+func (self class) CheckForInvalidation(path gd.String) { //gd:EditorResourcePreview.check_for_invalidation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil

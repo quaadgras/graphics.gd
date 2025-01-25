@@ -40,7 +40,7 @@ type Any interface {
 /*
 Creates, or obtains a cached, framebuffer. [param textures] lists textures accessed. [param passes] defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. [param views] defines the number of views used when rendering.
 */
-func GetCacheMultipass(textures []Resource.ID, passes [][1]gdclass.RDFramebufferPass, views int) Resource.ID {
+func GetCacheMultipass(textures []Resource.ID, passes [][1]gdclass.RDFramebufferPass, views int) Resource.ID { //gd:FramebufferCacheRD.get_cache_multipass
 	self := Instance{}
 	return Resource.ID(class(self).GetCacheMultipass(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), gd.Int(views)))
 }
@@ -67,7 +67,7 @@ func New() Instance {
 Creates, or obtains a cached, framebuffer. [param textures] lists textures accessed. [param passes] defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. [param views] defines the number of views used when rendering.
 */
 //go:nosplit
-func (self class) GetCacheMultipass(textures Array.Contains[gd.RID], passes Array.Contains[[1]gdclass.RDFramebufferPass], views gd.Int) gd.RID {
+func (self class) GetCacheMultipass(textures Array.Contains[gd.RID], passes Array.Contains[[1]gdclass.RDFramebufferPass], views gd.Int) gd.RID { //gd:FramebufferCacheRD.get_cache_multipass
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(textures)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(passes)))

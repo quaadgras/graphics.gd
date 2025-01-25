@@ -92,7 +92,7 @@ func (self Instance) SetAlignmentVertical(value gdclass.AspectRatioContainerAlig
 }
 
 //go:nosplit
-func (self class) SetRatio(ratio gd.Float) {
+func (self class) SetRatio(ratio gd.Float) { //gd:AspectRatioContainer.set_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -101,7 +101,7 @@ func (self class) SetRatio(ratio gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRatio() gd.Float {
+func (self class) GetRatio() gd.Float { //gd:AspectRatioContainer.get_ratio
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -111,7 +111,7 @@ func (self class) GetRatio() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetStretchMode(stretch_mode gdclass.AspectRatioContainerStretchMode) {
+func (self class) SetStretchMode(stretch_mode gdclass.AspectRatioContainerStretchMode) { //gd:AspectRatioContainer.set_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch_mode)
 	var r_ret = callframe.Nil
@@ -120,7 +120,7 @@ func (self class) SetStretchMode(stretch_mode gdclass.AspectRatioContainerStretc
 }
 
 //go:nosplit
-func (self class) GetStretchMode() gdclass.AspectRatioContainerStretchMode {
+func (self class) GetStretchMode() gdclass.AspectRatioContainerStretchMode { //gd:AspectRatioContainer.get_stretch_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AspectRatioContainerStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,7 +130,7 @@ func (self class) GetStretchMode() gdclass.AspectRatioContainerStretchMode {
 }
 
 //go:nosplit
-func (self class) SetAlignmentHorizontal(alignment_horizontal gdclass.AspectRatioContainerAlignmentMode) {
+func (self class) SetAlignmentHorizontal(alignment_horizontal gdclass.AspectRatioContainerAlignmentMode) { //gd:AspectRatioContainer.set_alignment_horizontal
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment_horizontal)
 	var r_ret = callframe.Nil
@@ -139,7 +139,7 @@ func (self class) SetAlignmentHorizontal(alignment_horizontal gdclass.AspectRati
 }
 
 //go:nosplit
-func (self class) GetAlignmentHorizontal() gdclass.AspectRatioContainerAlignmentMode {
+func (self class) GetAlignmentHorizontal() gdclass.AspectRatioContainerAlignmentMode { //gd:AspectRatioContainer.get_alignment_horizontal
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AspectRatioContainerAlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_horizontal, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ func (self class) GetAlignmentHorizontal() gdclass.AspectRatioContainerAlignment
 }
 
 //go:nosplit
-func (self class) SetAlignmentVertical(alignment_vertical gdclass.AspectRatioContainerAlignmentMode) {
+func (self class) SetAlignmentVertical(alignment_vertical gdclass.AspectRatioContainerAlignmentMode) { //gd:AspectRatioContainer.set_alignment_vertical
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment_vertical)
 	var r_ret = callframe.Nil
@@ -158,7 +158,7 @@ func (self class) SetAlignmentVertical(alignment_vertical gdclass.AspectRatioCon
 }
 
 //go:nosplit
-func (self class) GetAlignmentVertical() gdclass.AspectRatioContainerAlignmentMode {
+func (self class) GetAlignmentVertical() gdclass.AspectRatioContainerAlignmentMode { //gd:AspectRatioContainer.get_alignment_vertical
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AspectRatioContainerAlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -206,7 +206,7 @@ func init() {
 	})
 }
 
-type StretchMode = gdclass.AspectRatioContainerStretchMode
+type StretchMode = gdclass.AspectRatioContainerStretchMode //gd:AspectRatioContainer.StretchMode
 
 const (
 	/*The height of child controls is automatically adjusted based on the width of the container.*/
@@ -220,7 +220,7 @@ const (
 	StretchCover StretchMode = 3
 )
 
-type AlignmentMode = gdclass.AspectRatioContainerAlignmentMode
+type AlignmentMode = gdclass.AspectRatioContainerAlignmentMode //gd:AspectRatioContainer.AlignmentMode
 
 const (
 	/*Aligns child controls with the beginning (left or top) of the container.*/

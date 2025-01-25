@@ -68,7 +68,7 @@ func (self Instance) SetColumns(value int) {
 }
 
 //go:nosplit
-func (self class) SetColumns(columns gd.Int) {
+func (self class) SetColumns(columns gd.Int) { //gd:GridContainer.set_columns
 	var frame = callframe.New()
 	callframe.Arg(frame, columns)
 	var r_ret = callframe.Nil
@@ -77,7 +77,7 @@ func (self class) SetColumns(columns gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetColumns() gd.Int {
+func (self class) GetColumns() gd.Int { //gd:GridContainer.get_columns
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridContainer.Bind_get_columns, self.AsObject(), frame.Array(0), r_ret.Addr())

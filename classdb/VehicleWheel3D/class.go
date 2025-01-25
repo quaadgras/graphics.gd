@@ -43,7 +43,7 @@ type Any interface {
 /*
 Returns [code]true[/code] if this wheel is in contact with a surface.
 */
-func (self Instance) IsInContact() bool {
+func (self Instance) IsInContact() bool { //gd:VehicleWheel3D.is_in_contact
 	return bool(class(self).IsInContact())
 }
 
@@ -51,21 +51,21 @@ func (self Instance) IsInContact() bool {
 Returns the contacting body node if valid in the tree, as [Node3D]. At the moment, [GridMap] is not supported so the node will be always of type [PhysicsBody3D].
 Returns [code]null[/code] if the wheel is not in contact with a surface, or the contact body is not a [PhysicsBody3D].
 */
-func (self Instance) GetContactBody() [1]gdclass.Node3D {
+func (self Instance) GetContactBody() [1]gdclass.Node3D { //gd:VehicleWheel3D.get_contact_body
 	return [1]gdclass.Node3D(class(self).GetContactBody())
 }
 
 /*
 Returns a value between 0.0 and 1.0 that indicates whether this wheel is skidding. 0.0 is skidding (the wheel has lost grip, e.g. icy terrain), 1.0 means not skidding (the wheel has full grip, e.g. dry asphalt road).
 */
-func (self Instance) GetSkidinfo() Float.X {
+func (self Instance) GetSkidinfo() Float.X { //gd:VehicleWheel3D.get_skidinfo
 	return Float.X(Float.X(class(self).GetSkidinfo()))
 }
 
 /*
 Returns the rotational speed of the wheel in revolutions per minute.
 */
-func (self Instance) GetRpm() Float.X {
+func (self Instance) GetRpm() Float.X { //gd:VehicleWheel3D.get_rpm
 	return Float.X(Float.X(class(self).GetRpm()))
 }
 
@@ -200,7 +200,7 @@ func (self Instance) SetDampingRelaxation(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetRadius(length gd.Float) {
+func (self class) SetRadius(length gd.Float) { //gd:VehicleWheel3D.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -209,7 +209,7 @@ func (self class) SetRadius(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float {
+func (self class) GetRadius() gd.Float { //gd:VehicleWheel3D.get_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -219,7 +219,7 @@ func (self class) GetRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSuspensionRestLength(length gd.Float) {
+func (self class) SetSuspensionRestLength(length gd.Float) { //gd:VehicleWheel3D.set_suspension_rest_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -228,7 +228,7 @@ func (self class) SetSuspensionRestLength(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSuspensionRestLength() gd.Float {
+func (self class) GetSuspensionRestLength() gd.Float { //gd:VehicleWheel3D.get_suspension_rest_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_rest_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -238,7 +238,7 @@ func (self class) GetSuspensionRestLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSuspensionTravel(length gd.Float) {
+func (self class) SetSuspensionTravel(length gd.Float) { //gd:VehicleWheel3D.set_suspension_travel
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -247,7 +247,7 @@ func (self class) SetSuspensionTravel(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSuspensionTravel() gd.Float {
+func (self class) GetSuspensionTravel() gd.Float { //gd:VehicleWheel3D.get_suspension_travel
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_travel, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -257,7 +257,7 @@ func (self class) GetSuspensionTravel() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSuspensionStiffness(length gd.Float) {
+func (self class) SetSuspensionStiffness(length gd.Float) { //gd:VehicleWheel3D.set_suspension_stiffness
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -266,7 +266,7 @@ func (self class) SetSuspensionStiffness(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSuspensionStiffness() gd.Float {
+func (self class) GetSuspensionStiffness() gd.Float { //gd:VehicleWheel3D.get_suspension_stiffness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_stiffness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -276,7 +276,7 @@ func (self class) GetSuspensionStiffness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSuspensionMaxForce(length gd.Float) {
+func (self class) SetSuspensionMaxForce(length gd.Float) { //gd:VehicleWheel3D.set_suspension_max_force
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -285,7 +285,7 @@ func (self class) SetSuspensionMaxForce(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSuspensionMaxForce() gd.Float {
+func (self class) GetSuspensionMaxForce() gd.Float { //gd:VehicleWheel3D.get_suspension_max_force
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_max_force, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -295,7 +295,7 @@ func (self class) GetSuspensionMaxForce() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDampingCompression(length gd.Float) {
+func (self class) SetDampingCompression(length gd.Float) { //gd:VehicleWheel3D.set_damping_compression
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -304,7 +304,7 @@ func (self class) SetDampingCompression(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDampingCompression() gd.Float {
+func (self class) GetDampingCompression() gd.Float { //gd:VehicleWheel3D.get_damping_compression
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_damping_compression, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -314,7 +314,7 @@ func (self class) GetDampingCompression() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDampingRelaxation(length gd.Float) {
+func (self class) SetDampingRelaxation(length gd.Float) { //gd:VehicleWheel3D.set_damping_relaxation
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -323,7 +323,7 @@ func (self class) SetDampingRelaxation(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDampingRelaxation() gd.Float {
+func (self class) GetDampingRelaxation() gd.Float { //gd:VehicleWheel3D.get_damping_relaxation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_damping_relaxation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -333,7 +333,7 @@ func (self class) GetDampingRelaxation() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetUseAsTraction(enable bool) {
+func (self class) SetUseAsTraction(enable bool) { //gd:VehicleWheel3D.set_use_as_traction
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -342,7 +342,7 @@ func (self class) SetUseAsTraction(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsedAsTraction() bool {
+func (self class) IsUsedAsTraction() bool { //gd:VehicleWheel3D.is_used_as_traction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_is_used_as_traction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -352,7 +352,7 @@ func (self class) IsUsedAsTraction() bool {
 }
 
 //go:nosplit
-func (self class) SetUseAsSteering(enable bool) {
+func (self class) SetUseAsSteering(enable bool) { //gd:VehicleWheel3D.set_use_as_steering
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -361,7 +361,7 @@ func (self class) SetUseAsSteering(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsedAsSteering() bool {
+func (self class) IsUsedAsSteering() bool { //gd:VehicleWheel3D.is_used_as_steering
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_is_used_as_steering, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -371,7 +371,7 @@ func (self class) IsUsedAsSteering() bool {
 }
 
 //go:nosplit
-func (self class) SetFrictionSlip(length gd.Float) {
+func (self class) SetFrictionSlip(length gd.Float) { //gd:VehicleWheel3D.set_friction_slip
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -380,7 +380,7 @@ func (self class) SetFrictionSlip(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFrictionSlip() gd.Float {
+func (self class) GetFrictionSlip() gd.Float { //gd:VehicleWheel3D.get_friction_slip
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_friction_slip, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -393,7 +393,7 @@ func (self class) GetFrictionSlip() gd.Float {
 Returns [code]true[/code] if this wheel is in contact with a surface.
 */
 //go:nosplit
-func (self class) IsInContact() bool {
+func (self class) IsInContact() bool { //gd:VehicleWheel3D.is_in_contact
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_is_in_contact, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -407,7 +407,7 @@ Returns the contacting body node if valid in the tree, as [Node3D]. At the momen
 Returns [code]null[/code] if the wheel is not in contact with a surface, or the contact body is not a [PhysicsBody3D].
 */
 //go:nosplit
-func (self class) GetContactBody() [1]gdclass.Node3D {
+func (self class) GetContactBody() [1]gdclass.Node3D { //gd:VehicleWheel3D.get_contact_body
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_contact_body, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -417,7 +417,7 @@ func (self class) GetContactBody() [1]gdclass.Node3D {
 }
 
 //go:nosplit
-func (self class) SetRollInfluence(roll_influence gd.Float) {
+func (self class) SetRollInfluence(roll_influence gd.Float) { //gd:VehicleWheel3D.set_roll_influence
 	var frame = callframe.New()
 	callframe.Arg(frame, roll_influence)
 	var r_ret = callframe.Nil
@@ -426,7 +426,7 @@ func (self class) SetRollInfluence(roll_influence gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRollInfluence() gd.Float {
+func (self class) GetRollInfluence() gd.Float { //gd:VehicleWheel3D.get_roll_influence
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_roll_influence, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -439,7 +439,7 @@ func (self class) GetRollInfluence() gd.Float {
 Returns a value between 0.0 and 1.0 that indicates whether this wheel is skidding. 0.0 is skidding (the wheel has lost grip, e.g. icy terrain), 1.0 means not skidding (the wheel has full grip, e.g. dry asphalt road).
 */
 //go:nosplit
-func (self class) GetSkidinfo() gd.Float {
+func (self class) GetSkidinfo() gd.Float { //gd:VehicleWheel3D.get_skidinfo
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_skidinfo, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -452,7 +452,7 @@ func (self class) GetSkidinfo() gd.Float {
 Returns the rotational speed of the wheel in revolutions per minute.
 */
 //go:nosplit
-func (self class) GetRpm() gd.Float {
+func (self class) GetRpm() gd.Float { //gd:VehicleWheel3D.get_rpm
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_rpm, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -462,7 +462,7 @@ func (self class) GetRpm() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEngineForce(engine_force gd.Float) {
+func (self class) SetEngineForce(engine_force gd.Float) { //gd:VehicleWheel3D.set_engine_force
 	var frame = callframe.New()
 	callframe.Arg(frame, engine_force)
 	var r_ret = callframe.Nil
@@ -471,7 +471,7 @@ func (self class) SetEngineForce(engine_force gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEngineForce() gd.Float {
+func (self class) GetEngineForce() gd.Float { //gd:VehicleWheel3D.get_engine_force
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_engine_force, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -481,7 +481,7 @@ func (self class) GetEngineForce() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBrake(brake gd.Float) {
+func (self class) SetBrake(brake gd.Float) { //gd:VehicleWheel3D.set_brake
 	var frame = callframe.New()
 	callframe.Arg(frame, brake)
 	var r_ret = callframe.Nil
@@ -490,7 +490,7 @@ func (self class) SetBrake(brake gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBrake() gd.Float {
+func (self class) GetBrake() gd.Float { //gd:VehicleWheel3D.get_brake
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_brake, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -500,7 +500,7 @@ func (self class) GetBrake() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSteering(steering gd.Float) {
+func (self class) SetSteering(steering gd.Float) { //gd:VehicleWheel3D.set_steering
 	var frame = callframe.New()
 	callframe.Arg(frame, steering)
 	var r_ret = callframe.Nil
@@ -509,7 +509,7 @@ func (self class) SetSteering(steering gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSteering() gd.Float {
+func (self class) GetSteering() gd.Float { //gd:VehicleWheel3D.get_steering
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleWheel3D.Bind_get_steering, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -67,7 +67,7 @@ func (self Instance) SetVolumeDb(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetVolumeDb(volume gd.Float) {
+func (self class) SetVolumeDb(volume gd.Float) { //gd:AudioEffectAmplify.set_volume_db
 	var frame = callframe.New()
 	callframe.Arg(frame, volume)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetVolumeDb(volume gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumeDb() gd.Float {
+func (self class) GetVolumeDb() gd.Float { //gd:AudioEffectAmplify.get_volume_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectAmplify.Bind_get_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())

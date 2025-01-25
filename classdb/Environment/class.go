@@ -47,14 +47,14 @@ type Any interface {
 /*
 Sets the intensity of the glow level [param idx]. A value above [code]0.0[/code] enables the level. Each level relies on the previous level. This means that enabling higher glow levels will slow down the glow effect rendering, even if previous levels aren't enabled.
 */
-func (self Instance) SetGlowLevel(idx int, intensity Float.X) {
+func (self Instance) SetGlowLevel(idx int, intensity Float.X) { //gd:Environment.set_glow_level
 	class(self).SetGlowLevel(gd.Int(idx), gd.Float(intensity))
 }
 
 /*
 Returns the intensity of the glow level [param idx].
 */
-func (self Instance) GetGlowLevel(idx int) Float.X {
+func (self Instance) GetGlowLevel(idx int) Float.X { //gd:Environment.get_glow_level
 	return Float.X(Float.X(class(self).GetGlowLevel(gd.Int(idx))))
 }
 
@@ -806,7 +806,7 @@ func (self Instance) SetAdjustmentColorCorrection(value [1]gdclass.Texture) {
 }
 
 //go:nosplit
-func (self class) SetBackground(mode gdclass.EnvironmentBGMode) {
+func (self class) SetBackground(mode gdclass.EnvironmentBGMode) { //gd:Environment.set_background
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -815,7 +815,7 @@ func (self class) SetBackground(mode gdclass.EnvironmentBGMode) {
 }
 
 //go:nosplit
-func (self class) GetBackground() gdclass.EnvironmentBGMode {
+func (self class) GetBackground() gdclass.EnvironmentBGMode { //gd:Environment.get_background
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EnvironmentBGMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_background, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -825,7 +825,7 @@ func (self class) GetBackground() gdclass.EnvironmentBGMode {
 }
 
 //go:nosplit
-func (self class) SetSky(sky [1]gdclass.Sky) {
+func (self class) SetSky(sky [1]gdclass.Sky) { //gd:Environment.set_sky
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(sky[0])[0])
 	var r_ret = callframe.Nil
@@ -834,7 +834,7 @@ func (self class) SetSky(sky [1]gdclass.Sky) {
 }
 
 //go:nosplit
-func (self class) GetSky() [1]gdclass.Sky {
+func (self class) GetSky() [1]gdclass.Sky { //gd:Environment.get_sky
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sky, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -844,7 +844,7 @@ func (self class) GetSky() [1]gdclass.Sky {
 }
 
 //go:nosplit
-func (self class) SetSkyCustomFov(scale gd.Float) {
+func (self class) SetSkyCustomFov(scale gd.Float) { //gd:Environment.set_sky_custom_fov
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -853,7 +853,7 @@ func (self class) SetSkyCustomFov(scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSkyCustomFov() gd.Float {
+func (self class) GetSkyCustomFov() gd.Float { //gd:Environment.get_sky_custom_fov
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sky_custom_fov, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -863,7 +863,7 @@ func (self class) GetSkyCustomFov() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSkyRotation(euler_radians gd.Vector3) {
+func (self class) SetSkyRotation(euler_radians gd.Vector3) { //gd:Environment.set_sky_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, euler_radians)
 	var r_ret = callframe.Nil
@@ -872,7 +872,7 @@ func (self class) SetSkyRotation(euler_radians gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetSkyRotation() gd.Vector3 {
+func (self class) GetSkyRotation() gd.Vector3 { //gd:Environment.get_sky_rotation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sky_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -882,7 +882,7 @@ func (self class) GetSkyRotation() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetBgColor(color gd.Color) {
+func (self class) SetBgColor(color gd.Color) { //gd:Environment.set_bg_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -891,7 +891,7 @@ func (self class) SetBgColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetBgColor() gd.Color {
+func (self class) GetBgColor() gd.Color { //gd:Environment.get_bg_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_bg_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -901,7 +901,7 @@ func (self class) GetBgColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetBgEnergyMultiplier(energy gd.Float) {
+func (self class) SetBgEnergyMultiplier(energy gd.Float) { //gd:Environment.set_bg_energy_multiplier
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret = callframe.Nil
@@ -910,7 +910,7 @@ func (self class) SetBgEnergyMultiplier(energy gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBgEnergyMultiplier() gd.Float {
+func (self class) GetBgEnergyMultiplier() gd.Float { //gd:Environment.get_bg_energy_multiplier
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_bg_energy_multiplier, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -920,7 +920,7 @@ func (self class) GetBgEnergyMultiplier() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBgIntensity(energy gd.Float) {
+func (self class) SetBgIntensity(energy gd.Float) { //gd:Environment.set_bg_intensity
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret = callframe.Nil
@@ -929,7 +929,7 @@ func (self class) SetBgIntensity(energy gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBgIntensity() gd.Float {
+func (self class) GetBgIntensity() gd.Float { //gd:Environment.get_bg_intensity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_bg_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -939,7 +939,7 @@ func (self class) GetBgIntensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCanvasMaxLayer(layer gd.Int) {
+func (self class) SetCanvasMaxLayer(layer gd.Int) { //gd:Environment.set_canvas_max_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -948,7 +948,7 @@ func (self class) SetCanvasMaxLayer(layer gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCanvasMaxLayer() gd.Int {
+func (self class) GetCanvasMaxLayer() gd.Int { //gd:Environment.get_canvas_max_layer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_canvas_max_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -958,7 +958,7 @@ func (self class) GetCanvasMaxLayer() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCameraFeedId(id gd.Int) {
+func (self class) SetCameraFeedId(id gd.Int) { //gd:Environment.set_camera_feed_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -967,7 +967,7 @@ func (self class) SetCameraFeedId(id gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCameraFeedId() gd.Int {
+func (self class) GetCameraFeedId() gd.Int { //gd:Environment.get_camera_feed_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_camera_feed_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -977,7 +977,7 @@ func (self class) GetCameraFeedId() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetAmbientLightColor(color gd.Color) {
+func (self class) SetAmbientLightColor(color gd.Color) { //gd:Environment.set_ambient_light_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -986,7 +986,7 @@ func (self class) SetAmbientLightColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetAmbientLightColor() gd.Color {
+func (self class) GetAmbientLightColor() gd.Color { //gd:Environment.get_ambient_light_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ambient_light_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -996,7 +996,7 @@ func (self class) GetAmbientLightColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetAmbientSource(source gdclass.EnvironmentAmbientSource) {
+func (self class) SetAmbientSource(source gdclass.EnvironmentAmbientSource) { //gd:Environment.set_ambient_source
 	var frame = callframe.New()
 	callframe.Arg(frame, source)
 	var r_ret = callframe.Nil
@@ -1005,7 +1005,7 @@ func (self class) SetAmbientSource(source gdclass.EnvironmentAmbientSource) {
 }
 
 //go:nosplit
-func (self class) GetAmbientSource() gdclass.EnvironmentAmbientSource {
+func (self class) GetAmbientSource() gdclass.EnvironmentAmbientSource { //gd:Environment.get_ambient_source
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EnvironmentAmbientSource](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ambient_source, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1015,7 +1015,7 @@ func (self class) GetAmbientSource() gdclass.EnvironmentAmbientSource {
 }
 
 //go:nosplit
-func (self class) SetAmbientLightEnergy(energy gd.Float) {
+func (self class) SetAmbientLightEnergy(energy gd.Float) { //gd:Environment.set_ambient_light_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, energy)
 	var r_ret = callframe.Nil
@@ -1024,7 +1024,7 @@ func (self class) SetAmbientLightEnergy(energy gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAmbientLightEnergy() gd.Float {
+func (self class) GetAmbientLightEnergy() gd.Float { //gd:Environment.get_ambient_light_energy
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ambient_light_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1034,7 +1034,7 @@ func (self class) GetAmbientLightEnergy() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAmbientLightSkyContribution(ratio gd.Float) {
+func (self class) SetAmbientLightSkyContribution(ratio gd.Float) { //gd:Environment.set_ambient_light_sky_contribution
 	var frame = callframe.New()
 	callframe.Arg(frame, ratio)
 	var r_ret = callframe.Nil
@@ -1043,7 +1043,7 @@ func (self class) SetAmbientLightSkyContribution(ratio gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAmbientLightSkyContribution() gd.Float {
+func (self class) GetAmbientLightSkyContribution() gd.Float { //gd:Environment.get_ambient_light_sky_contribution
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ambient_light_sky_contribution, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1053,7 +1053,7 @@ func (self class) GetAmbientLightSkyContribution() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetReflectionSource(source gdclass.EnvironmentReflectionSource) {
+func (self class) SetReflectionSource(source gdclass.EnvironmentReflectionSource) { //gd:Environment.set_reflection_source
 	var frame = callframe.New()
 	callframe.Arg(frame, source)
 	var r_ret = callframe.Nil
@@ -1062,7 +1062,7 @@ func (self class) SetReflectionSource(source gdclass.EnvironmentReflectionSource
 }
 
 //go:nosplit
-func (self class) GetReflectionSource() gdclass.EnvironmentReflectionSource {
+func (self class) GetReflectionSource() gdclass.EnvironmentReflectionSource { //gd:Environment.get_reflection_source
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EnvironmentReflectionSource](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_reflection_source, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1072,7 +1072,7 @@ func (self class) GetReflectionSource() gdclass.EnvironmentReflectionSource {
 }
 
 //go:nosplit
-func (self class) SetTonemapper(mode gdclass.EnvironmentToneMapper) {
+func (self class) SetTonemapper(mode gdclass.EnvironmentToneMapper) { //gd:Environment.set_tonemapper
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1081,7 +1081,7 @@ func (self class) SetTonemapper(mode gdclass.EnvironmentToneMapper) {
 }
 
 //go:nosplit
-func (self class) GetTonemapper() gdclass.EnvironmentToneMapper {
+func (self class) GetTonemapper() gdclass.EnvironmentToneMapper { //gd:Environment.get_tonemapper
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EnvironmentToneMapper](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_tonemapper, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1091,7 +1091,7 @@ func (self class) GetTonemapper() gdclass.EnvironmentToneMapper {
 }
 
 //go:nosplit
-func (self class) SetTonemapExposure(exposure gd.Float) {
+func (self class) SetTonemapExposure(exposure gd.Float) { //gd:Environment.set_tonemap_exposure
 	var frame = callframe.New()
 	callframe.Arg(frame, exposure)
 	var r_ret = callframe.Nil
@@ -1100,7 +1100,7 @@ func (self class) SetTonemapExposure(exposure gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTonemapExposure() gd.Float {
+func (self class) GetTonemapExposure() gd.Float { //gd:Environment.get_tonemap_exposure
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_tonemap_exposure, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1110,7 +1110,7 @@ func (self class) GetTonemapExposure() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTonemapWhite(white gd.Float) {
+func (self class) SetTonemapWhite(white gd.Float) { //gd:Environment.set_tonemap_white
 	var frame = callframe.New()
 	callframe.Arg(frame, white)
 	var r_ret = callframe.Nil
@@ -1119,7 +1119,7 @@ func (self class) SetTonemapWhite(white gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTonemapWhite() gd.Float {
+func (self class) GetTonemapWhite() gd.Float { //gd:Environment.get_tonemap_white
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_tonemap_white, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1129,7 +1129,7 @@ func (self class) GetTonemapWhite() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsrEnabled(enabled bool) {
+func (self class) SetSsrEnabled(enabled bool) { //gd:Environment.set_ssr_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1138,7 +1138,7 @@ func (self class) SetSsrEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsSsrEnabled() bool {
+func (self class) IsSsrEnabled() bool { //gd:Environment.is_ssr_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_ssr_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1148,7 +1148,7 @@ func (self class) IsSsrEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetSsrMaxSteps(max_steps gd.Int) {
+func (self class) SetSsrMaxSteps(max_steps gd.Int) { //gd:Environment.set_ssr_max_steps
 	var frame = callframe.New()
 	callframe.Arg(frame, max_steps)
 	var r_ret = callframe.Nil
@@ -1157,7 +1157,7 @@ func (self class) SetSsrMaxSteps(max_steps gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSsrMaxSteps() gd.Int {
+func (self class) GetSsrMaxSteps() gd.Int { //gd:Environment.get_ssr_max_steps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssr_max_steps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1167,7 +1167,7 @@ func (self class) GetSsrMaxSteps() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSsrFadeIn(fade_in gd.Float) {
+func (self class) SetSsrFadeIn(fade_in gd.Float) { //gd:Environment.set_ssr_fade_in
 	var frame = callframe.New()
 	callframe.Arg(frame, fade_in)
 	var r_ret = callframe.Nil
@@ -1176,7 +1176,7 @@ func (self class) SetSsrFadeIn(fade_in gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsrFadeIn() gd.Float {
+func (self class) GetSsrFadeIn() gd.Float { //gd:Environment.get_ssr_fade_in
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssr_fade_in, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1186,7 +1186,7 @@ func (self class) GetSsrFadeIn() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsrFadeOut(fade_out gd.Float) {
+func (self class) SetSsrFadeOut(fade_out gd.Float) { //gd:Environment.set_ssr_fade_out
 	var frame = callframe.New()
 	callframe.Arg(frame, fade_out)
 	var r_ret = callframe.Nil
@@ -1195,7 +1195,7 @@ func (self class) SetSsrFadeOut(fade_out gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsrFadeOut() gd.Float {
+func (self class) GetSsrFadeOut() gd.Float { //gd:Environment.get_ssr_fade_out
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssr_fade_out, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1205,7 +1205,7 @@ func (self class) GetSsrFadeOut() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsrDepthTolerance(depth_tolerance gd.Float) {
+func (self class) SetSsrDepthTolerance(depth_tolerance gd.Float) { //gd:Environment.set_ssr_depth_tolerance
 	var frame = callframe.New()
 	callframe.Arg(frame, depth_tolerance)
 	var r_ret = callframe.Nil
@@ -1214,7 +1214,7 @@ func (self class) SetSsrDepthTolerance(depth_tolerance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsrDepthTolerance() gd.Float {
+func (self class) GetSsrDepthTolerance() gd.Float { //gd:Environment.get_ssr_depth_tolerance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssr_depth_tolerance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1224,7 +1224,7 @@ func (self class) GetSsrDepthTolerance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsaoEnabled(enabled bool) {
+func (self class) SetSsaoEnabled(enabled bool) { //gd:Environment.set_ssao_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1233,7 +1233,7 @@ func (self class) SetSsaoEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsSsaoEnabled() bool {
+func (self class) IsSsaoEnabled() bool { //gd:Environment.is_ssao_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_ssao_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1243,7 +1243,7 @@ func (self class) IsSsaoEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetSsaoRadius(radius gd.Float) {
+func (self class) SetSsaoRadius(radius gd.Float) { //gd:Environment.set_ssao_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -1252,7 +1252,7 @@ func (self class) SetSsaoRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsaoRadius() gd.Float {
+func (self class) GetSsaoRadius() gd.Float { //gd:Environment.get_ssao_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssao_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1262,7 +1262,7 @@ func (self class) GetSsaoRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsaoIntensity(intensity gd.Float) {
+func (self class) SetSsaoIntensity(intensity gd.Float) { //gd:Environment.set_ssao_intensity
 	var frame = callframe.New()
 	callframe.Arg(frame, intensity)
 	var r_ret = callframe.Nil
@@ -1271,7 +1271,7 @@ func (self class) SetSsaoIntensity(intensity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsaoIntensity() gd.Float {
+func (self class) GetSsaoIntensity() gd.Float { //gd:Environment.get_ssao_intensity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssao_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1281,7 +1281,7 @@ func (self class) GetSsaoIntensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsaoPower(power gd.Float) {
+func (self class) SetSsaoPower(power gd.Float) { //gd:Environment.set_ssao_power
 	var frame = callframe.New()
 	callframe.Arg(frame, power)
 	var r_ret = callframe.Nil
@@ -1290,7 +1290,7 @@ func (self class) SetSsaoPower(power gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsaoPower() gd.Float {
+func (self class) GetSsaoPower() gd.Float { //gd:Environment.get_ssao_power
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssao_power, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1300,7 +1300,7 @@ func (self class) GetSsaoPower() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsaoDetail(detail gd.Float) {
+func (self class) SetSsaoDetail(detail gd.Float) { //gd:Environment.set_ssao_detail
 	var frame = callframe.New()
 	callframe.Arg(frame, detail)
 	var r_ret = callframe.Nil
@@ -1309,7 +1309,7 @@ func (self class) SetSsaoDetail(detail gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsaoDetail() gd.Float {
+func (self class) GetSsaoDetail() gd.Float { //gd:Environment.get_ssao_detail
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssao_detail, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1319,7 +1319,7 @@ func (self class) GetSsaoDetail() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsaoHorizon(horizon gd.Float) {
+func (self class) SetSsaoHorizon(horizon gd.Float) { //gd:Environment.set_ssao_horizon
 	var frame = callframe.New()
 	callframe.Arg(frame, horizon)
 	var r_ret = callframe.Nil
@@ -1328,7 +1328,7 @@ func (self class) SetSsaoHorizon(horizon gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsaoHorizon() gd.Float {
+func (self class) GetSsaoHorizon() gd.Float { //gd:Environment.get_ssao_horizon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssao_horizon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1338,7 +1338,7 @@ func (self class) GetSsaoHorizon() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsaoSharpness(sharpness gd.Float) {
+func (self class) SetSsaoSharpness(sharpness gd.Float) { //gd:Environment.set_ssao_sharpness
 	var frame = callframe.New()
 	callframe.Arg(frame, sharpness)
 	var r_ret = callframe.Nil
@@ -1347,7 +1347,7 @@ func (self class) SetSsaoSharpness(sharpness gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsaoSharpness() gd.Float {
+func (self class) GetSsaoSharpness() gd.Float { //gd:Environment.get_ssao_sharpness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssao_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1357,7 +1357,7 @@ func (self class) GetSsaoSharpness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsaoDirectLightAffect(amount gd.Float) {
+func (self class) SetSsaoDirectLightAffect(amount gd.Float) { //gd:Environment.set_ssao_direct_light_affect
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1366,7 +1366,7 @@ func (self class) SetSsaoDirectLightAffect(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsaoDirectLightAffect() gd.Float {
+func (self class) GetSsaoDirectLightAffect() gd.Float { //gd:Environment.get_ssao_direct_light_affect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssao_direct_light_affect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1376,7 +1376,7 @@ func (self class) GetSsaoDirectLightAffect() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsaoAoChannelAffect(amount gd.Float) {
+func (self class) SetSsaoAoChannelAffect(amount gd.Float) { //gd:Environment.set_ssao_ao_channel_affect
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1385,7 +1385,7 @@ func (self class) SetSsaoAoChannelAffect(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsaoAoChannelAffect() gd.Float {
+func (self class) GetSsaoAoChannelAffect() gd.Float { //gd:Environment.get_ssao_ao_channel_affect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssao_ao_channel_affect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1395,7 +1395,7 @@ func (self class) GetSsaoAoChannelAffect() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsilEnabled(enabled bool) {
+func (self class) SetSsilEnabled(enabled bool) { //gd:Environment.set_ssil_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1404,7 +1404,7 @@ func (self class) SetSsilEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsSsilEnabled() bool {
+func (self class) IsSsilEnabled() bool { //gd:Environment.is_ssil_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_ssil_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1414,7 +1414,7 @@ func (self class) IsSsilEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetSsilRadius(radius gd.Float) {
+func (self class) SetSsilRadius(radius gd.Float) { //gd:Environment.set_ssil_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -1423,7 +1423,7 @@ func (self class) SetSsilRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsilRadius() gd.Float {
+func (self class) GetSsilRadius() gd.Float { //gd:Environment.get_ssil_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssil_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1433,7 +1433,7 @@ func (self class) GetSsilRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsilIntensity(intensity gd.Float) {
+func (self class) SetSsilIntensity(intensity gd.Float) { //gd:Environment.set_ssil_intensity
 	var frame = callframe.New()
 	callframe.Arg(frame, intensity)
 	var r_ret = callframe.Nil
@@ -1442,7 +1442,7 @@ func (self class) SetSsilIntensity(intensity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsilIntensity() gd.Float {
+func (self class) GetSsilIntensity() gd.Float { //gd:Environment.get_ssil_intensity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssil_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1452,7 +1452,7 @@ func (self class) GetSsilIntensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsilSharpness(sharpness gd.Float) {
+func (self class) SetSsilSharpness(sharpness gd.Float) { //gd:Environment.set_ssil_sharpness
 	var frame = callframe.New()
 	callframe.Arg(frame, sharpness)
 	var r_ret = callframe.Nil
@@ -1461,7 +1461,7 @@ func (self class) SetSsilSharpness(sharpness gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsilSharpness() gd.Float {
+func (self class) GetSsilSharpness() gd.Float { //gd:Environment.get_ssil_sharpness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssil_sharpness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1471,7 +1471,7 @@ func (self class) GetSsilSharpness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSsilNormalRejection(normal_rejection gd.Float) {
+func (self class) SetSsilNormalRejection(normal_rejection gd.Float) { //gd:Environment.set_ssil_normal_rejection
 	var frame = callframe.New()
 	callframe.Arg(frame, normal_rejection)
 	var r_ret = callframe.Nil
@@ -1480,7 +1480,7 @@ func (self class) SetSsilNormalRejection(normal_rejection gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSsilNormalRejection() gd.Float {
+func (self class) GetSsilNormalRejection() gd.Float { //gd:Environment.get_ssil_normal_rejection
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ssil_normal_rejection, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1490,7 +1490,7 @@ func (self class) GetSsilNormalRejection() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSdfgiEnabled(enabled bool) {
+func (self class) SetSdfgiEnabled(enabled bool) { //gd:Environment.set_sdfgi_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1499,7 +1499,7 @@ func (self class) SetSdfgiEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsSdfgiEnabled() bool {
+func (self class) IsSdfgiEnabled() bool { //gd:Environment.is_sdfgi_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_sdfgi_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1509,7 +1509,7 @@ func (self class) IsSdfgiEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetSdfgiCascades(amount gd.Int) {
+func (self class) SetSdfgiCascades(amount gd.Int) { //gd:Environment.set_sdfgi_cascades
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1518,7 +1518,7 @@ func (self class) SetSdfgiCascades(amount gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSdfgiCascades() gd.Int {
+func (self class) GetSdfgiCascades() gd.Int { //gd:Environment.get_sdfgi_cascades
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_cascades, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1528,7 +1528,7 @@ func (self class) GetSdfgiCascades() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSdfgiMinCellSize(size gd.Float) {
+func (self class) SetSdfgiMinCellSize(size gd.Float) { //gd:Environment.set_sdfgi_min_cell_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -1537,7 +1537,7 @@ func (self class) SetSdfgiMinCellSize(size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSdfgiMinCellSize() gd.Float {
+func (self class) GetSdfgiMinCellSize() gd.Float { //gd:Environment.get_sdfgi_min_cell_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_min_cell_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1547,7 +1547,7 @@ func (self class) GetSdfgiMinCellSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSdfgiMaxDistance(distance gd.Float) {
+func (self class) SetSdfgiMaxDistance(distance gd.Float) { //gd:Environment.set_sdfgi_max_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -1556,7 +1556,7 @@ func (self class) SetSdfgiMaxDistance(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSdfgiMaxDistance() gd.Float {
+func (self class) GetSdfgiMaxDistance() gd.Float { //gd:Environment.get_sdfgi_max_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1566,7 +1566,7 @@ func (self class) GetSdfgiMaxDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSdfgiCascade0Distance(distance gd.Float) {
+func (self class) SetSdfgiCascade0Distance(distance gd.Float) { //gd:Environment.set_sdfgi_cascade0_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -1575,7 +1575,7 @@ func (self class) SetSdfgiCascade0Distance(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSdfgiCascade0Distance() gd.Float {
+func (self class) GetSdfgiCascade0Distance() gd.Float { //gd:Environment.get_sdfgi_cascade0_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_cascade0_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1585,7 +1585,7 @@ func (self class) GetSdfgiCascade0Distance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSdfgiYScale(scale gdclass.EnvironmentSDFGIYScale) {
+func (self class) SetSdfgiYScale(scale gdclass.EnvironmentSDFGIYScale) { //gd:Environment.set_sdfgi_y_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1594,7 +1594,7 @@ func (self class) SetSdfgiYScale(scale gdclass.EnvironmentSDFGIYScale) {
 }
 
 //go:nosplit
-func (self class) GetSdfgiYScale() gdclass.EnvironmentSDFGIYScale {
+func (self class) GetSdfgiYScale() gdclass.EnvironmentSDFGIYScale { //gd:Environment.get_sdfgi_y_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EnvironmentSDFGIYScale](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_y_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1604,7 +1604,7 @@ func (self class) GetSdfgiYScale() gdclass.EnvironmentSDFGIYScale {
 }
 
 //go:nosplit
-func (self class) SetSdfgiUseOcclusion(enable bool) {
+func (self class) SetSdfgiUseOcclusion(enable bool) { //gd:Environment.set_sdfgi_use_occlusion
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1613,7 +1613,7 @@ func (self class) SetSdfgiUseOcclusion(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSdfgiUsingOcclusion() bool {
+func (self class) IsSdfgiUsingOcclusion() bool { //gd:Environment.is_sdfgi_using_occlusion
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_sdfgi_using_occlusion, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1623,7 +1623,7 @@ func (self class) IsSdfgiUsingOcclusion() bool {
 }
 
 //go:nosplit
-func (self class) SetSdfgiBounceFeedback(amount gd.Float) {
+func (self class) SetSdfgiBounceFeedback(amount gd.Float) { //gd:Environment.set_sdfgi_bounce_feedback
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1632,7 +1632,7 @@ func (self class) SetSdfgiBounceFeedback(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSdfgiBounceFeedback() gd.Float {
+func (self class) GetSdfgiBounceFeedback() gd.Float { //gd:Environment.get_sdfgi_bounce_feedback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_bounce_feedback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1642,7 +1642,7 @@ func (self class) GetSdfgiBounceFeedback() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSdfgiReadSkyLight(enable bool) {
+func (self class) SetSdfgiReadSkyLight(enable bool) { //gd:Environment.set_sdfgi_read_sky_light
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1651,7 +1651,7 @@ func (self class) SetSdfgiReadSkyLight(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSdfgiReadingSkyLight() bool {
+func (self class) IsSdfgiReadingSkyLight() bool { //gd:Environment.is_sdfgi_reading_sky_light
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_sdfgi_reading_sky_light, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1661,7 +1661,7 @@ func (self class) IsSdfgiReadingSkyLight() bool {
 }
 
 //go:nosplit
-func (self class) SetSdfgiEnergy(amount gd.Float) {
+func (self class) SetSdfgiEnergy(amount gd.Float) { //gd:Environment.set_sdfgi_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1670,7 +1670,7 @@ func (self class) SetSdfgiEnergy(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSdfgiEnergy() gd.Float {
+func (self class) GetSdfgiEnergy() gd.Float { //gd:Environment.get_sdfgi_energy
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1680,7 +1680,7 @@ func (self class) GetSdfgiEnergy() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSdfgiNormalBias(bias gd.Float) {
+func (self class) SetSdfgiNormalBias(bias gd.Float) { //gd:Environment.set_sdfgi_normal_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -1689,7 +1689,7 @@ func (self class) SetSdfgiNormalBias(bias gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSdfgiNormalBias() gd.Float {
+func (self class) GetSdfgiNormalBias() gd.Float { //gd:Environment.get_sdfgi_normal_bias
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_normal_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1699,7 +1699,7 @@ func (self class) GetSdfgiNormalBias() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSdfgiProbeBias(bias gd.Float) {
+func (self class) SetSdfgiProbeBias(bias gd.Float) { //gd:Environment.set_sdfgi_probe_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -1708,7 +1708,7 @@ func (self class) SetSdfgiProbeBias(bias gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSdfgiProbeBias() gd.Float {
+func (self class) GetSdfgiProbeBias() gd.Float { //gd:Environment.get_sdfgi_probe_bias
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_probe_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1718,7 +1718,7 @@ func (self class) GetSdfgiProbeBias() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowEnabled(enabled bool) {
+func (self class) SetGlowEnabled(enabled bool) { //gd:Environment.set_glow_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1727,7 +1727,7 @@ func (self class) SetGlowEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsGlowEnabled() bool {
+func (self class) IsGlowEnabled() bool { //gd:Environment.is_glow_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_glow_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1740,7 +1740,7 @@ func (self class) IsGlowEnabled() bool {
 Sets the intensity of the glow level [param idx]. A value above [code]0.0[/code] enables the level. Each level relies on the previous level. This means that enabling higher glow levels will slow down the glow effect rendering, even if previous levels aren't enabled.
 */
 //go:nosplit
-func (self class) SetGlowLevel(idx gd.Int, intensity gd.Float) {
+func (self class) SetGlowLevel(idx gd.Int, intensity gd.Float) { //gd:Environment.set_glow_level
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, intensity)
@@ -1753,7 +1753,7 @@ func (self class) SetGlowLevel(idx gd.Int, intensity gd.Float) {
 Returns the intensity of the glow level [param idx].
 */
 //go:nosplit
-func (self class) GetGlowLevel(idx gd.Int) gd.Float {
+func (self class) GetGlowLevel(idx gd.Int) gd.Float { //gd:Environment.get_glow_level
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -1764,7 +1764,7 @@ func (self class) GetGlowLevel(idx gd.Int) gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowNormalized(normalize bool) {
+func (self class) SetGlowNormalized(normalize bool) { //gd:Environment.set_glow_normalized
 	var frame = callframe.New()
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Nil
@@ -1773,7 +1773,7 @@ func (self class) SetGlowNormalized(normalize bool) {
 }
 
 //go:nosplit
-func (self class) IsGlowNormalized() bool {
+func (self class) IsGlowNormalized() bool { //gd:Environment.is_glow_normalized
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_glow_normalized, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1783,7 +1783,7 @@ func (self class) IsGlowNormalized() bool {
 }
 
 //go:nosplit
-func (self class) SetGlowIntensity(intensity gd.Float) {
+func (self class) SetGlowIntensity(intensity gd.Float) { //gd:Environment.set_glow_intensity
 	var frame = callframe.New()
 	callframe.Arg(frame, intensity)
 	var r_ret = callframe.Nil
@@ -1792,7 +1792,7 @@ func (self class) SetGlowIntensity(intensity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlowIntensity() gd.Float {
+func (self class) GetGlowIntensity() gd.Float { //gd:Environment.get_glow_intensity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_intensity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1802,7 +1802,7 @@ func (self class) GetGlowIntensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowStrength(strength gd.Float) {
+func (self class) SetGlowStrength(strength gd.Float) { //gd:Environment.set_glow_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -1811,7 +1811,7 @@ func (self class) SetGlowStrength(strength gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlowStrength() gd.Float {
+func (self class) GetGlowStrength() gd.Float { //gd:Environment.get_glow_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1821,7 +1821,7 @@ func (self class) GetGlowStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowMix(mix gd.Float) {
+func (self class) SetGlowMix(mix gd.Float) { //gd:Environment.set_glow_mix
 	var frame = callframe.New()
 	callframe.Arg(frame, mix)
 	var r_ret = callframe.Nil
@@ -1830,7 +1830,7 @@ func (self class) SetGlowMix(mix gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlowMix() gd.Float {
+func (self class) GetGlowMix() gd.Float { //gd:Environment.get_glow_mix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_mix, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1840,7 +1840,7 @@ func (self class) GetGlowMix() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowBloom(amount gd.Float) {
+func (self class) SetGlowBloom(amount gd.Float) { //gd:Environment.set_glow_bloom
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1849,7 +1849,7 @@ func (self class) SetGlowBloom(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlowBloom() gd.Float {
+func (self class) GetGlowBloom() gd.Float { //gd:Environment.get_glow_bloom
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_bloom, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1859,7 +1859,7 @@ func (self class) GetGlowBloom() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowBlendMode(mode gdclass.EnvironmentGlowBlendMode) {
+func (self class) SetGlowBlendMode(mode gdclass.EnvironmentGlowBlendMode) { //gd:Environment.set_glow_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1868,7 +1868,7 @@ func (self class) SetGlowBlendMode(mode gdclass.EnvironmentGlowBlendMode) {
 }
 
 //go:nosplit
-func (self class) GetGlowBlendMode() gdclass.EnvironmentGlowBlendMode {
+func (self class) GetGlowBlendMode() gdclass.EnvironmentGlowBlendMode { //gd:Environment.get_glow_blend_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EnvironmentGlowBlendMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1878,7 +1878,7 @@ func (self class) GetGlowBlendMode() gdclass.EnvironmentGlowBlendMode {
 }
 
 //go:nosplit
-func (self class) SetGlowHdrBleedThreshold(threshold gd.Float) {
+func (self class) SetGlowHdrBleedThreshold(threshold gd.Float) { //gd:Environment.set_glow_hdr_bleed_threshold
 	var frame = callframe.New()
 	callframe.Arg(frame, threshold)
 	var r_ret = callframe.Nil
@@ -1887,7 +1887,7 @@ func (self class) SetGlowHdrBleedThreshold(threshold gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlowHdrBleedThreshold() gd.Float {
+func (self class) GetGlowHdrBleedThreshold() gd.Float { //gd:Environment.get_glow_hdr_bleed_threshold
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_hdr_bleed_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1897,7 +1897,7 @@ func (self class) GetGlowHdrBleedThreshold() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowHdrBleedScale(scale gd.Float) {
+func (self class) SetGlowHdrBleedScale(scale gd.Float) { //gd:Environment.set_glow_hdr_bleed_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1906,7 +1906,7 @@ func (self class) SetGlowHdrBleedScale(scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlowHdrBleedScale() gd.Float {
+func (self class) GetGlowHdrBleedScale() gd.Float { //gd:Environment.get_glow_hdr_bleed_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_hdr_bleed_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1916,7 +1916,7 @@ func (self class) GetGlowHdrBleedScale() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowHdrLuminanceCap(amount gd.Float) {
+func (self class) SetGlowHdrLuminanceCap(amount gd.Float) { //gd:Environment.set_glow_hdr_luminance_cap
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -1925,7 +1925,7 @@ func (self class) SetGlowHdrLuminanceCap(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlowHdrLuminanceCap() gd.Float {
+func (self class) GetGlowHdrLuminanceCap() gd.Float { //gd:Environment.get_glow_hdr_luminance_cap
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_hdr_luminance_cap, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1935,7 +1935,7 @@ func (self class) GetGlowHdrLuminanceCap() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowMapStrength(strength gd.Float) {
+func (self class) SetGlowMapStrength(strength gd.Float) { //gd:Environment.set_glow_map_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -1944,7 +1944,7 @@ func (self class) SetGlowMapStrength(strength gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGlowMapStrength() gd.Float {
+func (self class) GetGlowMapStrength() gd.Float { //gd:Environment.get_glow_map_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_map_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1954,7 +1954,7 @@ func (self class) GetGlowMapStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGlowMap(mode [1]gdclass.Texture) {
+func (self class) SetGlowMap(mode [1]gdclass.Texture) { //gd:Environment.set_glow_map
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mode[0])[0])
 	var r_ret = callframe.Nil
@@ -1963,7 +1963,7 @@ func (self class) SetGlowMap(mode [1]gdclass.Texture) {
 }
 
 //go:nosplit
-func (self class) GetGlowMap() [1]gdclass.Texture {
+func (self class) GetGlowMap() [1]gdclass.Texture { //gd:Environment.get_glow_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_map, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1973,7 +1973,7 @@ func (self class) GetGlowMap() [1]gdclass.Texture {
 }
 
 //go:nosplit
-func (self class) SetFogEnabled(enabled bool) {
+func (self class) SetFogEnabled(enabled bool) { //gd:Environment.set_fog_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1982,7 +1982,7 @@ func (self class) SetFogEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsFogEnabled() bool {
+func (self class) IsFogEnabled() bool { //gd:Environment.is_fog_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_fog_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1992,7 +1992,7 @@ func (self class) IsFogEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetFogMode(mode gdclass.EnvironmentFogMode) {
+func (self class) SetFogMode(mode gdclass.EnvironmentFogMode) { //gd:Environment.set_fog_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2001,7 +2001,7 @@ func (self class) SetFogMode(mode gdclass.EnvironmentFogMode) {
 }
 
 //go:nosplit
-func (self class) GetFogMode() gdclass.EnvironmentFogMode {
+func (self class) GetFogMode() gdclass.EnvironmentFogMode { //gd:Environment.get_fog_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.EnvironmentFogMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2011,7 +2011,7 @@ func (self class) GetFogMode() gdclass.EnvironmentFogMode {
 }
 
 //go:nosplit
-func (self class) SetFogLightColor(light_color gd.Color) {
+func (self class) SetFogLightColor(light_color gd.Color) { //gd:Environment.set_fog_light_color
 	var frame = callframe.New()
 	callframe.Arg(frame, light_color)
 	var r_ret = callframe.Nil
@@ -2020,7 +2020,7 @@ func (self class) SetFogLightColor(light_color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetFogLightColor() gd.Color {
+func (self class) GetFogLightColor() gd.Color { //gd:Environment.get_fog_light_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_light_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2030,7 +2030,7 @@ func (self class) GetFogLightColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetFogLightEnergy(light_energy gd.Float) {
+func (self class) SetFogLightEnergy(light_energy gd.Float) { //gd:Environment.set_fog_light_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, light_energy)
 	var r_ret = callframe.Nil
@@ -2039,7 +2039,7 @@ func (self class) SetFogLightEnergy(light_energy gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogLightEnergy() gd.Float {
+func (self class) GetFogLightEnergy() gd.Float { //gd:Environment.get_fog_light_energy
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_light_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2049,7 +2049,7 @@ func (self class) GetFogLightEnergy() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFogSunScatter(sun_scatter gd.Float) {
+func (self class) SetFogSunScatter(sun_scatter gd.Float) { //gd:Environment.set_fog_sun_scatter
 	var frame = callframe.New()
 	callframe.Arg(frame, sun_scatter)
 	var r_ret = callframe.Nil
@@ -2058,7 +2058,7 @@ func (self class) SetFogSunScatter(sun_scatter gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogSunScatter() gd.Float {
+func (self class) GetFogSunScatter() gd.Float { //gd:Environment.get_fog_sun_scatter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_sun_scatter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2068,7 +2068,7 @@ func (self class) GetFogSunScatter() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFogDensity(density gd.Float) {
+func (self class) SetFogDensity(density gd.Float) { //gd:Environment.set_fog_density
 	var frame = callframe.New()
 	callframe.Arg(frame, density)
 	var r_ret = callframe.Nil
@@ -2077,7 +2077,7 @@ func (self class) SetFogDensity(density gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogDensity() gd.Float {
+func (self class) GetFogDensity() gd.Float { //gd:Environment.get_fog_density
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_density, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2087,7 +2087,7 @@ func (self class) GetFogDensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFogHeight(height gd.Float) {
+func (self class) SetFogHeight(height gd.Float) { //gd:Environment.set_fog_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -2096,7 +2096,7 @@ func (self class) SetFogHeight(height gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogHeight() gd.Float {
+func (self class) GetFogHeight() gd.Float { //gd:Environment.get_fog_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2106,7 +2106,7 @@ func (self class) GetFogHeight() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFogHeightDensity(height_density gd.Float) {
+func (self class) SetFogHeightDensity(height_density gd.Float) { //gd:Environment.set_fog_height_density
 	var frame = callframe.New()
 	callframe.Arg(frame, height_density)
 	var r_ret = callframe.Nil
@@ -2115,7 +2115,7 @@ func (self class) SetFogHeightDensity(height_density gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogHeightDensity() gd.Float {
+func (self class) GetFogHeightDensity() gd.Float { //gd:Environment.get_fog_height_density
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_height_density, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2125,7 +2125,7 @@ func (self class) GetFogHeightDensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFogAerialPerspective(aerial_perspective gd.Float) {
+func (self class) SetFogAerialPerspective(aerial_perspective gd.Float) { //gd:Environment.set_fog_aerial_perspective
 	var frame = callframe.New()
 	callframe.Arg(frame, aerial_perspective)
 	var r_ret = callframe.Nil
@@ -2134,7 +2134,7 @@ func (self class) SetFogAerialPerspective(aerial_perspective gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogAerialPerspective() gd.Float {
+func (self class) GetFogAerialPerspective() gd.Float { //gd:Environment.get_fog_aerial_perspective
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_aerial_perspective, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2144,7 +2144,7 @@ func (self class) GetFogAerialPerspective() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFogSkyAffect(sky_affect gd.Float) {
+func (self class) SetFogSkyAffect(sky_affect gd.Float) { //gd:Environment.set_fog_sky_affect
 	var frame = callframe.New()
 	callframe.Arg(frame, sky_affect)
 	var r_ret = callframe.Nil
@@ -2153,7 +2153,7 @@ func (self class) SetFogSkyAffect(sky_affect gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogSkyAffect() gd.Float {
+func (self class) GetFogSkyAffect() gd.Float { //gd:Environment.get_fog_sky_affect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_sky_affect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2163,7 +2163,7 @@ func (self class) GetFogSkyAffect() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFogDepthCurve(curve gd.Float) {
+func (self class) SetFogDepthCurve(curve gd.Float) { //gd:Environment.set_fog_depth_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, curve)
 	var r_ret = callframe.Nil
@@ -2172,7 +2172,7 @@ func (self class) SetFogDepthCurve(curve gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogDepthCurve() gd.Float {
+func (self class) GetFogDepthCurve() gd.Float { //gd:Environment.get_fog_depth_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_depth_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2182,7 +2182,7 @@ func (self class) GetFogDepthCurve() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFogDepthBegin(begin gd.Float) {
+func (self class) SetFogDepthBegin(begin gd.Float) { //gd:Environment.set_fog_depth_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	var r_ret = callframe.Nil
@@ -2191,7 +2191,7 @@ func (self class) SetFogDepthBegin(begin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogDepthBegin() gd.Float {
+func (self class) GetFogDepthBegin() gd.Float { //gd:Environment.get_fog_depth_begin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_depth_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2201,7 +2201,7 @@ func (self class) GetFogDepthBegin() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFogDepthEnd(end gd.Float) {
+func (self class) SetFogDepthEnd(end gd.Float) { //gd:Environment.set_fog_depth_end
 	var frame = callframe.New()
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Nil
@@ -2210,7 +2210,7 @@ func (self class) SetFogDepthEnd(end gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFogDepthEnd() gd.Float {
+func (self class) GetFogDepthEnd() gd.Float { //gd:Environment.get_fog_depth_end
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_depth_end, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2220,7 +2220,7 @@ func (self class) GetFogDepthEnd() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogEnabled(enabled bool) {
+func (self class) SetVolumetricFogEnabled(enabled bool) { //gd:Environment.set_volumetric_fog_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -2229,7 +2229,7 @@ func (self class) SetVolumetricFogEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsVolumetricFogEnabled() bool {
+func (self class) IsVolumetricFogEnabled() bool { //gd:Environment.is_volumetric_fog_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_volumetric_fog_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2239,7 +2239,7 @@ func (self class) IsVolumetricFogEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogEmission(color gd.Color) {
+func (self class) SetVolumetricFogEmission(color gd.Color) { //gd:Environment.set_volumetric_fog_emission
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -2248,7 +2248,7 @@ func (self class) SetVolumetricFogEmission(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogEmission() gd.Color {
+func (self class) GetVolumetricFogEmission() gd.Color { //gd:Environment.get_volumetric_fog_emission
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2258,7 +2258,7 @@ func (self class) GetVolumetricFogEmission() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogAlbedo(color gd.Color) {
+func (self class) SetVolumetricFogAlbedo(color gd.Color) { //gd:Environment.set_volumetric_fog_albedo
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -2267,7 +2267,7 @@ func (self class) SetVolumetricFogAlbedo(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogAlbedo() gd.Color {
+func (self class) GetVolumetricFogAlbedo() gd.Color { //gd:Environment.get_volumetric_fog_albedo
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2277,7 +2277,7 @@ func (self class) GetVolumetricFogAlbedo() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogDensity(density gd.Float) {
+func (self class) SetVolumetricFogDensity(density gd.Float) { //gd:Environment.set_volumetric_fog_density
 	var frame = callframe.New()
 	callframe.Arg(frame, density)
 	var r_ret = callframe.Nil
@@ -2286,7 +2286,7 @@ func (self class) SetVolumetricFogDensity(density gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogDensity() gd.Float {
+func (self class) GetVolumetricFogDensity() gd.Float { //gd:Environment.get_volumetric_fog_density
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_density, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2296,7 +2296,7 @@ func (self class) GetVolumetricFogDensity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogEmissionEnergy(begin gd.Float) {
+func (self class) SetVolumetricFogEmissionEnergy(begin gd.Float) { //gd:Environment.set_volumetric_fog_emission_energy
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	var r_ret = callframe.Nil
@@ -2305,7 +2305,7 @@ func (self class) SetVolumetricFogEmissionEnergy(begin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogEmissionEnergy() gd.Float {
+func (self class) GetVolumetricFogEmissionEnergy() gd.Float { //gd:Environment.get_volumetric_fog_emission_energy
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_emission_energy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2315,7 +2315,7 @@ func (self class) GetVolumetricFogEmissionEnergy() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogAnisotropy(anisotropy gd.Float) {
+func (self class) SetVolumetricFogAnisotropy(anisotropy gd.Float) { //gd:Environment.set_volumetric_fog_anisotropy
 	var frame = callframe.New()
 	callframe.Arg(frame, anisotropy)
 	var r_ret = callframe.Nil
@@ -2324,7 +2324,7 @@ func (self class) SetVolumetricFogAnisotropy(anisotropy gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogAnisotropy() gd.Float {
+func (self class) GetVolumetricFogAnisotropy() gd.Float { //gd:Environment.get_volumetric_fog_anisotropy
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_anisotropy, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2334,7 +2334,7 @@ func (self class) GetVolumetricFogAnisotropy() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogLength(length gd.Float) {
+func (self class) SetVolumetricFogLength(length gd.Float) { //gd:Environment.set_volumetric_fog_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -2343,7 +2343,7 @@ func (self class) SetVolumetricFogLength(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogLength() gd.Float {
+func (self class) GetVolumetricFogLength() gd.Float { //gd:Environment.get_volumetric_fog_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2353,7 +2353,7 @@ func (self class) GetVolumetricFogLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogDetailSpread(detail_spread gd.Float) {
+func (self class) SetVolumetricFogDetailSpread(detail_spread gd.Float) { //gd:Environment.set_volumetric_fog_detail_spread
 	var frame = callframe.New()
 	callframe.Arg(frame, detail_spread)
 	var r_ret = callframe.Nil
@@ -2362,7 +2362,7 @@ func (self class) SetVolumetricFogDetailSpread(detail_spread gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogDetailSpread() gd.Float {
+func (self class) GetVolumetricFogDetailSpread() gd.Float { //gd:Environment.get_volumetric_fog_detail_spread
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_detail_spread, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2372,7 +2372,7 @@ func (self class) GetVolumetricFogDetailSpread() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogGiInject(gi_inject gd.Float) {
+func (self class) SetVolumetricFogGiInject(gi_inject gd.Float) { //gd:Environment.set_volumetric_fog_gi_inject
 	var frame = callframe.New()
 	callframe.Arg(frame, gi_inject)
 	var r_ret = callframe.Nil
@@ -2381,7 +2381,7 @@ func (self class) SetVolumetricFogGiInject(gi_inject gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogGiInject() gd.Float {
+func (self class) GetVolumetricFogGiInject() gd.Float { //gd:Environment.get_volumetric_fog_gi_inject
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_gi_inject, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2391,7 +2391,7 @@ func (self class) GetVolumetricFogGiInject() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogAmbientInject(enabled gd.Float) {
+func (self class) SetVolumetricFogAmbientInject(enabled gd.Float) { //gd:Environment.set_volumetric_fog_ambient_inject
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -2400,7 +2400,7 @@ func (self class) SetVolumetricFogAmbientInject(enabled gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogAmbientInject() gd.Float {
+func (self class) GetVolumetricFogAmbientInject() gd.Float { //gd:Environment.get_volumetric_fog_ambient_inject
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_ambient_inject, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2410,7 +2410,7 @@ func (self class) GetVolumetricFogAmbientInject() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogSkyAffect(sky_affect gd.Float) {
+func (self class) SetVolumetricFogSkyAffect(sky_affect gd.Float) { //gd:Environment.set_volumetric_fog_sky_affect
 	var frame = callframe.New()
 	callframe.Arg(frame, sky_affect)
 	var r_ret = callframe.Nil
@@ -2419,7 +2419,7 @@ func (self class) SetVolumetricFogSkyAffect(sky_affect gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogSkyAffect() gd.Float {
+func (self class) GetVolumetricFogSkyAffect() gd.Float { //gd:Environment.get_volumetric_fog_sky_affect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_sky_affect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2429,7 +2429,7 @@ func (self class) GetVolumetricFogSkyAffect() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogTemporalReprojectionEnabled(enabled bool) {
+func (self class) SetVolumetricFogTemporalReprojectionEnabled(enabled bool) { //gd:Environment.set_volumetric_fog_temporal_reprojection_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -2438,7 +2438,7 @@ func (self class) SetVolumetricFogTemporalReprojectionEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsVolumetricFogTemporalReprojectionEnabled() bool {
+func (self class) IsVolumetricFogTemporalReprojectionEnabled() bool { //gd:Environment.is_volumetric_fog_temporal_reprojection_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_volumetric_fog_temporal_reprojection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2448,7 +2448,7 @@ func (self class) IsVolumetricFogTemporalReprojectionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetVolumetricFogTemporalReprojectionAmount(temporal_reprojection_amount gd.Float) {
+func (self class) SetVolumetricFogTemporalReprojectionAmount(temporal_reprojection_amount gd.Float) { //gd:Environment.set_volumetric_fog_temporal_reprojection_amount
 	var frame = callframe.New()
 	callframe.Arg(frame, temporal_reprojection_amount)
 	var r_ret = callframe.Nil
@@ -2457,7 +2457,7 @@ func (self class) SetVolumetricFogTemporalReprojectionAmount(temporal_reprojecti
 }
 
 //go:nosplit
-func (self class) GetVolumetricFogTemporalReprojectionAmount() gd.Float {
+func (self class) GetVolumetricFogTemporalReprojectionAmount() gd.Float { //gd:Environment.get_volumetric_fog_temporal_reprojection_amount
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_volumetric_fog_temporal_reprojection_amount, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2467,7 +2467,7 @@ func (self class) GetVolumetricFogTemporalReprojectionAmount() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAdjustmentEnabled(enabled bool) {
+func (self class) SetAdjustmentEnabled(enabled bool) { //gd:Environment.set_adjustment_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -2476,7 +2476,7 @@ func (self class) SetAdjustmentEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsAdjustmentEnabled() bool {
+func (self class) IsAdjustmentEnabled() bool { //gd:Environment.is_adjustment_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_is_adjustment_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2486,7 +2486,7 @@ func (self class) IsAdjustmentEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetAdjustmentBrightness(brightness gd.Float) {
+func (self class) SetAdjustmentBrightness(brightness gd.Float) { //gd:Environment.set_adjustment_brightness
 	var frame = callframe.New()
 	callframe.Arg(frame, brightness)
 	var r_ret = callframe.Nil
@@ -2495,7 +2495,7 @@ func (self class) SetAdjustmentBrightness(brightness gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAdjustmentBrightness() gd.Float {
+func (self class) GetAdjustmentBrightness() gd.Float { //gd:Environment.get_adjustment_brightness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_adjustment_brightness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2505,7 +2505,7 @@ func (self class) GetAdjustmentBrightness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAdjustmentContrast(contrast gd.Float) {
+func (self class) SetAdjustmentContrast(contrast gd.Float) { //gd:Environment.set_adjustment_contrast
 	var frame = callframe.New()
 	callframe.Arg(frame, contrast)
 	var r_ret = callframe.Nil
@@ -2514,7 +2514,7 @@ func (self class) SetAdjustmentContrast(contrast gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAdjustmentContrast() gd.Float {
+func (self class) GetAdjustmentContrast() gd.Float { //gd:Environment.get_adjustment_contrast
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_adjustment_contrast, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2524,7 +2524,7 @@ func (self class) GetAdjustmentContrast() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAdjustmentSaturation(saturation gd.Float) {
+func (self class) SetAdjustmentSaturation(saturation gd.Float) { //gd:Environment.set_adjustment_saturation
 	var frame = callframe.New()
 	callframe.Arg(frame, saturation)
 	var r_ret = callframe.Nil
@@ -2533,7 +2533,7 @@ func (self class) SetAdjustmentSaturation(saturation gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAdjustmentSaturation() gd.Float {
+func (self class) GetAdjustmentSaturation() gd.Float { //gd:Environment.get_adjustment_saturation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_adjustment_saturation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2543,7 +2543,7 @@ func (self class) GetAdjustmentSaturation() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAdjustmentColorCorrection(color_correction [1]gdclass.Texture) {
+func (self class) SetAdjustmentColorCorrection(color_correction [1]gdclass.Texture) { //gd:Environment.set_adjustment_color_correction
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(color_correction[0])[0])
 	var r_ret = callframe.Nil
@@ -2552,7 +2552,7 @@ func (self class) SetAdjustmentColorCorrection(color_correction [1]gdclass.Textu
 }
 
 //go:nosplit
-func (self class) GetAdjustmentColorCorrection() [1]gdclass.Texture {
+func (self class) GetAdjustmentColorCorrection() [1]gdclass.Texture { //gd:Environment.get_adjustment_color_correction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_adjustment_color_correction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2592,7 +2592,7 @@ func init() {
 	gdclass.Register("Environment", func(ptr gd.Object) any { return [1]gdclass.Environment{*(*gdclass.Environment)(unsafe.Pointer(&ptr))} })
 }
 
-type BGMode = gdclass.EnvironmentBGMode
+type BGMode = gdclass.EnvironmentBGMode //gd:Environment.BGMode
 
 const (
 	/*Clears the background using the clear color defined in [member ProjectSettings.rendering/environment/defaults/default_clear_color].*/
@@ -2611,7 +2611,7 @@ const (
 	BgMax BGMode = 6
 )
 
-type AmbientSource = gdclass.EnvironmentAmbientSource
+type AmbientSource = gdclass.EnvironmentAmbientSource //gd:Environment.AmbientSource
 
 const (
 	/*Gather ambient light from whichever source is specified as the background.*/
@@ -2624,7 +2624,7 @@ const (
 	AmbientSourceSky AmbientSource = 3
 )
 
-type ReflectionSource = gdclass.EnvironmentReflectionSource
+type ReflectionSource = gdclass.EnvironmentReflectionSource //gd:Environment.ReflectionSource
 
 const (
 	/*Use the background for reflections.*/
@@ -2635,7 +2635,7 @@ const (
 	ReflectionSourceSky ReflectionSource = 2
 )
 
-type ToneMapper = gdclass.EnvironmentToneMapper
+type ToneMapper = gdclass.EnvironmentToneMapper //gd:Environment.ToneMapper
 
 const (
 	/*Linear tonemapper operator. Reads the linear data and passes it on unmodified. This can cause bright lighting to look blown out, with noticeable clipping in the output colors.*/
@@ -2649,7 +2649,7 @@ const (
 	ToneMapperAces ToneMapper = 3
 )
 
-type GlowBlendMode = gdclass.EnvironmentGlowBlendMode
+type GlowBlendMode = gdclass.EnvironmentGlowBlendMode //gd:Environment.GlowBlendMode
 
 const (
 	/*Additive glow blending mode. Mostly used for particles, glows (bloom), lens flare, bright sources.*/
@@ -2664,7 +2664,7 @@ const (
 	GlowBlendModeMix GlowBlendMode = 4
 )
 
-type FogMode = gdclass.EnvironmentFogMode
+type FogMode = gdclass.EnvironmentFogMode //gd:Environment.FogMode
 
 const (
 	/*Use a physically-based fog model defined primarily by fog density.*/
@@ -2673,7 +2673,7 @@ const (
 	FogModeDepth FogMode = 1
 )
 
-type SDFGIYScale = gdclass.EnvironmentSDFGIYScale
+type SDFGIYScale = gdclass.EnvironmentSDFGIYScale //gd:Environment.SDFGIYScale
 
 const (
 	/*Use 50% scale for SDFGI on the Y (vertical) axis. SDFGI cells will be twice as short as they are wide. This allows providing increased GI detail and reduced light leaking with thin floors and ceilings. This is usually the best choice for scenes that don't feature much verticality.*/

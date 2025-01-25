@@ -80,7 +80,7 @@ func (Instance) _draw_port(impl func(ptr unsafe.Pointer, slot_index int, positio
 /*
 Returns the [HBoxContainer] used for the title bar, only containing a [Label] for displaying the title by default. This can be used to add custom controls to the title bar such as option or close buttons.
 */
-func (self Instance) GetTitlebarHbox() [1]gdclass.HBoxContainer {
+func (self Instance) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphNode.get_titlebar_hbox
 	return [1]gdclass.HBoxContainer(class(self).GetTitlebarHbox())
 }
 
@@ -93,217 +93,217 @@ Additionally, [param draw_stylebox] can be used to enable or disable drawing of 
 Individual properties can also be set using one of the [code]set_slot_*[/code] methods.
 [b]Note:[/b] This method only sets properties of the slot. To create the slot itself, add a [Control]-derived child to the GraphNode.
 */
-func (self Instance) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA) {
+func (self Instance) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA) { //gd:GraphNode.set_slot
 	class(self).SetSlot(gd.Int(slot_index), enable_left_port, gd.Int(type_left), gd.Color(color_left), enable_right_port, gd.Int(type_right), gd.Color(color_right), [1][1]gdclass.Texture2D{}[0], [1][1]gdclass.Texture2D{}[0], true)
 }
 
 /*
 Disables the slot with the given [param slot_index]. This will remove the corresponding input and output port from the GraphNode.
 */
-func (self Instance) ClearSlot(slot_index int) {
+func (self Instance) ClearSlot(slot_index int) { //gd:GraphNode.clear_slot
 	class(self).ClearSlot(gd.Int(slot_index))
 }
 
 /*
 Disables all slots of the GraphNode. This will remove all input/output ports from the GraphNode.
 */
-func (self Instance) ClearAllSlots() {
+func (self Instance) ClearAllSlots() { //gd:GraphNode.clear_all_slots
 	class(self).ClearAllSlots()
 }
 
 /*
 Returns [code]true[/code] if left (input) side of the slot with the given [param slot_index] is enabled.
 */
-func (self Instance) IsSlotEnabledLeft(slot_index int) bool {
+func (self Instance) IsSlotEnabledLeft(slot_index int) bool { //gd:GraphNode.is_slot_enabled_left
 	return bool(class(self).IsSlotEnabledLeft(gd.Int(slot_index)))
 }
 
 /*
 Toggles the left (input) side of the slot with the given [param slot_index]. If [param enable] is [code]true[/code], a port will appear on the left side and the slot will be able to be connected from this side.
 */
-func (self Instance) SetSlotEnabledLeft(slot_index int, enable bool) {
+func (self Instance) SetSlotEnabledLeft(slot_index int, enable bool) { //gd:GraphNode.set_slot_enabled_left
 	class(self).SetSlotEnabledLeft(gd.Int(slot_index), enable)
 }
 
 /*
 Sets the left (input) type of the slot with the given [param slot_index] to [param type]. If the value is negative, all connections will be disallowed to be created via user inputs.
 */
-func (self Instance) SetSlotTypeLeft(slot_index int, atype int) {
+func (self Instance) SetSlotTypeLeft(slot_index int, atype int) { //gd:GraphNode.set_slot_type_left
 	class(self).SetSlotTypeLeft(gd.Int(slot_index), gd.Int(atype))
 }
 
 /*
 Returns the left (input) type of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotTypeLeft(slot_index int) int {
+func (self Instance) GetSlotTypeLeft(slot_index int) int { //gd:GraphNode.get_slot_type_left
 	return int(int(class(self).GetSlotTypeLeft(gd.Int(slot_index))))
 }
 
 /*
 Sets the [Color] of the left (input) side of the slot with the given [param slot_index] to [param color].
 */
-func (self Instance) SetSlotColorLeft(slot_index int, color Color.RGBA) {
+func (self Instance) SetSlotColorLeft(slot_index int, color Color.RGBA) { //gd:GraphNode.set_slot_color_left
 	class(self).SetSlotColorLeft(gd.Int(slot_index), gd.Color(color))
 }
 
 /*
 Returns the left (input) [Color] of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotColorLeft(slot_index int) Color.RGBA {
+func (self Instance) GetSlotColorLeft(slot_index int) Color.RGBA { //gd:GraphNode.get_slot_color_left
 	return Color.RGBA(class(self).GetSlotColorLeft(gd.Int(slot_index)))
 }
 
 /*
 Sets the custom [Texture2D] of the left (input) side of the slot with the given [param slot_index] to [param custom_icon].
 */
-func (self Instance) SetSlotCustomIconLeft(slot_index int, custom_icon [1]gdclass.Texture2D) {
+func (self Instance) SetSlotCustomIconLeft(slot_index int, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_left
 	class(self).SetSlotCustomIconLeft(gd.Int(slot_index), custom_icon)
 }
 
 /*
 Returns the left (input) custom [Texture2D] of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotCustomIconLeft(slot_index int) [1]gdclass.Texture2D {
+func (self Instance) GetSlotCustomIconLeft(slot_index int) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_left
 	return [1]gdclass.Texture2D(class(self).GetSlotCustomIconLeft(gd.Int(slot_index)))
 }
 
 /*
 Returns [code]true[/code] if right (output) side of the slot with the given [param slot_index] is enabled.
 */
-func (self Instance) IsSlotEnabledRight(slot_index int) bool {
+func (self Instance) IsSlotEnabledRight(slot_index int) bool { //gd:GraphNode.is_slot_enabled_right
 	return bool(class(self).IsSlotEnabledRight(gd.Int(slot_index)))
 }
 
 /*
 Toggles the right (output) side of the slot with the given [param slot_index]. If [param enable] is [code]true[/code], a port will appear on the right side and the slot will be able to be connected from this side.
 */
-func (self Instance) SetSlotEnabledRight(slot_index int, enable bool) {
+func (self Instance) SetSlotEnabledRight(slot_index int, enable bool) { //gd:GraphNode.set_slot_enabled_right
 	class(self).SetSlotEnabledRight(gd.Int(slot_index), enable)
 }
 
 /*
 Sets the right (output) type of the slot with the given [param slot_index] to [param type]. If the value is negative, all connections will be disallowed to be created via user inputs.
 */
-func (self Instance) SetSlotTypeRight(slot_index int, atype int) {
+func (self Instance) SetSlotTypeRight(slot_index int, atype int) { //gd:GraphNode.set_slot_type_right
 	class(self).SetSlotTypeRight(gd.Int(slot_index), gd.Int(atype))
 }
 
 /*
 Returns the right (output) type of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotTypeRight(slot_index int) int {
+func (self Instance) GetSlotTypeRight(slot_index int) int { //gd:GraphNode.get_slot_type_right
 	return int(int(class(self).GetSlotTypeRight(gd.Int(slot_index))))
 }
 
 /*
 Sets the [Color] of the right (output) side of the slot with the given [param slot_index] to [param color].
 */
-func (self Instance) SetSlotColorRight(slot_index int, color Color.RGBA) {
+func (self Instance) SetSlotColorRight(slot_index int, color Color.RGBA) { //gd:GraphNode.set_slot_color_right
 	class(self).SetSlotColorRight(gd.Int(slot_index), gd.Color(color))
 }
 
 /*
 Returns the right (output) [Color] of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotColorRight(slot_index int) Color.RGBA {
+func (self Instance) GetSlotColorRight(slot_index int) Color.RGBA { //gd:GraphNode.get_slot_color_right
 	return Color.RGBA(class(self).GetSlotColorRight(gd.Int(slot_index)))
 }
 
 /*
 Sets the custom [Texture2D] of the right (output) side of the slot with the given [param slot_index] to [param custom_icon].
 */
-func (self Instance) SetSlotCustomIconRight(slot_index int, custom_icon [1]gdclass.Texture2D) {
+func (self Instance) SetSlotCustomIconRight(slot_index int, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_right
 	class(self).SetSlotCustomIconRight(gd.Int(slot_index), custom_icon)
 }
 
 /*
 Returns the right (output) custom [Texture2D] of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotCustomIconRight(slot_index int) [1]gdclass.Texture2D {
+func (self Instance) GetSlotCustomIconRight(slot_index int) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
 	return [1]gdclass.Texture2D(class(self).GetSlotCustomIconRight(gd.Int(slot_index)))
 }
 
 /*
 Returns true if the background [StyleBox] of the slot with the given [param slot_index] is drawn.
 */
-func (self Instance) IsSlotDrawStylebox(slot_index int) bool {
+func (self Instance) IsSlotDrawStylebox(slot_index int) bool { //gd:GraphNode.is_slot_draw_stylebox
 	return bool(class(self).IsSlotDrawStylebox(gd.Int(slot_index)))
 }
 
 /*
 Toggles the background [StyleBox] of the slot with the given [param slot_index].
 */
-func (self Instance) SetSlotDrawStylebox(slot_index int, enable bool) {
+func (self Instance) SetSlotDrawStylebox(slot_index int, enable bool) { //gd:GraphNode.set_slot_draw_stylebox
 	class(self).SetSlotDrawStylebox(gd.Int(slot_index), enable)
 }
 
 /*
 Returns the number of slots with an enabled input port.
 */
-func (self Instance) GetInputPortCount() int {
+func (self Instance) GetInputPortCount() int { //gd:GraphNode.get_input_port_count
 	return int(int(class(self).GetInputPortCount()))
 }
 
 /*
 Returns the position of the input port with the given [param port_idx].
 */
-func (self Instance) GetInputPortPosition(port_idx int) Vector2.XY {
+func (self Instance) GetInputPortPosition(port_idx int) Vector2.XY { //gd:GraphNode.get_input_port_position
 	return Vector2.XY(class(self).GetInputPortPosition(gd.Int(port_idx)))
 }
 
 /*
 Returns the type of the input port with the given [param port_idx].
 */
-func (self Instance) GetInputPortType(port_idx int) int {
+func (self Instance) GetInputPortType(port_idx int) int { //gd:GraphNode.get_input_port_type
 	return int(int(class(self).GetInputPortType(gd.Int(port_idx))))
 }
 
 /*
 Returns the [Color] of the input port with the given [param port_idx].
 */
-func (self Instance) GetInputPortColor(port_idx int) Color.RGBA {
+func (self Instance) GetInputPortColor(port_idx int) Color.RGBA { //gd:GraphNode.get_input_port_color
 	return Color.RGBA(class(self).GetInputPortColor(gd.Int(port_idx)))
 }
 
 /*
 Returns the corresponding slot index of the input port with the given [param port_idx].
 */
-func (self Instance) GetInputPortSlot(port_idx int) int {
+func (self Instance) GetInputPortSlot(port_idx int) int { //gd:GraphNode.get_input_port_slot
 	return int(int(class(self).GetInputPortSlot(gd.Int(port_idx))))
 }
 
 /*
 Returns the number of slots with an enabled output port.
 */
-func (self Instance) GetOutputPortCount() int {
+func (self Instance) GetOutputPortCount() int { //gd:GraphNode.get_output_port_count
 	return int(int(class(self).GetOutputPortCount()))
 }
 
 /*
 Returns the position of the output port with the given [param port_idx].
 */
-func (self Instance) GetOutputPortPosition(port_idx int) Vector2.XY {
+func (self Instance) GetOutputPortPosition(port_idx int) Vector2.XY { //gd:GraphNode.get_output_port_position
 	return Vector2.XY(class(self).GetOutputPortPosition(gd.Int(port_idx)))
 }
 
 /*
 Returns the type of the output port with the given [param port_idx].
 */
-func (self Instance) GetOutputPortType(port_idx int) int {
+func (self Instance) GetOutputPortType(port_idx int) int { //gd:GraphNode.get_output_port_type
 	return int(int(class(self).GetOutputPortType(gd.Int(port_idx))))
 }
 
 /*
 Returns the [Color] of the output port with the given [param port_idx].
 */
-func (self Instance) GetOutputPortColor(port_idx int) Color.RGBA {
+func (self Instance) GetOutputPortColor(port_idx int) Color.RGBA { //gd:GraphNode.get_output_port_color
 	return Color.RGBA(class(self).GetOutputPortColor(gd.Int(port_idx)))
 }
 
 /*
 Returns the corresponding slot index of the output port with the given [param port_idx].
 */
-func (self Instance) GetOutputPortSlot(port_idx int) int {
+func (self Instance) GetOutputPortSlot(port_idx int) int { //gd:GraphNode.get_output_port_slot
 	return int(int(class(self).GetOutputPortSlot(gd.Int(port_idx))))
 }
 
@@ -357,7 +357,7 @@ func (class) _draw_port(impl func(ptr unsafe.Pointer, slot_index gd.Int, positio
 }
 
 //go:nosplit
-func (self class) SetTitle(title gd.String) {
+func (self class) SetTitle(title gd.String) { //gd:GraphNode.set_title
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(title))
 	var r_ret = callframe.Nil
@@ -366,7 +366,7 @@ func (self class) SetTitle(title gd.String) {
 }
 
 //go:nosplit
-func (self class) GetTitle() gd.String {
+func (self class) GetTitle() gd.String { //gd:GraphNode.get_title
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -379,7 +379,7 @@ func (self class) GetTitle() gd.String {
 Returns the [HBoxContainer] used for the title bar, only containing a [Label] for displaying the title by default. This can be used to add custom controls to the title bar such as option or close buttons.
 */
 //go:nosplit
-func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer {
+func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphNode.get_titlebar_hbox
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_titlebar_hbox, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -398,7 +398,7 @@ Individual properties can also be set using one of the [code]set_slot_*[/code] m
 [b]Note:[/b] This method only sets properties of the slot. To create the slot itself, add a [Control]-derived child to the GraphNode.
 */
 //go:nosplit
-func (self class) SetSlot(slot_index gd.Int, enable_left_port bool, type_left gd.Int, color_left gd.Color, enable_right_port bool, type_right gd.Int, color_right gd.Color, custom_icon_left [1]gdclass.Texture2D, custom_icon_right [1]gdclass.Texture2D, draw_stylebox bool) {
+func (self class) SetSlot(slot_index gd.Int, enable_left_port bool, type_left gd.Int, color_left gd.Color, enable_right_port bool, type_right gd.Int, color_right gd.Color, custom_icon_left [1]gdclass.Texture2D, custom_icon_right [1]gdclass.Texture2D, draw_stylebox bool) { //gd:GraphNode.set_slot
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, enable_left_port)
@@ -419,7 +419,7 @@ func (self class) SetSlot(slot_index gd.Int, enable_left_port bool, type_left gd
 Disables the slot with the given [param slot_index]. This will remove the corresponding input and output port from the GraphNode.
 */
 //go:nosplit
-func (self class) ClearSlot(slot_index gd.Int) {
+func (self class) ClearSlot(slot_index gd.Int) { //gd:GraphNode.clear_slot
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Nil
@@ -431,7 +431,7 @@ func (self class) ClearSlot(slot_index gd.Int) {
 Disables all slots of the GraphNode. This will remove all input/output ports from the GraphNode.
 */
 //go:nosplit
-func (self class) ClearAllSlots() {
+func (self class) ClearAllSlots() { //gd:GraphNode.clear_all_slots
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_clear_all_slots, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -442,7 +442,7 @@ func (self class) ClearAllSlots() {
 Returns [code]true[/code] if left (input) side of the slot with the given [param slot_index] is enabled.
 */
 //go:nosplit
-func (self class) IsSlotEnabledLeft(slot_index gd.Int) bool {
+func (self class) IsSlotEnabledLeft(slot_index gd.Int) bool { //gd:GraphNode.is_slot_enabled_left
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[bool](frame)
@@ -456,7 +456,7 @@ func (self class) IsSlotEnabledLeft(slot_index gd.Int) bool {
 Toggles the left (input) side of the slot with the given [param slot_index]. If [param enable] is [code]true[/code], a port will appear on the left side and the slot will be able to be connected from this side.
 */
 //go:nosplit
-func (self class) SetSlotEnabledLeft(slot_index gd.Int, enable bool) {
+func (self class) SetSlotEnabledLeft(slot_index gd.Int, enable bool) { //gd:GraphNode.set_slot_enabled_left
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, enable)
@@ -469,7 +469,7 @@ func (self class) SetSlotEnabledLeft(slot_index gd.Int, enable bool) {
 Sets the left (input) type of the slot with the given [param slot_index] to [param type]. If the value is negative, all connections will be disallowed to be created via user inputs.
 */
 //go:nosplit
-func (self class) SetSlotTypeLeft(slot_index gd.Int, atype gd.Int) {
+func (self class) SetSlotTypeLeft(slot_index gd.Int, atype gd.Int) { //gd:GraphNode.set_slot_type_left
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, atype)
@@ -482,7 +482,7 @@ func (self class) SetSlotTypeLeft(slot_index gd.Int, atype gd.Int) {
 Returns the left (input) type of the slot with the given [param slot_index].
 */
 //go:nosplit
-func (self class) GetSlotTypeLeft(slot_index gd.Int) gd.Int {
+func (self class) GetSlotTypeLeft(slot_index gd.Int) gd.Int { //gd:GraphNode.get_slot_type_left
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -496,7 +496,7 @@ func (self class) GetSlotTypeLeft(slot_index gd.Int) gd.Int {
 Sets the [Color] of the left (input) side of the slot with the given [param slot_index] to [param color].
 */
 //go:nosplit
-func (self class) SetSlotColorLeft(slot_index gd.Int, color gd.Color) {
+func (self class) SetSlotColorLeft(slot_index gd.Int, color gd.Color) { //gd:GraphNode.set_slot_color_left
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, color)
@@ -509,7 +509,7 @@ func (self class) SetSlotColorLeft(slot_index gd.Int, color gd.Color) {
 Returns the left (input) [Color] of the slot with the given [param slot_index].
 */
 //go:nosplit
-func (self class) GetSlotColorLeft(slot_index gd.Int) gd.Color {
+func (self class) GetSlotColorLeft(slot_index gd.Int) gd.Color { //gd:GraphNode.get_slot_color_left
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.Color](frame)
@@ -523,7 +523,7 @@ func (self class) GetSlotColorLeft(slot_index gd.Int) gd.Color {
 Sets the custom [Texture2D] of the left (input) side of the slot with the given [param slot_index] to [param custom_icon].
 */
 //go:nosplit
-func (self class) SetSlotCustomIconLeft(slot_index gd.Int, custom_icon [1]gdclass.Texture2D) {
+func (self class) SetSlotCustomIconLeft(slot_index gd.Int, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_left
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, pointers.Get(custom_icon[0])[0])
@@ -536,7 +536,7 @@ func (self class) SetSlotCustomIconLeft(slot_index gd.Int, custom_icon [1]gdclas
 Returns the left (input) custom [Texture2D] of the slot with the given [param slot_index].
 */
 //go:nosplit
-func (self class) GetSlotCustomIconLeft(slot_index gd.Int) [1]gdclass.Texture2D {
+func (self class) GetSlotCustomIconLeft(slot_index gd.Int) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_left
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -550,7 +550,7 @@ func (self class) GetSlotCustomIconLeft(slot_index gd.Int) [1]gdclass.Texture2D 
 Returns [code]true[/code] if right (output) side of the slot with the given [param slot_index] is enabled.
 */
 //go:nosplit
-func (self class) IsSlotEnabledRight(slot_index gd.Int) bool {
+func (self class) IsSlotEnabledRight(slot_index gd.Int) bool { //gd:GraphNode.is_slot_enabled_right
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[bool](frame)
@@ -564,7 +564,7 @@ func (self class) IsSlotEnabledRight(slot_index gd.Int) bool {
 Toggles the right (output) side of the slot with the given [param slot_index]. If [param enable] is [code]true[/code], a port will appear on the right side and the slot will be able to be connected from this side.
 */
 //go:nosplit
-func (self class) SetSlotEnabledRight(slot_index gd.Int, enable bool) {
+func (self class) SetSlotEnabledRight(slot_index gd.Int, enable bool) { //gd:GraphNode.set_slot_enabled_right
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, enable)
@@ -577,7 +577,7 @@ func (self class) SetSlotEnabledRight(slot_index gd.Int, enable bool) {
 Sets the right (output) type of the slot with the given [param slot_index] to [param type]. If the value is negative, all connections will be disallowed to be created via user inputs.
 */
 //go:nosplit
-func (self class) SetSlotTypeRight(slot_index gd.Int, atype gd.Int) {
+func (self class) SetSlotTypeRight(slot_index gd.Int, atype gd.Int) { //gd:GraphNode.set_slot_type_right
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, atype)
@@ -590,7 +590,7 @@ func (self class) SetSlotTypeRight(slot_index gd.Int, atype gd.Int) {
 Returns the right (output) type of the slot with the given [param slot_index].
 */
 //go:nosplit
-func (self class) GetSlotTypeRight(slot_index gd.Int) gd.Int {
+func (self class) GetSlotTypeRight(slot_index gd.Int) gd.Int { //gd:GraphNode.get_slot_type_right
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -604,7 +604,7 @@ func (self class) GetSlotTypeRight(slot_index gd.Int) gd.Int {
 Sets the [Color] of the right (output) side of the slot with the given [param slot_index] to [param color].
 */
 //go:nosplit
-func (self class) SetSlotColorRight(slot_index gd.Int, color gd.Color) {
+func (self class) SetSlotColorRight(slot_index gd.Int, color gd.Color) { //gd:GraphNode.set_slot_color_right
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, color)
@@ -617,7 +617,7 @@ func (self class) SetSlotColorRight(slot_index gd.Int, color gd.Color) {
 Returns the right (output) [Color] of the slot with the given [param slot_index].
 */
 //go:nosplit
-func (self class) GetSlotColorRight(slot_index gd.Int) gd.Color {
+func (self class) GetSlotColorRight(slot_index gd.Int) gd.Color { //gd:GraphNode.get_slot_color_right
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.Color](frame)
@@ -631,7 +631,7 @@ func (self class) GetSlotColorRight(slot_index gd.Int) gd.Color {
 Sets the custom [Texture2D] of the right (output) side of the slot with the given [param slot_index] to [param custom_icon].
 */
 //go:nosplit
-func (self class) SetSlotCustomIconRight(slot_index gd.Int, custom_icon [1]gdclass.Texture2D) {
+func (self class) SetSlotCustomIconRight(slot_index gd.Int, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_right
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, pointers.Get(custom_icon[0])[0])
@@ -644,7 +644,7 @@ func (self class) SetSlotCustomIconRight(slot_index gd.Int, custom_icon [1]gdcla
 Returns the right (output) custom [Texture2D] of the slot with the given [param slot_index].
 */
 //go:nosplit
-func (self class) GetSlotCustomIconRight(slot_index gd.Int) [1]gdclass.Texture2D {
+func (self class) GetSlotCustomIconRight(slot_index gd.Int) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -658,7 +658,7 @@ func (self class) GetSlotCustomIconRight(slot_index gd.Int) [1]gdclass.Texture2D
 Returns true if the background [StyleBox] of the slot with the given [param slot_index] is drawn.
 */
 //go:nosplit
-func (self class) IsSlotDrawStylebox(slot_index gd.Int) bool {
+func (self class) IsSlotDrawStylebox(slot_index gd.Int) bool { //gd:GraphNode.is_slot_draw_stylebox
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	var r_ret = callframe.Ret[bool](frame)
@@ -672,7 +672,7 @@ func (self class) IsSlotDrawStylebox(slot_index gd.Int) bool {
 Toggles the background [StyleBox] of the slot with the given [param slot_index].
 */
 //go:nosplit
-func (self class) SetSlotDrawStylebox(slot_index gd.Int, enable bool) {
+func (self class) SetSlotDrawStylebox(slot_index gd.Int, enable bool) { //gd:GraphNode.set_slot_draw_stylebox
 	var frame = callframe.New()
 	callframe.Arg(frame, slot_index)
 	callframe.Arg(frame, enable)
@@ -682,7 +682,7 @@ func (self class) SetSlotDrawStylebox(slot_index gd.Int, enable bool) {
 }
 
 //go:nosplit
-func (self class) SetIgnoreInvalidConnectionType(ignore bool) {
+func (self class) SetIgnoreInvalidConnectionType(ignore bool) { //gd:GraphNode.set_ignore_invalid_connection_type
 	var frame = callframe.New()
 	callframe.Arg(frame, ignore)
 	var r_ret = callframe.Nil
@@ -691,7 +691,7 @@ func (self class) SetIgnoreInvalidConnectionType(ignore bool) {
 }
 
 //go:nosplit
-func (self class) IsIgnoringValidConnectionType() bool {
+func (self class) IsIgnoringValidConnectionType() bool { //gd:GraphNode.is_ignoring_valid_connection_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_ignoring_valid_connection_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -704,7 +704,7 @@ func (self class) IsIgnoringValidConnectionType() bool {
 Returns the number of slots with an enabled input port.
 */
 //go:nosplit
-func (self class) GetInputPortCount() gd.Int {
+func (self class) GetInputPortCount() gd.Int { //gd:GraphNode.get_input_port_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -717,7 +717,7 @@ func (self class) GetInputPortCount() gd.Int {
 Returns the position of the input port with the given [param port_idx].
 */
 //go:nosplit
-func (self class) GetInputPortPosition(port_idx gd.Int) gd.Vector2 {
+func (self class) GetInputPortPosition(port_idx gd.Int) gd.Vector2 { //gd:GraphNode.get_input_port_position
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -731,7 +731,7 @@ func (self class) GetInputPortPosition(port_idx gd.Int) gd.Vector2 {
 Returns the type of the input port with the given [param port_idx].
 */
 //go:nosplit
-func (self class) GetInputPortType(port_idx gd.Int) gd.Int {
+func (self class) GetInputPortType(port_idx gd.Int) gd.Int { //gd:GraphNode.get_input_port_type
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -745,7 +745,7 @@ func (self class) GetInputPortType(port_idx gd.Int) gd.Int {
 Returns the [Color] of the input port with the given [param port_idx].
 */
 //go:nosplit
-func (self class) GetInputPortColor(port_idx gd.Int) gd.Color {
+func (self class) GetInputPortColor(port_idx gd.Int) gd.Color { //gd:GraphNode.get_input_port_color
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Color](frame)
@@ -759,7 +759,7 @@ func (self class) GetInputPortColor(port_idx gd.Int) gd.Color {
 Returns the corresponding slot index of the input port with the given [param port_idx].
 */
 //go:nosplit
-func (self class) GetInputPortSlot(port_idx gd.Int) gd.Int {
+func (self class) GetInputPortSlot(port_idx gd.Int) gd.Int { //gd:GraphNode.get_input_port_slot
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -773,7 +773,7 @@ func (self class) GetInputPortSlot(port_idx gd.Int) gd.Int {
 Returns the number of slots with an enabled output port.
 */
 //go:nosplit
-func (self class) GetOutputPortCount() gd.Int {
+func (self class) GetOutputPortCount() gd.Int { //gd:GraphNode.get_output_port_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -786,7 +786,7 @@ func (self class) GetOutputPortCount() gd.Int {
 Returns the position of the output port with the given [param port_idx].
 */
 //go:nosplit
-func (self class) GetOutputPortPosition(port_idx gd.Int) gd.Vector2 {
+func (self class) GetOutputPortPosition(port_idx gd.Int) gd.Vector2 { //gd:GraphNode.get_output_port_position
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -800,7 +800,7 @@ func (self class) GetOutputPortPosition(port_idx gd.Int) gd.Vector2 {
 Returns the type of the output port with the given [param port_idx].
 */
 //go:nosplit
-func (self class) GetOutputPortType(port_idx gd.Int) gd.Int {
+func (self class) GetOutputPortType(port_idx gd.Int) gd.Int { //gd:GraphNode.get_output_port_type
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -814,7 +814,7 @@ func (self class) GetOutputPortType(port_idx gd.Int) gd.Int {
 Returns the [Color] of the output port with the given [param port_idx].
 */
 //go:nosplit
-func (self class) GetOutputPortColor(port_idx gd.Int) gd.Color {
+func (self class) GetOutputPortColor(port_idx gd.Int) gd.Color { //gd:GraphNode.get_output_port_color
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Color](frame)
@@ -828,7 +828,7 @@ func (self class) GetOutputPortColor(port_idx gd.Int) gd.Color {
 Returns the corresponding slot index of the output port with the given [param port_idx].
 */
 //go:nosplit
-func (self class) GetOutputPortSlot(port_idx gd.Int) gd.Int {
+func (self class) GetOutputPortSlot(port_idx gd.Int) gd.Int { //gd:GraphNode.get_output_port_slot
 	var frame = callframe.New()
 	callframe.Arg(frame, port_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)

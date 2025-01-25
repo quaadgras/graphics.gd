@@ -72,7 +72,7 @@ func (self Instance) SetLoadPath(value string) {
 Loads the texture from the specified [param path].
 */
 //go:nosplit
-func (self class) Load(path gd.String) gd.Error {
+func (self class) Load(path gd.String) gd.Error { //gd:CompressedTexture3D.load
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -83,7 +83,7 @@ func (self class) Load(path gd.String) gd.Error {
 }
 
 //go:nosplit
-func (self class) GetLoadPath() gd.String {
+func (self class) GetLoadPath() gd.String { //gd:CompressedTexture3D.get_load_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompressedTexture3D.Bind_get_load_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

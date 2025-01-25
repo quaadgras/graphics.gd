@@ -91,7 +91,7 @@ func (self Instance) SetEditorPreviewIndeterminate(value bool) {
 }
 
 //go:nosplit
-func (self class) SetFillMode(mode gd.Int) {
+func (self class) SetFillMode(mode gd.Int) { //gd:ProgressBar.set_fill_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -100,7 +100,7 @@ func (self class) SetFillMode(mode gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFillMode() gd.Int {
+func (self class) GetFillMode() gd.Int { //gd:ProgressBar.get_fill_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_get_fill_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -110,7 +110,7 @@ func (self class) GetFillMode() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetShowPercentage(visible bool) {
+func (self class) SetShowPercentage(visible bool) { //gd:ProgressBar.set_show_percentage
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret = callframe.Nil
@@ -119,7 +119,7 @@ func (self class) SetShowPercentage(visible bool) {
 }
 
 //go:nosplit
-func (self class) IsPercentageShown() bool {
+func (self class) IsPercentageShown() bool { //gd:ProgressBar.is_percentage_shown
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_is_percentage_shown, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -129,7 +129,7 @@ func (self class) IsPercentageShown() bool {
 }
 
 //go:nosplit
-func (self class) SetIndeterminate(indeterminate bool) {
+func (self class) SetIndeterminate(indeterminate bool) { //gd:ProgressBar.set_indeterminate
 	var frame = callframe.New()
 	callframe.Arg(frame, indeterminate)
 	var r_ret = callframe.Nil
@@ -138,7 +138,7 @@ func (self class) SetIndeterminate(indeterminate bool) {
 }
 
 //go:nosplit
-func (self class) IsIndeterminate() bool {
+func (self class) IsIndeterminate() bool { //gd:ProgressBar.is_indeterminate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_is_indeterminate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -148,7 +148,7 @@ func (self class) IsIndeterminate() bool {
 }
 
 //go:nosplit
-func (self class) SetEditorPreviewIndeterminate(preview_indeterminate bool) {
+func (self class) SetEditorPreviewIndeterminate(preview_indeterminate bool) { //gd:ProgressBar.set_editor_preview_indeterminate
 	var frame = callframe.New()
 	callframe.Arg(frame, preview_indeterminate)
 	var r_ret = callframe.Nil
@@ -157,7 +157,7 @@ func (self class) SetEditorPreviewIndeterminate(preview_indeterminate bool) {
 }
 
 //go:nosplit
-func (self class) IsEditorPreviewIndeterminateEnabled() bool {
+func (self class) IsEditorPreviewIndeterminateEnabled() bool { //gd:ProgressBar.is_editor_preview_indeterminate_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProgressBar.Bind_is_editor_preview_indeterminate_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -199,7 +199,7 @@ func init() {
 	gdclass.Register("ProgressBar", func(ptr gd.Object) any { return [1]gdclass.ProgressBar{*(*gdclass.ProgressBar)(unsafe.Pointer(&ptr))} })
 }
 
-type FillMode = gdclass.ProgressBarFillMode
+type FillMode = gdclass.ProgressBarFillMode //gd:ProgressBar.FillMode
 
 const (
 	/*The progress bar fills from begin to end horizontally, according to the language direction. If [method Control.is_layout_rtl] returns [code]false[/code], it fills from left to right, and if it returns [code]true[/code], it fills from right to left.*/

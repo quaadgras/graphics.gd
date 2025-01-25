@@ -67,7 +67,7 @@ func (self Instance) SetPolyphony(value int) {
 }
 
 //go:nosplit
-func (self class) SetPolyphony(voices gd.Int) {
+func (self class) SetPolyphony(voices gd.Int) { //gd:AudioStreamPolyphonic.set_polyphony
 	var frame = callframe.New()
 	callframe.Arg(frame, voices)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetPolyphony(voices gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPolyphony() gd.Int {
+func (self class) GetPolyphony() gd.Int { //gd:AudioStreamPolyphonic.get_polyphony
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPolyphonic.Bind_get_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())

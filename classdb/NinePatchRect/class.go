@@ -131,7 +131,7 @@ func (self Instance) SetAxisStretchVertical(value gdclass.NinePatchRectAxisStret
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:NinePatchRect.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -140,7 +140,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture2D {
+func (self class) GetTexture() [1]gdclass.Texture2D { //gd:NinePatchRect.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -153,7 +153,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D {
 Sets the size of the margin on the specified [enum Side] to [param value] pixels.
 */
 //go:nosplit
-func (self class) SetPatchMargin(margin Side, value gd.Int) {
+func (self class) SetPatchMargin(margin Side, value gd.Int) { //gd:NinePatchRect.set_patch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, value)
@@ -166,7 +166,7 @@ func (self class) SetPatchMargin(margin Side, value gd.Int) {
 Returns the size of the margin on the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetPatchMargin(margin Side) gd.Int {
+func (self class) GetPatchMargin(margin Side) gd.Int { //gd:NinePatchRect.get_patch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -177,7 +177,7 @@ func (self class) GetPatchMargin(margin Side) gd.Int {
 }
 
 //go:nosplit
-func (self class) SetRegionRect(rect gd.Rect2) {
+func (self class) SetRegionRect(rect gd.Rect2) { //gd:NinePatchRect.set_region_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -186,7 +186,7 @@ func (self class) SetRegionRect(rect gd.Rect2) {
 }
 
 //go:nosplit
-func (self class) GetRegionRect() gd.Rect2 {
+func (self class) GetRegionRect() gd.Rect2 { //gd:NinePatchRect.get_region_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_get_region_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -196,7 +196,7 @@ func (self class) GetRegionRect() gd.Rect2 {
 }
 
 //go:nosplit
-func (self class) SetDrawCenter(draw_center bool) {
+func (self class) SetDrawCenter(draw_center bool) { //gd:NinePatchRect.set_draw_center
 	var frame = callframe.New()
 	callframe.Arg(frame, draw_center)
 	var r_ret = callframe.Nil
@@ -205,7 +205,7 @@ func (self class) SetDrawCenter(draw_center bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawCenterEnabled() bool {
+func (self class) IsDrawCenterEnabled() bool { //gd:NinePatchRect.is_draw_center_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_is_draw_center_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -215,7 +215,7 @@ func (self class) IsDrawCenterEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetHAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode) {
+func (self class) SetHAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode) { //gd:NinePatchRect.set_h_axis_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -224,7 +224,7 @@ func (self class) SetHAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode)
 }
 
 //go:nosplit
-func (self class) GetHAxisStretchMode() gdclass.NinePatchRectAxisStretchMode {
+func (self class) GetHAxisStretchMode() gdclass.NinePatchRectAxisStretchMode { //gd:NinePatchRect.get_h_axis_stretch_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NinePatchRectAxisStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_get_h_axis_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -234,7 +234,7 @@ func (self class) GetHAxisStretchMode() gdclass.NinePatchRectAxisStretchMode {
 }
 
 //go:nosplit
-func (self class) SetVAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode) {
+func (self class) SetVAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode) { //gd:NinePatchRect.set_v_axis_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -243,7 +243,7 @@ func (self class) SetVAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode)
 }
 
 //go:nosplit
-func (self class) GetVAxisStretchMode() gdclass.NinePatchRectAxisStretchMode {
+func (self class) GetVAxisStretchMode() gdclass.NinePatchRectAxisStretchMode { //gd:NinePatchRect.get_v_axis_stretch_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NinePatchRectAxisStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_get_v_axis_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -289,7 +289,7 @@ func init() {
 	})
 }
 
-type AxisStretchMode = gdclass.NinePatchRectAxisStretchMode
+type AxisStretchMode = gdclass.NinePatchRectAxisStretchMode //gd:NinePatchRect.AxisStretchMode
 
 const (
 	/*Stretches the center texture across the NinePatchRect. This may cause the texture to be distorted.*/

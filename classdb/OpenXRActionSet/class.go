@@ -41,21 +41,21 @@ type Any interface {
 /*
 Retrieve the number of actions in our action set.
 */
-func (self Instance) GetActionCount() int {
+func (self Instance) GetActionCount() int { //gd:OpenXRActionSet.get_action_count
 	return int(int(class(self).GetActionCount()))
 }
 
 /*
 Add an action to this action set.
 */
-func (self Instance) AddAction(action [1]gdclass.OpenXRAction) {
+func (self Instance) AddAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.add_action
 	class(self).AddAction(action)
 }
 
 /*
 Remove an action from this action set.
 */
-func (self Instance) RemoveAction(action [1]gdclass.OpenXRAction) {
+func (self Instance) RemoveAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.remove_action
 	class(self).RemoveAction(action)
 }
 
@@ -103,7 +103,7 @@ func (self Instance) SetActions(value []any) {
 }
 
 //go:nosplit
-func (self class) SetLocalizedName(localized_name gd.String) {
+func (self class) SetLocalizedName(localized_name gd.String) { //gd:OpenXRActionSet.set_localized_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(localized_name))
 	var r_ret = callframe.Nil
@@ -112,7 +112,7 @@ func (self class) SetLocalizedName(localized_name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLocalizedName() gd.String {
+func (self class) GetLocalizedName() gd.String { //gd:OpenXRActionSet.get_localized_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_get_localized_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -122,7 +122,7 @@ func (self class) GetLocalizedName() gd.String {
 }
 
 //go:nosplit
-func (self class) SetPriority(priority gd.Int) {
+func (self class) SetPriority(priority gd.Int) { //gd:OpenXRActionSet.set_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -131,7 +131,7 @@ func (self class) SetPriority(priority gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPriority() gd.Int {
+func (self class) GetPriority() gd.Int { //gd:OpenXRActionSet.get_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_get_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -144,7 +144,7 @@ func (self class) GetPriority() gd.Int {
 Retrieve the number of actions in our action set.
 */
 //go:nosplit
-func (self class) GetActionCount() gd.Int {
+func (self class) GetActionCount() gd.Int { //gd:OpenXRActionSet.get_action_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_get_action_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func (self class) GetActionCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetActions(actions Array.Any) {
+func (self class) SetActions(actions Array.Any) { //gd:OpenXRActionSet.set_actions
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(actions)))
 	var r_ret = callframe.Nil
@@ -163,7 +163,7 @@ func (self class) SetActions(actions Array.Any) {
 }
 
 //go:nosplit
-func (self class) GetActions() Array.Any {
+func (self class) GetActions() Array.Any { //gd:OpenXRActionSet.get_actions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_get_actions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -176,7 +176,7 @@ func (self class) GetActions() Array.Any {
 Add an action to this action set.
 */
 //go:nosplit
-func (self class) AddAction(action [1]gdclass.OpenXRAction) {
+func (self class) AddAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.add_action
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action[0])[0])
 	var r_ret = callframe.Nil
@@ -188,7 +188,7 @@ func (self class) AddAction(action [1]gdclass.OpenXRAction) {
 Remove an action from this action set.
 */
 //go:nosplit
-func (self class) RemoveAction(action [1]gdclass.OpenXRAction) {
+func (self class) RemoveAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.remove_action
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action[0])[0])
 	var r_ret = callframe.Nil

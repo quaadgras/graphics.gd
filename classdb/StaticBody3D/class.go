@@ -86,7 +86,7 @@ func (self Instance) SetConstantAngularVelocity(value Vector3.XYZ) {
 }
 
 //go:nosplit
-func (self class) SetConstantLinearVelocity(vel gd.Vector3) {
+func (self class) SetConstantLinearVelocity(vel gd.Vector3) { //gd:StaticBody3D.set_constant_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, vel)
 	var r_ret = callframe.Nil
@@ -95,7 +95,7 @@ func (self class) SetConstantLinearVelocity(vel gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) SetConstantAngularVelocity(vel gd.Vector3) {
+func (self class) SetConstantAngularVelocity(vel gd.Vector3) { //gd:StaticBody3D.set_constant_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, vel)
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetConstantAngularVelocity(vel gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetConstantLinearVelocity() gd.Vector3 {
+func (self class) GetConstantLinearVelocity() gd.Vector3 { //gd:StaticBody3D.get_constant_linear_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody3D.Bind_get_constant_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -114,7 +114,7 @@ func (self class) GetConstantLinearVelocity() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) GetConstantAngularVelocity() gd.Vector3 {
+func (self class) GetConstantAngularVelocity() gd.Vector3 { //gd:StaticBody3D.get_constant_angular_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody3D.Bind_get_constant_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -124,7 +124,7 @@ func (self class) GetConstantAngularVelocity() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) {
+func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:StaticBody3D.set_physics_material_override
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(physics_material_override[0])[0])
 	var r_ret = callframe.Nil
@@ -133,7 +133,7 @@ func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclas
 }
 
 //go:nosplit
-func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial {
+func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:StaticBody3D.get_physics_material_override
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StaticBody3D.Bind_get_physics_material_override, self.AsObject(), frame.Array(0), r_ret.Addr())

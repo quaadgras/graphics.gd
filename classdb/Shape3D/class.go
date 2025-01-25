@@ -42,7 +42,7 @@ type Any interface {
 /*
 Returns the [ArrayMesh] used to draw the debug collision for this [Shape3D].
 */
-func (self Instance) GetDebugMesh() [1]gdclass.ArrayMesh {
+func (self Instance) GetDebugMesh() [1]gdclass.ArrayMesh { //gd:Shape3D.get_debug_mesh
 	return [1]gdclass.ArrayMesh(class(self).GetDebugMesh())
 }
 
@@ -82,7 +82,7 @@ func (self Instance) SetMargin(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetCustomSolverBias(bias gd.Float) {
+func (self class) SetCustomSolverBias(bias gd.Float) { //gd:Shape3D.set_custom_solver_bias
 	var frame = callframe.New()
 	callframe.Arg(frame, bias)
 	var r_ret = callframe.Nil
@@ -91,7 +91,7 @@ func (self class) SetCustomSolverBias(bias gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCustomSolverBias() gd.Float {
+func (self class) GetCustomSolverBias() gd.Float { //gd:Shape3D.get_custom_solver_bias
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape3D.Bind_get_custom_solver_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) GetCustomSolverBias() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Float) {
+func (self class) SetMargin(margin gd.Float) { //gd:Shape3D.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -110,7 +110,7 @@ func (self class) SetMargin(margin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Float {
+func (self class) GetMargin() gd.Float { //gd:Shape3D.get_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape3D.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,7 +123,7 @@ func (self class) GetMargin() gd.Float {
 Returns the [ArrayMesh] used to draw the debug collision for this [Shape3D].
 */
 //go:nosplit
-func (self class) GetDebugMesh() [1]gdclass.ArrayMesh {
+func (self class) GetDebugMesh() [1]gdclass.ArrayMesh { //gd:Shape3D.get_debug_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shape3D.Bind_get_debug_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())

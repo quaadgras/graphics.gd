@@ -48,21 +48,21 @@ type Any interface {
 Adds the given color to a list of color presets. The presets are displayed in the color picker and the user will be able to select them.
 [b]Note:[/b] The presets list is only for [i]this[/i] color picker.
 */
-func (self Instance) AddPreset(color Color.RGBA) {
+func (self Instance) AddPreset(color Color.RGBA) { //gd:ColorPicker.add_preset
 	class(self).AddPreset(gd.Color(color))
 }
 
 /*
 Removes the given color from the list of color presets of this color picker.
 */
-func (self Instance) ErasePreset(color Color.RGBA) {
+func (self Instance) ErasePreset(color Color.RGBA) { //gd:ColorPicker.erase_preset
 	class(self).ErasePreset(gd.Color(color))
 }
 
 /*
 Returns the list of colors in the presets of the color picker.
 */
-func (self Instance) GetPresets() []Color.RGBA {
+func (self Instance) GetPresets() []Color.RGBA { //gd:ColorPicker.get_presets
 	return []Color.RGBA(class(self).GetPresets().AsSlice())
 }
 
@@ -70,21 +70,21 @@ func (self Instance) GetPresets() []Color.RGBA {
 Adds the given color to a list of color recent presets so that it can be picked later. Recent presets are the colors that were picked recently, a new preset is automatically created and added to recent presets when you pick a new color.
 [b]Note:[/b] The recent presets list is only for [i]this[/i] color picker.
 */
-func (self Instance) AddRecentPreset(color Color.RGBA) {
+func (self Instance) AddRecentPreset(color Color.RGBA) { //gd:ColorPicker.add_recent_preset
 	class(self).AddRecentPreset(gd.Color(color))
 }
 
 /*
 Removes the given color from the list of color recent presets of this color picker.
 */
-func (self Instance) EraseRecentPreset(color Color.RGBA) {
+func (self Instance) EraseRecentPreset(color Color.RGBA) { //gd:ColorPicker.erase_recent_preset
 	class(self).EraseRecentPreset(gd.Color(color))
 }
 
 /*
 Returns the list of colors in the recent presets of the color picker.
 */
-func (self Instance) GetRecentPresets() []Color.RGBA {
+func (self Instance) GetRecentPresets() []Color.RGBA { //gd:ColorPicker.get_recent_presets
 	return []Color.RGBA(class(self).GetRecentPresets().AsSlice())
 }
 
@@ -195,7 +195,7 @@ func (self Instance) SetPresetsVisible(value bool) {
 }
 
 //go:nosplit
-func (self class) SetPickColor(color gd.Color) {
+func (self class) SetPickColor(color gd.Color) { //gd:ColorPicker.set_pick_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -204,7 +204,7 @@ func (self class) SetPickColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetPickColor() gd.Color {
+func (self class) GetPickColor() gd.Color { //gd:ColorPicker.get_pick_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_pick_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -214,7 +214,7 @@ func (self class) GetPickColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetDeferredMode(mode bool) {
+func (self class) SetDeferredMode(mode bool) { //gd:ColorPicker.set_deferred_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -223,7 +223,7 @@ func (self class) SetDeferredMode(mode bool) {
 }
 
 //go:nosplit
-func (self class) IsDeferredMode() bool {
+func (self class) IsDeferredMode() bool { //gd:ColorPicker.is_deferred_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_is_deferred_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -233,7 +233,7 @@ func (self class) IsDeferredMode() bool {
 }
 
 //go:nosplit
-func (self class) SetColorMode(color_mode gdclass.ColorPickerColorModeType) {
+func (self class) SetColorMode(color_mode gdclass.ColorPickerColorModeType) { //gd:ColorPicker.set_color_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, color_mode)
 	var r_ret = callframe.Nil
@@ -242,7 +242,7 @@ func (self class) SetColorMode(color_mode gdclass.ColorPickerColorModeType) {
 }
 
 //go:nosplit
-func (self class) GetColorMode() gdclass.ColorPickerColorModeType {
+func (self class) GetColorMode() gdclass.ColorPickerColorModeType { //gd:ColorPicker.get_color_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ColorPickerColorModeType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_color_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -252,7 +252,7 @@ func (self class) GetColorMode() gdclass.ColorPickerColorModeType {
 }
 
 //go:nosplit
-func (self class) SetEditAlpha(show bool) {
+func (self class) SetEditAlpha(show bool) { //gd:ColorPicker.set_edit_alpha
 	var frame = callframe.New()
 	callframe.Arg(frame, show)
 	var r_ret = callframe.Nil
@@ -261,7 +261,7 @@ func (self class) SetEditAlpha(show bool) {
 }
 
 //go:nosplit
-func (self class) IsEditingAlpha() bool {
+func (self class) IsEditingAlpha() bool { //gd:ColorPicker.is_editing_alpha
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_is_editing_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -271,7 +271,7 @@ func (self class) IsEditingAlpha() bool {
 }
 
 //go:nosplit
-func (self class) SetCanAddSwatches(enabled bool) {
+func (self class) SetCanAddSwatches(enabled bool) { //gd:ColorPicker.set_can_add_swatches
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -280,7 +280,7 @@ func (self class) SetCanAddSwatches(enabled bool) {
 }
 
 //go:nosplit
-func (self class) AreSwatchesEnabled() bool {
+func (self class) AreSwatchesEnabled() bool { //gd:ColorPicker.are_swatches_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_are_swatches_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -290,7 +290,7 @@ func (self class) AreSwatchesEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetPresetsVisible(visible bool) {
+func (self class) SetPresetsVisible(visible bool) { //gd:ColorPicker.set_presets_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret = callframe.Nil
@@ -299,7 +299,7 @@ func (self class) SetPresetsVisible(visible bool) {
 }
 
 //go:nosplit
-func (self class) ArePresetsVisible() bool {
+func (self class) ArePresetsVisible() bool { //gd:ColorPicker.are_presets_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_are_presets_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -309,7 +309,7 @@ func (self class) ArePresetsVisible() bool {
 }
 
 //go:nosplit
-func (self class) SetModesVisible(visible bool) {
+func (self class) SetModesVisible(visible bool) { //gd:ColorPicker.set_modes_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret = callframe.Nil
@@ -318,7 +318,7 @@ func (self class) SetModesVisible(visible bool) {
 }
 
 //go:nosplit
-func (self class) AreModesVisible() bool {
+func (self class) AreModesVisible() bool { //gd:ColorPicker.are_modes_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_are_modes_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -328,7 +328,7 @@ func (self class) AreModesVisible() bool {
 }
 
 //go:nosplit
-func (self class) SetSamplerVisible(visible bool) {
+func (self class) SetSamplerVisible(visible bool) { //gd:ColorPicker.set_sampler_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret = callframe.Nil
@@ -337,7 +337,7 @@ func (self class) SetSamplerVisible(visible bool) {
 }
 
 //go:nosplit
-func (self class) IsSamplerVisible() bool {
+func (self class) IsSamplerVisible() bool { //gd:ColorPicker.is_sampler_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_is_sampler_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -347,7 +347,7 @@ func (self class) IsSamplerVisible() bool {
 }
 
 //go:nosplit
-func (self class) SetSlidersVisible(visible bool) {
+func (self class) SetSlidersVisible(visible bool) { //gd:ColorPicker.set_sliders_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret = callframe.Nil
@@ -356,7 +356,7 @@ func (self class) SetSlidersVisible(visible bool) {
 }
 
 //go:nosplit
-func (self class) AreSlidersVisible() bool {
+func (self class) AreSlidersVisible() bool { //gd:ColorPicker.are_sliders_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_are_sliders_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -366,7 +366,7 @@ func (self class) AreSlidersVisible() bool {
 }
 
 //go:nosplit
-func (self class) SetHexVisible(visible bool) {
+func (self class) SetHexVisible(visible bool) { //gd:ColorPicker.set_hex_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret = callframe.Nil
@@ -375,7 +375,7 @@ func (self class) SetHexVisible(visible bool) {
 }
 
 //go:nosplit
-func (self class) IsHexVisible() bool {
+func (self class) IsHexVisible() bool { //gd:ColorPicker.is_hex_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_is_hex_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -389,7 +389,7 @@ Adds the given color to a list of color presets. The presets are displayed in th
 [b]Note:[/b] The presets list is only for [i]this[/i] color picker.
 */
 //go:nosplit
-func (self class) AddPreset(color gd.Color) {
+func (self class) AddPreset(color gd.Color) { //gd:ColorPicker.add_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -401,7 +401,7 @@ func (self class) AddPreset(color gd.Color) {
 Removes the given color from the list of color presets of this color picker.
 */
 //go:nosplit
-func (self class) ErasePreset(color gd.Color) {
+func (self class) ErasePreset(color gd.Color) { //gd:ColorPicker.erase_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -413,7 +413,7 @@ func (self class) ErasePreset(color gd.Color) {
 Returns the list of colors in the presets of the color picker.
 */
 //go:nosplit
-func (self class) GetPresets() gd.PackedColorArray {
+func (self class) GetPresets() gd.PackedColorArray { //gd:ColorPicker.get_presets
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_presets, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -427,7 +427,7 @@ Adds the given color to a list of color recent presets so that it can be picked 
 [b]Note:[/b] The recent presets list is only for [i]this[/i] color picker.
 */
 //go:nosplit
-func (self class) AddRecentPreset(color gd.Color) {
+func (self class) AddRecentPreset(color gd.Color) { //gd:ColorPicker.add_recent_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -439,7 +439,7 @@ func (self class) AddRecentPreset(color gd.Color) {
 Removes the given color from the list of color recent presets of this color picker.
 */
 //go:nosplit
-func (self class) EraseRecentPreset(color gd.Color) {
+func (self class) EraseRecentPreset(color gd.Color) { //gd:ColorPicker.erase_recent_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -451,7 +451,7 @@ func (self class) EraseRecentPreset(color gd.Color) {
 Returns the list of colors in the recent presets of the color picker.
 */
 //go:nosplit
-func (self class) GetRecentPresets() gd.PackedColorArray {
+func (self class) GetRecentPresets() gd.PackedColorArray { //gd:ColorPicker.get_recent_presets
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_recent_presets, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -461,7 +461,7 @@ func (self class) GetRecentPresets() gd.PackedColorArray {
 }
 
 //go:nosplit
-func (self class) SetPickerShape(shape gdclass.ColorPickerPickerShapeType) {
+func (self class) SetPickerShape(shape gdclass.ColorPickerPickerShapeType) { //gd:ColorPicker.set_picker_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -470,7 +470,7 @@ func (self class) SetPickerShape(shape gdclass.ColorPickerPickerShapeType) {
 }
 
 //go:nosplit
-func (self class) GetPickerShape() gdclass.ColorPickerPickerShapeType {
+func (self class) GetPickerShape() gdclass.ColorPickerPickerShapeType { //gd:ColorPicker.get_picker_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ColorPickerPickerShapeType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_picker_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -540,7 +540,7 @@ func init() {
 	gdclass.Register("ColorPicker", func(ptr gd.Object) any { return [1]gdclass.ColorPicker{*(*gdclass.ColorPicker)(unsafe.Pointer(&ptr))} })
 }
 
-type ColorModeType = gdclass.ColorPickerColorModeType
+type ColorModeType = gdclass.ColorPickerColorModeType //gd:ColorPicker.ColorModeType
 
 const (
 	/*Allows editing the color with Red/Green/Blue sliders.*/
@@ -555,7 +555,7 @@ const (
 	ModeOkhsl ColorModeType = 3
 )
 
-type PickerShapeType = gdclass.ColorPickerPickerShapeType
+type PickerShapeType = gdclass.ColorPickerPickerShapeType //gd:ColorPicker.PickerShapeType
 
 const (
 	/*HSV Color Model rectangle color space.*/

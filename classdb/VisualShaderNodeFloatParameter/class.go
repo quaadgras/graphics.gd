@@ -108,7 +108,7 @@ func (self Instance) SetDefaultValue(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetHint(hint gdclass.VisualShaderNodeFloatParameterHint) {
+func (self class) SetHint(hint gdclass.VisualShaderNodeFloatParameterHint) { //gd:VisualShaderNodeFloatParameter.set_hint
 	var frame = callframe.New()
 	callframe.Arg(frame, hint)
 	var r_ret = callframe.Nil
@@ -117,7 +117,7 @@ func (self class) SetHint(hint gdclass.VisualShaderNodeFloatParameterHint) {
 }
 
 //go:nosplit
-func (self class) GetHint() gdclass.VisualShaderNodeFloatParameterHint {
+func (self class) GetHint() gdclass.VisualShaderNodeFloatParameterHint { //gd:VisualShaderNodeFloatParameter.get_hint
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeFloatParameterHint](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func (self class) GetHint() gdclass.VisualShaderNodeFloatParameterHint {
 }
 
 //go:nosplit
-func (self class) SetMin(value gd.Float) {
+func (self class) SetMin(value gd.Float) { //gd:VisualShaderNodeFloatParameter.set_min
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -136,7 +136,7 @@ func (self class) SetMin(value gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMin() gd.Float {
+func (self class) GetMin() gd.Float { //gd:VisualShaderNodeFloatParameter.get_min
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -146,7 +146,7 @@ func (self class) GetMin() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMax(value gd.Float) {
+func (self class) SetMax(value gd.Float) { //gd:VisualShaderNodeFloatParameter.set_max
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -155,7 +155,7 @@ func (self class) SetMax(value gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMax() gd.Float {
+func (self class) GetMax() gd.Float { //gd:VisualShaderNodeFloatParameter.get_max
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -165,7 +165,7 @@ func (self class) GetMax() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetStep(value gd.Float) {
+func (self class) SetStep(value gd.Float) { //gd:VisualShaderNodeFloatParameter.set_step
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -174,7 +174,7 @@ func (self class) SetStep(value gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetStep() gd.Float {
+func (self class) GetStep() gd.Float { //gd:VisualShaderNodeFloatParameter.get_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -184,7 +184,7 @@ func (self class) GetStep() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDefaultValueEnabled(enabled bool) {
+func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeFloatParameter.set_default_value_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -193,7 +193,7 @@ func (self class) SetDefaultValueEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDefaultValueEnabled() bool {
+func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeFloatParameter.is_default_value_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_is_default_value_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -203,7 +203,7 @@ func (self class) IsDefaultValueEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDefaultValue(value gd.Float) {
+func (self class) SetDefaultValue(value gd.Float) { //gd:VisualShaderNodeFloatParameter.set_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -212,7 +212,7 @@ func (self class) SetDefaultValue(value gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDefaultValue() gd.Float {
+func (self class) GetDefaultValue() gd.Float { //gd:VisualShaderNodeFloatParameter.get_default_value
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -270,7 +270,7 @@ func init() {
 	})
 }
 
-type Hint = gdclass.VisualShaderNodeFloatParameterHint
+type Hint = gdclass.VisualShaderNodeFloatParameterHint //gd:VisualShaderNodeFloatParameter.Hint
 
 const (
 	/*No hint used.*/

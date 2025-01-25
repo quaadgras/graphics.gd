@@ -36,10 +36,10 @@ type Any interface {
 	AsRDTextureFormat() Instance
 }
 
-func (self Instance) AddShareableFormat(format gdclass.RenderingDeviceDataFormat) {
+func (self Instance) AddShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.add_shareable_format
 	class(self).AddShareableFormat(format)
 }
-func (self Instance) RemoveShareableFormat(format gdclass.RenderingDeviceDataFormat) {
+func (self Instance) RemoveShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.remove_shareable_format
 	class(self).RemoveShareableFormat(format)
 }
 
@@ -135,7 +135,7 @@ func (self Instance) SetUsageBits(value gdclass.RenderingDeviceTextureUsageBits)
 }
 
 //go:nosplit
-func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) {
+func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.set_format
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) {
 }
 
 //go:nosplit
-func (self class) GetFormat() gdclass.RenderingDeviceDataFormat {
+func (self class) GetFormat() gdclass.RenderingDeviceDataFormat { //gd:RDTextureFormat.get_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceDataFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func (self class) GetFormat() gdclass.RenderingDeviceDataFormat {
 }
 
 //go:nosplit
-func (self class) SetWidth(p_member gd.Int) {
+func (self class) SetWidth(p_member gd.Int) { //gd:RDTextureFormat.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -163,7 +163,7 @@ func (self class) SetWidth(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetWidth() gd.Int {
+func (self class) GetWidth() gd.Int { //gd:RDTextureFormat.get_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func (self class) GetWidth() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetHeight(p_member gd.Int) {
+func (self class) SetHeight(p_member gd.Int) { //gd:RDTextureFormat.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -182,7 +182,7 @@ func (self class) SetHeight(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetHeight() gd.Int {
+func (self class) GetHeight() gd.Int { //gd:RDTextureFormat.get_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -192,7 +192,7 @@ func (self class) GetHeight() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetDepth(p_member gd.Int) {
+func (self class) SetDepth(p_member gd.Int) { //gd:RDTextureFormat.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -201,7 +201,7 @@ func (self class) SetDepth(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetDepth() gd.Int {
+func (self class) GetDepth() gd.Int { //gd:RDTextureFormat.get_depth
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func (self class) GetDepth() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetArrayLayers(p_member gd.Int) {
+func (self class) SetArrayLayers(p_member gd.Int) { //gd:RDTextureFormat.set_array_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -220,7 +220,7 @@ func (self class) SetArrayLayers(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetArrayLayers() gd.Int {
+func (self class) GetArrayLayers() gd.Int { //gd:RDTextureFormat.get_array_layers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_array_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -230,7 +230,7 @@ func (self class) GetArrayLayers() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMipmaps(p_member gd.Int) {
+func (self class) SetMipmaps(p_member gd.Int) { //gd:RDTextureFormat.set_mipmaps
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -239,7 +239,7 @@ func (self class) SetMipmaps(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMipmaps() gd.Int {
+func (self class) GetMipmaps() gd.Int { //gd:RDTextureFormat.get_mipmaps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -249,7 +249,7 @@ func (self class) GetMipmaps() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetTextureType(p_member gdclass.RenderingDeviceTextureType) {
+func (self class) SetTextureType(p_member gdclass.RenderingDeviceTextureType) { //gd:RDTextureFormat.set_texture_type
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -258,7 +258,7 @@ func (self class) SetTextureType(p_member gdclass.RenderingDeviceTextureType) {
 }
 
 //go:nosplit
-func (self class) GetTextureType() gdclass.RenderingDeviceTextureType {
+func (self class) GetTextureType() gdclass.RenderingDeviceTextureType { //gd:RDTextureFormat.get_texture_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -268,7 +268,7 @@ func (self class) GetTextureType() gdclass.RenderingDeviceTextureType {
 }
 
 //go:nosplit
-func (self class) SetSamples(p_member gdclass.RenderingDeviceTextureSamples) {
+func (self class) SetSamples(p_member gdclass.RenderingDeviceTextureSamples) { //gd:RDTextureFormat.set_samples
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -277,7 +277,7 @@ func (self class) SetSamples(p_member gdclass.RenderingDeviceTextureSamples) {
 }
 
 //go:nosplit
-func (self class) GetSamples() gdclass.RenderingDeviceTextureSamples {
+func (self class) GetSamples() gdclass.RenderingDeviceTextureSamples { //gd:RDTextureFormat.get_samples
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureSamples](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_samples, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -287,7 +287,7 @@ func (self class) GetSamples() gdclass.RenderingDeviceTextureSamples {
 }
 
 //go:nosplit
-func (self class) SetUsageBits(p_member gdclass.RenderingDeviceTextureUsageBits) {
+func (self class) SetUsageBits(p_member gdclass.RenderingDeviceTextureUsageBits) { //gd:RDTextureFormat.set_usage_bits
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -296,7 +296,7 @@ func (self class) SetUsageBits(p_member gdclass.RenderingDeviceTextureUsageBits)
 }
 
 //go:nosplit
-func (self class) GetUsageBits() gdclass.RenderingDeviceTextureUsageBits {
+func (self class) GetUsageBits() gdclass.RenderingDeviceTextureUsageBits { //gd:RDTextureFormat.get_usage_bits
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureUsageBits](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_usage_bits, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -306,7 +306,7 @@ func (self class) GetUsageBits() gdclass.RenderingDeviceTextureUsageBits {
 }
 
 //go:nosplit
-func (self class) AddShareableFormat(format gdclass.RenderingDeviceDataFormat) {
+func (self class) AddShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.add_shareable_format
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Nil
@@ -315,7 +315,7 @@ func (self class) AddShareableFormat(format gdclass.RenderingDeviceDataFormat) {
 }
 
 //go:nosplit
-func (self class) RemoveShareableFormat(format gdclass.RenderingDeviceDataFormat) {
+func (self class) RemoveShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.remove_shareable_format
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Nil

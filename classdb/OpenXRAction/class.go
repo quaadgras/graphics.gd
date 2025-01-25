@@ -84,7 +84,7 @@ func (self Instance) SetToplevelPaths(value []string) {
 }
 
 //go:nosplit
-func (self class) SetLocalizedName(localized_name gd.String) {
+func (self class) SetLocalizedName(localized_name gd.String) { //gd:OpenXRAction.set_localized_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(localized_name))
 	var r_ret = callframe.Nil
@@ -93,7 +93,7 @@ func (self class) SetLocalizedName(localized_name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLocalizedName() gd.String {
+func (self class) GetLocalizedName() gd.String { //gd:OpenXRAction.get_localized_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_get_localized_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -103,7 +103,7 @@ func (self class) GetLocalizedName() gd.String {
 }
 
 //go:nosplit
-func (self class) SetActionType(action_type gdclass.OpenXRActionActionType) {
+func (self class) SetActionType(action_type gdclass.OpenXRActionActionType) { //gd:OpenXRAction.set_action_type
 	var frame = callframe.New()
 	callframe.Arg(frame, action_type)
 	var r_ret = callframe.Nil
@@ -112,7 +112,7 @@ func (self class) SetActionType(action_type gdclass.OpenXRActionActionType) {
 }
 
 //go:nosplit
-func (self class) GetActionType() gdclass.OpenXRActionActionType {
+func (self class) GetActionType() gdclass.OpenXRActionActionType { //gd:OpenXRAction.get_action_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.OpenXRActionActionType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_get_action_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -122,7 +122,7 @@ func (self class) GetActionType() gdclass.OpenXRActionActionType {
 }
 
 //go:nosplit
-func (self class) SetToplevelPaths(toplevel_paths gd.PackedStringArray) {
+func (self class) SetToplevelPaths(toplevel_paths gd.PackedStringArray) { //gd:OpenXRAction.set_toplevel_paths
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(toplevel_paths))
 	var r_ret = callframe.Nil
@@ -131,7 +131,7 @@ func (self class) SetToplevelPaths(toplevel_paths gd.PackedStringArray) {
 }
 
 //go:nosplit
-func (self class) GetToplevelPaths() gd.PackedStringArray {
+func (self class) GetToplevelPaths() gd.PackedStringArray { //gd:OpenXRAction.get_toplevel_paths
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAction.Bind_get_toplevel_paths, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func init() {
 	})
 }
 
-type ActionType = gdclass.OpenXRActionActionType
+type ActionType = gdclass.OpenXRActionActionType //gd:OpenXRAction.ActionType
 
 const (
 	/*This action provides a boolean value.*/

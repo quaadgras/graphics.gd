@@ -80,7 +80,7 @@ func (self Instance) SetCurve(value [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Int) {
+func (self class) SetWidth(width gd.Int) { //gd:CurveTexture.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -89,7 +89,7 @@ func (self class) SetWidth(width gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetCurve(curve [1]gdclass.Curve) {
+func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:CurveTexture.set_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -98,7 +98,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetCurve() [1]gdclass.Curve {
+func (self class) GetCurve() [1]gdclass.Curve { //gd:CurveTexture.get_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -108,7 +108,7 @@ func (self class) GetCurve() [1]gdclass.Curve {
 }
 
 //go:nosplit
-func (self class) SetTextureMode(texture_mode gdclass.CurveTextureTextureMode) {
+func (self class) SetTextureMode(texture_mode gdclass.CurveTextureTextureMode) { //gd:CurveTexture.set_texture_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_mode)
 	var r_ret = callframe.Nil
@@ -117,7 +117,7 @@ func (self class) SetTextureMode(texture_mode gdclass.CurveTextureTextureMode) {
 }
 
 //go:nosplit
-func (self class) GetTextureMode() gdclass.CurveTextureTextureMode {
+func (self class) GetTextureMode() gdclass.CurveTextureTextureMode { //gd:CurveTexture.get_texture_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CurveTextureTextureMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_get_texture_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -169,7 +169,7 @@ func init() {
 	})
 }
 
-type TextureMode = gdclass.CurveTextureTextureMode
+type TextureMode = gdclass.CurveTextureTextureMode //gd:CurveTexture.TextureMode
 
 const (
 	/*Store the curve equally across the red, green and blue channels. This uses more video memory, but is more compatible with shaders that only read the green and blue values.*/

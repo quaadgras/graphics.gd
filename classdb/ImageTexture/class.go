@@ -62,7 +62,7 @@ type Any interface {
 /*
 Creates a new [ImageTexture] and initializes it by allocating and setting the data from an [Image].
 */
-func CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture {
+func CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
 	self := Instance{}
 	return [1]gdclass.ImageTexture(class(self).CreateFromImage(image))
 }
@@ -70,7 +70,7 @@ func CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture {
 /*
 Returns the format of the texture, one of [enum Image.Format].
 */
-func (self Instance) GetFormat() gdclass.ImageFormat {
+func (self Instance) GetFormat() gdclass.ImageFormat { //gd:ImageTexture.get_format
 	return gdclass.ImageFormat(class(self).GetFormat())
 }
 
@@ -78,7 +78,7 @@ func (self Instance) GetFormat() gdclass.ImageFormat {
 Replaces the texture's data with a new [Image]. This will re-allocate new memory for the texture.
 If you want to update the image, but don't need to change its parameters (format, size), use [method update] instead for better performance.
 */
-func (self Instance) SetImage(image [1]gdclass.Image) {
+func (self Instance) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
 	class(self).SetImage(image)
 }
 
@@ -87,14 +87,14 @@ Replaces the texture's data with a new [Image].
 [b]Note:[/b] The texture has to be created using [method create_from_image] or initialized first with the [method set_image] method before it can be updated. The new image dimensions, format, and mipmaps configuration should match the existing texture's image configuration.
 Use this method over [method set_image] if you need to update the texture frequently, which is faster than allocating additional memory for a new texture each time.
 */
-func (self Instance) Update(image [1]gdclass.Image) {
+func (self Instance) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
 	class(self).Update(image)
 }
 
 /*
 Resizes the texture to the specified dimensions.
 */
-func (self Instance) SetSizeOverride(size Vector2i.XY) {
+func (self Instance) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
 	class(self).SetSizeOverride(gd.Vector2i(size))
 }
 
@@ -121,7 +121,7 @@ func New() Instance {
 Creates a new [ImageTexture] and initializes it by allocating and setting the data from an [Image].
 */
 //go:nosplit
-func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture {
+func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -135,7 +135,7 @@ func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTextur
 Returns the format of the texture, one of [enum Image.Format].
 */
 //go:nosplit
-func (self class) GetFormat() gdclass.ImageFormat {
+func (self class) GetFormat() gdclass.ImageFormat { //gd:ImageTexture.get_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ Replaces the texture's data with a new [Image]. This will re-allocate new memory
 If you want to update the image, but don't need to change its parameters (format, size), use [method update] instead for better performance.
 */
 //go:nosplit
-func (self class) SetImage(image [1]gdclass.Image) {
+func (self class) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret = callframe.Nil
@@ -163,7 +163,7 @@ Replaces the texture's data with a new [Image].
 Use this method over [method set_image] if you need to update the texture frequently, which is faster than allocating additional memory for a new texture each time.
 */
 //go:nosplit
-func (self class) Update(image [1]gdclass.Image) {
+func (self class) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret = callframe.Nil
@@ -175,7 +175,7 @@ func (self class) Update(image [1]gdclass.Image) {
 Resizes the texture to the specified dimensions.
 */
 //go:nosplit
-func (self class) SetSizeOverride(size gd.Vector2i) {
+func (self class) SetSizeOverride(size gd.Vector2i) { //gd:ImageTexture.set_size_override
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil

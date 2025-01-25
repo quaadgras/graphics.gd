@@ -76,7 +76,7 @@ func (self Instance) SetBoneUpdate(value gdclass.XRHandModifier3DBoneUpdate) {
 }
 
 //go:nosplit
-func (self class) SetHandTracker(tracker_name gd.StringName) {
+func (self class) SetHandTracker(tracker_name gd.StringName) { //gd:XRHandModifier3D.set_hand_tracker
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tracker_name))
 	var r_ret = callframe.Nil
@@ -85,7 +85,7 @@ func (self class) SetHandTracker(tracker_name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetHandTracker() gd.StringName {
+func (self class) GetHandTracker() gd.StringName { //gd:XRHandModifier3D.get_hand_tracker
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) GetHandTracker() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetBoneUpdate(bone_update gdclass.XRHandModifier3DBoneUpdate) {
+func (self class) SetBoneUpdate(bone_update gdclass.XRHandModifier3DBoneUpdate) { //gd:XRHandModifier3D.set_bone_update
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_update)
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetBoneUpdate(bone_update gdclass.XRHandModifier3DBoneUpdate) 
 }
 
 //go:nosplit
-func (self class) GetBoneUpdate() gdclass.XRHandModifier3DBoneUpdate {
+func (self class) GetBoneUpdate() gdclass.XRHandModifier3DBoneUpdate { //gd:XRHandModifier3D.get_bone_update
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRHandModifier3DBoneUpdate](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_bone_update, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -144,7 +144,7 @@ func init() {
 	})
 }
 
-type BoneUpdate = gdclass.XRHandModifier3DBoneUpdate
+type BoneUpdate = gdclass.XRHandModifier3DBoneUpdate //gd:XRHandModifier3D.BoneUpdate
 
 const (
 	/*The skeleton's bones are fully updated (both position and rotation) to match the tracked bones.*/

@@ -43,14 +43,14 @@ type Any interface {
 /*
 Sets the value of the specified parameter.
 */
-func (self Instance) SetParam(param gdclass.PinJoint3DParam, value Float.X) {
+func (self Instance) SetParam(param gdclass.PinJoint3DParam, value Float.X) { //gd:PinJoint3D.set_param
 	class(self).SetParam(param, gd.Float(value))
 }
 
 /*
 Returns the value of the specified parameter.
 */
-func (self Instance) GetParam(param gdclass.PinJoint3DParam) Float.X {
+func (self Instance) GetParam(param gdclass.PinJoint3DParam) Float.X { //gd:PinJoint3D.get_param
 	return Float.X(Float.X(class(self).GetParam(param)))
 }
 
@@ -76,7 +76,7 @@ func New() Instance {
 Sets the value of the specified parameter.
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.PinJoint3DParam, value gd.Float) {
+func (self class) SetParam(param gdclass.PinJoint3DParam, value gd.Float) { //gd:PinJoint3D.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -89,7 +89,7 @@ func (self class) SetParam(param gdclass.PinJoint3DParam, value gd.Float) {
 Returns the value of the specified parameter.
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.PinJoint3DParam) gd.Float {
+func (self class) GetParam(param gdclass.PinJoint3DParam) gd.Float { //gd:PinJoint3D.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -126,7 +126,7 @@ func init() {
 	gdclass.Register("PinJoint3D", func(ptr gd.Object) any { return [1]gdclass.PinJoint3D{*(*gdclass.PinJoint3D)(unsafe.Pointer(&ptr))} })
 }
 
-type Param = gdclass.PinJoint3DParam
+type Param = gdclass.PinJoint3DParam //gd:PinJoint3D.Param
 
 const (
 	/*The force with which the pinned objects stay in positional relation to each other. The higher, the stronger.*/

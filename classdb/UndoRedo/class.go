@@ -133,49 +133,49 @@ Create a new action. After this is called, do all your calls to [method add_do_m
 The way actions are merged is dictated by [param merge_mode]. See [enum MergeMode] for details.
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
-func (self Instance) CreateAction(name string) {
+func (self Instance) CreateAction(name string) { //gd:UndoRedo.create_action
 	class(self).CreateAction(gd.NewString(name), 0, false)
 }
 
 /*
 Commit the action. If [param execute] is [code]true[/code] (which it is by default), all "do" methods/properties are called/set when this function is called.
 */
-func (self Instance) CommitAction() {
+func (self Instance) CommitAction() { //gd:UndoRedo.commit_action
 	class(self).CommitAction(true)
 }
 
 /*
 Returns [code]true[/code] if the [UndoRedo] is currently committing the action, i.e. running its "do" method or property change (see [method commit_action]).
 */
-func (self Instance) IsCommittingAction() bool {
+func (self Instance) IsCommittingAction() bool { //gd:UndoRedo.is_committing_action
 	return bool(class(self).IsCommittingAction())
 }
 
 /*
 Register a [Callable] that will be called when the action is committed.
 */
-func (self Instance) AddDoMethod(callable func()) {
+func (self Instance) AddDoMethod(callable func()) { //gd:UndoRedo.add_do_method
 	class(self).AddDoMethod(Callable.New(callable))
 }
 
 /*
 Register a [Callable] that will be called when the action is undone.
 */
-func (self Instance) AddUndoMethod(callable func()) {
+func (self Instance) AddUndoMethod(callable func()) { //gd:UndoRedo.add_undo_method
 	class(self).AddUndoMethod(Callable.New(callable))
 }
 
 /*
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
-func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) {
+func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_do_property
 	class(self).AddDoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
 }
 
 /*
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
-func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) {
+func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_undo_property
 	class(self).AddUndoProperty(obj, gd.NewStringName(property), gd.NewVariant(value))
 }
 
@@ -191,7 +191,7 @@ undo_redo.add_undo_method(remove_child.bind(node))
 undo_redo.commit_action()
 [/codeblock]
 */
-func (self Instance) AddDoReference(obj Object.Instance) {
+func (self Instance) AddDoReference(obj Object.Instance) { //gd:UndoRedo.add_do_reference
 	class(self).AddDoReference(obj)
 }
 
@@ -207,42 +207,42 @@ undo_redo.add_undo_reference(node)
 undo_redo.commit_action()
 [/codeblock]
 */
-func (self Instance) AddUndoReference(obj Object.Instance) {
+func (self Instance) AddUndoReference(obj Object.Instance) { //gd:UndoRedo.add_undo_reference
 	class(self).AddUndoReference(obj)
 }
 
 /*
 Marks the next "do" and "undo" operations to be processed even if the action gets merged with another in the [constant MERGE_ENDS] mode. Return to normal operation using [method end_force_keep_in_merge_ends].
 */
-func (self Instance) StartForceKeepInMergeEnds() {
+func (self Instance) StartForceKeepInMergeEnds() { //gd:UndoRedo.start_force_keep_in_merge_ends
 	class(self).StartForceKeepInMergeEnds()
 }
 
 /*
 Stops marking operations as to be processed even if the action gets merged with another in the [constant MERGE_ENDS] mode. See [method start_force_keep_in_merge_ends].
 */
-func (self Instance) EndForceKeepInMergeEnds() {
+func (self Instance) EndForceKeepInMergeEnds() { //gd:UndoRedo.end_force_keep_in_merge_ends
 	class(self).EndForceKeepInMergeEnds()
 }
 
 /*
 Returns how many elements are in the history.
 */
-func (self Instance) GetHistoryCount() int {
+func (self Instance) GetHistoryCount() int { //gd:UndoRedo.get_history_count
 	return int(int(class(self).GetHistoryCount()))
 }
 
 /*
 Gets the index of the current action.
 */
-func (self Instance) GetCurrentAction() int {
+func (self Instance) GetCurrentAction() int { //gd:UndoRedo.get_current_action
 	return int(int(class(self).GetCurrentAction()))
 }
 
 /*
 Gets the action name from its index.
 */
-func (self Instance) GetActionName(id int) string {
+func (self Instance) GetActionName(id int) string { //gd:UndoRedo.get_action_name
 	return string(class(self).GetActionName(gd.Int(id)).String())
 }
 
@@ -250,28 +250,28 @@ func (self Instance) GetActionName(id int) string {
 Clear the undo/redo history and associated references.
 Passing [code]false[/code] to [param increase_version] will prevent the version number from increasing when the history is cleared.
 */
-func (self Instance) ClearHistory() {
+func (self Instance) ClearHistory() { //gd:UndoRedo.clear_history
 	class(self).ClearHistory(true)
 }
 
 /*
 Gets the name of the current action, equivalent to [code]get_action_name(get_current_action())[/code].
 */
-func (self Instance) GetCurrentActionName() string {
+func (self Instance) GetCurrentActionName() string { //gd:UndoRedo.get_current_action_name
 	return string(class(self).GetCurrentActionName().String())
 }
 
 /*
 Returns [code]true[/code] if an "undo" action is available.
 */
-func (self Instance) HasUndo() bool {
+func (self Instance) HasUndo() bool { //gd:UndoRedo.has_undo
 	return bool(class(self).HasUndo())
 }
 
 /*
 Returns [code]true[/code] if a "redo" action is available.
 */
-func (self Instance) HasRedo() bool {
+func (self Instance) HasRedo() bool { //gd:UndoRedo.has_redo
 	return bool(class(self).HasRedo())
 }
 
@@ -279,21 +279,21 @@ func (self Instance) HasRedo() bool {
 Gets the version. Every time a new action is committed, the [UndoRedo]'s version number is increased automatically.
 This is useful mostly to check if something changed from a saved version.
 */
-func (self Instance) GetVersion() int {
+func (self Instance) GetVersion() int { //gd:UndoRedo.get_version
 	return int(int(class(self).GetVersion()))
 }
 
 /*
 Redo the last action.
 */
-func (self Instance) Redo() bool {
+func (self Instance) Redo() bool { //gd:UndoRedo.redo
 	return bool(class(self).Redo())
 }
 
 /*
 Undo the last action.
 */
-func (self Instance) Undo() bool {
+func (self Instance) Undo() bool { //gd:UndoRedo.undo
 	return bool(class(self).Undo())
 }
 
@@ -329,7 +329,7 @@ The way actions are merged is dictated by [param merge_mode]. See [enum MergeMod
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 //go:nosplit
-func (self class) CreateAction(name gd.String, merge_mode gdclass.UndoRedoMergeMode, backward_undo_ops bool) {
+func (self class) CreateAction(name gd.String, merge_mode gdclass.UndoRedoMergeMode, backward_undo_ops bool) { //gd:UndoRedo.create_action
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, merge_mode)
@@ -343,7 +343,7 @@ func (self class) CreateAction(name gd.String, merge_mode gdclass.UndoRedoMergeM
 Commit the action. If [param execute] is [code]true[/code] (which it is by default), all "do" methods/properties are called/set when this function is called.
 */
 //go:nosplit
-func (self class) CommitAction(execute bool) {
+func (self class) CommitAction(execute bool) { //gd:UndoRedo.commit_action
 	var frame = callframe.New()
 	callframe.Arg(frame, execute)
 	var r_ret = callframe.Nil
@@ -355,7 +355,7 @@ func (self class) CommitAction(execute bool) {
 Returns [code]true[/code] if the [UndoRedo] is currently committing the action, i.e. running its "do" method or property change (see [method commit_action]).
 */
 //go:nosplit
-func (self class) IsCommittingAction() bool {
+func (self class) IsCommittingAction() bool { //gd:UndoRedo.is_committing_action
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_is_committing_action, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -368,7 +368,7 @@ func (self class) IsCommittingAction() bool {
 Register a [Callable] that will be called when the action is committed.
 */
 //go:nosplit
-func (self class) AddDoMethod(callable Callable.Function) {
+func (self class) AddDoMethod(callable Callable.Function) { //gd:UndoRedo.add_do_method
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
@@ -380,7 +380,7 @@ func (self class) AddDoMethod(callable Callable.Function) {
 Register a [Callable] that will be called when the action is undone.
 */
 //go:nosplit
-func (self class) AddUndoMethod(callable Callable.Function) {
+func (self class) AddUndoMethod(callable Callable.Function) { //gd:UndoRedo.add_undo_method
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Nil
@@ -392,7 +392,7 @@ func (self class) AddUndoMethod(callable Callable.Function) {
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
 //go:nosplit
-func (self class) AddDoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) {
+func (self class) AddDoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) { //gd:UndoRedo.add_do_property
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(property))
@@ -406,7 +406,7 @@ func (self class) AddDoProperty(obj [1]gd.Object, property gd.StringName, value 
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
 //go:nosplit
-func (self class) AddUndoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) {
+func (self class) AddUndoProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) { //gd:UndoRedo.add_undo_property
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	callframe.Arg(frame, pointers.Get(property))
@@ -429,7 +429,7 @@ undo_redo.commit_action()
 [/codeblock]
 */
 //go:nosplit
-func (self class) AddDoReference(obj [1]gd.Object) {
+func (self class) AddDoReference(obj [1]gd.Object) { //gd:UndoRedo.add_do_reference
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -450,7 +450,7 @@ undo_redo.commit_action()
 [/codeblock]
 */
 //go:nosplit
-func (self class) AddUndoReference(obj [1]gd.Object) {
+func (self class) AddUndoReference(obj [1]gd.Object) { //gd:UndoRedo.add_undo_reference
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -462,7 +462,7 @@ func (self class) AddUndoReference(obj [1]gd.Object) {
 Marks the next "do" and "undo" operations to be processed even if the action gets merged with another in the [constant MERGE_ENDS] mode. Return to normal operation using [method end_force_keep_in_merge_ends].
 */
 //go:nosplit
-func (self class) StartForceKeepInMergeEnds() {
+func (self class) StartForceKeepInMergeEnds() { //gd:UndoRedo.start_force_keep_in_merge_ends
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_start_force_keep_in_merge_ends, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -473,7 +473,7 @@ func (self class) StartForceKeepInMergeEnds() {
 Stops marking operations as to be processed even if the action gets merged with another in the [constant MERGE_ENDS] mode. See [method start_force_keep_in_merge_ends].
 */
 //go:nosplit
-func (self class) EndForceKeepInMergeEnds() {
+func (self class) EndForceKeepInMergeEnds() { //gd:UndoRedo.end_force_keep_in_merge_ends
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_end_force_keep_in_merge_ends, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -484,7 +484,7 @@ func (self class) EndForceKeepInMergeEnds() {
 Returns how many elements are in the history.
 */
 //go:nosplit
-func (self class) GetHistoryCount() gd.Int {
+func (self class) GetHistoryCount() gd.Int { //gd:UndoRedo.get_history_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_history_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -497,7 +497,7 @@ func (self class) GetHistoryCount() gd.Int {
 Gets the index of the current action.
 */
 //go:nosplit
-func (self class) GetCurrentAction() gd.Int {
+func (self class) GetCurrentAction() gd.Int { //gd:UndoRedo.get_current_action
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_current_action, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -510,7 +510,7 @@ func (self class) GetCurrentAction() gd.Int {
 Gets the action name from its index.
 */
 //go:nosplit
-func (self class) GetActionName(id gd.Int) gd.String {
+func (self class) GetActionName(id gd.Int) gd.String { //gd:UndoRedo.get_action_name
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -525,7 +525,7 @@ Clear the undo/redo history and associated references.
 Passing [code]false[/code] to [param increase_version] will prevent the version number from increasing when the history is cleared.
 */
 //go:nosplit
-func (self class) ClearHistory(increase_version bool) {
+func (self class) ClearHistory(increase_version bool) { //gd:UndoRedo.clear_history
 	var frame = callframe.New()
 	callframe.Arg(frame, increase_version)
 	var r_ret = callframe.Nil
@@ -537,7 +537,7 @@ func (self class) ClearHistory(increase_version bool) {
 Gets the name of the current action, equivalent to [code]get_action_name(get_current_action())[/code].
 */
 //go:nosplit
-func (self class) GetCurrentActionName() gd.String {
+func (self class) GetCurrentActionName() gd.String { //gd:UndoRedo.get_current_action_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_current_action_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -550,7 +550,7 @@ func (self class) GetCurrentActionName() gd.String {
 Returns [code]true[/code] if an "undo" action is available.
 */
 //go:nosplit
-func (self class) HasUndo() bool {
+func (self class) HasUndo() bool { //gd:UndoRedo.has_undo
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_has_undo, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -563,7 +563,7 @@ func (self class) HasUndo() bool {
 Returns [code]true[/code] if a "redo" action is available.
 */
 //go:nosplit
-func (self class) HasRedo() bool {
+func (self class) HasRedo() bool { //gd:UndoRedo.has_redo
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_has_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -577,7 +577,7 @@ Gets the version. Every time a new action is committed, the [UndoRedo]'s version
 This is useful mostly to check if something changed from a saved version.
 */
 //go:nosplit
-func (self class) GetVersion() gd.Int {
+func (self class) GetVersion() gd.Int { //gd:UndoRedo.get_version
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -587,7 +587,7 @@ func (self class) GetVersion() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMaxSteps(max_steps gd.Int) {
+func (self class) SetMaxSteps(max_steps gd.Int) { //gd:UndoRedo.set_max_steps
 	var frame = callframe.New()
 	callframe.Arg(frame, max_steps)
 	var r_ret = callframe.Nil
@@ -596,7 +596,7 @@ func (self class) SetMaxSteps(max_steps gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMaxSteps() gd.Int {
+func (self class) GetMaxSteps() gd.Int { //gd:UndoRedo.get_max_steps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_get_max_steps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -609,7 +609,7 @@ func (self class) GetMaxSteps() gd.Int {
 Redo the last action.
 */
 //go:nosplit
-func (self class) Redo() bool {
+func (self class) Redo() bool { //gd:UndoRedo.redo
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -622,7 +622,7 @@ func (self class) Redo() bool {
 Undo the last action.
 */
 //go:nosplit
-func (self class) Undo() bool {
+func (self class) Undo() bool { //gd:UndoRedo.undo
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UndoRedo.Bind_undo, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -654,7 +654,7 @@ func init() {
 	gdclass.Register("UndoRedo", func(ptr gd.Object) any { return [1]gdclass.UndoRedo{*(*gdclass.UndoRedo)(unsafe.Pointer(&ptr))} })
 }
 
-type MergeMode = gdclass.UndoRedoMergeMode
+type MergeMode = gdclass.UndoRedoMergeMode //gd:UndoRedo.MergeMode
 
 const (
 	/*Makes "do"/"undo" operations stay in separate actions.*/

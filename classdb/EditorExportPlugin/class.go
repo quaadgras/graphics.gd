@@ -638,14 +638,14 @@ Adds a shared object or a directory containing only shared objects with the give
 [b]Note:[/b] In case of macOS exports, those shared objects will be added to [code]Frameworks[/code] directory of app bundle.
 In case of a directory code-sign will error if you place non code object in directory.
 */
-func (self Instance) AddSharedObject(path string, tags []string, target string) {
+func (self Instance) AddSharedObject(path string, tags []string, target string) { //gd:EditorExportPlugin.add_shared_object
 	class(self).AddSharedObject(gd.NewString(path), gd.NewPackedStringSlice(tags), gd.NewString(target))
 }
 
 /*
 Adds a static lib from the given [param path] to the iOS project.
 */
-func (self Instance) AddIosProjectStaticLib(path string) {
+func (self Instance) AddIosProjectStaticLib(path string) { //gd:EditorExportPlugin.add_ios_project_static_lib
 	class(self).AddIosProjectStaticLib(gd.NewString(path))
 }
 
@@ -654,14 +654,14 @@ Adds a custom file to be exported. [param path] is the virtual path that can be 
 When called inside [method _export_file] and [param remap] is [code]true[/code], the current file will not be exported, but instead remapped to this custom file. [param remap] is ignored when called in other places.
 [param file] will not be imported, so consider using [method _customize_resource] to remap imported resources.
 */
-func (self Instance) AddFile(path string, file []byte, remap bool) {
+func (self Instance) AddFile(path string, file []byte, remap bool) { //gd:EditorExportPlugin.add_file
 	class(self).AddFile(gd.NewString(path), gd.NewPackedByteSlice(file), remap)
 }
 
 /*
 Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project.
 */
-func (self Instance) AddIosFramework(path string) {
+func (self Instance) AddIosFramework(path string) { //gd:EditorExportPlugin.add_ios_framework
 	class(self).AddIosFramework(gd.NewString(path))
 }
 
@@ -670,35 +670,35 @@ Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode pr
 [b]Note:[/b] For static libraries (*.a) works in same way as [method add_ios_framework].
 [b]Note:[/b] This method should not be used for System libraries as they are already present on the device.
 */
-func (self Instance) AddIosEmbeddedFramework(path string) {
+func (self Instance) AddIosEmbeddedFramework(path string) { //gd:EditorExportPlugin.add_ios_embedded_framework
 	class(self).AddIosEmbeddedFramework(gd.NewString(path))
 }
 
 /*
 Adds content for iOS Property List files.
 */
-func (self Instance) AddIosPlistContent(plist_content string) {
+func (self Instance) AddIosPlistContent(plist_content string) { //gd:EditorExportPlugin.add_ios_plist_content
 	class(self).AddIosPlistContent(gd.NewString(plist_content))
 }
 
 /*
 Adds linker flags for the iOS export.
 */
-func (self Instance) AddIosLinkerFlags(flags string) {
+func (self Instance) AddIosLinkerFlags(flags string) { //gd:EditorExportPlugin.add_ios_linker_flags
 	class(self).AddIosLinkerFlags(gd.NewString(flags))
 }
 
 /*
 Adds an iOS bundle file from the given [param path] to the exported project.
 */
-func (self Instance) AddIosBundleFile(path string) {
+func (self Instance) AddIosBundleFile(path string) { //gd:EditorExportPlugin.add_ios_bundle_file
 	class(self).AddIosBundleFile(gd.NewString(path))
 }
 
 /*
 Adds a C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
 */
-func (self Instance) AddIosCppCode(code string) {
+func (self Instance) AddIosCppCode(code string) { //gd:EditorExportPlugin.add_ios_cpp_code
 	class(self).AddIosCppCode(gd.NewString(code))
 }
 
@@ -706,21 +706,21 @@ func (self Instance) AddIosCppCode(code string) {
 Adds file or directory matching [param path] to [code]PlugIns[/code] directory of macOS app bundle.
 [b]Note:[/b] This is useful only for macOS exports.
 */
-func (self Instance) AddMacosPluginFile(path string) {
+func (self Instance) AddMacosPluginFile(path string) { //gd:EditorExportPlugin.add_macos_plugin_file
 	class(self).AddMacosPluginFile(gd.NewString(path))
 }
 
 /*
 To be called inside [method _export_file]. Skips the current file, so it's not included in the export.
 */
-func (self Instance) Skip() {
+func (self Instance) Skip() { //gd:EditorExportPlugin.skip
 	class(self).Skip()
 }
 
 /*
 Returns the current value of an export option supplied by [method _get_export_options].
 */
-func (self Instance) GetOption(name string) any {
+func (self Instance) GetOption(name string) any { //gd:EditorExportPlugin.get_option
 	return any(class(self).GetOption(gd.NewStringName(name)).Interface())
 }
 
@@ -1190,7 +1190,7 @@ Adds a shared object or a directory containing only shared objects with the give
 In case of a directory code-sign will error if you place non code object in directory.
 */
 //go:nosplit
-func (self class) AddSharedObject(path gd.String, tags gd.PackedStringArray, target gd.String) {
+func (self class) AddSharedObject(path gd.String, tags gd.PackedStringArray, target gd.String) { //gd:EditorExportPlugin.add_shared_object
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(tags))
@@ -1204,7 +1204,7 @@ func (self class) AddSharedObject(path gd.String, tags gd.PackedStringArray, tar
 Adds a static lib from the given [param path] to the iOS project.
 */
 //go:nosplit
-func (self class) AddIosProjectStaticLib(path gd.String) {
+func (self class) AddIosProjectStaticLib(path gd.String) { //gd:EditorExportPlugin.add_ios_project_static_lib
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -1218,7 +1218,7 @@ When called inside [method _export_file] and [param remap] is [code]true[/code],
 [param file] will not be imported, so consider using [method _customize_resource] to remap imported resources.
 */
 //go:nosplit
-func (self class) AddFile(path gd.String, file gd.PackedByteArray, remap bool) {
+func (self class) AddFile(path gd.String, file gd.PackedByteArray, remap bool) { //gd:EditorExportPlugin.add_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(file))
@@ -1232,7 +1232,7 @@ func (self class) AddFile(path gd.String, file gd.PackedByteArray, remap bool) {
 Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project.
 */
 //go:nosplit
-func (self class) AddIosFramework(path gd.String) {
+func (self class) AddIosFramework(path gd.String) { //gd:EditorExportPlugin.add_ios_framework
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -1246,7 +1246,7 @@ Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode pr
 [b]Note:[/b] This method should not be used for System libraries as they are already present on the device.
 */
 //go:nosplit
-func (self class) AddIosEmbeddedFramework(path gd.String) {
+func (self class) AddIosEmbeddedFramework(path gd.String) { //gd:EditorExportPlugin.add_ios_embedded_framework
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -1258,7 +1258,7 @@ func (self class) AddIosEmbeddedFramework(path gd.String) {
 Adds content for iOS Property List files.
 */
 //go:nosplit
-func (self class) AddIosPlistContent(plist_content gd.String) {
+func (self class) AddIosPlistContent(plist_content gd.String) { //gd:EditorExportPlugin.add_ios_plist_content
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(plist_content))
 	var r_ret = callframe.Nil
@@ -1270,7 +1270,7 @@ func (self class) AddIosPlistContent(plist_content gd.String) {
 Adds linker flags for the iOS export.
 */
 //go:nosplit
-func (self class) AddIosLinkerFlags(flags gd.String) {
+func (self class) AddIosLinkerFlags(flags gd.String) { //gd:EditorExportPlugin.add_ios_linker_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(flags))
 	var r_ret = callframe.Nil
@@ -1282,7 +1282,7 @@ func (self class) AddIosLinkerFlags(flags gd.String) {
 Adds an iOS bundle file from the given [param path] to the exported project.
 */
 //go:nosplit
-func (self class) AddIosBundleFile(path gd.String) {
+func (self class) AddIosBundleFile(path gd.String) { //gd:EditorExportPlugin.add_ios_bundle_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -1294,7 +1294,7 @@ func (self class) AddIosBundleFile(path gd.String) {
 Adds a C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
 */
 //go:nosplit
-func (self class) AddIosCppCode(code gd.String) {
+func (self class) AddIosCppCode(code gd.String) { //gd:EditorExportPlugin.add_ios_cpp_code
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(code))
 	var r_ret = callframe.Nil
@@ -1307,7 +1307,7 @@ Adds file or directory matching [param path] to [code]PlugIns[/code] directory o
 [b]Note:[/b] This is useful only for macOS exports.
 */
 //go:nosplit
-func (self class) AddMacosPluginFile(path gd.String) {
+func (self class) AddMacosPluginFile(path gd.String) { //gd:EditorExportPlugin.add_macos_plugin_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -1319,7 +1319,7 @@ func (self class) AddMacosPluginFile(path gd.String) {
 To be called inside [method _export_file]. Skips the current file, so it's not included in the export.
 */
 //go:nosplit
-func (self class) Skip() {
+func (self class) Skip() { //gd:EditorExportPlugin.skip
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_skip, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1330,7 +1330,7 @@ func (self class) Skip() {
 Returns the current value of an export option supplied by [method _get_export_options].
 */
 //go:nosplit
-func (self class) GetOption(name gd.StringName) gd.Variant {
+func (self class) GetOption(name gd.StringName) gd.Variant { //gd:EditorExportPlugin.get_option
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[3]uint64](frame)

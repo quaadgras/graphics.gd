@@ -43,56 +43,56 @@ type Any interface {
 /*
 Set the name of the current clip (for easier identification).
 */
-func (self Instance) SetClipName(clip_index int, name string) {
+func (self Instance) SetClipName(clip_index int, name string) { //gd:AudioStreamInteractive.set_clip_name
 	class(self).SetClipName(gd.Int(clip_index), gd.NewStringName(name))
 }
 
 /*
 Return the name of a clip.
 */
-func (self Instance) GetClipName(clip_index int) string {
+func (self Instance) GetClipName(clip_index int) string { //gd:AudioStreamInteractive.get_clip_name
 	return string(class(self).GetClipName(gd.Int(clip_index)).String())
 }
 
 /*
 Set the [AudioStream] associated with the current clip.
 */
-func (self Instance) SetClipStream(clip_index int, stream [1]gdclass.AudioStream) {
+func (self Instance) SetClipStream(clip_index int, stream [1]gdclass.AudioStream) { //gd:AudioStreamInteractive.set_clip_stream
 	class(self).SetClipStream(gd.Int(clip_index), stream)
 }
 
 /*
 Return the [AudioStream] associated with a clip.
 */
-func (self Instance) GetClipStream(clip_index int) [1]gdclass.AudioStream {
+func (self Instance) GetClipStream(clip_index int) [1]gdclass.AudioStream { //gd:AudioStreamInteractive.get_clip_stream
 	return [1]gdclass.AudioStream(class(self).GetClipStream(gd.Int(clip_index)))
 }
 
 /*
 Set whether a clip will auto-advance by changing the auto-advance mode.
 */
-func (self Instance) SetClipAutoAdvance(clip_index int, mode gdclass.AudioStreamInteractiveAutoAdvanceMode) {
+func (self Instance) SetClipAutoAdvance(clip_index int, mode gdclass.AudioStreamInteractiveAutoAdvanceMode) { //gd:AudioStreamInteractive.set_clip_auto_advance
 	class(self).SetClipAutoAdvance(gd.Int(clip_index), mode)
 }
 
 /*
 Return whether a clip has auto-advance enabled. See [method set_clip_auto_advance].
 */
-func (self Instance) GetClipAutoAdvance(clip_index int) gdclass.AudioStreamInteractiveAutoAdvanceMode {
+func (self Instance) GetClipAutoAdvance(clip_index int) gdclass.AudioStreamInteractiveAutoAdvanceMode { //gd:AudioStreamInteractive.get_clip_auto_advance
 	return gdclass.AudioStreamInteractiveAutoAdvanceMode(class(self).GetClipAutoAdvance(gd.Int(clip_index)))
 }
 
 /*
 Set the index of the next clip towards which this clip will auto advance to when finished. If the clip being played loops, then auto-advance will be ignored.
 */
-func (self Instance) SetClipAutoAdvanceNextClip(clip_index int, auto_advance_next_clip int) {
+func (self Instance) SetClipAutoAdvanceNextClip(clip_index int, auto_advance_next_clip int) { //gd:AudioStreamInteractive.set_clip_auto_advance_next_clip
 	class(self).SetClipAutoAdvanceNextClip(gd.Int(clip_index), gd.Int(auto_advance_next_clip))
 }
 
 /*
 Return the clip towards which the clip referenced by [param clip_index] will auto-advance to.
 */
-func (self Instance) GetClipAutoAdvanceNextClip(clip_index int) int {
+func (self Instance) GetClipAutoAdvanceNextClip(clip_index int) int { //gd:AudioStreamInteractive.get_clip_auto_advance_next_clip
 	return int(int(class(self).GetClipAutoAdvanceNextClip(gd.Int(clip_index))))
 }
 
@@ -106,77 +106,77 @@ Add a transition between two clips. Provide the indices of the source and destin
 * [param filler_clip] the index of the filler clip.
 * If [param hold_previous] is used, then this clip will be remembered. This can be used together with [constant AUTO_ADVANCE_RETURN_TO_HOLD] to return to this clip after another is done playing.
 */
-func (self Instance) AddTransition(from_clip int, to_clip int, from_time gdclass.AudioStreamInteractiveTransitionFromTime, to_time gdclass.AudioStreamInteractiveTransitionToTime, fade_mode gdclass.AudioStreamInteractiveFadeMode, fade_beats Float.X) {
+func (self Instance) AddTransition(from_clip int, to_clip int, from_time gdclass.AudioStreamInteractiveTransitionFromTime, to_time gdclass.AudioStreamInteractiveTransitionToTime, fade_mode gdclass.AudioStreamInteractiveFadeMode, fade_beats Float.X) { //gd:AudioStreamInteractive.add_transition
 	class(self).AddTransition(gd.Int(from_clip), gd.Int(to_clip), from_time, to_time, fade_mode, gd.Float(fade_beats), false, gd.Int(-1), false)
 }
 
 /*
 Return true if a given transition exists (was added via [method add_transition]).
 */
-func (self Instance) HasTransition(from_clip int, to_clip int) bool {
+func (self Instance) HasTransition(from_clip int, to_clip int) bool { //gd:AudioStreamInteractive.has_transition
 	return bool(class(self).HasTransition(gd.Int(from_clip), gd.Int(to_clip)))
 }
 
 /*
 Erase a transition by providing [param from_clip] and [param to_clip] clip indices. [constant CLIP_ANY] can be used for either argument or both.
 */
-func (self Instance) EraseTransition(from_clip int, to_clip int) {
+func (self Instance) EraseTransition(from_clip int, to_clip int) { //gd:AudioStreamInteractive.erase_transition
 	class(self).EraseTransition(gd.Int(from_clip), gd.Int(to_clip))
 }
 
 /*
 Return the list of transitions (from, to interleaved).
 */
-func (self Instance) GetTransitionList() []int32 {
+func (self Instance) GetTransitionList() []int32 { //gd:AudioStreamInteractive.get_transition_list
 	return []int32(class(self).GetTransitionList().AsSlice())
 }
 
 /*
 Return the source time position for a transition (see [method add_transition]).
 */
-func (self Instance) GetTransitionFromTime(from_clip int, to_clip int) gdclass.AudioStreamInteractiveTransitionFromTime {
+func (self Instance) GetTransitionFromTime(from_clip int, to_clip int) gdclass.AudioStreamInteractiveTransitionFromTime { //gd:AudioStreamInteractive.get_transition_from_time
 	return gdclass.AudioStreamInteractiveTransitionFromTime(class(self).GetTransitionFromTime(gd.Int(from_clip), gd.Int(to_clip)))
 }
 
 /*
 Return the destination time position for a transition (see [method add_transition]).
 */
-func (self Instance) GetTransitionToTime(from_clip int, to_clip int) gdclass.AudioStreamInteractiveTransitionToTime {
+func (self Instance) GetTransitionToTime(from_clip int, to_clip int) gdclass.AudioStreamInteractiveTransitionToTime { //gd:AudioStreamInteractive.get_transition_to_time
 	return gdclass.AudioStreamInteractiveTransitionToTime(class(self).GetTransitionToTime(gd.Int(from_clip), gd.Int(to_clip)))
 }
 
 /*
 Return the mode for a transition (see [method add_transition]).
 */
-func (self Instance) GetTransitionFadeMode(from_clip int, to_clip int) gdclass.AudioStreamInteractiveFadeMode {
+func (self Instance) GetTransitionFadeMode(from_clip int, to_clip int) gdclass.AudioStreamInteractiveFadeMode { //gd:AudioStreamInteractive.get_transition_fade_mode
 	return gdclass.AudioStreamInteractiveFadeMode(class(self).GetTransitionFadeMode(gd.Int(from_clip), gd.Int(to_clip)))
 }
 
 /*
 Return the time (in beats) for a transition (see [method add_transition]).
 */
-func (self Instance) GetTransitionFadeBeats(from_clip int, to_clip int) Float.X {
+func (self Instance) GetTransitionFadeBeats(from_clip int, to_clip int) Float.X { //gd:AudioStreamInteractive.get_transition_fade_beats
 	return Float.X(Float.X(class(self).GetTransitionFadeBeats(gd.Int(from_clip), gd.Int(to_clip))))
 }
 
 /*
 Return whether a transition uses the [i]filler clip[/i] functionality (see [method add_transition]).
 */
-func (self Instance) IsTransitionUsingFillerClip(from_clip int, to_clip int) bool {
+func (self Instance) IsTransitionUsingFillerClip(from_clip int, to_clip int) bool { //gd:AudioStreamInteractive.is_transition_using_filler_clip
 	return bool(class(self).IsTransitionUsingFillerClip(gd.Int(from_clip), gd.Int(to_clip)))
 }
 
 /*
 Return the filler clip for a transition (see [method add_transition]).
 */
-func (self Instance) GetTransitionFillerClip(from_clip int, to_clip int) int {
+func (self Instance) GetTransitionFillerClip(from_clip int, to_clip int) int { //gd:AudioStreamInteractive.get_transition_filler_clip
 	return int(int(class(self).GetTransitionFillerClip(gd.Int(from_clip), gd.Int(to_clip))))
 }
 
 /*
 Return whether a transition uses the [i]hold previous[/i] functionality (see [method add_transition]).
 */
-func (self Instance) IsTransitionHoldingPrevious(from_clip int, to_clip int) bool {
+func (self Instance) IsTransitionHoldingPrevious(from_clip int, to_clip int) bool { //gd:AudioStreamInteractive.is_transition_holding_previous
 	return bool(class(self).IsTransitionHoldingPrevious(gd.Int(from_clip), gd.Int(to_clip)))
 }
 
@@ -216,7 +216,7 @@ func (self Instance) SetClipCount(value int) {
 }
 
 //go:nosplit
-func (self class) SetClipCount(clip_count gd.Int) {
+func (self class) SetClipCount(clip_count gd.Int) { //gd:AudioStreamInteractive.set_clip_count
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_count)
 	var r_ret = callframe.Nil
@@ -225,7 +225,7 @@ func (self class) SetClipCount(clip_count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetClipCount() gd.Int {
+func (self class) GetClipCount() gd.Int { //gd:AudioStreamInteractive.get_clip_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamInteractive.Bind_get_clip_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -235,7 +235,7 @@ func (self class) GetClipCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetInitialClip(clip_index gd.Int) {
+func (self class) SetInitialClip(clip_index gd.Int) { //gd:AudioStreamInteractive.set_initial_clip
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	var r_ret = callframe.Nil
@@ -244,7 +244,7 @@ func (self class) SetInitialClip(clip_index gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetInitialClip() gd.Int {
+func (self class) GetInitialClip() gd.Int { //gd:AudioStreamInteractive.get_initial_clip
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamInteractive.Bind_get_initial_clip, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -257,7 +257,7 @@ func (self class) GetInitialClip() gd.Int {
 Set the name of the current clip (for easier identification).
 */
 //go:nosplit
-func (self class) SetClipName(clip_index gd.Int, name gd.StringName) {
+func (self class) SetClipName(clip_index gd.Int, name gd.StringName) { //gd:AudioStreamInteractive.set_clip_name
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	callframe.Arg(frame, pointers.Get(name))
@@ -270,7 +270,7 @@ func (self class) SetClipName(clip_index gd.Int, name gd.StringName) {
 Return the name of a clip.
 */
 //go:nosplit
-func (self class) GetClipName(clip_index gd.Int) gd.StringName {
+func (self class) GetClipName(clip_index gd.Int) gd.StringName { //gd:AudioStreamInteractive.get_clip_name
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -284,7 +284,7 @@ func (self class) GetClipName(clip_index gd.Int) gd.StringName {
 Set the [AudioStream] associated with the current clip.
 */
 //go:nosplit
-func (self class) SetClipStream(clip_index gd.Int, stream [1]gdclass.AudioStream) {
+func (self class) SetClipStream(clip_index gd.Int, stream [1]gdclass.AudioStream) { //gd:AudioStreamInteractive.set_clip_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
@@ -297,7 +297,7 @@ func (self class) SetClipStream(clip_index gd.Int, stream [1]gdclass.AudioStream
 Return the [AudioStream] associated with a clip.
 */
 //go:nosplit
-func (self class) GetClipStream(clip_index gd.Int) [1]gdclass.AudioStream {
+func (self class) GetClipStream(clip_index gd.Int) [1]gdclass.AudioStream { //gd:AudioStreamInteractive.get_clip_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -311,7 +311,7 @@ func (self class) GetClipStream(clip_index gd.Int) [1]gdclass.AudioStream {
 Set whether a clip will auto-advance by changing the auto-advance mode.
 */
 //go:nosplit
-func (self class) SetClipAutoAdvance(clip_index gd.Int, mode gdclass.AudioStreamInteractiveAutoAdvanceMode) {
+func (self class) SetClipAutoAdvance(clip_index gd.Int, mode gdclass.AudioStreamInteractiveAutoAdvanceMode) { //gd:AudioStreamInteractive.set_clip_auto_advance
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	callframe.Arg(frame, mode)
@@ -324,7 +324,7 @@ func (self class) SetClipAutoAdvance(clip_index gd.Int, mode gdclass.AudioStream
 Return whether a clip has auto-advance enabled. See [method set_clip_auto_advance].
 */
 //go:nosplit
-func (self class) GetClipAutoAdvance(clip_index gd.Int) gdclass.AudioStreamInteractiveAutoAdvanceMode {
+func (self class) GetClipAutoAdvance(clip_index gd.Int) gdclass.AudioStreamInteractiveAutoAdvanceMode { //gd:AudioStreamInteractive.get_clip_auto_advance
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	var r_ret = callframe.Ret[gdclass.AudioStreamInteractiveAutoAdvanceMode](frame)
@@ -338,7 +338,7 @@ func (self class) GetClipAutoAdvance(clip_index gd.Int) gdclass.AudioStreamInter
 Set the index of the next clip towards which this clip will auto advance to when finished. If the clip being played loops, then auto-advance will be ignored.
 */
 //go:nosplit
-func (self class) SetClipAutoAdvanceNextClip(clip_index gd.Int, auto_advance_next_clip gd.Int) {
+func (self class) SetClipAutoAdvanceNextClip(clip_index gd.Int, auto_advance_next_clip gd.Int) { //gd:AudioStreamInteractive.set_clip_auto_advance_next_clip
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	callframe.Arg(frame, auto_advance_next_clip)
@@ -351,7 +351,7 @@ func (self class) SetClipAutoAdvanceNextClip(clip_index gd.Int, auto_advance_nex
 Return the clip towards which the clip referenced by [param clip_index] will auto-advance to.
 */
 //go:nosplit
-func (self class) GetClipAutoAdvanceNextClip(clip_index gd.Int) gd.Int {
+func (self class) GetClipAutoAdvanceNextClip(clip_index gd.Int) gd.Int { //gd:AudioStreamInteractive.get_clip_auto_advance_next_clip
 	var frame = callframe.New()
 	callframe.Arg(frame, clip_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -372,7 +372,7 @@ Add a transition between two clips. Provide the indices of the source and destin
 * If [param hold_previous] is used, then this clip will be remembered. This can be used together with [constant AUTO_ADVANCE_RETURN_TO_HOLD] to return to this clip after another is done playing.
 */
 //go:nosplit
-func (self class) AddTransition(from_clip gd.Int, to_clip gd.Int, from_time gdclass.AudioStreamInteractiveTransitionFromTime, to_time gdclass.AudioStreamInteractiveTransitionToTime, fade_mode gdclass.AudioStreamInteractiveFadeMode, fade_beats gd.Float, use_filler_clip bool, filler_clip gd.Int, hold_previous bool) {
+func (self class) AddTransition(from_clip gd.Int, to_clip gd.Int, from_time gdclass.AudioStreamInteractiveTransitionFromTime, to_time gdclass.AudioStreamInteractiveTransitionToTime, fade_mode gdclass.AudioStreamInteractiveFadeMode, fade_beats gd.Float, use_filler_clip bool, filler_clip gd.Int, hold_previous bool) { //gd:AudioStreamInteractive.add_transition
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -392,7 +392,7 @@ func (self class) AddTransition(from_clip gd.Int, to_clip gd.Int, from_time gdcl
 Return true if a given transition exists (was added via [method add_transition]).
 */
 //go:nosplit
-func (self class) HasTransition(from_clip gd.Int, to_clip gd.Int) bool {
+func (self class) HasTransition(from_clip gd.Int, to_clip gd.Int) bool { //gd:AudioStreamInteractive.has_transition
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -407,7 +407,7 @@ func (self class) HasTransition(from_clip gd.Int, to_clip gd.Int) bool {
 Erase a transition by providing [param from_clip] and [param to_clip] clip indices. [constant CLIP_ANY] can be used for either argument or both.
 */
 //go:nosplit
-func (self class) EraseTransition(from_clip gd.Int, to_clip gd.Int) {
+func (self class) EraseTransition(from_clip gd.Int, to_clip gd.Int) { //gd:AudioStreamInteractive.erase_transition
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -420,7 +420,7 @@ func (self class) EraseTransition(from_clip gd.Int, to_clip gd.Int) {
 Return the list of transitions (from, to interleaved).
 */
 //go:nosplit
-func (self class) GetTransitionList() gd.PackedInt32Array {
+func (self class) GetTransitionList() gd.PackedInt32Array { //gd:AudioStreamInteractive.get_transition_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamInteractive.Bind_get_transition_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -433,7 +433,7 @@ func (self class) GetTransitionList() gd.PackedInt32Array {
 Return the source time position for a transition (see [method add_transition]).
 */
 //go:nosplit
-func (self class) GetTransitionFromTime(from_clip gd.Int, to_clip gd.Int) gdclass.AudioStreamInteractiveTransitionFromTime {
+func (self class) GetTransitionFromTime(from_clip gd.Int, to_clip gd.Int) gdclass.AudioStreamInteractiveTransitionFromTime { //gd:AudioStreamInteractive.get_transition_from_time
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -448,7 +448,7 @@ func (self class) GetTransitionFromTime(from_clip gd.Int, to_clip gd.Int) gdclas
 Return the destination time position for a transition (see [method add_transition]).
 */
 //go:nosplit
-func (self class) GetTransitionToTime(from_clip gd.Int, to_clip gd.Int) gdclass.AudioStreamInteractiveTransitionToTime {
+func (self class) GetTransitionToTime(from_clip gd.Int, to_clip gd.Int) gdclass.AudioStreamInteractiveTransitionToTime { //gd:AudioStreamInteractive.get_transition_to_time
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -463,7 +463,7 @@ func (self class) GetTransitionToTime(from_clip gd.Int, to_clip gd.Int) gdclass.
 Return the mode for a transition (see [method add_transition]).
 */
 //go:nosplit
-func (self class) GetTransitionFadeMode(from_clip gd.Int, to_clip gd.Int) gdclass.AudioStreamInteractiveFadeMode {
+func (self class) GetTransitionFadeMode(from_clip gd.Int, to_clip gd.Int) gdclass.AudioStreamInteractiveFadeMode { //gd:AudioStreamInteractive.get_transition_fade_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -478,7 +478,7 @@ func (self class) GetTransitionFadeMode(from_clip gd.Int, to_clip gd.Int) gdclas
 Return the time (in beats) for a transition (see [method add_transition]).
 */
 //go:nosplit
-func (self class) GetTransitionFadeBeats(from_clip gd.Int, to_clip gd.Int) gd.Float {
+func (self class) GetTransitionFadeBeats(from_clip gd.Int, to_clip gd.Int) gd.Float { //gd:AudioStreamInteractive.get_transition_fade_beats
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -493,7 +493,7 @@ func (self class) GetTransitionFadeBeats(from_clip gd.Int, to_clip gd.Int) gd.Fl
 Return whether a transition uses the [i]filler clip[/i] functionality (see [method add_transition]).
 */
 //go:nosplit
-func (self class) IsTransitionUsingFillerClip(from_clip gd.Int, to_clip gd.Int) bool {
+func (self class) IsTransitionUsingFillerClip(from_clip gd.Int, to_clip gd.Int) bool { //gd:AudioStreamInteractive.is_transition_using_filler_clip
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -508,7 +508,7 @@ func (self class) IsTransitionUsingFillerClip(from_clip gd.Int, to_clip gd.Int) 
 Return the filler clip for a transition (see [method add_transition]).
 */
 //go:nosplit
-func (self class) GetTransitionFillerClip(from_clip gd.Int, to_clip gd.Int) gd.Int {
+func (self class) GetTransitionFillerClip(from_clip gd.Int, to_clip gd.Int) gd.Int { //gd:AudioStreamInteractive.get_transition_filler_clip
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -523,7 +523,7 @@ func (self class) GetTransitionFillerClip(from_clip gd.Int, to_clip gd.Int) gd.I
 Return whether a transition uses the [i]hold previous[/i] functionality (see [method add_transition]).
 */
 //go:nosplit
-func (self class) IsTransitionHoldingPrevious(from_clip gd.Int, to_clip gd.Int) bool {
+func (self class) IsTransitionHoldingPrevious(from_clip gd.Int, to_clip gd.Int) bool { //gd:AudioStreamInteractive.is_transition_holding_previous
 	var frame = callframe.New()
 	callframe.Arg(frame, from_clip)
 	callframe.Arg(frame, to_clip)
@@ -575,7 +575,7 @@ func init() {
 	})
 }
 
-type TransitionFromTime = gdclass.AudioStreamInteractiveTransitionFromTime
+type TransitionFromTime = gdclass.AudioStreamInteractiveTransitionFromTime //gd:AudioStreamInteractive.TransitionFromTime
 
 const (
 	/*Start transition as soon as possible, don't wait for any specific time position.*/
@@ -588,7 +588,7 @@ const (
 	TransitionFromTimeEnd TransitionFromTime = 3
 )
 
-type TransitionToTime = gdclass.AudioStreamInteractiveTransitionToTime
+type TransitionToTime = gdclass.AudioStreamInteractiveTransitionToTime //gd:AudioStreamInteractive.TransitionToTime
 
 const (
 	/*Transition to the same position in the destination clip. This is useful when both clips have exactly the same length and the music should fade between them.*/
@@ -597,7 +597,7 @@ const (
 	TransitionToTimeStart TransitionToTime = 1
 )
 
-type FadeMode = gdclass.AudioStreamInteractiveFadeMode
+type FadeMode = gdclass.AudioStreamInteractiveFadeMode //gd:AudioStreamInteractive.FadeMode
 
 const (
 	/*Do not use fade for the transition. This is useful when transitioning from a clip-end to clip-beginning, and each clip has their begin/end.*/
@@ -612,7 +612,7 @@ const (
 	FadeAutomatic FadeMode = 4
 )
 
-type AutoAdvanceMode = gdclass.AudioStreamInteractiveAutoAdvanceMode
+type AutoAdvanceMode = gdclass.AudioStreamInteractiveAutoAdvanceMode //gd:AudioStreamInteractive.AutoAdvanceMode
 
 const (
 	/*Disable auto-advance (default).*/

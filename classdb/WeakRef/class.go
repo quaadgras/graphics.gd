@@ -39,7 +39,7 @@ type Any interface {
 /*
 Returns the [Object] this weakref is referring to. Returns [code]null[/code] if that object no longer exists.
 */
-func (self Instance) GetRef() any {
+func (self Instance) GetRef() any { //gd:WeakRef.get_ref
 	return any(class(self).GetRef().Interface())
 }
 
@@ -66,7 +66,7 @@ func New() Instance {
 Returns the [Object] this weakref is referring to. Returns [code]null[/code] if that object no longer exists.
 */
 //go:nosplit
-func (self class) GetRef() gd.Variant {
+func (self class) GetRef() gd.Variant { //gd:WeakRef.get_ref
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[3]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WeakRef.Bind_get_ref, self.AsObject(), frame.Array(0), r_ret.Addr())

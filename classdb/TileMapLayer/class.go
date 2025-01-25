@@ -110,49 +110,49 @@ Sets the tile identifiers for the cell at coordinates [param coords]. Each tile 
 - The alternative tile identifier [param alternative_tile] identifies a tile alternative in the atlas (if the source is a [TileSetAtlasSource]), and the scene for a [TileSetScenesCollectionSource].
 If [param source_id] is set to [code]-1[/code], [param atlas_coords] to [code]Vector2i(-1, -1)[/code], or [param alternative_tile] to [code]-1[/code], the cell will be erased. An erased cell gets [b]all[/b] its identifiers automatically set to their respective invalid values, namely [code]-1[/code], [code]Vector2i(-1, -1)[/code] and [code]-1[/code].
 */
-func (self Instance) SetCell(coords Vector2i.XY) {
+func (self Instance) SetCell(coords Vector2i.XY) { //gd:TileMapLayer.set_cell
 	class(self).SetCell(gd.Vector2i(coords), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(0))
 }
 
 /*
 Erases the cell at coordinates [param coords].
 */
-func (self Instance) EraseCell(coords Vector2i.XY) {
+func (self Instance) EraseCell(coords Vector2i.XY) { //gd:TileMapLayer.erase_cell
 	class(self).EraseCell(gd.Vector2i(coords))
 }
 
 /*
 Clears cells containing tiles that do not exist in the [member tile_set].
 */
-func (self Instance) FixInvalidTiles() {
+func (self Instance) FixInvalidTiles() { //gd:TileMapLayer.fix_invalid_tiles
 	class(self).FixInvalidTiles()
 }
 
 /*
 Clears all cells.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:TileMapLayer.clear
 	class(self).Clear()
 }
 
 /*
 Returns the tile source ID of the cell at coordinates [param coords]. Returns [code]-1[/code] if the cell does not exist.
 */
-func (self Instance) GetCellSourceId(coords Vector2i.XY) int {
+func (self Instance) GetCellSourceId(coords Vector2i.XY) int { //gd:TileMapLayer.get_cell_source_id
 	return int(int(class(self).GetCellSourceId(gd.Vector2i(coords))))
 }
 
 /*
 Returns the tile atlas coordinates ID of the cell at coordinates [param coords]. Returns [code]Vector2i(-1, -1)[/code] if the cell does not exist.
 */
-func (self Instance) GetCellAtlasCoords(coords Vector2i.XY) Vector2i.XY {
+func (self Instance) GetCellAtlasCoords(coords Vector2i.XY) Vector2i.XY { //gd:TileMapLayer.get_cell_atlas_coords
 	return Vector2i.XY(class(self).GetCellAtlasCoords(gd.Vector2i(coords)))
 }
 
 /*
 Returns the tile alternative ID of the cell at coordinates [param coords].
 */
-func (self Instance) GetCellAlternativeTile(coords Vector2i.XY) int {
+func (self Instance) GetCellAlternativeTile(coords Vector2i.XY) int { //gd:TileMapLayer.get_cell_alternative_tile
 	return int(int(class(self).GetCellAlternativeTile(gd.Vector2i(coords))))
 }
 
@@ -170,14 +170,14 @@ func get_clicked_tile_power():
 
 [/codeblock]
 */
-func (self Instance) GetCellTileData(coords Vector2i.XY) [1]gdclass.TileData {
+func (self Instance) GetCellTileData(coords Vector2i.XY) [1]gdclass.TileData { //gd:TileMapLayer.get_cell_tile_data
 	return [1]gdclass.TileData(class(self).GetCellTileData(gd.Vector2i(coords)))
 }
 
 /*
 Returns a [Vector2i] array with the positions of all cells containing a tile. A cell is considered empty if its source identifier equals [code]-1[/code], its atlas coordinate identifier is [code]Vector2(-1, -1)[/code] and its alternative identifier is [code]-1[/code].
 */
-func (self Instance) GetUsedCells() []Vector2i.XY {
+func (self Instance) GetUsedCells() []Vector2i.XY { //gd:TileMapLayer.get_used_cells
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetUsedCells())))
 }
 
@@ -186,28 +186,28 @@ Returns a [Vector2i] array with the positions of all cells containing a tile. Ti
 If a parameter has its value set to the default one, this parameter is not used to filter a cell. Thus, if all parameters have their respective default values, this method returns the same result as [method get_used_cells].
 A cell is considered empty if its source identifier equals [code]-1[/code], its atlas coordinate identifier is [code]Vector2(-1, -1)[/code] and its alternative identifier is [code]-1[/code].
 */
-func (self Instance) GetUsedCellsById() []Vector2i.XY {
+func (self Instance) GetUsedCellsById() []Vector2i.XY { //gd:TileMapLayer.get_used_cells_by_id
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetUsedCellsById(gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1)))))
 }
 
 /*
 Returns a rectangle enclosing the used (non-empty) tiles of the map.
 */
-func (self Instance) GetUsedRect() Rect2i.PositionSize {
+func (self Instance) GetUsedRect() Rect2i.PositionSize { //gd:TileMapLayer.get_used_rect
 	return Rect2i.PositionSize(class(self).GetUsedRect())
 }
 
 /*
 Creates and returns a new [TileMapPattern] from the given array of cells. See also [method set_pattern].
 */
-func (self Instance) GetPattern(coords_array []Vector2i.XY) [1]gdclass.TileMapPattern {
+func (self Instance) GetPattern(coords_array []Vector2i.XY) [1]gdclass.TileMapPattern { //gd:TileMapLayer.get_pattern
 	return [1]gdclass.TileMapPattern(class(self).GetPattern(gd.ArrayFromSlice[Array.Contains[gd.Vector2i]](coords_array)))
 }
 
 /*
 Pastes the [TileMapPattern] at the given [param position] in the tile map. See also [method get_pattern].
 */
-func (self Instance) SetPattern(position Vector2i.XY, pattern [1]gdclass.TileMapPattern) {
+func (self Instance) SetPattern(position Vector2i.XY, pattern [1]gdclass.TileMapPattern) { //gd:TileMapLayer.set_pattern
 	class(self).SetPattern(gd.Vector2i(position), pattern)
 }
 
@@ -216,7 +216,7 @@ Update all the cells in the [param cells] coordinates array so that they use the
 If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
-func (self Instance) SetCellsTerrainConnect(cells []Vector2i.XY, terrain_set int, terrain int) {
+func (self Instance) SetCellsTerrainConnect(cells []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMapLayer.set_cells_terrain_connect
 	class(self).SetCellsTerrainConnect(gd.ArrayFromSlice[Array.Contains[gd.Vector2i]](cells), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
@@ -225,21 +225,21 @@ Update all the cells in the [param path] coordinates array so that they use the 
 If [param ignore_empty_terrains] is true, empty terrains will be ignored when trying to find the best fitting tile for the given terrain constraints.
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
-func (self Instance) SetCellsTerrainPath(path []Vector2i.XY, terrain_set int, terrain int) {
+func (self Instance) SetCellsTerrainPath(path []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMapLayer.set_cells_terrain_path
 	class(self).SetCellsTerrainPath(gd.ArrayFromSlice[Array.Contains[gd.Vector2i]](path), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
 /*
 Returns whether the provided [param body] [RID] belongs to one of this [TileMapLayer]'s cells.
 */
-func (self Instance) HasBodyRid(body Resource.ID) bool {
+func (self Instance) HasBodyRid(body Resource.ID) bool { //gd:TileMapLayer.has_body_rid
 	return bool(class(self).HasBodyRid(body))
 }
 
 /*
 Returns the coordinates of the tile for given physics body [RID]. Such an [RID] can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
-func (self Instance) GetCoordsForBodyRid(body Resource.ID) Vector2i.XY {
+func (self Instance) GetCoordsForBodyRid(body Resource.ID) Vector2i.XY { //gd:TileMapLayer.get_coords_for_body_rid
 	return Vector2i.XY(class(self).GetCoordsForBodyRid(body))
 }
 
@@ -248,7 +248,7 @@ Triggers a direct update of the [TileMapLayer]. Usually, calling this function i
 However, for performance reasons, those updates are batched and delayed to the end of the frame. Calling this function will force the [TileMapLayer] to update right away instead.
 [b]Warning:[/b] Updating the [TileMapLayer] is computationally expensive and may impact performance. Try to limit the number of updates and how many tiles they impact.
 */
-func (self Instance) UpdateInternals() {
+func (self Instance) UpdateInternals() { //gd:TileMapLayer.update_internals
 	class(self).UpdateInternals()
 }
 
@@ -257,28 +257,28 @@ Notifies the [TileMapLayer] node that calls to [method _use_tile_data_runtime_up
 [b]Warning:[/b] Updating the [TileMapLayer] is computationally expensive and may impact performance. Try to limit the number of calls to this function to avoid unnecessary update.
 [b]Note:[/b] This does not trigger a direct update of the [TileMapLayer], the update will be done at the end of the frame as usual (unless you call [method update_internals]).
 */
-func (self Instance) NotifyRuntimeTileDataUpdate() {
+func (self Instance) NotifyRuntimeTileDataUpdate() { //gd:TileMapLayer.notify_runtime_tile_data_update
 	class(self).NotifyRuntimeTileDataUpdate()
 }
 
 /*
 Returns for the given coordinates [param coords_in_pattern] in a [TileMapPattern] the corresponding cell coordinates if the pattern was pasted at the [param position_in_tilemap] coordinates (see [method set_pattern]). This mapping is required as in half-offset tile shapes, the mapping might not work by calculating [code]position_in_tile_map + coords_in_pattern[/code].
 */
-func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern [1]gdclass.TileMapPattern) Vector2i.XY {
+func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern [1]gdclass.TileMapPattern) Vector2i.XY { //gd:TileMapLayer.map_pattern
 	return Vector2i.XY(class(self).MapPattern(gd.Vector2i(position_in_tilemap), gd.Vector2i(coords_in_pattern), pattern))
 }
 
 /*
 Returns the list of all neighboring cells to the one at [param coords].
 */
-func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY {
+func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY { //gd:TileMapLayer.get_surrounding_cells
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetSurroundingCells(gd.Vector2i(coords)))))
 }
 
 /*
 Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 */
-func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor gdclass.TileSetCellNeighbor) Vector2i.XY {
+func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor gdclass.TileSetCellNeighbor) Vector2i.XY { //gd:TileMapLayer.get_neighbor_cell
 	return Vector2i.XY(class(self).GetNeighborCell(gd.Vector2i(coords), neighbor))
 }
 
@@ -286,21 +286,21 @@ func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor gdclass.TileSe
 Returns the centered position of a cell in the [TileMapLayer]'s local coordinate space. To convert the returned value into global coordinates, use [method Node2D.to_global]. See also [method local_to_map].
 [b]Note:[/b] This may not correspond to the visual position of the tile, i.e. it ignores the [member TileData.texture_origin] property of individual tiles.
 */
-func (self Instance) MapToLocal(map_position Vector2i.XY) Vector2.XY {
+func (self Instance) MapToLocal(map_position Vector2i.XY) Vector2.XY { //gd:TileMapLayer.map_to_local
 	return Vector2.XY(class(self).MapToLocal(gd.Vector2i(map_position)))
 }
 
 /*
 Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node2D.to_local] before passing it to this method. See also [method map_to_local].
 */
-func (self Instance) LocalToMap(local_position Vector2.XY) Vector2i.XY {
+func (self Instance) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:TileMapLayer.local_to_map
 	return Vector2i.XY(class(self).LocalToMap(gd.Vector2(local_position)))
 }
 
 /*
 Sets a custom [param map] as a [NavigationServer2D] navigation map. If not set, uses the default [World2D] navigation map instead.
 */
-func (self Instance) SetNavigationMap(mapping Resource.ID) {
+func (self Instance) SetNavigationMap(mapping Resource.ID) { //gd:TileMapLayer.set_navigation_map
 	class(self).SetNavigationMap(mapping)
 }
 
@@ -308,7 +308,7 @@ func (self Instance) SetNavigationMap(mapping Resource.ID) {
 Returns the [RID] of the [NavigationServer2D] navigation used by this [TileMapLayer].
 By default this returns the default [World2D] navigation map, unless a custom map was provided using [method set_navigation_map].
 */
-func (self Instance) GetNavigationMap() Resource.ID {
+func (self Instance) GetNavigationMap() Resource.ID { //gd:TileMapLayer.get_navigation_map
 	return Resource.ID(class(self).GetNavigationMap())
 }
 
@@ -459,7 +459,7 @@ Sets the tile identifiers for the cell at coordinates [param coords]. Each tile 
 If [param source_id] is set to [code]-1[/code], [param atlas_coords] to [code]Vector2i(-1, -1)[/code], or [param alternative_tile] to [code]-1[/code], the cell will be erased. An erased cell gets [b]all[/b] its identifiers automatically set to their respective invalid values, namely [code]-1[/code], [code]Vector2i(-1, -1)[/code] and [code]-1[/code].
 */
 //go:nosplit
-func (self class) SetCell(coords gd.Vector2i, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) {
+func (self class) SetCell(coords gd.Vector2i, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) { //gd:TileMapLayer.set_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, source_id)
@@ -474,7 +474,7 @@ func (self class) SetCell(coords gd.Vector2i, source_id gd.Int, atlas_coords gd.
 Erases the cell at coordinates [param coords].
 */
 //go:nosplit
-func (self class) EraseCell(coords gd.Vector2i) {
+func (self class) EraseCell(coords gd.Vector2i) { //gd:TileMapLayer.erase_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Nil
@@ -486,7 +486,7 @@ func (self class) EraseCell(coords gd.Vector2i) {
 Clears cells containing tiles that do not exist in the [member tile_set].
 */
 //go:nosplit
-func (self class) FixInvalidTiles() {
+func (self class) FixInvalidTiles() { //gd:TileMapLayer.fix_invalid_tiles
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_fix_invalid_tiles, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -497,7 +497,7 @@ func (self class) FixInvalidTiles() {
 Clears all cells.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:TileMapLayer.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -508,7 +508,7 @@ func (self class) Clear() {
 Returns the tile source ID of the cell at coordinates [param coords]. Returns [code]-1[/code] if the cell does not exist.
 */
 //go:nosplit
-func (self class) GetCellSourceId(coords gd.Vector2i) gd.Int {
+func (self class) GetCellSourceId(coords gd.Vector2i) gd.Int { //gd:TileMapLayer.get_cell_source_id
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -522,7 +522,7 @@ func (self class) GetCellSourceId(coords gd.Vector2i) gd.Int {
 Returns the tile atlas coordinates ID of the cell at coordinates [param coords]. Returns [code]Vector2i(-1, -1)[/code] if the cell does not exist.
 */
 //go:nosplit
-func (self class) GetCellAtlasCoords(coords gd.Vector2i) gd.Vector2i {
+func (self class) GetCellAtlasCoords(coords gd.Vector2i) gd.Vector2i { //gd:TileMapLayer.get_cell_atlas_coords
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -536,7 +536,7 @@ func (self class) GetCellAtlasCoords(coords gd.Vector2i) gd.Vector2i {
 Returns the tile alternative ID of the cell at coordinates [param coords].
 */
 //go:nosplit
-func (self class) GetCellAlternativeTile(coords gd.Vector2i) gd.Int {
+func (self class) GetCellAlternativeTile(coords gd.Vector2i) gd.Int { //gd:TileMapLayer.get_cell_alternative_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -559,7 +559,7 @@ func get_clicked_tile_power():
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetCellTileData(coords gd.Vector2i) [1]gdclass.TileData {
+func (self class) GetCellTileData(coords gd.Vector2i) [1]gdclass.TileData { //gd:TileMapLayer.get_cell_tile_data
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -573,7 +573,7 @@ func (self class) GetCellTileData(coords gd.Vector2i) [1]gdclass.TileData {
 Returns a [Vector2i] array with the positions of all cells containing a tile. A cell is considered empty if its source identifier equals [code]-1[/code], its atlas coordinate identifier is [code]Vector2(-1, -1)[/code] and its alternative identifier is [code]-1[/code].
 */
 //go:nosplit
-func (self class) GetUsedCells() Array.Contains[gd.Vector2i] {
+func (self class) GetUsedCells() Array.Contains[gd.Vector2i] { //gd:TileMapLayer.get_used_cells
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -588,7 +588,7 @@ If a parameter has its value set to the default one, this parameter is not used 
 A cell is considered empty if its source identifier equals [code]-1[/code], its atlas coordinate identifier is [code]Vector2(-1, -1)[/code] and its alternative identifier is [code]-1[/code].
 */
 //go:nosplit
-func (self class) GetUsedCellsById(source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) Array.Contains[gd.Vector2i] {
+func (self class) GetUsedCellsById(source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) Array.Contains[gd.Vector2i] { //gd:TileMapLayer.get_used_cells_by_id
 	var frame = callframe.New()
 	callframe.Arg(frame, source_id)
 	callframe.Arg(frame, atlas_coords)
@@ -604,7 +604,7 @@ func (self class) GetUsedCellsById(source_id gd.Int, atlas_coords gd.Vector2i, a
 Returns a rectangle enclosing the used (non-empty) tiles of the map.
 */
 //go:nosplit
-func (self class) GetUsedRect() gd.Rect2i {
+func (self class) GetUsedRect() gd.Rect2i { //gd:TileMapLayer.get_used_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_used_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -617,7 +617,7 @@ func (self class) GetUsedRect() gd.Rect2i {
 Creates and returns a new [TileMapPattern] from the given array of cells. See also [method set_pattern].
 */
 //go:nosplit
-func (self class) GetPattern(coords_array Array.Contains[gd.Vector2i]) [1]gdclass.TileMapPattern {
+func (self class) GetPattern(coords_array Array.Contains[gd.Vector2i]) [1]gdclass.TileMapPattern { //gd:TileMapLayer.get_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(coords_array)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -631,7 +631,7 @@ func (self class) GetPattern(coords_array Array.Contains[gd.Vector2i]) [1]gdclas
 Pastes the [TileMapPattern] at the given [param position] in the tile map. See also [method get_pattern].
 */
 //go:nosplit
-func (self class) SetPattern(position gd.Vector2i, pattern [1]gdclass.TileMapPattern) {
+func (self class) SetPattern(position gd.Vector2i, pattern [1]gdclass.TileMapPattern) { //gd:TileMapLayer.set_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, pointers.Get(pattern[0])[0])
@@ -646,7 +646,7 @@ If [param ignore_empty_terrains] is true, empty terrains will be ignored when tr
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 //go:nosplit
-func (self class) SetCellsTerrainConnect(cells Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) {
+func (self class) SetCellsTerrainConnect(cells Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) { //gd:TileMapLayer.set_cells_terrain_connect
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(cells)))
 	callframe.Arg(frame, terrain_set)
@@ -663,7 +663,7 @@ If [param ignore_empty_terrains] is true, empty terrains will be ignored when tr
 [b]Note:[/b] To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 //go:nosplit
-func (self class) SetCellsTerrainPath(path Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) {
+func (self class) SetCellsTerrainPath(path Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) { //gd:TileMapLayer.set_cells_terrain_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(path)))
 	callframe.Arg(frame, terrain_set)
@@ -678,7 +678,7 @@ func (self class) SetCellsTerrainPath(path Array.Contains[gd.Vector2i], terrain_
 Returns whether the provided [param body] [RID] belongs to one of this [TileMapLayer]'s cells.
 */
 //go:nosplit
-func (self class) HasBodyRid(body gd.RID) bool {
+func (self class) HasBodyRid(body gd.RID) bool { //gd:TileMapLayer.has_body_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[bool](frame)
@@ -692,7 +692,7 @@ func (self class) HasBodyRid(body gd.RID) bool {
 Returns the coordinates of the tile for given physics body [RID]. Such an [RID] can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
 //go:nosplit
-func (self class) GetCoordsForBodyRid(body gd.RID) gd.Vector2i {
+func (self class) GetCoordsForBodyRid(body gd.RID) gd.Vector2i { //gd:TileMapLayer.get_coords_for_body_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -708,7 +708,7 @@ However, for performance reasons, those updates are batched and delayed to the e
 [b]Warning:[/b] Updating the [TileMapLayer] is computationally expensive and may impact performance. Try to limit the number of updates and how many tiles they impact.
 */
 //go:nosplit
-func (self class) UpdateInternals() {
+func (self class) UpdateInternals() { //gd:TileMapLayer.update_internals
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_update_internals, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -721,7 +721,7 @@ Notifies the [TileMapLayer] node that calls to [method _use_tile_data_runtime_up
 [b]Note:[/b] This does not trigger a direct update of the [TileMapLayer], the update will be done at the end of the frame as usual (unless you call [method update_internals]).
 */
 //go:nosplit
-func (self class) NotifyRuntimeTileDataUpdate() {
+func (self class) NotifyRuntimeTileDataUpdate() { //gd:TileMapLayer.notify_runtime_tile_data_update
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_notify_runtime_tile_data_update, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -732,7 +732,7 @@ func (self class) NotifyRuntimeTileDataUpdate() {
 Returns for the given coordinates [param coords_in_pattern] in a [TileMapPattern] the corresponding cell coordinates if the pattern was pasted at the [param position_in_tilemap] coordinates (see [method set_pattern]). This mapping is required as in half-offset tile shapes, the mapping might not work by calculating [code]position_in_tile_map + coords_in_pattern[/code].
 */
 //go:nosplit
-func (self class) MapPattern(position_in_tilemap gd.Vector2i, coords_in_pattern gd.Vector2i, pattern [1]gdclass.TileMapPattern) gd.Vector2i {
+func (self class) MapPattern(position_in_tilemap gd.Vector2i, coords_in_pattern gd.Vector2i, pattern [1]gdclass.TileMapPattern) gd.Vector2i { //gd:TileMapLayer.map_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, position_in_tilemap)
 	callframe.Arg(frame, coords_in_pattern)
@@ -748,7 +748,7 @@ func (self class) MapPattern(position_in_tilemap gd.Vector2i, coords_in_pattern 
 Returns the list of all neighboring cells to the one at [param coords].
 */
 //go:nosplit
-func (self class) GetSurroundingCells(coords gd.Vector2i) Array.Contains[gd.Vector2i] {
+func (self class) GetSurroundingCells(coords gd.Vector2i) Array.Contains[gd.Vector2i] { //gd:TileMapLayer.get_surrounding_cells
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -762,7 +762,7 @@ func (self class) GetSurroundingCells(coords gd.Vector2i) Array.Contains[gd.Vect
 Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 */
 //go:nosplit
-func (self class) GetNeighborCell(coords gd.Vector2i, neighbor gdclass.TileSetCellNeighbor) gd.Vector2i {
+func (self class) GetNeighborCell(coords gd.Vector2i, neighbor gdclass.TileSetCellNeighbor) gd.Vector2i { //gd:TileMapLayer.get_neighbor_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, neighbor)
@@ -778,7 +778,7 @@ Returns the centered position of a cell in the [TileMapLayer]'s local coordinate
 [b]Note:[/b] This may not correspond to the visual position of the tile, i.e. it ignores the [member TileData.texture_origin] property of individual tiles.
 */
 //go:nosplit
-func (self class) MapToLocal(map_position gd.Vector2i) gd.Vector2 {
+func (self class) MapToLocal(map_position gd.Vector2i) gd.Vector2 { //gd:TileMapLayer.map_to_local
 	var frame = callframe.New()
 	callframe.Arg(frame, map_position)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -792,7 +792,7 @@ func (self class) MapToLocal(map_position gd.Vector2i) gd.Vector2 {
 Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node2D.to_local] before passing it to this method. See also [method map_to_local].
 */
 //go:nosplit
-func (self class) LocalToMap(local_position gd.Vector2) gd.Vector2i {
+func (self class) LocalToMap(local_position gd.Vector2) gd.Vector2i { //gd:TileMapLayer.local_to_map
 	var frame = callframe.New()
 	callframe.Arg(frame, local_position)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -803,7 +803,7 @@ func (self class) LocalToMap(local_position gd.Vector2) gd.Vector2i {
 }
 
 //go:nosplit
-func (self class) SetTileMapDataFromArray(tile_map_layer_data gd.PackedByteArray) {
+func (self class) SetTileMapDataFromArray(tile_map_layer_data gd.PackedByteArray) { //gd:TileMapLayer.set_tile_map_data_from_array
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tile_map_layer_data))
 	var r_ret = callframe.Nil
@@ -812,7 +812,7 @@ func (self class) SetTileMapDataFromArray(tile_map_layer_data gd.PackedByteArray
 }
 
 //go:nosplit
-func (self class) GetTileMapDataAsArray() gd.PackedByteArray {
+func (self class) GetTileMapDataAsArray() gd.PackedByteArray { //gd:TileMapLayer.get_tile_map_data_as_array
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_tile_map_data_as_array, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -822,7 +822,7 @@ func (self class) GetTileMapDataAsArray() gd.PackedByteArray {
 }
 
 //go:nosplit
-func (self class) SetEnabled(enabled bool) {
+func (self class) SetEnabled(enabled bool) { //gd:TileMapLayer.set_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -831,7 +831,7 @@ func (self class) SetEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsEnabled() bool {
+func (self class) IsEnabled() bool { //gd:TileMapLayer.is_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -841,7 +841,7 @@ func (self class) IsEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetTileSet(tile_set [1]gdclass.TileSet) {
+func (self class) SetTileSet(tile_set [1]gdclass.TileSet) { //gd:TileMapLayer.set_tile_set
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tile_set[0])[0])
 	var r_ret = callframe.Nil
@@ -850,7 +850,7 @@ func (self class) SetTileSet(tile_set [1]gdclass.TileSet) {
 }
 
 //go:nosplit
-func (self class) GetTileSet() [1]gdclass.TileSet {
+func (self class) GetTileSet() [1]gdclass.TileSet { //gd:TileMapLayer.get_tile_set
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_tile_set, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -860,7 +860,7 @@ func (self class) GetTileSet() [1]gdclass.TileSet {
 }
 
 //go:nosplit
-func (self class) SetYSortOrigin(y_sort_origin gd.Int) {
+func (self class) SetYSortOrigin(y_sort_origin gd.Int) { //gd:TileMapLayer.set_y_sort_origin
 	var frame = callframe.New()
 	callframe.Arg(frame, y_sort_origin)
 	var r_ret = callframe.Nil
@@ -869,7 +869,7 @@ func (self class) SetYSortOrigin(y_sort_origin gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetYSortOrigin() gd.Int {
+func (self class) GetYSortOrigin() gd.Int { //gd:TileMapLayer.get_y_sort_origin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_y_sort_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -879,7 +879,7 @@ func (self class) GetYSortOrigin() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetXDrawOrderReversed(x_draw_order_reversed bool) {
+func (self class) SetXDrawOrderReversed(x_draw_order_reversed bool) { //gd:TileMapLayer.set_x_draw_order_reversed
 	var frame = callframe.New()
 	callframe.Arg(frame, x_draw_order_reversed)
 	var r_ret = callframe.Nil
@@ -888,7 +888,7 @@ func (self class) SetXDrawOrderReversed(x_draw_order_reversed bool) {
 }
 
 //go:nosplit
-func (self class) IsXDrawOrderReversed() bool {
+func (self class) IsXDrawOrderReversed() bool { //gd:TileMapLayer.is_x_draw_order_reversed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_x_draw_order_reversed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -898,7 +898,7 @@ func (self class) IsXDrawOrderReversed() bool {
 }
 
 //go:nosplit
-func (self class) SetRenderingQuadrantSize(size gd.Int) {
+func (self class) SetRenderingQuadrantSize(size gd.Int) { //gd:TileMapLayer.set_rendering_quadrant_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -907,7 +907,7 @@ func (self class) SetRenderingQuadrantSize(size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRenderingQuadrantSize() gd.Int {
+func (self class) GetRenderingQuadrantSize() gd.Int { //gd:TileMapLayer.get_rendering_quadrant_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_rendering_quadrant_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -917,7 +917,7 @@ func (self class) GetRenderingQuadrantSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCollisionEnabled(enabled bool) {
+func (self class) SetCollisionEnabled(enabled bool) { //gd:TileMapLayer.set_collision_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -926,7 +926,7 @@ func (self class) SetCollisionEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsCollisionEnabled() bool {
+func (self class) IsCollisionEnabled() bool { //gd:TileMapLayer.is_collision_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_collision_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -936,7 +936,7 @@ func (self class) IsCollisionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetUseKinematicBodies(use_kinematic_bodies bool) {
+func (self class) SetUseKinematicBodies(use_kinematic_bodies bool) { //gd:TileMapLayer.set_use_kinematic_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, use_kinematic_bodies)
 	var r_ret = callframe.Nil
@@ -945,7 +945,7 @@ func (self class) SetUseKinematicBodies(use_kinematic_bodies bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingKinematicBodies() bool {
+func (self class) IsUsingKinematicBodies() bool { //gd:TileMapLayer.is_using_kinematic_bodies
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_using_kinematic_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -955,7 +955,7 @@ func (self class) IsUsingKinematicBodies() bool {
 }
 
 //go:nosplit
-func (self class) SetCollisionVisibilityMode(visibility_mode gdclass.TileMapLayerDebugVisibilityMode) {
+func (self class) SetCollisionVisibilityMode(visibility_mode gdclass.TileMapLayerDebugVisibilityMode) { //gd:TileMapLayer.set_collision_visibility_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, visibility_mode)
 	var r_ret = callframe.Nil
@@ -964,7 +964,7 @@ func (self class) SetCollisionVisibilityMode(visibility_mode gdclass.TileMapLaye
 }
 
 //go:nosplit
-func (self class) GetCollisionVisibilityMode() gdclass.TileMapLayerDebugVisibilityMode {
+func (self class) GetCollisionVisibilityMode() gdclass.TileMapLayerDebugVisibilityMode { //gd:TileMapLayer.get_collision_visibility_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileMapLayerDebugVisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -974,7 +974,7 @@ func (self class) GetCollisionVisibilityMode() gdclass.TileMapLayerDebugVisibili
 }
 
 //go:nosplit
-func (self class) SetNavigationEnabled(enabled bool) {
+func (self class) SetNavigationEnabled(enabled bool) { //gd:TileMapLayer.set_navigation_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -983,7 +983,7 @@ func (self class) SetNavigationEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsNavigationEnabled() bool {
+func (self class) IsNavigationEnabled() bool { //gd:TileMapLayer.is_navigation_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_navigation_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -996,7 +996,7 @@ func (self class) IsNavigationEnabled() bool {
 Sets a custom [param map] as a [NavigationServer2D] navigation map. If not set, uses the default [World2D] navigation map instead.
 */
 //go:nosplit
-func (self class) SetNavigationMap(mapping gd.RID) {
+func (self class) SetNavigationMap(mapping gd.RID) { //gd:TileMapLayer.set_navigation_map
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
 	var r_ret = callframe.Nil
@@ -1009,7 +1009,7 @@ Returns the [RID] of the [NavigationServer2D] navigation used by this [TileMapLa
 By default this returns the default [World2D] navigation map, unless a custom map was provided using [method set_navigation_map].
 */
 //go:nosplit
-func (self class) GetNavigationMap() gd.RID {
+func (self class) GetNavigationMap() gd.RID { //gd:TileMapLayer.get_navigation_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1019,7 +1019,7 @@ func (self class) GetNavigationMap() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetNavigationVisibilityMode(show_navigation gdclass.TileMapLayerDebugVisibilityMode) {
+func (self class) SetNavigationVisibilityMode(show_navigation gdclass.TileMapLayerDebugVisibilityMode) { //gd:TileMapLayer.set_navigation_visibility_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, show_navigation)
 	var r_ret = callframe.Nil
@@ -1028,7 +1028,7 @@ func (self class) SetNavigationVisibilityMode(show_navigation gdclass.TileMapLay
 }
 
 //go:nosplit
-func (self class) GetNavigationVisibilityMode() gdclass.TileMapLayerDebugVisibilityMode {
+func (self class) GetNavigationVisibilityMode() gdclass.TileMapLayerDebugVisibilityMode { //gd:TileMapLayer.get_navigation_visibility_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileMapLayerDebugVisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1080,7 +1080,7 @@ func init() {
 	})
 }
 
-type DebugVisibilityMode = gdclass.TileMapLayerDebugVisibilityMode
+type DebugVisibilityMode = gdclass.TileMapLayerDebugVisibilityMode //gd:TileMapLayer.DebugVisibilityMode
 
 const (
 	/*Hide the collisions or navigation debug shapes in the editor, and use the debug settings to determine their visibility in game (i.e. [member SceneTree.debug_collisions_hint] or [member SceneTree.debug_navigation_hint]).*/

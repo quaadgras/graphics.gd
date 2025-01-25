@@ -39,7 +39,7 @@ func singleton() {
 /*
 Register a [PhysicsServer2D] implementation by passing a [param name] and a [Callable] that returns a [PhysicsServer2D] object.
 */
-func RegisterServer(name string, create_callback func() [1]gdclass.PhysicsServer2D) {
+func RegisterServer(name string, create_callback func() [1]gdclass.PhysicsServer2D) { //gd:PhysicsServer2DManager.register_server
 	once.Do(singleton)
 	class(self).RegisterServer(gd.NewString(name), Callable.New(create_callback))
 }
@@ -47,7 +47,7 @@ func RegisterServer(name string, create_callback func() [1]gdclass.PhysicsServer
 /*
 Set the default [PhysicsServer2D] implementation to the one identified by [param name], if [param priority] is greater than the priority of the current default implementation.
 */
-func SetDefaultServer(name string, priority int) {
+func SetDefaultServer(name string, priority int) { //gd:PhysicsServer2DManager.set_default_server
 	once.Do(singleton)
 	class(self).SetDefaultServer(gd.NewString(name), gd.Int(priority))
 }
@@ -66,7 +66,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Register a [PhysicsServer2D] implementation by passing a [param name] and a [Callable] that returns a [PhysicsServer2D] object.
 */
 //go:nosplit
-func (self class) RegisterServer(name gd.String, create_callback Callable.Function) {
+func (self class) RegisterServer(name gd.String, create_callback Callable.Function) { //gd:PhysicsServer2DManager.register_server
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(create_callback)))
@@ -79,7 +79,7 @@ func (self class) RegisterServer(name gd.String, create_callback Callable.Functi
 Set the default [PhysicsServer2D] implementation to the one identified by [param name], if [param priority] is greater than the priority of the current default implementation.
 */
 //go:nosplit
-func (self class) SetDefaultServer(name gd.String, priority gd.Int) {
+func (self class) SetDefaultServer(name gd.String, priority gd.Int) { //gd:PhysicsServer2DManager.set_default_server
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, priority)

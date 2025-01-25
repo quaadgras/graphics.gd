@@ -43,7 +43,7 @@ type Any interface {
 Creates an [ImageTextureLayered] from an array of [Image]s. See [method Image.create] for the expected data format. The first image decides the width, height, image format and mipmapping setting. The other images [i]must[/i] have the same width, height, image format and mipmapping setting.
 Each [Image] represents one [code]layer[/code].
 */
-func (self Instance) CreateFromImages(images [][1]gdclass.Image) error {
+func (self Instance) CreateFromImages(images [][1]gdclass.Image) error { //gd:ImageTextureLayered.create_from_images
 	return error(gd.ToError(class(self).CreateFromImages(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](images))))
 }
 
@@ -53,7 +53,7 @@ The given [Image] must have the same width, height, image format, and mipmapping
 If the image format is unsupported, it will be decompressed and converted to a similar and supported [enum Image.Format].
 The update is immediate: it's synchronized with drawing.
 */
-func (self Instance) UpdateLayer(image [1]gdclass.Image, layer int) {
+func (self Instance) UpdateLayer(image [1]gdclass.Image, layer int) { //gd:ImageTextureLayered.update_layer
 	class(self).UpdateLayer(image, gd.Int(layer))
 }
 
@@ -81,7 +81,7 @@ Creates an [ImageTextureLayered] from an array of [Image]s. See [method Image.cr
 Each [Image] represents one [code]layer[/code].
 */
 //go:nosplit
-func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) gd.Error {
+func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) gd.Error { //gd:ImageTextureLayered.create_from_images
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(images)))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -98,7 +98,7 @@ If the image format is unsupported, it will be decompressed and converted to a s
 The update is immediate: it's synchronized with drawing.
 */
 //go:nosplit
-func (self class) UpdateLayer(image [1]gdclass.Image, layer gd.Int) {
+func (self class) UpdateLayer(image [1]gdclass.Image, layer gd.Int) { //gd:ImageTextureLayered.update_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, layer)
@@ -150,7 +150,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

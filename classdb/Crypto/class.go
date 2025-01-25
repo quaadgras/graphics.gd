@@ -105,14 +105,14 @@ type Any interface {
 /*
 Generates a [PackedByteArray] of cryptographically secure random bytes with given [param size].
 */
-func (self Instance) GenerateRandomBytes(size int) []byte {
+func (self Instance) GenerateRandomBytes(size int) []byte { //gd:Crypto.generate_random_bytes
 	return []byte(class(self).GenerateRandomBytes(gd.Int(size)).Bytes())
 }
 
 /*
 Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [method StreamPeerTLS.accept_stream].
 */
-func (self Instance) GenerateRsa(size int) [1]gdclass.CryptoKey {
+func (self Instance) GenerateRsa(size int) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
 	return [1]gdclass.CryptoKey(class(self).GenerateRsa(gd.Int(size)))
 }
 
@@ -136,21 +136,21 @@ X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.co
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey) [1]gdclass.X509Certificate {
+func (self Instance) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
 	return [1]gdclass.X509Certificate(class(self).GenerateSelfSignedCertificate(key, gd.NewString("CN=myserver,O=myorganisation,C=IT"), gd.NewString("20140101000000"), gd.NewString("20340101000000")))
 }
 
 /*
 Sign a given [param hash] of type [param hash_type] with the provided private [param key].
 */
-func (self Instance) Sign(hash_type gdclass.HashingContextHashType, hash []byte, key [1]gdclass.CryptoKey) []byte {
+func (self Instance) Sign(hash_type gdclass.HashingContextHashType, hash []byte, key [1]gdclass.CryptoKey) []byte { //gd:Crypto.sign
 	return []byte(class(self).Sign(hash_type, gd.NewPackedByteSlice(hash), key).Bytes())
 }
 
 /*
 Verify that a given [param signature] for [param hash] of type [param hash_type] against the provided public [param key].
 */
-func (self Instance) Verify(hash_type gdclass.HashingContextHashType, hash []byte, signature []byte, key [1]gdclass.CryptoKey) bool {
+func (self Instance) Verify(hash_type gdclass.HashingContextHashType, hash []byte, signature []byte, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
 	return bool(class(self).Verify(hash_type, gd.NewPackedByteSlice(hash), gd.NewPackedByteSlice(signature), key))
 }
 
@@ -158,7 +158,7 @@ func (self Instance) Verify(hash_type gdclass.HashingContextHashType, hash []byt
 Encrypt the given [param plaintext] with the provided public [param key].
 [b]Note:[/b] The maximum size of accepted plaintext is limited by the key size.
 */
-func (self Instance) Encrypt(key [1]gdclass.CryptoKey, plaintext []byte) []byte {
+func (self Instance) Encrypt(key [1]gdclass.CryptoKey, plaintext []byte) []byte { //gd:Crypto.encrypt
 	return []byte(class(self).Encrypt(key, gd.NewPackedByteSlice(plaintext)).Bytes())
 }
 
@@ -166,7 +166,7 @@ func (self Instance) Encrypt(key [1]gdclass.CryptoKey, plaintext []byte) []byte 
 Decrypt the given [param ciphertext] with the provided private [param key].
 [b]Note:[/b] The maximum size of accepted ciphertext is limited by the key size.
 */
-func (self Instance) Decrypt(key [1]gdclass.CryptoKey, ciphertext []byte) []byte {
+func (self Instance) Decrypt(key [1]gdclass.CryptoKey, ciphertext []byte) []byte { //gd:Crypto.decrypt
 	return []byte(class(self).Decrypt(key, gd.NewPackedByteSlice(ciphertext)).Bytes())
 }
 
@@ -174,7 +174,7 @@ func (self Instance) Decrypt(key [1]gdclass.CryptoKey, ciphertext []byte) []byte
 Generates an [url=https://en.wikipedia.org/wiki/HMAC]HMAC[/url] digest of [param msg] using [param key]. The [param hash_type] parameter is the hashing algorithm that is used for the inner and outer hashes.
 Currently, only [constant HashingContext.HASH_SHA256] and [constant HashingContext.HASH_SHA1] are supported.
 */
-func (self Instance) HmacDigest(hash_type gdclass.HashingContextHashType, key []byte, msg []byte) []byte {
+func (self Instance) HmacDigest(hash_type gdclass.HashingContextHashType, key []byte, msg []byte) []byte { //gd:Crypto.hmac_digest
 	return []byte(class(self).HmacDigest(hash_type, gd.NewPackedByteSlice(key), gd.NewPackedByteSlice(msg)).Bytes())
 }
 
@@ -182,7 +182,7 @@ func (self Instance) HmacDigest(hash_type gdclass.HashingContextHashType, key []
 Compares two [PackedByteArray]s for equality without leaking timing information in order to prevent timing attacks.
 See [url=https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy]this blog post[/url] for more information.
 */
-func (self Instance) ConstantTimeCompare(trusted []byte, received []byte) bool {
+func (self Instance) ConstantTimeCompare(trusted []byte, received []byte) bool { //gd:Crypto.constant_time_compare
 	return bool(class(self).ConstantTimeCompare(gd.NewPackedByteSlice(trusted), gd.NewPackedByteSlice(received)))
 }
 
@@ -209,7 +209,7 @@ func New() Instance {
 Generates a [PackedByteArray] of cryptographically secure random bytes with given [param size].
 */
 //go:nosplit
-func (self class) GenerateRandomBytes(size gd.Int) gd.PackedByteArray {
+func (self class) GenerateRandomBytes(size gd.Int) gd.PackedByteArray { //gd:Crypto.generate_random_bytes
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -223,7 +223,7 @@ func (self class) GenerateRandomBytes(size gd.Int) gd.PackedByteArray {
 Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [method StreamPeerTLS.accept_stream].
 */
 //go:nosplit
-func (self class) GenerateRsa(size gd.Int) [1]gdclass.CryptoKey {
+func (self class) GenerateRsa(size gd.Int) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -254,7 +254,7 @@ X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.co
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name gd.String, not_before gd.String, not_after gd.String) [1]gdclass.X509Certificate {
+func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name gd.String, not_before gd.String, not_after gd.String) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	callframe.Arg(frame, pointers.Get(issuer_name))
@@ -271,7 +271,7 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 Sign a given [param hash] of type [param hash_type] with the provided private [param key].
 */
 //go:nosplit
-func (self class) Sign(hash_type gdclass.HashingContextHashType, hash gd.PackedByteArray, key [1]gdclass.CryptoKey) gd.PackedByteArray {
+func (self class) Sign(hash_type gdclass.HashingContextHashType, hash gd.PackedByteArray, key [1]gdclass.CryptoKey) gd.PackedByteArray { //gd:Crypto.sign
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(hash))
@@ -287,7 +287,7 @@ func (self class) Sign(hash_type gdclass.HashingContextHashType, hash gd.PackedB
 Verify that a given [param signature] for [param hash] of type [param hash_type] against the provided public [param key].
 */
 //go:nosplit
-func (self class) Verify(hash_type gdclass.HashingContextHashType, hash gd.PackedByteArray, signature gd.PackedByteArray, key [1]gdclass.CryptoKey) bool {
+func (self class) Verify(hash_type gdclass.HashingContextHashType, hash gd.PackedByteArray, signature gd.PackedByteArray, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(hash))
@@ -305,7 +305,7 @@ Encrypt the given [param plaintext] with the provided public [param key].
 [b]Note:[/b] The maximum size of accepted plaintext is limited by the key size.
 */
 //go:nosplit
-func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext gd.PackedByteArray) gd.PackedByteArray {
+func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext gd.PackedByteArray) gd.PackedByteArray { //gd:Crypto.encrypt
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	callframe.Arg(frame, pointers.Get(plaintext))
@@ -321,7 +321,7 @@ Decrypt the given [param ciphertext] with the provided private [param key].
 [b]Note:[/b] The maximum size of accepted ciphertext is limited by the key size.
 */
 //go:nosplit
-func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext gd.PackedByteArray) gd.PackedByteArray {
+func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext gd.PackedByteArray) gd.PackedByteArray { //gd:Crypto.decrypt
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	callframe.Arg(frame, pointers.Get(ciphertext))
@@ -337,7 +337,7 @@ Generates an [url=https://en.wikipedia.org/wiki/HMAC]HMAC[/url] digest of [param
 Currently, only [constant HashingContext.HASH_SHA256] and [constant HashingContext.HASH_SHA1] are supported.
 */
 //go:nosplit
-func (self class) HmacDigest(hash_type gdclass.HashingContextHashType, key gd.PackedByteArray, msg gd.PackedByteArray) gd.PackedByteArray {
+func (self class) HmacDigest(hash_type gdclass.HashingContextHashType, key gd.PackedByteArray, msg gd.PackedByteArray) gd.PackedByteArray { //gd:Crypto.hmac_digest
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(key))
@@ -354,7 +354,7 @@ Compares two [PackedByteArray]s for equality without leaking timing information 
 See [url=https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy]this blog post[/url] for more information.
 */
 //go:nosplit
-func (self class) ConstantTimeCompare(trusted gd.PackedByteArray, received gd.PackedByteArray) bool {
+func (self class) ConstantTimeCompare(trusted gd.PackedByteArray, received gd.PackedByteArray) bool { //gd:Crypto.constant_time_compare
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(trusted))
 	callframe.Arg(frame, pointers.Get(received))

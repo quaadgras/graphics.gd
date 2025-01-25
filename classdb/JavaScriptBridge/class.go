@@ -40,7 +40,7 @@ func singleton() {
 Execute the string [param code] as JavaScript code within the browser window. This is a call to the actual global JavaScript function [code skip-lint]eval()[/code].
 If [param use_global_execution_context] is [code]true[/code], the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
-func Eval(code string) any {
+func Eval(code string) any { //gd:JavaScriptBridge.eval
 	once.Do(singleton)
 	return any(class(self).Eval(gd.NewString(code), false).Interface())
 }
@@ -48,7 +48,7 @@ func Eval(code string) any {
 /*
 Returns an interface to a JavaScript object that can be used by scripts. The [param interface] must be a valid property of the JavaScript [code]window[/code]. The callback must accept a single [Array] argument, which will contain the JavaScript [code]arguments[/code]. See [JavaScriptObject] for usage.
 */
-func GetInterface(intf string) [1]gdclass.JavaScriptObject {
+func GetInterface(intf string) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
 	once.Do(singleton)
 	return [1]gdclass.JavaScriptObject(class(self).GetInterface(gd.NewString(intf)))
 }
@@ -56,7 +56,7 @@ func GetInterface(intf string) [1]gdclass.JavaScriptObject {
 /*
 Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 */
-func CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject {
+func CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
 	once.Do(singleton)
 	return [1]gdclass.JavaScriptObject(class(self).CreateCallback(Callable.New(callable)))
 }
@@ -67,7 +67,7 @@ Prompts the user to download a file containing the specified [param buffer]. The
 [b]Note:[/b] Browsers might block the download if [method download_buffer] is not being called from a user interaction (e.g. button click).
 [b]Note:[/b] Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
 */
-func DownloadBuffer(buffer []byte, name string) {
+func DownloadBuffer(buffer []byte, name string) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
 	class(self).DownloadBuffer(gd.NewPackedByteSlice(buffer), gd.NewString(name), gd.NewString("application/octet-stream"))
 }
@@ -76,7 +76,7 @@ func DownloadBuffer(buffer []byte, name string) {
 Returns [code]true[/code] if a new version of the progressive web app is waiting to be activated.
 [b]Note:[/b] Only relevant when exported as a Progressive Web App.
 */
-func PwaNeedsUpdate() bool {
+func PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
 	once.Do(singleton)
 	return bool(class(self).PwaNeedsUpdate())
 }
@@ -86,7 +86,7 @@ Performs the live update of the progressive web app. Forcing the new version to 
 [b]Note:[/b] Your application will be [b]reloaded in all browser tabs[/b].
 [b]Note:[/b] Only relevant when exported as a Progressive Web App and [method pwa_needs_update] returns [code]true[/code].
 */
-func PwaUpdate() error {
+func PwaUpdate() error { //gd:JavaScriptBridge.pwa_update
 	once.Do(singleton)
 	return error(gd.ToError(class(self).PwaUpdate()))
 }
@@ -95,7 +95,7 @@ func PwaUpdate() error {
 Force synchronization of the persistent file system (when enabled).
 [b]Note:[/b] This is only useful for modules or extensions that can't use [FileAccess] to write files.
 */
-func ForceFsSync() {
+func ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
 	once.Do(singleton)
 	class(self).ForceFsSync()
 }
@@ -115,7 +115,7 @@ Execute the string [param code] as JavaScript code within the browser window. Th
 If [param use_global_execution_context] is [code]true[/code], the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
 //go:nosplit
-func (self class) Eval(code gd.String, use_global_execution_context bool) gd.Variant {
+func (self class) Eval(code gd.String, use_global_execution_context bool) gd.Variant { //gd:JavaScriptBridge.eval
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(code))
 	callframe.Arg(frame, use_global_execution_context)
@@ -130,7 +130,7 @@ func (self class) Eval(code gd.String, use_global_execution_context bool) gd.Var
 Returns an interface to a JavaScript object that can be used by scripts. The [param interface] must be a valid property of the JavaScript [code]window[/code]. The callback must accept a single [Array] argument, which will contain the JavaScript [code]arguments[/code]. See [JavaScriptObject] for usage.
 */
 //go:nosplit
-func (self class) GetInterface(intf gd.String) [1]gdclass.JavaScriptObject {
+func (self class) GetInterface(intf gd.String) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(intf))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -144,7 +144,7 @@ func (self class) GetInterface(intf gd.String) [1]gdclass.JavaScriptObject {
 Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 */
 //go:nosplit
-func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject {
+func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -161,7 +161,7 @@ Prompts the user to download a file containing the specified [param buffer]. The
 [b]Note:[/b] Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
 */
 //go:nosplit
-func (self class) DownloadBuffer(buffer gd.PackedByteArray, name gd.String, mime gd.String) {
+func (self class) DownloadBuffer(buffer gd.PackedByteArray, name gd.String, mime gd.String) { //gd:JavaScriptBridge.download_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
 	callframe.Arg(frame, pointers.Get(name))
@@ -176,7 +176,7 @@ Returns [code]true[/code] if a new version of the progressive web app is waiting
 [b]Note:[/b] Only relevant when exported as a Progressive Web App.
 */
 //go:nosplit
-func (self class) PwaNeedsUpdate() bool {
+func (self class) PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_pwa_needs_update, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -191,7 +191,7 @@ Performs the live update of the progressive web app. Forcing the new version to 
 [b]Note:[/b] Only relevant when exported as a Progressive Web App and [method pwa_needs_update] returns [code]true[/code].
 */
 //go:nosplit
-func (self class) PwaUpdate() gd.Error {
+func (self class) PwaUpdate() gd.Error { //gd:JavaScriptBridge.pwa_update
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_pwa_update, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -205,7 +205,7 @@ Force synchronization of the persistent file system (when enabled).
 [b]Note:[/b] This is only useful for modules or extensions that can't use [FileAccess] to write files.
 */
 //go:nosplit
-func (self class) ForceFsSync() {
+func (self class) ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JavaScriptBridge.Bind_force_fs_sync, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -227,7 +227,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

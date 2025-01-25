@@ -303,35 +303,35 @@ func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb g
 Returns the smallest [AABB] enclosing this mesh in local space. Not affected by [code]custom_aabb[/code].
 [b]Note:[/b] This is only implemented for [ArrayMesh] and [PrimitiveMesh].
 */
-func (self Instance) GetAabb() AABB.PositionSize {
+func (self Instance) GetAabb() AABB.PositionSize { //gd:Mesh.get_aabb
 	return AABB.PositionSize(class(self).GetAabb())
 }
 
 /*
 Returns all the vertices that make up the faces of the mesh. Each three vertices represent one triangle.
 */
-func (self Instance) GetFaces() []Vector3.XYZ {
+func (self Instance) GetFaces() []Vector3.XYZ { //gd:Mesh.get_faces
 	return []Vector3.XYZ(class(self).GetFaces().AsSlice())
 }
 
 /*
 Returns the number of surfaces that the [Mesh] holds. This is equivalent to [method MeshInstance3D.get_surface_override_material_count].
 */
-func (self Instance) GetSurfaceCount() int {
+func (self Instance) GetSurfaceCount() int { //gd:Mesh.get_surface_count
 	return int(int(class(self).GetSurfaceCount()))
 }
 
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface (see [method ArrayMesh.add_surface_from_arrays]).
 */
-func (self Instance) SurfaceGetArrays(surf_idx int) []any {
+func (self Instance) SurfaceGetArrays(surf_idx int) []any { //gd:Mesh.surface_get_arrays
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).SurfaceGetArrays(gd.Int(surf_idx)))))
 }
 
 /*
 Returns the blend shape arrays for the requested surface.
 */
-func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][]any {
+func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][]any { //gd:Mesh.surface_get_blend_shape_arrays
 	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(class(self).SurfaceGetBlendShapeArrays(gd.Int(surf_idx)))))
 }
 
@@ -339,7 +339,7 @@ func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][]any {
 Sets a [Material] for a given surface. Surface will be rendered using this material.
 [b]Note:[/b] This assigns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To set the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [method MeshInstance3D.set_surface_override_material] instead.
 */
-func (self Instance) SurfaceSetMaterial(surf_idx int, material [1]gdclass.Material) {
+func (self Instance) SurfaceSetMaterial(surf_idx int, material [1]gdclass.Material) { //gd:Mesh.surface_set_material
 	class(self).SurfaceSetMaterial(gd.Int(surf_idx), material)
 }
 
@@ -347,21 +347,21 @@ func (self Instance) SurfaceSetMaterial(surf_idx int, material [1]gdclass.Materi
 Returns a [Material] in a given surface. Surface is rendered using this material.
 [b]Note:[/b] This returns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To get the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [method MeshInstance3D.get_surface_override_material] instead.
 */
-func (self Instance) SurfaceGetMaterial(surf_idx int) [1]gdclass.Material {
+func (self Instance) SurfaceGetMaterial(surf_idx int) [1]gdclass.Material { //gd:Mesh.surface_get_material
 	return [1]gdclass.Material(class(self).SurfaceGetMaterial(gd.Int(surf_idx)))
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderMesh]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource {
+func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Mesh.create_placeholder
 	return [1]gdclass.Resource(class(self).CreatePlaceholder())
 }
 
 /*
 Calculate a [ConcavePolygonShape3D] from the mesh.
 */
-func (self Instance) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D {
+func (self Instance) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D { //gd:Mesh.create_trimesh_shape
 	return [1]gdclass.ConcavePolygonShape3D(class(self).CreateTrimeshShape())
 }
 
@@ -370,7 +370,7 @@ Calculate a [ConvexPolygonShape3D] from the mesh.
 If [param clean] is [code]true[/code] (default), duplicate and interior vertices are removed automatically. You can set it to [code]false[/code] to make the process faster if not needed.
 If [param simplify] is [code]true[/code], the geometry can be further simplified to reduce the number of vertices. Disabled by default.
 */
-func (self Instance) CreateConvexShape() [1]gdclass.ConvexPolygonShape3D {
+func (self Instance) CreateConvexShape() [1]gdclass.ConvexPolygonShape3D { //gd:Mesh.create_convex_shape
 	return [1]gdclass.ConvexPolygonShape3D(class(self).CreateConvexShape(true, false))
 }
 
@@ -378,14 +378,14 @@ func (self Instance) CreateConvexShape() [1]gdclass.ConvexPolygonShape3D {
 Calculate an outline mesh at a defined offset (margin) from the original mesh.
 [b]Note:[/b] This method typically returns the vertices in reverse order (e.g. clockwise to counterclockwise).
 */
-func (self Instance) CreateOutline(margin Float.X) [1]gdclass.Mesh {
+func (self Instance) CreateOutline(margin Float.X) [1]gdclass.Mesh { //gd:Mesh.create_outline
 	return [1]gdclass.Mesh(class(self).CreateOutline(gd.Float(margin)))
 }
 
 /*
 Generate a [TriangleMesh] from the mesh. Considers only surfaces using one of these primitive types: [constant PRIMITIVE_TRIANGLES], [constant PRIMITIVE_TRIANGLE_STRIP].
 */
-func (self Instance) GenerateTriangleMesh() [1]gdclass.TriangleMesh {
+func (self Instance) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Mesh.generate_triangle_mesh
 	return [1]gdclass.TriangleMesh(class(self).GenerateTriangleMesh())
 }
 
@@ -621,7 +621,7 @@ func (class) _get_aabb(impl func(ptr unsafe.Pointer) gd.AABB) (cb gd.ExtensionCl
 }
 
 //go:nosplit
-func (self class) SetLightmapSizeHint(size gd.Vector2i) {
+func (self class) SetLightmapSizeHint(size gd.Vector2i) { //gd:Mesh.set_lightmap_size_hint
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -630,7 +630,7 @@ func (self class) SetLightmapSizeHint(size gd.Vector2i) {
 }
 
 //go:nosplit
-func (self class) GetLightmapSizeHint() gd.Vector2i {
+func (self class) GetLightmapSizeHint() gd.Vector2i { //gd:Mesh.get_lightmap_size_hint
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_lightmap_size_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -644,7 +644,7 @@ Returns the smallest [AABB] enclosing this mesh in local space. Not affected by 
 [b]Note:[/b] This is only implemented for [ArrayMesh] and [PrimitiveMesh].
 */
 //go:nosplit
-func (self class) GetAabb() gd.AABB {
+func (self class) GetAabb() gd.AABB { //gd:Mesh.get_aabb
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -657,7 +657,7 @@ func (self class) GetAabb() gd.AABB {
 Returns all the vertices that make up the faces of the mesh. Each three vertices represent one triangle.
 */
 //go:nosplit
-func (self class) GetFaces() gd.PackedVector3Array {
+func (self class) GetFaces() gd.PackedVector3Array { //gd:Mesh.get_faces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -670,7 +670,7 @@ func (self class) GetFaces() gd.PackedVector3Array {
 Returns the number of surfaces that the [Mesh] holds. This is equivalent to [method MeshInstance3D.get_surface_override_material_count].
 */
 //go:nosplit
-func (self class) GetSurfaceCount() gd.Int {
+func (self class) GetSurfaceCount() gd.Int { //gd:Mesh.get_surface_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_get_surface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -683,7 +683,7 @@ func (self class) GetSurfaceCount() gd.Int {
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface (see [method ArrayMesh.add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetArrays(surf_idx gd.Int) Array.Any {
+func (self class) SurfaceGetArrays(surf_idx gd.Int) Array.Any { //gd:Mesh.surface_get_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -697,7 +697,7 @@ func (self class) SurfaceGetArrays(surf_idx gd.Int) Array.Any {
 Returns the blend shape arrays for the requested surface.
 */
 //go:nosplit
-func (self class) SurfaceGetBlendShapeArrays(surf_idx gd.Int) Array.Contains[Array.Any] {
+func (self class) SurfaceGetBlendShapeArrays(surf_idx gd.Int) Array.Contains[Array.Any] { //gd:Mesh.surface_get_blend_shape_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -712,7 +712,7 @@ Sets a [Material] for a given surface. Surface will be rendered using this mater
 [b]Note:[/b] This assigns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To set the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [method MeshInstance3D.set_surface_override_material] instead.
 */
 //go:nosplit
-func (self class) SurfaceSetMaterial(surf_idx gd.Int, material [1]gdclass.Material) {
+func (self class) SurfaceSetMaterial(surf_idx gd.Int, material [1]gdclass.Material) { //gd:Mesh.surface_set_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	callframe.Arg(frame, pointers.Get(material[0])[0])
@@ -726,7 +726,7 @@ Returns a [Material] in a given surface. Surface is rendered using this material
 [b]Note:[/b] This returns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To get the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [method MeshInstance3D.get_surface_override_material] instead.
 */
 //go:nosplit
-func (self class) SurfaceGetMaterial(surf_idx gd.Int) [1]gdclass.Material {
+func (self class) SurfaceGetMaterial(surf_idx gd.Int) [1]gdclass.Material { //gd:Mesh.surface_get_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -740,7 +740,7 @@ func (self class) SurfaceGetMaterial(surf_idx gd.Int) [1]gdclass.Material {
 Creates a placeholder version of this resource ([PlaceholderMesh]).
 */
 //go:nosplit
-func (self class) CreatePlaceholder() [1]gdclass.Resource {
+func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Mesh.create_placeholder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -753,7 +753,7 @@ func (self class) CreatePlaceholder() [1]gdclass.Resource {
 Calculate a [ConcavePolygonShape3D] from the mesh.
 */
 //go:nosplit
-func (self class) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D {
+func (self class) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D { //gd:Mesh.create_trimesh_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_create_trimesh_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -768,7 +768,7 @@ If [param clean] is [code]true[/code] (default), duplicate and interior vertices
 If [param simplify] is [code]true[/code], the geometry can be further simplified to reduce the number of vertices. Disabled by default.
 */
 //go:nosplit
-func (self class) CreateConvexShape(clean bool, simplify bool) [1]gdclass.ConvexPolygonShape3D {
+func (self class) CreateConvexShape(clean bool, simplify bool) [1]gdclass.ConvexPolygonShape3D { //gd:Mesh.create_convex_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, clean)
 	callframe.Arg(frame, simplify)
@@ -784,7 +784,7 @@ Calculate an outline mesh at a defined offset (margin) from the original mesh.
 [b]Note:[/b] This method typically returns the vertices in reverse order (e.g. clockwise to counterclockwise).
 */
 //go:nosplit
-func (self class) CreateOutline(margin gd.Float) [1]gdclass.Mesh {
+func (self class) CreateOutline(margin gd.Float) [1]gdclass.Mesh { //gd:Mesh.create_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -798,7 +798,7 @@ func (self class) CreateOutline(margin gd.Float) [1]gdclass.Mesh {
 Generate a [TriangleMesh] from the mesh. Considers only surfaces using one of these primitive types: [constant PRIMITIVE_TRIANGLES], [constant PRIMITIVE_TRIANGLE_STRIP].
 */
 //go:nosplit
-func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh {
+func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Mesh.generate_triangle_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mesh.Bind_generate_triangle_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -894,7 +894,7 @@ func init() {
 	gdclass.Register("Mesh", func(ptr gd.Object) any { return [1]gdclass.Mesh{*(*gdclass.Mesh)(unsafe.Pointer(&ptr))} })
 }
 
-type PrimitiveType = gdclass.MeshPrimitiveType
+type PrimitiveType = gdclass.MeshPrimitiveType //gd:Mesh.PrimitiveType
 
 const (
 	/*Render array as points (one vertex equals one point).*/
@@ -909,7 +909,7 @@ const (
 	PrimitiveTriangleStrip PrimitiveType = 4
 )
 
-type ArrayType = gdclass.MeshArrayType
+type ArrayType = gdclass.MeshArrayType //gd:Mesh.ArrayType
 
 const (
 	/*[PackedVector3Array], [PackedVector2Array], or [Array] of vertex positions.*/
@@ -944,7 +944,7 @@ const (
 	ArrayMax ArrayType = 13
 )
 
-type ArrayCustomFormat = gdclass.MeshArrayCustomFormat
+type ArrayCustomFormat = gdclass.MeshArrayCustomFormat //gd:Mesh.ArrayCustomFormat
 
 const (
 	/*Indicates this custom channel contains unsigned normalized byte colors from 0 to 1, encoded as [PackedByteArray].*/
@@ -967,7 +967,7 @@ const (
 	ArrayCustomMax ArrayCustomFormat = 8
 )
 
-type ArrayFormat = gdclass.MeshArrayFormat
+type ArrayFormat = gdclass.MeshArrayFormat //gd:Mesh.ArrayFormat
 
 const (
 	/*Mesh array contains vertices. All meshes require a vertex array so this should always be present.*/
@@ -1026,7 +1026,7 @@ const (
 	ArrayFlagCompressAttributes ArrayFormat = 536870912
 )
 
-type BlendShapeMode = gdclass.MeshBlendShapeMode
+type BlendShapeMode = gdclass.MeshBlendShapeMode //gd:Mesh.BlendShapeMode
 
 const (
 	/*Blend shapes are normalized.*/

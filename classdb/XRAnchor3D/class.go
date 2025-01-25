@@ -46,14 +46,14 @@ type Any interface {
 /*
 Returns the estimated size of the plane that was detected. Say when the anchor relates to a table in the real world, this is the estimated size of the surface of that table.
 */
-func (self Instance) GetSize() Vector3.XYZ {
+func (self Instance) GetSize() Vector3.XYZ { //gd:XRAnchor3D.get_size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 /*
 Returns a plane aligned with our anchor; handy for intersection testing.
 */
-func (self Instance) GetPlane() Plane.NormalD {
+func (self Instance) GetPlane() Plane.NormalD { //gd:XRAnchor3D.get_plane
 	return Plane.NormalD(class(self).GetPlane())
 }
 
@@ -79,7 +79,7 @@ func New() Instance {
 Returns the estimated size of the plane that was detected. Say when the anchor relates to a table in the real world, this is the estimated size of the surface of that table.
 */
 //go:nosplit
-func (self class) GetSize() gd.Vector3 {
+func (self class) GetSize() gd.Vector3 { //gd:XRAnchor3D.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRAnchor3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -92,7 +92,7 @@ func (self class) GetSize() gd.Vector3 {
 Returns a plane aligned with our anchor; handy for intersection testing.
 */
 //go:nosplit
-func (self class) GetPlane() gd.Plane {
+func (self class) GetPlane() gd.Plane { //gd:XRAnchor3D.get_plane
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Plane](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRAnchor3D.Bind_get_plane, self.AsObject(), frame.Array(0), r_ret.Addr())

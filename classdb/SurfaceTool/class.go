@@ -69,7 +69,7 @@ Set to [constant SKIN_8_WEIGHTS] to indicate that up to 8 bone influences per ve
 By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS])
 [b]Note:[/b] This function takes an enum, not the exact number of weights.
 */
-func (self Instance) SetSkinWeightCount(count gdclass.SurfaceToolSkinWeightCount) {
+func (self Instance) SetSkinWeightCount(count gdclass.SurfaceToolSkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
 	class(self).SetSkinWeightCount(count)
 }
 
@@ -78,7 +78,7 @@ By default, returns [constant SKIN_4_WEIGHTS] to indicate only 4 bone influences
 Returns [constant SKIN_8_WEIGHTS] if up to 8 influences are used.
 [b]Note:[/b] This function returns an enum, not the exact number of weights.
 */
-func (self Instance) GetSkinWeightCount() gdclass.SurfaceToolSkinWeightCount {
+func (self Instance) GetSkinWeightCount() gdclass.SurfaceToolSkinWeightCount { //gd:SurfaceTool.get_skin_weight_count
 	return gdclass.SurfaceToolSkinWeightCount(class(self).GetSkinWeightCount())
 }
 
@@ -86,28 +86,28 @@ func (self Instance) GetSkinWeightCount() gdclass.SurfaceToolSkinWeightCount {
 Sets the color format for this custom [param channel_index]. Use [constant CUSTOM_MAX] to disable.
 Must be invoked after [method begin] and should be set before [method commit] or [method commit_to_arrays].
 */
-func (self Instance) SetCustomFormat(channel_index int, format gdclass.SurfaceToolCustomFormat) {
+func (self Instance) SetCustomFormat(channel_index int, format gdclass.SurfaceToolCustomFormat) { //gd:SurfaceTool.set_custom_format
 	class(self).SetCustomFormat(gd.Int(channel_index), format)
 }
 
 /*
 Returns the format for custom [param channel_index] (currently up to 4). Returns [constant CUSTOM_MAX] if this custom channel is unused.
 */
-func (self Instance) GetCustomFormat(channel_index int) gdclass.SurfaceToolCustomFormat {
+func (self Instance) GetCustomFormat(channel_index int) gdclass.SurfaceToolCustomFormat { //gd:SurfaceTool.get_custom_format
 	return gdclass.SurfaceToolCustomFormat(class(self).GetCustomFormat(gd.Int(channel_index)))
 }
 
 /*
 Called before adding any vertices. Takes the primitive type as an argument (e.g. [constant Mesh.PRIMITIVE_TRIANGLES]).
 */
-func (self Instance) Begin(primitive gdclass.MeshPrimitiveType) {
+func (self Instance) Begin(primitive gdclass.MeshPrimitiveType) { //gd:SurfaceTool.begin
 	class(self).Begin(primitive)
 }
 
 /*
 Specifies the position of current vertex. Should be called after specifying other vertex properties (e.g. Color, UV).
 */
-func (self Instance) AddVertex(vertex Vector3.XYZ) {
+func (self Instance) AddVertex(vertex Vector3.XYZ) { //gd:SurfaceTool.add_vertex
 	class(self).AddVertex(gd.Vector3(vertex))
 }
 
@@ -115,49 +115,49 @@ func (self Instance) AddVertex(vertex Vector3.XYZ) {
 Specifies a [Color] to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 [b]Note:[/b] The material must have [member BaseMaterial3D.vertex_color_use_as_albedo] enabled for the vertex color to be visible.
 */
-func (self Instance) SetColor(color Color.RGBA) {
+func (self Instance) SetColor(color Color.RGBA) { //gd:SurfaceTool.set_color
 	class(self).SetColor(gd.Color(color))
 }
 
 /*
 Specifies a normal to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
-func (self Instance) SetNormal(normal Vector3.XYZ) {
+func (self Instance) SetNormal(normal Vector3.XYZ) { //gd:SurfaceTool.set_normal
 	class(self).SetNormal(gd.Vector3(normal))
 }
 
 /*
 Specifies a tangent to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
-func (self Instance) SetTangent(tangent Plane.NormalD) {
+func (self Instance) SetTangent(tangent Plane.NormalD) { //gd:SurfaceTool.set_tangent
 	class(self).SetTangent(gd.Plane(tangent))
 }
 
 /*
 Specifies a set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
-func (self Instance) SetUv(uv Vector2.XY) {
+func (self Instance) SetUv(uv Vector2.XY) { //gd:SurfaceTool.set_uv
 	class(self).SetUv(gd.Vector2(uv))
 }
 
 /*
 Specifies an optional second set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
-func (self Instance) SetUv2(uv2 Vector2.XY) {
+func (self Instance) SetUv2(uv2 Vector2.XY) { //gd:SurfaceTool.set_uv2
 	class(self).SetUv2(gd.Vector2(uv2))
 }
 
 /*
 Specifies an array of bones to use for the [i]next[/i] vertex. [param bones] must contain 4 integers.
 */
-func (self Instance) SetBones(bones []int32) {
+func (self Instance) SetBones(bones []int32) { //gd:SurfaceTool.set_bones
 	class(self).SetBones(gd.NewPackedInt32Slice(bones))
 }
 
 /*
 Specifies weight values to use for the [i]next[/i] vertex. [param weights] must contain 4 values. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
-func (self Instance) SetWeights(weights []float32) {
+func (self Instance) SetWeights(weights []float32) { //gd:SurfaceTool.set_weights
 	class(self).SetWeights(gd.NewPackedFloat32Slice(weights))
 }
 
@@ -165,7 +165,7 @@ func (self Instance) SetWeights(weights []float32) {
 Sets the custom value on this vertex for [param channel_index].
 [method set_custom_format] must be called first for this [param channel_index]. Formats which are not RGBA will ignore other color channels.
 */
-func (self Instance) SetCustom(channel_index int, custom_color Color.RGBA) {
+func (self Instance) SetCustom(channel_index int, custom_color Color.RGBA) { //gd:SurfaceTool.set_custom
 	class(self).SetCustom(gd.Int(channel_index), gd.Color(custom_color))
 }
 
@@ -173,7 +173,7 @@ func (self Instance) SetCustom(channel_index int, custom_color Color.RGBA) {
 Specifies the smooth group to use for the [i]next[/i] vertex. If this is never called, all vertices will have the default smooth group of [code]0[/code] and will be smoothed with adjacent vertices of the same group. To produce a mesh with flat normals, set the smooth group to [code]-1[/code].
 [b]Note:[/b] This function actually takes a [code]uint32_t[/code], so C# users should use [code]uint32.MaxValue[/code] instead of [code]-1[/code] to produce a mesh with flat normals.
 */
-func (self Instance) SetSmoothGroup(index int) {
+func (self Instance) SetSmoothGroup(index int) { //gd:SurfaceTool.set_smooth_group
 	class(self).SetSmoothGroup(gd.Int(index))
 }
 
@@ -181,28 +181,28 @@ func (self Instance) SetSmoothGroup(index int) {
 Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Instance) AddTriangleFan(vertices []Vector3.XYZ) {
+func (self Instance) AddTriangleFan(vertices []Vector3.XYZ) { //gd:SurfaceTool.add_triangle_fan
 	class(self).AddTriangleFan(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedVector2Slice(nil), gd.NewPackedColorSlice(nil), gd.NewPackedVector2Slice(nil), gd.NewPackedVector3Slice(nil), gd.ArrayFromSlice[Array.Contains[gd.Plane]]([1][]Plane.NormalD{}[0]))
 }
 
 /*
 Adds a vertex to index array if you are using indexed vertices. Does not need to be called before adding vertices.
 */
-func (self Instance) AddIndex(index int) {
+func (self Instance) AddIndex(index int) { //gd:SurfaceTool.add_index
 	class(self).AddIndex(gd.Int(index))
 }
 
 /*
 Shrinks the vertex array by creating an index array. This can improve performance by avoiding vertex reuse.
 */
-func (self Instance) Index() {
+func (self Instance) Index() { //gd:SurfaceTool.index
 	class(self).Index()
 }
 
 /*
 Removes the index array by expanding the vertex array.
 */
-func (self Instance) Deindex() {
+func (self Instance) Deindex() { //gd:SurfaceTool.deindex
 	class(self).Deindex()
 }
 
@@ -211,84 +211,84 @@ Generates normals from vertices so you do not have to do it manually. If [param 
 [b]Note:[/b] [method generate_normals] only works if the primitive type to be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 [b]Note:[/b] [method generate_normals] takes smooth groups into account. To generate smooth normals, set the smooth group to a value greater than or equal to [code]0[/code] using [method set_smooth_group] or leave the smooth group at the default of [code]0[/code]. To generate flat normals, set the smooth group to [code]-1[/code] using [method set_smooth_group] prior to adding vertices.
 */
-func (self Instance) GenerateNormals() {
+func (self Instance) GenerateNormals() { //gd:SurfaceTool.generate_normals
 	class(self).GenerateNormals(false)
 }
 
 /*
 Generates a tangent vector for each vertex. Requires that each vertex have UVs and normals set already (see [method generate_normals]).
 */
-func (self Instance) GenerateTangents() {
+func (self Instance) GenerateTangents() { //gd:SurfaceTool.generate_tangents
 	class(self).GenerateTangents()
 }
 
 /*
 Optimizes triangle sorting for performance. Requires that [method get_primitive_type] is [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Instance) OptimizeIndicesForCache() {
+func (self Instance) OptimizeIndicesForCache() { //gd:SurfaceTool.optimize_indices_for_cache
 	class(self).OptimizeIndicesForCache()
 }
 
 /*
 Returns the axis-aligned bounding box of the vertex positions.
 */
-func (self Instance) GetAabb() AABB.PositionSize {
+func (self Instance) GetAabb() AABB.PositionSize { //gd:SurfaceTool.get_aabb
 	return AABB.PositionSize(class(self).GetAabb())
 }
 
 /*
 Generates an LOD for a given [param nd_threshold] in linear units (square root of quadric error metric), using at most [param target_index_count] indices.
 */
-func (self Instance) GenerateLod(nd_threshold Float.X) []int32 {
+func (self Instance) GenerateLod(nd_threshold Float.X) []int32 { //gd:SurfaceTool.generate_lod
 	return []int32(class(self).GenerateLod(gd.Float(nd_threshold), gd.Int(3)).AsSlice())
 }
 
 /*
 Sets [Material] to be used by the [Mesh] you are constructing.
 */
-func (self Instance) SetMaterial(material [1]gdclass.Material) {
+func (self Instance) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.set_material
 	class(self).SetMaterial(material)
 }
 
 /*
 Returns the type of mesh geometry, such as [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Instance) GetPrimitiveType() gdclass.MeshPrimitiveType {
+func (self Instance) GetPrimitiveType() gdclass.MeshPrimitiveType { //gd:SurfaceTool.get_primitive_type
 	return gdclass.MeshPrimitiveType(class(self).GetPrimitiveType())
 }
 
 /*
 Clear all information passed into the surface tool so far.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:SurfaceTool.clear
 	class(self).Clear()
 }
 
 /*
 Creates a vertex array from an existing [Mesh].
 */
-func (self Instance) CreateFrom(existing [1]gdclass.Mesh, surface int) {
+func (self Instance) CreateFrom(existing [1]gdclass.Mesh, surface int) { //gd:SurfaceTool.create_from
 	class(self).CreateFrom(existing, gd.Int(surface))
 }
 
 /*
 Creates this SurfaceTool from existing vertex arrays such as returned by [method commit_to_arrays], [method Mesh.surface_get_arrays], [method Mesh.surface_get_blend_shape_arrays], [method ImporterMesh.get_surface_arrays], and [method ImporterMesh.get_surface_blend_shape_arrays]. [param primitive_type] controls the type of mesh data, defaulting to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Instance) CreateFromArrays(arrays []any) {
+func (self Instance) CreateFromArrays(arrays []any) { //gd:SurfaceTool.create_from_arrays
 	class(self).CreateFromArrays(gd.EngineArrayFromSlice(arrays), 3)
 }
 
 /*
 Creates a vertex array from the specified blend shape of an existing [Mesh]. This can be used to extract a specific pose from a blend shape.
 */
-func (self Instance) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int, blend_shape string) {
+func (self Instance) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int, blend_shape string) { //gd:SurfaceTool.create_from_blend_shape
 	class(self).CreateFromBlendShape(existing, gd.Int(surface), gd.NewString(blend_shape))
 }
 
 /*
 Append vertices from a given [Mesh] surface onto the current vertex array with specified [Transform3D].
 */
-func (self Instance) AppendFrom(existing [1]gdclass.Mesh, surface int, transform Transform3D.BasisOrigin) {
+func (self Instance) AppendFrom(existing [1]gdclass.Mesh, surface int, transform Transform3D.BasisOrigin) { //gd:SurfaceTool.append_from
 	class(self).AppendFrom(existing, gd.Int(surface), gd.Transform3D(transform))
 }
 
@@ -296,14 +296,14 @@ func (self Instance) AppendFrom(existing [1]gdclass.Mesh, surface int, transform
 Returns a constructed [ArrayMesh] from current information passed in. If an existing [ArrayMesh] is passed in as an argument, will add an extra surface to the existing [ArrayMesh].
 [b]FIXME:[/b] Document possible values for [param flags], it changed in 4.0. Likely some combinations of [enum Mesh.ArrayFormat].
 */
-func (self Instance) Commit() [1]gdclass.ArrayMesh {
+func (self Instance) Commit() [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
 	return [1]gdclass.ArrayMesh(class(self).Commit([1][1]gdclass.ArrayMesh{}[0], gd.Int(0)))
 }
 
 /*
 Commits the data to the same format used by [method ArrayMesh.add_surface_from_arrays], [method ImporterMesh.add_surface], and [method create_from_arrays]. This way you can further process the mesh data using the [ArrayMesh] or [ImporterMesh] APIs.
 */
-func (self Instance) CommitToArrays() []any {
+func (self Instance) CommitToArrays() []any { //gd:SurfaceTool.commit_to_arrays
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).CommitToArrays())))
 }
 
@@ -332,7 +332,7 @@ By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS])
 [b]Note:[/b] This function takes an enum, not the exact number of weights.
 */
 //go:nosplit
-func (self class) SetSkinWeightCount(count gdclass.SurfaceToolSkinWeightCount) {
+func (self class) SetSkinWeightCount(count gdclass.SurfaceToolSkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -346,7 +346,7 @@ Returns [constant SKIN_8_WEIGHTS] if up to 8 influences are used.
 [b]Note:[/b] This function returns an enum, not the exact number of weights.
 */
 //go:nosplit
-func (self class) GetSkinWeightCount() gdclass.SurfaceToolSkinWeightCount {
+func (self class) GetSkinWeightCount() gdclass.SurfaceToolSkinWeightCount { //gd:SurfaceTool.get_skin_weight_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SurfaceToolSkinWeightCount](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -360,7 +360,7 @@ Sets the color format for this custom [param channel_index]. Use [constant CUSTO
 Must be invoked after [method begin] and should be set before [method commit] or [method commit_to_arrays].
 */
 //go:nosplit
-func (self class) SetCustomFormat(channel_index gd.Int, format gdclass.SurfaceToolCustomFormat) {
+func (self class) SetCustomFormat(channel_index gd.Int, format gdclass.SurfaceToolCustomFormat) { //gd:SurfaceTool.set_custom_format
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	callframe.Arg(frame, format)
@@ -373,7 +373,7 @@ func (self class) SetCustomFormat(channel_index gd.Int, format gdclass.SurfaceTo
 Returns the format for custom [param channel_index] (currently up to 4). Returns [constant CUSTOM_MAX] if this custom channel is unused.
 */
 //go:nosplit
-func (self class) GetCustomFormat(channel_index gd.Int) gdclass.SurfaceToolCustomFormat {
+func (self class) GetCustomFormat(channel_index gd.Int) gdclass.SurfaceToolCustomFormat { //gd:SurfaceTool.get_custom_format
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	var r_ret = callframe.Ret[gdclass.SurfaceToolCustomFormat](frame)
@@ -387,7 +387,7 @@ func (self class) GetCustomFormat(channel_index gd.Int) gdclass.SurfaceToolCusto
 Called before adding any vertices. Takes the primitive type as an argument (e.g. [constant Mesh.PRIMITIVE_TRIANGLES]).
 */
 //go:nosplit
-func (self class) Begin(primitive gdclass.MeshPrimitiveType) {
+func (self class) Begin(primitive gdclass.MeshPrimitiveType) { //gd:SurfaceTool.begin
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	var r_ret = callframe.Nil
@@ -399,7 +399,7 @@ func (self class) Begin(primitive gdclass.MeshPrimitiveType) {
 Specifies the position of current vertex. Should be called after specifying other vertex properties (e.g. Color, UV).
 */
 //go:nosplit
-func (self class) AddVertex(vertex gd.Vector3) {
+func (self class) AddVertex(vertex gd.Vector3) { //gd:SurfaceTool.add_vertex
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex)
 	var r_ret = callframe.Nil
@@ -412,7 +412,7 @@ Specifies a [Color] to use for the [i]next[/i] vertex. If every vertex needs to 
 [b]Note:[/b] The material must have [member BaseMaterial3D.vertex_color_use_as_albedo] enabled for the vertex color to be visible.
 */
 //go:nosplit
-func (self class) SetColor(color gd.Color) {
+func (self class) SetColor(color gd.Color) { //gd:SurfaceTool.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -424,7 +424,7 @@ func (self class) SetColor(color gd.Color) {
 Specifies a normal to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetNormal(normal gd.Vector3) {
+func (self class) SetNormal(normal gd.Vector3) { //gd:SurfaceTool.set_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, normal)
 	var r_ret = callframe.Nil
@@ -436,7 +436,7 @@ func (self class) SetNormal(normal gd.Vector3) {
 Specifies a tangent to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetTangent(tangent gd.Plane) {
+func (self class) SetTangent(tangent gd.Plane) { //gd:SurfaceTool.set_tangent
 	var frame = callframe.New()
 	callframe.Arg(frame, tangent)
 	var r_ret = callframe.Nil
@@ -448,7 +448,7 @@ func (self class) SetTangent(tangent gd.Plane) {
 Specifies a set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetUv(uv gd.Vector2) {
+func (self class) SetUv(uv gd.Vector2) { //gd:SurfaceTool.set_uv
 	var frame = callframe.New()
 	callframe.Arg(frame, uv)
 	var r_ret = callframe.Nil
@@ -460,7 +460,7 @@ func (self class) SetUv(uv gd.Vector2) {
 Specifies an optional second set of UV coordinates to use for the [i]next[/i] vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetUv2(uv2 gd.Vector2) {
+func (self class) SetUv2(uv2 gd.Vector2) { //gd:SurfaceTool.set_uv2
 	var frame = callframe.New()
 	callframe.Arg(frame, uv2)
 	var r_ret = callframe.Nil
@@ -472,7 +472,7 @@ func (self class) SetUv2(uv2 gd.Vector2) {
 Specifies an array of bones to use for the [i]next[/i] vertex. [param bones] must contain 4 integers.
 */
 //go:nosplit
-func (self class) SetBones(bones gd.PackedInt32Array) {
+func (self class) SetBones(bones gd.PackedInt32Array) { //gd:SurfaceTool.set_bones
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bones))
 	var r_ret = callframe.Nil
@@ -484,7 +484,7 @@ func (self class) SetBones(bones gd.PackedInt32Array) {
 Specifies weight values to use for the [i]next[/i] vertex. [param weights] must contain 4 values. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
 */
 //go:nosplit
-func (self class) SetWeights(weights gd.PackedFloat32Array) {
+func (self class) SetWeights(weights gd.PackedFloat32Array) { //gd:SurfaceTool.set_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(weights))
 	var r_ret = callframe.Nil
@@ -497,7 +497,7 @@ Sets the custom value on this vertex for [param channel_index].
 [method set_custom_format] must be called first for this [param channel_index]. Formats which are not RGBA will ignore other color channels.
 */
 //go:nosplit
-func (self class) SetCustom(channel_index gd.Int, custom_color gd.Color) {
+func (self class) SetCustom(channel_index gd.Int, custom_color gd.Color) { //gd:SurfaceTool.set_custom
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	callframe.Arg(frame, custom_color)
@@ -511,7 +511,7 @@ Specifies the smooth group to use for the [i]next[/i] vertex. If this is never c
 [b]Note:[/b] This function actually takes a [code]uint32_t[/code], so C# users should use [code]uint32.MaxValue[/code] instead of [code]-1[/code] to produce a mesh with flat normals.
 */
 //go:nosplit
-func (self class) SetSmoothGroup(index gd.Int) {
+func (self class) SetSmoothGroup(index gd.Int) { //gd:SurfaceTool.set_smooth_group
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -524,7 +524,7 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) AddTriangleFan(vertices gd.PackedVector3Array, uvs gd.PackedVector2Array, colors gd.PackedColorArray, uv2s gd.PackedVector2Array, normals gd.PackedVector3Array, tangents Array.Contains[gd.Plane]) {
+func (self class) AddTriangleFan(vertices gd.PackedVector3Array, uvs gd.PackedVector2Array, colors gd.PackedColorArray, uv2s gd.PackedVector2Array, normals gd.PackedVector3Array, tangents Array.Contains[gd.Plane]) { //gd:SurfaceTool.add_triangle_fan
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(vertices))
 	callframe.Arg(frame, pointers.Get(uvs))
@@ -541,7 +541,7 @@ func (self class) AddTriangleFan(vertices gd.PackedVector3Array, uvs gd.PackedVe
 Adds a vertex to index array if you are using indexed vertices. Does not need to be called before adding vertices.
 */
 //go:nosplit
-func (self class) AddIndex(index gd.Int) {
+func (self class) AddIndex(index gd.Int) { //gd:SurfaceTool.add_index
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -553,7 +553,7 @@ func (self class) AddIndex(index gd.Int) {
 Shrinks the vertex array by creating an index array. This can improve performance by avoiding vertex reuse.
 */
 //go:nosplit
-func (self class) Index() {
+func (self class) Index() { //gd:SurfaceTool.index
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -564,7 +564,7 @@ func (self class) Index() {
 Removes the index array by expanding the vertex array.
 */
 //go:nosplit
-func (self class) Deindex() {
+func (self class) Deindex() { //gd:SurfaceTool.deindex
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_deindex, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -577,7 +577,7 @@ Generates normals from vertices so you do not have to do it manually. If [param 
 [b]Note:[/b] [method generate_normals] takes smooth groups into account. To generate smooth normals, set the smooth group to a value greater than or equal to [code]0[/code] using [method set_smooth_group] or leave the smooth group at the default of [code]0[/code]. To generate flat normals, set the smooth group to [code]-1[/code] using [method set_smooth_group] prior to adding vertices.
 */
 //go:nosplit
-func (self class) GenerateNormals(flip bool) {
+func (self class) GenerateNormals(flip bool) { //gd:SurfaceTool.generate_normals
 	var frame = callframe.New()
 	callframe.Arg(frame, flip)
 	var r_ret = callframe.Nil
@@ -589,7 +589,7 @@ func (self class) GenerateNormals(flip bool) {
 Generates a tangent vector for each vertex. Requires that each vertex have UVs and normals set already (see [method generate_normals]).
 */
 //go:nosplit
-func (self class) GenerateTangents() {
+func (self class) GenerateTangents() { //gd:SurfaceTool.generate_tangents
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_tangents, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -600,7 +600,7 @@ func (self class) GenerateTangents() {
 Optimizes triangle sorting for performance. Requires that [method get_primitive_type] is [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) OptimizeIndicesForCache() {
+func (self class) OptimizeIndicesForCache() { //gd:SurfaceTool.optimize_indices_for_cache
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_optimize_indices_for_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -611,7 +611,7 @@ func (self class) OptimizeIndicesForCache() {
 Returns the axis-aligned bounding box of the vertex positions.
 */
 //go:nosplit
-func (self class) GetAabb() gd.AABB {
+func (self class) GetAabb() gd.AABB { //gd:SurfaceTool.get_aabb
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -624,7 +624,7 @@ func (self class) GetAabb() gd.AABB {
 Generates an LOD for a given [param nd_threshold] in linear units (square root of quadric error metric), using at most [param target_index_count] indices.
 */
 //go:nosplit
-func (self class) GenerateLod(nd_threshold gd.Float, target_index_count gd.Int) gd.PackedInt32Array {
+func (self class) GenerateLod(nd_threshold gd.Float, target_index_count gd.Int) gd.PackedInt32Array { //gd:SurfaceTool.generate_lod
 	var frame = callframe.New()
 	callframe.Arg(frame, nd_threshold)
 	callframe.Arg(frame, target_index_count)
@@ -639,7 +639,7 @@ func (self class) GenerateLod(nd_threshold gd.Float, target_index_count gd.Int) 
 Sets [Material] to be used by the [Mesh] you are constructing.
 */
 //go:nosplit
-func (self class) SetMaterial(material [1]gdclass.Material) {
+func (self class) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.set_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	var r_ret = callframe.Nil
@@ -651,7 +651,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 Returns the type of mesh geometry, such as [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) GetPrimitiveType() gdclass.MeshPrimitiveType {
+func (self class) GetPrimitiveType() gdclass.MeshPrimitiveType { //gd:SurfaceTool.get_primitive_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.MeshPrimitiveType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -664,7 +664,7 @@ func (self class) GetPrimitiveType() gdclass.MeshPrimitiveType {
 Clear all information passed into the surface tool so far.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:SurfaceTool.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -675,7 +675,7 @@ func (self class) Clear() {
 Creates a vertex array from an existing [Mesh].
 */
 //go:nosplit
-func (self class) CreateFrom(existing [1]gdclass.Mesh, surface gd.Int) {
+func (self class) CreateFrom(existing [1]gdclass.Mesh, surface gd.Int) { //gd:SurfaceTool.create_from
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
@@ -688,7 +688,7 @@ func (self class) CreateFrom(existing [1]gdclass.Mesh, surface gd.Int) {
 Creates this SurfaceTool from existing vertex arrays such as returned by [method commit_to_arrays], [method Mesh.surface_get_arrays], [method Mesh.surface_get_blend_shape_arrays], [method ImporterMesh.get_surface_arrays], and [method ImporterMesh.get_surface_blend_shape_arrays]. [param primitive_type] controls the type of mesh data, defaulting to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) CreateFromArrays(arrays Array.Any, primitive_type gdclass.MeshPrimitiveType) {
+func (self class) CreateFromArrays(arrays Array.Any, primitive_type gdclass.MeshPrimitiveType) { //gd:SurfaceTool.create_from_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
 	callframe.Arg(frame, primitive_type)
@@ -701,7 +701,7 @@ func (self class) CreateFromArrays(arrays Array.Any, primitive_type gdclass.Mesh
 Creates a vertex array from the specified blend shape of an existing [Mesh]. This can be used to extract a specific pose from a blend shape.
 */
 //go:nosplit
-func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface gd.Int, blend_shape gd.String) {
+func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface gd.Int, blend_shape gd.String) { //gd:SurfaceTool.create_from_blend_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
@@ -715,7 +715,7 @@ func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface gd.Int,
 Append vertices from a given [Mesh] surface onto the current vertex array with specified [Transform3D].
 */
 //go:nosplit
-func (self class) AppendFrom(existing [1]gdclass.Mesh, surface gd.Int, transform gd.Transform3D) {
+func (self class) AppendFrom(existing [1]gdclass.Mesh, surface gd.Int, transform gd.Transform3D) { //gd:SurfaceTool.append_from
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
@@ -730,7 +730,7 @@ Returns a constructed [ArrayMesh] from current information passed in. If an exis
 [b]FIXME:[/b] Document possible values for [param flags], it changed in 4.0. Likely some combinations of [enum Mesh.ArrayFormat].
 */
 //go:nosplit
-func (self class) Commit(existing [1]gdclass.ArrayMesh, flags gd.Int) [1]gdclass.ArrayMesh {
+func (self class) Commit(existing [1]gdclass.ArrayMesh, flags gd.Int) [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, flags)
@@ -745,7 +745,7 @@ func (self class) Commit(existing [1]gdclass.ArrayMesh, flags gd.Int) [1]gdclass
 Commits the data to the same format used by [method ArrayMesh.add_surface_from_arrays], [method ImporterMesh.add_surface], and [method create_from_arrays]. This way you can further process the mesh data using the [ArrayMesh] or [ImporterMesh] APIs.
 */
 //go:nosplit
-func (self class) CommitToArrays() Array.Any {
+func (self class) CommitToArrays() Array.Any { //gd:SurfaceTool.commit_to_arrays
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit_to_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -779,7 +779,7 @@ func init() {
 	gdclass.Register("SurfaceTool", func(ptr gd.Object) any { return [1]gdclass.SurfaceTool{*(*gdclass.SurfaceTool)(unsafe.Pointer(&ptr))} })
 }
 
-type CustomFormat = gdclass.SurfaceToolCustomFormat
+type CustomFormat = gdclass.SurfaceToolCustomFormat //gd:SurfaceTool.CustomFormat
 
 const (
 	/*Limits range of data passed to [method set_custom] to unsigned normalized 0 to 1 stored in 8 bits per channel. See [constant Mesh.ARRAY_CUSTOM_RGBA8_UNORM].*/
@@ -802,7 +802,7 @@ const (
 	CustomMax CustomFormat = 8
 )
 
-type SkinWeightCount = gdclass.SurfaceToolSkinWeightCount
+type SkinWeightCount = gdclass.SurfaceToolSkinWeightCount //gd:SurfaceTool.SkinWeightCount
 
 const (
 	/*Each individual vertex can be influenced by only 4 bone weights.*/

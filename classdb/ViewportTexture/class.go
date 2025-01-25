@@ -71,7 +71,7 @@ func (self Instance) SetViewportPath(value NodePath.String) {
 }
 
 //go:nosplit
-func (self class) SetViewportPathInScene(path gd.NodePath) {
+func (self class) SetViewportPathInScene(path gd.NodePath) { //gd:ViewportTexture.set_viewport_path_in_scene
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -80,7 +80,7 @@ func (self class) SetViewportPathInScene(path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetViewportPathInScene() gd.NodePath {
+func (self class) GetViewportPathInScene() gd.NodePath { //gd:ViewportTexture.get_viewport_path_in_scene
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ViewportTexture.Bind_get_viewport_path_in_scene, self.AsObject(), frame.Array(0), r_ret.Addr())

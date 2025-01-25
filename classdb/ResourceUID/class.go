@@ -39,7 +39,7 @@ func singleton() {
 /*
 Converts the given UID to a [code]uid://[/code] string value.
 */
-func IdToText(id int) string {
+func IdToText(id int) string { //gd:ResourceUID.id_to_text
 	once.Do(singleton)
 	return string(class(self).IdToText(gd.Int(id)).String())
 }
@@ -47,7 +47,7 @@ func IdToText(id int) string {
 /*
 Extracts the UID value from the given [code]uid://[/code] string.
 */
-func TextToId(text_id string) int {
+func TextToId(text_id string) int { //gd:ResourceUID.text_to_id
 	once.Do(singleton)
 	return int(int(class(self).TextToId(gd.NewString(text_id))))
 }
@@ -56,7 +56,7 @@ func TextToId(text_id string) int {
 Generates a random resource UID which is guaranteed to be unique within the list of currently loaded UIDs.
 In order for this UID to be registered, you must call [method add_id] or [method set_id].
 */
-func CreateId() int {
+func CreateId() int { //gd:ResourceUID.create_id
 	once.Do(singleton)
 	return int(int(class(self).CreateId()))
 }
@@ -64,7 +64,7 @@ func CreateId() int {
 /*
 Returns whether the given UID value is known to the cache.
 */
-func HasId(id int) bool {
+func HasId(id int) bool { //gd:ResourceUID.has_id
 	once.Do(singleton)
 	return bool(class(self).HasId(gd.Int(id)))
 }
@@ -73,7 +73,7 @@ func HasId(id int) bool {
 Adds a new UID value which is mapped to the given resource path.
 Fails with an error if the UID already exists, so be sure to check [method has_id] beforehand, or use [method set_id] instead.
 */
-func AddId(id int, path string) {
+func AddId(id int, path string) { //gd:ResourceUID.add_id
 	once.Do(singleton)
 	class(self).AddId(gd.Int(id), gd.NewString(path))
 }
@@ -82,7 +82,7 @@ func AddId(id int, path string) {
 Updates the resource path of an existing UID.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand, or use [method add_id] instead.
 */
-func SetId(id int, path string) {
+func SetId(id int, path string) { //gd:ResourceUID.set_id
 	once.Do(singleton)
 	class(self).SetId(gd.Int(id), gd.NewString(path))
 }
@@ -91,7 +91,7 @@ func SetId(id int, path string) {
 Returns the path that the given UID value refers to.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand.
 */
-func GetIdPath(id int) string {
+func GetIdPath(id int) string { //gd:ResourceUID.get_id_path
 	once.Do(singleton)
 	return string(class(self).GetIdPath(gd.Int(id)).String())
 }
@@ -100,7 +100,7 @@ func GetIdPath(id int) string {
 Removes a loaded UID value from the cache.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand.
 */
-func RemoveId(id int) {
+func RemoveId(id int) { //gd:ResourceUID.remove_id
 	once.Do(singleton)
 	class(self).RemoveId(gd.Int(id))
 }
@@ -119,7 +119,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Converts the given UID to a [code]uid://[/code] string value.
 */
 //go:nosplit
-func (self class) IdToText(id gd.Int) gd.String {
+func (self class) IdToText(id gd.Int) gd.String { //gd:ResourceUID.id_to_text
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -133,7 +133,7 @@ func (self class) IdToText(id gd.Int) gd.String {
 Extracts the UID value from the given [code]uid://[/code] string.
 */
 //go:nosplit
-func (self class) TextToId(text_id gd.String) gd.Int {
+func (self class) TextToId(text_id gd.String) gd.Int { //gd:ResourceUID.text_to_id
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text_id))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -148,7 +148,7 @@ Generates a random resource UID which is guaranteed to be unique within the list
 In order for this UID to be registered, you must call [method add_id] or [method set_id].
 */
 //go:nosplit
-func (self class) CreateId() gd.Int {
+func (self class) CreateId() gd.Int { //gd:ResourceUID.create_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceUID.Bind_create_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -161,7 +161,7 @@ func (self class) CreateId() gd.Int {
 Returns whether the given UID value is known to the cache.
 */
 //go:nosplit
-func (self class) HasId(id gd.Int) bool {
+func (self class) HasId(id gd.Int) bool { //gd:ResourceUID.has_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -176,7 +176,7 @@ Adds a new UID value which is mapped to the given resource path.
 Fails with an error if the UID already exists, so be sure to check [method has_id] beforehand, or use [method set_id] instead.
 */
 //go:nosplit
-func (self class) AddId(id gd.Int, path gd.String) {
+func (self class) AddId(id gd.Int, path gd.String) { //gd:ResourceUID.add_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(path))
@@ -190,7 +190,7 @@ Updates the resource path of an existing UID.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand, or use [method add_id] instead.
 */
 //go:nosplit
-func (self class) SetId(id gd.Int, path gd.String) {
+func (self class) SetId(id gd.Int, path gd.String) { //gd:ResourceUID.set_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(path))
@@ -204,7 +204,7 @@ Returns the path that the given UID value refers to.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand.
 */
 //go:nosplit
-func (self class) GetIdPath(id gd.Int) gd.String {
+func (self class) GetIdPath(id gd.Int) gd.String { //gd:ResourceUID.get_id_path
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -219,7 +219,7 @@ Removes a loaded UID value from the cache.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand.
 */
 //go:nosplit
-func (self class) RemoveId(id gd.Int) {
+func (self class) RemoveId(id gd.Int) { //gd:ResourceUID.remove_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil

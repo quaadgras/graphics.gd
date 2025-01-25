@@ -156,7 +156,7 @@ func (self Instance) SetNoise(value [1]gdclass.Noise) {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Int) {
+func (self class) SetWidth(width gd.Int) { //gd:NoiseTexture2D.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -165,7 +165,7 @@ func (self class) SetWidth(width gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Int) {
+func (self class) SetHeight(height gd.Int) { //gd:NoiseTexture2D.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -174,7 +174,7 @@ func (self class) SetHeight(height gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetInvert(invert bool) {
+func (self class) SetInvert(invert bool) { //gd:NoiseTexture2D.set_invert
 	var frame = callframe.New()
 	callframe.Arg(frame, invert)
 	var r_ret = callframe.Nil
@@ -183,7 +183,7 @@ func (self class) SetInvert(invert bool) {
 }
 
 //go:nosplit
-func (self class) GetInvert() bool {
+func (self class) GetInvert() bool { //gd:NoiseTexture2D.get_invert
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_get_invert, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -193,7 +193,7 @@ func (self class) GetInvert() bool {
 }
 
 //go:nosplit
-func (self class) SetIn3dSpace(enable bool) {
+func (self class) SetIn3dSpace(enable bool) { //gd:NoiseTexture2D.set_in_3d_space
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -202,7 +202,7 @@ func (self class) SetIn3dSpace(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsIn3dSpace() bool {
+func (self class) IsIn3dSpace() bool { //gd:NoiseTexture2D.is_in_3d_space
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_is_in_3d_space, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -212,7 +212,7 @@ func (self class) IsIn3dSpace() bool {
 }
 
 //go:nosplit
-func (self class) SetGenerateMipmaps(invert bool) {
+func (self class) SetGenerateMipmaps(invert bool) { //gd:NoiseTexture2D.set_generate_mipmaps
 	var frame = callframe.New()
 	callframe.Arg(frame, invert)
 	var r_ret = callframe.Nil
@@ -221,7 +221,7 @@ func (self class) SetGenerateMipmaps(invert bool) {
 }
 
 //go:nosplit
-func (self class) IsGeneratingMipmaps() bool {
+func (self class) IsGeneratingMipmaps() bool { //gd:NoiseTexture2D.is_generating_mipmaps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_is_generating_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -231,7 +231,7 @@ func (self class) IsGeneratingMipmaps() bool {
 }
 
 //go:nosplit
-func (self class) SetSeamless(seamless bool) {
+func (self class) SetSeamless(seamless bool) { //gd:NoiseTexture2D.set_seamless
 	var frame = callframe.New()
 	callframe.Arg(frame, seamless)
 	var r_ret = callframe.Nil
@@ -240,7 +240,7 @@ func (self class) SetSeamless(seamless bool) {
 }
 
 //go:nosplit
-func (self class) GetSeamless() bool {
+func (self class) GetSeamless() bool { //gd:NoiseTexture2D.get_seamless
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_get_seamless, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -250,7 +250,7 @@ func (self class) GetSeamless() bool {
 }
 
 //go:nosplit
-func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt gd.Float) {
+func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt gd.Float) { //gd:NoiseTexture2D.set_seamless_blend_skirt
 	var frame = callframe.New()
 	callframe.Arg(frame, seamless_blend_skirt)
 	var r_ret = callframe.Nil
@@ -259,7 +259,7 @@ func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSeamlessBlendSkirt() gd.Float {
+func (self class) GetSeamlessBlendSkirt() gd.Float { //gd:NoiseTexture2D.get_seamless_blend_skirt
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_get_seamless_blend_skirt, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -269,7 +269,7 @@ func (self class) GetSeamlessBlendSkirt() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAsNormalMap(as_normal_map bool) {
+func (self class) SetAsNormalMap(as_normal_map bool) { //gd:NoiseTexture2D.set_as_normal_map
 	var frame = callframe.New()
 	callframe.Arg(frame, as_normal_map)
 	var r_ret = callframe.Nil
@@ -278,7 +278,7 @@ func (self class) SetAsNormalMap(as_normal_map bool) {
 }
 
 //go:nosplit
-func (self class) IsNormalMap() bool {
+func (self class) IsNormalMap() bool { //gd:NoiseTexture2D.is_normal_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_is_normal_map, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -288,7 +288,7 @@ func (self class) IsNormalMap() bool {
 }
 
 //go:nosplit
-func (self class) SetBumpStrength(bump_strength gd.Float) {
+func (self class) SetBumpStrength(bump_strength gd.Float) { //gd:NoiseTexture2D.set_bump_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, bump_strength)
 	var r_ret = callframe.Nil
@@ -297,7 +297,7 @@ func (self class) SetBumpStrength(bump_strength gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBumpStrength() gd.Float {
+func (self class) GetBumpStrength() gd.Float { //gd:NoiseTexture2D.get_bump_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_get_bump_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -307,7 +307,7 @@ func (self class) GetBumpStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetNormalize(normalize bool) {
+func (self class) SetNormalize(normalize bool) { //gd:NoiseTexture2D.set_normalize
 	var frame = callframe.New()
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Nil
@@ -316,7 +316,7 @@ func (self class) SetNormalize(normalize bool) {
 }
 
 //go:nosplit
-func (self class) IsNormalized() bool {
+func (self class) IsNormalized() bool { //gd:NoiseTexture2D.is_normalized
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_is_normalized, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -326,7 +326,7 @@ func (self class) IsNormalized() bool {
 }
 
 //go:nosplit
-func (self class) SetColorRamp(gradient [1]gdclass.Gradient) {
+func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture2D.set_color_ramp
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gradient[0])[0])
 	var r_ret = callframe.Nil
@@ -335,7 +335,7 @@ func (self class) SetColorRamp(gradient [1]gdclass.Gradient) {
 }
 
 //go:nosplit
-func (self class) GetColorRamp() [1]gdclass.Gradient {
+func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture2D.get_color_ramp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_get_color_ramp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -345,7 +345,7 @@ func (self class) GetColorRamp() [1]gdclass.Gradient {
 }
 
 //go:nosplit
-func (self class) SetNoise(noise [1]gdclass.Noise) {
+func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture2D.set_noise
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(noise[0])[0])
 	var r_ret = callframe.Nil
@@ -354,7 +354,7 @@ func (self class) SetNoise(noise [1]gdclass.Noise) {
 }
 
 //go:nosplit
-func (self class) GetNoise() [1]gdclass.Noise {
+func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture2D.get_noise
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture2D.Bind_get_noise, self.AsObject(), frame.Array(0), r_ret.Addr())

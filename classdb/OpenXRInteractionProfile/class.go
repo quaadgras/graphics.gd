@@ -41,14 +41,14 @@ type Any interface {
 /*
 Get the number of bindings in this interaction profile.
 */
-func (self Instance) GetBindingCount() int {
+func (self Instance) GetBindingCount() int { //gd:OpenXRInteractionProfile.get_binding_count
 	return int(int(class(self).GetBindingCount()))
 }
 
 /*
 Retrieve the binding at this index.
 */
-func (self Instance) GetBinding(index int) [1]gdclass.OpenXRIPBinding {
+func (self Instance) GetBinding(index int) [1]gdclass.OpenXRIPBinding { //gd:OpenXRInteractionProfile.get_binding
 	return [1]gdclass.OpenXRIPBinding(class(self).GetBinding(gd.Int(index)))
 }
 
@@ -88,7 +88,7 @@ func (self Instance) SetBindings(value []any) {
 }
 
 //go:nosplit
-func (self class) SetInteractionProfilePath(interaction_profile_path gd.String) {
+func (self class) SetInteractionProfilePath(interaction_profile_path gd.String) { //gd:OpenXRInteractionProfile.set_interaction_profile_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(interaction_profile_path))
 	var r_ret = callframe.Nil
@@ -97,7 +97,7 @@ func (self class) SetInteractionProfilePath(interaction_profile_path gd.String) 
 }
 
 //go:nosplit
-func (self class) GetInteractionProfilePath() gd.String {
+func (self class) GetInteractionProfilePath() gd.String { //gd:OpenXRInteractionProfile.get_interaction_profile_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_interaction_profile_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -110,7 +110,7 @@ func (self class) GetInteractionProfilePath() gd.String {
 Get the number of bindings in this interaction profile.
 */
 //go:nosplit
-func (self class) GetBindingCount() gd.Int {
+func (self class) GetBindingCount() gd.Int { //gd:OpenXRInteractionProfile.get_binding_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,7 +123,7 @@ func (self class) GetBindingCount() gd.Int {
 Retrieve the binding at this index.
 */
 //go:nosplit
-func (self class) GetBinding(index gd.Int) [1]gdclass.OpenXRIPBinding {
+func (self class) GetBinding(index gd.Int) [1]gdclass.OpenXRIPBinding { //gd:OpenXRInteractionProfile.get_binding
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -134,7 +134,7 @@ func (self class) GetBinding(index gd.Int) [1]gdclass.OpenXRIPBinding {
 }
 
 //go:nosplit
-func (self class) SetBindings(bindings Array.Any) {
+func (self class) SetBindings(bindings Array.Any) { //gd:OpenXRInteractionProfile.set_bindings
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(bindings)))
 	var r_ret = callframe.Nil
@@ -143,7 +143,7 @@ func (self class) SetBindings(bindings Array.Any) {
 }
 
 //go:nosplit
-func (self class) GetBindings() Array.Any {
+func (self class) GetBindings() Array.Any { //gd:OpenXRInteractionProfile.get_bindings
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_bindings, self.AsObject(), frame.Array(0), r_ret.Addr())

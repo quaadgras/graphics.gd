@@ -66,7 +66,7 @@ func (self Instance) SetFunction(value gdclass.VisualShaderNodeIsFunction) {
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeIsFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeIsFunction) { //gd:VisualShaderNodeIs.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeIsFunction) {
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeIsFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeIsFunction { //gd:VisualShaderNodeIs.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeIsFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIs.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,7 +123,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeIsFunction
+type Function = gdclass.VisualShaderNodeIsFunction //gd:VisualShaderNodeIs.Function
 
 const (
 	/*Comparison with [code]INF[/code] (Infinity).*/

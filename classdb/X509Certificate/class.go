@@ -41,28 +41,28 @@ type Any interface {
 /*
 Saves a certificate to the given [param path] (should be a "*.crt" file).
 */
-func (self Instance) Save(path string) error {
+func (self Instance) Save(path string) error { //gd:X509Certificate.save
 	return error(gd.ToError(class(self).Save(gd.NewString(path))))
 }
 
 /*
 Loads a certificate from [param path] ("*.crt" file).
 */
-func (self Instance) Load(path string) error {
+func (self Instance) Load(path string) error { //gd:X509Certificate.load
 	return error(gd.ToError(class(self).Load(gd.NewString(path))))
 }
 
 /*
 Returns a string representation of the certificate, or an empty string if the certificate is invalid.
 */
-func (self Instance) SaveToString() string {
+func (self Instance) SaveToString() string { //gd:X509Certificate.save_to_string
 	return string(class(self).SaveToString().String())
 }
 
 /*
 Loads a certificate from the given [param string].
 */
-func (self Instance) LoadFromString(s string) error {
+func (self Instance) LoadFromString(s string) error { //gd:X509Certificate.load_from_string
 	return error(gd.ToError(class(self).LoadFromString(gd.NewString(s))))
 }
 
@@ -89,7 +89,7 @@ func New() Instance {
 Saves a certificate to the given [param path] (should be a "*.crt" file).
 */
 //go:nosplit
-func (self class) Save(path gd.String) gd.Error {
+func (self class) Save(path gd.String) gd.Error { //gd:X509Certificate.save
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -103,7 +103,7 @@ func (self class) Save(path gd.String) gd.Error {
 Loads a certificate from [param path] ("*.crt" file).
 */
 //go:nosplit
-func (self class) Load(path gd.String) gd.Error {
+func (self class) Load(path gd.String) gd.Error { //gd:X509Certificate.load
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -117,7 +117,7 @@ func (self class) Load(path gd.String) gd.Error {
 Returns a string representation of the certificate, or an empty string if the certificate is invalid.
 */
 //go:nosplit
-func (self class) SaveToString() gd.String {
+func (self class) SaveToString() gd.String { //gd:X509Certificate.save_to_string
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.X509Certificate.Bind_save_to_string, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,7 +130,7 @@ func (self class) SaveToString() gd.String {
 Loads a certificate from the given [param string].
 */
 //go:nosplit
-func (self class) LoadFromString(s gd.String) gd.Error {
+func (self class) LoadFromString(s gd.String) gd.Error { //gd:X509Certificate.load_from_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -173,7 +173,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

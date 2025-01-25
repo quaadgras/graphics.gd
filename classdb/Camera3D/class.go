@@ -48,21 +48,21 @@ type Any interface {
 /*
 Returns a normal vector in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 */
-func (self Instance) ProjectRayNormal(screen_point Vector2.XY) Vector3.XYZ {
+func (self Instance) ProjectRayNormal(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_ray_normal
 	return Vector3.XYZ(class(self).ProjectRayNormal(gd.Vector2(screen_point)))
 }
 
 /*
 Returns a normal vector from the screen point location directed along the camera. Orthogonal cameras are normalized. Perspective cameras account for perspective, screen width/height, etc.
 */
-func (self Instance) ProjectLocalRayNormal(screen_point Vector2.XY) Vector3.XYZ {
+func (self Instance) ProjectLocalRayNormal(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_local_ray_normal
 	return Vector3.XYZ(class(self).ProjectLocalRayNormal(gd.Vector2(screen_point)))
 }
 
 /*
 Returns a 3D position in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 */
-func (self Instance) ProjectRayOrigin(screen_point Vector2.XY) Vector3.XYZ {
+func (self Instance) ProjectRayOrigin(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_ray_origin
 	return Vector3.XYZ(class(self).ProjectRayOrigin(gd.Vector2(screen_point)))
 }
 
@@ -76,7 +76,7 @@ control.visible = not get_viewport().get_camera_3d().is_position_behind(global_t
 control.position = get_viewport().get_camera_3d().unproject_position(global_transform.origin)
 [/codeblock]
 */
-func (self Instance) UnprojectPosition(world_point Vector3.XYZ) Vector2.XY {
+func (self Instance) UnprojectPosition(world_point Vector3.XYZ) Vector2.XY { //gd:Camera3D.unproject_position
 	return Vector2.XY(class(self).UnprojectPosition(gd.Vector3(world_point)))
 }
 
@@ -84,105 +84,105 @@ func (self Instance) UnprojectPosition(world_point Vector3.XYZ) Vector2.XY {
 Returns [code]true[/code] if the given position is behind the camera (the blue part of the linked diagram). [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/camera3d_position_frustum.png]See this diagram[/url] for an overview of position query methods.
 [b]Note:[/b] A position which returns [code]false[/code] may still be outside the camera's field of view.
 */
-func (self Instance) IsPositionBehind(world_point Vector3.XYZ) bool {
+func (self Instance) IsPositionBehind(world_point Vector3.XYZ) bool { //gd:Camera3D.is_position_behind
 	return bool(class(self).IsPositionBehind(gd.Vector3(world_point)))
 }
 
 /*
 Returns the 3D point in world space that maps to the given 2D coordinate in the [Viewport] rectangle on a plane that is the given [param z_depth] distance into the scene away from the camera.
 */
-func (self Instance) ProjectPosition(screen_point Vector2.XY, z_depth Float.X) Vector3.XYZ {
+func (self Instance) ProjectPosition(screen_point Vector2.XY, z_depth Float.X) Vector3.XYZ { //gd:Camera3D.project_position
 	return Vector3.XYZ(class(self).ProjectPosition(gd.Vector2(screen_point), gd.Float(z_depth)))
 }
 
 /*
 Sets the camera projection to perspective mode (see [constant PROJECTION_PERSPECTIVE]), by specifying a [param fov] (field of view) angle in degrees, and the [param z_near] and [param z_far] clip planes in world space units.
 */
-func (self Instance) SetPerspective(fov Float.X, z_near Float.X, z_far Float.X) {
+func (self Instance) SetPerspective(fov Float.X, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_perspective
 	class(self).SetPerspective(gd.Float(fov), gd.Float(z_near), gd.Float(z_far))
 }
 
 /*
 Sets the camera projection to orthogonal mode (see [constant PROJECTION_ORTHOGONAL]), by specifying a [param size], and the [param z_near] and [param z_far] clip planes in world space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
 */
-func (self Instance) SetOrthogonal(size Float.X, z_near Float.X, z_far Float.X) {
+func (self Instance) SetOrthogonal(size Float.X, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_orthogonal
 	class(self).SetOrthogonal(gd.Float(size), gd.Float(z_near), gd.Float(z_far))
 }
 
 /*
 Sets the camera projection to frustum mode (see [constant PROJECTION_FRUSTUM]), by specifying a [param size], an [param offset], and the [param z_near] and [param z_far] clip planes in world space units. See also [member frustum_offset].
 */
-func (self Instance) SetFrustum(size Float.X, offset Vector2.XY, z_near Float.X, z_far Float.X) {
+func (self Instance) SetFrustum(size Float.X, offset Vector2.XY, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_frustum
 	class(self).SetFrustum(gd.Float(size), gd.Vector2(offset), gd.Float(z_near), gd.Float(z_far))
 }
 
 /*
 Makes this camera the current camera for the [Viewport] (see class description). If the camera node is outside the scene tree, it will attempt to become current once it's added.
 */
-func (self Instance) MakeCurrent() {
+func (self Instance) MakeCurrent() { //gd:Camera3D.make_current
 	class(self).MakeCurrent()
 }
 
 /*
 If this is the current camera, remove it from being current. If [param enable_next] is [code]true[/code], request to make the next camera current, if any.
 */
-func (self Instance) ClearCurrent() {
+func (self Instance) ClearCurrent() { //gd:Camera3D.clear_current
 	class(self).ClearCurrent(true)
 }
 
 /*
 Returns the transform of the camera plus the vertical ([member v_offset]) and horizontal ([member h_offset]) offsets; and any other adjustments made to the position and orientation of the camera by subclassed cameras such as [XRCamera3D].
 */
-func (self Instance) GetCameraTransform() Transform3D.BasisOrigin {
+func (self Instance) GetCameraTransform() Transform3D.BasisOrigin { //gd:Camera3D.get_camera_transform
 	return Transform3D.BasisOrigin(class(self).GetCameraTransform())
 }
 
 /*
 Returns the projection matrix that this camera uses to render to its associated viewport. The camera must be part of the scene tree to function.
 */
-func (self Instance) GetCameraProjection() Projection.XYZW {
+func (self Instance) GetCameraProjection() Projection.XYZW { //gd:Camera3D.get_camera_projection
 	return Projection.XYZW(class(self).GetCameraProjection())
 }
 
 /*
 Returns the camera's frustum planes in world space units as an array of [Plane]s in the following order: near, far, left, top, right, bottom. Not to be confused with [member frustum_offset].
 */
-func (self Instance) GetFrustum() []Plane.NormalD {
+func (self Instance) GetFrustum() []Plane.NormalD { //gd:Camera3D.get_frustum
 	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(class(self).GetFrustum())))
 }
 
 /*
 Returns [code]true[/code] if the given position is inside the camera's frustum (the green part of the linked diagram). [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/camera3d_position_frustum.png]See this diagram[/url] for an overview of position query methods.
 */
-func (self Instance) IsPositionInFrustum(world_point Vector3.XYZ) bool {
+func (self Instance) IsPositionInFrustum(world_point Vector3.XYZ) bool { //gd:Camera3D.is_position_in_frustum
 	return bool(class(self).IsPositionInFrustum(gd.Vector3(world_point)))
 }
 
 /*
 Returns the camera's RID from the [RenderingServer].
 */
-func (self Instance) GetCameraRid() Resource.ID {
+func (self Instance) GetCameraRid() Resource.ID { //gd:Camera3D.get_camera_rid
 	return Resource.ID(class(self).GetCameraRid())
 }
 
 /*
 Returns the RID of a pyramid shape encompassing the camera's view frustum, ignoring the camera's near plane. The tip of the pyramid represents the position of the camera.
 */
-func (self Instance) GetPyramidShapeRid() Resource.ID {
+func (self Instance) GetPyramidShapeRid() Resource.ID { //gd:Camera3D.get_pyramid_shape_rid
 	return Resource.ID(class(self).GetPyramidShapeRid())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member cull_mask], given a [param layer_number] between 1 and 20.
 */
-func (self Instance) SetCullMaskValue(layer_number int, value bool) {
+func (self Instance) SetCullMaskValue(layer_number int, value bool) { //gd:Camera3D.set_cull_mask_value
 	class(self).SetCullMaskValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member cull_mask] is enabled, given a [param layer_number] between 1 and 20.
 */
-func (self Instance) GetCullMaskValue(layer_number int) bool {
+func (self Instance) GetCullMaskValue(layer_number int) bool { //gd:Camera3D.get_cull_mask_value
 	return bool(class(self).GetCullMaskValue(gd.Int(layer_number)))
 }
 
@@ -328,7 +328,7 @@ func (self Instance) SetFar(value Float.X) {
 Returns a normal vector in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 */
 //go:nosplit
-func (self class) ProjectRayNormal(screen_point gd.Vector2) gd.Vector3 {
+func (self class) ProjectRayNormal(screen_point gd.Vector2) gd.Vector3 { //gd:Camera3D.project_ray_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_point)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -342,7 +342,7 @@ func (self class) ProjectRayNormal(screen_point gd.Vector2) gd.Vector3 {
 Returns a normal vector from the screen point location directed along the camera. Orthogonal cameras are normalized. Perspective cameras account for perspective, screen width/height, etc.
 */
 //go:nosplit
-func (self class) ProjectLocalRayNormal(screen_point gd.Vector2) gd.Vector3 {
+func (self class) ProjectLocalRayNormal(screen_point gd.Vector2) gd.Vector3 { //gd:Camera3D.project_local_ray_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_point)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -356,7 +356,7 @@ func (self class) ProjectLocalRayNormal(screen_point gd.Vector2) gd.Vector3 {
 Returns a 3D position in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 */
 //go:nosplit
-func (self class) ProjectRayOrigin(screen_point gd.Vector2) gd.Vector3 {
+func (self class) ProjectRayOrigin(screen_point gd.Vector2) gd.Vector3 { //gd:Camera3D.project_ray_origin
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_point)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -377,7 +377,7 @@ control.position = get_viewport().get_camera_3d().unproject_position(global_tran
 [/codeblock]
 */
 //go:nosplit
-func (self class) UnprojectPosition(world_point gd.Vector3) gd.Vector2 {
+func (self class) UnprojectPosition(world_point gd.Vector3) gd.Vector2 { //gd:Camera3D.unproject_position
 	var frame = callframe.New()
 	callframe.Arg(frame, world_point)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -392,7 +392,7 @@ Returns [code]true[/code] if the given position is behind the camera (the blue p
 [b]Note:[/b] A position which returns [code]false[/code] may still be outside the camera's field of view.
 */
 //go:nosplit
-func (self class) IsPositionBehind(world_point gd.Vector3) bool {
+func (self class) IsPositionBehind(world_point gd.Vector3) bool { //gd:Camera3D.is_position_behind
 	var frame = callframe.New()
 	callframe.Arg(frame, world_point)
 	var r_ret = callframe.Ret[bool](frame)
@@ -406,7 +406,7 @@ func (self class) IsPositionBehind(world_point gd.Vector3) bool {
 Returns the 3D point in world space that maps to the given 2D coordinate in the [Viewport] rectangle on a plane that is the given [param z_depth] distance into the scene away from the camera.
 */
 //go:nosplit
-func (self class) ProjectPosition(screen_point gd.Vector2, z_depth gd.Float) gd.Vector3 {
+func (self class) ProjectPosition(screen_point gd.Vector2, z_depth gd.Float) gd.Vector3 { //gd:Camera3D.project_position
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_point)
 	callframe.Arg(frame, z_depth)
@@ -421,7 +421,7 @@ func (self class) ProjectPosition(screen_point gd.Vector2, z_depth gd.Float) gd.
 Sets the camera projection to perspective mode (see [constant PROJECTION_PERSPECTIVE]), by specifying a [param fov] (field of view) angle in degrees, and the [param z_near] and [param z_far] clip planes in world space units.
 */
 //go:nosplit
-func (self class) SetPerspective(fov gd.Float, z_near gd.Float, z_far gd.Float) {
+func (self class) SetPerspective(fov gd.Float, z_near gd.Float, z_far gd.Float) { //gd:Camera3D.set_perspective
 	var frame = callframe.New()
 	callframe.Arg(frame, fov)
 	callframe.Arg(frame, z_near)
@@ -435,7 +435,7 @@ func (self class) SetPerspective(fov gd.Float, z_near gd.Float, z_far gd.Float) 
 Sets the camera projection to orthogonal mode (see [constant PROJECTION_ORTHOGONAL]), by specifying a [param size], and the [param z_near] and [param z_far] clip planes in world space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
 */
 //go:nosplit
-func (self class) SetOrthogonal(size gd.Float, z_near gd.Float, z_far gd.Float) {
+func (self class) SetOrthogonal(size gd.Float, z_near gd.Float, z_far gd.Float) { //gd:Camera3D.set_orthogonal
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, z_near)
@@ -449,7 +449,7 @@ func (self class) SetOrthogonal(size gd.Float, z_near gd.Float, z_far gd.Float) 
 Sets the camera projection to frustum mode (see [constant PROJECTION_FRUSTUM]), by specifying a [param size], an [param offset], and the [param z_near] and [param z_far] clip planes in world space units. See also [member frustum_offset].
 */
 //go:nosplit
-func (self class) SetFrustum(size gd.Float, offset gd.Vector2, z_near gd.Float, z_far gd.Float) {
+func (self class) SetFrustum(size gd.Float, offset gd.Vector2, z_near gd.Float, z_far gd.Float) { //gd:Camera3D.set_frustum
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, offset)
@@ -464,7 +464,7 @@ func (self class) SetFrustum(size gd.Float, offset gd.Vector2, z_near gd.Float, 
 Makes this camera the current camera for the [Viewport] (see class description). If the camera node is outside the scene tree, it will attempt to become current once it's added.
 */
 //go:nosplit
-func (self class) MakeCurrent() {
+func (self class) MakeCurrent() { //gd:Camera3D.make_current
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_make_current, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -475,7 +475,7 @@ func (self class) MakeCurrent() {
 If this is the current camera, remove it from being current. If [param enable_next] is [code]true[/code], request to make the next camera current, if any.
 */
 //go:nosplit
-func (self class) ClearCurrent(enable_next bool) {
+func (self class) ClearCurrent(enable_next bool) { //gd:Camera3D.clear_current
 	var frame = callframe.New()
 	callframe.Arg(frame, enable_next)
 	var r_ret = callframe.Nil
@@ -484,7 +484,7 @@ func (self class) ClearCurrent(enable_next bool) {
 }
 
 //go:nosplit
-func (self class) SetCurrent(enabled bool) {
+func (self class) SetCurrent(enabled bool) { //gd:Camera3D.set_current
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -493,7 +493,7 @@ func (self class) SetCurrent(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsCurrent() bool {
+func (self class) IsCurrent() bool { //gd:Camera3D.is_current
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_is_current, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -506,7 +506,7 @@ func (self class) IsCurrent() bool {
 Returns the transform of the camera plus the vertical ([member v_offset]) and horizontal ([member h_offset]) offsets; and any other adjustments made to the position and orientation of the camera by subclassed cameras such as [XRCamera3D].
 */
 //go:nosplit
-func (self class) GetCameraTransform() gd.Transform3D {
+func (self class) GetCameraTransform() gd.Transform3D { //gd:Camera3D.get_camera_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_camera_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -519,7 +519,7 @@ func (self class) GetCameraTransform() gd.Transform3D {
 Returns the projection matrix that this camera uses to render to its associated viewport. The camera must be part of the scene tree to function.
 */
 //go:nosplit
-func (self class) GetCameraProjection() gd.Projection {
+func (self class) GetCameraProjection() gd.Projection { //gd:Camera3D.get_camera_projection
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Projection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_camera_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -529,7 +529,7 @@ func (self class) GetCameraProjection() gd.Projection {
 }
 
 //go:nosplit
-func (self class) GetFov() gd.Float {
+func (self class) GetFov() gd.Float { //gd:Camera3D.get_fov
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_fov, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -539,7 +539,7 @@ func (self class) GetFov() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetFrustumOffset() gd.Vector2 {
+func (self class) GetFrustumOffset() gd.Vector2 { //gd:Camera3D.get_frustum_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_frustum_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -549,7 +549,7 @@ func (self class) GetFrustumOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Float {
+func (self class) GetSize() gd.Float { //gd:Camera3D.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -559,7 +559,7 @@ func (self class) GetSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetFar() gd.Float {
+func (self class) GetFar() gd.Float { //gd:Camera3D.get_far
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_far, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -569,7 +569,7 @@ func (self class) GetFar() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetNear() gd.Float {
+func (self class) GetNear() gd.Float { //gd:Camera3D.get_near
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_near, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -579,7 +579,7 @@ func (self class) GetNear() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFov(fov gd.Float) {
+func (self class) SetFov(fov gd.Float) { //gd:Camera3D.set_fov
 	var frame = callframe.New()
 	callframe.Arg(frame, fov)
 	var r_ret = callframe.Nil
@@ -588,7 +588,7 @@ func (self class) SetFov(fov gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetFrustumOffset(offset gd.Vector2) {
+func (self class) SetFrustumOffset(offset gd.Vector2) { //gd:Camera3D.set_frustum_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -597,7 +597,7 @@ func (self class) SetFrustumOffset(offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Float) {
+func (self class) SetSize(size gd.Float) { //gd:Camera3D.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -606,7 +606,7 @@ func (self class) SetSize(size gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetFar(far gd.Float) {
+func (self class) SetFar(far gd.Float) { //gd:Camera3D.set_far
 	var frame = callframe.New()
 	callframe.Arg(frame, far)
 	var r_ret = callframe.Nil
@@ -615,7 +615,7 @@ func (self class) SetFar(far gd.Float) {
 }
 
 //go:nosplit
-func (self class) SetNear(near gd.Float) {
+func (self class) SetNear(near gd.Float) { //gd:Camera3D.set_near
 	var frame = callframe.New()
 	callframe.Arg(frame, near)
 	var r_ret = callframe.Nil
@@ -624,7 +624,7 @@ func (self class) SetNear(near gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetProjection() gdclass.Camera3DProjectionType {
+func (self class) GetProjection() gdclass.Camera3DProjectionType { //gd:Camera3D.get_projection
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Camera3DProjectionType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -634,7 +634,7 @@ func (self class) GetProjection() gdclass.Camera3DProjectionType {
 }
 
 //go:nosplit
-func (self class) SetProjection(mode gdclass.Camera3DProjectionType) {
+func (self class) SetProjection(mode gdclass.Camera3DProjectionType) { //gd:Camera3D.set_projection
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -643,7 +643,7 @@ func (self class) SetProjection(mode gdclass.Camera3DProjectionType) {
 }
 
 //go:nosplit
-func (self class) SetHOffset(offset gd.Float) {
+func (self class) SetHOffset(offset gd.Float) { //gd:Camera3D.set_h_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -652,7 +652,7 @@ func (self class) SetHOffset(offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetHOffset() gd.Float {
+func (self class) GetHOffset() gd.Float { //gd:Camera3D.get_h_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_h_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -662,7 +662,7 @@ func (self class) GetHOffset() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVOffset(offset gd.Float) {
+func (self class) SetVOffset(offset gd.Float) { //gd:Camera3D.set_v_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -671,7 +671,7 @@ func (self class) SetVOffset(offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVOffset() gd.Float {
+func (self class) GetVOffset() gd.Float { //gd:Camera3D.get_v_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_v_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -681,7 +681,7 @@ func (self class) GetVOffset() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCullMask(mask gd.Int) {
+func (self class) SetCullMask(mask gd.Int) { //gd:Camera3D.set_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -690,7 +690,7 @@ func (self class) SetCullMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCullMask() gd.Int {
+func (self class) GetCullMask() gd.Int { //gd:Camera3D.get_cull_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -700,7 +700,7 @@ func (self class) GetCullMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetEnvironment(env [1]gdclass.Environment) {
+func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:Camera3D.set_environment
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(env[0])[0])
 	var r_ret = callframe.Nil
@@ -709,7 +709,7 @@ func (self class) SetEnvironment(env [1]gdclass.Environment) {
 }
 
 //go:nosplit
-func (self class) GetEnvironment() [1]gdclass.Environment {
+func (self class) GetEnvironment() [1]gdclass.Environment { //gd:Camera3D.get_environment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -719,7 +719,7 @@ func (self class) GetEnvironment() [1]gdclass.Environment {
 }
 
 //go:nosplit
-func (self class) SetAttributes(env [1]gdclass.CameraAttributes) {
+func (self class) SetAttributes(env [1]gdclass.CameraAttributes) { //gd:Camera3D.set_attributes
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(env[0])[0])
 	var r_ret = callframe.Nil
@@ -728,7 +728,7 @@ func (self class) SetAttributes(env [1]gdclass.CameraAttributes) {
 }
 
 //go:nosplit
-func (self class) GetAttributes() [1]gdclass.CameraAttributes {
+func (self class) GetAttributes() [1]gdclass.CameraAttributes { //gd:Camera3D.get_attributes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -738,7 +738,7 @@ func (self class) GetAttributes() [1]gdclass.CameraAttributes {
 }
 
 //go:nosplit
-func (self class) SetCompositor(compositor [1]gdclass.Compositor) {
+func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:Camera3D.set_compositor
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(compositor[0])[0])
 	var r_ret = callframe.Nil
@@ -747,7 +747,7 @@ func (self class) SetCompositor(compositor [1]gdclass.Compositor) {
 }
 
 //go:nosplit
-func (self class) GetCompositor() [1]gdclass.Compositor {
+func (self class) GetCompositor() [1]gdclass.Compositor { //gd:Camera3D.get_compositor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -757,7 +757,7 @@ func (self class) GetCompositor() [1]gdclass.Compositor {
 }
 
 //go:nosplit
-func (self class) SetKeepAspectMode(mode gdclass.Camera3DKeepAspect) {
+func (self class) SetKeepAspectMode(mode gdclass.Camera3DKeepAspect) { //gd:Camera3D.set_keep_aspect_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -766,7 +766,7 @@ func (self class) SetKeepAspectMode(mode gdclass.Camera3DKeepAspect) {
 }
 
 //go:nosplit
-func (self class) GetKeepAspectMode() gdclass.Camera3DKeepAspect {
+func (self class) GetKeepAspectMode() gdclass.Camera3DKeepAspect { //gd:Camera3D.get_keep_aspect_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Camera3DKeepAspect](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_keep_aspect_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -776,7 +776,7 @@ func (self class) GetKeepAspectMode() gdclass.Camera3DKeepAspect {
 }
 
 //go:nosplit
-func (self class) SetDopplerTracking(mode gdclass.Camera3DDopplerTracking) {
+func (self class) SetDopplerTracking(mode gdclass.Camera3DDopplerTracking) { //gd:Camera3D.set_doppler_tracking
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -785,7 +785,7 @@ func (self class) SetDopplerTracking(mode gdclass.Camera3DDopplerTracking) {
 }
 
 //go:nosplit
-func (self class) GetDopplerTracking() gdclass.Camera3DDopplerTracking {
+func (self class) GetDopplerTracking() gdclass.Camera3DDopplerTracking { //gd:Camera3D.get_doppler_tracking
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Camera3DDopplerTracking](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_doppler_tracking, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -798,7 +798,7 @@ func (self class) GetDopplerTracking() gdclass.Camera3DDopplerTracking {
 Returns the camera's frustum planes in world space units as an array of [Plane]s in the following order: near, far, left, top, right, bottom. Not to be confused with [member frustum_offset].
 */
 //go:nosplit
-func (self class) GetFrustum() Array.Contains[gd.Plane] {
+func (self class) GetFrustum() Array.Contains[gd.Plane] { //gd:Camera3D.get_frustum
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_frustum, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -811,7 +811,7 @@ func (self class) GetFrustum() Array.Contains[gd.Plane] {
 Returns [code]true[/code] if the given position is inside the camera's frustum (the green part of the linked diagram). [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/camera3d_position_frustum.png]See this diagram[/url] for an overview of position query methods.
 */
 //go:nosplit
-func (self class) IsPositionInFrustum(world_point gd.Vector3) bool {
+func (self class) IsPositionInFrustum(world_point gd.Vector3) bool { //gd:Camera3D.is_position_in_frustum
 	var frame = callframe.New()
 	callframe.Arg(frame, world_point)
 	var r_ret = callframe.Ret[bool](frame)
@@ -825,7 +825,7 @@ func (self class) IsPositionInFrustum(world_point gd.Vector3) bool {
 Returns the camera's RID from the [RenderingServer].
 */
 //go:nosplit
-func (self class) GetCameraRid() gd.RID {
+func (self class) GetCameraRid() gd.RID { //gd:Camera3D.get_camera_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_camera_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -838,7 +838,7 @@ func (self class) GetCameraRid() gd.RID {
 Returns the RID of a pyramid shape encompassing the camera's view frustum, ignoring the camera's near plane. The tip of the pyramid represents the position of the camera.
 */
 //go:nosplit
-func (self class) GetPyramidShapeRid() gd.RID {
+func (self class) GetPyramidShapeRid() gd.RID { //gd:Camera3D.get_pyramid_shape_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_pyramid_shape_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -851,7 +851,7 @@ func (self class) GetPyramidShapeRid() gd.RID {
 Based on [param value], enables or disables the specified layer in the [member cull_mask], given a [param layer_number] between 1 and 20.
 */
 //go:nosplit
-func (self class) SetCullMaskValue(layer_number gd.Int, value bool) {
+func (self class) SetCullMaskValue(layer_number gd.Int, value bool) { //gd:Camera3D.set_cull_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -864,7 +864,7 @@ func (self class) SetCullMaskValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member cull_mask] is enabled, given a [param layer_number] between 1 and 20.
 */
 //go:nosplit
-func (self class) GetCullMaskValue(layer_number gd.Int) bool {
+func (self class) GetCullMaskValue(layer_number gd.Int) bool { //gd:Camera3D.get_cull_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -897,7 +897,7 @@ func init() {
 	gdclass.Register("Camera3D", func(ptr gd.Object) any { return [1]gdclass.Camera3D{*(*gdclass.Camera3D)(unsafe.Pointer(&ptr))} })
 }
 
-type ProjectionType = gdclass.Camera3DProjectionType
+type ProjectionType = gdclass.Camera3DProjectionType //gd:Camera3D.ProjectionType
 
 const (
 	/*Perspective projection. Objects on the screen becomes smaller when they are far away.*/
@@ -908,7 +908,7 @@ const (
 	ProjectionFrustum ProjectionType = 2
 )
 
-type KeepAspect = gdclass.Camera3DKeepAspect
+type KeepAspect = gdclass.Camera3DKeepAspect //gd:Camera3D.KeepAspect
 
 const (
 	/*Preserves the horizontal aspect ratio; also known as Vert- scaling. This is usually the best option for projects running in portrait mode, as taller aspect ratios will benefit from a wider vertical FOV.*/
@@ -917,7 +917,7 @@ const (
 	KeepHeight KeepAspect = 1
 )
 
-type DopplerTracking = gdclass.Camera3DDopplerTracking
+type DopplerTracking = gdclass.Camera3DDopplerTracking //gd:Camera3D.DopplerTracking
 
 const (
 	/*Disables [url=https://en.wikipedia.org/wiki/Doppler_effect]Doppler effect[/url] simulation (default).*/

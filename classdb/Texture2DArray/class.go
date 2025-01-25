@@ -45,7 +45,7 @@ type Any interface {
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture2DArray]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource {
+func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2DArray.create_placeholder
 	return [1]gdclass.Resource(class(self).CreatePlaceholder())
 }
 
@@ -72,7 +72,7 @@ func New() Instance {
 Creates a placeholder version of this resource ([PlaceholderTexture2DArray]).
 */
 //go:nosplit
-func (self class) CreatePlaceholder() [1]gdclass.Resource {
+func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2DArray.create_placeholder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2DArray.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())

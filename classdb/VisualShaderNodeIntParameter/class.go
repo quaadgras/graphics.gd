@@ -107,7 +107,7 @@ func (self Instance) SetDefaultValue(value int) {
 }
 
 //go:nosplit
-func (self class) SetHint(hint gdclass.VisualShaderNodeIntParameterHint) {
+func (self class) SetHint(hint gdclass.VisualShaderNodeIntParameterHint) { //gd:VisualShaderNodeIntParameter.set_hint
 	var frame = callframe.New()
 	callframe.Arg(frame, hint)
 	var r_ret = callframe.Nil
@@ -116,7 +116,7 @@ func (self class) SetHint(hint gdclass.VisualShaderNodeIntParameterHint) {
 }
 
 //go:nosplit
-func (self class) GetHint() gdclass.VisualShaderNodeIntParameterHint {
+func (self class) GetHint() gdclass.VisualShaderNodeIntParameterHint { //gd:VisualShaderNodeIntParameter.get_hint
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeIntParameterHint](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -126,7 +126,7 @@ func (self class) GetHint() gdclass.VisualShaderNodeIntParameterHint {
 }
 
 //go:nosplit
-func (self class) SetMin(value gd.Int) {
+func (self class) SetMin(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_min
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -135,7 +135,7 @@ func (self class) SetMin(value gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMin() gd.Int {
+func (self class) GetMin() gd.Int { //gd:VisualShaderNodeIntParameter.get_min
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -145,7 +145,7 @@ func (self class) GetMin() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMax(value gd.Int) {
+func (self class) SetMax(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_max
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -154,7 +154,7 @@ func (self class) SetMax(value gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMax() gd.Int {
+func (self class) GetMax() gd.Int { //gd:VisualShaderNodeIntParameter.get_max
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -164,7 +164,7 @@ func (self class) GetMax() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetStep(value gd.Int) {
+func (self class) SetStep(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_step
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -173,7 +173,7 @@ func (self class) SetStep(value gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetStep() gd.Int {
+func (self class) GetStep() gd.Int { //gd:VisualShaderNodeIntParameter.get_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -183,7 +183,7 @@ func (self class) GetStep() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetDefaultValueEnabled(enabled bool) {
+func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeIntParameter.set_default_value_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -192,7 +192,7 @@ func (self class) SetDefaultValueEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDefaultValueEnabled() bool {
+func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeIntParameter.is_default_value_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_is_default_value_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -202,7 +202,7 @@ func (self class) IsDefaultValueEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDefaultValue(value gd.Int) {
+func (self class) SetDefaultValue(value gd.Int) { //gd:VisualShaderNodeIntParameter.set_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -211,7 +211,7 @@ func (self class) SetDefaultValue(value gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetDefaultValue() gd.Int {
+func (self class) GetDefaultValue() gd.Int { //gd:VisualShaderNodeIntParameter.get_default_value
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -269,7 +269,7 @@ func init() {
 	})
 }
 
-type Hint = gdclass.VisualShaderNodeIntParameterHint
+type Hint = gdclass.VisualShaderNodeIntParameterHint //gd:VisualShaderNodeIntParameter.Hint
 
 const (
 	/*The parameter will not constrain its value.*/

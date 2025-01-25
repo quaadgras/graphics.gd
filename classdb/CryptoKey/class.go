@@ -42,7 +42,7 @@ type Any interface {
 Saves a key to the given [param path]. If [param public_only] is [code]true[/code], only the public key will be saved.
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
-func (self Instance) Save(path string) error {
+func (self Instance) Save(path string) error { //gd:CryptoKey.save
 	return error(gd.ToError(class(self).Save(gd.NewString(path), false)))
 }
 
@@ -50,28 +50,28 @@ func (self Instance) Save(path string) error {
 Loads a key from [param path]. If [param public_only] is [code]true[/code], only the public key will be loaded.
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
-func (self Instance) Load(path string) error {
+func (self Instance) Load(path string) error { //gd:CryptoKey.load
 	return error(gd.ToError(class(self).Load(gd.NewString(path), false)))
 }
 
 /*
 Returns [code]true[/code] if this CryptoKey only has the public part, and not the private one.
 */
-func (self Instance) IsPublicOnly() bool {
+func (self Instance) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
 	return bool(class(self).IsPublicOnly())
 }
 
 /*
 Returns a string containing the key in PEM format. If [param public_only] is [code]true[/code], only the public key will be included.
 */
-func (self Instance) SaveToString() string {
+func (self Instance) SaveToString() string { //gd:CryptoKey.save_to_string
 	return string(class(self).SaveToString(false).String())
 }
 
 /*
 Loads a key from the given [param string_key]. If [param public_only] is [code]true[/code], only the public key will be loaded.
 */
-func (self Instance) LoadFromString(string_key string) error {
+func (self Instance) LoadFromString(string_key string) error { //gd:CryptoKey.load_from_string
 	return error(gd.ToError(class(self).LoadFromString(gd.NewString(string_key), false)))
 }
 
@@ -99,7 +99,7 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 //go:nosplit
-func (self class) Save(path gd.String, public_only bool) gd.Error {
+func (self class) Save(path gd.String, public_only bool) gd.Error { //gd:CryptoKey.save
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, public_only)
@@ -115,7 +115,7 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 //go:nosplit
-func (self class) Load(path gd.String, public_only bool) gd.Error {
+func (self class) Load(path gd.String, public_only bool) gd.Error { //gd:CryptoKey.load
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, public_only)
@@ -130,7 +130,7 @@ func (self class) Load(path gd.String, public_only bool) gd.Error {
 Returns [code]true[/code] if this CryptoKey only has the public part, and not the private one.
 */
 //go:nosplit
-func (self class) IsPublicOnly() bool {
+func (self class) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_is_public_only, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -143,7 +143,7 @@ func (self class) IsPublicOnly() bool {
 Returns a string containing the key in PEM format. If [param public_only] is [code]true[/code], only the public key will be included.
 */
 //go:nosplit
-func (self class) SaveToString(public_only bool) gd.String {
+func (self class) SaveToString(public_only bool) gd.String { //gd:CryptoKey.save_to_string
 	var frame = callframe.New()
 	callframe.Arg(frame, public_only)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -157,7 +157,7 @@ func (self class) SaveToString(public_only bool) gd.String {
 Loads a key from the given [param string_key]. If [param public_only] is [code]true[/code], only the public key will be loaded.
 */
 //go:nosplit
-func (self class) LoadFromString(string_key gd.String, public_only bool) gd.Error {
+func (self class) LoadFromString(string_key gd.String, public_only bool) gd.Error { //gd:CryptoKey.load_from_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(string_key))
 	callframe.Arg(frame, public_only)
@@ -199,7 +199,7 @@ func init() {
 	gdclass.Register("CryptoKey", func(ptr gd.Object) any { return [1]gdclass.CryptoKey{*(*gdclass.CryptoKey)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

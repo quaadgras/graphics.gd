@@ -44,7 +44,7 @@ type Any interface {
 Returns the magnitude of the frequencies from [param from_hz] to [param to_hz] in linear energy as a Vector2. The [code]x[/code] component of the return value represents the left stereo channel, and [code]y[/code] represents the right channel.
 [param mode] determines how the frequency range will be processed. See [enum MagnitudeMode].
 */
-func (self Instance) GetMagnitudeForFrequencyRange(from_hz Float.X, to_hz Float.X) Vector2.XY {
+func (self Instance) GetMagnitudeForFrequencyRange(from_hz Float.X, to_hz Float.X) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
 	return Vector2.XY(class(self).GetMagnitudeForFrequencyRange(gd.Float(from_hz), gd.Float(to_hz), 1))
 }
 
@@ -72,7 +72,7 @@ Returns the magnitude of the frequencies from [param from_hz] to [param to_hz] i
 [param mode] determines how the frequency range will be processed. See [enum MagnitudeMode].
 */
 //go:nosplit
-func (self class) GetMagnitudeForFrequencyRange(from_hz gd.Float, to_hz gd.Float, mode gdclass.AudioEffectSpectrumAnalyzerInstanceMagnitudeMode) gd.Vector2 {
+func (self class) GetMagnitudeForFrequencyRange(from_hz gd.Float, to_hz gd.Float, mode gdclass.AudioEffectSpectrumAnalyzerInstanceMagnitudeMode) gd.Vector2 { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
 	var frame = callframe.New()
 	callframe.Arg(frame, from_hz)
 	callframe.Arg(frame, to_hz)
@@ -121,7 +121,7 @@ func init() {
 	})
 }
 
-type MagnitudeMode = gdclass.AudioEffectSpectrumAnalyzerInstanceMagnitudeMode
+type MagnitudeMode = gdclass.AudioEffectSpectrumAnalyzerInstanceMagnitudeMode //gd:AudioEffectSpectrumAnalyzerInstance.MagnitudeMode
 
 const (
 	/*Use the average value across the frequency range as magnitude.*/

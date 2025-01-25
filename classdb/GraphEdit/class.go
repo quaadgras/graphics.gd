@@ -227,35 +227,35 @@ func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node str
 /*
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 */
-func (self Instance) ConnectNode(from_node string, from_port int, to_node string, to_port int) error {
+func (self Instance) ConnectNode(from_node string, from_port int, to_node string, to_port int) error { //gd:GraphEdit.connect_node
 	return error(gd.ToError(class(self).ConnectNode(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port))))
 }
 
 /*
 Returns [code]true[/code] if the [param from_port] of the [param from_node] [GraphNode] is connected to the [param to_port] of the [param to_node] [GraphNode].
 */
-func (self Instance) IsNodeConnected(from_node string, from_port int, to_node string, to_port int) bool {
+func (self Instance) IsNodeConnected(from_node string, from_port int, to_node string, to_port int) bool { //gd:GraphEdit.is_node_connected
 	return bool(class(self).IsNodeConnected(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port)))
 }
 
 /*
 Removes the connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection does not exist, no connection is removed.
 */
-func (self Instance) DisconnectNode(from_node string, from_port int, to_node string, to_port int) {
+func (self Instance) DisconnectNode(from_node string, from_port int, to_node string, to_port int) { //gd:GraphEdit.disconnect_node
 	class(self).DisconnectNode(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port))
 }
 
 /*
 Sets the coloration of the connection between [param from_node]'s [param from_port] and [param to_node]'s [param to_port] with the color provided in the [theme_item activity] theme property. The color is linearly interpolated between the connection color and the activity color using [param amount] as weight.
 */
-func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount Float.X) {
+func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount Float.X) { //gd:GraphEdit.set_connection_activity
 	class(self).SetConnectionActivity(gd.NewStringName(from_node), gd.Int(from_port), gd.NewStringName(to_node), gd.Int(to_port), gd.Float(amount))
 }
 
 /*
 Returns an [Array] containing the list of connections. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
-func (self Instance) GetConnectionList() []map[any]any {
+func (self Instance) GetConnectionList() []map[any]any { //gd:GraphEdit.get_connection_list
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetConnectionList())))
 }
 
@@ -269,21 +269,21 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) map[any]any {
+func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) map[any]any { //gd:GraphEdit.get_closest_connection_at_point
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetClosestConnectionAtPoint(gd.Vector2(point), gd.Float(4.0))))
 }
 
 /*
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
-func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []map[any]any {
+func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []map[any]any { //gd:GraphEdit.get_connections_intersecting_with_rect
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetConnectionsIntersectingWithRect(gd.Rect2(rect)))))
 }
 
 /*
 Removes all connections between nodes.
 */
-func (self Instance) ClearConnections() {
+func (self Instance) ClearConnections() { //gd:GraphEdit.clear_connections
 	class(self).ClearConnections()
 }
 
@@ -292,35 +292,35 @@ Ends the creation of the current connection. In other words, if you are dragging
 This is best used together with [signal connection_drag_started] and [signal connection_drag_ended] to add custom behavior like node addition through shortcuts.
 [b]Note:[/b] This method suppresses any other connection request signals apart from [signal connection_drag_ended].
 */
-func (self Instance) ForceConnectionDragEnd() {
+func (self Instance) ForceConnectionDragEnd() { //gd:GraphEdit.force_connection_drag_end
 	class(self).ForceConnectionDragEnd()
 }
 
 /*
 Allows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_right_disconnect_type].
 */
-func (self Instance) AddValidRightDisconnectType(atype int) {
+func (self Instance) AddValidRightDisconnectType(atype int) { //gd:GraphEdit.add_valid_right_disconnect_type
 	class(self).AddValidRightDisconnectType(gd.Int(atype))
 }
 
 /*
 Disallows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_right_disconnect_type].
 */
-func (self Instance) RemoveValidRightDisconnectType(atype int) {
+func (self Instance) RemoveValidRightDisconnectType(atype int) { //gd:GraphEdit.remove_valid_right_disconnect_type
 	class(self).RemoveValidRightDisconnectType(gd.Int(atype))
 }
 
 /*
 Allows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_left_disconnect_type].
 */
-func (self Instance) AddValidLeftDisconnectType(atype int) {
+func (self Instance) AddValidLeftDisconnectType(atype int) { //gd:GraphEdit.add_valid_left_disconnect_type
 	class(self).AddValidLeftDisconnectType(gd.Int(atype))
 }
 
 /*
 Disallows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_left_disconnect_type].
 */
-func (self Instance) RemoveValidLeftDisconnectType(atype int) {
+func (self Instance) RemoveValidLeftDisconnectType(atype int) { //gd:GraphEdit.remove_valid_left_disconnect_type
 	class(self).RemoveValidLeftDisconnectType(gd.Int(atype))
 }
 
@@ -328,7 +328,7 @@ func (self Instance) RemoveValidLeftDisconnectType(atype int) {
 Allows the connection between two different port types. The port type is defined individually for the left and the right port of each slot with the [method GraphNode.set_slot] method.
 See also [method is_valid_connection_type] and [method remove_valid_connection_type].
 */
-func (self Instance) AddValidConnectionType(from_type int, to_type int) {
+func (self Instance) AddValidConnectionType(from_type int, to_type int) { //gd:GraphEdit.add_valid_connection_type
 	class(self).AddValidConnectionType(gd.Int(from_type), gd.Int(to_type))
 }
 
@@ -336,7 +336,7 @@ func (self Instance) AddValidConnectionType(from_type int, to_type int) {
 Disallows the connection between two different port types previously allowed by [method add_valid_connection_type]. The port type is defined individually for the left and the right port of each slot with the [method GraphNode.set_slot] method.
 See also [method is_valid_connection_type].
 */
-func (self Instance) RemoveValidConnectionType(from_type int, to_type int) {
+func (self Instance) RemoveValidConnectionType(from_type int, to_type int) { //gd:GraphEdit.remove_valid_connection_type
 	class(self).RemoveValidConnectionType(gd.Int(from_type), gd.Int(to_type))
 }
 
@@ -344,42 +344,42 @@ func (self Instance) RemoveValidConnectionType(from_type int, to_type int) {
 Returns whether it's possible to make a connection between two different port types. The port type is defined individually for the left and the right port of each slot with the [method GraphNode.set_slot] method.
 See also [method add_valid_connection_type] and [method remove_valid_connection_type].
 */
-func (self Instance) IsValidConnectionType(from_type int, to_type int) bool {
+func (self Instance) IsValidConnectionType(from_type int, to_type int) bool { //gd:GraphEdit.is_valid_connection_type
 	return bool(class(self).IsValidConnectionType(gd.Int(from_type), gd.Int(to_type)))
 }
 
 /*
 Returns the points which would make up a connection between [param from_node] and [param to_node].
 */
-func (self Instance) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY) []Vector2.XY {
+func (self Instance) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY) []Vector2.XY { //gd:GraphEdit.get_connection_line
 	return []Vector2.XY(class(self).GetConnectionLine(gd.Vector2(from_node), gd.Vector2(to_node)).AsSlice())
 }
 
 /*
 Attaches the [param element] [GraphElement] to the [param frame] [GraphFrame].
 */
-func (self Instance) AttachGraphElementToFrame(element string, frame_ string) {
+func (self Instance) AttachGraphElementToFrame(element string, frame_ string) { //gd:GraphEdit.attach_graph_element_to_frame
 	class(self).AttachGraphElementToFrame(gd.NewStringName(element), gd.NewStringName(frame_))
 }
 
 /*
 Detaches the [param element] [GraphElement] from the [GraphFrame] it is currently attached to.
 */
-func (self Instance) DetachGraphElementFromFrame(element string) {
+func (self Instance) DetachGraphElementFromFrame(element string) { //gd:GraphEdit.detach_graph_element_from_frame
 	class(self).DetachGraphElementFromFrame(gd.NewStringName(element))
 }
 
 /*
 Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 */
-func (self Instance) GetElementFrame(element string) [1]gdclass.GraphFrame {
+func (self Instance) GetElementFrame(element string) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
 	return [1]gdclass.GraphFrame(class(self).GetElementFrame(gd.NewStringName(element)))
 }
 
 /*
 Returns an array of node names that are attached to the [GraphFrame] with the given name.
 */
-func (self Instance) GetAttachedNodesOfFrame(frame_ string) []string {
+func (self Instance) GetAttachedNodesOfFrame(frame_ string) []string { //gd:GraphEdit.get_attached_nodes_of_frame
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAttachedNodesOfFrame(gd.NewStringName(frame_)))))
 }
 
@@ -387,21 +387,21 @@ func (self Instance) GetAttachedNodesOfFrame(frame_ string) []string {
 Gets the [HBoxContainer] that contains the zooming and grid snap controls in the top left of the graph. You can use this method to reposition the toolbar or to add your own custom controls to it.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetMenuHbox() [1]gdclass.HBoxContainer {
+func (self Instance) GetMenuHbox() [1]gdclass.HBoxContainer { //gd:GraphEdit.get_menu_hbox
 	return [1]gdclass.HBoxContainer(class(self).GetMenuHbox())
 }
 
 /*
 Rearranges selected nodes in a layout with minimum crossings between connections and uniform horizontal and vertical gap between nodes.
 */
-func (self Instance) ArrangeNodes() {
+func (self Instance) ArrangeNodes() { //gd:GraphEdit.arrange_nodes
 	class(self).ArrangeNodes()
 }
 
 /*
 Sets the specified [param node] as the one selected.
 */
-func (self Instance) SetSelected(node [1]gdclass.Node) {
+func (self Instance) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
 	class(self).SetSelected(node)
 }
 
@@ -725,7 +725,7 @@ func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node gd.Str
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 */
 //go:nosplit
-func (self class) ConnectNode(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) gd.Error {
+func (self class) ConnectNode(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) gd.Error { //gd:GraphEdit.connect_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node))
 	callframe.Arg(frame, from_port)
@@ -742,7 +742,7 @@ func (self class) ConnectNode(from_node gd.StringName, from_port gd.Int, to_node
 Returns [code]true[/code] if the [param from_port] of the [param from_node] [GraphNode] is connected to the [param to_port] of the [param to_node] [GraphNode].
 */
 //go:nosplit
-func (self class) IsNodeConnected(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) bool {
+func (self class) IsNodeConnected(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) bool { //gd:GraphEdit.is_node_connected
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node))
 	callframe.Arg(frame, from_port)
@@ -759,7 +759,7 @@ func (self class) IsNodeConnected(from_node gd.StringName, from_port gd.Int, to_
 Removes the connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection does not exist, no connection is removed.
 */
 //go:nosplit
-func (self class) DisconnectNode(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) {
+func (self class) DisconnectNode(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) { //gd:GraphEdit.disconnect_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node))
 	callframe.Arg(frame, from_port)
@@ -774,7 +774,7 @@ func (self class) DisconnectNode(from_node gd.StringName, from_port gd.Int, to_n
 Sets the coloration of the connection between [param from_node]'s [param from_port] and [param to_node]'s [param to_port] with the color provided in the [theme_item activity] theme property. The color is linearly interpolated between the connection color and the activity color using [param amount] as weight.
 */
 //go:nosplit
-func (self class) SetConnectionActivity(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int, amount gd.Float) {
+func (self class) SetConnectionActivity(from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int, amount gd.Float) { //gd:GraphEdit.set_connection_activity
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node))
 	callframe.Arg(frame, from_port)
@@ -790,7 +790,7 @@ func (self class) SetConnectionActivity(from_node gd.StringName, from_port gd.In
 Returns an [Array] containing the list of connections. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 //go:nosplit
-func (self class) GetConnectionList() Array.Contains[gd.Dictionary] {
+func (self class) GetConnectionList() Array.Contains[gd.Dictionary] { //gd:GraphEdit.get_connection_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -810,7 +810,7 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.Float) gd.Dictionary {
+func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.Float) gd.Dictionary { //gd:GraphEdit.get_closest_connection_at_point
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, max_distance)
@@ -825,7 +825,7 @@ func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 //go:nosplit
-func (self class) GetConnectionsIntersectingWithRect(rect gd.Rect2) Array.Contains[gd.Dictionary] {
+func (self class) GetConnectionsIntersectingWithRect(rect gd.Rect2) Array.Contains[gd.Dictionary] { //gd:GraphEdit.get_connections_intersecting_with_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -839,7 +839,7 @@ func (self class) GetConnectionsIntersectingWithRect(rect gd.Rect2) Array.Contai
 Removes all connections between nodes.
 */
 //go:nosplit
-func (self class) ClearConnections() {
+func (self class) ClearConnections() { //gd:GraphEdit.clear_connections
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_clear_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -852,7 +852,7 @@ This is best used together with [signal connection_drag_started] and [signal con
 [b]Note:[/b] This method suppresses any other connection request signals apart from [signal connection_drag_ended].
 */
 //go:nosplit
-func (self class) ForceConnectionDragEnd() {
+func (self class) ForceConnectionDragEnd() { //gd:GraphEdit.force_connection_drag_end
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_force_connection_drag_end, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -860,7 +860,7 @@ func (self class) ForceConnectionDragEnd() {
 }
 
 //go:nosplit
-func (self class) GetScrollOffset() gd.Vector2 {
+func (self class) GetScrollOffset() gd.Vector2 { //gd:GraphEdit.get_scroll_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_scroll_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -870,7 +870,7 @@ func (self class) GetScrollOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetScrollOffset(offset gd.Vector2) {
+func (self class) SetScrollOffset(offset gd.Vector2) { //gd:GraphEdit.set_scroll_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -882,7 +882,7 @@ func (self class) SetScrollOffset(offset gd.Vector2) {
 Allows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_right_disconnect_type].
 */
 //go:nosplit
-func (self class) AddValidRightDisconnectType(atype gd.Int) {
+func (self class) AddValidRightDisconnectType(atype gd.Int) { //gd:GraphEdit.add_valid_right_disconnect_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -894,7 +894,7 @@ func (self class) AddValidRightDisconnectType(atype gd.Int) {
 Disallows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_right_disconnect_type].
 */
 //go:nosplit
-func (self class) RemoveValidRightDisconnectType(atype gd.Int) {
+func (self class) RemoveValidRightDisconnectType(atype gd.Int) { //gd:GraphEdit.remove_valid_right_disconnect_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -906,7 +906,7 @@ func (self class) RemoveValidRightDisconnectType(atype gd.Int) {
 Allows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_left_disconnect_type].
 */
 //go:nosplit
-func (self class) AddValidLeftDisconnectType(atype gd.Int) {
+func (self class) AddValidLeftDisconnectType(atype gd.Int) { //gd:GraphEdit.add_valid_left_disconnect_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -918,7 +918,7 @@ func (self class) AddValidLeftDisconnectType(atype gd.Int) {
 Disallows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_left_disconnect_type].
 */
 //go:nosplit
-func (self class) RemoveValidLeftDisconnectType(atype gd.Int) {
+func (self class) RemoveValidLeftDisconnectType(atype gd.Int) { //gd:GraphEdit.remove_valid_left_disconnect_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -931,7 +931,7 @@ Allows the connection between two different port types. The port type is defined
 See also [method is_valid_connection_type] and [method remove_valid_connection_type].
 */
 //go:nosplit
-func (self class) AddValidConnectionType(from_type gd.Int, to_type gd.Int) {
+func (self class) AddValidConnectionType(from_type gd.Int, to_type gd.Int) { //gd:GraphEdit.add_valid_connection_type
 	var frame = callframe.New()
 	callframe.Arg(frame, from_type)
 	callframe.Arg(frame, to_type)
@@ -945,7 +945,7 @@ Disallows the connection between two different port types previously allowed by 
 See also [method is_valid_connection_type].
 */
 //go:nosplit
-func (self class) RemoveValidConnectionType(from_type gd.Int, to_type gd.Int) {
+func (self class) RemoveValidConnectionType(from_type gd.Int, to_type gd.Int) { //gd:GraphEdit.remove_valid_connection_type
 	var frame = callframe.New()
 	callframe.Arg(frame, from_type)
 	callframe.Arg(frame, to_type)
@@ -959,7 +959,7 @@ Returns whether it's possible to make a connection between two different port ty
 See also [method add_valid_connection_type] and [method remove_valid_connection_type].
 */
 //go:nosplit
-func (self class) IsValidConnectionType(from_type gd.Int, to_type gd.Int) bool {
+func (self class) IsValidConnectionType(from_type gd.Int, to_type gd.Int) bool { //gd:GraphEdit.is_valid_connection_type
 	var frame = callframe.New()
 	callframe.Arg(frame, from_type)
 	callframe.Arg(frame, to_type)
@@ -974,7 +974,7 @@ func (self class) IsValidConnectionType(from_type gd.Int, to_type gd.Int) bool {
 Returns the points which would make up a connection between [param from_node] and [param to_node].
 */
 //go:nosplit
-func (self class) GetConnectionLine(from_node gd.Vector2, to_node gd.Vector2) gd.PackedVector2Array {
+func (self class) GetConnectionLine(from_node gd.Vector2, to_node gd.Vector2) gd.PackedVector2Array { //gd:GraphEdit.get_connection_line
 	var frame = callframe.New()
 	callframe.Arg(frame, from_node)
 	callframe.Arg(frame, to_node)
@@ -989,7 +989,7 @@ func (self class) GetConnectionLine(from_node gd.Vector2, to_node gd.Vector2) gd
 Attaches the [param element] [GraphElement] to the [param frame] [GraphFrame].
 */
 //go:nosplit
-func (self class) AttachGraphElementToFrame(element gd.StringName, frame_ gd.StringName) {
+func (self class) AttachGraphElementToFrame(element gd.StringName, frame_ gd.StringName) { //gd:GraphEdit.attach_graph_element_to_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(element))
 	callframe.Arg(frame, pointers.Get(frame_))
@@ -1002,7 +1002,7 @@ func (self class) AttachGraphElementToFrame(element gd.StringName, frame_ gd.Str
 Detaches the [param element] [GraphElement] from the [GraphFrame] it is currently attached to.
 */
 //go:nosplit
-func (self class) DetachGraphElementFromFrame(element gd.StringName) {
+func (self class) DetachGraphElementFromFrame(element gd.StringName) { //gd:GraphEdit.detach_graph_element_from_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(element))
 	var r_ret = callframe.Nil
@@ -1014,7 +1014,7 @@ func (self class) DetachGraphElementFromFrame(element gd.StringName) {
 Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 */
 //go:nosplit
-func (self class) GetElementFrame(element gd.StringName) [1]gdclass.GraphFrame {
+func (self class) GetElementFrame(element gd.StringName) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(element))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1028,7 +1028,7 @@ func (self class) GetElementFrame(element gd.StringName) [1]gdclass.GraphFrame {
 Returns an array of node names that are attached to the [GraphFrame] with the given name.
 */
 //go:nosplit
-func (self class) GetAttachedNodesOfFrame(frame_ gd.StringName) Array.Contains[gd.StringName] {
+func (self class) GetAttachedNodesOfFrame(frame_ gd.StringName) Array.Contains[gd.StringName] { //gd:GraphEdit.get_attached_nodes_of_frame
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(frame_))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1039,7 +1039,7 @@ func (self class) GetAttachedNodesOfFrame(frame_ gd.StringName) Array.Contains[g
 }
 
 //go:nosplit
-func (self class) SetPanningScheme(scheme gdclass.GraphEditPanningScheme) {
+func (self class) SetPanningScheme(scheme gdclass.GraphEditPanningScheme) { //gd:GraphEdit.set_panning_scheme
 	var frame = callframe.New()
 	callframe.Arg(frame, scheme)
 	var r_ret = callframe.Nil
@@ -1048,7 +1048,7 @@ func (self class) SetPanningScheme(scheme gdclass.GraphEditPanningScheme) {
 }
 
 //go:nosplit
-func (self class) GetPanningScheme() gdclass.GraphEditPanningScheme {
+func (self class) GetPanningScheme() gdclass.GraphEditPanningScheme { //gd:GraphEdit.get_panning_scheme
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GraphEditPanningScheme](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_panning_scheme, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1058,7 +1058,7 @@ func (self class) GetPanningScheme() gdclass.GraphEditPanningScheme {
 }
 
 //go:nosplit
-func (self class) SetZoom(zoom gd.Float) {
+func (self class) SetZoom(zoom gd.Float) { //gd:GraphEdit.set_zoom
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom)
 	var r_ret = callframe.Nil
@@ -1067,7 +1067,7 @@ func (self class) SetZoom(zoom gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetZoom() gd.Float {
+func (self class) GetZoom() gd.Float { //gd:GraphEdit.get_zoom
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_zoom, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1077,7 +1077,7 @@ func (self class) GetZoom() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetZoomMin(zoom_min gd.Float) {
+func (self class) SetZoomMin(zoom_min gd.Float) { //gd:GraphEdit.set_zoom_min
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom_min)
 	var r_ret = callframe.Nil
@@ -1086,7 +1086,7 @@ func (self class) SetZoomMin(zoom_min gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetZoomMin() gd.Float {
+func (self class) GetZoomMin() gd.Float { //gd:GraphEdit.get_zoom_min
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_zoom_min, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1096,7 +1096,7 @@ func (self class) GetZoomMin() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetZoomMax(zoom_max gd.Float) {
+func (self class) SetZoomMax(zoom_max gd.Float) { //gd:GraphEdit.set_zoom_max
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom_max)
 	var r_ret = callframe.Nil
@@ -1105,7 +1105,7 @@ func (self class) SetZoomMax(zoom_max gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetZoomMax() gd.Float {
+func (self class) GetZoomMax() gd.Float { //gd:GraphEdit.get_zoom_max
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_zoom_max, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1115,7 +1115,7 @@ func (self class) GetZoomMax() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetZoomStep(zoom_step gd.Float) {
+func (self class) SetZoomStep(zoom_step gd.Float) { //gd:GraphEdit.set_zoom_step
 	var frame = callframe.New()
 	callframe.Arg(frame, zoom_step)
 	var r_ret = callframe.Nil
@@ -1124,7 +1124,7 @@ func (self class) SetZoomStep(zoom_step gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetZoomStep() gd.Float {
+func (self class) GetZoomStep() gd.Float { //gd:GraphEdit.get_zoom_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_zoom_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1134,7 +1134,7 @@ func (self class) GetZoomStep() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetShowGrid(enable bool) {
+func (self class) SetShowGrid(enable bool) { //gd:GraphEdit.set_show_grid
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1143,7 +1143,7 @@ func (self class) SetShowGrid(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsShowingGrid() bool {
+func (self class) IsShowingGrid() bool { //gd:GraphEdit.is_showing_grid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_showing_grid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1153,7 +1153,7 @@ func (self class) IsShowingGrid() bool {
 }
 
 //go:nosplit
-func (self class) SetGridPattern(pattern gdclass.GraphEditGridPattern) {
+func (self class) SetGridPattern(pattern gdclass.GraphEditGridPattern) { //gd:GraphEdit.set_grid_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, pattern)
 	var r_ret = callframe.Nil
@@ -1162,7 +1162,7 @@ func (self class) SetGridPattern(pattern gdclass.GraphEditGridPattern) {
 }
 
 //go:nosplit
-func (self class) GetGridPattern() gdclass.GraphEditGridPattern {
+func (self class) GetGridPattern() gdclass.GraphEditGridPattern { //gd:GraphEdit.get_grid_pattern
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GraphEditGridPattern](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_grid_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1172,7 +1172,7 @@ func (self class) GetGridPattern() gdclass.GraphEditGridPattern {
 }
 
 //go:nosplit
-func (self class) SetSnappingEnabled(enable bool) {
+func (self class) SetSnappingEnabled(enable bool) { //gd:GraphEdit.set_snapping_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1181,7 +1181,7 @@ func (self class) SetSnappingEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSnappingEnabled() bool {
+func (self class) IsSnappingEnabled() bool { //gd:GraphEdit.is_snapping_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_snapping_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1191,7 +1191,7 @@ func (self class) IsSnappingEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetSnappingDistance(pixels gd.Int) {
+func (self class) SetSnappingDistance(pixels gd.Int) { //gd:GraphEdit.set_snapping_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -1200,7 +1200,7 @@ func (self class) SetSnappingDistance(pixels gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSnappingDistance() gd.Int {
+func (self class) GetSnappingDistance() gd.Int { //gd:GraphEdit.get_snapping_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_snapping_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1210,7 +1210,7 @@ func (self class) GetSnappingDistance() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetConnectionLinesCurvature(curvature gd.Float) {
+func (self class) SetConnectionLinesCurvature(curvature gd.Float) { //gd:GraphEdit.set_connection_lines_curvature
 	var frame = callframe.New()
 	callframe.Arg(frame, curvature)
 	var r_ret = callframe.Nil
@@ -1219,7 +1219,7 @@ func (self class) SetConnectionLinesCurvature(curvature gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetConnectionLinesCurvature() gd.Float {
+func (self class) GetConnectionLinesCurvature() gd.Float { //gd:GraphEdit.get_connection_lines_curvature
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_lines_curvature, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1229,7 +1229,7 @@ func (self class) GetConnectionLinesCurvature() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetConnectionLinesThickness(pixels gd.Float) {
+func (self class) SetConnectionLinesThickness(pixels gd.Float) { //gd:GraphEdit.set_connection_lines_thickness
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -1238,7 +1238,7 @@ func (self class) SetConnectionLinesThickness(pixels gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetConnectionLinesThickness() gd.Float {
+func (self class) GetConnectionLinesThickness() gd.Float { //gd:GraphEdit.get_connection_lines_thickness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_lines_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1248,7 +1248,7 @@ func (self class) GetConnectionLinesThickness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetConnectionLinesAntialiased(pixels bool) {
+func (self class) SetConnectionLinesAntialiased(pixels bool) { //gd:GraphEdit.set_connection_lines_antialiased
 	var frame = callframe.New()
 	callframe.Arg(frame, pixels)
 	var r_ret = callframe.Nil
@@ -1257,7 +1257,7 @@ func (self class) SetConnectionLinesAntialiased(pixels bool) {
 }
 
 //go:nosplit
-func (self class) IsConnectionLinesAntialiased() bool {
+func (self class) IsConnectionLinesAntialiased() bool { //gd:GraphEdit.is_connection_lines_antialiased
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_connection_lines_antialiased, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1267,7 +1267,7 @@ func (self class) IsConnectionLinesAntialiased() bool {
 }
 
 //go:nosplit
-func (self class) SetMinimapSize(size gd.Vector2) {
+func (self class) SetMinimapSize(size gd.Vector2) { //gd:GraphEdit.set_minimap_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -1276,7 +1276,7 @@ func (self class) SetMinimapSize(size gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetMinimapSize() gd.Vector2 {
+func (self class) GetMinimapSize() gd.Vector2 { //gd:GraphEdit.get_minimap_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_minimap_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1286,7 +1286,7 @@ func (self class) GetMinimapSize() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetMinimapOpacity(opacity gd.Float) {
+func (self class) SetMinimapOpacity(opacity gd.Float) { //gd:GraphEdit.set_minimap_opacity
 	var frame = callframe.New()
 	callframe.Arg(frame, opacity)
 	var r_ret = callframe.Nil
@@ -1295,7 +1295,7 @@ func (self class) SetMinimapOpacity(opacity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMinimapOpacity() gd.Float {
+func (self class) GetMinimapOpacity() gd.Float { //gd:GraphEdit.get_minimap_opacity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_minimap_opacity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1305,7 +1305,7 @@ func (self class) GetMinimapOpacity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMinimapEnabled(enable bool) {
+func (self class) SetMinimapEnabled(enable bool) { //gd:GraphEdit.set_minimap_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1314,7 +1314,7 @@ func (self class) SetMinimapEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsMinimapEnabled() bool {
+func (self class) IsMinimapEnabled() bool { //gd:GraphEdit.is_minimap_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_minimap_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1324,7 +1324,7 @@ func (self class) IsMinimapEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetShowMenu(hidden bool) {
+func (self class) SetShowMenu(hidden bool) { //gd:GraphEdit.set_show_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, hidden)
 	var r_ret = callframe.Nil
@@ -1333,7 +1333,7 @@ func (self class) SetShowMenu(hidden bool) {
 }
 
 //go:nosplit
-func (self class) IsShowingMenu() bool {
+func (self class) IsShowingMenu() bool { //gd:GraphEdit.is_showing_menu
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_showing_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1343,7 +1343,7 @@ func (self class) IsShowingMenu() bool {
 }
 
 //go:nosplit
-func (self class) SetShowZoomLabel(enable bool) {
+func (self class) SetShowZoomLabel(enable bool) { //gd:GraphEdit.set_show_zoom_label
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1352,7 +1352,7 @@ func (self class) SetShowZoomLabel(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsShowingZoomLabel() bool {
+func (self class) IsShowingZoomLabel() bool { //gd:GraphEdit.is_showing_zoom_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_showing_zoom_label, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1362,7 +1362,7 @@ func (self class) IsShowingZoomLabel() bool {
 }
 
 //go:nosplit
-func (self class) SetShowGridButtons(hidden bool) {
+func (self class) SetShowGridButtons(hidden bool) { //gd:GraphEdit.set_show_grid_buttons
 	var frame = callframe.New()
 	callframe.Arg(frame, hidden)
 	var r_ret = callframe.Nil
@@ -1371,7 +1371,7 @@ func (self class) SetShowGridButtons(hidden bool) {
 }
 
 //go:nosplit
-func (self class) IsShowingGridButtons() bool {
+func (self class) IsShowingGridButtons() bool { //gd:GraphEdit.is_showing_grid_buttons
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_showing_grid_buttons, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1381,7 +1381,7 @@ func (self class) IsShowingGridButtons() bool {
 }
 
 //go:nosplit
-func (self class) SetShowZoomButtons(hidden bool) {
+func (self class) SetShowZoomButtons(hidden bool) { //gd:GraphEdit.set_show_zoom_buttons
 	var frame = callframe.New()
 	callframe.Arg(frame, hidden)
 	var r_ret = callframe.Nil
@@ -1390,7 +1390,7 @@ func (self class) SetShowZoomButtons(hidden bool) {
 }
 
 //go:nosplit
-func (self class) IsShowingZoomButtons() bool {
+func (self class) IsShowingZoomButtons() bool { //gd:GraphEdit.is_showing_zoom_buttons
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_showing_zoom_buttons, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1400,7 +1400,7 @@ func (self class) IsShowingZoomButtons() bool {
 }
 
 //go:nosplit
-func (self class) SetShowMinimapButton(hidden bool) {
+func (self class) SetShowMinimapButton(hidden bool) { //gd:GraphEdit.set_show_minimap_button
 	var frame = callframe.New()
 	callframe.Arg(frame, hidden)
 	var r_ret = callframe.Nil
@@ -1409,7 +1409,7 @@ func (self class) SetShowMinimapButton(hidden bool) {
 }
 
 //go:nosplit
-func (self class) IsShowingMinimapButton() bool {
+func (self class) IsShowingMinimapButton() bool { //gd:GraphEdit.is_showing_minimap_button
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_showing_minimap_button, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1419,7 +1419,7 @@ func (self class) IsShowingMinimapButton() bool {
 }
 
 //go:nosplit
-func (self class) SetShowArrangeButton(hidden bool) {
+func (self class) SetShowArrangeButton(hidden bool) { //gd:GraphEdit.set_show_arrange_button
 	var frame = callframe.New()
 	callframe.Arg(frame, hidden)
 	var r_ret = callframe.Nil
@@ -1428,7 +1428,7 @@ func (self class) SetShowArrangeButton(hidden bool) {
 }
 
 //go:nosplit
-func (self class) IsShowingArrangeButton() bool {
+func (self class) IsShowingArrangeButton() bool { //gd:GraphEdit.is_showing_arrange_button
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_showing_arrange_button, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1438,7 +1438,7 @@ func (self class) IsShowingArrangeButton() bool {
 }
 
 //go:nosplit
-func (self class) SetRightDisconnects(enable bool) {
+func (self class) SetRightDisconnects(enable bool) { //gd:GraphEdit.set_right_disconnects
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1447,7 +1447,7 @@ func (self class) SetRightDisconnects(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsRightDisconnectsEnabled() bool {
+func (self class) IsRightDisconnectsEnabled() bool { //gd:GraphEdit.is_right_disconnects_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_is_right_disconnects_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1461,7 +1461,7 @@ Gets the [HBoxContainer] that contains the zooming and grid snap controls in the
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 //go:nosplit
-func (self class) GetMenuHbox() [1]gdclass.HBoxContainer {
+func (self class) GetMenuHbox() [1]gdclass.HBoxContainer { //gd:GraphEdit.get_menu_hbox
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_menu_hbox, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1474,7 +1474,7 @@ func (self class) GetMenuHbox() [1]gdclass.HBoxContainer {
 Rearranges selected nodes in a layout with minimum crossings between connections and uniform horizontal and vertical gap between nodes.
 */
 //go:nosplit
-func (self class) ArrangeNodes() {
+func (self class) ArrangeNodes() { //gd:GraphEdit.arrange_nodes
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_arrange_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1485,7 +1485,7 @@ func (self class) ArrangeNodes() {
 Sets the specified [param node] as the one selected.
 */
 //go:nosplit
-func (self class) SetSelected(node [1]gdclass.Node) {
+func (self class) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Nil
@@ -1612,7 +1612,7 @@ func init() {
 	gdclass.Register("GraphEdit", func(ptr gd.Object) any { return [1]gdclass.GraphEdit{*(*gdclass.GraphEdit)(unsafe.Pointer(&ptr))} })
 }
 
-type PanningScheme = gdclass.GraphEditPanningScheme
+type PanningScheme = gdclass.GraphEditPanningScheme //gd:GraphEdit.PanningScheme
 
 const (
 	/*[kbd]Mouse Wheel[/kbd] will zoom, [kbd]Ctrl + Mouse Wheel[/kbd] will move the view.*/
@@ -1621,7 +1621,7 @@ const (
 	ScrollPans PanningScheme = 1
 )
 
-type GridPattern = gdclass.GraphEditGridPattern
+type GridPattern = gdclass.GraphEditGridPattern //gd:GraphEdit.GridPattern
 
 const (
 	/*Draw the grid using solid lines.*/
@@ -1630,7 +1630,7 @@ const (
 	GridPatternDots GridPattern = 1
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

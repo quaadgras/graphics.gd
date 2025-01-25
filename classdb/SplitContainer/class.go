@@ -43,7 +43,7 @@ type Any interface {
 /*
 Clamps the [member split_offset] value to not go outside the currently possible minimal and maximum values.
 */
-func (self Instance) ClampSplitOffset() {
+func (self Instance) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
 	class(self).ClampSplitOffset()
 }
 
@@ -98,7 +98,7 @@ func (self Instance) SetVertical(value bool) {
 }
 
 //go:nosplit
-func (self class) SetSplitOffset(offset gd.Int) {
+func (self class) SetSplitOffset(offset gd.Int) { //gd:SplitContainer.set_split_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetSplitOffset(offset gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSplitOffset() gd.Int {
+func (self class) GetSplitOffset() gd.Int { //gd:SplitContainer.get_split_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_split_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func (self class) GetSplitOffset() gd.Int {
 Clamps the [member split_offset] value to not go outside the currently possible minimal and maximum values.
 */
 //go:nosplit
-func (self class) ClampSplitOffset() {
+func (self class) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_clamp_split_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -128,7 +128,7 @@ func (self class) ClampSplitOffset() {
 }
 
 //go:nosplit
-func (self class) SetCollapsed(collapsed bool) {
+func (self class) SetCollapsed(collapsed bool) { //gd:SplitContainer.set_collapsed
 	var frame = callframe.New()
 	callframe.Arg(frame, collapsed)
 	var r_ret = callframe.Nil
@@ -137,7 +137,7 @@ func (self class) SetCollapsed(collapsed bool) {
 }
 
 //go:nosplit
-func (self class) IsCollapsed() bool {
+func (self class) IsCollapsed() bool { //gd:SplitContainer.is_collapsed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_collapsed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -147,7 +147,7 @@ func (self class) IsCollapsed() bool {
 }
 
 //go:nosplit
-func (self class) SetDraggerVisibility(mode gdclass.SplitContainerDraggerVisibility) {
+func (self class) SetDraggerVisibility(mode gdclass.SplitContainerDraggerVisibility) { //gd:SplitContainer.set_dragger_visibility
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -156,7 +156,7 @@ func (self class) SetDraggerVisibility(mode gdclass.SplitContainerDraggerVisibil
 }
 
 //go:nosplit
-func (self class) GetDraggerVisibility() gdclass.SplitContainerDraggerVisibility {
+func (self class) GetDraggerVisibility() gdclass.SplitContainerDraggerVisibility { //gd:SplitContainer.get_dragger_visibility
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SplitContainerDraggerVisibility](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_dragger_visibility, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -166,7 +166,7 @@ func (self class) GetDraggerVisibility() gdclass.SplitContainerDraggerVisibility
 }
 
 //go:nosplit
-func (self class) SetVertical(vertical bool) {
+func (self class) SetVertical(vertical bool) { //gd:SplitContainer.set_vertical
 	var frame = callframe.New()
 	callframe.Arg(frame, vertical)
 	var r_ret = callframe.Nil
@@ -175,7 +175,7 @@ func (self class) SetVertical(vertical bool) {
 }
 
 //go:nosplit
-func (self class) IsVertical() bool {
+func (self class) IsVertical() bool { //gd:SplitContainer.is_vertical
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -227,7 +227,7 @@ func init() {
 	})
 }
 
-type DraggerVisibility = gdclass.SplitContainerDraggerVisibility
+type DraggerVisibility = gdclass.SplitContainerDraggerVisibility //gd:SplitContainer.DraggerVisibility
 
 const (
 	/*The split dragger is visible when the cursor hovers it.*/

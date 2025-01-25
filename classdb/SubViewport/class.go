@@ -99,7 +99,7 @@ func (self Instance) SetRenderTargetUpdateMode(value gdclass.SubViewportUpdateMo
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector2i) {
+func (self class) SetSize(size gd.Vector2i) { //gd:SubViewport.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -108,7 +108,7 @@ func (self class) SetSize(size gd.Vector2i) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector2i {
+func (self class) GetSize() gd.Vector2i { //gd:SubViewport.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewport.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -118,7 +118,7 @@ func (self class) GetSize() gd.Vector2i {
 }
 
 //go:nosplit
-func (self class) SetSize2dOverride(size gd.Vector2i) {
+func (self class) SetSize2dOverride(size gd.Vector2i) { //gd:SubViewport.set_size_2d_override
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -127,7 +127,7 @@ func (self class) SetSize2dOverride(size gd.Vector2i) {
 }
 
 //go:nosplit
-func (self class) GetSize2dOverride() gd.Vector2i {
+func (self class) GetSize2dOverride() gd.Vector2i { //gd:SubViewport.get_size_2d_override
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewport.Bind_get_size_2d_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -137,7 +137,7 @@ func (self class) GetSize2dOverride() gd.Vector2i {
 }
 
 //go:nosplit
-func (self class) SetSize2dOverrideStretch(enable bool) {
+func (self class) SetSize2dOverrideStretch(enable bool) { //gd:SubViewport.set_size_2d_override_stretch
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -146,7 +146,7 @@ func (self class) SetSize2dOverrideStretch(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSize2dOverrideStretchEnabled() bool {
+func (self class) IsSize2dOverrideStretchEnabled() bool { //gd:SubViewport.is_size_2d_override_stretch_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewport.Bind_is_size_2d_override_stretch_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -156,7 +156,7 @@ func (self class) IsSize2dOverrideStretchEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetUpdateMode(mode gdclass.SubViewportUpdateMode) {
+func (self class) SetUpdateMode(mode gdclass.SubViewportUpdateMode) { //gd:SubViewport.set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -165,7 +165,7 @@ func (self class) SetUpdateMode(mode gdclass.SubViewportUpdateMode) {
 }
 
 //go:nosplit
-func (self class) GetUpdateMode() gdclass.SubViewportUpdateMode {
+func (self class) GetUpdateMode() gdclass.SubViewportUpdateMode { //gd:SubViewport.get_update_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SubViewportUpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewport.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -175,7 +175,7 @@ func (self class) GetUpdateMode() gdclass.SubViewportUpdateMode {
 }
 
 //go:nosplit
-func (self class) SetClearMode(mode gdclass.SubViewportClearMode) {
+func (self class) SetClearMode(mode gdclass.SubViewportClearMode) { //gd:SubViewport.set_clear_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -184,7 +184,7 @@ func (self class) SetClearMode(mode gdclass.SubViewportClearMode) {
 }
 
 //go:nosplit
-func (self class) GetClearMode() gdclass.SubViewportClearMode {
+func (self class) GetClearMode() gdclass.SubViewportClearMode { //gd:SubViewport.get_clear_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SubViewportClearMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewport.Bind_get_clear_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -220,7 +220,7 @@ func init() {
 	gdclass.Register("SubViewport", func(ptr gd.Object) any { return [1]gdclass.SubViewport{*(*gdclass.SubViewport)(unsafe.Pointer(&ptr))} })
 }
 
-type ClearMode = gdclass.SubViewportClearMode
+type ClearMode = gdclass.SubViewportClearMode //gd:SubViewport.ClearMode
 
 const (
 	/*Always clear the render target before drawing.*/
@@ -231,7 +231,7 @@ const (
 	ClearModeOnce ClearMode = 2
 )
 
-type UpdateMode = gdclass.SubViewportUpdateMode
+type UpdateMode = gdclass.SubViewportUpdateMode //gd:SubViewport.UpdateMode
 
 const (
 	/*Do not update the render target.*/

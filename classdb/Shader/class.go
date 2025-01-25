@@ -41,7 +41,7 @@ type Any interface {
 /*
 Returns the shader mode for the shader.
 */
-func (self Instance) GetMode() gdclass.ShaderMode {
+func (self Instance) GetMode() gdclass.ShaderMode { //gd:Shader.get_mode
 	return gdclass.ShaderMode(class(self).GetMode())
 }
 
@@ -50,7 +50,7 @@ Sets the default texture to be used with a texture uniform. The default is used 
 [b]Note:[/b] [param name] must match the name of the uniform in the code exactly.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func (self Instance) SetDefaultTextureParameter(name string, texture [1]gdclass.Texture2D) {
+func (self Instance) SetDefaultTextureParameter(name string, texture [1]gdclass.Texture2D) { //gd:Shader.set_default_texture_parameter
 	class(self).SetDefaultTextureParameter(gd.NewStringName(name), texture, gd.Int(0))
 }
 
@@ -59,7 +59,7 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] [param name] must match the name of the uniform in the code exactly.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func (self Instance) GetDefaultTextureParameter(name string) [1]gdclass.Texture2D {
+func (self Instance) GetDefaultTextureParameter(name string) [1]gdclass.Texture2D { //gd:Shader.get_default_texture_parameter
 	return [1]gdclass.Texture2D(class(self).GetDefaultTextureParameter(gd.NewStringName(name), gd.Int(0)))
 }
 
@@ -67,7 +67,7 @@ func (self Instance) GetDefaultTextureParameter(name string) [1]gdclass.Texture2
 Get the list of shader uniforms that can be assigned to a [ShaderMaterial], for use with [method ShaderMaterial.set_shader_parameter] and [method ShaderMaterial.get_shader_parameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [method Object.get_property_list].
 If argument [param get_groups] is true, parameter grouping hints will be provided.
 */
-func (self Instance) GetShaderUniformList() []any {
+func (self Instance) GetShaderUniformList() []any { //gd:Shader.get_shader_uniform_list
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetShaderUniformList(false))))
 }
 
@@ -102,7 +102,7 @@ func (self Instance) SetCode(value string) {
 Returns the shader mode for the shader.
 */
 //go:nosplit
-func (self class) GetMode() gdclass.ShaderMode {
+func (self class) GetMode() gdclass.ShaderMode { //gd:Shader.get_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ShaderMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -112,7 +112,7 @@ func (self class) GetMode() gdclass.ShaderMode {
 }
 
 //go:nosplit
-func (self class) SetCode(code gd.String) {
+func (self class) SetCode(code gd.String) { //gd:Shader.set_code
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(code))
 	var r_ret = callframe.Nil
@@ -121,7 +121,7 @@ func (self class) SetCode(code gd.String) {
 }
 
 //go:nosplit
-func (self class) GetCode() gd.String {
+func (self class) GetCode() gd.String { //gd:Shader.get_code
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_code, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -136,7 +136,7 @@ Sets the default texture to be used with a texture uniform. The default is used 
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 //go:nosplit
-func (self class) SetDefaultTextureParameter(name gd.StringName, texture [1]gdclass.Texture2D, index gd.Int) {
+func (self class) SetDefaultTextureParameter(name gd.StringName, texture [1]gdclass.Texture2D, index gd.Int) { //gd:Shader.set_default_texture_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -152,7 +152,7 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 //go:nosplit
-func (self class) GetDefaultTextureParameter(name gd.StringName, index gd.Int) [1]gdclass.Texture2D {
+func (self class) GetDefaultTextureParameter(name gd.StringName, index gd.Int) [1]gdclass.Texture2D { //gd:Shader.get_default_texture_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, index)
@@ -168,7 +168,7 @@ Get the list of shader uniforms that can be assigned to a [ShaderMaterial], for 
 If argument [param get_groups] is true, parameter grouping hints will be provided.
 */
 //go:nosplit
-func (self class) GetShaderUniformList(get_groups bool) Array.Any {
+func (self class) GetShaderUniformList(get_groups bool) Array.Any { //gd:Shader.get_shader_uniform_list
 	var frame = callframe.New()
 	callframe.Arg(frame, get_groups)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -209,7 +209,7 @@ func init() {
 	gdclass.Register("Shader", func(ptr gd.Object) any { return [1]gdclass.Shader{*(*gdclass.Shader)(unsafe.Pointer(&ptr))} })
 }
 
-type Mode = gdclass.ShaderMode
+type Mode = gdclass.ShaderMode //gd:Shader.Mode
 
 const (
 	/*Mode used to draw all 3D objects.*/

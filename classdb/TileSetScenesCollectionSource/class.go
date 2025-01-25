@@ -72,21 +72,21 @@ type Any interface {
 /*
 Returns the number or scene tiles this TileSet source has.
 */
-func (self Instance) GetSceneTilesCount() int {
+func (self Instance) GetSceneTilesCount() int { //gd:TileSetScenesCollectionSource.get_scene_tiles_count
 	return int(int(class(self).GetSceneTilesCount()))
 }
 
 /*
 Returns the scene tile ID of the scene tile at [param index].
 */
-func (self Instance) GetSceneTileId(index int) int {
+func (self Instance) GetSceneTileId(index int) int { //gd:TileSetScenesCollectionSource.get_scene_tile_id
 	return int(int(class(self).GetSceneTileId(gd.Int(index))))
 }
 
 /*
 Returns whether this TileSet source has a scene tile with [param id].
 */
-func (self Instance) HasSceneTileId(id int) bool {
+func (self Instance) HasSceneTileId(id int) bool { //gd:TileSetScenesCollectionSource.has_scene_tile_id
 	return bool(class(self).HasSceneTileId(gd.Int(id)))
 }
 
@@ -94,56 +94,56 @@ func (self Instance) HasSceneTileId(id int) bool {
 Creates a scene-based tile out of the given scene.
 Returns a newly generated unique ID.
 */
-func (self Instance) CreateSceneTile(packed_scene [1]gdclass.PackedScene) int {
+func (self Instance) CreateSceneTile(packed_scene [1]gdclass.PackedScene) int { //gd:TileSetScenesCollectionSource.create_scene_tile
 	return int(int(class(self).CreateSceneTile(packed_scene, gd.Int(-1))))
 }
 
 /*
 Changes a scene tile's ID from [param id] to [param new_id]. This will fail if there is already a tile with an ID equal to [param new_id].
 */
-func (self Instance) SetSceneTileId(id int, new_id int) {
+func (self Instance) SetSceneTileId(id int, new_id int) { //gd:TileSetScenesCollectionSource.set_scene_tile_id
 	class(self).SetSceneTileId(gd.Int(id), gd.Int(new_id))
 }
 
 /*
 Assigns a [PackedScene] resource to the scene tile with [param id]. This will fail if the scene does not extend CanvasItem, as positioning properties are needed to place the scene on the TileMap.
 */
-func (self Instance) SetSceneTileScene(id int, packed_scene [1]gdclass.PackedScene) {
+func (self Instance) SetSceneTileScene(id int, packed_scene [1]gdclass.PackedScene) { //gd:TileSetScenesCollectionSource.set_scene_tile_scene
 	class(self).SetSceneTileScene(gd.Int(id), packed_scene)
 }
 
 /*
 Returns the [PackedScene] resource of scene tile with [param id].
 */
-func (self Instance) GetSceneTileScene(id int) [1]gdclass.PackedScene {
+func (self Instance) GetSceneTileScene(id int) [1]gdclass.PackedScene { //gd:TileSetScenesCollectionSource.get_scene_tile_scene
 	return [1]gdclass.PackedScene(class(self).GetSceneTileScene(gd.Int(id)))
 }
 
 /*
 Sets whether or not the scene tile with [param id] should display a placeholder in the editor. This might be useful for scenes that are not visible.
 */
-func (self Instance) SetSceneTileDisplayPlaceholder(id int, display_placeholder bool) {
+func (self Instance) SetSceneTileDisplayPlaceholder(id int, display_placeholder bool) { //gd:TileSetScenesCollectionSource.set_scene_tile_display_placeholder
 	class(self).SetSceneTileDisplayPlaceholder(gd.Int(id), display_placeholder)
 }
 
 /*
 Returns whether the scene tile with [param id] displays a placeholder in the editor.
 */
-func (self Instance) GetSceneTileDisplayPlaceholder(id int) bool {
+func (self Instance) GetSceneTileDisplayPlaceholder(id int) bool { //gd:TileSetScenesCollectionSource.get_scene_tile_display_placeholder
 	return bool(class(self).GetSceneTileDisplayPlaceholder(gd.Int(id)))
 }
 
 /*
 Remove the scene tile with [param id].
 */
-func (self Instance) RemoveSceneTile(id int) {
+func (self Instance) RemoveSceneTile(id int) { //gd:TileSetScenesCollectionSource.remove_scene_tile
 	class(self).RemoveSceneTile(gd.Int(id))
 }
 
 /*
 Returns the scene ID a following call to [method create_scene_tile] would return.
 */
-func (self Instance) GetNextSceneTileId() int {
+func (self Instance) GetNextSceneTileId() int { //gd:TileSetScenesCollectionSource.get_next_scene_tile_id
 	return int(int(class(self).GetNextSceneTileId()))
 }
 
@@ -170,7 +170,7 @@ func New() Instance {
 Returns the number or scene tiles this TileSet source has.
 */
 //go:nosplit
-func (self class) GetSceneTilesCount() gd.Int {
+func (self class) GetSceneTilesCount() gd.Int { //gd:TileSetScenesCollectionSource.get_scene_tiles_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_scene_tiles_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -183,7 +183,7 @@ func (self class) GetSceneTilesCount() gd.Int {
 Returns the scene tile ID of the scene tile at [param index].
 */
 //go:nosplit
-func (self class) GetSceneTileId(index gd.Int) gd.Int {
+func (self class) GetSceneTileId(index gd.Int) gd.Int { //gd:TileSetScenesCollectionSource.get_scene_tile_id
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -197,7 +197,7 @@ func (self class) GetSceneTileId(index gd.Int) gd.Int {
 Returns whether this TileSet source has a scene tile with [param id].
 */
 //go:nosplit
-func (self class) HasSceneTileId(id gd.Int) bool {
+func (self class) HasSceneTileId(id gd.Int) bool { //gd:TileSetScenesCollectionSource.has_scene_tile_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -212,7 +212,7 @@ Creates a scene-based tile out of the given scene.
 Returns a newly generated unique ID.
 */
 //go:nosplit
-func (self class) CreateSceneTile(packed_scene [1]gdclass.PackedScene, id_override gd.Int) gd.Int {
+func (self class) CreateSceneTile(packed_scene [1]gdclass.PackedScene, id_override gd.Int) gd.Int { //gd:TileSetScenesCollectionSource.create_scene_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(packed_scene[0])[0])
 	callframe.Arg(frame, id_override)
@@ -227,7 +227,7 @@ func (self class) CreateSceneTile(packed_scene [1]gdclass.PackedScene, id_overri
 Changes a scene tile's ID from [param id] to [param new_id]. This will fail if there is already a tile with an ID equal to [param new_id].
 */
 //go:nosplit
-func (self class) SetSceneTileId(id gd.Int, new_id gd.Int) {
+func (self class) SetSceneTileId(id gd.Int, new_id gd.Int) { //gd:TileSetScenesCollectionSource.set_scene_tile_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, new_id)
@@ -240,7 +240,7 @@ func (self class) SetSceneTileId(id gd.Int, new_id gd.Int) {
 Assigns a [PackedScene] resource to the scene tile with [param id]. This will fail if the scene does not extend CanvasItem, as positioning properties are needed to place the scene on the TileMap.
 */
 //go:nosplit
-func (self class) SetSceneTileScene(id gd.Int, packed_scene [1]gdclass.PackedScene) {
+func (self class) SetSceneTileScene(id gd.Int, packed_scene [1]gdclass.PackedScene) { //gd:TileSetScenesCollectionSource.set_scene_tile_scene
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, pointers.Get(packed_scene[0])[0])
@@ -253,7 +253,7 @@ func (self class) SetSceneTileScene(id gd.Int, packed_scene [1]gdclass.PackedSce
 Returns the [PackedScene] resource of scene tile with [param id].
 */
 //go:nosplit
-func (self class) GetSceneTileScene(id gd.Int) [1]gdclass.PackedScene {
+func (self class) GetSceneTileScene(id gd.Int) [1]gdclass.PackedScene { //gd:TileSetScenesCollectionSource.get_scene_tile_scene
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -267,7 +267,7 @@ func (self class) GetSceneTileScene(id gd.Int) [1]gdclass.PackedScene {
 Sets whether or not the scene tile with [param id] should display a placeholder in the editor. This might be useful for scenes that are not visible.
 */
 //go:nosplit
-func (self class) SetSceneTileDisplayPlaceholder(id gd.Int, display_placeholder bool) {
+func (self class) SetSceneTileDisplayPlaceholder(id gd.Int, display_placeholder bool) { //gd:TileSetScenesCollectionSource.set_scene_tile_display_placeholder
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, display_placeholder)
@@ -280,7 +280,7 @@ func (self class) SetSceneTileDisplayPlaceholder(id gd.Int, display_placeholder 
 Returns whether the scene tile with [param id] displays a placeholder in the editor.
 */
 //go:nosplit
-func (self class) GetSceneTileDisplayPlaceholder(id gd.Int) bool {
+func (self class) GetSceneTileDisplayPlaceholder(id gd.Int) bool { //gd:TileSetScenesCollectionSource.get_scene_tile_display_placeholder
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -294,7 +294,7 @@ func (self class) GetSceneTileDisplayPlaceholder(id gd.Int) bool {
 Remove the scene tile with [param id].
 */
 //go:nosplit
-func (self class) RemoveSceneTile(id gd.Int) {
+func (self class) RemoveSceneTile(id gd.Int) { //gd:TileSetScenesCollectionSource.remove_scene_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -306,7 +306,7 @@ func (self class) RemoveSceneTile(id gd.Int) {
 Returns the scene ID a following call to [method create_scene_tile] would return.
 */
 //go:nosplit
-func (self class) GetNextSceneTileId() gd.Int {
+func (self class) GetNextSceneTileId() gd.Int { //gd:TileSetScenesCollectionSource.get_next_scene_tile_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetScenesCollectionSource.Bind_get_next_scene_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())

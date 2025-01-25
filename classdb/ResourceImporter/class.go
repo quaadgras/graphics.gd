@@ -83,7 +83,7 @@ func init() {
 	})
 }
 
-type ImportOrder = gdclass.ResourceImporterImportOrder
+type ImportOrder = gdclass.ResourceImporterImportOrder //gd:ResourceImporter.ImportOrder
 
 const (
 	/*The default import order.*/

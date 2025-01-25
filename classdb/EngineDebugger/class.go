@@ -38,7 +38,7 @@ func singleton() {
 /*
 Returns [code]true[/code] if the debugger is active otherwise [code]false[/code].
 */
-func IsActive() bool {
+func IsActive() bool { //gd:EngineDebugger.is_active
 	once.Do(singleton)
 	return bool(class(self).IsActive())
 }
@@ -46,7 +46,7 @@ func IsActive() bool {
 /*
 Registers a profiler with the given [param name]. See [EngineProfiler] for more information.
 */
-func RegisterProfiler(name string, profiler [1]gdclass.EngineProfiler) {
+func RegisterProfiler(name string, profiler [1]gdclass.EngineProfiler) { //gd:EngineDebugger.register_profiler
 	once.Do(singleton)
 	class(self).RegisterProfiler(gd.NewStringName(name), profiler)
 }
@@ -54,7 +54,7 @@ func RegisterProfiler(name string, profiler [1]gdclass.EngineProfiler) {
 /*
 Unregisters a profiler with given [param name].
 */
-func UnregisterProfiler(name string) {
+func UnregisterProfiler(name string) { //gd:EngineDebugger.unregister_profiler
 	once.Do(singleton)
 	class(self).UnregisterProfiler(gd.NewStringName(name))
 }
@@ -62,7 +62,7 @@ func UnregisterProfiler(name string) {
 /*
 Returns [code]true[/code] if a profiler with the given name is present and active otherwise [code]false[/code].
 */
-func IsProfiling(name string) bool {
+func IsProfiling(name string) bool { //gd:EngineDebugger.is_profiling
 	once.Do(singleton)
 	return bool(class(self).IsProfiling(gd.NewStringName(name)))
 }
@@ -70,7 +70,7 @@ func IsProfiling(name string) bool {
 /*
 Returns [code]true[/code] if a profiler with the given name is present otherwise [code]false[/code].
 */
-func HasProfiler(name string) bool {
+func HasProfiler(name string) bool { //gd:EngineDebugger.has_profiler
 	once.Do(singleton)
 	return bool(class(self).HasProfiler(gd.NewStringName(name)))
 }
@@ -78,7 +78,7 @@ func HasProfiler(name string) bool {
 /*
 Calls the [code]add[/code] callable of the profiler with given [param name] and [param data].
 */
-func ProfilerAddFrameData(name string, data []any) {
+func ProfilerAddFrameData(name string, data []any) { //gd:EngineDebugger.profiler_add_frame_data
 	once.Do(singleton)
 	class(self).ProfilerAddFrameData(gd.NewStringName(name), gd.EngineArrayFromSlice(data))
 }
@@ -86,7 +86,7 @@ func ProfilerAddFrameData(name string, data []any) {
 /*
 Calls the [code]toggle[/code] callable of the profiler with given [param name] and [param arguments]. Enables/Disables the same profiler depending on [param enable] argument.
 */
-func ProfilerEnable(name string, enable bool) {
+func ProfilerEnable(name string, enable bool) { //gd:EngineDebugger.profiler_enable
 	once.Do(singleton)
 	class(self).ProfilerEnable(gd.NewStringName(name), enable, Array.Nil)
 }
@@ -95,7 +95,7 @@ func ProfilerEnable(name string, enable bool) {
 Registers a message capture with given [param name]. If [param name] is "my_message" then messages starting with "my_message:" will be called with the given callable.
 Callable must accept a message string and a data array as argument. If the message and data are valid then callable must return [code]true[/code] otherwise [code]false[/code].
 */
-func RegisterMessageCapture(name string, callable func(message string, data []any)) {
+func RegisterMessageCapture(name string, callable func(message string, data []any)) { //gd:EngineDebugger.register_message_capture
 	once.Do(singleton)
 	class(self).RegisterMessageCapture(gd.NewStringName(name), Callable.New(callable))
 }
@@ -103,7 +103,7 @@ func RegisterMessageCapture(name string, callable func(message string, data []an
 /*
 Unregisters the message capture with given [param name].
 */
-func UnregisterMessageCapture(name string) {
+func UnregisterMessageCapture(name string) { //gd:EngineDebugger.unregister_message_capture
 	once.Do(singleton)
 	class(self).UnregisterMessageCapture(gd.NewStringName(name))
 }
@@ -111,7 +111,7 @@ func UnregisterMessageCapture(name string) {
 /*
 Returns [code]true[/code] if a capture with the given name is present otherwise [code]false[/code].
 */
-func HasCapture(name string) bool {
+func HasCapture(name string) bool { //gd:EngineDebugger.has_capture
 	once.Do(singleton)
 	return bool(class(self).HasCapture(gd.NewStringName(name)))
 }
@@ -119,7 +119,7 @@ func HasCapture(name string) bool {
 /*
 Forces a processing loop of debugger events. The purpose of this method is just processing events every now and then when the script might get too busy, so that bugs like infinite loops can be caught
 */
-func LinePoll() {
+func LinePoll() { //gd:EngineDebugger.line_poll
 	once.Do(singleton)
 	class(self).LinePoll()
 }
@@ -127,7 +127,7 @@ func LinePoll() {
 /*
 Sends a message with given [param message] and [param data] array.
 */
-func SendMessage(message string, data []any) {
+func SendMessage(message string, data []any) { //gd:EngineDebugger.send_message
 	once.Do(singleton)
 	class(self).SendMessage(gd.NewString(message), gd.EngineArrayFromSlice(data))
 }
@@ -135,7 +135,7 @@ func SendMessage(message string, data []any) {
 /*
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
-func Debug() {
+func Debug() { //gd:EngineDebugger.debug
 	once.Do(singleton)
 	class(self).Debug(true, false)
 }
@@ -143,7 +143,7 @@ func Debug() {
 /*
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
-func ScriptDebug(language [1]gdclass.ScriptLanguage) {
+func ScriptDebug(language [1]gdclass.ScriptLanguage) { //gd:EngineDebugger.script_debug
 	once.Do(singleton)
 	class(self).ScriptDebug(language, true, false)
 }
@@ -151,7 +151,7 @@ func ScriptDebug(language [1]gdclass.ScriptLanguage) {
 /*
 Sets the current debugging lines that remain.
 */
-func SetLinesLeft(lines int) {
+func SetLinesLeft(lines int) { //gd:EngineDebugger.set_lines_left
 	once.Do(singleton)
 	class(self).SetLinesLeft(gd.Int(lines))
 }
@@ -159,7 +159,7 @@ func SetLinesLeft(lines int) {
 /*
 Returns the number of lines that remain.
 */
-func GetLinesLeft() int {
+func GetLinesLeft() int { //gd:EngineDebugger.get_lines_left
 	once.Do(singleton)
 	return int(int(class(self).GetLinesLeft()))
 }
@@ -167,7 +167,7 @@ func GetLinesLeft() int {
 /*
 Sets the current debugging depth.
 */
-func SetDepth(depth int) {
+func SetDepth(depth int) { //gd:EngineDebugger.set_depth
 	once.Do(singleton)
 	class(self).SetDepth(gd.Int(depth))
 }
@@ -175,7 +175,7 @@ func SetDepth(depth int) {
 /*
 Returns the current debug depth.
 */
-func GetDepth() int {
+func GetDepth() int { //gd:EngineDebugger.get_depth
 	once.Do(singleton)
 	return int(int(class(self).GetDepth()))
 }
@@ -183,7 +183,7 @@ func GetDepth() int {
 /*
 Returns [code]true[/code] if the given [param source] and [param line] represent an existing breakpoint.
 */
-func IsBreakpoint(line int, source string) bool {
+func IsBreakpoint(line int, source string) bool { //gd:EngineDebugger.is_breakpoint
 	once.Do(singleton)
 	return bool(class(self).IsBreakpoint(gd.Int(line), gd.NewStringName(source)))
 }
@@ -191,7 +191,7 @@ func IsBreakpoint(line int, source string) bool {
 /*
 Returns [code]true[/code] if the debugger is skipping breakpoints otherwise [code]false[/code].
 */
-func IsSkippingBreakpoints() bool {
+func IsSkippingBreakpoints() bool { //gd:EngineDebugger.is_skipping_breakpoints
 	once.Do(singleton)
 	return bool(class(self).IsSkippingBreakpoints())
 }
@@ -199,7 +199,7 @@ func IsSkippingBreakpoints() bool {
 /*
 Inserts a new breakpoint with the given [param source] and [param line].
 */
-func InsertBreakpoint(line int, source string) {
+func InsertBreakpoint(line int, source string) { //gd:EngineDebugger.insert_breakpoint
 	once.Do(singleton)
 	class(self).InsertBreakpoint(gd.Int(line), gd.NewStringName(source))
 }
@@ -207,7 +207,7 @@ func InsertBreakpoint(line int, source string) {
 /*
 Removes a breakpoint with the given [param source] and [param line].
 */
-func RemoveBreakpoint(line int, source string) {
+func RemoveBreakpoint(line int, source string) { //gd:EngineDebugger.remove_breakpoint
 	once.Do(singleton)
 	class(self).RemoveBreakpoint(gd.Int(line), gd.NewStringName(source))
 }
@@ -215,7 +215,7 @@ func RemoveBreakpoint(line int, source string) {
 /*
 Clears all breakpoints.
 */
-func ClearBreakpoints() {
+func ClearBreakpoints() { //gd:EngineDebugger.clear_breakpoints
 	once.Do(singleton)
 	class(self).ClearBreakpoints()
 }
@@ -234,7 +234,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns [code]true[/code] if the debugger is active otherwise [code]false[/code].
 */
 //go:nosplit
-func (self class) IsActive() bool {
+func (self class) IsActive() bool { //gd:EngineDebugger.is_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -247,7 +247,7 @@ func (self class) IsActive() bool {
 Registers a profiler with the given [param name]. See [EngineProfiler] for more information.
 */
 //go:nosplit
-func (self class) RegisterProfiler(name gd.StringName, profiler [1]gdclass.EngineProfiler) {
+func (self class) RegisterProfiler(name gd.StringName, profiler [1]gdclass.EngineProfiler) { //gd:EngineDebugger.register_profiler
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(profiler[0])[0])
@@ -260,7 +260,7 @@ func (self class) RegisterProfiler(name gd.StringName, profiler [1]gdclass.Engin
 Unregisters a profiler with given [param name].
 */
 //go:nosplit
-func (self class) UnregisterProfiler(name gd.StringName) {
+func (self class) UnregisterProfiler(name gd.StringName) { //gd:EngineDebugger.unregister_profiler
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -272,7 +272,7 @@ func (self class) UnregisterProfiler(name gd.StringName) {
 Returns [code]true[/code] if a profiler with the given name is present and active otherwise [code]false[/code].
 */
 //go:nosplit
-func (self class) IsProfiling(name gd.StringName) bool {
+func (self class) IsProfiling(name gd.StringName) bool { //gd:EngineDebugger.is_profiling
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -286,7 +286,7 @@ func (self class) IsProfiling(name gd.StringName) bool {
 Returns [code]true[/code] if a profiler with the given name is present otherwise [code]false[/code].
 */
 //go:nosplit
-func (self class) HasProfiler(name gd.StringName) bool {
+func (self class) HasProfiler(name gd.StringName) bool { //gd:EngineDebugger.has_profiler
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -300,7 +300,7 @@ func (self class) HasProfiler(name gd.StringName) bool {
 Calls the [code]add[/code] callable of the profiler with given [param name] and [param data].
 */
 //go:nosplit
-func (self class) ProfilerAddFrameData(name gd.StringName, data Array.Any) {
+func (self class) ProfilerAddFrameData(name gd.StringName, data Array.Any) { //gd:EngineDebugger.profiler_add_frame_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
@@ -313,7 +313,7 @@ func (self class) ProfilerAddFrameData(name gd.StringName, data Array.Any) {
 Calls the [code]toggle[/code] callable of the profiler with given [param name] and [param arguments]. Enables/Disables the same profiler depending on [param enable] argument.
 */
 //go:nosplit
-func (self class) ProfilerEnable(name gd.StringName, enable bool, arguments Array.Any) {
+func (self class) ProfilerEnable(name gd.StringName, enable bool, arguments Array.Any) { //gd:EngineDebugger.profiler_enable
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, enable)
@@ -328,7 +328,7 @@ Registers a message capture with given [param name]. If [param name] is "my_mess
 Callable must accept a message string and a data array as argument. If the message and data are valid then callable must return [code]true[/code] otherwise [code]false[/code].
 */
 //go:nosplit
-func (self class) RegisterMessageCapture(name gd.StringName, callable Callable.Function) {
+func (self class) RegisterMessageCapture(name gd.StringName, callable Callable.Function) { //gd:EngineDebugger.register_message_capture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
@@ -341,7 +341,7 @@ func (self class) RegisterMessageCapture(name gd.StringName, callable Callable.F
 Unregisters the message capture with given [param name].
 */
 //go:nosplit
-func (self class) UnregisterMessageCapture(name gd.StringName) {
+func (self class) UnregisterMessageCapture(name gd.StringName) { //gd:EngineDebugger.unregister_message_capture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -353,7 +353,7 @@ func (self class) UnregisterMessageCapture(name gd.StringName) {
 Returns [code]true[/code] if a capture with the given name is present otherwise [code]false[/code].
 */
 //go:nosplit
-func (self class) HasCapture(name gd.StringName) bool {
+func (self class) HasCapture(name gd.StringName) bool { //gd:EngineDebugger.has_capture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -367,7 +367,7 @@ func (self class) HasCapture(name gd.StringName) bool {
 Forces a processing loop of debugger events. The purpose of this method is just processing events every now and then when the script might get too busy, so that bugs like infinite loops can be caught
 */
 //go:nosplit
-func (self class) LinePoll() {
+func (self class) LinePoll() { //gd:EngineDebugger.line_poll
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_line_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -378,7 +378,7 @@ func (self class) LinePoll() {
 Sends a message with given [param message] and [param data] array.
 */
 //go:nosplit
-func (self class) SendMessage(message gd.String, data Array.Any) {
+func (self class) SendMessage(message gd.String, data Array.Any) { //gd:EngineDebugger.send_message
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
@@ -391,7 +391,7 @@ func (self class) SendMessage(message gd.String, data Array.Any) {
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
 //go:nosplit
-func (self class) Debug(can_continue bool, is_error_breakpoint bool) {
+func (self class) Debug(can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.debug
 	var frame = callframe.New()
 	callframe.Arg(frame, can_continue)
 	callframe.Arg(frame, is_error_breakpoint)
@@ -404,7 +404,7 @@ func (self class) Debug(can_continue bool, is_error_breakpoint bool) {
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
 //go:nosplit
-func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue bool, is_error_breakpoint bool) {
+func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language[0])[0])
 	callframe.Arg(frame, can_continue)
@@ -418,7 +418,7 @@ func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue b
 Sets the current debugging lines that remain.
 */
 //go:nosplit
-func (self class) SetLinesLeft(lines gd.Int) {
+func (self class) SetLinesLeft(lines gd.Int) { //gd:EngineDebugger.set_lines_left
 	var frame = callframe.New()
 	callframe.Arg(frame, lines)
 	var r_ret = callframe.Nil
@@ -430,7 +430,7 @@ func (self class) SetLinesLeft(lines gd.Int) {
 Returns the number of lines that remain.
 */
 //go:nosplit
-func (self class) GetLinesLeft() gd.Int {
+func (self class) GetLinesLeft() gd.Int { //gd:EngineDebugger.get_lines_left
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_get_lines_left, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -443,7 +443,7 @@ func (self class) GetLinesLeft() gd.Int {
 Sets the current debugging depth.
 */
 //go:nosplit
-func (self class) SetDepth(depth gd.Int) {
+func (self class) SetDepth(depth gd.Int) { //gd:EngineDebugger.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -455,7 +455,7 @@ func (self class) SetDepth(depth gd.Int) {
 Returns the current debug depth.
 */
 //go:nosplit
-func (self class) GetDepth() gd.Int {
+func (self class) GetDepth() gd.Int { //gd:EngineDebugger.get_depth
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -468,7 +468,7 @@ func (self class) GetDepth() gd.Int {
 Returns [code]true[/code] if the given [param source] and [param line] represent an existing breakpoint.
 */
 //go:nosplit
-func (self class) IsBreakpoint(line gd.Int, source gd.StringName) bool {
+func (self class) IsBreakpoint(line gd.Int, source gd.StringName) bool { //gd:EngineDebugger.is_breakpoint
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(source))
@@ -483,7 +483,7 @@ func (self class) IsBreakpoint(line gd.Int, source gd.StringName) bool {
 Returns [code]true[/code] if the debugger is skipping breakpoints otherwise [code]false[/code].
 */
 //go:nosplit
-func (self class) IsSkippingBreakpoints() bool {
+func (self class) IsSkippingBreakpoints() bool { //gd:EngineDebugger.is_skipping_breakpoints
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_is_skipping_breakpoints, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -496,7 +496,7 @@ func (self class) IsSkippingBreakpoints() bool {
 Inserts a new breakpoint with the given [param source] and [param line].
 */
 //go:nosplit
-func (self class) InsertBreakpoint(line gd.Int, source gd.StringName) {
+func (self class) InsertBreakpoint(line gd.Int, source gd.StringName) { //gd:EngineDebugger.insert_breakpoint
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(source))
@@ -509,7 +509,7 @@ func (self class) InsertBreakpoint(line gd.Int, source gd.StringName) {
 Removes a breakpoint with the given [param source] and [param line].
 */
 //go:nosplit
-func (self class) RemoveBreakpoint(line gd.Int, source gd.StringName) {
+func (self class) RemoveBreakpoint(line gd.Int, source gd.StringName) { //gd:EngineDebugger.remove_breakpoint
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, pointers.Get(source))
@@ -522,7 +522,7 @@ func (self class) RemoveBreakpoint(line gd.Int, source gd.StringName) {
 Clears all breakpoints.
 */
 //go:nosplit
-func (self class) ClearBreakpoints() {
+func (self class) ClearBreakpoints() { //gd:EngineDebugger.clear_breakpoints
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_clear_breakpoints, self.AsObject(), frame.Array(0), r_ret.Addr())

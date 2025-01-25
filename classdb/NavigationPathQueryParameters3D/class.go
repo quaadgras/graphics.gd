@@ -131,7 +131,7 @@ func (self Instance) SetSimplifyEpsilon(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm) {
+func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm) { //gd:NavigationPathQueryParameters3D.set_pathfinding_algorithm
 	var frame = callframe.New()
 	callframe.Arg(frame, pathfinding_algorithm)
 	var r_ret = callframe.Nil
@@ -140,7 +140,7 @@ func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.Navigati
 }
 
 //go:nosplit
-func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm {
+func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm { //gd:NavigationPathQueryParameters3D.get_pathfinding_algorithm
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters3D.Bind_get_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -150,7 +150,7 @@ func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameter
 }
 
 //go:nosplit
-func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPathQueryParameters3DPathPostProcessing) {
+func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPathQueryParameters3DPathPostProcessing) { //gd:NavigationPathQueryParameters3D.set_path_postprocessing
 	var frame = callframe.New()
 	callframe.Arg(frame, path_postprocessing)
 	var r_ret = callframe.Nil
@@ -159,7 +159,7 @@ func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPa
 }
 
 //go:nosplit
-func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters3DPathPostProcessing {
+func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters3DPathPostProcessing { //gd:NavigationPathQueryParameters3D.get_path_postprocessing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters3DPathPostProcessing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters3D.Bind_get_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -169,7 +169,7 @@ func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters3
 }
 
 //go:nosplit
-func (self class) SetMap(mapping gd.RID) {
+func (self class) SetMap(mapping gd.RID) { //gd:NavigationPathQueryParameters3D.set_map
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
 	var r_ret = callframe.Nil
@@ -178,7 +178,7 @@ func (self class) SetMap(mapping gd.RID) {
 }
 
 //go:nosplit
-func (self class) GetMap() gd.RID {
+func (self class) GetMap() gd.RID { //gd:NavigationPathQueryParameters3D.get_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters3D.Bind_get_map, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -188,7 +188,7 @@ func (self class) GetMap() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetStartPosition(start_position gd.Vector3) {
+func (self class) SetStartPosition(start_position gd.Vector3) { //gd:NavigationPathQueryParameters3D.set_start_position
 	var frame = callframe.New()
 	callframe.Arg(frame, start_position)
 	var r_ret = callframe.Nil
@@ -197,7 +197,7 @@ func (self class) SetStartPosition(start_position gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetStartPosition() gd.Vector3 {
+func (self class) GetStartPosition() gd.Vector3 { //gd:NavigationPathQueryParameters3D.get_start_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters3D.Bind_get_start_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -207,7 +207,7 @@ func (self class) GetStartPosition() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetTargetPosition(target_position gd.Vector3) {
+func (self class) SetTargetPosition(target_position gd.Vector3) { //gd:NavigationPathQueryParameters3D.set_target_position
 	var frame = callframe.New()
 	callframe.Arg(frame, target_position)
 	var r_ret = callframe.Nil
@@ -216,7 +216,7 @@ func (self class) SetTargetPosition(target_position gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetTargetPosition() gd.Vector3 {
+func (self class) GetTargetPosition() gd.Vector3 { //gd:NavigationPathQueryParameters3D.get_target_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters3D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -226,7 +226,7 @@ func (self class) GetTargetPosition() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetNavigationLayers(navigation_layers gd.Int) {
+func (self class) SetNavigationLayers(navigation_layers gd.Int) { //gd:NavigationPathQueryParameters3D.set_navigation_layers
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_layers)
 	var r_ret = callframe.Nil
@@ -235,7 +235,7 @@ func (self class) SetNavigationLayers(navigation_layers gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetNavigationLayers() gd.Int {
+func (self class) GetNavigationLayers() gd.Int { //gd:NavigationPathQueryParameters3D.get_navigation_layers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters3D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -245,7 +245,7 @@ func (self class) GetNavigationLayers() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMetadataFlags(flags gdclass.NavigationPathQueryParameters3DPathMetadataFlags) {
+func (self class) SetMetadataFlags(flags gdclass.NavigationPathQueryParameters3DPathMetadataFlags) { //gd:NavigationPathQueryParameters3D.set_metadata_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -254,7 +254,7 @@ func (self class) SetMetadataFlags(flags gdclass.NavigationPathQueryParameters3D
 }
 
 //go:nosplit
-func (self class) GetMetadataFlags() gdclass.NavigationPathQueryParameters3DPathMetadataFlags {
+func (self class) GetMetadataFlags() gdclass.NavigationPathQueryParameters3DPathMetadataFlags { //gd:NavigationPathQueryParameters3D.get_metadata_flags
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters3DPathMetadataFlags](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters3D.Bind_get_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -264,7 +264,7 @@ func (self class) GetMetadataFlags() gdclass.NavigationPathQueryParameters3DPath
 }
 
 //go:nosplit
-func (self class) SetSimplifyPath(enabled bool) {
+func (self class) SetSimplifyPath(enabled bool) { //gd:NavigationPathQueryParameters3D.set_simplify_path
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -273,7 +273,7 @@ func (self class) SetSimplifyPath(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetSimplifyPath() bool {
+func (self class) GetSimplifyPath() bool { //gd:NavigationPathQueryParameters3D.get_simplify_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters3D.Bind_get_simplify_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -283,7 +283,7 @@ func (self class) GetSimplifyPath() bool {
 }
 
 //go:nosplit
-func (self class) SetSimplifyEpsilon(epsilon gd.Float) {
+func (self class) SetSimplifyEpsilon(epsilon gd.Float) { //gd:NavigationPathQueryParameters3D.set_simplify_epsilon
 	var frame = callframe.New()
 	callframe.Arg(frame, epsilon)
 	var r_ret = callframe.Nil
@@ -292,7 +292,7 @@ func (self class) SetSimplifyEpsilon(epsilon gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSimplifyEpsilon() gd.Float {
+func (self class) GetSimplifyEpsilon() gd.Float { //gd:NavigationPathQueryParameters3D.get_simplify_epsilon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters3D.Bind_get_simplify_epsilon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -332,14 +332,14 @@ func init() {
 	})
 }
 
-type PathfindingAlgorithm = gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm
+type PathfindingAlgorithm = gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm //gd:NavigationPathQueryParameters3D.PathfindingAlgorithm
 
 const (
 	/*The path query uses the default A* pathfinding algorithm.*/
 	PathfindingAlgorithmAstar PathfindingAlgorithm = 0
 )
 
-type PathPostProcessing = gdclass.NavigationPathQueryParameters3DPathPostProcessing
+type PathPostProcessing = gdclass.NavigationPathQueryParameters3DPathPostProcessing //gd:NavigationPathQueryParameters3D.PathPostProcessing
 
 const (
 	/*Applies a funnel algorithm to the raw path corridor found by the pathfinding algorithm. This will result in the shortest path possible inside the path corridor. This postprocessing very much depends on the navigation mesh polygon layout and the created corridor. Especially tile- or gridbased layouts can face artificial corners with diagonal movement due to a jagged path corridor imposed by the cell shapes.*/
@@ -348,7 +348,7 @@ const (
 	PathPostprocessingEdgecentered PathPostProcessing = 1
 )
 
-type PathMetadataFlags = gdclass.NavigationPathQueryParameters3DPathMetadataFlags
+type PathMetadataFlags = gdclass.NavigationPathQueryParameters3DPathMetadataFlags //gd:NavigationPathQueryParameters3D.PathMetadataFlags
 
 const (
 	/*Don't include any additional metadata about the returned path.*/

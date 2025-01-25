@@ -92,7 +92,7 @@ func (self Instance) SetDoubleTap(value bool) {
 }
 
 //go:nosplit
-func (self class) SetIndex(index gd.Int) {
+func (self class) SetIndex(index gd.Int) { //gd:InputEventScreenTouch.set_index
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -101,7 +101,7 @@ func (self class) SetIndex(index gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetIndex() gd.Int {
+func (self class) GetIndex() gd.Int { //gd:InputEventScreenTouch.get_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -111,7 +111,7 @@ func (self class) GetIndex() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetPosition(position gd.Vector2) {
+func (self class) SetPosition(position gd.Vector2) { //gd:InputEventScreenTouch.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -120,7 +120,7 @@ func (self class) SetPosition(position gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector2 {
+func (self class) GetPosition() gd.Vector2 { //gd:InputEventScreenTouch.get_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,7 +130,7 @@ func (self class) GetPosition() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetPressed(pressed bool) {
+func (self class) SetPressed(pressed bool) { //gd:InputEventScreenTouch.set_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -139,7 +139,7 @@ func (self class) SetPressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) SetCanceled(canceled bool) {
+func (self class) SetCanceled(canceled bool) { //gd:InputEventScreenTouch.set_canceled
 	var frame = callframe.New()
 	callframe.Arg(frame, canceled)
 	var r_ret = callframe.Nil
@@ -148,7 +148,7 @@ func (self class) SetCanceled(canceled bool) {
 }
 
 //go:nosplit
-func (self class) SetDoubleTap(double_tap bool) {
+func (self class) SetDoubleTap(double_tap bool) { //gd:InputEventScreenTouch.set_double_tap
 	var frame = callframe.New()
 	callframe.Arg(frame, double_tap)
 	var r_ret = callframe.Nil
@@ -157,7 +157,7 @@ func (self class) SetDoubleTap(double_tap bool) {
 }
 
 //go:nosplit
-func (self class) IsDoubleTap() bool {
+func (self class) IsDoubleTap() bool { //gd:InputEventScreenTouch.is_double_tap
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_is_double_tap, self.AsObject(), frame.Array(0), r_ret.Addr())

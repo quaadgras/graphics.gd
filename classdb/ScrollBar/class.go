@@ -68,7 +68,7 @@ func (self Instance) SetCustomStep(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetCustomStep(step gd.Float) {
+func (self class) SetCustomStep(step gd.Float) { //gd:ScrollBar.set_custom_step
 	var frame = callframe.New()
 	callframe.Arg(frame, step)
 	var r_ret = callframe.Nil
@@ -77,7 +77,7 @@ func (self class) SetCustomStep(step gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCustomStep() gd.Float {
+func (self class) GetCustomStep() gd.Float { //gd:ScrollBar.get_custom_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollBar.Bind_get_custom_step, self.AsObject(), frame.Array(0), r_ret.Addr())

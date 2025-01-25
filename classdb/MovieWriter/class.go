@@ -175,7 +175,7 @@ func (Instance) _write_end(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassC
 Adds a writer to be usable by the engine. The supported file extensions can be set by overriding [method _handles_file].
 [b]Note:[/b] [method add_writer] must be called early enough in the engine initialization to work, as movie writing is designed to start at the same time as the rest of the engine.
 */
-func AddWriter(writer [1]gdclass.MovieWriter) {
+func AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.add_writer
 	self := Instance{}
 	class(self).AddWriter(writer)
 }
@@ -290,7 +290,7 @@ Adds a writer to be usable by the engine. The supported file extensions can be s
 [b]Note:[/b] [method add_writer] must be called early enough in the engine initialization to work, as movie writing is designed to start at the same time as the rest of the engine.
 */
 //go:nosplit
-func (self class) AddWriter(writer [1]gdclass.MovieWriter) {
+func (self class) AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.add_writer
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(writer[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -341,7 +341,7 @@ func init() {
 	gdclass.Register("MovieWriter", func(ptr gd.Object) any { return [1]gdclass.MovieWriter{*(*gdclass.MovieWriter)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

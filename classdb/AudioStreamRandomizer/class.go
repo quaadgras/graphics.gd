@@ -42,49 +42,49 @@ type Any interface {
 /*
 Insert a stream at the specified index. If the index is less than zero, the insertion occurs at the end of the underlying pool.
 */
-func (self Instance) AddStream(index int, stream [1]gdclass.AudioStream) {
+func (self Instance) AddStream(index int, stream [1]gdclass.AudioStream) { //gd:AudioStreamRandomizer.add_stream
 	class(self).AddStream(gd.Int(index), stream, gd.Float(1.0))
 }
 
 /*
 Move a stream from one index to another.
 */
-func (self Instance) MoveStream(index_from int, index_to int) {
+func (self Instance) MoveStream(index_from int, index_to int) { //gd:AudioStreamRandomizer.move_stream
 	class(self).MoveStream(gd.Int(index_from), gd.Int(index_to))
 }
 
 /*
 Remove the stream at the specified index.
 */
-func (self Instance) RemoveStream(index int) {
+func (self Instance) RemoveStream(index int) { //gd:AudioStreamRandomizer.remove_stream
 	class(self).RemoveStream(gd.Int(index))
 }
 
 /*
 Set the AudioStream at the specified index.
 */
-func (self Instance) SetStream(index int, stream [1]gdclass.AudioStream) {
+func (self Instance) SetStream(index int, stream [1]gdclass.AudioStream) { //gd:AudioStreamRandomizer.set_stream
 	class(self).SetStream(gd.Int(index), stream)
 }
 
 /*
 Returns the stream at the specified index.
 */
-func (self Instance) GetStream(index int) [1]gdclass.AudioStream {
+func (self Instance) GetStream(index int) [1]gdclass.AudioStream { //gd:AudioStreamRandomizer.get_stream
 	return [1]gdclass.AudioStream(class(self).GetStream(gd.Int(index)))
 }
 
 /*
 Set the probability weight of the stream at the specified index. The higher this value, the more likely that the randomizer will choose this stream during random playback modes.
 */
-func (self Instance) SetStreamProbabilityWeight(index int, weight Float.X) {
+func (self Instance) SetStreamProbabilityWeight(index int, weight Float.X) { //gd:AudioStreamRandomizer.set_stream_probability_weight
 	class(self).SetStreamProbabilityWeight(gd.Int(index), gd.Float(weight))
 }
 
 /*
 Returns the probability weight associated with the stream at the given index.
 */
-func (self Instance) GetStreamProbabilityWeight(index int) Float.X {
+func (self Instance) GetStreamProbabilityWeight(index int) Float.X { //gd:AudioStreamRandomizer.get_stream_probability_weight
 	return Float.X(Float.X(class(self).GetStreamProbabilityWeight(gd.Int(index))))
 }
 
@@ -143,7 +143,7 @@ func (self Instance) SetStreamsCount(value int) {
 Insert a stream at the specified index. If the index is less than zero, the insertion occurs at the end of the underlying pool.
 */
 //go:nosplit
-func (self class) AddStream(index gd.Int, stream [1]gdclass.AudioStream, weight gd.Float) {
+func (self class) AddStream(index gd.Int, stream [1]gdclass.AudioStream, weight gd.Float) { //gd:AudioStreamRandomizer.add_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
@@ -157,7 +157,7 @@ func (self class) AddStream(index gd.Int, stream [1]gdclass.AudioStream, weight 
 Move a stream from one index to another.
 */
 //go:nosplit
-func (self class) MoveStream(index_from gd.Int, index_to gd.Int) {
+func (self class) MoveStream(index_from gd.Int, index_to gd.Int) { //gd:AudioStreamRandomizer.move_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, index_from)
 	callframe.Arg(frame, index_to)
@@ -170,7 +170,7 @@ func (self class) MoveStream(index_from gd.Int, index_to gd.Int) {
 Remove the stream at the specified index.
 */
 //go:nosplit
-func (self class) RemoveStream(index gd.Int) {
+func (self class) RemoveStream(index gd.Int) { //gd:AudioStreamRandomizer.remove_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -182,7 +182,7 @@ func (self class) RemoveStream(index gd.Int) {
 Set the AudioStream at the specified index.
 */
 //go:nosplit
-func (self class) SetStream(index gd.Int, stream [1]gdclass.AudioStream) {
+func (self class) SetStream(index gd.Int, stream [1]gdclass.AudioStream) { //gd:AudioStreamRandomizer.set_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
@@ -195,7 +195,7 @@ func (self class) SetStream(index gd.Int, stream [1]gdclass.AudioStream) {
 Returns the stream at the specified index.
 */
 //go:nosplit
-func (self class) GetStream(index gd.Int) [1]gdclass.AudioStream {
+func (self class) GetStream(index gd.Int) [1]gdclass.AudioStream { //gd:AudioStreamRandomizer.get_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -209,7 +209,7 @@ func (self class) GetStream(index gd.Int) [1]gdclass.AudioStream {
 Set the probability weight of the stream at the specified index. The higher this value, the more likely that the randomizer will choose this stream during random playback modes.
 */
 //go:nosplit
-func (self class) SetStreamProbabilityWeight(index gd.Int, weight gd.Float) {
+func (self class) SetStreamProbabilityWeight(index gd.Int, weight gd.Float) { //gd:AudioStreamRandomizer.set_stream_probability_weight
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, weight)
@@ -222,7 +222,7 @@ func (self class) SetStreamProbabilityWeight(index gd.Int, weight gd.Float) {
 Returns the probability weight associated with the stream at the given index.
 */
 //go:nosplit
-func (self class) GetStreamProbabilityWeight(index gd.Int) gd.Float {
+func (self class) GetStreamProbabilityWeight(index gd.Int) gd.Float { //gd:AudioStreamRandomizer.get_stream_probability_weight
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -233,7 +233,7 @@ func (self class) GetStreamProbabilityWeight(index gd.Int) gd.Float {
 }
 
 //go:nosplit
-func (self class) SetStreamsCount(count gd.Int) {
+func (self class) SetStreamsCount(count gd.Int) { //gd:AudioStreamRandomizer.set_streams_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -242,7 +242,7 @@ func (self class) SetStreamsCount(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetStreamsCount() gd.Int {
+func (self class) GetStreamsCount() gd.Int { //gd:AudioStreamRandomizer.get_streams_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamRandomizer.Bind_get_streams_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -252,7 +252,7 @@ func (self class) GetStreamsCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetRandomPitch(scale gd.Float) {
+func (self class) SetRandomPitch(scale gd.Float) { //gd:AudioStreamRandomizer.set_random_pitch
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -261,7 +261,7 @@ func (self class) SetRandomPitch(scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRandomPitch() gd.Float {
+func (self class) GetRandomPitch() gd.Float { //gd:AudioStreamRandomizer.get_random_pitch
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamRandomizer.Bind_get_random_pitch, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -271,7 +271,7 @@ func (self class) GetRandomPitch() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRandomVolumeOffsetDb(db_offset gd.Float) {
+func (self class) SetRandomVolumeOffsetDb(db_offset gd.Float) { //gd:AudioStreamRandomizer.set_random_volume_offset_db
 	var frame = callframe.New()
 	callframe.Arg(frame, db_offset)
 	var r_ret = callframe.Nil
@@ -280,7 +280,7 @@ func (self class) SetRandomVolumeOffsetDb(db_offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRandomVolumeOffsetDb() gd.Float {
+func (self class) GetRandomVolumeOffsetDb() gd.Float { //gd:AudioStreamRandomizer.get_random_volume_offset_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamRandomizer.Bind_get_random_volume_offset_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -290,7 +290,7 @@ func (self class) GetRandomVolumeOffsetDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPlaybackMode(mode gdclass.AudioStreamRandomizerPlaybackMode) {
+func (self class) SetPlaybackMode(mode gdclass.AudioStreamRandomizerPlaybackMode) { //gd:AudioStreamRandomizer.set_playback_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -299,7 +299,7 @@ func (self class) SetPlaybackMode(mode gdclass.AudioStreamRandomizerPlaybackMode
 }
 
 //go:nosplit
-func (self class) GetPlaybackMode() gdclass.AudioStreamRandomizerPlaybackMode {
+func (self class) GetPlaybackMode() gdclass.AudioStreamRandomizerPlaybackMode { //gd:AudioStreamRandomizer.get_playback_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioStreamRandomizerPlaybackMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamRandomizer.Bind_get_playback_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -347,7 +347,7 @@ func init() {
 	})
 }
 
-type PlaybackMode = gdclass.AudioStreamRandomizerPlaybackMode
+type PlaybackMode = gdclass.AudioStreamRandomizerPlaybackMode //gd:AudioStreamRandomizer.PlaybackMode
 
 const (
 	/*Pick a stream at random according to the probability weights chosen for each stream, but avoid playing the same stream twice in a row whenever possible. If only 1 sound is present in the pool, the same sound will always play, effectively allowing repeats to occur.*/

@@ -106,14 +106,14 @@ func (Instance) _test_mask(impl func(ptr unsafe.Pointer, point Vector2.XY, rect 
 /*
 Returns the minimum size that this stylebox can be shrunk to.
 */
-func (self Instance) GetMinimumSize() Vector2.XY {
+func (self Instance) GetMinimumSize() Vector2.XY { //gd:StyleBox.get_minimum_size
 	return Vector2.XY(class(self).GetMinimumSize())
 }
 
 /*
 Sets the default margin to [param offset] pixels for all sides.
 */
-func (self Instance) SetContentMarginAll(offset Float.X) {
+func (self Instance) SetContentMarginAll(offset Float.X) { //gd:StyleBox.set_content_margin_all
 	class(self).SetContentMarginAll(gd.Float(offset))
 }
 
@@ -121,14 +121,14 @@ func (self Instance) SetContentMarginAll(offset Float.X) {
 Returns the content margin offset for the specified [enum Side].
 Positive values reduce size inwards, unlike [Control]'s margin values.
 */
-func (self Instance) GetMargin(margin Side) Float.X {
+func (self Instance) GetMargin(margin Side) Float.X { //gd:StyleBox.get_margin
 	return Float.X(Float.X(class(self).GetMargin(margin)))
 }
 
 /*
 Returns the "offset" of a stylebox. This helper function returns a value equivalent to [code]Vector2(style.get_margin(MARGIN_LEFT), style.get_margin(MARGIN_TOP))[/code].
 */
-func (self Instance) GetOffset() Vector2.XY {
+func (self Instance) GetOffset() Vector2.XY { //gd:StyleBox.get_offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
@@ -136,21 +136,21 @@ func (self Instance) GetOffset() Vector2.XY {
 Draws this stylebox using a canvas item identified by the given [RID].
 The [RID] value can either be the result of [method CanvasItem.get_canvas_item] called on an existing [CanvasItem]-derived node, or directly from creating a canvas item in the [RenderingServer] with [method RenderingServer.canvas_item_create].
 */
-func (self Instance) Draw(canvas_item Resource.ID, rect Rect2.PositionSize) {
+func (self Instance) Draw(canvas_item Resource.ID, rect Rect2.PositionSize) { //gd:StyleBox.draw
 	class(self).Draw(canvas_item, gd.Rect2(rect))
 }
 
 /*
 Returns the [CanvasItem] that handles its [constant CanvasItem.NOTIFICATION_DRAW] or [method CanvasItem._draw] callback at this moment.
 */
-func (self Instance) GetCurrentItemDrawn() [1]gdclass.CanvasItem {
+func (self Instance) GetCurrentItemDrawn() [1]gdclass.CanvasItem { //gd:StyleBox.get_current_item_drawn
 	return [1]gdclass.CanvasItem(class(self).GetCurrentItemDrawn())
 }
 
 /*
 Test a position in a rectangle, return whether it passes the mask test.
 */
-func (self Instance) TestMask(point Vector2.XY, rect Rect2.PositionSize) bool {
+func (self Instance) TestMask(point Vector2.XY, rect Rect2.PositionSize) bool { //gd:StyleBox.test_mask
 	return bool(class(self).TestMask(gd.Vector2(point), gd.Rect2(rect)))
 }
 
@@ -253,7 +253,7 @@ func (class) _test_mask(impl func(ptr unsafe.Pointer, point gd.Vector2, rect gd.
 Returns the minimum size that this stylebox can be shrunk to.
 */
 //go:nosplit
-func (self class) GetMinimumSize() gd.Vector2 {
+func (self class) GetMinimumSize() gd.Vector2 { //gd:StyleBox.get_minimum_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBox.Bind_get_minimum_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -266,7 +266,7 @@ func (self class) GetMinimumSize() gd.Vector2 {
 Sets the default value of the specified [enum Side] to [param offset] pixels.
 */
 //go:nosplit
-func (self class) SetContentMargin(margin Side, offset gd.Float) {
+func (self class) SetContentMargin(margin Side, offset gd.Float) { //gd:StyleBox.set_content_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, offset)
@@ -279,7 +279,7 @@ func (self class) SetContentMargin(margin Side, offset gd.Float) {
 Sets the default margin to [param offset] pixels for all sides.
 */
 //go:nosplit
-func (self class) SetContentMarginAll(offset gd.Float) {
+func (self class) SetContentMarginAll(offset gd.Float) { //gd:StyleBox.set_content_margin_all
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -291,7 +291,7 @@ func (self class) SetContentMarginAll(offset gd.Float) {
 Returns the default margin of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetContentMargin(margin Side) gd.Float {
+func (self class) GetContentMargin(margin Side) gd.Float { //gd:StyleBox.get_content_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -306,7 +306,7 @@ Returns the content margin offset for the specified [enum Side].
 Positive values reduce size inwards, unlike [Control]'s margin values.
 */
 //go:nosplit
-func (self class) GetMargin(margin Side) gd.Float {
+func (self class) GetMargin(margin Side) gd.Float { //gd:StyleBox.get_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -320,7 +320,7 @@ func (self class) GetMargin(margin Side) gd.Float {
 Returns the "offset" of a stylebox. This helper function returns a value equivalent to [code]Vector2(style.get_margin(MARGIN_LEFT), style.get_margin(MARGIN_TOP))[/code].
 */
 //go:nosplit
-func (self class) GetOffset() gd.Vector2 {
+func (self class) GetOffset() gd.Vector2 { //gd:StyleBox.get_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBox.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -334,7 +334,7 @@ Draws this stylebox using a canvas item identified by the given [RID].
 The [RID] value can either be the result of [method CanvasItem.get_canvas_item] called on an existing [CanvasItem]-derived node, or directly from creating a canvas item in the [RenderingServer] with [method RenderingServer.canvas_item_create].
 */
 //go:nosplit
-func (self class) Draw(canvas_item gd.RID, rect gd.Rect2) {
+func (self class) Draw(canvas_item gd.RID, rect gd.Rect2) { //gd:StyleBox.draw
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, rect)
@@ -347,7 +347,7 @@ func (self class) Draw(canvas_item gd.RID, rect gd.Rect2) {
 Returns the [CanvasItem] that handles its [constant CanvasItem.NOTIFICATION_DRAW] or [method CanvasItem._draw] callback at this moment.
 */
 //go:nosplit
-func (self class) GetCurrentItemDrawn() [1]gdclass.CanvasItem {
+func (self class) GetCurrentItemDrawn() [1]gdclass.CanvasItem { //gd:StyleBox.get_current_item_drawn
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBox.Bind_get_current_item_drawn, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -360,7 +360,7 @@ func (self class) GetCurrentItemDrawn() [1]gdclass.CanvasItem {
 Test a position in a rectangle, return whether it passes the mask test.
 */
 //go:nosplit
-func (self class) TestMask(point gd.Vector2, rect gd.Rect2) bool {
+func (self class) TestMask(point gd.Vector2, rect gd.Rect2) bool { //gd:StyleBox.test_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	callframe.Arg(frame, rect)

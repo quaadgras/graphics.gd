@@ -75,7 +75,7 @@ func (self Instance) SetDefaultValue(value bool) {
 }
 
 //go:nosplit
-func (self class) SetDefaultValueEnabled(enabled bool) {
+func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeBooleanParameter.set_default_value_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -84,7 +84,7 @@ func (self class) SetDefaultValueEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDefaultValueEnabled() bool {
+func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeBooleanParameter.is_default_value_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_is_default_value_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -94,7 +94,7 @@ func (self class) IsDefaultValueEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDefaultValue(value bool) {
+func (self class) SetDefaultValue(value bool) { //gd:VisualShaderNodeBooleanParameter.set_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -103,7 +103,7 @@ func (self class) SetDefaultValue(value bool) {
 }
 
 //go:nosplit
-func (self class) GetDefaultValue() bool {
+func (self class) GetDefaultValue() bool { //gd:VisualShaderNodeBooleanParameter.get_default_value
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())

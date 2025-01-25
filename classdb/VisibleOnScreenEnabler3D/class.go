@@ -78,7 +78,7 @@ func (self Instance) SetEnableNodePath(value NodePath.String) {
 }
 
 //go:nosplit
-func (self class) SetEnableMode(mode gdclass.VisibleOnScreenEnabler3DEnableMode) {
+func (self class) SetEnableMode(mode gdclass.VisibleOnScreenEnabler3DEnableMode) { //gd:VisibleOnScreenEnabler3D.set_enable_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -87,7 +87,7 @@ func (self class) SetEnableMode(mode gdclass.VisibleOnScreenEnabler3DEnableMode)
 }
 
 //go:nosplit
-func (self class) GetEnableMode() gdclass.VisibleOnScreenEnabler3DEnableMode {
+func (self class) GetEnableMode() gdclass.VisibleOnScreenEnabler3DEnableMode { //gd:VisibleOnScreenEnabler3D.get_enable_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisibleOnScreenEnabler3DEnableMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -97,7 +97,7 @@ func (self class) GetEnableMode() gdclass.VisibleOnScreenEnabler3DEnableMode {
 }
 
 //go:nosplit
-func (self class) SetEnableNodePath(path gd.NodePath) {
+func (self class) SetEnableNodePath(path gd.NodePath) { //gd:VisibleOnScreenEnabler3D.set_enable_node_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -106,7 +106,7 @@ func (self class) SetEnableNodePath(path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetEnableNodePath() gd.NodePath {
+func (self class) GetEnableNodePath() gd.NodePath { //gd:VisibleOnScreenEnabler3D.get_enable_node_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_node_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func init() {
 	})
 }
 
-type EnableMode = gdclass.VisibleOnScreenEnabler3DEnableMode
+type EnableMode = gdclass.VisibleOnScreenEnabler3DEnableMode //gd:VisibleOnScreenEnabler3D.EnableMode
 
 const (
 	/*Corresponds to [constant Node.PROCESS_MODE_INHERIT].*/

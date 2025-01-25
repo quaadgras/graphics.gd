@@ -92,14 +92,18 @@ func generateEnum(code io.Writer, prefix string, enum gdjson.Enum, classdb strin
 	if enum.Name == "MouseMode" {
 		rename = "MouseModeValue"
 	}
+	original := enum.Name
+	if prefix != "" {
+		original = prefix + "." + original
+	}
 	rename = strings.Replace(rename, ".", "", -1)
 	enum.Name = strings.Replace(enum.Name, ".", "", -1)
 
 	if enum.Name == "Error" {
-		fmt.Fprintf(code, "type Error = gd.Error\n\n")
+		fmt.Fprintf(code, "type Error = gd.Error //gd:Error\n\n")
 	} else {
 		if classdb != "" {
-			fmt.Fprintf(code, "type %v = %s%s%s\n\n", rename, classdb, prefix, enum.Name)
+			fmt.Fprintf(code, "type %v = %s%s%s//gd:%s\n\n", rename, classdb, prefix, enum.Name, original)
 		} else {
 			fmt.Fprintf(code, "type %v int\n\n", rename)
 		}

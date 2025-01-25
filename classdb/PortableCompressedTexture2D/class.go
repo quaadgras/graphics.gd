@@ -49,28 +49,28 @@ Initializes the compressed texture from a base image. The compression mode must 
 [param normal_map] is recommended to ensure optimum quality if this image will be used as a normal map.
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
-func (self Instance) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode) {
+func (self Instance) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode) { //gd:PortableCompressedTexture2D.create_from_image
 	class(self).CreateFromImage(image, compression_mode, false, gd.Float(0.8))
 }
 
 /*
 Return the image format used (valid after initialized).
 */
-func (self Instance) GetFormat() gdclass.ImageFormat {
+func (self Instance) GetFormat() gdclass.ImageFormat { //gd:PortableCompressedTexture2D.get_format
 	return gdclass.ImageFormat(class(self).GetFormat())
 }
 
 /*
 Return the compression mode used (valid after initialized).
 */
-func (self Instance) GetCompressionMode() gdclass.PortableCompressedTexture2DCompressionMode {
+func (self Instance) GetCompressionMode() gdclass.PortableCompressedTexture2DCompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
 	return gdclass.PortableCompressedTexture2DCompressionMode(class(self).GetCompressionMode())
 }
 
 /*
 Overrides the flag globally for all textures of this type. This is used primarily by the editor.
 */
-func SetKeepAllCompressedBuffers(keep bool) {
+func SetKeepAllCompressedBuffers(keep bool) { //gd:PortableCompressedTexture2D.set_keep_all_compressed_buffers
 	self := Instance{}
 	class(self).SetKeepAllCompressedBuffers(keep)
 }
@@ -78,7 +78,7 @@ func SetKeepAllCompressedBuffers(keep bool) {
 /*
 Return whether the flag is overridden for all textures of this type.
 */
-func IsKeepingAllCompressedBuffers() bool {
+func IsKeepingAllCompressedBuffers() bool { //gd:PortableCompressedTexture2D.is_keeping_all_compressed_buffers
 	self := Instance{}
 	return bool(class(self).IsKeepingAllCompressedBuffers())
 }
@@ -124,7 +124,7 @@ Initializes the compressed texture from a base image. The compression mode must 
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
 //go:nosplit
-func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality gd.Float) {
+func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality gd.Float) { //gd:PortableCompressedTexture2D.create_from_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, compression_mode)
@@ -139,7 +139,7 @@ func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode gdcla
 Return the image format used (valid after initialized).
 */
 //go:nosplit
-func (self class) GetFormat() gdclass.ImageFormat {
+func (self class) GetFormat() gdclass.ImageFormat { //gd:PortableCompressedTexture2D.get_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -152,7 +152,7 @@ func (self class) GetFormat() gdclass.ImageFormat {
 Return the compression mode used (valid after initialized).
 */
 //go:nosplit
-func (self class) GetCompressionMode() gdclass.PortableCompressedTexture2DCompressionMode {
+func (self class) GetCompressionMode() gdclass.PortableCompressedTexture2DCompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.PortableCompressedTexture2DCompressionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_get_compression_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -162,7 +162,7 @@ func (self class) GetCompressionMode() gdclass.PortableCompressedTexture2DCompre
 }
 
 //go:nosplit
-func (self class) SetSizeOverride(size gd.Vector2) {
+func (self class) SetSizeOverride(size gd.Vector2) { //gd:PortableCompressedTexture2D.set_size_override
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -171,7 +171,7 @@ func (self class) SetSizeOverride(size gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetSizeOverride() gd.Vector2 {
+func (self class) GetSizeOverride() gd.Vector2 { //gd:PortableCompressedTexture2D.get_size_override
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_get_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -181,7 +181,7 @@ func (self class) GetSizeOverride() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetKeepCompressedBuffer(keep bool) {
+func (self class) SetKeepCompressedBuffer(keep bool) { //gd:PortableCompressedTexture2D.set_keep_compressed_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, keep)
 	var r_ret = callframe.Nil
@@ -190,7 +190,7 @@ func (self class) SetKeepCompressedBuffer(keep bool) {
 }
 
 //go:nosplit
-func (self class) IsKeepingCompressedBuffer() bool {
+func (self class) IsKeepingCompressedBuffer() bool { //gd:PortableCompressedTexture2D.is_keeping_compressed_buffer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_is_keeping_compressed_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -203,7 +203,7 @@ func (self class) IsKeepingCompressedBuffer() bool {
 Overrides the flag globally for all textures of this type. This is used primarily by the editor.
 */
 //go:nosplit
-func (self class) SetKeepAllCompressedBuffers(keep bool) {
+func (self class) SetKeepAllCompressedBuffers(keep bool) { //gd:PortableCompressedTexture2D.set_keep_all_compressed_buffers
 	var frame = callframe.New()
 	callframe.Arg(frame, keep)
 	var r_ret = callframe.Nil
@@ -215,7 +215,7 @@ func (self class) SetKeepAllCompressedBuffers(keep bool) {
 Return whether the flag is overridden for all textures of this type.
 */
 //go:nosplit
-func (self class) IsKeepingAllCompressedBuffers() bool {
+func (self class) IsKeepingAllCompressedBuffers() bool { //gd:PortableCompressedTexture2D.is_keeping_all_compressed_buffers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_is_keeping_all_compressed_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -271,7 +271,7 @@ func init() {
 	})
 }
 
-type CompressionMode = gdclass.PortableCompressedTexture2DCompressionMode
+type CompressionMode = gdclass.PortableCompressedTexture2DCompressionMode //gd:PortableCompressedTexture2D.CompressionMode
 
 const (
 	CompressionModeLossless       CompressionMode = 0

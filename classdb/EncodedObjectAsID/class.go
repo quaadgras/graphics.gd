@@ -65,7 +65,7 @@ func (self Instance) SetObjectId(value int) {
 }
 
 //go:nosplit
-func (self class) SetObjectId(id gd.Int) {
+func (self class) SetObjectId(id gd.Int) { //gd:EncodedObjectAsID.set_object_id
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -74,7 +74,7 @@ func (self class) SetObjectId(id gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetObjectId() gd.Int {
+func (self class) GetObjectId() gd.Int { //gd:EncodedObjectAsID.get_object_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EncodedObjectAsID.Bind_get_object_id, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -46,42 +46,42 @@ type Any interface {
 /*
 Returns [code]true[/code] if the tracker is available and is currently tracking the bound [param name] pose.
 */
-func (self Instance) HasPose(name string) bool {
+func (self Instance) HasPose(name string) bool { //gd:XRPositionalTracker.has_pose
 	return bool(class(self).HasPose(gd.NewStringName(name)))
 }
 
 /*
 Returns the current [XRPose] state object for the bound [param name] pose.
 */
-func (self Instance) GetPose(name string) [1]gdclass.XRPose {
+func (self Instance) GetPose(name string) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
 	return [1]gdclass.XRPose(class(self).GetPose(gd.NewStringName(name)))
 }
 
 /*
 Marks this pose as invalid, we don't clear the last reported state but it allows users to decide if trackers need to be hidden if we lose tracking or just remain at their last known position.
 */
-func (self Instance) InvalidatePose(name string) {
+func (self Instance) InvalidatePose(name string) { //gd:XRPositionalTracker.invalidate_pose
 	class(self).InvalidatePose(gd.NewStringName(name))
 }
 
 /*
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
-func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence gdclass.XRPoseTrackingConfidence) {
+func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	class(self).SetPose(gd.NewStringName(name), gd.Transform3D(transform), gd.Vector3(linear_velocity), gd.Vector3(angular_velocity), tracking_confidence)
 }
 
 /*
 Returns an input for this tracker. It can return a boolean, float or [Vector2] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
 */
-func (self Instance) GetInput(name string) any {
+func (self Instance) GetInput(name string) any { //gd:XRPositionalTracker.get_input
 	return any(class(self).GetInput(gd.NewStringName(name)).Interface())
 }
 
 /*
 Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
 */
-func (self Instance) SetInput(name string, value any) {
+func (self Instance) SetInput(name string, value any) { //gd:XRPositionalTracker.set_input
 	class(self).SetInput(gd.NewStringName(name), gd.NewVariant(value))
 }
 
@@ -121,7 +121,7 @@ func (self Instance) SetHand(value gdclass.XRPositionalTrackerTrackerHand) {
 }
 
 //go:nosplit
-func (self class) GetTrackerProfile() gd.String {
+func (self class) GetTrackerProfile() gd.String { //gd:XRPositionalTracker.get_tracker_profile
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -131,7 +131,7 @@ func (self class) GetTrackerProfile() gd.String {
 }
 
 //go:nosplit
-func (self class) SetTrackerProfile(profile gd.String) {
+func (self class) SetTrackerProfile(profile gd.String) { //gd:XRPositionalTracker.set_tracker_profile
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profile))
 	var r_ret = callframe.Nil
@@ -140,7 +140,7 @@ func (self class) SetTrackerProfile(profile gd.String) {
 }
 
 //go:nosplit
-func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand {
+func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand { //gd:XRPositionalTracker.get_tracker_hand
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRPositionalTrackerTrackerHand](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -150,7 +150,7 @@ func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand {
 }
 
 //go:nosplit
-func (self class) SetTrackerHand(hand gdclass.XRPositionalTrackerTrackerHand) {
+func (self class) SetTrackerHand(hand gdclass.XRPositionalTrackerTrackerHand) { //gd:XRPositionalTracker.set_tracker_hand
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetTrackerHand(hand gdclass.XRPositionalTrackerTrackerHand) {
 Returns [code]true[/code] if the tracker is available and is currently tracking the bound [param name] pose.
 */
 //go:nosplit
-func (self class) HasPose(name gd.StringName) bool {
+func (self class) HasPose(name gd.StringName) bool { //gd:XRPositionalTracker.has_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -176,7 +176,7 @@ func (self class) HasPose(name gd.StringName) bool {
 Returns the current [XRPose] state object for the bound [param name] pose.
 */
 //go:nosplit
-func (self class) GetPose(name gd.StringName) [1]gdclass.XRPose {
+func (self class) GetPose(name gd.StringName) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -190,7 +190,7 @@ func (self class) GetPose(name gd.StringName) [1]gdclass.XRPose {
 Marks this pose as invalid, we don't clear the last reported state but it allows users to decide if trackers need to be hidden if we lose tracking or just remain at their last known position.
 */
 //go:nosplit
-func (self class) InvalidatePose(name gd.StringName) {
+func (self class) InvalidatePose(name gd.StringName) { //gd:XRPositionalTracker.invalidate_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -202,7 +202,7 @@ func (self class) InvalidatePose(name gd.StringName) {
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
-func (self class) SetPose(name gd.StringName, transform gd.Transform3D, linear_velocity gd.Vector3, angular_velocity gd.Vector3, tracking_confidence gdclass.XRPoseTrackingConfidence) {
+func (self class) SetPose(name gd.StringName, transform gd.Transform3D, linear_velocity gd.Vector3, angular_velocity gd.Vector3, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, transform)
@@ -218,7 +218,7 @@ func (self class) SetPose(name gd.StringName, transform gd.Transform3D, linear_v
 Returns an input for this tracker. It can return a boolean, float or [Vector2] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
 */
 //go:nosplit
-func (self class) GetInput(name gd.StringName) gd.Variant {
+func (self class) GetInput(name gd.StringName) gd.Variant { //gd:XRPositionalTracker.get_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -232,7 +232,7 @@ func (self class) GetInput(name gd.StringName) gd.Variant {
 Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
-func (self class) SetInput(name gd.StringName, value gd.Variant) {
+func (self class) SetInput(name gd.StringName, value gd.Variant) { //gd:XRPositionalTracker.set_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(value))
@@ -302,7 +302,7 @@ func init() {
 	})
 }
 
-type TrackerHand = gdclass.XRPositionalTrackerTrackerHand
+type TrackerHand = gdclass.XRPositionalTrackerTrackerHand //gd:XRPositionalTracker.TrackerHand
 
 const (
 	/*The hand this tracker is held in is unknown or not applicable.*/

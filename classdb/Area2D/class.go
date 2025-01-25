@@ -49,7 +49,7 @@ type Any interface {
 Returns a list of intersecting [PhysicsBody2D]s and [TileMap]s. The overlapping body's [member CollisionObject2D.collision_layer] must be part of this area's [member CollisionObject2D.collision_mask] in order to be detected.
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
-func (self Instance) GetOverlappingBodies() [][1]gdclass.Node2D {
+func (self Instance) GetOverlappingBodies() [][1]gdclass.Node2D { //gd:Area2D.get_overlapping_bodies
 	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](gd.InternalArray(class(self).GetOverlappingBodies())))
 }
 
@@ -57,7 +57,7 @@ func (self Instance) GetOverlappingBodies() [][1]gdclass.Node2D {
 Returns a list of intersecting [Area2D]s. The overlapping area's [member CollisionObject2D.collision_layer] must be part of this area's [member CollisionObject2D.collision_mask] in order to be detected.
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
-func (self Instance) GetOverlappingAreas() [][1]gdclass.Area2D {
+func (self Instance) GetOverlappingAreas() [][1]gdclass.Area2D { //gd:Area2D.get_overlapping_areas
 	return [][1]gdclass.Area2D(gd.ArrayAs[[][1]gdclass.Area2D](gd.InternalArray(class(self).GetOverlappingAreas())))
 }
 
@@ -65,7 +65,7 @@ func (self Instance) GetOverlappingAreas() [][1]gdclass.Area2D {
 Returns [code]true[/code] if intersecting any [PhysicsBody2D]s or [TileMap]s, otherwise returns [code]false[/code]. The overlapping body's [member CollisionObject2D.collision_layer] must be part of this area's [member CollisionObject2D.collision_mask] in order to be detected.
 For performance reasons (collisions are all processed at the same time) the list of overlapping bodies is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
-func (self Instance) HasOverlappingBodies() bool {
+func (self Instance) HasOverlappingBodies() bool { //gd:Area2D.has_overlapping_bodies
 	return bool(class(self).HasOverlappingBodies())
 }
 
@@ -73,7 +73,7 @@ func (self Instance) HasOverlappingBodies() bool {
 Returns [code]true[/code] if intersecting any [Area2D]s, otherwise returns [code]false[/code]. The overlapping area's [member CollisionObject2D.collision_layer] must be part of this area's [member CollisionObject2D.collision_mask] in order to be detected.
 For performance reasons (collisions are all processed at the same time) the list of overlapping areas is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
-func (self Instance) HasOverlappingAreas() bool {
+func (self Instance) HasOverlappingAreas() bool { //gd:Area2D.has_overlapping_areas
 	return bool(class(self).HasOverlappingAreas())
 }
 
@@ -82,7 +82,7 @@ Returns [code]true[/code] if the given physics body intersects or overlaps this 
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
 The [param body] argument can either be a [PhysicsBody2D] or a [TileMap] instance. While TileMaps are not physics bodies themselves, they register their tiles with collision shapes as a virtual physics body.
 */
-func (self Instance) OverlapsBody(body [1]gdclass.Node) bool {
+func (self Instance) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area2D.overlaps_body
 	return bool(class(self).OverlapsBody(body))
 }
 
@@ -90,7 +90,7 @@ func (self Instance) OverlapsBody(body [1]gdclass.Node) bool {
 Returns [code]true[/code] if the given [Area2D] intersects or overlaps this [Area2D], [code]false[/code] otherwise.
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, the list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
 */
-func (self Instance) OverlapsArea(area [1]gdclass.Node) bool {
+func (self Instance) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area2D.overlaps_area
 	return bool(class(self).OverlapsArea(area))
 }
 
@@ -233,7 +233,7 @@ func (self Instance) SetAudioBusName(value string) {
 }
 
 //go:nosplit
-func (self class) SetGravitySpaceOverrideMode(space_override_mode gdclass.Area2DSpaceOverride) {
+func (self class) SetGravitySpaceOverrideMode(space_override_mode gdclass.Area2DSpaceOverride) { //gd:Area2D.set_gravity_space_override_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, space_override_mode)
 	var r_ret = callframe.Nil
@@ -242,7 +242,7 @@ func (self class) SetGravitySpaceOverrideMode(space_override_mode gdclass.Area2D
 }
 
 //go:nosplit
-func (self class) GetGravitySpaceOverrideMode() gdclass.Area2DSpaceOverride {
+func (self class) GetGravitySpaceOverrideMode() gdclass.Area2DSpaceOverride { //gd:Area2D.get_gravity_space_override_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Area2DSpaceOverride](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -252,7 +252,7 @@ func (self class) GetGravitySpaceOverrideMode() gdclass.Area2DSpaceOverride {
 }
 
 //go:nosplit
-func (self class) SetGravityIsPoint(enable bool) {
+func (self class) SetGravityIsPoint(enable bool) { //gd:Area2D.set_gravity_is_point
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -261,7 +261,7 @@ func (self class) SetGravityIsPoint(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsGravityAPoint() bool {
+func (self class) IsGravityAPoint() bool { //gd:Area2D.is_gravity_a_point
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_is_gravity_a_point, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -271,7 +271,7 @@ func (self class) IsGravityAPoint() bool {
 }
 
 //go:nosplit
-func (self class) SetGravityPointUnitDistance(distance_scale gd.Float) {
+func (self class) SetGravityPointUnitDistance(distance_scale gd.Float) { //gd:Area2D.set_gravity_point_unit_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance_scale)
 	var r_ret = callframe.Nil
@@ -280,7 +280,7 @@ func (self class) SetGravityPointUnitDistance(distance_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGravityPointUnitDistance() gd.Float {
+func (self class) GetGravityPointUnitDistance() gd.Float { //gd:Area2D.get_gravity_point_unit_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity_point_unit_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -290,7 +290,7 @@ func (self class) GetGravityPointUnitDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGravityPointCenter(center gd.Vector2) {
+func (self class) SetGravityPointCenter(center gd.Vector2) { //gd:Area2D.set_gravity_point_center
 	var frame = callframe.New()
 	callframe.Arg(frame, center)
 	var r_ret = callframe.Nil
@@ -299,7 +299,7 @@ func (self class) SetGravityPointCenter(center gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetGravityPointCenter() gd.Vector2 {
+func (self class) GetGravityPointCenter() gd.Vector2 { //gd:Area2D.get_gravity_point_center
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity_point_center, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -309,7 +309,7 @@ func (self class) GetGravityPointCenter() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetGravityDirection(direction gd.Vector2) {
+func (self class) SetGravityDirection(direction gd.Vector2) { //gd:Area2D.set_gravity_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -318,7 +318,7 @@ func (self class) SetGravityDirection(direction gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetGravityDirection() gd.Vector2 {
+func (self class) GetGravityDirection() gd.Vector2 { //gd:Area2D.get_gravity_direction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -328,7 +328,7 @@ func (self class) GetGravityDirection() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetGravity(gravity gd.Float) {
+func (self class) SetGravity(gravity gd.Float) { //gd:Area2D.set_gravity
 	var frame = callframe.New()
 	callframe.Arg(frame, gravity)
 	var r_ret = callframe.Nil
@@ -337,7 +337,7 @@ func (self class) SetGravity(gravity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGravity() gd.Float {
+func (self class) GetGravity() gd.Float { //gd:Area2D.get_gravity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -347,7 +347,7 @@ func (self class) GetGravity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetLinearDampSpaceOverrideMode(space_override_mode gdclass.Area2DSpaceOverride) {
+func (self class) SetLinearDampSpaceOverrideMode(space_override_mode gdclass.Area2DSpaceOverride) { //gd:Area2D.set_linear_damp_space_override_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, space_override_mode)
 	var r_ret = callframe.Nil
@@ -356,7 +356,7 @@ func (self class) SetLinearDampSpaceOverrideMode(space_override_mode gdclass.Are
 }
 
 //go:nosplit
-func (self class) GetLinearDampSpaceOverrideMode() gdclass.Area2DSpaceOverride {
+func (self class) GetLinearDampSpaceOverrideMode() gdclass.Area2DSpaceOverride { //gd:Area2D.get_linear_damp_space_override_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Area2DSpaceOverride](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_linear_damp_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -366,7 +366,7 @@ func (self class) GetLinearDampSpaceOverrideMode() gdclass.Area2DSpaceOverride {
 }
 
 //go:nosplit
-func (self class) SetAngularDampSpaceOverrideMode(space_override_mode gdclass.Area2DSpaceOverride) {
+func (self class) SetAngularDampSpaceOverrideMode(space_override_mode gdclass.Area2DSpaceOverride) { //gd:Area2D.set_angular_damp_space_override_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, space_override_mode)
 	var r_ret = callframe.Nil
@@ -375,7 +375,7 @@ func (self class) SetAngularDampSpaceOverrideMode(space_override_mode gdclass.Ar
 }
 
 //go:nosplit
-func (self class) GetAngularDampSpaceOverrideMode() gdclass.Area2DSpaceOverride {
+func (self class) GetAngularDampSpaceOverrideMode() gdclass.Area2DSpaceOverride { //gd:Area2D.get_angular_damp_space_override_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Area2DSpaceOverride](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_angular_damp_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -385,7 +385,7 @@ func (self class) GetAngularDampSpaceOverrideMode() gdclass.Area2DSpaceOverride 
 }
 
 //go:nosplit
-func (self class) SetLinearDamp(linear_damp gd.Float) {
+func (self class) SetLinearDamp(linear_damp gd.Float) { //gd:Area2D.set_linear_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp)
 	var r_ret = callframe.Nil
@@ -394,7 +394,7 @@ func (self class) SetLinearDamp(linear_damp gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLinearDamp() gd.Float {
+func (self class) GetLinearDamp() gd.Float { //gd:Area2D.get_linear_damp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -404,7 +404,7 @@ func (self class) GetLinearDamp() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAngularDamp(angular_damp gd.Float) {
+func (self class) SetAngularDamp(angular_damp gd.Float) { //gd:Area2D.set_angular_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp)
 	var r_ret = callframe.Nil
@@ -413,7 +413,7 @@ func (self class) SetAngularDamp(angular_damp gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAngularDamp() gd.Float {
+func (self class) GetAngularDamp() gd.Float { //gd:Area2D.get_angular_damp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -423,7 +423,7 @@ func (self class) GetAngularDamp() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPriority(priority gd.Int) {
+func (self class) SetPriority(priority gd.Int) { //gd:Area2D.set_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -432,7 +432,7 @@ func (self class) SetPriority(priority gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPriority() gd.Int {
+func (self class) GetPriority() gd.Int { //gd:Area2D.get_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -442,7 +442,7 @@ func (self class) GetPriority() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMonitoring(enable bool) {
+func (self class) SetMonitoring(enable bool) { //gd:Area2D.set_monitoring
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -451,7 +451,7 @@ func (self class) SetMonitoring(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsMonitoring() bool {
+func (self class) IsMonitoring() bool { //gd:Area2D.is_monitoring
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_is_monitoring, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -461,7 +461,7 @@ func (self class) IsMonitoring() bool {
 }
 
 //go:nosplit
-func (self class) SetMonitorable(enable bool) {
+func (self class) SetMonitorable(enable bool) { //gd:Area2D.set_monitorable
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -470,7 +470,7 @@ func (self class) SetMonitorable(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsMonitorable() bool {
+func (self class) IsMonitorable() bool { //gd:Area2D.is_monitorable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_is_monitorable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -484,7 +484,7 @@ Returns a list of intersecting [PhysicsBody2D]s and [TileMap]s. The overlapping 
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 //go:nosplit
-func (self class) GetOverlappingBodies() Array.Contains[[1]gdclass.Node2D] {
+func (self class) GetOverlappingBodies() Array.Contains[[1]gdclass.Node2D] { //gd:Area2D.get_overlapping_bodies
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_overlapping_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -498,7 +498,7 @@ Returns a list of intersecting [Area2D]s. The overlapping area's [member Collisi
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 //go:nosplit
-func (self class) GetOverlappingAreas() Array.Contains[[1]gdclass.Area2D] {
+func (self class) GetOverlappingAreas() Array.Contains[[1]gdclass.Area2D] { //gd:Area2D.get_overlapping_areas
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_overlapping_areas, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -512,7 +512,7 @@ Returns [code]true[/code] if intersecting any [PhysicsBody2D]s or [TileMap]s, ot
 For performance reasons (collisions are all processed at the same time) the list of overlapping bodies is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 //go:nosplit
-func (self class) HasOverlappingBodies() bool {
+func (self class) HasOverlappingBodies() bool { //gd:Area2D.has_overlapping_bodies
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_has_overlapping_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -526,7 +526,7 @@ Returns [code]true[/code] if intersecting any [Area2D]s, otherwise returns [code
 For performance reasons (collisions are all processed at the same time) the list of overlapping areas is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 //go:nosplit
-func (self class) HasOverlappingAreas() bool {
+func (self class) HasOverlappingAreas() bool { //gd:Area2D.has_overlapping_areas
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_has_overlapping_areas, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -541,7 +541,7 @@ Returns [code]true[/code] if the given physics body intersects or overlaps this 
 The [param body] argument can either be a [PhysicsBody2D] or a [TileMap] instance. While TileMaps are not physics bodies themselves, they register their tiles with collision shapes as a virtual physics body.
 */
 //go:nosplit
-func (self class) OverlapsBody(body [1]gdclass.Node) bool {
+func (self class) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area2D.overlaps_body
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(body[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
@@ -556,7 +556,7 @@ Returns [code]true[/code] if the given [Area2D] intersects or overlaps this [Are
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, the list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
 */
 //go:nosplit
-func (self class) OverlapsArea(area [1]gdclass.Node) bool {
+func (self class) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area2D.overlaps_area
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(area[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
@@ -567,7 +567,7 @@ func (self class) OverlapsArea(area [1]gdclass.Node) bool {
 }
 
 //go:nosplit
-func (self class) SetAudioBusName(name gd.StringName) {
+func (self class) SetAudioBusName(name gd.StringName) { //gd:Area2D.set_audio_bus_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -576,7 +576,7 @@ func (self class) SetAudioBusName(name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetAudioBusName() gd.StringName {
+func (self class) GetAudioBusName() gd.StringName { //gd:Area2D.get_audio_bus_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_audio_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -586,7 +586,7 @@ func (self class) GetAudioBusName() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetAudioBusOverride(enable bool) {
+func (self class) SetAudioBusOverride(enable bool) { //gd:Area2D.set_audio_bus_override
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -595,7 +595,7 @@ func (self class) SetAudioBusOverride(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsOverridingAudioBus() bool {
+func (self class) IsOverridingAudioBus() bool { //gd:Area2D.is_overriding_audio_bus
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_is_overriding_audio_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -671,7 +671,7 @@ func init() {
 	gdclass.Register("Area2D", func(ptr gd.Object) any { return [1]gdclass.Area2D{*(*gdclass.Area2D)(unsafe.Pointer(&ptr))} })
 }
 
-type SpaceOverride = gdclass.Area2DSpaceOverride
+type SpaceOverride = gdclass.Area2DSpaceOverride //gd:Area2D.SpaceOverride
 
 const (
 	/*This area does not affect gravity/damping.*/

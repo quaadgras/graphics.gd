@@ -162,49 +162,49 @@ func (Instance) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index int) [
 /*
 Returns the current format being used by this texture. See [enum Image.Format] for details.
 */
-func (self Instance) GetFormat() gdclass.ImageFormat {
+func (self Instance) GetFormat() gdclass.ImageFormat { //gd:TextureLayered.get_format
 	return gdclass.ImageFormat(class(self).GetFormat())
 }
 
 /*
 Returns the [TextureLayered]'s type. The type determines how the data is accessed, with cubemaps having special types.
 */
-func (self Instance) GetLayeredType() gdclass.TextureLayeredLayeredType {
+func (self Instance) GetLayeredType() gdclass.TextureLayeredLayeredType { //gd:TextureLayered.get_layered_type
 	return gdclass.TextureLayeredLayeredType(class(self).GetLayeredType())
 }
 
 /*
 Returns the width of the texture in pixels. Width is typically represented by the X axis.
 */
-func (self Instance) GetWidth() int {
+func (self Instance) GetWidth() int { //gd:TextureLayered.get_width
 	return int(int(class(self).GetWidth()))
 }
 
 /*
 Returns the height of the texture in pixels. Height is typically represented by the Y axis.
 */
-func (self Instance) GetHeight() int {
+func (self Instance) GetHeight() int { //gd:TextureLayered.get_height
 	return int(int(class(self).GetHeight()))
 }
 
 /*
 Returns the number of referenced [Image]s.
 */
-func (self Instance) GetLayers() int {
+func (self Instance) GetLayers() int { //gd:TextureLayered.get_layers
 	return int(int(class(self).GetLayers()))
 }
 
 /*
 Returns [code]true[/code] if the layers have generated mipmaps.
 */
-func (self Instance) HasMipmaps() bool {
+func (self Instance) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
 	return bool(class(self).HasMipmaps())
 }
 
 /*
 Returns an [Image] resource with the data from specified [param layer].
 */
-func (self Instance) GetLayerData(layer int) [1]gdclass.Image {
+func (self Instance) GetLayerData(layer int) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
 	return [1]gdclass.Image(class(self).GetLayerData(gd.Int(layer)))
 }
 
@@ -315,7 +315,7 @@ func (class) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index gd.Int) [
 Returns the current format being used by this texture. See [enum Image.Format] for details.
 */
 //go:nosplit
-func (self class) GetFormat() gdclass.ImageFormat {
+func (self class) GetFormat() gdclass.ImageFormat { //gd:TextureLayered.get_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -328,7 +328,7 @@ func (self class) GetFormat() gdclass.ImageFormat {
 Returns the [TextureLayered]'s type. The type determines how the data is accessed, with cubemaps having special types.
 */
 //go:nosplit
-func (self class) GetLayeredType() gdclass.TextureLayeredLayeredType {
+func (self class) GetLayeredType() gdclass.TextureLayeredLayeredType { //gd:TextureLayered.get_layered_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextureLayeredLayeredType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layered_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -341,7 +341,7 @@ func (self class) GetLayeredType() gdclass.TextureLayeredLayeredType {
 Returns the width of the texture in pixels. Width is typically represented by the X axis.
 */
 //go:nosplit
-func (self class) GetWidth() gd.Int {
+func (self class) GetWidth() gd.Int { //gd:TextureLayered.get_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -354,7 +354,7 @@ func (self class) GetWidth() gd.Int {
 Returns the height of the texture in pixels. Height is typically represented by the Y axis.
 */
 //go:nosplit
-func (self class) GetHeight() gd.Int {
+func (self class) GetHeight() gd.Int { //gd:TextureLayered.get_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -367,7 +367,7 @@ func (self class) GetHeight() gd.Int {
 Returns the number of referenced [Image]s.
 */
 //go:nosplit
-func (self class) GetLayers() gd.Int {
+func (self class) GetLayers() gd.Int { //gd:TextureLayered.get_layers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -380,7 +380,7 @@ func (self class) GetLayers() gd.Int {
 Returns [code]true[/code] if the layers have generated mipmaps.
 */
 //go:nosplit
-func (self class) HasMipmaps() bool {
+func (self class) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -393,7 +393,7 @@ func (self class) HasMipmaps() bool {
 Returns an [Image] resource with the data from specified [param layer].
 */
 //go:nosplit
-func (self class) GetLayerData(layer gd.Int) [1]gdclass.Image {
+func (self class) GetLayerData(layer gd.Int) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -468,7 +468,7 @@ func init() {
 	})
 }
 
-type LayeredType = gdclass.TextureLayeredLayeredType
+type LayeredType = gdclass.TextureLayeredLayeredType //gd:TextureLayered.LayeredType
 
 const (
 	/*Texture is a generic [Texture2DArray].*/

@@ -66,7 +66,7 @@ type Any interface {
 /*
 Prefills required fields to configure the ScriptCreateDialog for use.
 */
-func (self Instance) Config(inherits string, path string) {
+func (self Instance) Config(inherits string, path string) { //gd:ScriptCreateDialog.config
 	class(self).Config(gd.NewString(inherits), gd.NewString(path), true, true)
 }
 
@@ -92,7 +92,7 @@ func New() Instance {
 Prefills required fields to configure the ScriptCreateDialog for use.
 */
 //go:nosplit
-func (self class) Config(inherits gd.String, path gd.String, built_in_enabled bool, load_enabled bool) {
+func (self class) Config(inherits gd.String, path gd.String, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(inherits))
 	callframe.Arg(frame, pointers.Get(path))

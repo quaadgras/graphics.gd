@@ -39,7 +39,7 @@ func singleton() {
 /*
 Loads an extension by absolute file path. The [param path] needs to point to a valid [GDExtension]. Returns [constant LOAD_STATUS_OK] if successful.
 */
-func LoadExtension(path string) gdclass.GDExtensionManagerLoadStatus {
+func LoadExtension(path string) gdclass.GDExtensionManagerLoadStatus { //gd:GDExtensionManager.load_extension
 	once.Do(singleton)
 	return gdclass.GDExtensionManagerLoadStatus(class(self).LoadExtension(gd.NewString(path)))
 }
@@ -48,7 +48,7 @@ func LoadExtension(path string) gdclass.GDExtensionManagerLoadStatus {
 Reloads the extension at the given file path. The [param path] needs to point to a valid [GDExtension], otherwise this method may return either [constant LOAD_STATUS_NOT_LOADED] or [constant LOAD_STATUS_FAILED].
 [b]Note:[/b] You can only reload extensions in the editor. In release builds, this method always fails and returns [constant LOAD_STATUS_FAILED].
 */
-func ReloadExtension(path string) gdclass.GDExtensionManagerLoadStatus {
+func ReloadExtension(path string) gdclass.GDExtensionManagerLoadStatus { //gd:GDExtensionManager.reload_extension
 	once.Do(singleton)
 	return gdclass.GDExtensionManagerLoadStatus(class(self).ReloadExtension(gd.NewString(path)))
 }
@@ -56,7 +56,7 @@ func ReloadExtension(path string) gdclass.GDExtensionManagerLoadStatus {
 /*
 Unloads an extension by file path. The [param path] needs to point to an already loaded [GDExtension], otherwise this method returns [constant LOAD_STATUS_NOT_LOADED].
 */
-func UnloadExtension(path string) gdclass.GDExtensionManagerLoadStatus {
+func UnloadExtension(path string) gdclass.GDExtensionManagerLoadStatus { //gd:GDExtensionManager.unload_extension
 	once.Do(singleton)
 	return gdclass.GDExtensionManagerLoadStatus(class(self).UnloadExtension(gd.NewString(path)))
 }
@@ -64,7 +64,7 @@ func UnloadExtension(path string) gdclass.GDExtensionManagerLoadStatus {
 /*
 Returns [code]true[/code] if the extension at the given file [param path] has already been loaded successfully. See also [method get_loaded_extensions].
 */
-func IsExtensionLoaded(path string) bool {
+func IsExtensionLoaded(path string) bool { //gd:GDExtensionManager.is_extension_loaded
 	once.Do(singleton)
 	return bool(class(self).IsExtensionLoaded(gd.NewString(path)))
 }
@@ -72,7 +72,7 @@ func IsExtensionLoaded(path string) bool {
 /*
 Returns the file paths of all currently loaded extensions.
 */
-func GetLoadedExtensions() []string {
+func GetLoadedExtensions() []string { //gd:GDExtensionManager.get_loaded_extensions
 	once.Do(singleton)
 	return []string(class(self).GetLoadedExtensions().Strings())
 }
@@ -80,7 +80,7 @@ func GetLoadedExtensions() []string {
 /*
 Returns the [GDExtension] at the given file [param path], or [code]null[/code] if it has not been loaded or does not exist.
 */
-func GetExtension(path string) [1]gdclass.GDExtension {
+func GetExtension(path string) [1]gdclass.GDExtension { //gd:GDExtensionManager.get_extension
 	once.Do(singleton)
 	return [1]gdclass.GDExtension(class(self).GetExtension(gd.NewString(path)))
 }
@@ -99,7 +99,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Loads an extension by absolute file path. The [param path] needs to point to a valid [GDExtension]. Returns [constant LOAD_STATUS_OK] if successful.
 */
 //go:nosplit
-func (self class) LoadExtension(path gd.String) gdclass.GDExtensionManagerLoadStatus {
+func (self class) LoadExtension(path gd.String) gdclass.GDExtensionManagerLoadStatus { //gd:GDExtensionManager.load_extension
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gdclass.GDExtensionManagerLoadStatus](frame)
@@ -114,7 +114,7 @@ Reloads the extension at the given file path. The [param path] needs to point to
 [b]Note:[/b] You can only reload extensions in the editor. In release builds, this method always fails and returns [constant LOAD_STATUS_FAILED].
 */
 //go:nosplit
-func (self class) ReloadExtension(path gd.String) gdclass.GDExtensionManagerLoadStatus {
+func (self class) ReloadExtension(path gd.String) gdclass.GDExtensionManagerLoadStatus { //gd:GDExtensionManager.reload_extension
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gdclass.GDExtensionManagerLoadStatus](frame)
@@ -128,7 +128,7 @@ func (self class) ReloadExtension(path gd.String) gdclass.GDExtensionManagerLoad
 Unloads an extension by file path. The [param path] needs to point to an already loaded [GDExtension], otherwise this method returns [constant LOAD_STATUS_NOT_LOADED].
 */
 //go:nosplit
-func (self class) UnloadExtension(path gd.String) gdclass.GDExtensionManagerLoadStatus {
+func (self class) UnloadExtension(path gd.String) gdclass.GDExtensionManagerLoadStatus { //gd:GDExtensionManager.unload_extension
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gdclass.GDExtensionManagerLoadStatus](frame)
@@ -142,7 +142,7 @@ func (self class) UnloadExtension(path gd.String) gdclass.GDExtensionManagerLoad
 Returns [code]true[/code] if the extension at the given file [param path] has already been loaded successfully. See also [method get_loaded_extensions].
 */
 //go:nosplit
-func (self class) IsExtensionLoaded(path gd.String) bool {
+func (self class) IsExtensionLoaded(path gd.String) bool { //gd:GDExtensionManager.is_extension_loaded
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[bool](frame)
@@ -156,7 +156,7 @@ func (self class) IsExtensionLoaded(path gd.String) bool {
 Returns the file paths of all currently loaded extensions.
 */
 //go:nosplit
-func (self class) GetLoadedExtensions() gd.PackedStringArray {
+func (self class) GetLoadedExtensions() gd.PackedStringArray { //gd:GDExtensionManager.get_loaded_extensions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtensionManager.Bind_get_loaded_extensions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -169,7 +169,7 @@ func (self class) GetLoadedExtensions() gd.PackedStringArray {
 Returns the [GDExtension] at the given file [param path], or [code]null[/code] if it has not been loaded or does not exist.
 */
 //go:nosplit
-func (self class) GetExtension(path gd.String) [1]gdclass.GDExtension {
+func (self class) GetExtension(path gd.String) [1]gdclass.GDExtension { //gd:GDExtensionManager.get_extension
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -194,7 +194,7 @@ func init() {
 	})
 }
 
-type LoadStatus = gdclass.GDExtensionManagerLoadStatus
+type LoadStatus = gdclass.GDExtensionManagerLoadStatus //gd:GDExtensionManager.LoadStatus
 
 const (
 	/*The extension has loaded successfully.*/

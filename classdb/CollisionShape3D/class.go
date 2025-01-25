@@ -42,14 +42,14 @@ type Any interface {
 /*
 This method does nothing.
 */
-func (self Instance) ResourceChanged(resource [1]gdclass.Resource) {
+func (self Instance) ResourceChanged(resource [1]gdclass.Resource) { //gd:CollisionShape3D.resource_changed
 	class(self).ResourceChanged(resource)
 }
 
 /*
 Sets the collision shape's shape to the addition of all its convexed [MeshInstance3D] siblings geometry.
 */
-func (self Instance) MakeConvexFromSiblings() {
+func (self Instance) MakeConvexFromSiblings() { //gd:CollisionShape3D.make_convex_from_siblings
 	class(self).MakeConvexFromSiblings()
 }
 
@@ -91,7 +91,7 @@ func (self Instance) SetDisabled(value bool) {
 This method does nothing.
 */
 //go:nosplit
-func (self class) ResourceChanged(resource [1]gdclass.Resource) {
+func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:CollisionShape3D.resource_changed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
 	var r_ret = callframe.Nil
@@ -100,7 +100,7 @@ func (self class) ResourceChanged(resource [1]gdclass.Resource) {
 }
 
 //go:nosplit
-func (self class) SetShape(shape [1]gdclass.Shape3D) {
+func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:CollisionShape3D.set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape[0])[0])
 	var r_ret = callframe.Nil
@@ -109,7 +109,7 @@ func (self class) SetShape(shape [1]gdclass.Shape3D) {
 }
 
 //go:nosplit
-func (self class) GetShape() [1]gdclass.Shape3D {
+func (self class) GetShape() [1]gdclass.Shape3D { //gd:CollisionShape3D.get_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape3D.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -119,7 +119,7 @@ func (self class) GetShape() [1]gdclass.Shape3D {
 }
 
 //go:nosplit
-func (self class) SetDisabled(enable bool) {
+func (self class) SetDisabled(enable bool) { //gd:CollisionShape3D.set_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -128,7 +128,7 @@ func (self class) SetDisabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsDisabled() bool {
+func (self class) IsDisabled() bool { //gd:CollisionShape3D.is_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape3D.Bind_is_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -141,7 +141,7 @@ func (self class) IsDisabled() bool {
 Sets the collision shape's shape to the addition of all its convexed [MeshInstance3D] siblings geometry.
 */
 //go:nosplit
-func (self class) MakeConvexFromSiblings() {
+func (self class) MakeConvexFromSiblings() { //gd:CollisionShape3D.make_convex_from_siblings
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionShape3D.Bind_make_convex_from_siblings, self.AsObject(), frame.Array(0), r_ret.Addr())

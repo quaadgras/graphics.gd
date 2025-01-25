@@ -85,7 +85,7 @@ func (self Instance) SetFftSize(value gdclass.AudioEffectSpectrumAnalyzerFFTSize
 }
 
 //go:nosplit
-func (self class) SetBufferLength(seconds gd.Float) {
+func (self class) SetBufferLength(seconds gd.Float) { //gd:AudioEffectSpectrumAnalyzer.set_buffer_length
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
 	var r_ret = callframe.Nil
@@ -94,7 +94,7 @@ func (self class) SetBufferLength(seconds gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBufferLength() gd.Float {
+func (self class) GetBufferLength() gd.Float { //gd:AudioEffectSpectrumAnalyzer.get_buffer_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_buffer_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -104,7 +104,7 @@ func (self class) GetBufferLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTapBackPos(seconds gd.Float) {
+func (self class) SetTapBackPos(seconds gd.Float) { //gd:AudioEffectSpectrumAnalyzer.set_tap_back_pos
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
 	var r_ret = callframe.Nil
@@ -113,7 +113,7 @@ func (self class) SetTapBackPos(seconds gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTapBackPos() gd.Float {
+func (self class) GetTapBackPos() gd.Float { //gd:AudioEffectSpectrumAnalyzer.get_tap_back_pos
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_tap_back_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,7 +123,7 @@ func (self class) GetTapBackPos() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFftSize(size gdclass.AudioEffectSpectrumAnalyzerFFTSize) {
+func (self class) SetFftSize(size gdclass.AudioEffectSpectrumAnalyzerFFTSize) { //gd:AudioEffectSpectrumAnalyzer.set_fft_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -132,7 +132,7 @@ func (self class) SetFftSize(size gdclass.AudioEffectSpectrumAnalyzerFFTSize) {
 }
 
 //go:nosplit
-func (self class) GetFftSize() gdclass.AudioEffectSpectrumAnalyzerFFTSize {
+func (self class) GetFftSize() gdclass.AudioEffectSpectrumAnalyzerFFTSize { //gd:AudioEffectSpectrumAnalyzer.get_fft_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioEffectSpectrumAnalyzerFFTSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_fft_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -184,7 +184,7 @@ func init() {
 	})
 }
 
-type FFTSize = gdclass.AudioEffectSpectrumAnalyzerFFTSize
+type FFTSize = gdclass.AudioEffectSpectrumAnalyzerFFTSize //gd:AudioEffectSpectrumAnalyzer.FFTSize
 
 const (
 	/*Use a buffer of 256 samples for the Fast Fourier transform. Lowest latency, but least stable over time.*/

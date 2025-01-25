@@ -132,7 +132,7 @@ func (self Instance) SetCollideWithAreas(value bool) {
 }
 
 //go:nosplit
-func (self class) SetShape(shape [1]gdclass.Resource) {
+func (self class) SetShape(shape [1]gdclass.Resource) { //gd:PhysicsShapeQueryParameters3D.set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape[0])[0])
 	var r_ret = callframe.Nil
@@ -141,7 +141,7 @@ func (self class) SetShape(shape [1]gdclass.Resource) {
 }
 
 //go:nosplit
-func (self class) GetShape() [1]gdclass.Resource {
+func (self class) GetShape() [1]gdclass.Resource { //gd:PhysicsShapeQueryParameters3D.get_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -151,7 +151,7 @@ func (self class) GetShape() [1]gdclass.Resource {
 }
 
 //go:nosplit
-func (self class) SetShapeRid(shape gd.RID) {
+func (self class) SetShapeRid(shape gd.RID) { //gd:PhysicsShapeQueryParameters3D.set_shape_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -160,7 +160,7 @@ func (self class) SetShapeRid(shape gd.RID) {
 }
 
 //go:nosplit
-func (self class) GetShapeRid() gd.RID {
+func (self class) GetShapeRid() gd.RID { //gd:PhysicsShapeQueryParameters3D.get_shape_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_shape_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -170,7 +170,7 @@ func (self class) GetShapeRid() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetTransform(transform gd.Transform3D) {
+func (self class) SetTransform(transform gd.Transform3D) { //gd:PhysicsShapeQueryParameters3D.set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	var r_ret = callframe.Nil
@@ -179,7 +179,7 @@ func (self class) SetTransform(transform gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) GetTransform() gd.Transform3D {
+func (self class) GetTransform() gd.Transform3D { //gd:PhysicsShapeQueryParameters3D.get_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -189,7 +189,7 @@ func (self class) GetTransform() gd.Transform3D {
 }
 
 //go:nosplit
-func (self class) SetMotion(motion gd.Vector3) {
+func (self class) SetMotion(motion gd.Vector3) { //gd:PhysicsShapeQueryParameters3D.set_motion
 	var frame = callframe.New()
 	callframe.Arg(frame, motion)
 	var r_ret = callframe.Nil
@@ -198,7 +198,7 @@ func (self class) SetMotion(motion gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetMotion() gd.Vector3 {
+func (self class) GetMotion() gd.Vector3 { //gd:PhysicsShapeQueryParameters3D.get_motion
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_motion, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -208,7 +208,7 @@ func (self class) GetMotion() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Float) {
+func (self class) SetMargin(margin gd.Float) { //gd:PhysicsShapeQueryParameters3D.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -217,7 +217,7 @@ func (self class) SetMargin(margin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Float {
+func (self class) GetMargin() gd.Float { //gd:PhysicsShapeQueryParameters3D.get_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -227,7 +227,7 @@ func (self class) GetMargin() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(collision_mask gd.Int) {
+func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:PhysicsShapeQueryParameters3D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_mask)
 	var r_ret = callframe.Nil
@@ -236,7 +236,7 @@ func (self class) SetCollisionMask(collision_mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int {
+func (self class) GetCollisionMask() gd.Int { //gd:PhysicsShapeQueryParameters3D.get_collision_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -246,7 +246,7 @@ func (self class) GetCollisionMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetExclude(exclude Array.Contains[gd.RID]) {
+func (self class) SetExclude(exclude Array.Contains[gd.RID]) { //gd:PhysicsShapeQueryParameters3D.set_exclude
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
 	var r_ret = callframe.Nil
@@ -255,7 +255,7 @@ func (self class) SetExclude(exclude Array.Contains[gd.RID]) {
 }
 
 //go:nosplit
-func (self class) GetExclude() Array.Contains[gd.RID] {
+func (self class) GetExclude() Array.Contains[gd.RID] { //gd:PhysicsShapeQueryParameters3D.get_exclude
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -265,7 +265,7 @@ func (self class) GetExclude() Array.Contains[gd.RID] {
 }
 
 //go:nosplit
-func (self class) SetCollideWithBodies(enable bool) {
+func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsShapeQueryParameters3D.set_collide_with_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -274,7 +274,7 @@ func (self class) SetCollideWithBodies(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCollideWithBodiesEnabled() bool {
+func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsShapeQueryParameters3D.is_collide_with_bodies_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_is_collide_with_bodies_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -284,7 +284,7 @@ func (self class) IsCollideWithBodiesEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetCollideWithAreas(enable bool) {
+func (self class) SetCollideWithAreas(enable bool) { //gd:PhysicsShapeQueryParameters3D.set_collide_with_areas
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -293,7 +293,7 @@ func (self class) SetCollideWithAreas(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCollideWithAreasEnabled() bool {
+func (self class) IsCollideWithAreasEnabled() bool { //gd:PhysicsShapeQueryParameters3D.is_collide_with_areas_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_is_collide_with_areas_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())

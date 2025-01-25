@@ -37,28 +37,28 @@ type Any interface {
 	AsPolygonPathFinder() Instance
 }
 
-func (self Instance) Setup(points []Vector2.XY, connections []int32) {
+func (self Instance) Setup(points []Vector2.XY, connections []int32) { //gd:PolygonPathFinder.setup
 	class(self).Setup(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&points))), gd.NewPackedInt32Slice(connections))
 }
-func (self Instance) FindPath(from Vector2.XY, to Vector2.XY) []Vector2.XY {
+func (self Instance) FindPath(from Vector2.XY, to Vector2.XY) []Vector2.XY { //gd:PolygonPathFinder.find_path
 	return []Vector2.XY(class(self).FindPath(gd.Vector2(from), gd.Vector2(to)).AsSlice())
 }
-func (self Instance) GetIntersections(from Vector2.XY, to Vector2.XY) []Vector2.XY {
+func (self Instance) GetIntersections(from Vector2.XY, to Vector2.XY) []Vector2.XY { //gd:PolygonPathFinder.get_intersections
 	return []Vector2.XY(class(self).GetIntersections(gd.Vector2(from), gd.Vector2(to)).AsSlice())
 }
-func (self Instance) GetClosestPoint(point Vector2.XY) Vector2.XY {
+func (self Instance) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:PolygonPathFinder.get_closest_point
 	return Vector2.XY(class(self).GetClosestPoint(gd.Vector2(point)))
 }
-func (self Instance) IsPointInside(point Vector2.XY) bool {
+func (self Instance) IsPointInside(point Vector2.XY) bool { //gd:PolygonPathFinder.is_point_inside
 	return bool(class(self).IsPointInside(gd.Vector2(point)))
 }
-func (self Instance) SetPointPenalty(idx int, penalty Float.X) {
+func (self Instance) SetPointPenalty(idx int, penalty Float.X) { //gd:PolygonPathFinder.set_point_penalty
 	class(self).SetPointPenalty(gd.Int(idx), gd.Float(penalty))
 }
-func (self Instance) GetPointPenalty(idx int) Float.X {
+func (self Instance) GetPointPenalty(idx int) Float.X { //gd:PolygonPathFinder.get_point_penalty
 	return Float.X(Float.X(class(self).GetPointPenalty(gd.Int(idx))))
 }
-func (self Instance) GetBounds() Rect2.PositionSize {
+func (self Instance) GetBounds() Rect2.PositionSize { //gd:PolygonPathFinder.get_bounds
 	return Rect2.PositionSize(class(self).GetBounds())
 }
 
@@ -82,7 +82,7 @@ func New() Instance {
 }
 
 //go:nosplit
-func (self class) Setup(points gd.PackedVector2Array, connections gd.PackedInt32Array) {
+func (self class) Setup(points gd.PackedVector2Array, connections gd.PackedInt32Array) { //gd:PolygonPathFinder.setup
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	callframe.Arg(frame, pointers.Get(connections))
@@ -92,7 +92,7 @@ func (self class) Setup(points gd.PackedVector2Array, connections gd.PackedInt32
 }
 
 //go:nosplit
-func (self class) FindPath(from gd.Vector2, to gd.Vector2) gd.PackedVector2Array {
+func (self class) FindPath(from gd.Vector2, to gd.Vector2) gd.PackedVector2Array { //gd:PolygonPathFinder.find_path
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -104,7 +104,7 @@ func (self class) FindPath(from gd.Vector2, to gd.Vector2) gd.PackedVector2Array
 }
 
 //go:nosplit
-func (self class) GetIntersections(from gd.Vector2, to gd.Vector2) gd.PackedVector2Array {
+func (self class) GetIntersections(from gd.Vector2, to gd.Vector2) gd.PackedVector2Array { //gd:PolygonPathFinder.get_intersections
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
@@ -116,7 +116,7 @@ func (self class) GetIntersections(from gd.Vector2, to gd.Vector2) gd.PackedVect
 }
 
 //go:nosplit
-func (self class) GetClosestPoint(point gd.Vector2) gd.Vector2 {
+func (self class) GetClosestPoint(point gd.Vector2) gd.Vector2 { //gd:PolygonPathFinder.get_closest_point
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -127,7 +127,7 @@ func (self class) GetClosestPoint(point gd.Vector2) gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) IsPointInside(point gd.Vector2) bool {
+func (self class) IsPointInside(point gd.Vector2) bool { //gd:PolygonPathFinder.is_point_inside
 	var frame = callframe.New()
 	callframe.Arg(frame, point)
 	var r_ret = callframe.Ret[bool](frame)
@@ -138,7 +138,7 @@ func (self class) IsPointInside(point gd.Vector2) bool {
 }
 
 //go:nosplit
-func (self class) SetPointPenalty(idx gd.Int, penalty gd.Float) {
+func (self class) SetPointPenalty(idx gd.Int, penalty gd.Float) { //gd:PolygonPathFinder.set_point_penalty
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, penalty)
@@ -148,7 +148,7 @@ func (self class) SetPointPenalty(idx gd.Int, penalty gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPointPenalty(idx gd.Int) gd.Float {
+func (self class) GetPointPenalty(idx gd.Int) gd.Float { //gd:PolygonPathFinder.get_point_penalty
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -159,7 +159,7 @@ func (self class) GetPointPenalty(idx gd.Int) gd.Float {
 }
 
 //go:nosplit
-func (self class) GetBounds() gd.Rect2 {
+func (self class) GetBounds() gd.Rect2 { //gd:PolygonPathFinder.get_bounds
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_get_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())

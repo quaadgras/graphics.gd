@@ -508,7 +508,7 @@ func (Instance) _is_available(impl func(ptr unsafe.Pointer, mode gdclass.ShaderM
 /*
 Returns the selected index of the drop-down list option within a graph. You may use this function to define the specific behavior in the [method _get_code] or [method _get_global_code].
 */
-func (self Instance) GetOptionIndex(option int) int {
+func (self Instance) GetOptionIndex(option int) int { //gd:VisualShaderNodeCustom.get_option_index
 	return int(int(class(self).GetOptionIndex(gd.Int(option))))
 }
 
@@ -885,7 +885,7 @@ func (class) _is_available(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode
 Returns the selected index of the drop-down list option within a graph. You may use this function to define the specific behavior in the [method _get_code] or [method _get_global_code].
 */
 //go:nosplit
-func (self class) GetOptionIndex(option gd.Int) gd.Int {
+func (self class) GetOptionIndex(option gd.Int) gd.Int { //gd:VisualShaderNodeCustom.get_option_index
 	var frame = callframe.New()
 	callframe.Arg(frame, option)
 	var r_ret = callframe.Ret[gd.Int](frame)

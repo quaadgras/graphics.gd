@@ -45,42 +45,42 @@ type Any interface {
 /*
 Returns [code]true[/code] if this is a root shape and is thus the object that is rendered.
 */
-func (self Instance) IsRootShape() bool {
+func (self Instance) IsRootShape() bool { //gd:CSGShape3D.is_root_shape
 	return bool(class(self).IsRootShape())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) {
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_mask_value
 	class(self).SetCollisionMaskValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetCollisionMaskValue(layer_number int) bool {
+func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:CSGShape3D.get_collision_mask_value
 	return bool(class(self).GetCollisionMaskValue(gd.Int(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetCollisionLayerValue(layer_number int, value bool) {
+func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_layer_value
 	class(self).SetCollisionLayerValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetCollisionLayerValue(layer_number int) bool {
+func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:CSGShape3D.get_collision_layer_value
 	return bool(class(self).GetCollisionLayerValue(gd.Int(layer_number)))
 }
 
 /*
 Returns an [Array] with two elements, the first is the [Transform3D] of this node and the second is the root [Mesh] of this node. Only works when this node is the root shape.
 */
-func (self Instance) GetMeshes() []any {
+func (self Instance) GetMeshes() []any { //gd:CSGShape3D.get_meshes
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetMeshes())))
 }
 
@@ -162,7 +162,7 @@ func (self Instance) SetCollisionPriority(value Float.X) {
 Returns [code]true[/code] if this is a root shape and is thus the object that is rendered.
 */
 //go:nosplit
-func (self class) IsRootShape() bool {
+func (self class) IsRootShape() bool { //gd:CSGShape3D.is_root_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_is_root_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func (self class) IsRootShape() bool {
 }
 
 //go:nosplit
-func (self class) SetOperation(operation gdclass.CSGShape3DOperation) {
+func (self class) SetOperation(operation gdclass.CSGShape3DOperation) { //gd:CSGShape3D.set_operation
 	var frame = callframe.New()
 	callframe.Arg(frame, operation)
 	var r_ret = callframe.Nil
@@ -181,7 +181,7 @@ func (self class) SetOperation(operation gdclass.CSGShape3DOperation) {
 }
 
 //go:nosplit
-func (self class) GetOperation() gdclass.CSGShape3DOperation {
+func (self class) GetOperation() gdclass.CSGShape3DOperation { //gd:CSGShape3D.get_operation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CSGShape3DOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_operation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -191,7 +191,7 @@ func (self class) GetOperation() gdclass.CSGShape3DOperation {
 }
 
 //go:nosplit
-func (self class) SetSnap(snap gd.Float) {
+func (self class) SetSnap(snap gd.Float) { //gd:CSGShape3D.set_snap
 	var frame = callframe.New()
 	callframe.Arg(frame, snap)
 	var r_ret = callframe.Nil
@@ -200,7 +200,7 @@ func (self class) SetSnap(snap gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSnap() gd.Float {
+func (self class) GetSnap() gd.Float { //gd:CSGShape3D.get_snap
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_snap, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -210,7 +210,7 @@ func (self class) GetSnap() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetUseCollision(operation bool) {
+func (self class) SetUseCollision(operation bool) { //gd:CSGShape3D.set_use_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, operation)
 	var r_ret = callframe.Nil
@@ -219,7 +219,7 @@ func (self class) SetUseCollision(operation bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingCollision() bool {
+func (self class) IsUsingCollision() bool { //gd:CSGShape3D.is_using_collision
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_is_using_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) IsUsingCollision() bool {
 }
 
 //go:nosplit
-func (self class) SetCollisionLayer(layer gd.Int) {
+func (self class) SetCollisionLayer(layer gd.Int) { //gd:CSGShape3D.set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -238,7 +238,7 @@ func (self class) SetCollisionLayer(layer gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionLayer() gd.Int {
+func (self class) GetCollisionLayer() gd.Int { //gd:CSGShape3D.get_collision_layer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -248,7 +248,7 @@ func (self class) GetCollisionLayer() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(mask gd.Int) {
+func (self class) SetCollisionMask(mask gd.Int) { //gd:CSGShape3D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -257,7 +257,7 @@ func (self class) SetCollisionMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int {
+func (self class) GetCollisionMask() gd.Int { //gd:CSGShape3D.get_collision_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -270,7 +270,7 @@ func (self class) GetCollisionMask() gd.Int {
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
+func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:CSGShape3D.set_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -283,7 +283,7 @@ func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
+func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:CSGShape3D.get_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -297,7 +297,7 @@ func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) {
+func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) { //gd:CSGShape3D.set_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -310,7 +310,7 @@ func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionLayerValue(layer_number gd.Int) bool {
+func (self class) GetCollisionLayerValue(layer_number gd.Int) bool { //gd:CSGShape3D.get_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -321,7 +321,7 @@ func (self class) GetCollisionLayerValue(layer_number gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) SetCollisionPriority(priority gd.Float) {
+func (self class) SetCollisionPriority(priority gd.Float) { //gd:CSGShape3D.set_collision_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -330,7 +330,7 @@ func (self class) SetCollisionPriority(priority gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCollisionPriority() gd.Float {
+func (self class) GetCollisionPriority() gd.Float { //gd:CSGShape3D.get_collision_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -340,7 +340,7 @@ func (self class) GetCollisionPriority() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCalculateTangents(enabled bool) {
+func (self class) SetCalculateTangents(enabled bool) { //gd:CSGShape3D.set_calculate_tangents
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -349,7 +349,7 @@ func (self class) SetCalculateTangents(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsCalculatingTangents() bool {
+func (self class) IsCalculatingTangents() bool { //gd:CSGShape3D.is_calculating_tangents
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_is_calculating_tangents, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -362,7 +362,7 @@ func (self class) IsCalculatingTangents() bool {
 Returns an [Array] with two elements, the first is the [Transform3D] of this node and the second is the root [Mesh] of this node. Only works when this node is the root shape.
 */
 //go:nosplit
-func (self class) GetMeshes() Array.Any {
+func (self class) GetMeshes() Array.Any { //gd:CSGShape3D.get_meshes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -406,7 +406,7 @@ func init() {
 	gdclass.Register("CSGShape3D", func(ptr gd.Object) any { return [1]gdclass.CSGShape3D{*(*gdclass.CSGShape3D)(unsafe.Pointer(&ptr))} })
 }
 
-type Operation = gdclass.CSGShape3DOperation
+type Operation = gdclass.CSGShape3DOperation //gd:CSGShape3D.Operation
 
 const (
 	/*Geometry of both primitives is merged, intersecting geometry is removed.*/

@@ -43,35 +43,35 @@ type Any interface {
 /*
 Returns the name of the group at [param group_idx] that will be the drawing group in the [BoneMap] editor.
 */
-func (self Instance) GetGroupName(group_idx int) string {
+func (self Instance) GetGroupName(group_idx int) string { //gd:SkeletonProfile.get_group_name
 	return string(class(self).GetGroupName(gd.Int(group_idx)).String())
 }
 
 /*
 Sets the name of the group at [param group_idx] that will be the drawing group in the [BoneMap] editor.
 */
-func (self Instance) SetGroupName(group_idx int, group_name string) {
+func (self Instance) SetGroupName(group_idx int, group_name string) { //gd:SkeletonProfile.set_group_name
 	class(self).SetGroupName(gd.Int(group_idx), gd.NewStringName(group_name))
 }
 
 /*
 Returns the texture of the group at [param group_idx] that will be the drawing group background image in the [BoneMap] editor.
 */
-func (self Instance) GetTexture(group_idx int) [1]gdclass.Texture2D {
+func (self Instance) GetTexture(group_idx int) [1]gdclass.Texture2D { //gd:SkeletonProfile.get_texture
 	return [1]gdclass.Texture2D(class(self).GetTexture(gd.Int(group_idx)))
 }
 
 /*
 Sets the texture of the group at [param group_idx] that will be the drawing group background image in the [BoneMap] editor.
 */
-func (self Instance) SetTexture(group_idx int, texture [1]gdclass.Texture2D) {
+func (self Instance) SetTexture(group_idx int, texture [1]gdclass.Texture2D) { //gd:SkeletonProfile.set_texture
 	class(self).SetTexture(gd.Int(group_idx), texture)
 }
 
 /*
 Returns the bone index that matches [param bone_name] as its name.
 */
-func (self Instance) FindBone(bone_name string) int {
+func (self Instance) FindBone(bone_name string) int { //gd:SkeletonProfile.find_bone
 	return int(int(class(self).FindBone(gd.NewStringName(bone_name))))
 }
 
@@ -79,7 +79,7 @@ func (self Instance) FindBone(bone_name string) int {
 Returns the name of the bone at [param bone_idx] that will be the key name in the [BoneMap].
 In the retargeting process, the returned bone name is the bone name of the target skeleton.
 */
-func (self Instance) GetBoneName(bone_idx int) string {
+func (self Instance) GetBoneName(bone_idx int) string { //gd:SkeletonProfile.get_bone_name
 	return string(class(self).GetBoneName(gd.Int(bone_idx)).String())
 }
 
@@ -87,28 +87,28 @@ func (self Instance) GetBoneName(bone_idx int) string {
 Sets the name of the bone at [param bone_idx] that will be the key name in the [BoneMap].
 In the retargeting process, the setting bone name is the bone name of the target skeleton.
 */
-func (self Instance) SetBoneName(bone_idx int, bone_name string) {
+func (self Instance) SetBoneName(bone_idx int, bone_name string) { //gd:SkeletonProfile.set_bone_name
 	class(self).SetBoneName(gd.Int(bone_idx), gd.NewStringName(bone_name))
 }
 
 /*
 Returns the name of the bone which is the parent to the bone at [param bone_idx]. The result is empty if the bone has no parent.
 */
-func (self Instance) GetBoneParent(bone_idx int) string {
+func (self Instance) GetBoneParent(bone_idx int) string { //gd:SkeletonProfile.get_bone_parent
 	return string(class(self).GetBoneParent(gd.Int(bone_idx)).String())
 }
 
 /*
 Sets the bone with name [param bone_parent] as the parent of the bone at [param bone_idx]. If an empty string is passed, then the bone has no parent.
 */
-func (self Instance) SetBoneParent(bone_idx int, bone_parent string) {
+func (self Instance) SetBoneParent(bone_idx int, bone_parent string) { //gd:SkeletonProfile.set_bone_parent
 	class(self).SetBoneParent(gd.Int(bone_idx), gd.NewStringName(bone_parent))
 }
 
 /*
 Returns the tail direction of the bone at [param bone_idx].
 */
-func (self Instance) GetTailDirection(bone_idx int) gdclass.SkeletonProfileTailDirection {
+func (self Instance) GetTailDirection(bone_idx int) gdclass.SkeletonProfileTailDirection { //gd:SkeletonProfile.get_tail_direction
 	return gdclass.SkeletonProfileTailDirection(class(self).GetTailDirection(gd.Int(bone_idx)))
 }
 
@@ -116,35 +116,35 @@ func (self Instance) GetTailDirection(bone_idx int) gdclass.SkeletonProfileTailD
 Sets the tail direction of the bone at [param bone_idx].
 [b]Note:[/b] This only specifies the method of calculation. The actual coordinates required should be stored in an external skeleton, so the calculation itself needs to be done externally.
 */
-func (self Instance) SetTailDirection(bone_idx int, tail_direction gdclass.SkeletonProfileTailDirection) {
+func (self Instance) SetTailDirection(bone_idx int, tail_direction gdclass.SkeletonProfileTailDirection) { //gd:SkeletonProfile.set_tail_direction
 	class(self).SetTailDirection(gd.Int(bone_idx), tail_direction)
 }
 
 /*
 Returns the name of the bone which is the tail of the bone at [param bone_idx].
 */
-func (self Instance) GetBoneTail(bone_idx int) string {
+func (self Instance) GetBoneTail(bone_idx int) string { //gd:SkeletonProfile.get_bone_tail
 	return string(class(self).GetBoneTail(gd.Int(bone_idx)).String())
 }
 
 /*
 Sets the bone with name [param bone_tail] as the tail of the bone at [param bone_idx].
 */
-func (self Instance) SetBoneTail(bone_idx int, bone_tail string) {
+func (self Instance) SetBoneTail(bone_idx int, bone_tail string) { //gd:SkeletonProfile.set_bone_tail
 	class(self).SetBoneTail(gd.Int(bone_idx), gd.NewStringName(bone_tail))
 }
 
 /*
 Returns the reference pose transform for bone [param bone_idx].
 */
-func (self Instance) GetReferencePose(bone_idx int) Transform3D.BasisOrigin {
+func (self Instance) GetReferencePose(bone_idx int) Transform3D.BasisOrigin { //gd:SkeletonProfile.get_reference_pose
 	return Transform3D.BasisOrigin(class(self).GetReferencePose(gd.Int(bone_idx)))
 }
 
 /*
 Sets the reference pose transform for bone [param bone_idx].
 */
-func (self Instance) SetReferencePose(bone_idx int, bone_name Transform3D.BasisOrigin) {
+func (self Instance) SetReferencePose(bone_idx int, bone_name Transform3D.BasisOrigin) { //gd:SkeletonProfile.set_reference_pose
 	class(self).SetReferencePose(gd.Int(bone_idx), gd.Transform3D(bone_name))
 }
 
@@ -152,7 +152,7 @@ func (self Instance) SetReferencePose(bone_idx int, bone_name Transform3D.BasisO
 Returns the offset of the bone at [param bone_idx] that will be the button position in the [BoneMap] editor.
 This is the offset with origin at the top left corner of the square.
 */
-func (self Instance) GetHandleOffset(bone_idx int) Vector2.XY {
+func (self Instance) GetHandleOffset(bone_idx int) Vector2.XY { //gd:SkeletonProfile.get_handle_offset
 	return Vector2.XY(class(self).GetHandleOffset(gd.Int(bone_idx)))
 }
 
@@ -160,21 +160,21 @@ func (self Instance) GetHandleOffset(bone_idx int) Vector2.XY {
 Sets the offset of the bone at [param bone_idx] that will be the button position in the [BoneMap] editor.
 This is the offset with origin at the top left corner of the square.
 */
-func (self Instance) SetHandleOffset(bone_idx int, handle_offset Vector2.XY) {
+func (self Instance) SetHandleOffset(bone_idx int, handle_offset Vector2.XY) { //gd:SkeletonProfile.set_handle_offset
 	class(self).SetHandleOffset(gd.Int(bone_idx), gd.Vector2(handle_offset))
 }
 
 /*
 Returns the group of the bone at [param bone_idx].
 */
-func (self Instance) GetGroup(bone_idx int) string {
+func (self Instance) GetGroup(bone_idx int) string { //gd:SkeletonProfile.get_group
 	return string(class(self).GetGroup(gd.Int(bone_idx)).String())
 }
 
 /*
 Sets the group of the bone at [param bone_idx].
 */
-func (self Instance) SetGroup(bone_idx int, group string) {
+func (self Instance) SetGroup(bone_idx int, group string) { //gd:SkeletonProfile.set_group
 	class(self).SetGroup(gd.Int(bone_idx), gd.NewStringName(group))
 }
 
@@ -182,14 +182,14 @@ func (self Instance) SetGroup(bone_idx int, group string) {
 Returns whether the bone at [param bone_idx] is required for retargeting.
 This value is used by the bone map editor. If this method returns [code]true[/code], and no bone is assigned, the handle color will be red on the bone map editor.
 */
-func (self Instance) IsRequired(bone_idx int) bool {
+func (self Instance) IsRequired(bone_idx int) bool { //gd:SkeletonProfile.is_required
 	return bool(class(self).IsRequired(gd.Int(bone_idx)))
 }
 
 /*
 Sets the required status for bone [param bone_idx] to [param required].
 */
-func (self Instance) SetRequired(bone_idx int, required bool) {
+func (self Instance) SetRequired(bone_idx int, required bool) { //gd:SkeletonProfile.set_required
 	class(self).SetRequired(gd.Int(bone_idx), required)
 }
 
@@ -245,7 +245,7 @@ func (self Instance) SetBoneSize(value int) {
 }
 
 //go:nosplit
-func (self class) SetRootBone(bone_name gd.StringName) {
+func (self class) SetRootBone(bone_name gd.StringName) { //gd:SkeletonProfile.set_root_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bone_name))
 	var r_ret = callframe.Nil
@@ -254,7 +254,7 @@ func (self class) SetRootBone(bone_name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetRootBone() gd.StringName {
+func (self class) GetRootBone() gd.StringName { //gd:SkeletonProfile.get_root_bone
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_root_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -264,7 +264,7 @@ func (self class) GetRootBone() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetScaleBaseBone(bone_name gd.StringName) {
+func (self class) SetScaleBaseBone(bone_name gd.StringName) { //gd:SkeletonProfile.set_scale_base_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bone_name))
 	var r_ret = callframe.Nil
@@ -273,7 +273,7 @@ func (self class) SetScaleBaseBone(bone_name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetScaleBaseBone() gd.StringName {
+func (self class) GetScaleBaseBone() gd.StringName { //gd:SkeletonProfile.get_scale_base_bone
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_scale_base_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -283,7 +283,7 @@ func (self class) GetScaleBaseBone() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetGroupSize(size gd.Int) {
+func (self class) SetGroupSize(size gd.Int) { //gd:SkeletonProfile.set_group_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -292,7 +292,7 @@ func (self class) SetGroupSize(size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetGroupSize() gd.Int {
+func (self class) GetGroupSize() gd.Int { //gd:SkeletonProfile.get_group_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_group_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -305,7 +305,7 @@ func (self class) GetGroupSize() gd.Int {
 Returns the name of the group at [param group_idx] that will be the drawing group in the [BoneMap] editor.
 */
 //go:nosplit
-func (self class) GetGroupName(group_idx gd.Int) gd.StringName {
+func (self class) GetGroupName(group_idx gd.Int) gd.StringName { //gd:SkeletonProfile.get_group_name
 	var frame = callframe.New()
 	callframe.Arg(frame, group_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -319,7 +319,7 @@ func (self class) GetGroupName(group_idx gd.Int) gd.StringName {
 Sets the name of the group at [param group_idx] that will be the drawing group in the [BoneMap] editor.
 */
 //go:nosplit
-func (self class) SetGroupName(group_idx gd.Int, group_name gd.StringName) {
+func (self class) SetGroupName(group_idx gd.Int, group_name gd.StringName) { //gd:SkeletonProfile.set_group_name
 	var frame = callframe.New()
 	callframe.Arg(frame, group_idx)
 	callframe.Arg(frame, pointers.Get(group_name))
@@ -332,7 +332,7 @@ func (self class) SetGroupName(group_idx gd.Int, group_name gd.StringName) {
 Returns the texture of the group at [param group_idx] that will be the drawing group background image in the [BoneMap] editor.
 */
 //go:nosplit
-func (self class) GetTexture(group_idx gd.Int) [1]gdclass.Texture2D {
+func (self class) GetTexture(group_idx gd.Int) [1]gdclass.Texture2D { //gd:SkeletonProfile.get_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, group_idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -346,7 +346,7 @@ func (self class) GetTexture(group_idx gd.Int) [1]gdclass.Texture2D {
 Sets the texture of the group at [param group_idx] that will be the drawing group background image in the [BoneMap] editor.
 */
 //go:nosplit
-func (self class) SetTexture(group_idx gd.Int, texture [1]gdclass.Texture2D) {
+func (self class) SetTexture(group_idx gd.Int, texture [1]gdclass.Texture2D) { //gd:SkeletonProfile.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, group_idx)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -356,7 +356,7 @@ func (self class) SetTexture(group_idx gd.Int, texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) SetBoneSize(size gd.Int) {
+func (self class) SetBoneSize(size gd.Int) { //gd:SkeletonProfile.set_bone_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -365,7 +365,7 @@ func (self class) SetBoneSize(size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBoneSize() gd.Int {
+func (self class) GetBoneSize() gd.Int { //gd:SkeletonProfile.get_bone_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_bone_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -378,7 +378,7 @@ func (self class) GetBoneSize() gd.Int {
 Returns the bone index that matches [param bone_name] as its name.
 */
 //go:nosplit
-func (self class) FindBone(bone_name gd.StringName) gd.Int {
+func (self class) FindBone(bone_name gd.StringName) gd.Int { //gd:SkeletonProfile.find_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bone_name))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -393,7 +393,7 @@ Returns the name of the bone at [param bone_idx] that will be the key name in th
 In the retargeting process, the returned bone name is the bone name of the target skeleton.
 */
 //go:nosplit
-func (self class) GetBoneName(bone_idx gd.Int) gd.StringName {
+func (self class) GetBoneName(bone_idx gd.Int) gd.StringName { //gd:SkeletonProfile.get_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -408,7 +408,7 @@ Sets the name of the bone at [param bone_idx] that will be the key name in the [
 In the retargeting process, the setting bone name is the bone name of the target skeleton.
 */
 //go:nosplit
-func (self class) SetBoneName(bone_idx gd.Int, bone_name gd.StringName) {
+func (self class) SetBoneName(bone_idx gd.Int, bone_name gd.StringName) { //gd:SkeletonProfile.set_bone_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pointers.Get(bone_name))
@@ -421,7 +421,7 @@ func (self class) SetBoneName(bone_idx gd.Int, bone_name gd.StringName) {
 Returns the name of the bone which is the parent to the bone at [param bone_idx]. The result is empty if the bone has no parent.
 */
 //go:nosplit
-func (self class) GetBoneParent(bone_idx gd.Int) gd.StringName {
+func (self class) GetBoneParent(bone_idx gd.Int) gd.StringName { //gd:SkeletonProfile.get_bone_parent
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -435,7 +435,7 @@ func (self class) GetBoneParent(bone_idx gd.Int) gd.StringName {
 Sets the bone with name [param bone_parent] as the parent of the bone at [param bone_idx]. If an empty string is passed, then the bone has no parent.
 */
 //go:nosplit
-func (self class) SetBoneParent(bone_idx gd.Int, bone_parent gd.StringName) {
+func (self class) SetBoneParent(bone_idx gd.Int, bone_parent gd.StringName) { //gd:SkeletonProfile.set_bone_parent
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pointers.Get(bone_parent))
@@ -448,7 +448,7 @@ func (self class) SetBoneParent(bone_idx gd.Int, bone_parent gd.StringName) {
 Returns the tail direction of the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) GetTailDirection(bone_idx gd.Int) gdclass.SkeletonProfileTailDirection {
+func (self class) GetTailDirection(bone_idx gd.Int) gdclass.SkeletonProfileTailDirection { //gd:SkeletonProfile.get_tail_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gdclass.SkeletonProfileTailDirection](frame)
@@ -463,7 +463,7 @@ Sets the tail direction of the bone at [param bone_idx].
 [b]Note:[/b] This only specifies the method of calculation. The actual coordinates required should be stored in an external skeleton, so the calculation itself needs to be done externally.
 */
 //go:nosplit
-func (self class) SetTailDirection(bone_idx gd.Int, tail_direction gdclass.SkeletonProfileTailDirection) {
+func (self class) SetTailDirection(bone_idx gd.Int, tail_direction gdclass.SkeletonProfileTailDirection) { //gd:SkeletonProfile.set_tail_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, tail_direction)
@@ -476,7 +476,7 @@ func (self class) SetTailDirection(bone_idx gd.Int, tail_direction gdclass.Skele
 Returns the name of the bone which is the tail of the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) GetBoneTail(bone_idx gd.Int) gd.StringName {
+func (self class) GetBoneTail(bone_idx gd.Int) gd.StringName { //gd:SkeletonProfile.get_bone_tail
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -490,7 +490,7 @@ func (self class) GetBoneTail(bone_idx gd.Int) gd.StringName {
 Sets the bone with name [param bone_tail] as the tail of the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) SetBoneTail(bone_idx gd.Int, bone_tail gd.StringName) {
+func (self class) SetBoneTail(bone_idx gd.Int, bone_tail gd.StringName) { //gd:SkeletonProfile.set_bone_tail
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pointers.Get(bone_tail))
@@ -503,7 +503,7 @@ func (self class) SetBoneTail(bone_idx gd.Int, bone_tail gd.StringName) {
 Returns the reference pose transform for bone [param bone_idx].
 */
 //go:nosplit
-func (self class) GetReferencePose(bone_idx gd.Int) gd.Transform3D {
+func (self class) GetReferencePose(bone_idx gd.Int) gd.Transform3D { //gd:SkeletonProfile.get_reference_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
@@ -517,7 +517,7 @@ func (self class) GetReferencePose(bone_idx gd.Int) gd.Transform3D {
 Sets the reference pose transform for bone [param bone_idx].
 */
 //go:nosplit
-func (self class) SetReferencePose(bone_idx gd.Int, bone_name gd.Transform3D) {
+func (self class) SetReferencePose(bone_idx gd.Int, bone_name gd.Transform3D) { //gd:SkeletonProfile.set_reference_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, bone_name)
@@ -531,7 +531,7 @@ Returns the offset of the bone at [param bone_idx] that will be the button posit
 This is the offset with origin at the top left corner of the square.
 */
 //go:nosplit
-func (self class) GetHandleOffset(bone_idx gd.Int) gd.Vector2 {
+func (self class) GetHandleOffset(bone_idx gd.Int) gd.Vector2 { //gd:SkeletonProfile.get_handle_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -546,7 +546,7 @@ Sets the offset of the bone at [param bone_idx] that will be the button position
 This is the offset with origin at the top left corner of the square.
 */
 //go:nosplit
-func (self class) SetHandleOffset(bone_idx gd.Int, handle_offset gd.Vector2) {
+func (self class) SetHandleOffset(bone_idx gd.Int, handle_offset gd.Vector2) { //gd:SkeletonProfile.set_handle_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, handle_offset)
@@ -559,7 +559,7 @@ func (self class) SetHandleOffset(bone_idx gd.Int, handle_offset gd.Vector2) {
 Returns the group of the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) GetGroup(bone_idx gd.Int) gd.StringName {
+func (self class) GetGroup(bone_idx gd.Int) gd.StringName { //gd:SkeletonProfile.get_group
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -573,7 +573,7 @@ func (self class) GetGroup(bone_idx gd.Int) gd.StringName {
 Sets the group of the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) SetGroup(bone_idx gd.Int, group gd.StringName) {
+func (self class) SetGroup(bone_idx gd.Int, group gd.StringName) { //gd:SkeletonProfile.set_group
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, pointers.Get(group))
@@ -587,7 +587,7 @@ Returns whether the bone at [param bone_idx] is required for retargeting.
 This value is used by the bone map editor. If this method returns [code]true[/code], and no bone is assigned, the handle color will be red on the bone map editor.
 */
 //go:nosplit
-func (self class) IsRequired(bone_idx gd.Int) bool {
+func (self class) IsRequired(bone_idx gd.Int) bool { //gd:SkeletonProfile.is_required
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -601,7 +601,7 @@ func (self class) IsRequired(bone_idx gd.Int) bool {
 Sets the required status for bone [param bone_idx] to [param required].
 */
 //go:nosplit
-func (self class) SetRequired(bone_idx gd.Int, required bool) {
+func (self class) SetRequired(bone_idx gd.Int, required bool) { //gd:SkeletonProfile.set_required
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, required)
@@ -647,7 +647,7 @@ func init() {
 	})
 }
 
-type TailDirection = gdclass.SkeletonProfileTailDirection
+type TailDirection = gdclass.SkeletonProfileTailDirection //gd:SkeletonProfile.TailDirection
 
 const (
 	/*Direction to the average coordinates of bone children.*/

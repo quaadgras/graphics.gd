@@ -91,14 +91,14 @@ func (Instance) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int) bool
 /*
 Returns a list of all allowed types and subtypes corresponding to the [member base_type]. If the [member base_type] is empty, an empty list is returned.
 */
-func (self Instance) GetAllowedTypes() []string {
+func (self Instance) GetAllowedTypes() []string { //gd:EditorResourcePicker.get_allowed_types
 	return []string(class(self).GetAllowedTypes().Strings())
 }
 
 /*
 Sets the toggle mode state for the main button. Works only if [member toggle_mode] is set to [code]true[/code].
 */
-func (self Instance) SetTogglePressed(pressed bool) {
+func (self Instance) SetTogglePressed(pressed bool) { //gd:EditorResourcePicker.set_toggle_pressed
 	class(self).SetTogglePressed(pressed)
 }
 
@@ -179,7 +179,7 @@ func (class) _handle_menu_selected(impl func(ptr unsafe.Pointer, id gd.Int) bool
 }
 
 //go:nosplit
-func (self class) SetBaseType(base_type gd.String) {
+func (self class) SetBaseType(base_type gd.String) { //gd:EditorResourcePicker.set_base_type
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base_type))
 	var r_ret = callframe.Nil
@@ -188,7 +188,7 @@ func (self class) SetBaseType(base_type gd.String) {
 }
 
 //go:nosplit
-func (self class) GetBaseType() gd.String {
+func (self class) GetBaseType() gd.String { //gd:EditorResourcePicker.get_base_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePicker.Bind_get_base_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -201,7 +201,7 @@ func (self class) GetBaseType() gd.String {
 Returns a list of all allowed types and subtypes corresponding to the [member base_type]. If the [member base_type] is empty, an empty list is returned.
 */
 //go:nosplit
-func (self class) GetAllowedTypes() gd.PackedStringArray {
+func (self class) GetAllowedTypes() gd.PackedStringArray { //gd:EditorResourcePicker.get_allowed_types
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePicker.Bind_get_allowed_types, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func (self class) GetAllowedTypes() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) SetEditedResource(resource [1]gdclass.Resource) {
+func (self class) SetEditedResource(resource [1]gdclass.Resource) { //gd:EditorResourcePicker.set_edited_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
 	var r_ret = callframe.Nil
@@ -220,7 +220,7 @@ func (self class) SetEditedResource(resource [1]gdclass.Resource) {
 }
 
 //go:nosplit
-func (self class) GetEditedResource() [1]gdclass.Resource {
+func (self class) GetEditedResource() [1]gdclass.Resource { //gd:EditorResourcePicker.get_edited_resource
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePicker.Bind_get_edited_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -230,7 +230,7 @@ func (self class) GetEditedResource() [1]gdclass.Resource {
 }
 
 //go:nosplit
-func (self class) SetToggleMode(enable bool) {
+func (self class) SetToggleMode(enable bool) { //gd:EditorResourcePicker.set_toggle_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -239,7 +239,7 @@ func (self class) SetToggleMode(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsToggleMode() bool {
+func (self class) IsToggleMode() bool { //gd:EditorResourcePicker.is_toggle_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePicker.Bind_is_toggle_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -252,7 +252,7 @@ func (self class) IsToggleMode() bool {
 Sets the toggle mode state for the main button. Works only if [member toggle_mode] is set to [code]true[/code].
 */
 //go:nosplit
-func (self class) SetTogglePressed(pressed bool) {
+func (self class) SetTogglePressed(pressed bool) { //gd:EditorResourcePicker.set_toggle_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -261,7 +261,7 @@ func (self class) SetTogglePressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) SetEditable(enable bool) {
+func (self class) SetEditable(enable bool) { //gd:EditorResourcePicker.set_editable
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -270,7 +270,7 @@ func (self class) SetEditable(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsEditable() bool {
+func (self class) IsEditable() bool { //gd:EditorResourcePicker.is_editable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorResourcePicker.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Addr())

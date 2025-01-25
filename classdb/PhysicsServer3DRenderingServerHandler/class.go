@@ -99,21 +99,21 @@ func (Instance) _set_aabb(impl func(ptr unsafe.Pointer, aabb AABB.PositionSize))
 /*
 Sets the position for the [SoftBody3D] vertex at the index specified by [param vertex_id].
 */
-func (self Instance) SetVertex(vertex_id int, vertex Vector3.XYZ) {
+func (self Instance) SetVertex(vertex_id int, vertex Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
 	class(self).SetVertex(gd.Int(vertex_id), gd.Vector3(vertex))
 }
 
 /*
 Sets the normal for the [SoftBody3D] vertex at the index specified by [param vertex_id].
 */
-func (self Instance) SetNormal(vertex_id int, normal Vector3.XYZ) {
+func (self Instance) SetNormal(vertex_id int, normal Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_normal
 	class(self).SetNormal(gd.Int(vertex_id), gd.Vector3(normal))
 }
 
 /*
 Sets the bounding box for the [SoftBody3D].
 */
-func (self Instance) SetAabb(aabb AABB.PositionSize) {
+func (self Instance) SetAabb(aabb AABB.PositionSize) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
 	class(self).SetAabb(gd.AABB(aabb))
 }
 
@@ -181,7 +181,7 @@ func (class) _set_aabb(impl func(ptr unsafe.Pointer, aabb gd.AABB)) (cb gd.Exten
 Sets the position for the [SoftBody3D] vertex at the index specified by [param vertex_id].
 */
 //go:nosplit
-func (self class) SetVertex(vertex_id gd.Int, vertex gd.Vector3) {
+func (self class) SetVertex(vertex_id gd.Int, vertex gd.Vector3) { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex_id)
 	callframe.Arg(frame, vertex)
@@ -194,7 +194,7 @@ func (self class) SetVertex(vertex_id gd.Int, vertex gd.Vector3) {
 Sets the normal for the [SoftBody3D] vertex at the index specified by [param vertex_id].
 */
 //go:nosplit
-func (self class) SetNormal(vertex_id gd.Int, normal gd.Vector3) {
+func (self class) SetNormal(vertex_id gd.Int, normal gd.Vector3) { //gd:PhysicsServer3DRenderingServerHandler.set_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex_id)
 	callframe.Arg(frame, normal)
@@ -207,7 +207,7 @@ func (self class) SetNormal(vertex_id gd.Int, normal gd.Vector3) {
 Sets the bounding box for the [SoftBody3D].
 */
 //go:nosplit
-func (self class) SetAabb(aabb gd.AABB) {
+func (self class) SetAabb(aabb gd.AABB) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
 	var r_ret = callframe.Nil

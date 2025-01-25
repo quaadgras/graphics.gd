@@ -82,7 +82,7 @@ func (self Instance) SetTextureType(value gdclass.VisualShaderNodeTextureTexture
 }
 
 //go:nosplit
-func (self class) SetSource(value gdclass.VisualShaderNodeTextureSource) {
+func (self class) SetSource(value gdclass.VisualShaderNodeTextureSource) { //gd:VisualShaderNodeTexture.set_source
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -91,7 +91,7 @@ func (self class) SetSource(value gdclass.VisualShaderNodeTextureSource) {
 }
 
 //go:nosplit
-func (self class) GetSource() gdclass.VisualShaderNodeTextureSource {
+func (self class) GetSource() gdclass.VisualShaderNodeTextureSource { //gd:VisualShaderNodeTexture.get_source
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTextureSource](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) GetSource() gdclass.VisualShaderNodeTextureSource {
 }
 
 //go:nosplit
-func (self class) SetTexture(value [1]gdclass.Texture2D) {
+func (self class) SetTexture(value [1]gdclass.Texture2D) { //gd:VisualShaderNodeTexture.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value[0])[0])
 	var r_ret = callframe.Nil
@@ -110,7 +110,7 @@ func (self class) SetTexture(value [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture2D {
+func (self class) GetTexture() [1]gdclass.Texture2D { //gd:VisualShaderNodeTexture.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetTextureType(value gdclass.VisualShaderNodeTextureTextureType) {
+func (self class) SetTextureType(value gdclass.VisualShaderNodeTextureTextureType) { //gd:VisualShaderNodeTexture.set_texture_type
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetTextureType(value gdclass.VisualShaderNodeTextureTextureTyp
 }
 
 //go:nosplit
-func (self class) GetTextureType() gdclass.VisualShaderNodeTextureTextureType {
+func (self class) GetTextureType() gdclass.VisualShaderNodeTextureTextureType { //gd:VisualShaderNodeTexture.get_texture_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTextureTextureType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -179,7 +179,7 @@ func init() {
 	})
 }
 
-type Source = gdclass.VisualShaderNodeTextureSource
+type Source = gdclass.VisualShaderNodeTextureSource //gd:VisualShaderNodeTexture.Source
 
 const (
 	/*Use the texture given as an argument for this function.*/
@@ -202,7 +202,7 @@ const (
 	SourceMax Source = 8
 )
 
-type TextureType = gdclass.VisualShaderNodeTextureTextureType
+type TextureType = gdclass.VisualShaderNodeTextureTextureType //gd:VisualShaderNodeTexture.TextureType
 
 const (
 	/*No hints are added to the uniform declaration.*/

@@ -43,7 +43,7 @@ type Any interface {
 /*
 [RemoteTransform3D] caches the remote node. It may not notice if the remote node disappears; [method force_update_cache] forces it to update the cache again.
 */
-func (self Instance) ForceUpdateCache() {
+func (self Instance) ForceUpdateCache() { //gd:RemoteTransform3D.force_update_cache
 	class(self).ForceUpdateCache()
 }
 
@@ -106,7 +106,7 @@ func (self Instance) SetUpdateScale(value bool) {
 }
 
 //go:nosplit
-func (self class) SetRemoteNode(path gd.NodePath) {
+func (self class) SetRemoteNode(path gd.NodePath) { //gd:RemoteTransform3D.set_remote_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -115,7 +115,7 @@ func (self class) SetRemoteNode(path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetRemoteNode() gd.NodePath {
+func (self class) GetRemoteNode() gd.NodePath { //gd:RemoteTransform3D.get_remote_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform3D.Bind_get_remote_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -128,7 +128,7 @@ func (self class) GetRemoteNode() gd.NodePath {
 [RemoteTransform3D] caches the remote node. It may not notice if the remote node disappears; [method force_update_cache] forces it to update the cache again.
 */
 //go:nosplit
-func (self class) ForceUpdateCache() {
+func (self class) ForceUpdateCache() { //gd:RemoteTransform3D.force_update_cache
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform3D.Bind_force_update_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -136,7 +136,7 @@ func (self class) ForceUpdateCache() {
 }
 
 //go:nosplit
-func (self class) SetUseGlobalCoordinates(use_global_coordinates bool) {
+func (self class) SetUseGlobalCoordinates(use_global_coordinates bool) { //gd:RemoteTransform3D.set_use_global_coordinates
 	var frame = callframe.New()
 	callframe.Arg(frame, use_global_coordinates)
 	var r_ret = callframe.Nil
@@ -145,7 +145,7 @@ func (self class) SetUseGlobalCoordinates(use_global_coordinates bool) {
 }
 
 //go:nosplit
-func (self class) GetUseGlobalCoordinates() bool {
+func (self class) GetUseGlobalCoordinates() bool { //gd:RemoteTransform3D.get_use_global_coordinates
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform3D.Bind_get_use_global_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -155,7 +155,7 @@ func (self class) GetUseGlobalCoordinates() bool {
 }
 
 //go:nosplit
-func (self class) SetUpdatePosition(update_remote_position bool) {
+func (self class) SetUpdatePosition(update_remote_position bool) { //gd:RemoteTransform3D.set_update_position
 	var frame = callframe.New()
 	callframe.Arg(frame, update_remote_position)
 	var r_ret = callframe.Nil
@@ -164,7 +164,7 @@ func (self class) SetUpdatePosition(update_remote_position bool) {
 }
 
 //go:nosplit
-func (self class) GetUpdatePosition() bool {
+func (self class) GetUpdatePosition() bool { //gd:RemoteTransform3D.get_update_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform3D.Bind_get_update_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func (self class) GetUpdatePosition() bool {
 }
 
 //go:nosplit
-func (self class) SetUpdateRotation(update_remote_rotation bool) {
+func (self class) SetUpdateRotation(update_remote_rotation bool) { //gd:RemoteTransform3D.set_update_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, update_remote_rotation)
 	var r_ret = callframe.Nil
@@ -183,7 +183,7 @@ func (self class) SetUpdateRotation(update_remote_rotation bool) {
 }
 
 //go:nosplit
-func (self class) GetUpdateRotation() bool {
+func (self class) GetUpdateRotation() bool { //gd:RemoteTransform3D.get_update_rotation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform3D.Bind_get_update_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -193,7 +193,7 @@ func (self class) GetUpdateRotation() bool {
 }
 
 //go:nosplit
-func (self class) SetUpdateScale(update_remote_scale bool) {
+func (self class) SetUpdateScale(update_remote_scale bool) { //gd:RemoteTransform3D.set_update_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, update_remote_scale)
 	var r_ret = callframe.Nil
@@ -202,7 +202,7 @@ func (self class) SetUpdateScale(update_remote_scale bool) {
 }
 
 //go:nosplit
-func (self class) GetUpdateScale() bool {
+func (self class) GetUpdateScale() bool { //gd:RemoteTransform3D.get_update_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RemoteTransform3D.Bind_get_update_scale, self.AsObject(), frame.Array(0), r_ret.Addr())

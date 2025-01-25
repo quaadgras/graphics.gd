@@ -43,28 +43,28 @@ type Any interface {
 /*
 Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [member spawn_path].
 */
-func (self Instance) AddSpawnableScene(path string) {
+func (self Instance) AddSpawnableScene(path string) { //gd:MultiplayerSpawner.add_spawnable_scene
 	class(self).AddSpawnableScene(gd.NewString(path))
 }
 
 /*
 Returns the count of spawnable scene paths.
 */
-func (self Instance) GetSpawnableSceneCount() int {
+func (self Instance) GetSpawnableSceneCount() int { //gd:MultiplayerSpawner.get_spawnable_scene_count
 	return int(int(class(self).GetSpawnableSceneCount()))
 }
 
 /*
 Returns the spawnable scene path by index.
 */
-func (self Instance) GetSpawnableScene(index int) string {
+func (self Instance) GetSpawnableScene(index int) string { //gd:MultiplayerSpawner.get_spawnable_scene
 	return string(class(self).GetSpawnableScene(gd.Int(index)).String())
 }
 
 /*
 Clears all spawnable scenes. Does not despawn existing instances on remote peers.
 */
-func (self Instance) ClearSpawnableScenes() {
+func (self Instance) ClearSpawnableScenes() { //gd:MultiplayerSpawner.clear_spawnable_scenes
 	class(self).ClearSpawnableScenes()
 }
 
@@ -72,7 +72,7 @@ func (self Instance) ClearSpawnableScenes() {
 Requests a custom spawn, with [param data] passed to [member spawn_function] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [member spawn_path].
 [b]Note:[/b] Spawnable scenes are spawned automatically. [method spawn] is only needed for custom spawns.
 */
-func (self Instance) Spawn() [1]gdclass.Node {
+func (self Instance) Spawn() [1]gdclass.Node { //gd:MultiplayerSpawner.spawn
 	return [1]gdclass.Node(class(self).Spawn(gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
@@ -122,7 +122,7 @@ func (self Instance) SetSpawnFunction(value Callable.Function) {
 Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [member spawn_path].
 */
 //go:nosplit
-func (self class) AddSpawnableScene(path gd.String) {
+func (self class) AddSpawnableScene(path gd.String) { //gd:MultiplayerSpawner.add_spawnable_scene
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -134,7 +134,7 @@ func (self class) AddSpawnableScene(path gd.String) {
 Returns the count of spawnable scene paths.
 */
 //go:nosplit
-func (self class) GetSpawnableSceneCount() gd.Int {
+func (self class) GetSpawnableSceneCount() gd.Int { //gd:MultiplayerSpawner.get_spawnable_scene_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawnable_scene_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -147,7 +147,7 @@ func (self class) GetSpawnableSceneCount() gd.Int {
 Returns the spawnable scene path by index.
 */
 //go:nosplit
-func (self class) GetSpawnableScene(index gd.Int) gd.String {
+func (self class) GetSpawnableScene(index gd.Int) gd.String { //gd:MultiplayerSpawner.get_spawnable_scene
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -161,7 +161,7 @@ func (self class) GetSpawnableScene(index gd.Int) gd.String {
 Clears all spawnable scenes. Does not despawn existing instances on remote peers.
 */
 //go:nosplit
-func (self class) ClearSpawnableScenes() {
+func (self class) ClearSpawnableScenes() { //gd:MultiplayerSpawner.clear_spawnable_scenes
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_clear_spawnable_scenes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ Requests a custom spawn, with [param data] passed to [member spawn_function] on 
 [b]Note:[/b] Spawnable scenes are spawned automatically. [method spawn] is only needed for custom spawns.
 */
 //go:nosplit
-func (self class) Spawn(data gd.Variant) [1]gdclass.Node {
+func (self class) Spawn(data gd.Variant) [1]gdclass.Node { //gd:MultiplayerSpawner.spawn
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -184,7 +184,7 @@ func (self class) Spawn(data gd.Variant) [1]gdclass.Node {
 }
 
 //go:nosplit
-func (self class) GetSpawnPath() gd.NodePath {
+func (self class) GetSpawnPath() gd.NodePath { //gd:MultiplayerSpawner.get_spawn_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -194,7 +194,7 @@ func (self class) GetSpawnPath() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetSpawnPath(path gd.NodePath) {
+func (self class) SetSpawnPath(path gd.NodePath) { //gd:MultiplayerSpawner.set_spawn_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -203,7 +203,7 @@ func (self class) SetSpawnPath(path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetSpawnLimit() gd.Int {
+func (self class) GetSpawnLimit() gd.Int { //gd:MultiplayerSpawner.get_spawn_limit
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -213,7 +213,7 @@ func (self class) GetSpawnLimit() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSpawnLimit(limit gd.Int) {
+func (self class) SetSpawnLimit(limit gd.Int) { //gd:MultiplayerSpawner.set_spawn_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, limit)
 	var r_ret = callframe.Nil
@@ -222,7 +222,7 @@ func (self class) SetSpawnLimit(limit gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSpawnFunction() Callable.Function {
+func (self class) GetSpawnFunction() Callable.Function { //gd:MultiplayerSpawner.get_spawn_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[2]uint64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -232,7 +232,7 @@ func (self class) GetSpawnFunction() Callable.Function {
 }
 
 //go:nosplit
-func (self class) SetSpawnFunction(spawn_function Callable.Function) {
+func (self class) SetSpawnFunction(spawn_function Callable.Function) { //gd:MultiplayerSpawner.set_spawn_function
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(spawn_function)))
 	var r_ret = callframe.Nil

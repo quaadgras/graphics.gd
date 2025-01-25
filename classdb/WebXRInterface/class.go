@@ -137,14 +137,14 @@ Checks if the given [param session_mode] is supported by the user's browser.
 Possible values come from [url=https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode]WebXR's XRSessionMode[/url], including: [code]"immersive-vr"[/code], [code]"immersive-ar"[/code], and [code]"inline"[/code].
 This method returns nothing, instead it emits the [signal session_supported] signal with the result.
 */
-func (self Instance) IsSessionSupported(session_mode string) {
+func (self Instance) IsSessionSupported(session_mode string) { //gd:WebXRInterface.is_session_supported
 	class(self).IsSessionSupported(gd.NewString(session_mode))
 }
 
 /*
 Returns [code]true[/code] if there is an active input source with the given [param input_source_id].
 */
-func (self Instance) IsInputSourceActive(input_source_id int) bool {
+func (self Instance) IsInputSourceActive(input_source_id int) bool { //gd:WebXRInterface.is_input_source_active
 	return bool(class(self).IsInputSourceActive(gd.Int(input_source_id)))
 }
 
@@ -159,7 +159,7 @@ Use this method to get information about the input source that triggered one of 
 - [signal squeeze]
 - [signal squeezestart]
 */
-func (self Instance) GetInputSourceTracker(input_source_id int) [1]gdclass.XRControllerTracker {
+func (self Instance) GetInputSourceTracker(input_source_id int) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
 	return [1]gdclass.XRControllerTracker(class(self).GetInputSourceTracker(gd.Int(input_source_id)))
 }
 
@@ -167,28 +167,28 @@ func (self Instance) GetInputSourceTracker(input_source_id int) [1]gdclass.XRCon
 Returns the target ray mode for the given [param input_source_id].
 This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
 */
-func (self Instance) GetInputSourceTargetRayMode(input_source_id int) gdclass.WebXRInterfaceTargetRayMode {
+func (self Instance) GetInputSourceTargetRayMode(input_source_id int) gdclass.WebXRInterfaceTargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
 	return gdclass.WebXRInterfaceTargetRayMode(class(self).GetInputSourceTargetRayMode(gd.Int(input_source_id)))
 }
 
 /*
 Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [method set_display_refresh_rate].
 */
-func (self Instance) GetDisplayRefreshRate() Float.X {
+func (self Instance) GetDisplayRefreshRate() Float.X { //gd:WebXRInterface.get_display_refresh_rate
 	return Float.X(Float.X(class(self).GetDisplayRefreshRate()))
 }
 
 /*
 Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [signal display_refresh_rate_changed] is emitted.
 */
-func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) {
+func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) { //gd:WebXRInterface.set_display_refresh_rate
 	class(self).SetDisplayRefreshRate(gd.Float(refresh_rate))
 }
 
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the web browser and after the interface has been initialized.
 */
-func (self Instance) GetAvailableDisplayRefreshRates() []any {
+func (self Instance) GetAvailableDisplayRefreshRates() []any { //gd:WebXRInterface.get_available_display_refresh_rates
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetAvailableDisplayRefreshRates())))
 }
 
@@ -261,7 +261,7 @@ Possible values come from [url=https://developer.mozilla.org/en-US/docs/Web/API/
 This method returns nothing, instead it emits the [signal session_supported] signal with the result.
 */
 //go:nosplit
-func (self class) IsSessionSupported(session_mode gd.String) {
+func (self class) IsSessionSupported(session_mode gd.String) { //gd:WebXRInterface.is_session_supported
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(session_mode))
 	var r_ret = callframe.Nil
@@ -270,7 +270,7 @@ func (self class) IsSessionSupported(session_mode gd.String) {
 }
 
 //go:nosplit
-func (self class) SetSessionMode(session_mode gd.String) {
+func (self class) SetSessionMode(session_mode gd.String) { //gd:WebXRInterface.set_session_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(session_mode))
 	var r_ret = callframe.Nil
@@ -279,7 +279,7 @@ func (self class) SetSessionMode(session_mode gd.String) {
 }
 
 //go:nosplit
-func (self class) GetSessionMode() gd.String {
+func (self class) GetSessionMode() gd.String { //gd:WebXRInterface.get_session_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_session_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -289,7 +289,7 @@ func (self class) GetSessionMode() gd.String {
 }
 
 //go:nosplit
-func (self class) SetRequiredFeatures(required_features gd.String) {
+func (self class) SetRequiredFeatures(required_features gd.String) { //gd:WebXRInterface.set_required_features
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(required_features))
 	var r_ret = callframe.Nil
@@ -298,7 +298,7 @@ func (self class) SetRequiredFeatures(required_features gd.String) {
 }
 
 //go:nosplit
-func (self class) GetRequiredFeatures() gd.String {
+func (self class) GetRequiredFeatures() gd.String { //gd:WebXRInterface.get_required_features
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_required_features, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -308,7 +308,7 @@ func (self class) GetRequiredFeatures() gd.String {
 }
 
 //go:nosplit
-func (self class) SetOptionalFeatures(optional_features gd.String) {
+func (self class) SetOptionalFeatures(optional_features gd.String) { //gd:WebXRInterface.set_optional_features
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(optional_features))
 	var r_ret = callframe.Nil
@@ -317,7 +317,7 @@ func (self class) SetOptionalFeatures(optional_features gd.String) {
 }
 
 //go:nosplit
-func (self class) GetOptionalFeatures() gd.String {
+func (self class) GetOptionalFeatures() gd.String { //gd:WebXRInterface.get_optional_features
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_optional_features, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -327,7 +327,7 @@ func (self class) GetOptionalFeatures() gd.String {
 }
 
 //go:nosplit
-func (self class) GetReferenceSpaceType() gd.String {
+func (self class) GetReferenceSpaceType() gd.String { //gd:WebXRInterface.get_reference_space_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_reference_space_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -337,7 +337,7 @@ func (self class) GetReferenceSpaceType() gd.String {
 }
 
 //go:nosplit
-func (self class) GetEnabledFeatures() gd.String {
+func (self class) GetEnabledFeatures() gd.String { //gd:WebXRInterface.get_enabled_features
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_enabled_features, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -347,7 +347,7 @@ func (self class) GetEnabledFeatures() gd.String {
 }
 
 //go:nosplit
-func (self class) SetRequestedReferenceSpaceTypes(requested_reference_space_types gd.String) {
+func (self class) SetRequestedReferenceSpaceTypes(requested_reference_space_types gd.String) { //gd:WebXRInterface.set_requested_reference_space_types
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(requested_reference_space_types))
 	var r_ret = callframe.Nil
@@ -356,7 +356,7 @@ func (self class) SetRequestedReferenceSpaceTypes(requested_reference_space_type
 }
 
 //go:nosplit
-func (self class) GetRequestedReferenceSpaceTypes() gd.String {
+func (self class) GetRequestedReferenceSpaceTypes() gd.String { //gd:WebXRInterface.get_requested_reference_space_types
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_requested_reference_space_types, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -369,7 +369,7 @@ func (self class) GetRequestedReferenceSpaceTypes() gd.String {
 Returns [code]true[/code] if there is an active input source with the given [param input_source_id].
 */
 //go:nosplit
-func (self class) IsInputSourceActive(input_source_id gd.Int) bool {
+func (self class) IsInputSourceActive(input_source_id gd.Int) bool { //gd:WebXRInterface.is_input_source_active
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -391,7 +391,7 @@ Use this method to get information about the input source that triggered one of 
 - [signal squeezestart]
 */
 //go:nosplit
-func (self class) GetInputSourceTracker(input_source_id gd.Int) [1]gdclass.XRControllerTracker {
+func (self class) GetInputSourceTracker(input_source_id gd.Int) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -406,7 +406,7 @@ Returns the target ray mode for the given [param input_source_id].
 This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
 */
 //go:nosplit
-func (self class) GetInputSourceTargetRayMode(input_source_id gd.Int) gdclass.WebXRInterfaceTargetRayMode {
+func (self class) GetInputSourceTargetRayMode(input_source_id gd.Int) gdclass.WebXRInterfaceTargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
 	var r_ret = callframe.Ret[gdclass.WebXRInterfaceTargetRayMode](frame)
@@ -417,7 +417,7 @@ func (self class) GetInputSourceTargetRayMode(input_source_id gd.Int) gdclass.We
 }
 
 //go:nosplit
-func (self class) GetVisibilityState() gd.String {
+func (self class) GetVisibilityState() gd.String { //gd:WebXRInterface.get_visibility_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_visibility_state, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -430,7 +430,7 @@ func (self class) GetVisibilityState() gd.String {
 Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [method set_display_refresh_rate].
 */
 //go:nosplit
-func (self class) GetDisplayRefreshRate() gd.Float {
+func (self class) GetDisplayRefreshRate() gd.Float { //gd:WebXRInterface.get_display_refresh_rate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_display_refresh_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -443,7 +443,7 @@ func (self class) GetDisplayRefreshRate() gd.Float {
 Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [signal display_refresh_rate_changed] is emitted.
 */
 //go:nosplit
-func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) {
+func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) { //gd:WebXRInterface.set_display_refresh_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, refresh_rate)
 	var r_ret = callframe.Nil
@@ -455,7 +455,7 @@ func (self class) SetDisplayRefreshRate(refresh_rate gd.Float) {
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the web browser and after the interface has been initialized.
 */
 //go:nosplit
-func (self class) GetAvailableDisplayRefreshRates() Array.Any {
+func (self class) GetAvailableDisplayRefreshRates() Array.Any { //gd:WebXRInterface.get_available_display_refresh_rates
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_available_display_refresh_rates, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -549,7 +549,7 @@ func init() {
 	})
 }
 
-type TargetRayMode = gdclass.WebXRInterfaceTargetRayMode
+type TargetRayMode = gdclass.WebXRInterfaceTargetRayMode //gd:WebXRInterface.TargetRayMode
 
 const (
 	/*We don't know the the target ray mode.*/

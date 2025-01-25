@@ -83,21 +83,21 @@ func (Instance) _toggled(impl func(ptr unsafe.Pointer, toggled_on bool)) (cb gd.
 Changes the [member button_pressed] state of the button, without emitting [signal toggled]. Use when you just want to change the state of the button without sending the pressed event (e.g. when initializing scene). Only works if [member toggle_mode] is [code]true[/code].
 [b]Note:[/b] This method doesn't unpress other buttons in [member button_group].
 */
-func (self Instance) SetPressedNoSignal(pressed bool) {
+func (self Instance) SetPressedNoSignal(pressed bool) { //gd:BaseButton.set_pressed_no_signal
 	class(self).SetPressedNoSignal(pressed)
 }
 
 /*
 Returns [code]true[/code] if the mouse has entered the button and has not left it yet.
 */
-func (self Instance) IsHovered() bool {
+func (self Instance) IsHovered() bool { //gd:BaseButton.is_hovered
 	return bool(class(self).IsHovered())
 }
 
 /*
 Returns the visual state used to draw the button. This is useful mainly when implementing your own draw code by either overriding _draw() or connecting to "draw" signal. The visual state of the button is defined by the [enum DrawMode] enum.
 */
-func (self Instance) GetDrawMode() gdclass.BaseButtonDrawMode {
+func (self Instance) GetDrawMode() gdclass.BaseButtonDrawMode { //gd:BaseButton.get_draw_mode
 	return gdclass.BaseButtonDrawMode(class(self).GetDrawMode())
 }
 
@@ -222,7 +222,7 @@ func (class) _toggled(impl func(ptr unsafe.Pointer, toggled_on bool)) (cb gd.Ext
 }
 
 //go:nosplit
-func (self class) SetPressed(pressed bool) {
+func (self class) SetPressed(pressed bool) { //gd:BaseButton.set_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -231,7 +231,7 @@ func (self class) SetPressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) IsPressed() bool {
+func (self class) IsPressed() bool { //gd:BaseButton.is_pressed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_is_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -245,7 +245,7 @@ Changes the [member button_pressed] state of the button, without emitting [signa
 [b]Note:[/b] This method doesn't unpress other buttons in [member button_group].
 */
 //go:nosplit
-func (self class) SetPressedNoSignal(pressed bool) {
+func (self class) SetPressedNoSignal(pressed bool) { //gd:BaseButton.set_pressed_no_signal
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -257,7 +257,7 @@ func (self class) SetPressedNoSignal(pressed bool) {
 Returns [code]true[/code] if the mouse has entered the button and has not left it yet.
 */
 //go:nosplit
-func (self class) IsHovered() bool {
+func (self class) IsHovered() bool { //gd:BaseButton.is_hovered
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_is_hovered, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -267,7 +267,7 @@ func (self class) IsHovered() bool {
 }
 
 //go:nosplit
-func (self class) SetToggleMode(enabled bool) {
+func (self class) SetToggleMode(enabled bool) { //gd:BaseButton.set_toggle_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -276,7 +276,7 @@ func (self class) SetToggleMode(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsToggleMode() bool {
+func (self class) IsToggleMode() bool { //gd:BaseButton.is_toggle_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_is_toggle_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -286,7 +286,7 @@ func (self class) IsToggleMode() bool {
 }
 
 //go:nosplit
-func (self class) SetShortcutInTooltip(enabled bool) {
+func (self class) SetShortcutInTooltip(enabled bool) { //gd:BaseButton.set_shortcut_in_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -295,7 +295,7 @@ func (self class) SetShortcutInTooltip(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsShortcutInTooltipEnabled() bool {
+func (self class) IsShortcutInTooltipEnabled() bool { //gd:BaseButton.is_shortcut_in_tooltip_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_is_shortcut_in_tooltip_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -305,7 +305,7 @@ func (self class) IsShortcutInTooltipEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDisabled(disabled bool) {
+func (self class) SetDisabled(disabled bool) { //gd:BaseButton.set_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, disabled)
 	var r_ret = callframe.Nil
@@ -314,7 +314,7 @@ func (self class) SetDisabled(disabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDisabled() bool {
+func (self class) IsDisabled() bool { //gd:BaseButton.is_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_is_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -324,7 +324,7 @@ func (self class) IsDisabled() bool {
 }
 
 //go:nosplit
-func (self class) SetActionMode(mode gdclass.BaseButtonActionMode) {
+func (self class) SetActionMode(mode gdclass.BaseButtonActionMode) { //gd:BaseButton.set_action_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -333,7 +333,7 @@ func (self class) SetActionMode(mode gdclass.BaseButtonActionMode) {
 }
 
 //go:nosplit
-func (self class) GetActionMode() gdclass.BaseButtonActionMode {
+func (self class) GetActionMode() gdclass.BaseButtonActionMode { //gd:BaseButton.get_action_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseButtonActionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_action_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -343,7 +343,7 @@ func (self class) GetActionMode() gdclass.BaseButtonActionMode {
 }
 
 //go:nosplit
-func (self class) SetButtonMask(mask MouseButtonMask) {
+func (self class) SetButtonMask(mask MouseButtonMask) { //gd:BaseButton.set_button_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -352,7 +352,7 @@ func (self class) SetButtonMask(mask MouseButtonMask) {
 }
 
 //go:nosplit
-func (self class) GetButtonMask() MouseButtonMask {
+func (self class) GetButtonMask() MouseButtonMask { //gd:BaseButton.get_button_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[MouseButtonMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_button_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -365,7 +365,7 @@ func (self class) GetButtonMask() MouseButtonMask {
 Returns the visual state used to draw the button. This is useful mainly when implementing your own draw code by either overriding _draw() or connecting to "draw" signal. The visual state of the button is defined by the [enum DrawMode] enum.
 */
 //go:nosplit
-func (self class) GetDrawMode() gdclass.BaseButtonDrawMode {
+func (self class) GetDrawMode() gdclass.BaseButtonDrawMode { //gd:BaseButton.get_draw_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BaseButtonDrawMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_draw_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -375,7 +375,7 @@ func (self class) GetDrawMode() gdclass.BaseButtonDrawMode {
 }
 
 //go:nosplit
-func (self class) SetKeepPressedOutside(enabled bool) {
+func (self class) SetKeepPressedOutside(enabled bool) { //gd:BaseButton.set_keep_pressed_outside
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -384,7 +384,7 @@ func (self class) SetKeepPressedOutside(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsKeepPressedOutside() bool {
+func (self class) IsKeepPressedOutside() bool { //gd:BaseButton.is_keep_pressed_outside
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_is_keep_pressed_outside, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -394,7 +394,7 @@ func (self class) IsKeepPressedOutside() bool {
 }
 
 //go:nosplit
-func (self class) SetShortcutFeedback(enabled bool) {
+func (self class) SetShortcutFeedback(enabled bool) { //gd:BaseButton.set_shortcut_feedback
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -403,7 +403,7 @@ func (self class) SetShortcutFeedback(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsShortcutFeedback() bool {
+func (self class) IsShortcutFeedback() bool { //gd:BaseButton.is_shortcut_feedback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_is_shortcut_feedback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -413,7 +413,7 @@ func (self class) IsShortcutFeedback() bool {
 }
 
 //go:nosplit
-func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) {
+func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:BaseButton.set_shortcut
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
 	var r_ret = callframe.Nil
@@ -422,7 +422,7 @@ func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) {
 }
 
 //go:nosplit
-func (self class) GetShortcut() [1]gdclass.Shortcut {
+func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:BaseButton.get_shortcut
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_shortcut, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -432,7 +432,7 @@ func (self class) GetShortcut() [1]gdclass.Shortcut {
 }
 
 //go:nosplit
-func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) {
+func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) { //gd:BaseButton.set_button_group
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(button_group[0])[0])
 	var r_ret = callframe.Nil
@@ -441,7 +441,7 @@ func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) {
 }
 
 //go:nosplit
-func (self class) GetButtonGroup() [1]gdclass.ButtonGroup {
+func (self class) GetButtonGroup() [1]gdclass.ButtonGroup { //gd:BaseButton.get_button_group
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_button_group, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -505,7 +505,7 @@ func init() {
 	gdclass.Register("BaseButton", func(ptr gd.Object) any { return [1]gdclass.BaseButton{*(*gdclass.BaseButton)(unsafe.Pointer(&ptr))} })
 }
 
-type DrawMode = gdclass.BaseButtonDrawMode
+type DrawMode = gdclass.BaseButtonDrawMode //gd:BaseButton.DrawMode
 
 const (
 	/*The normal state (i.e. not pressed, not hovered, not toggled and enabled) of buttons.*/
@@ -520,7 +520,7 @@ const (
 	DrawHoverPressed DrawMode = 4
 )
 
-type ActionMode = gdclass.BaseButtonActionMode
+type ActionMode = gdclass.BaseButtonActionMode //gd:BaseButton.ActionMode
 
 const (
 	/*Require just a press to consider the button clicked.*/

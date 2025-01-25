@@ -76,7 +76,7 @@ func (self Instance) SetRect(value Rect2.PositionSize) {
 }
 
 //go:nosplit
-func (self class) SetRect(rect gd.Rect2) {
+func (self class) SetRect(rect gd.Rect2) { //gd:BackBufferCopy.set_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -85,7 +85,7 @@ func (self class) SetRect(rect gd.Rect2) {
 }
 
 //go:nosplit
-func (self class) GetRect() gd.Rect2 {
+func (self class) GetRect() gd.Rect2 { //gd:BackBufferCopy.get_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) GetRect() gd.Rect2 {
 }
 
 //go:nosplit
-func (self class) SetCopyMode(copy_mode gdclass.BackBufferCopyCopyMode) {
+func (self class) SetCopyMode(copy_mode gdclass.BackBufferCopyCopyMode) { //gd:BackBufferCopy.set_copy_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, copy_mode)
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetCopyMode(copy_mode gdclass.BackBufferCopyCopyMode) {
 }
 
 //go:nosplit
-func (self class) GetCopyMode() gdclass.BackBufferCopyCopyMode {
+func (self class) GetCopyMode() gdclass.BackBufferCopyCopyMode { //gd:BackBufferCopy.get_copy_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BackBufferCopyCopyMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_get_copy_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -144,7 +144,7 @@ func init() {
 	})
 }
 
-type CopyMode = gdclass.BackBufferCopyCopyMode
+type CopyMode = gdclass.BackBufferCopyCopyMode //gd:BackBufferCopy.CopyMode
 
 const (
 	/*Disables the buffering mode. This means the [BackBufferCopy] node will directly use the portion of screen it covers.*/

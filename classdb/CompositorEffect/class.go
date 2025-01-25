@@ -160,7 +160,7 @@ func (class) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type
 }
 
 //go:nosplit
-func (self class) SetEnabled(enabled bool) {
+func (self class) SetEnabled(enabled bool) { //gd:CompositorEffect.set_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -169,7 +169,7 @@ func (self class) SetEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetEnabled() bool {
+func (self class) GetEnabled() bool { //gd:CompositorEffect.get_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompositorEffect.Bind_get_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -179,7 +179,7 @@ func (self class) GetEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetEffectCallbackType(effect_callback_type gdclass.CompositorEffectEffectCallbackType) {
+func (self class) SetEffectCallbackType(effect_callback_type gdclass.CompositorEffectEffectCallbackType) { //gd:CompositorEffect.set_effect_callback_type
 	var frame = callframe.New()
 	callframe.Arg(frame, effect_callback_type)
 	var r_ret = callframe.Nil
@@ -188,7 +188,7 @@ func (self class) SetEffectCallbackType(effect_callback_type gdclass.CompositorE
 }
 
 //go:nosplit
-func (self class) GetEffectCallbackType() gdclass.CompositorEffectEffectCallbackType {
+func (self class) GetEffectCallbackType() gdclass.CompositorEffectEffectCallbackType { //gd:CompositorEffect.get_effect_callback_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CompositorEffectEffectCallbackType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompositorEffect.Bind_get_effect_callback_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -198,7 +198,7 @@ func (self class) GetEffectCallbackType() gdclass.CompositorEffectEffectCallback
 }
 
 //go:nosplit
-func (self class) SetAccessResolvedColor(enable bool) {
+func (self class) SetAccessResolvedColor(enable bool) { //gd:CompositorEffect.set_access_resolved_color
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -207,7 +207,7 @@ func (self class) SetAccessResolvedColor(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetAccessResolvedColor() bool {
+func (self class) GetAccessResolvedColor() bool { //gd:CompositorEffect.get_access_resolved_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompositorEffect.Bind_get_access_resolved_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -217,7 +217,7 @@ func (self class) GetAccessResolvedColor() bool {
 }
 
 //go:nosplit
-func (self class) SetAccessResolvedDepth(enable bool) {
+func (self class) SetAccessResolvedDepth(enable bool) { //gd:CompositorEffect.set_access_resolved_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -226,7 +226,7 @@ func (self class) SetAccessResolvedDepth(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetAccessResolvedDepth() bool {
+func (self class) GetAccessResolvedDepth() bool { //gd:CompositorEffect.get_access_resolved_depth
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompositorEffect.Bind_get_access_resolved_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -236,7 +236,7 @@ func (self class) GetAccessResolvedDepth() bool {
 }
 
 //go:nosplit
-func (self class) SetNeedsMotionVectors(enable bool) {
+func (self class) SetNeedsMotionVectors(enable bool) { //gd:CompositorEffect.set_needs_motion_vectors
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -245,7 +245,7 @@ func (self class) SetNeedsMotionVectors(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetNeedsMotionVectors() bool {
+func (self class) GetNeedsMotionVectors() bool { //gd:CompositorEffect.get_needs_motion_vectors
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompositorEffect.Bind_get_needs_motion_vectors, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -255,7 +255,7 @@ func (self class) GetNeedsMotionVectors() bool {
 }
 
 //go:nosplit
-func (self class) SetNeedsNormalRoughness(enable bool) {
+func (self class) SetNeedsNormalRoughness(enable bool) { //gd:CompositorEffect.set_needs_normal_roughness
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -264,7 +264,7 @@ func (self class) SetNeedsNormalRoughness(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetNeedsNormalRoughness() bool {
+func (self class) GetNeedsNormalRoughness() bool { //gd:CompositorEffect.get_needs_normal_roughness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompositorEffect.Bind_get_needs_normal_roughness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -274,7 +274,7 @@ func (self class) GetNeedsNormalRoughness() bool {
 }
 
 //go:nosplit
-func (self class) SetNeedsSeparateSpecular(enable bool) {
+func (self class) SetNeedsSeparateSpecular(enable bool) { //gd:CompositorEffect.set_needs_separate_specular
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -283,7 +283,7 @@ func (self class) SetNeedsSeparateSpecular(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetNeedsSeparateSpecular() bool {
+func (self class) GetNeedsSeparateSpecular() bool { //gd:CompositorEffect.get_needs_separate_specular
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CompositorEffect.Bind_get_needs_separate_specular, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -329,7 +329,7 @@ func init() {
 	})
 }
 
-type EffectCallbackType = gdclass.CompositorEffectEffectCallbackType
+type EffectCallbackType = gdclass.CompositorEffectEffectCallbackType //gd:CompositorEffect.EffectCallbackType
 
 const (
 	/*The callback is called before our opaque rendering pass, but after depth prepass (if applicable).*/

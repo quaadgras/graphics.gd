@@ -71,7 +71,7 @@ func (self Instance) SetScriptOwner(value [1]gdclass.Node) {
 }
 
 //go:nosplit
-func (self class) SetScriptOwner(owner_node [1]gdclass.Node) {
+func (self class) SetScriptOwner(owner_node [1]gdclass.Node) { //gd:EditorScriptPicker.set_script_owner
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -80,7 +80,7 @@ func (self class) SetScriptOwner(owner_node [1]gdclass.Node) {
 }
 
 //go:nosplit
-func (self class) GetScriptOwner() [1]gdclass.Node {
+func (self class) GetScriptOwner() [1]gdclass.Node { //gd:EditorScriptPicker.get_script_owner
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorScriptPicker.Bind_get_script_owner, self.AsObject(), frame.Array(0), r_ret.Addr())

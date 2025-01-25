@@ -42,7 +42,7 @@ type Any interface {
 Returns the list of properties that will be applied to the node when [method create_instance] is called.
 If [param with_order] is [code]true[/code], a key named [code].order[/code] (note the leading period) is added to the dictionary. This [code].order[/code] key is an [Array] of [String] property names specifying the order in which properties will be applied (with index 0 being the first).
 */
-func (self Instance) GetStoredValues() map[any]any {
+func (self Instance) GetStoredValues() map[any]any { //gd:InstancePlaceholder.get_stored_values
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetStoredValues(false)))
 }
 
@@ -50,14 +50,14 @@ func (self Instance) GetStoredValues() map[any]any {
 Call this method to actually load in the node. The created node will be placed as a sibling [i]above[/i] the [InstancePlaceholder] in the scene tree. The [Node]'s reference is also returned for convenience.
 [b]Note:[/b] [method create_instance] is not thread-safe. Use [method Object.call_deferred] if calling from a thread.
 */
-func (self Instance) CreateInstance() [1]gdclass.Node {
+func (self Instance) CreateInstance() [1]gdclass.Node { //gd:InstancePlaceholder.create_instance
 	return [1]gdclass.Node(class(self).CreateInstance(false, [1][1]gdclass.PackedScene{}[0]))
 }
 
 /*
 Gets the path to the [PackedScene] resource file that is loaded by default when calling [method create_instance]. Not thread-safe. Use [method Object.call_deferred] if calling from a thread.
 */
-func (self Instance) GetInstancePath() string {
+func (self Instance) GetInstancePath() string { //gd:InstancePlaceholder.get_instance_path
 	return string(class(self).GetInstancePath().String())
 }
 
@@ -84,7 +84,7 @@ Returns the list of properties that will be applied to the node when [method cre
 If [param with_order] is [code]true[/code], a key named [code].order[/code] (note the leading period) is added to the dictionary. This [code].order[/code] key is an [Array] of [String] property names specifying the order in which properties will be applied (with index 0 being the first).
 */
 //go:nosplit
-func (self class) GetStoredValues(with_order bool) gd.Dictionary {
+func (self class) GetStoredValues(with_order bool) gd.Dictionary { //gd:InstancePlaceholder.get_stored_values
 	var frame = callframe.New()
 	callframe.Arg(frame, with_order)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -99,7 +99,7 @@ Call this method to actually load in the node. The created node will be placed a
 [b]Note:[/b] [method create_instance] is not thread-safe. Use [method Object.call_deferred] if calling from a thread.
 */
 //go:nosplit
-func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedScene) [1]gdclass.Node {
+func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedScene) [1]gdclass.Node { //gd:InstancePlaceholder.create_instance
 	var frame = callframe.New()
 	callframe.Arg(frame, replace)
 	callframe.Arg(frame, pointers.Get(custom_scene[0])[0])
@@ -114,7 +114,7 @@ func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedSce
 Gets the path to the [PackedScene] resource file that is loaded by default when calling [method create_instance]. Not thread-safe. Use [method Object.call_deferred] if calling from a thread.
 */
 //go:nosplit
-func (self class) GetInstancePath() gd.String {
+func (self class) GetInstancePath() gd.String { //gd:InstancePlaceholder.get_instance_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InstancePlaceholder.Bind_get_instance_path, self.AsObject(), frame.Array(0), r_ret.Addr())

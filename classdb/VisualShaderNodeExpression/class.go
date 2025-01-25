@@ -69,7 +69,7 @@ func (self Instance) SetExpression(value string) {
 }
 
 //go:nosplit
-func (self class) SetExpression(expression gd.String) {
+func (self class) SetExpression(expression gd.String) { //gd:VisualShaderNodeExpression.set_expression
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expression))
 	var r_ret = callframe.Nil
@@ -78,7 +78,7 @@ func (self class) SetExpression(expression gd.String) {
 }
 
 //go:nosplit
-func (self class) GetExpression() gd.String {
+func (self class) GetExpression() gd.String { //gd:VisualShaderNodeExpression.get_expression
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeExpression.Bind_get_expression, self.AsObject(), frame.Array(0), r_ret.Addr())

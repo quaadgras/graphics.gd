@@ -65,7 +65,7 @@ func (self Instance) SetCode(value string) {
 }
 
 //go:nosplit
-func (self class) SetCode(code gd.String) {
+func (self class) SetCode(code gd.String) { //gd:ShaderInclude.set_code
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(code))
 	var r_ret = callframe.Nil
@@ -74,7 +74,7 @@ func (self class) SetCode(code gd.String) {
 }
 
 //go:nosplit
-func (self class) GetCode() gd.String {
+func (self class) GetCode() gd.String { //gd:ShaderInclude.get_code
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderInclude.Bind_get_code, self.AsObject(), frame.Array(0), r_ret.Addr())

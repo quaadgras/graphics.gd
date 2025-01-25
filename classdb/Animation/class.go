@@ -69,35 +69,35 @@ type Any interface {
 /*
 Adds a track to the Animation.
 */
-func (self Instance) AddTrack(atype gdclass.AnimationTrackType) int {
+func (self Instance) AddTrack(atype gdclass.AnimationTrackType) int { //gd:Animation.add_track
 	return int(int(class(self).AddTrack(atype, gd.Int(-1))))
 }
 
 /*
 Removes a track by specifying the track index.
 */
-func (self Instance) RemoveTrack(track_idx int) {
+func (self Instance) RemoveTrack(track_idx int) { //gd:Animation.remove_track
 	class(self).RemoveTrack(gd.Int(track_idx))
 }
 
 /*
 Returns the amount of tracks in the animation.
 */
-func (self Instance) GetTrackCount() int {
+func (self Instance) GetTrackCount() int { //gd:Animation.get_track_count
 	return int(int(class(self).GetTrackCount()))
 }
 
 /*
 Gets the type of a track.
 */
-func (self Instance) TrackGetType(track_idx int) gdclass.AnimationTrackType {
+func (self Instance) TrackGetType(track_idx int) gdclass.AnimationTrackType { //gd:Animation.track_get_type
 	return gdclass.AnimationTrackType(class(self).TrackGetType(gd.Int(track_idx)))
 }
 
 /*
 Gets the path of a track. For more information on the path format, see [method track_set_path].
 */
-func (self Instance) TrackGetPath(track_idx int) NodePath.String {
+func (self Instance) TrackGetPath(track_idx int) NodePath.String { //gd:Animation.track_get_path
 	return NodePath.String(class(self).TrackGetPath(gd.Int(track_idx)).String())
 }
 
@@ -105,196 +105,196 @@ func (self Instance) TrackGetPath(track_idx int) NodePath.String {
 Sets the path of a track. Paths must be valid scene-tree paths to a node and must be specified starting from the [member AnimationMixer.root_node] that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by [code]":"[/code].
 For example, [code]"character/skeleton:ankle"[/code] or [code]"character/mesh:transform/local"[/code].
 */
-func (self Instance) TrackSetPath(track_idx int, path NodePath.String) {
+func (self Instance) TrackSetPath(track_idx int, path NodePath.String) { //gd:Animation.track_set_path
 	class(self).TrackSetPath(gd.Int(track_idx), gd.NewString(string(path)).NodePath())
 }
 
 /*
 Returns the index of the specified track. If the track is not found, return -1.
 */
-func (self Instance) FindTrack(path NodePath.String, atype gdclass.AnimationTrackType) int {
+func (self Instance) FindTrack(path NodePath.String, atype gdclass.AnimationTrackType) int { //gd:Animation.find_track
 	return int(int(class(self).FindTrack(gd.NewString(string(path)).NodePath(), atype)))
 }
 
 /*
 Moves a track up.
 */
-func (self Instance) TrackMoveUp(track_idx int) {
+func (self Instance) TrackMoveUp(track_idx int) { //gd:Animation.track_move_up
 	class(self).TrackMoveUp(gd.Int(track_idx))
 }
 
 /*
 Moves a track down.
 */
-func (self Instance) TrackMoveDown(track_idx int) {
+func (self Instance) TrackMoveDown(track_idx int) { //gd:Animation.track_move_down
 	class(self).TrackMoveDown(gd.Int(track_idx))
 }
 
 /*
 Changes the index position of track [param track_idx] to the one defined in [param to_idx].
 */
-func (self Instance) TrackMoveTo(track_idx int, to_idx int) {
+func (self Instance) TrackMoveTo(track_idx int, to_idx int) { //gd:Animation.track_move_to
 	class(self).TrackMoveTo(gd.Int(track_idx), gd.Int(to_idx))
 }
 
 /*
 Swaps the track [param track_idx]'s index position with the track [param with_idx].
 */
-func (self Instance) TrackSwap(track_idx int, with_idx int) {
+func (self Instance) TrackSwap(track_idx int, with_idx int) { //gd:Animation.track_swap
 	class(self).TrackSwap(gd.Int(track_idx), gd.Int(with_idx))
 }
 
 /*
 Sets the given track as imported or not.
 */
-func (self Instance) TrackSetImported(track_idx int, imported bool) {
+func (self Instance) TrackSetImported(track_idx int, imported bool) { //gd:Animation.track_set_imported
 	class(self).TrackSetImported(gd.Int(track_idx), imported)
 }
 
 /*
 Returns [code]true[/code] if the given track is imported. Else, return [code]false[/code].
 */
-func (self Instance) TrackIsImported(track_idx int) bool {
+func (self Instance) TrackIsImported(track_idx int) bool { //gd:Animation.track_is_imported
 	return bool(class(self).TrackIsImported(gd.Int(track_idx)))
 }
 
 /*
 Enables/disables the given track. Tracks are enabled by default.
 */
-func (self Instance) TrackSetEnabled(track_idx int, enabled bool) {
+func (self Instance) TrackSetEnabled(track_idx int, enabled bool) { //gd:Animation.track_set_enabled
 	class(self).TrackSetEnabled(gd.Int(track_idx), enabled)
 }
 
 /*
 Returns [code]true[/code] if the track at index [param track_idx] is enabled.
 */
-func (self Instance) TrackIsEnabled(track_idx int) bool {
+func (self Instance) TrackIsEnabled(track_idx int) bool { //gd:Animation.track_is_enabled
 	return bool(class(self).TrackIsEnabled(gd.Int(track_idx)))
 }
 
 /*
 Inserts a key in a given 3D position track. Returns the key index.
 */
-func (self Instance) PositionTrackInsertKey(track_idx int, time Float.X, position Vector3.XYZ) int {
+func (self Instance) PositionTrackInsertKey(track_idx int, time Float.X, position Vector3.XYZ) int { //gd:Animation.position_track_insert_key
 	return int(int(class(self).PositionTrackInsertKey(gd.Int(track_idx), gd.Float(time), gd.Vector3(position))))
 }
 
 /*
 Inserts a key in a given 3D rotation track. Returns the key index.
 */
-func (self Instance) RotationTrackInsertKey(track_idx int, time Float.X, rotation Quaternion.IJKX) int {
+func (self Instance) RotationTrackInsertKey(track_idx int, time Float.X, rotation Quaternion.IJKX) int { //gd:Animation.rotation_track_insert_key
 	return int(int(class(self).RotationTrackInsertKey(gd.Int(track_idx), gd.Float(time), gd.Quaternion(rotation))))
 }
 
 /*
 Inserts a key in a given 3D scale track. Returns the key index.
 */
-func (self Instance) ScaleTrackInsertKey(track_idx int, time Float.X, scale Vector3.XYZ) int {
+func (self Instance) ScaleTrackInsertKey(track_idx int, time Float.X, scale Vector3.XYZ) int { //gd:Animation.scale_track_insert_key
 	return int(int(class(self).ScaleTrackInsertKey(gd.Int(track_idx), gd.Float(time), gd.Vector3(scale))))
 }
 
 /*
 Inserts a key in a given blend shape track. Returns the key index.
 */
-func (self Instance) BlendShapeTrackInsertKey(track_idx int, time Float.X, amount Float.X) int {
+func (self Instance) BlendShapeTrackInsertKey(track_idx int, time Float.X, amount Float.X) int { //gd:Animation.blend_shape_track_insert_key
 	return int(int(class(self).BlendShapeTrackInsertKey(gd.Int(track_idx), gd.Float(time), gd.Float(amount))))
 }
 
 /*
 Returns the interpolated position value at the given time (in seconds). The [param track_idx] must be the index of a 3D position track.
 */
-func (self Instance) PositionTrackInterpolate(track_idx int, time_sec Float.X) Vector3.XYZ {
+func (self Instance) PositionTrackInterpolate(track_idx int, time_sec Float.X) Vector3.XYZ { //gd:Animation.position_track_interpolate
 	return Vector3.XYZ(class(self).PositionTrackInterpolate(gd.Int(track_idx), gd.Float(time_sec), false))
 }
 
 /*
 Returns the interpolated rotation value at the given time (in seconds). The [param track_idx] must be the index of a 3D rotation track.
 */
-func (self Instance) RotationTrackInterpolate(track_idx int, time_sec Float.X) Quaternion.IJKX {
+func (self Instance) RotationTrackInterpolate(track_idx int, time_sec Float.X) Quaternion.IJKX { //gd:Animation.rotation_track_interpolate
 	return Quaternion.IJKX(class(self).RotationTrackInterpolate(gd.Int(track_idx), gd.Float(time_sec), false))
 }
 
 /*
 Returns the interpolated scale value at the given time (in seconds). The [param track_idx] must be the index of a 3D scale track.
 */
-func (self Instance) ScaleTrackInterpolate(track_idx int, time_sec Float.X) Vector3.XYZ {
+func (self Instance) ScaleTrackInterpolate(track_idx int, time_sec Float.X) Vector3.XYZ { //gd:Animation.scale_track_interpolate
 	return Vector3.XYZ(class(self).ScaleTrackInterpolate(gd.Int(track_idx), gd.Float(time_sec), false))
 }
 
 /*
 Returns the interpolated blend shape value at the given time (in seconds). The [param track_idx] must be the index of a blend shape track.
 */
-func (self Instance) BlendShapeTrackInterpolate(track_idx int, time_sec Float.X) Float.X {
+func (self Instance) BlendShapeTrackInterpolate(track_idx int, time_sec Float.X) Float.X { //gd:Animation.blend_shape_track_interpolate
 	return Float.X(Float.X(class(self).BlendShapeTrackInterpolate(gd.Int(track_idx), gd.Float(time_sec), false)))
 }
 
 /*
 Inserts a generic key in a given track. Returns the key index.
 */
-func (self Instance) TrackInsertKey(track_idx int, time Float.X, key any) int {
+func (self Instance) TrackInsertKey(track_idx int, time Float.X, key any) int { //gd:Animation.track_insert_key
 	return int(int(class(self).TrackInsertKey(gd.Int(track_idx), gd.Float(time), gd.NewVariant(key), gd.Float(1))))
 }
 
 /*
 Removes a key by index in a given track.
 */
-func (self Instance) TrackRemoveKey(track_idx int, key_idx int) {
+func (self Instance) TrackRemoveKey(track_idx int, key_idx int) { //gd:Animation.track_remove_key
 	class(self).TrackRemoveKey(gd.Int(track_idx), gd.Int(key_idx))
 }
 
 /*
 Removes a key at [param time] in a given track.
 */
-func (self Instance) TrackRemoveKeyAtTime(track_idx int, time Float.X) {
+func (self Instance) TrackRemoveKeyAtTime(track_idx int, time Float.X) { //gd:Animation.track_remove_key_at_time
 	class(self).TrackRemoveKeyAtTime(gd.Int(track_idx), gd.Float(time))
 }
 
 /*
 Sets the value of an existing key.
 */
-func (self Instance) TrackSetKeyValue(track_idx int, key int, value any) {
+func (self Instance) TrackSetKeyValue(track_idx int, key int, value any) { //gd:Animation.track_set_key_value
 	class(self).TrackSetKeyValue(gd.Int(track_idx), gd.Int(key), gd.NewVariant(value))
 }
 
 /*
 Sets the transition curve (easing) for a specific key (see the built-in math function [method @GlobalScope.ease]).
 */
-func (self Instance) TrackSetKeyTransition(track_idx int, key_idx int, transition Float.X) {
+func (self Instance) TrackSetKeyTransition(track_idx int, key_idx int, transition Float.X) { //gd:Animation.track_set_key_transition
 	class(self).TrackSetKeyTransition(gd.Int(track_idx), gd.Int(key_idx), gd.Float(transition))
 }
 
 /*
 Sets the time of an existing key.
 */
-func (self Instance) TrackSetKeyTime(track_idx int, key_idx int, time Float.X) {
+func (self Instance) TrackSetKeyTime(track_idx int, key_idx int, time Float.X) { //gd:Animation.track_set_key_time
 	class(self).TrackSetKeyTime(gd.Int(track_idx), gd.Int(key_idx), gd.Float(time))
 }
 
 /*
 Returns the transition curve (easing) for a specific key (see the built-in math function [method @GlobalScope.ease]).
 */
-func (self Instance) TrackGetKeyTransition(track_idx int, key_idx int) Float.X {
+func (self Instance) TrackGetKeyTransition(track_idx int, key_idx int) Float.X { //gd:Animation.track_get_key_transition
 	return Float.X(Float.X(class(self).TrackGetKeyTransition(gd.Int(track_idx), gd.Int(key_idx))))
 }
 
 /*
 Returns the number of keys in a given track.
 */
-func (self Instance) TrackGetKeyCount(track_idx int) int {
+func (self Instance) TrackGetKeyCount(track_idx int) int { //gd:Animation.track_get_key_count
 	return int(int(class(self).TrackGetKeyCount(gd.Int(track_idx))))
 }
 
 /*
 Returns the value of a given key in a given track.
 */
-func (self Instance) TrackGetKeyValue(track_idx int, key_idx int) any {
+func (self Instance) TrackGetKeyValue(track_idx int, key_idx int) any { //gd:Animation.track_get_key_value
 	return any(class(self).TrackGetKeyValue(gd.Int(track_idx), gd.Int(key_idx)).Interface())
 }
 
 /*
 Returns the time at which the key is located.
 */
-func (self Instance) TrackGetKeyTime(track_idx int, key_idx int) Float.X {
+func (self Instance) TrackGetKeyTime(track_idx int, key_idx int) Float.X { //gd:Animation.track_get_key_time
 	return Float.X(Float.X(class(self).TrackGetKeyTime(gd.Int(track_idx), gd.Int(key_idx))))
 }
 
@@ -304,56 +304,56 @@ If [param limit] is [code]true[/code], it does not return keys outside the anima
 If [param backward] is [code]true[/code], the direction is reversed in methods that rely on one directional processing.
 For example, in case [param find_mode] is [constant FIND_MODE_NEAREST], if there is no key in the current position just after seeked, the first key found is retrieved by searching before the position, but if [param backward] is [code]true[/code], the first key found is retrieved after the position.
 */
-func (self Instance) TrackFindKey(track_idx int, time Float.X) int {
+func (self Instance) TrackFindKey(track_idx int, time Float.X) int { //gd:Animation.track_find_key
 	return int(int(class(self).TrackFindKey(gd.Int(track_idx), gd.Float(time), 0, false, false)))
 }
 
 /*
 Sets the interpolation type of a given track.
 */
-func (self Instance) TrackSetInterpolationType(track_idx int, interpolation gdclass.AnimationInterpolationType) {
+func (self Instance) TrackSetInterpolationType(track_idx int, interpolation gdclass.AnimationInterpolationType) { //gd:Animation.track_set_interpolation_type
 	class(self).TrackSetInterpolationType(gd.Int(track_idx), interpolation)
 }
 
 /*
 Returns the interpolation type of a given track.
 */
-func (self Instance) TrackGetInterpolationType(track_idx int) gdclass.AnimationInterpolationType {
+func (self Instance) TrackGetInterpolationType(track_idx int) gdclass.AnimationInterpolationType { //gd:Animation.track_get_interpolation_type
 	return gdclass.AnimationInterpolationType(class(self).TrackGetInterpolationType(gd.Int(track_idx)))
 }
 
 /*
 If [code]true[/code], the track at [param track_idx] wraps the interpolation loop.
 */
-func (self Instance) TrackSetInterpolationLoopWrap(track_idx int, interpolation bool) {
+func (self Instance) TrackSetInterpolationLoopWrap(track_idx int, interpolation bool) { //gd:Animation.track_set_interpolation_loop_wrap
 	class(self).TrackSetInterpolationLoopWrap(gd.Int(track_idx), interpolation)
 }
 
 /*
 Returns [code]true[/code] if the track at [param track_idx] wraps the interpolation loop. New tracks wrap the interpolation loop by default.
 */
-func (self Instance) TrackGetInterpolationLoopWrap(track_idx int) bool {
+func (self Instance) TrackGetInterpolationLoopWrap(track_idx int) bool { //gd:Animation.track_get_interpolation_loop_wrap
 	return bool(class(self).TrackGetInterpolationLoopWrap(gd.Int(track_idx)))
 }
 
 /*
 Returns [code]true[/code] if the track is compressed, [code]false[/code] otherwise. See also [method compress].
 */
-func (self Instance) TrackIsCompressed(track_idx int) bool {
+func (self Instance) TrackIsCompressed(track_idx int) bool { //gd:Animation.track_is_compressed
 	return bool(class(self).TrackIsCompressed(gd.Int(track_idx)))
 }
 
 /*
 Sets the update mode (see [enum UpdateMode]) of a value track.
 */
-func (self Instance) ValueTrackSetUpdateMode(track_idx int, mode gdclass.AnimationUpdateMode) {
+func (self Instance) ValueTrackSetUpdateMode(track_idx int, mode gdclass.AnimationUpdateMode) { //gd:Animation.value_track_set_update_mode
 	class(self).ValueTrackSetUpdateMode(gd.Int(track_idx), mode)
 }
 
 /*
 Returns the update mode of a value track.
 */
-func (self Instance) ValueTrackGetUpdateMode(track_idx int) gdclass.AnimationUpdateMode {
+func (self Instance) ValueTrackGetUpdateMode(track_idx int) gdclass.AnimationUpdateMode { //gd:Animation.value_track_get_update_mode
 	return gdclass.AnimationUpdateMode(class(self).ValueTrackGetUpdateMode(gd.Int(track_idx)))
 }
 
@@ -361,21 +361,21 @@ func (self Instance) ValueTrackGetUpdateMode(track_idx int) gdclass.AnimationUpd
 Returns the interpolated value at the given time (in seconds). The [param track_idx] must be the index of a value track.
 A [param backward] mainly affects the direction of key retrieval of the track with [constant UPDATE_DISCRETE] converted by [constant AnimationMixer.ANIMATION_CALLBACK_MODE_DISCRETE_FORCE_CONTINUOUS] to match the result with [method track_find_key].
 */
-func (self Instance) ValueTrackInterpolate(track_idx int, time_sec Float.X) any {
+func (self Instance) ValueTrackInterpolate(track_idx int, time_sec Float.X) any { //gd:Animation.value_track_interpolate
 	return any(class(self).ValueTrackInterpolate(gd.Int(track_idx), gd.Float(time_sec), false).Interface())
 }
 
 /*
 Returns the method name of a method track.
 */
-func (self Instance) MethodTrackGetName(track_idx int, key_idx int) string {
+func (self Instance) MethodTrackGetName(track_idx int, key_idx int) string { //gd:Animation.method_track_get_name
 	return string(class(self).MethodTrackGetName(gd.Int(track_idx), gd.Int(key_idx)).String())
 }
 
 /*
 Returns the arguments values to be called on a method track for a given key in a given track.
 */
-func (self Instance) MethodTrackGetParams(track_idx int, key_idx int) []any {
+func (self Instance) MethodTrackGetParams(track_idx int, key_idx int) []any { //gd:Animation.method_track_get_params
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).MethodTrackGetParams(gd.Int(track_idx), gd.Int(key_idx)))))
 }
 
@@ -383,56 +383,56 @@ func (self Instance) MethodTrackGetParams(track_idx int, key_idx int) []any {
 Inserts a Bezier Track key at the given [param time] in seconds. The [param track_idx] must be the index of a Bezier Track.
 [param in_handle] is the left-side weight of the added Bezier curve point, [param out_handle] is the right-side one, while [param value] is the actual value at this point.
 */
-func (self Instance) BezierTrackInsertKey(track_idx int, time Float.X, value Float.X) int {
+func (self Instance) BezierTrackInsertKey(track_idx int, time Float.X, value Float.X) int { //gd:Animation.bezier_track_insert_key
 	return int(int(class(self).BezierTrackInsertKey(gd.Int(track_idx), gd.Float(time), gd.Float(value), gd.Vector2(gd.Vector2{0, 0}), gd.Vector2(gd.Vector2{0, 0}))))
 }
 
 /*
 Sets the value of the key identified by [param key_idx] to the given value. The [param track_idx] must be the index of a Bezier Track.
 */
-func (self Instance) BezierTrackSetKeyValue(track_idx int, key_idx int, value Float.X) {
+func (self Instance) BezierTrackSetKeyValue(track_idx int, key_idx int, value Float.X) { //gd:Animation.bezier_track_set_key_value
 	class(self).BezierTrackSetKeyValue(gd.Int(track_idx), gd.Int(key_idx), gd.Float(value))
 }
 
 /*
 Sets the in handle of the key identified by [param key_idx] to value [param in_handle]. The [param track_idx] must be the index of a Bezier Track.
 */
-func (self Instance) BezierTrackSetKeyInHandle(track_idx int, key_idx int, in_handle Vector2.XY) {
+func (self Instance) BezierTrackSetKeyInHandle(track_idx int, key_idx int, in_handle Vector2.XY) { //gd:Animation.bezier_track_set_key_in_handle
 	class(self).BezierTrackSetKeyInHandle(gd.Int(track_idx), gd.Int(key_idx), gd.Vector2(in_handle), gd.Float(1.0))
 }
 
 /*
 Sets the out handle of the key identified by [param key_idx] to value [param out_handle]. The [param track_idx] must be the index of a Bezier Track.
 */
-func (self Instance) BezierTrackSetKeyOutHandle(track_idx int, key_idx int, out_handle Vector2.XY) {
+func (self Instance) BezierTrackSetKeyOutHandle(track_idx int, key_idx int, out_handle Vector2.XY) { //gd:Animation.bezier_track_set_key_out_handle
 	class(self).BezierTrackSetKeyOutHandle(gd.Int(track_idx), gd.Int(key_idx), gd.Vector2(out_handle), gd.Float(1.0))
 }
 
 /*
 Returns the value of the key identified by [param key_idx]. The [param track_idx] must be the index of a Bezier Track.
 */
-func (self Instance) BezierTrackGetKeyValue(track_idx int, key_idx int) Float.X {
+func (self Instance) BezierTrackGetKeyValue(track_idx int, key_idx int) Float.X { //gd:Animation.bezier_track_get_key_value
 	return Float.X(Float.X(class(self).BezierTrackGetKeyValue(gd.Int(track_idx), gd.Int(key_idx))))
 }
 
 /*
 Returns the in handle of the key identified by [param key_idx]. The [param track_idx] must be the index of a Bezier Track.
 */
-func (self Instance) BezierTrackGetKeyInHandle(track_idx int, key_idx int) Vector2.XY {
+func (self Instance) BezierTrackGetKeyInHandle(track_idx int, key_idx int) Vector2.XY { //gd:Animation.bezier_track_get_key_in_handle
 	return Vector2.XY(class(self).BezierTrackGetKeyInHandle(gd.Int(track_idx), gd.Int(key_idx)))
 }
 
 /*
 Returns the out handle of the key identified by [param key_idx]. The [param track_idx] must be the index of a Bezier Track.
 */
-func (self Instance) BezierTrackGetKeyOutHandle(track_idx int, key_idx int) Vector2.XY {
+func (self Instance) BezierTrackGetKeyOutHandle(track_idx int, key_idx int) Vector2.XY { //gd:Animation.bezier_track_get_key_out_handle
 	return Vector2.XY(class(self).BezierTrackGetKeyOutHandle(gd.Int(track_idx), gd.Int(key_idx)))
 }
 
 /*
 Returns the interpolated value at the given [param time] (in seconds). The [param track_idx] must be the index of a Bezier Track.
 */
-func (self Instance) BezierTrackInterpolate(track_idx int, time Float.X) Float.X {
+func (self Instance) BezierTrackInterpolate(track_idx int, time Float.X) Float.X { //gd:Animation.bezier_track_interpolate
 	return Float.X(Float.X(class(self).BezierTrackInterpolate(gd.Int(track_idx), gd.Float(time))))
 }
 
@@ -440,35 +440,35 @@ func (self Instance) BezierTrackInterpolate(track_idx int, time Float.X) Float.X
 Inserts an Audio Track key at the given [param time] in seconds. The [param track_idx] must be the index of an Audio Track.
 [param stream] is the [AudioStream] resource to play. [param start_offset] is the number of seconds cut off at the beginning of the audio stream, while [param end_offset] is at the ending.
 */
-func (self Instance) AudioTrackInsertKey(track_idx int, time Float.X, stream [1]gdclass.Resource) int {
+func (self Instance) AudioTrackInsertKey(track_idx int, time Float.X, stream [1]gdclass.Resource) int { //gd:Animation.audio_track_insert_key
 	return int(int(class(self).AudioTrackInsertKey(gd.Int(track_idx), gd.Float(time), stream, gd.Float(0), gd.Float(0))))
 }
 
 /*
 Sets the stream of the key identified by [param key_idx] to value [param stream]. The [param track_idx] must be the index of an Audio Track.
 */
-func (self Instance) AudioTrackSetKeyStream(track_idx int, key_idx int, stream [1]gdclass.Resource) {
+func (self Instance) AudioTrackSetKeyStream(track_idx int, key_idx int, stream [1]gdclass.Resource) { //gd:Animation.audio_track_set_key_stream
 	class(self).AudioTrackSetKeyStream(gd.Int(track_idx), gd.Int(key_idx), stream)
 }
 
 /*
 Sets the start offset of the key identified by [param key_idx] to value [param offset]. The [param track_idx] must be the index of an Audio Track.
 */
-func (self Instance) AudioTrackSetKeyStartOffset(track_idx int, key_idx int, offset Float.X) {
+func (self Instance) AudioTrackSetKeyStartOffset(track_idx int, key_idx int, offset Float.X) { //gd:Animation.audio_track_set_key_start_offset
 	class(self).AudioTrackSetKeyStartOffset(gd.Int(track_idx), gd.Int(key_idx), gd.Float(offset))
 }
 
 /*
 Sets the end offset of the key identified by [param key_idx] to value [param offset]. The [param track_idx] must be the index of an Audio Track.
 */
-func (self Instance) AudioTrackSetKeyEndOffset(track_idx int, key_idx int, offset Float.X) {
+func (self Instance) AudioTrackSetKeyEndOffset(track_idx int, key_idx int, offset Float.X) { //gd:Animation.audio_track_set_key_end_offset
 	class(self).AudioTrackSetKeyEndOffset(gd.Int(track_idx), gd.Int(key_idx), gd.Float(offset))
 }
 
 /*
 Returns the audio stream of the key identified by [param key_idx]. The [param track_idx] must be the index of an Audio Track.
 */
-func (self Instance) AudioTrackGetKeyStream(track_idx int, key_idx int) [1]gdclass.Resource {
+func (self Instance) AudioTrackGetKeyStream(track_idx int, key_idx int) [1]gdclass.Resource { //gd:Animation.audio_track_get_key_stream
 	return [1]gdclass.Resource(class(self).AudioTrackGetKeyStream(gd.Int(track_idx), gd.Int(key_idx)))
 }
 
@@ -476,7 +476,7 @@ func (self Instance) AudioTrackGetKeyStream(track_idx int, key_idx int) [1]gdcla
 Returns the start offset of the key identified by [param key_idx]. The [param track_idx] must be the index of an Audio Track.
 Start offset is the number of seconds cut off at the beginning of the audio stream.
 */
-func (self Instance) AudioTrackGetKeyStartOffset(track_idx int, key_idx int) Float.X {
+func (self Instance) AudioTrackGetKeyStartOffset(track_idx int, key_idx int) Float.X { //gd:Animation.audio_track_get_key_start_offset
 	return Float.X(Float.X(class(self).AudioTrackGetKeyStartOffset(gd.Int(track_idx), gd.Int(key_idx))))
 }
 
@@ -484,56 +484,56 @@ func (self Instance) AudioTrackGetKeyStartOffset(track_idx int, key_idx int) Flo
 Returns the end offset of the key identified by [param key_idx]. The [param track_idx] must be the index of an Audio Track.
 End offset is the number of seconds cut off at the ending of the audio stream.
 */
-func (self Instance) AudioTrackGetKeyEndOffset(track_idx int, key_idx int) Float.X {
+func (self Instance) AudioTrackGetKeyEndOffset(track_idx int, key_idx int) Float.X { //gd:Animation.audio_track_get_key_end_offset
 	return Float.X(Float.X(class(self).AudioTrackGetKeyEndOffset(gd.Int(track_idx), gd.Int(key_idx))))
 }
 
 /*
 Sets whether the track will be blended with other animations. If [code]true[/code], the audio playback volume changes depending on the blend value.
 */
-func (self Instance) AudioTrackSetUseBlend(track_idx int, enable bool) {
+func (self Instance) AudioTrackSetUseBlend(track_idx int, enable bool) { //gd:Animation.audio_track_set_use_blend
 	class(self).AudioTrackSetUseBlend(gd.Int(track_idx), enable)
 }
 
 /*
 Returns [code]true[/code] if the track at [param track_idx] will be blended with other animations.
 */
-func (self Instance) AudioTrackIsUseBlend(track_idx int) bool {
+func (self Instance) AudioTrackIsUseBlend(track_idx int) bool { //gd:Animation.audio_track_is_use_blend
 	return bool(class(self).AudioTrackIsUseBlend(gd.Int(track_idx)))
 }
 
 /*
 Inserts a key with value [param animation] at the given [param time] (in seconds). The [param track_idx] must be the index of an Animation Track.
 */
-func (self Instance) AnimationTrackInsertKey(track_idx int, time Float.X, animation string) int {
+func (self Instance) AnimationTrackInsertKey(track_idx int, time Float.X, animation string) int { //gd:Animation.animation_track_insert_key
 	return int(int(class(self).AnimationTrackInsertKey(gd.Int(track_idx), gd.Float(time), gd.NewStringName(animation))))
 }
 
 /*
 Sets the key identified by [param key_idx] to value [param animation]. The [param track_idx] must be the index of an Animation Track.
 */
-func (self Instance) AnimationTrackSetKeyAnimation(track_idx int, key_idx int, animation string) {
+func (self Instance) AnimationTrackSetKeyAnimation(track_idx int, key_idx int, animation string) { //gd:Animation.animation_track_set_key_animation
 	class(self).AnimationTrackSetKeyAnimation(gd.Int(track_idx), gd.Int(key_idx), gd.NewStringName(animation))
 }
 
 /*
 Returns the animation name at the key identified by [param key_idx]. The [param track_idx] must be the index of an Animation Track.
 */
-func (self Instance) AnimationTrackGetKeyAnimation(track_idx int, key_idx int) string {
+func (self Instance) AnimationTrackGetKeyAnimation(track_idx int, key_idx int) string { //gd:Animation.animation_track_get_key_animation
 	return string(class(self).AnimationTrackGetKeyAnimation(gd.Int(track_idx), gd.Int(key_idx)).String())
 }
 
 /*
 Clear the animation (clear all tracks and reset all).
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:Animation.clear
 	class(self).Clear()
 }
 
 /*
 Adds a new track to [param to_animation] that is a copy of the given track from this animation.
 */
-func (self Instance) CopyTrack(track_idx int, to_animation [1]gdclass.Animation) {
+func (self Instance) CopyTrack(track_idx int, to_animation [1]gdclass.Animation) { //gd:Animation.copy_track
 	class(self).CopyTrack(gd.Int(track_idx), to_animation)
 }
 
@@ -541,7 +541,7 @@ func (self Instance) CopyTrack(track_idx int, to_animation [1]gdclass.Animation)
 Compress the animation and all its tracks in-place. This will make [method track_is_compressed] return [code]true[/code] once called on this [Animation]. Compressed tracks require less memory to be played, and are designed to be used for complex 3D animations (such as cutscenes) imported from external 3D software. Compression is lossy, but the difference is usually not noticeable in real world conditions.
 [b]Note:[/b] Compressed tracks have various limitations (such as not being editable from the editor), so only use compressed animations if you actually need them.
 */
-func (self Instance) Compress() {
+func (self Instance) Compress() { //gd:Animation.compress
 	class(self).Compress(gd.Int(8192), gd.Int(120), gd.Float(4.0))
 }
 
@@ -596,7 +596,7 @@ func (self Instance) CaptureIncluded() bool {
 Adds a track to the Animation.
 */
 //go:nosplit
-func (self class) AddTrack(atype gdclass.AnimationTrackType, at_position gd.Int) gd.Int {
+func (self class) AddTrack(atype gdclass.AnimationTrackType, at_position gd.Int) gd.Int { //gd:Animation.add_track
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, at_position)
@@ -611,7 +611,7 @@ func (self class) AddTrack(atype gdclass.AnimationTrackType, at_position gd.Int)
 Removes a track by specifying the track index.
 */
 //go:nosplit
-func (self class) RemoveTrack(track_idx gd.Int) {
+func (self class) RemoveTrack(track_idx gd.Int) { //gd:Animation.remove_track
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Nil
@@ -623,7 +623,7 @@ func (self class) RemoveTrack(track_idx gd.Int) {
 Returns the amount of tracks in the animation.
 */
 //go:nosplit
-func (self class) GetTrackCount() gd.Int {
+func (self class) GetTrackCount() gd.Int { //gd:Animation.get_track_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_track_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -636,7 +636,7 @@ func (self class) GetTrackCount() gd.Int {
 Gets the type of a track.
 */
 //go:nosplit
-func (self class) TrackGetType(track_idx gd.Int) gdclass.AnimationTrackType {
+func (self class) TrackGetType(track_idx gd.Int) gdclass.AnimationTrackType { //gd:Animation.track_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[gdclass.AnimationTrackType](frame)
@@ -650,7 +650,7 @@ func (self class) TrackGetType(track_idx gd.Int) gdclass.AnimationTrackType {
 Gets the path of a track. For more information on the path format, see [method track_set_path].
 */
 //go:nosplit
-func (self class) TrackGetPath(track_idx gd.Int) gd.NodePath {
+func (self class) TrackGetPath(track_idx gd.Int) gd.NodePath { //gd:Animation.track_get_path
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -665,7 +665,7 @@ Sets the path of a track. Paths must be valid scene-tree paths to a node and mus
 For example, [code]"character/skeleton:ankle"[/code] or [code]"character/mesh:transform/local"[/code].
 */
 //go:nosplit
-func (self class) TrackSetPath(track_idx gd.Int, path gd.NodePath) {
+func (self class) TrackSetPath(track_idx gd.Int, path gd.NodePath) { //gd:Animation.track_set_path
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, pointers.Get(path))
@@ -678,7 +678,7 @@ func (self class) TrackSetPath(track_idx gd.Int, path gd.NodePath) {
 Returns the index of the specified track. If the track is not found, return -1.
 */
 //go:nosplit
-func (self class) FindTrack(path gd.NodePath, atype gdclass.AnimationTrackType) gd.Int {
+func (self class) FindTrack(path gd.NodePath, atype gdclass.AnimationTrackType) gd.Int { //gd:Animation.find_track
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, atype)
@@ -693,7 +693,7 @@ func (self class) FindTrack(path gd.NodePath, atype gdclass.AnimationTrackType) 
 Moves a track up.
 */
 //go:nosplit
-func (self class) TrackMoveUp(track_idx gd.Int) {
+func (self class) TrackMoveUp(track_idx gd.Int) { //gd:Animation.track_move_up
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Nil
@@ -705,7 +705,7 @@ func (self class) TrackMoveUp(track_idx gd.Int) {
 Moves a track down.
 */
 //go:nosplit
-func (self class) TrackMoveDown(track_idx gd.Int) {
+func (self class) TrackMoveDown(track_idx gd.Int) { //gd:Animation.track_move_down
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Nil
@@ -717,7 +717,7 @@ func (self class) TrackMoveDown(track_idx gd.Int) {
 Changes the index position of track [param track_idx] to the one defined in [param to_idx].
 */
 //go:nosplit
-func (self class) TrackMoveTo(track_idx gd.Int, to_idx gd.Int) {
+func (self class) TrackMoveTo(track_idx gd.Int, to_idx gd.Int) { //gd:Animation.track_move_to
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, to_idx)
@@ -730,7 +730,7 @@ func (self class) TrackMoveTo(track_idx gd.Int, to_idx gd.Int) {
 Swaps the track [param track_idx]'s index position with the track [param with_idx].
 */
 //go:nosplit
-func (self class) TrackSwap(track_idx gd.Int, with_idx gd.Int) {
+func (self class) TrackSwap(track_idx gd.Int, with_idx gd.Int) { //gd:Animation.track_swap
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, with_idx)
@@ -743,7 +743,7 @@ func (self class) TrackSwap(track_idx gd.Int, with_idx gd.Int) {
 Sets the given track as imported or not.
 */
 //go:nosplit
-func (self class) TrackSetImported(track_idx gd.Int, imported bool) {
+func (self class) TrackSetImported(track_idx gd.Int, imported bool) { //gd:Animation.track_set_imported
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, imported)
@@ -756,7 +756,7 @@ func (self class) TrackSetImported(track_idx gd.Int, imported bool) {
 Returns [code]true[/code] if the given track is imported. Else, return [code]false[/code].
 */
 //go:nosplit
-func (self class) TrackIsImported(track_idx gd.Int) bool {
+func (self class) TrackIsImported(track_idx gd.Int) bool { //gd:Animation.track_is_imported
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -770,7 +770,7 @@ func (self class) TrackIsImported(track_idx gd.Int) bool {
 Enables/disables the given track. Tracks are enabled by default.
 */
 //go:nosplit
-func (self class) TrackSetEnabled(track_idx gd.Int, enabled bool) {
+func (self class) TrackSetEnabled(track_idx gd.Int, enabled bool) { //gd:Animation.track_set_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, enabled)
@@ -783,7 +783,7 @@ func (self class) TrackSetEnabled(track_idx gd.Int, enabled bool) {
 Returns [code]true[/code] if the track at index [param track_idx] is enabled.
 */
 //go:nosplit
-func (self class) TrackIsEnabled(track_idx gd.Int) bool {
+func (self class) TrackIsEnabled(track_idx gd.Int) bool { //gd:Animation.track_is_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -797,7 +797,7 @@ func (self class) TrackIsEnabled(track_idx gd.Int) bool {
 Inserts a key in a given 3D position track. Returns the key index.
 */
 //go:nosplit
-func (self class) PositionTrackInsertKey(track_idx gd.Int, time gd.Float, position gd.Vector3) gd.Int {
+func (self class) PositionTrackInsertKey(track_idx gd.Int, time gd.Float, position gd.Vector3) gd.Int { //gd:Animation.position_track_insert_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -813,7 +813,7 @@ func (self class) PositionTrackInsertKey(track_idx gd.Int, time gd.Float, positi
 Inserts a key in a given 3D rotation track. Returns the key index.
 */
 //go:nosplit
-func (self class) RotationTrackInsertKey(track_idx gd.Int, time gd.Float, rotation gd.Quaternion) gd.Int {
+func (self class) RotationTrackInsertKey(track_idx gd.Int, time gd.Float, rotation gd.Quaternion) gd.Int { //gd:Animation.rotation_track_insert_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -829,7 +829,7 @@ func (self class) RotationTrackInsertKey(track_idx gd.Int, time gd.Float, rotati
 Inserts a key in a given 3D scale track. Returns the key index.
 */
 //go:nosplit
-func (self class) ScaleTrackInsertKey(track_idx gd.Int, time gd.Float, scale gd.Vector3) gd.Int {
+func (self class) ScaleTrackInsertKey(track_idx gd.Int, time gd.Float, scale gd.Vector3) gd.Int { //gd:Animation.scale_track_insert_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -845,7 +845,7 @@ func (self class) ScaleTrackInsertKey(track_idx gd.Int, time gd.Float, scale gd.
 Inserts a key in a given blend shape track. Returns the key index.
 */
 //go:nosplit
-func (self class) BlendShapeTrackInsertKey(track_idx gd.Int, time gd.Float, amount gd.Float) gd.Int {
+func (self class) BlendShapeTrackInsertKey(track_idx gd.Int, time gd.Float, amount gd.Float) gd.Int { //gd:Animation.blend_shape_track_insert_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -861,7 +861,7 @@ func (self class) BlendShapeTrackInsertKey(track_idx gd.Int, time gd.Float, amou
 Returns the interpolated position value at the given time (in seconds). The [param track_idx] must be the index of a 3D position track.
 */
 //go:nosplit
-func (self class) PositionTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Vector3 {
+func (self class) PositionTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Vector3 { //gd:Animation.position_track_interpolate
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time_sec)
@@ -877,7 +877,7 @@ func (self class) PositionTrackInterpolate(track_idx gd.Int, time_sec gd.Float, 
 Returns the interpolated rotation value at the given time (in seconds). The [param track_idx] must be the index of a 3D rotation track.
 */
 //go:nosplit
-func (self class) RotationTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Quaternion {
+func (self class) RotationTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Quaternion { //gd:Animation.rotation_track_interpolate
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time_sec)
@@ -893,7 +893,7 @@ func (self class) RotationTrackInterpolate(track_idx gd.Int, time_sec gd.Float, 
 Returns the interpolated scale value at the given time (in seconds). The [param track_idx] must be the index of a 3D scale track.
 */
 //go:nosplit
-func (self class) ScaleTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Vector3 {
+func (self class) ScaleTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Vector3 { //gd:Animation.scale_track_interpolate
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time_sec)
@@ -909,7 +909,7 @@ func (self class) ScaleTrackInterpolate(track_idx gd.Int, time_sec gd.Float, bac
 Returns the interpolated blend shape value at the given time (in seconds). The [param track_idx] must be the index of a blend shape track.
 */
 //go:nosplit
-func (self class) BlendShapeTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Float {
+func (self class) BlendShapeTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Float { //gd:Animation.blend_shape_track_interpolate
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time_sec)
@@ -925,7 +925,7 @@ func (self class) BlendShapeTrackInterpolate(track_idx gd.Int, time_sec gd.Float
 Inserts a generic key in a given track. Returns the key index.
 */
 //go:nosplit
-func (self class) TrackInsertKey(track_idx gd.Int, time gd.Float, key gd.Variant, transition gd.Float) gd.Int {
+func (self class) TrackInsertKey(track_idx gd.Int, time gd.Float, key gd.Variant, transition gd.Float) gd.Int { //gd:Animation.track_insert_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -942,7 +942,7 @@ func (self class) TrackInsertKey(track_idx gd.Int, time gd.Float, key gd.Variant
 Removes a key by index in a given track.
 */
 //go:nosplit
-func (self class) TrackRemoveKey(track_idx gd.Int, key_idx gd.Int) {
+func (self class) TrackRemoveKey(track_idx gd.Int, key_idx gd.Int) { //gd:Animation.track_remove_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -955,7 +955,7 @@ func (self class) TrackRemoveKey(track_idx gd.Int, key_idx gd.Int) {
 Removes a key at [param time] in a given track.
 */
 //go:nosplit
-func (self class) TrackRemoveKeyAtTime(track_idx gd.Int, time gd.Float) {
+func (self class) TrackRemoveKeyAtTime(track_idx gd.Int, time gd.Float) { //gd:Animation.track_remove_key_at_time
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -968,7 +968,7 @@ func (self class) TrackRemoveKeyAtTime(track_idx gd.Int, time gd.Float) {
 Sets the value of an existing key.
 */
 //go:nosplit
-func (self class) TrackSetKeyValue(track_idx gd.Int, key gd.Int, value gd.Variant) {
+func (self class) TrackSetKeyValue(track_idx gd.Int, key gd.Int, value gd.Variant) { //gd:Animation.track_set_key_value
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key)
@@ -982,7 +982,7 @@ func (self class) TrackSetKeyValue(track_idx gd.Int, key gd.Int, value gd.Varian
 Sets the transition curve (easing) for a specific key (see the built-in math function [method @GlobalScope.ease]).
 */
 //go:nosplit
-func (self class) TrackSetKeyTransition(track_idx gd.Int, key_idx gd.Int, transition gd.Float) {
+func (self class) TrackSetKeyTransition(track_idx gd.Int, key_idx gd.Int, transition gd.Float) { //gd:Animation.track_set_key_transition
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -996,7 +996,7 @@ func (self class) TrackSetKeyTransition(track_idx gd.Int, key_idx gd.Int, transi
 Sets the time of an existing key.
 */
 //go:nosplit
-func (self class) TrackSetKeyTime(track_idx gd.Int, key_idx gd.Int, time gd.Float) {
+func (self class) TrackSetKeyTime(track_idx gd.Int, key_idx gd.Int, time gd.Float) { //gd:Animation.track_set_key_time
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1010,7 +1010,7 @@ func (self class) TrackSetKeyTime(track_idx gd.Int, key_idx gd.Int, time gd.Floa
 Returns the transition curve (easing) for a specific key (see the built-in math function [method @GlobalScope.ease]).
 */
 //go:nosplit
-func (self class) TrackGetKeyTransition(track_idx gd.Int, key_idx gd.Int) gd.Float {
+func (self class) TrackGetKeyTransition(track_idx gd.Int, key_idx gd.Int) gd.Float { //gd:Animation.track_get_key_transition
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1025,7 +1025,7 @@ func (self class) TrackGetKeyTransition(track_idx gd.Int, key_idx gd.Int) gd.Flo
 Returns the number of keys in a given track.
 */
 //go:nosplit
-func (self class) TrackGetKeyCount(track_idx gd.Int) gd.Int {
+func (self class) TrackGetKeyCount(track_idx gd.Int) gd.Int { //gd:Animation.track_get_key_count
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1039,7 +1039,7 @@ func (self class) TrackGetKeyCount(track_idx gd.Int) gd.Int {
 Returns the value of a given key in a given track.
 */
 //go:nosplit
-func (self class) TrackGetKeyValue(track_idx gd.Int, key_idx gd.Int) gd.Variant {
+func (self class) TrackGetKeyValue(track_idx gd.Int, key_idx gd.Int) gd.Variant { //gd:Animation.track_get_key_value
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1054,7 +1054,7 @@ func (self class) TrackGetKeyValue(track_idx gd.Int, key_idx gd.Int) gd.Variant 
 Returns the time at which the key is located.
 */
 //go:nosplit
-func (self class) TrackGetKeyTime(track_idx gd.Int, key_idx gd.Int) gd.Float {
+func (self class) TrackGetKeyTime(track_idx gd.Int, key_idx gd.Int) gd.Float { //gd:Animation.track_get_key_time
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1072,7 +1072,7 @@ If [param backward] is [code]true[/code], the direction is reversed in methods t
 For example, in case [param find_mode] is [constant FIND_MODE_NEAREST], if there is no key in the current position just after seeked, the first key found is retrieved by searching before the position, but if [param backward] is [code]true[/code], the first key found is retrieved after the position.
 */
 //go:nosplit
-func (self class) TrackFindKey(track_idx gd.Int, time gd.Float, find_mode gdclass.AnimationFindMode, limit bool, backward bool) gd.Int {
+func (self class) TrackFindKey(track_idx gd.Int, time gd.Float, find_mode gdclass.AnimationFindMode, limit bool, backward bool) gd.Int { //gd:Animation.track_find_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -1090,7 +1090,7 @@ func (self class) TrackFindKey(track_idx gd.Int, time gd.Float, find_mode gdclas
 Sets the interpolation type of a given track.
 */
 //go:nosplit
-func (self class) TrackSetInterpolationType(track_idx gd.Int, interpolation gdclass.AnimationInterpolationType) {
+func (self class) TrackSetInterpolationType(track_idx gd.Int, interpolation gdclass.AnimationInterpolationType) { //gd:Animation.track_set_interpolation_type
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, interpolation)
@@ -1103,7 +1103,7 @@ func (self class) TrackSetInterpolationType(track_idx gd.Int, interpolation gdcl
 Returns the interpolation type of a given track.
 */
 //go:nosplit
-func (self class) TrackGetInterpolationType(track_idx gd.Int) gdclass.AnimationInterpolationType {
+func (self class) TrackGetInterpolationType(track_idx gd.Int) gdclass.AnimationInterpolationType { //gd:Animation.track_get_interpolation_type
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[gdclass.AnimationInterpolationType](frame)
@@ -1117,7 +1117,7 @@ func (self class) TrackGetInterpolationType(track_idx gd.Int) gdclass.AnimationI
 If [code]true[/code], the track at [param track_idx] wraps the interpolation loop.
 */
 //go:nosplit
-func (self class) TrackSetInterpolationLoopWrap(track_idx gd.Int, interpolation bool) {
+func (self class) TrackSetInterpolationLoopWrap(track_idx gd.Int, interpolation bool) { //gd:Animation.track_set_interpolation_loop_wrap
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, interpolation)
@@ -1130,7 +1130,7 @@ func (self class) TrackSetInterpolationLoopWrap(track_idx gd.Int, interpolation 
 Returns [code]true[/code] if the track at [param track_idx] wraps the interpolation loop. New tracks wrap the interpolation loop by default.
 */
 //go:nosplit
-func (self class) TrackGetInterpolationLoopWrap(track_idx gd.Int) bool {
+func (self class) TrackGetInterpolationLoopWrap(track_idx gd.Int) bool { //gd:Animation.track_get_interpolation_loop_wrap
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1144,7 +1144,7 @@ func (self class) TrackGetInterpolationLoopWrap(track_idx gd.Int) bool {
 Returns [code]true[/code] if the track is compressed, [code]false[/code] otherwise. See also [method compress].
 */
 //go:nosplit
-func (self class) TrackIsCompressed(track_idx gd.Int) bool {
+func (self class) TrackIsCompressed(track_idx gd.Int) bool { //gd:Animation.track_is_compressed
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1158,7 +1158,7 @@ func (self class) TrackIsCompressed(track_idx gd.Int) bool {
 Sets the update mode (see [enum UpdateMode]) of a value track.
 */
 //go:nosplit
-func (self class) ValueTrackSetUpdateMode(track_idx gd.Int, mode gdclass.AnimationUpdateMode) {
+func (self class) ValueTrackSetUpdateMode(track_idx gd.Int, mode gdclass.AnimationUpdateMode) { //gd:Animation.value_track_set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, mode)
@@ -1171,7 +1171,7 @@ func (self class) ValueTrackSetUpdateMode(track_idx gd.Int, mode gdclass.Animati
 Returns the update mode of a value track.
 */
 //go:nosplit
-func (self class) ValueTrackGetUpdateMode(track_idx gd.Int) gdclass.AnimationUpdateMode {
+func (self class) ValueTrackGetUpdateMode(track_idx gd.Int) gdclass.AnimationUpdateMode { //gd:Animation.value_track_get_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[gdclass.AnimationUpdateMode](frame)
@@ -1186,7 +1186,7 @@ Returns the interpolated value at the given time (in seconds). The [param track_
 A [param backward] mainly affects the direction of key retrieval of the track with [constant UPDATE_DISCRETE] converted by [constant AnimationMixer.ANIMATION_CALLBACK_MODE_DISCRETE_FORCE_CONTINUOUS] to match the result with [method track_find_key].
 */
 //go:nosplit
-func (self class) ValueTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Variant {
+func (self class) ValueTrackInterpolate(track_idx gd.Int, time_sec gd.Float, backward bool) gd.Variant { //gd:Animation.value_track_interpolate
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time_sec)
@@ -1202,7 +1202,7 @@ func (self class) ValueTrackInterpolate(track_idx gd.Int, time_sec gd.Float, bac
 Returns the method name of a method track.
 */
 //go:nosplit
-func (self class) MethodTrackGetName(track_idx gd.Int, key_idx gd.Int) gd.StringName {
+func (self class) MethodTrackGetName(track_idx gd.Int, key_idx gd.Int) gd.StringName { //gd:Animation.method_track_get_name
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1217,7 +1217,7 @@ func (self class) MethodTrackGetName(track_idx gd.Int, key_idx gd.Int) gd.String
 Returns the arguments values to be called on a method track for a given key in a given track.
 */
 //go:nosplit
-func (self class) MethodTrackGetParams(track_idx gd.Int, key_idx gd.Int) Array.Any {
+func (self class) MethodTrackGetParams(track_idx gd.Int, key_idx gd.Int) Array.Any { //gd:Animation.method_track_get_params
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1233,7 +1233,7 @@ Inserts a Bezier Track key at the given [param time] in seconds. The [param trac
 [param in_handle] is the left-side weight of the added Bezier curve point, [param out_handle] is the right-side one, while [param value] is the actual value at this point.
 */
 //go:nosplit
-func (self class) BezierTrackInsertKey(track_idx gd.Int, time gd.Float, value gd.Float, in_handle gd.Vector2, out_handle gd.Vector2) gd.Int {
+func (self class) BezierTrackInsertKey(track_idx gd.Int, time gd.Float, value gd.Float, in_handle gd.Vector2, out_handle gd.Vector2) gd.Int { //gd:Animation.bezier_track_insert_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -1251,7 +1251,7 @@ func (self class) BezierTrackInsertKey(track_idx gd.Int, time gd.Float, value gd
 Sets the value of the key identified by [param key_idx] to the given value. The [param track_idx] must be the index of a Bezier Track.
 */
 //go:nosplit
-func (self class) BezierTrackSetKeyValue(track_idx gd.Int, key_idx gd.Int, value gd.Float) {
+func (self class) BezierTrackSetKeyValue(track_idx gd.Int, key_idx gd.Int, value gd.Float) { //gd:Animation.bezier_track_set_key_value
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1265,7 +1265,7 @@ func (self class) BezierTrackSetKeyValue(track_idx gd.Int, key_idx gd.Int, value
 Sets the in handle of the key identified by [param key_idx] to value [param in_handle]. The [param track_idx] must be the index of a Bezier Track.
 */
 //go:nosplit
-func (self class) BezierTrackSetKeyInHandle(track_idx gd.Int, key_idx gd.Int, in_handle gd.Vector2, balanced_value_time_ratio gd.Float) {
+func (self class) BezierTrackSetKeyInHandle(track_idx gd.Int, key_idx gd.Int, in_handle gd.Vector2, balanced_value_time_ratio gd.Float) { //gd:Animation.bezier_track_set_key_in_handle
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1280,7 +1280,7 @@ func (self class) BezierTrackSetKeyInHandle(track_idx gd.Int, key_idx gd.Int, in
 Sets the out handle of the key identified by [param key_idx] to value [param out_handle]. The [param track_idx] must be the index of a Bezier Track.
 */
 //go:nosplit
-func (self class) BezierTrackSetKeyOutHandle(track_idx gd.Int, key_idx gd.Int, out_handle gd.Vector2, balanced_value_time_ratio gd.Float) {
+func (self class) BezierTrackSetKeyOutHandle(track_idx gd.Int, key_idx gd.Int, out_handle gd.Vector2, balanced_value_time_ratio gd.Float) { //gd:Animation.bezier_track_set_key_out_handle
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1295,7 +1295,7 @@ func (self class) BezierTrackSetKeyOutHandle(track_idx gd.Int, key_idx gd.Int, o
 Returns the value of the key identified by [param key_idx]. The [param track_idx] must be the index of a Bezier Track.
 */
 //go:nosplit
-func (self class) BezierTrackGetKeyValue(track_idx gd.Int, key_idx gd.Int) gd.Float {
+func (self class) BezierTrackGetKeyValue(track_idx gd.Int, key_idx gd.Int) gd.Float { //gd:Animation.bezier_track_get_key_value
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1310,7 +1310,7 @@ func (self class) BezierTrackGetKeyValue(track_idx gd.Int, key_idx gd.Int) gd.Fl
 Returns the in handle of the key identified by [param key_idx]. The [param track_idx] must be the index of a Bezier Track.
 */
 //go:nosplit
-func (self class) BezierTrackGetKeyInHandle(track_idx gd.Int, key_idx gd.Int) gd.Vector2 {
+func (self class) BezierTrackGetKeyInHandle(track_idx gd.Int, key_idx gd.Int) gd.Vector2 { //gd:Animation.bezier_track_get_key_in_handle
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1325,7 +1325,7 @@ func (self class) BezierTrackGetKeyInHandle(track_idx gd.Int, key_idx gd.Int) gd
 Returns the out handle of the key identified by [param key_idx]. The [param track_idx] must be the index of a Bezier Track.
 */
 //go:nosplit
-func (self class) BezierTrackGetKeyOutHandle(track_idx gd.Int, key_idx gd.Int) gd.Vector2 {
+func (self class) BezierTrackGetKeyOutHandle(track_idx gd.Int, key_idx gd.Int) gd.Vector2 { //gd:Animation.bezier_track_get_key_out_handle
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1340,7 +1340,7 @@ func (self class) BezierTrackGetKeyOutHandle(track_idx gd.Int, key_idx gd.Int) g
 Returns the interpolated value at the given [param time] (in seconds). The [param track_idx] must be the index of a Bezier Track.
 */
 //go:nosplit
-func (self class) BezierTrackInterpolate(track_idx gd.Int, time gd.Float) gd.Float {
+func (self class) BezierTrackInterpolate(track_idx gd.Int, time gd.Float) gd.Float { //gd:Animation.bezier_track_interpolate
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -1356,7 +1356,7 @@ Inserts an Audio Track key at the given [param time] in seconds. The [param trac
 [param stream] is the [AudioStream] resource to play. [param start_offset] is the number of seconds cut off at the beginning of the audio stream, while [param end_offset] is at the ending.
 */
 //go:nosplit
-func (self class) AudioTrackInsertKey(track_idx gd.Int, time gd.Float, stream [1]gdclass.Resource, start_offset gd.Float, end_offset gd.Float) gd.Int {
+func (self class) AudioTrackInsertKey(track_idx gd.Int, time gd.Float, stream [1]gdclass.Resource, start_offset gd.Float, end_offset gd.Float) gd.Int { //gd:Animation.audio_track_insert_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -1374,7 +1374,7 @@ func (self class) AudioTrackInsertKey(track_idx gd.Int, time gd.Float, stream [1
 Sets the stream of the key identified by [param key_idx] to value [param stream]. The [param track_idx] must be the index of an Audio Track.
 */
 //go:nosplit
-func (self class) AudioTrackSetKeyStream(track_idx gd.Int, key_idx gd.Int, stream [1]gdclass.Resource) {
+func (self class) AudioTrackSetKeyStream(track_idx gd.Int, key_idx gd.Int, stream [1]gdclass.Resource) { //gd:Animation.audio_track_set_key_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1388,7 +1388,7 @@ func (self class) AudioTrackSetKeyStream(track_idx gd.Int, key_idx gd.Int, strea
 Sets the start offset of the key identified by [param key_idx] to value [param offset]. The [param track_idx] must be the index of an Audio Track.
 */
 //go:nosplit
-func (self class) AudioTrackSetKeyStartOffset(track_idx gd.Int, key_idx gd.Int, offset gd.Float) {
+func (self class) AudioTrackSetKeyStartOffset(track_idx gd.Int, key_idx gd.Int, offset gd.Float) { //gd:Animation.audio_track_set_key_start_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1402,7 +1402,7 @@ func (self class) AudioTrackSetKeyStartOffset(track_idx gd.Int, key_idx gd.Int, 
 Sets the end offset of the key identified by [param key_idx] to value [param offset]. The [param track_idx] must be the index of an Audio Track.
 */
 //go:nosplit
-func (self class) AudioTrackSetKeyEndOffset(track_idx gd.Int, key_idx gd.Int, offset gd.Float) {
+func (self class) AudioTrackSetKeyEndOffset(track_idx gd.Int, key_idx gd.Int, offset gd.Float) { //gd:Animation.audio_track_set_key_end_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1416,7 +1416,7 @@ func (self class) AudioTrackSetKeyEndOffset(track_idx gd.Int, key_idx gd.Int, of
 Returns the audio stream of the key identified by [param key_idx]. The [param track_idx] must be the index of an Audio Track.
 */
 //go:nosplit
-func (self class) AudioTrackGetKeyStream(track_idx gd.Int, key_idx gd.Int) [1]gdclass.Resource {
+func (self class) AudioTrackGetKeyStream(track_idx gd.Int, key_idx gd.Int) [1]gdclass.Resource { //gd:Animation.audio_track_get_key_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1432,7 +1432,7 @@ Returns the start offset of the key identified by [param key_idx]. The [param tr
 Start offset is the number of seconds cut off at the beginning of the audio stream.
 */
 //go:nosplit
-func (self class) AudioTrackGetKeyStartOffset(track_idx gd.Int, key_idx gd.Int) gd.Float {
+func (self class) AudioTrackGetKeyStartOffset(track_idx gd.Int, key_idx gd.Int) gd.Float { //gd:Animation.audio_track_get_key_start_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1448,7 +1448,7 @@ Returns the end offset of the key identified by [param key_idx]. The [param trac
 End offset is the number of seconds cut off at the ending of the audio stream.
 */
 //go:nosplit
-func (self class) AudioTrackGetKeyEndOffset(track_idx gd.Int, key_idx gd.Int) gd.Float {
+func (self class) AudioTrackGetKeyEndOffset(track_idx gd.Int, key_idx gd.Int) gd.Float { //gd:Animation.audio_track_get_key_end_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1463,7 +1463,7 @@ func (self class) AudioTrackGetKeyEndOffset(track_idx gd.Int, key_idx gd.Int) gd
 Sets whether the track will be blended with other animations. If [code]true[/code], the audio playback volume changes depending on the blend value.
 */
 //go:nosplit
-func (self class) AudioTrackSetUseBlend(track_idx gd.Int, enable bool) {
+func (self class) AudioTrackSetUseBlend(track_idx gd.Int, enable bool) { //gd:Animation.audio_track_set_use_blend
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, enable)
@@ -1476,7 +1476,7 @@ func (self class) AudioTrackSetUseBlend(track_idx gd.Int, enable bool) {
 Returns [code]true[/code] if the track at [param track_idx] will be blended with other animations.
 */
 //go:nosplit
-func (self class) AudioTrackIsUseBlend(track_idx gd.Int) bool {
+func (self class) AudioTrackIsUseBlend(track_idx gd.Int) bool { //gd:Animation.audio_track_is_use_blend
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1490,7 +1490,7 @@ func (self class) AudioTrackIsUseBlend(track_idx gd.Int) bool {
 Inserts a key with value [param animation] at the given [param time] (in seconds). The [param track_idx] must be the index of an Animation Track.
 */
 //go:nosplit
-func (self class) AnimationTrackInsertKey(track_idx gd.Int, time gd.Float, animation gd.StringName) gd.Int {
+func (self class) AnimationTrackInsertKey(track_idx gd.Int, time gd.Float, animation gd.StringName) gd.Int { //gd:Animation.animation_track_insert_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -1506,7 +1506,7 @@ func (self class) AnimationTrackInsertKey(track_idx gd.Int, time gd.Float, anima
 Sets the key identified by [param key_idx] to value [param animation]. The [param track_idx] must be the index of an Animation Track.
 */
 //go:nosplit
-func (self class) AnimationTrackSetKeyAnimation(track_idx gd.Int, key_idx gd.Int, animation gd.StringName) {
+func (self class) AnimationTrackSetKeyAnimation(track_idx gd.Int, key_idx gd.Int, animation gd.StringName) { //gd:Animation.animation_track_set_key_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1520,7 +1520,7 @@ func (self class) AnimationTrackSetKeyAnimation(track_idx gd.Int, key_idx gd.Int
 Returns the animation name at the key identified by [param key_idx]. The [param track_idx] must be the index of an Animation Track.
 */
 //go:nosplit
-func (self class) AnimationTrackGetKeyAnimation(track_idx gd.Int, key_idx gd.Int) gd.StringName {
+func (self class) AnimationTrackGetKeyAnimation(track_idx gd.Int, key_idx gd.Int) gd.StringName { //gd:Animation.animation_track_get_key_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
@@ -1532,7 +1532,7 @@ func (self class) AnimationTrackGetKeyAnimation(track_idx gd.Int, key_idx gd.Int
 }
 
 //go:nosplit
-func (self class) SetLength(time_sec gd.Float) {
+func (self class) SetLength(time_sec gd.Float) { //gd:Animation.set_length
 	var frame = callframe.New()
 	callframe.Arg(frame, time_sec)
 	var r_ret = callframe.Nil
@@ -1541,7 +1541,7 @@ func (self class) SetLength(time_sec gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLength() gd.Float {
+func (self class) GetLength() gd.Float { //gd:Animation.get_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1551,7 +1551,7 @@ func (self class) GetLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) {
+func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) { //gd:Animation.set_loop_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_mode)
 	var r_ret = callframe.Nil
@@ -1560,7 +1560,7 @@ func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) {
 }
 
 //go:nosplit
-func (self class) GetLoopMode() gdclass.AnimationLoopMode {
+func (self class) GetLoopMode() gdclass.AnimationLoopMode { //gd:Animation.get_loop_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationLoopMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_loop_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1570,7 +1570,7 @@ func (self class) GetLoopMode() gdclass.AnimationLoopMode {
 }
 
 //go:nosplit
-func (self class) SetStep(size_sec gd.Float) {
+func (self class) SetStep(size_sec gd.Float) { //gd:Animation.set_step
 	var frame = callframe.New()
 	callframe.Arg(frame, size_sec)
 	var r_ret = callframe.Nil
@@ -1579,7 +1579,7 @@ func (self class) SetStep(size_sec gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetStep() gd.Float {
+func (self class) GetStep() gd.Float { //gd:Animation.get_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1592,7 +1592,7 @@ func (self class) GetStep() gd.Float {
 Clear the animation (clear all tracks and reset all).
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:Animation.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1603,7 +1603,7 @@ func (self class) Clear() {
 Adds a new track to [param to_animation] that is a copy of the given track from this animation.
 */
 //go:nosplit
-func (self class) CopyTrack(track_idx gd.Int, to_animation [1]gdclass.Animation) {
+func (self class) CopyTrack(track_idx gd.Int, to_animation [1]gdclass.Animation) { //gd:Animation.copy_track
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, pointers.Get(to_animation[0])[0])
@@ -1617,7 +1617,7 @@ Compress the animation and all its tracks in-place. This will make [method track
 [b]Note:[/b] Compressed tracks have various limitations (such as not being editable from the editor), so only use compressed animations if you actually need them.
 */
 //go:nosplit
-func (self class) Compress(page_size gd.Int, fps gd.Int, split_tolerance gd.Float) {
+func (self class) Compress(page_size gd.Int, fps gd.Int, split_tolerance gd.Float) { //gd:Animation.compress
 	var frame = callframe.New()
 	callframe.Arg(frame, page_size)
 	callframe.Arg(frame, fps)
@@ -1628,7 +1628,7 @@ func (self class) Compress(page_size gd.Int, fps gd.Int, split_tolerance gd.Floa
 }
 
 //go:nosplit
-func (self class) IsCaptureIncluded() bool {
+func (self class) IsCaptureIncluded() bool { //gd:Animation.is_capture_included
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_is_capture_included, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1668,7 +1668,7 @@ func init() {
 	gdclass.Register("Animation", func(ptr gd.Object) any { return [1]gdclass.Animation{*(*gdclass.Animation)(unsafe.Pointer(&ptr))} })
 }
 
-type TrackType = gdclass.AnimationTrackType
+type TrackType = gdclass.AnimationTrackType //gd:Animation.TrackType
 
 const (
 	/*Value tracks set values in node properties, but only those which can be interpolated. For 3D position/rotation/scale, using the dedicated [constant TYPE_POSITION_3D], [constant TYPE_ROTATION_3D] and [constant TYPE_SCALE_3D] track types instead of [constant TYPE_VALUE] is recommended for performance reasons.*/
@@ -1691,7 +1691,7 @@ const (
 	TypeAnimation TrackType = 8
 )
 
-type InterpolationType = gdclass.AnimationInterpolationType
+type InterpolationType = gdclass.AnimationInterpolationType //gd:Animation.InterpolationType
 
 const (
 	/*No interpolation (nearest value).*/
@@ -1708,7 +1708,7 @@ const (
 	InterpolationCubicAngle InterpolationType = 4
 )
 
-type UpdateMode = gdclass.AnimationUpdateMode
+type UpdateMode = gdclass.AnimationUpdateMode //gd:Animation.UpdateMode
 
 const (
 	/*Update between keyframes and hold the value.*/
@@ -1719,7 +1719,7 @@ const (
 	UpdateCapture UpdateMode = 2
 )
 
-type LoopMode = gdclass.AnimationLoopMode
+type LoopMode = gdclass.AnimationLoopMode //gd:Animation.LoopMode
 
 const (
 	/*At both ends of the animation, the animation will stop playing.*/
@@ -1730,7 +1730,7 @@ const (
 	LoopPingpong LoopMode = 2
 )
 
-type LoopedFlag = gdclass.AnimationLoopedFlag
+type LoopedFlag = gdclass.AnimationLoopedFlag //gd:Animation.LoopedFlag
 
 const (
 	/*This flag indicates that the animation proceeds without any looping.*/
@@ -1741,7 +1741,7 @@ const (
 	LoopedFlagStart LoopedFlag = 2
 )
 
-type FindMode = gdclass.AnimationFindMode
+type FindMode = gdclass.AnimationFindMode //gd:Animation.FindMode
 
 const (
 	/*Finds the nearest time key.*/

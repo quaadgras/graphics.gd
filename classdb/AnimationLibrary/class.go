@@ -40,42 +40,42 @@ type Any interface {
 /*
 Adds the [param animation] to the library, accessible by the key [param name].
 */
-func (self Instance) AddAnimation(name string, animation [1]gdclass.Animation) error {
+func (self Instance) AddAnimation(name string, animation [1]gdclass.Animation) error { //gd:AnimationLibrary.add_animation
 	return error(gd.ToError(class(self).AddAnimation(gd.NewStringName(name), animation)))
 }
 
 /*
 Removes the [Animation] with the key [param name].
 */
-func (self Instance) RemoveAnimation(name string) {
+func (self Instance) RemoveAnimation(name string) { //gd:AnimationLibrary.remove_animation
 	class(self).RemoveAnimation(gd.NewStringName(name))
 }
 
 /*
 Changes the key of the [Animation] associated with the key [param name] to [param newname].
 */
-func (self Instance) RenameAnimation(name string, newname string) {
+func (self Instance) RenameAnimation(name string, newname string) { //gd:AnimationLibrary.rename_animation
 	class(self).RenameAnimation(gd.NewStringName(name), gd.NewStringName(newname))
 }
 
 /*
 Returns [code]true[/code] if the library stores an [Animation] with [param name] as the key.
 */
-func (self Instance) HasAnimation(name string) bool {
+func (self Instance) HasAnimation(name string) bool { //gd:AnimationLibrary.has_animation
 	return bool(class(self).HasAnimation(gd.NewStringName(name)))
 }
 
 /*
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
-func (self Instance) GetAnimation(name string) [1]gdclass.Animation {
+func (self Instance) GetAnimation(name string) [1]gdclass.Animation { //gd:AnimationLibrary.get_animation
 	return [1]gdclass.Animation(class(self).GetAnimation(gd.NewStringName(name)))
 }
 
 /*
 Returns the keys for the [Animation]s stored in the library.
 */
-func (self Instance) GetAnimationList() []string {
+func (self Instance) GetAnimationList() []string { //gd:AnimationLibrary.get_animation_list
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAnimationList())))
 }
 
@@ -102,7 +102,7 @@ func New() Instance {
 Adds the [param animation] to the library, accessible by the key [param name].
 */
 //go:nosplit
-func (self class) AddAnimation(name gd.StringName, animation [1]gdclass.Animation) gd.Error {
+func (self class) AddAnimation(name gd.StringName, animation [1]gdclass.Animation) gd.Error { //gd:AnimationLibrary.add_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(animation[0])[0])
@@ -117,7 +117,7 @@ func (self class) AddAnimation(name gd.StringName, animation [1]gdclass.Animatio
 Removes the [Animation] with the key [param name].
 */
 //go:nosplit
-func (self class) RemoveAnimation(name gd.StringName) {
+func (self class) RemoveAnimation(name gd.StringName) { //gd:AnimationLibrary.remove_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) RemoveAnimation(name gd.StringName) {
 Changes the key of the [Animation] associated with the key [param name] to [param newname].
 */
 //go:nosplit
-func (self class) RenameAnimation(name gd.StringName, newname gd.StringName) {
+func (self class) RenameAnimation(name gd.StringName, newname gd.StringName) { //gd:AnimationLibrary.rename_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(newname))
@@ -142,7 +142,7 @@ func (self class) RenameAnimation(name gd.StringName, newname gd.StringName) {
 Returns [code]true[/code] if the library stores an [Animation] with [param name] as the key.
 */
 //go:nosplit
-func (self class) HasAnimation(name gd.StringName) bool {
+func (self class) HasAnimation(name gd.StringName) bool { //gd:AnimationLibrary.has_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -156,7 +156,7 @@ func (self class) HasAnimation(name gd.StringName) bool {
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
 //go:nosplit
-func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation {
+func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation { //gd:AnimationLibrary.get_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -170,7 +170,7 @@ func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation {
 Returns the keys for the [Animation]s stored in the library.
 */
 //go:nosplit
-func (self class) GetAnimationList() Array.Contains[gd.StringName] {
+func (self class) GetAnimationList() Array.Contains[gd.StringName] { //gd:AnimationLibrary.get_animation_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_get_animation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -228,7 +228,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

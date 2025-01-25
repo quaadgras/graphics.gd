@@ -87,7 +87,7 @@ func (self Instance) SetSteering(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetEngineForce(engine_force gd.Float) {
+func (self class) SetEngineForce(engine_force gd.Float) { //gd:VehicleBody3D.set_engine_force
 	var frame = callframe.New()
 	callframe.Arg(frame, engine_force)
 	var r_ret = callframe.Nil
@@ -96,7 +96,7 @@ func (self class) SetEngineForce(engine_force gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEngineForce() gd.Float {
+func (self class) GetEngineForce() gd.Float { //gd:VehicleBody3D.get_engine_force
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleBody3D.Bind_get_engine_force, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -106,7 +106,7 @@ func (self class) GetEngineForce() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBrake(brake gd.Float) {
+func (self class) SetBrake(brake gd.Float) { //gd:VehicleBody3D.set_brake
 	var frame = callframe.New()
 	callframe.Arg(frame, brake)
 	var r_ret = callframe.Nil
@@ -115,7 +115,7 @@ func (self class) SetBrake(brake gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBrake() gd.Float {
+func (self class) GetBrake() gd.Float { //gd:VehicleBody3D.get_brake
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleBody3D.Bind_get_brake, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -125,7 +125,7 @@ func (self class) GetBrake() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSteering(steering gd.Float) {
+func (self class) SetSteering(steering gd.Float) { //gd:VehicleBody3D.set_steering
 	var frame = callframe.New()
 	callframe.Arg(frame, steering)
 	var r_ret = callframe.Nil
@@ -134,7 +134,7 @@ func (self class) SetSteering(steering gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSteering() gd.Float {
+func (self class) GetSteering() gd.Float { //gd:VehicleBody3D.get_steering
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VehicleBody3D.Bind_get_steering, self.AsObject(), frame.Array(0), r_ret.Addr())

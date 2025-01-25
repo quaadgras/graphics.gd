@@ -66,7 +66,7 @@ func (self Instance) SetFunction(value gdclass.VisualShaderNodeUIntFuncFunction)
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeUIntFuncFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeUIntFuncFunction) { //gd:VisualShaderNodeUIntFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeUIntFuncFunction) {
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeUIntFuncFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeUIntFuncFunction { //gd:VisualShaderNodeUIntFunc.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeUIntFuncFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeUIntFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -125,7 +125,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeUIntFuncFunction
+type Function = gdclass.VisualShaderNodeUIntFuncFunction //gd:VisualShaderNodeUIntFunc.Function
 
 const (
 	/*Negates the [code]x[/code] using [code]-(x)[/code].*/

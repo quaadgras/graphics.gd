@@ -50,35 +50,35 @@ type Any interface {
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) {
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:GridMap.set_collision_mask_value
 	class(self).SetCollisionMaskValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetCollisionMaskValue(layer_number int) bool {
+func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:GridMap.get_collision_mask_value
 	return bool(class(self).GetCollisionMaskValue(gd.Int(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetCollisionLayerValue(layer_number int, value bool) {
+func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:GridMap.set_collision_layer_value
 	class(self).SetCollisionLayerValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetCollisionLayerValue(layer_number int) bool {
+func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:GridMap.get_collision_layer_value
 	return bool(class(self).GetCollisionLayerValue(gd.Int(layer_number)))
 }
 
 /*
 Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 */
-func (self Instance) SetNavigationMap(navigation_map Resource.ID) {
+func (self Instance) SetNavigationMap(navigation_map Resource.ID) { //gd:GridMap.set_navigation_map
 	class(self).SetNavigationMap(navigation_map)
 }
 
@@ -86,7 +86,7 @@ func (self Instance) SetNavigationMap(navigation_map Resource.ID) {
 Returns the [RID] of the navigation map this GridMap node uses for its cell baked navigation meshes.
 This function returns always the map set on the GridMap node and not the map on the NavigationServer. If the map is changed directly with the NavigationServer API the GridMap node will not be aware of the map change.
 */
-func (self Instance) GetNavigationMap() Resource.ID {
+func (self Instance) GetNavigationMap() Resource.ID { //gd:GridMap.get_navigation_map
 	return Resource.ID(class(self).GetNavigationMap())
 }
 
@@ -95,119 +95,119 @@ Sets the mesh index for the cell referenced by its grid coordinates.
 A negative item index such as [constant INVALID_CELL_ITEM] will clear the cell.
 Optionally, the item's orientation can be passed. For valid orientation values, see [method get_orthogonal_index_from_basis].
 */
-func (self Instance) SetCellItem(position Vector3i.XYZ, item int) {
+func (self Instance) SetCellItem(position Vector3i.XYZ, item int) { //gd:GridMap.set_cell_item
 	class(self).SetCellItem(gd.Vector3i(position), gd.Int(item), gd.Int(0))
 }
 
 /*
 The [MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [constant INVALID_CELL_ITEM] will be returned.
 */
-func (self Instance) GetCellItem(position Vector3i.XYZ) int {
+func (self Instance) GetCellItem(position Vector3i.XYZ) int { //gd:GridMap.get_cell_item
 	return int(int(class(self).GetCellItem(gd.Vector3i(position))))
 }
 
 /*
 The orientation of the cell at the given grid coordinates. [code]-1[/code] is returned if the cell is empty.
 */
-func (self Instance) GetCellItemOrientation(position Vector3i.XYZ) int {
+func (self Instance) GetCellItemOrientation(position Vector3i.XYZ) int { //gd:GridMap.get_cell_item_orientation
 	return int(int(class(self).GetCellItemOrientation(gd.Vector3i(position))))
 }
 
 /*
 Returns the basis that gives the specified cell its orientation.
 */
-func (self Instance) GetCellItemBasis(position Vector3i.XYZ) Basis.XYZ {
+func (self Instance) GetCellItemBasis(position Vector3i.XYZ) Basis.XYZ { //gd:GridMap.get_cell_item_basis
 	return Basis.XYZ(class(self).GetCellItemBasis(gd.Vector3i(position)))
 }
 
 /*
 Returns one of 24 possible rotations that lie along the vectors (x,y,z) with each component being either -1, 0, or 1. For further details, refer to the Godot source code.
 */
-func (self Instance) GetBasisWithOrthogonalIndex(index int) Basis.XYZ {
+func (self Instance) GetBasisWithOrthogonalIndex(index int) Basis.XYZ { //gd:GridMap.get_basis_with_orthogonal_index
 	return Basis.XYZ(class(self).GetBasisWithOrthogonalIndex(gd.Int(index)))
 }
 
 /*
 This function considers a discretization of rotations into 24 points on unit sphere, lying along the vectors (x,y,z) with each component being either -1, 0, or 1, and returns the index (in the range from 0 to 23) of the point best representing the orientation of the object. For further details, refer to the Godot source code.
 */
-func (self Instance) GetOrthogonalIndexFromBasis(basis Basis.XYZ) int {
+func (self Instance) GetOrthogonalIndexFromBasis(basis Basis.XYZ) int { //gd:GridMap.get_orthogonal_index_from_basis
 	return int(int(class(self).GetOrthogonalIndexFromBasis(gd.Basis(basis))))
 }
 
 /*
 Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node3D.to_local] before passing it to this method. See also [method map_to_local].
 */
-func (self Instance) LocalToMap(local_position Vector3.XYZ) Vector3i.XYZ {
+func (self Instance) LocalToMap(local_position Vector3.XYZ) Vector3i.XYZ { //gd:GridMap.local_to_map
 	return Vector3i.XYZ(class(self).LocalToMap(gd.Vector3(local_position)))
 }
 
 /*
 Returns the position of a grid cell in the GridMap's local coordinate space. To convert the returned value into global coordinates, use [method Node3D.to_global]. See also [method local_to_map].
 */
-func (self Instance) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ {
+func (self Instance) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:GridMap.map_to_local
 	return Vector3.XYZ(class(self).MapToLocal(gd.Vector3i(map_position)))
 }
 
 /*
 This method does nothing.
 */
-func (self Instance) ResourceChanged(resource [1]gdclass.Resource) {
+func (self Instance) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
 	class(self).ResourceChanged(resource)
 }
 
 /*
 Clear all cells.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:GridMap.clear
 	class(self).Clear()
 }
 
 /*
 Returns an array of [Vector3] with the non-empty cell coordinates in the grid map.
 */
-func (self Instance) GetUsedCells() []Vector3i.XYZ {
+func (self Instance) GetUsedCells() []Vector3i.XYZ { //gd:GridMap.get_used_cells
 	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(class(self).GetUsedCells())))
 }
 
 /*
 Returns an array of all cells with the given item index specified in [param item].
 */
-func (self Instance) GetUsedCellsByItem(item int) []Vector3i.XYZ {
+func (self Instance) GetUsedCellsByItem(item int) []Vector3i.XYZ { //gd:GridMap.get_used_cells_by_item
 	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(class(self).GetUsedCellsByItem(gd.Int(item)))))
 }
 
 /*
 Returns an array of [Transform3D] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
 */
-func (self Instance) GetMeshes() []any {
+func (self Instance) GetMeshes() []any { //gd:GridMap.get_meshes
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetMeshes())))
 }
 
 /*
 Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshes that exist within the current GridMap.
 */
-func (self Instance) GetBakeMeshes() []any {
+func (self Instance) GetBakeMeshes() []any { //gd:GridMap.get_bake_meshes
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetBakeMeshes())))
 }
 
 /*
 Returns [RID] of a baked mesh with the given [param idx].
 */
-func (self Instance) GetBakeMeshInstance(idx int) Resource.ID {
+func (self Instance) GetBakeMeshInstance(idx int) Resource.ID { //gd:GridMap.get_bake_mesh_instance
 	return Resource.ID(class(self).GetBakeMeshInstance(gd.Int(idx)))
 }
 
 /*
 Clears all baked meshes. See [method make_baked_meshes].
 */
-func (self Instance) ClearBakedMeshes() {
+func (self Instance) ClearBakedMeshes() { //gd:GridMap.clear_baked_meshes
 	class(self).ClearBakedMeshes()
 }
 
 /*
 Bakes lightmap data for all meshes in the assigned [MeshLibrary].
 */
-func (self Instance) MakeBakedMeshes() {
+func (self Instance) MakeBakedMeshes() { //gd:GridMap.make_baked_meshes
 	class(self).MakeBakedMeshes(false, gd.Float(0.1))
 }
 
@@ -326,7 +326,7 @@ func (self Instance) SetBakeNavigation(value bool) {
 }
 
 //go:nosplit
-func (self class) SetCollisionLayer(layer gd.Int) {
+func (self class) SetCollisionLayer(layer gd.Int) { //gd:GridMap.set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -335,7 +335,7 @@ func (self class) SetCollisionLayer(layer gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionLayer() gd.Int {
+func (self class) GetCollisionLayer() gd.Int { //gd:GridMap.get_collision_layer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -345,7 +345,7 @@ func (self class) GetCollisionLayer() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(mask gd.Int) {
+func (self class) SetCollisionMask(mask gd.Int) { //gd:GridMap.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -354,7 +354,7 @@ func (self class) SetCollisionMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int {
+func (self class) GetCollisionMask() gd.Int { //gd:GridMap.get_collision_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -367,7 +367,7 @@ func (self class) GetCollisionMask() gd.Int {
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
+func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:GridMap.set_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -380,7 +380,7 @@ func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
+func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:GridMap.get_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -394,7 +394,7 @@ func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) {
+func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) { //gd:GridMap.set_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -407,7 +407,7 @@ func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionLayerValue(layer_number gd.Int) bool {
+func (self class) GetCollisionLayerValue(layer_number gd.Int) bool { //gd:GridMap.get_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -418,7 +418,7 @@ func (self class) GetCollisionLayerValue(layer_number gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) SetCollisionPriority(priority gd.Float) {
+func (self class) SetCollisionPriority(priority gd.Float) { //gd:GridMap.set_collision_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -427,7 +427,7 @@ func (self class) SetCollisionPriority(priority gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCollisionPriority() gd.Float {
+func (self class) GetCollisionPriority() gd.Float { //gd:GridMap.get_collision_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -437,7 +437,7 @@ func (self class) GetCollisionPriority() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) {
+func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) { //gd:GridMap.set_physics_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	var r_ret = callframe.Nil
@@ -446,7 +446,7 @@ func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) {
 }
 
 //go:nosplit
-func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial {
+func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial { //gd:GridMap.get_physics_material
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_physics_material, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -456,7 +456,7 @@ func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial {
 }
 
 //go:nosplit
-func (self class) SetBakeNavigation(bake_navigation bool) {
+func (self class) SetBakeNavigation(bake_navigation bool) { //gd:GridMap.set_bake_navigation
 	var frame = callframe.New()
 	callframe.Arg(frame, bake_navigation)
 	var r_ret = callframe.Nil
@@ -465,7 +465,7 @@ func (self class) SetBakeNavigation(bake_navigation bool) {
 }
 
 //go:nosplit
-func (self class) IsBakingNavigation() bool {
+func (self class) IsBakingNavigation() bool { //gd:GridMap.is_baking_navigation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_is_baking_navigation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -478,7 +478,7 @@ func (self class) IsBakingNavigation() bool {
 Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 */
 //go:nosplit
-func (self class) SetNavigationMap(navigation_map gd.RID) {
+func (self class) SetNavigationMap(navigation_map gd.RID) { //gd:GridMap.set_navigation_map
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_map)
 	var r_ret = callframe.Nil
@@ -491,7 +491,7 @@ Returns the [RID] of the navigation map this GridMap node uses for its cell bake
 This function returns always the map set on the GridMap node and not the map on the NavigationServer. If the map is changed directly with the NavigationServer API the GridMap node will not be aware of the map change.
 */
 //go:nosplit
-func (self class) GetNavigationMap() gd.RID {
+func (self class) GetNavigationMap() gd.RID { //gd:GridMap.get_navigation_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -501,7 +501,7 @@ func (self class) GetNavigationMap() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) {
+func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) { //gd:GridMap.set_mesh_library
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh_library[0])[0])
 	var r_ret = callframe.Nil
@@ -510,7 +510,7 @@ func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) {
 }
 
 //go:nosplit
-func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary {
+func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary { //gd:GridMap.get_mesh_library
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_mesh_library, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -520,7 +520,7 @@ func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary {
 }
 
 //go:nosplit
-func (self class) SetCellSize(size gd.Vector3) {
+func (self class) SetCellSize(size gd.Vector3) { //gd:GridMap.set_cell_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -529,7 +529,7 @@ func (self class) SetCellSize(size gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetCellSize() gd.Vector3 {
+func (self class) GetCellSize() gd.Vector3 { //gd:GridMap.get_cell_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_cell_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -539,7 +539,7 @@ func (self class) GetCellSize() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetCellScale(scale gd.Float) {
+func (self class) SetCellScale(scale gd.Float) { //gd:GridMap.set_cell_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -548,7 +548,7 @@ func (self class) SetCellScale(scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCellScale() gd.Float {
+func (self class) GetCellScale() gd.Float { //gd:GridMap.get_cell_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_cell_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -558,7 +558,7 @@ func (self class) GetCellScale() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetOctantSize(size gd.Int) {
+func (self class) SetOctantSize(size gd.Int) { //gd:GridMap.set_octant_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -567,7 +567,7 @@ func (self class) SetOctantSize(size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetOctantSize() gd.Int {
+func (self class) GetOctantSize() gd.Int { //gd:GridMap.get_octant_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_octant_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -582,7 +582,7 @@ A negative item index such as [constant INVALID_CELL_ITEM] will clear the cell.
 Optionally, the item's orientation can be passed. For valid orientation values, see [method get_orthogonal_index_from_basis].
 */
 //go:nosplit
-func (self class) SetCellItem(position gd.Vector3i, item gd.Int, orientation gd.Int) {
+func (self class) SetCellItem(position gd.Vector3i, item gd.Int, orientation gd.Int) { //gd:GridMap.set_cell_item
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, item)
@@ -596,7 +596,7 @@ func (self class) SetCellItem(position gd.Vector3i, item gd.Int, orientation gd.
 The [MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [constant INVALID_CELL_ITEM] will be returned.
 */
 //go:nosplit
-func (self class) GetCellItem(position gd.Vector3i) gd.Int {
+func (self class) GetCellItem(position gd.Vector3i) gd.Int { //gd:GridMap.get_cell_item
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -610,7 +610,7 @@ func (self class) GetCellItem(position gd.Vector3i) gd.Int {
 The orientation of the cell at the given grid coordinates. [code]-1[/code] is returned if the cell is empty.
 */
 //go:nosplit
-func (self class) GetCellItemOrientation(position gd.Vector3i) gd.Int {
+func (self class) GetCellItemOrientation(position gd.Vector3i) gd.Int { //gd:GridMap.get_cell_item_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -624,7 +624,7 @@ func (self class) GetCellItemOrientation(position gd.Vector3i) gd.Int {
 Returns the basis that gives the specified cell its orientation.
 */
 //go:nosplit
-func (self class) GetCellItemBasis(position gd.Vector3i) gd.Basis {
+func (self class) GetCellItemBasis(position gd.Vector3i) gd.Basis { //gd:GridMap.get_cell_item_basis
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Basis](frame)
@@ -638,7 +638,7 @@ func (self class) GetCellItemBasis(position gd.Vector3i) gd.Basis {
 Returns one of 24 possible rotations that lie along the vectors (x,y,z) with each component being either -1, 0, or 1. For further details, refer to the Godot source code.
 */
 //go:nosplit
-func (self class) GetBasisWithOrthogonalIndex(index gd.Int) gd.Basis {
+func (self class) GetBasisWithOrthogonalIndex(index gd.Int) gd.Basis { //gd:GridMap.get_basis_with_orthogonal_index
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Basis](frame)
@@ -652,7 +652,7 @@ func (self class) GetBasisWithOrthogonalIndex(index gd.Int) gd.Basis {
 This function considers a discretization of rotations into 24 points on unit sphere, lying along the vectors (x,y,z) with each component being either -1, 0, or 1, and returns the index (in the range from 0 to 23) of the point best representing the orientation of the object. For further details, refer to the Godot source code.
 */
 //go:nosplit
-func (self class) GetOrthogonalIndexFromBasis(basis gd.Basis) gd.Int {
+func (self class) GetOrthogonalIndexFromBasis(basis gd.Basis) gd.Int { //gd:GridMap.get_orthogonal_index_from_basis
 	var frame = callframe.New()
 	callframe.Arg(frame, basis)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -666,7 +666,7 @@ func (self class) GetOrthogonalIndexFromBasis(basis gd.Basis) gd.Int {
 Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node3D.to_local] before passing it to this method. See also [method map_to_local].
 */
 //go:nosplit
-func (self class) LocalToMap(local_position gd.Vector3) gd.Vector3i {
+func (self class) LocalToMap(local_position gd.Vector3) gd.Vector3i { //gd:GridMap.local_to_map
 	var frame = callframe.New()
 	callframe.Arg(frame, local_position)
 	var r_ret = callframe.Ret[gd.Vector3i](frame)
@@ -680,7 +680,7 @@ func (self class) LocalToMap(local_position gd.Vector3) gd.Vector3i {
 Returns the position of a grid cell in the GridMap's local coordinate space. To convert the returned value into global coordinates, use [method Node3D.to_global]. See also [method local_to_map].
 */
 //go:nosplit
-func (self class) MapToLocal(map_position gd.Vector3i) gd.Vector3 {
+func (self class) MapToLocal(map_position gd.Vector3i) gd.Vector3 { //gd:GridMap.map_to_local
 	var frame = callframe.New()
 	callframe.Arg(frame, map_position)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -694,7 +694,7 @@ func (self class) MapToLocal(map_position gd.Vector3i) gd.Vector3 {
 This method does nothing.
 */
 //go:nosplit
-func (self class) ResourceChanged(resource [1]gdclass.Resource) {
+func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
 	var r_ret = callframe.Nil
@@ -703,7 +703,7 @@ func (self class) ResourceChanged(resource [1]gdclass.Resource) {
 }
 
 //go:nosplit
-func (self class) SetCenterX(enable bool) {
+func (self class) SetCenterX(enable bool) { //gd:GridMap.set_center_x
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -712,7 +712,7 @@ func (self class) SetCenterX(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetCenterX() bool {
+func (self class) GetCenterX() bool { //gd:GridMap.get_center_x
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_center_x, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -722,7 +722,7 @@ func (self class) GetCenterX() bool {
 }
 
 //go:nosplit
-func (self class) SetCenterY(enable bool) {
+func (self class) SetCenterY(enable bool) { //gd:GridMap.set_center_y
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -731,7 +731,7 @@ func (self class) SetCenterY(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetCenterY() bool {
+func (self class) GetCenterY() bool { //gd:GridMap.get_center_y
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_center_y, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -741,7 +741,7 @@ func (self class) GetCenterY() bool {
 }
 
 //go:nosplit
-func (self class) SetCenterZ(enable bool) {
+func (self class) SetCenterZ(enable bool) { //gd:GridMap.set_center_z
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -750,7 +750,7 @@ func (self class) SetCenterZ(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetCenterZ() bool {
+func (self class) GetCenterZ() bool { //gd:GridMap.get_center_z
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_center_z, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -763,7 +763,7 @@ func (self class) GetCenterZ() bool {
 Clear all cells.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:GridMap.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -774,7 +774,7 @@ func (self class) Clear() {
 Returns an array of [Vector3] with the non-empty cell coordinates in the grid map.
 */
 //go:nosplit
-func (self class) GetUsedCells() Array.Contains[gd.Vector3i] {
+func (self class) GetUsedCells() Array.Contains[gd.Vector3i] { //gd:GridMap.get_used_cells
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -787,7 +787,7 @@ func (self class) GetUsedCells() Array.Contains[gd.Vector3i] {
 Returns an array of all cells with the given item index specified in [param item].
 */
 //go:nosplit
-func (self class) GetUsedCellsByItem(item gd.Int) Array.Contains[gd.Vector3i] {
+func (self class) GetUsedCellsByItem(item gd.Int) Array.Contains[gd.Vector3i] { //gd:GridMap.get_used_cells_by_item
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -801,7 +801,7 @@ func (self class) GetUsedCellsByItem(item gd.Int) Array.Contains[gd.Vector3i] {
 Returns an array of [Transform3D] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
 */
 //go:nosplit
-func (self class) GetMeshes() Array.Any {
+func (self class) GetMeshes() Array.Any { //gd:GridMap.get_meshes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -814,7 +814,7 @@ func (self class) GetMeshes() Array.Any {
 Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshes that exist within the current GridMap.
 */
 //go:nosplit
-func (self class) GetBakeMeshes() Array.Any {
+func (self class) GetBakeMeshes() Array.Any { //gd:GridMap.get_bake_meshes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_bake_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -827,7 +827,7 @@ func (self class) GetBakeMeshes() Array.Any {
 Returns [RID] of a baked mesh with the given [param idx].
 */
 //go:nosplit
-func (self class) GetBakeMeshInstance(idx gd.Int) gd.RID {
+func (self class) GetBakeMeshInstance(idx gd.Int) gd.RID { //gd:GridMap.get_bake_mesh_instance
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -841,7 +841,7 @@ func (self class) GetBakeMeshInstance(idx gd.Int) gd.RID {
 Clears all baked meshes. See [method make_baked_meshes].
 */
 //go:nosplit
-func (self class) ClearBakedMeshes() {
+func (self class) ClearBakedMeshes() { //gd:GridMap.clear_baked_meshes
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_clear_baked_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -852,7 +852,7 @@ func (self class) ClearBakedMeshes() {
 Bakes lightmap data for all meshes in the assigned [MeshLibrary].
 */
 //go:nosplit
-func (self class) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size gd.Float) {
+func (self class) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size gd.Float) { //gd:GridMap.make_baked_meshes
 	var frame = callframe.New()
 	callframe.Arg(frame, gen_lightmap_uv)
 	callframe.Arg(frame, lightmap_uv_texel_size)

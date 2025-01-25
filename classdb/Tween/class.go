@@ -163,7 +163,7 @@ tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenProperty(obj Object.Instance, property NodePath.String, final_val any, duration Float.X) [1]gdclass.PropertyTweener {
+func (self Instance) TweenProperty(obj Object.Instance, property NodePath.String, final_val any, duration Float.X) [1]gdclass.PropertyTweener { //gd:Tween.tween_property
 	return [1]gdclass.PropertyTweener(class(self).TweenProperty(obj, gd.NewString(string(property)).NodePath(), gd.NewVariant(final_val), gd.Float(duration)))
 }
 
@@ -204,7 +204,7 @@ tween.TweenInterval(2.0f);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenInterval(time Float.X) [1]gdclass.IntervalTweener {
+func (self Instance) TweenInterval(time Float.X) [1]gdclass.IntervalTweener { //gd:Tween.tween_interval
 	return [1]gdclass.IntervalTweener(class(self).TweenInterval(gd.Float(time)))
 }
 
@@ -236,7 +236,7 @@ tween.TweenCallback(Callable.From(() => sprite.Modulate = Colors.Blue)).SetDelay
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenCallback(callback func()) [1]gdclass.CallbackTweener {
+func (self Instance) TweenCallback(callback func()) [1]gdclass.CallbackTweener { //gd:Tween.tween_callback
 	return [1]gdclass.CallbackTweener(class(self).TweenCallback(Callable.New(callback)))
 }
 
@@ -285,7 +285,7 @@ private void SetLabelText(int value)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) TweenMethod(method func(value any), from any, to any, duration Float.X) [1]gdclass.MethodTweener {
+func (self Instance) TweenMethod(method func(value any), from any, to any, duration Float.X) [1]gdclass.MethodTweener { //gd:Tween.tween_method
 	return [1]gdclass.MethodTweener(class(self).TweenMethod(Callable.New(method), gd.NewVariant(from), gd.NewVariant(to), gd.Float(duration)))
 }
 
@@ -293,7 +293,7 @@ func (self Instance) TweenMethod(method func(value any), from any, to any, durat
 Processes the [Tween] by the given [param delta] value, in seconds. This is mostly useful for manual control when the [Tween] is paused. It can also be used to end the [Tween] animation immediately, by setting [param delta] longer than the whole duration of the [Tween] animation.
 Returns [code]true[/code] if the [Tween] still has [Tweener]s that haven't finished.
 */
-func (self Instance) CustomStep(delta Float.X) bool {
+func (self Instance) CustomStep(delta Float.X) bool { //gd:Tween.custom_step
 	return bool(class(self).CustomStep(gd.Float(delta)))
 }
 
@@ -301,7 +301,7 @@ func (self Instance) CustomStep(delta Float.X) bool {
 Stops the tweening and resets the [Tween] to its initial state. This will not remove any appended [Tweener]s.
 [b]Note:[/b] If a Tween is stopped and not bound to any node, it will exist indefinitely until manually started or invalidated. If you lose a reference to such Tween, you can retrieve it using [method SceneTree.get_processed_tweens].
 */
-func (self Instance) Stop() {
+func (self Instance) Stop() { //gd:Tween.stop
 	class(self).Stop()
 }
 
@@ -309,21 +309,21 @@ func (self Instance) Stop() {
 Pauses the tweening. The animation can be resumed by using [method play].
 [b]Note:[/b] If a Tween is paused and not bound to any node, it will exist indefinitely until manually started or invalidated. If you lose a reference to such Tween, you can retrieve it using [method SceneTree.get_processed_tweens].
 */
-func (self Instance) Pause() {
+func (self Instance) Pause() { //gd:Tween.pause
 	class(self).Pause()
 }
 
 /*
 Resumes a paused or stopped [Tween].
 */
-func (self Instance) Play() {
+func (self Instance) Play() { //gd:Tween.play
 	class(self).Play()
 }
 
 /*
 Aborts all tweening operations and invalidates the [Tween].
 */
-func (self Instance) Kill() {
+func (self Instance) Kill() { //gd:Tween.kill
 	class(self).Kill()
 }
 
@@ -331,21 +331,21 @@ func (self Instance) Kill() {
 Returns the total time in seconds the [Tween] has been animating (i.e. the time since it started, not counting pauses etc.). The time is affected by [method set_speed_scale], and [method stop] will reset it to [code]0[/code].
 [b]Note:[/b] As it results from accumulating frame deltas, the time returned after the [Tween] has finished animating will be slightly greater than the actual [Tween] duration.
 */
-func (self Instance) GetTotalElapsedTime() Float.X {
+func (self Instance) GetTotalElapsedTime() Float.X { //gd:Tween.get_total_elapsed_time
 	return Float.X(Float.X(class(self).GetTotalElapsedTime()))
 }
 
 /*
 Returns whether the [Tween] is currently running, i.e. it wasn't paused and it's not finished.
 */
-func (self Instance) IsRunning() bool {
+func (self Instance) IsRunning() bool { //gd:Tween.is_running
 	return bool(class(self).IsRunning())
 }
 
 /*
 Returns whether the [Tween] is valid. A valid [Tween] is a [Tween] contained by the scene tree (i.e. the array from [method SceneTree.get_processed_tweens] will contain this [Tween]). A [Tween] might become invalid when it has finished tweening, is killed, or when created with [code]Tween.new()[/code]. Invalid [Tween]s can't have [Tweener]s appended.
 */
-func (self Instance) IsValid() bool {
+func (self Instance) IsValid() bool { //gd:Tween.is_valid
 	return bool(class(self).IsValid())
 }
 
@@ -353,7 +353,7 @@ func (self Instance) IsValid() bool {
 Binds this [Tween] with the given [param node]. [Tween]s are processed directly by the [SceneTree], so they run independently of the animated nodes. When you bind a [Node] with the [Tween], the [Tween] will halt the animation when the object is not inside tree and the [Tween] will be automatically killed when the bound object is freed. Also [constant TWEEN_PAUSE_BOUND] will make the pausing behavior dependent on the bound node.
 For a shorter way to create and bind a [Tween], you can use [method Node.create_tween].
 */
-func (self Instance) BindNode(node [1]gdclass.Node) [1]gdclass.Tween {
+func (self Instance) BindNode(node [1]gdclass.Node) [1]gdclass.Tween { //gd:Tween.bind_node
 	return [1]gdclass.Tween(class(self).BindNode(node))
 }
 
@@ -361,7 +361,7 @@ func (self Instance) BindNode(node [1]gdclass.Node) [1]gdclass.Tween {
 Determines whether the [Tween] should run after process frames (see [method Node._process]) or physics frames (see [method Node._physics_process]).
 Default value is [constant TWEEN_PROCESS_IDLE].
 */
-func (self Instance) SetProcessMode(mode gdclass.TweenTweenProcessMode) [1]gdclass.Tween {
+func (self Instance) SetProcessMode(mode gdclass.TweenTweenProcessMode) [1]gdclass.Tween { //gd:Tween.set_process_mode
 	return [1]gdclass.Tween(class(self).SetProcessMode(mode))
 }
 
@@ -369,7 +369,7 @@ func (self Instance) SetProcessMode(mode gdclass.TweenTweenProcessMode) [1]gdcla
 Determines the behavior of the [Tween] when the [SceneTree] is paused. Check [enum TweenPauseMode] for options.
 Default value is [constant TWEEN_PAUSE_BOUND].
 */
-func (self Instance) SetPauseMode(mode gdclass.TweenTweenPauseMode) [1]gdclass.Tween {
+func (self Instance) SetPauseMode(mode gdclass.TweenTweenPauseMode) [1]gdclass.Tween { //gd:Tween.set_pause_mode
 	return [1]gdclass.Tween(class(self).SetPauseMode(mode))
 }
 
@@ -382,7 +382,7 @@ tween.set_parallel()
 tween.tween_property(self, "modulate", Color.GREEN, 0.5) # Runs together with the position tweener.
 [/codeblock]
 */
-func (self Instance) SetParallel() [1]gdclass.Tween {
+func (self Instance) SetParallel() [1]gdclass.Tween { //gd:Tween.set_parallel
 	return [1]gdclass.Tween(class(self).SetParallel(true))
 }
 
@@ -391,21 +391,21 @@ Sets the number of times the tweening sequence will be repeated, i.e. [code]set_
 Calling this method without arguments will make the [Tween] run infinitely, until either it is killed with [method kill], the [Tween]'s bound node is freed, or all the animated objects have been freed (which makes further animation impossible).
 [b]Warning:[/b] Make sure to always add some duration/delay when using infinite loops. To prevent the game freezing, 0-duration looped animations (e.g. a single [CallbackTweener] with no delay) are stopped after a small number of loops, which may produce unexpected results. If a [Tween]'s lifetime depends on some node, always use [method bind_node].
 */
-func (self Instance) SetLoops() [1]gdclass.Tween {
+func (self Instance) SetLoops() [1]gdclass.Tween { //gd:Tween.set_loops
 	return [1]gdclass.Tween(class(self).SetLoops(gd.Int(0)))
 }
 
 /*
 Returns the number of remaining loops for this [Tween] (see [method set_loops]). A return value of [code]-1[/code] indicates an infinitely looping [Tween], and a return value of [code]0[/code] indicates that the [Tween] has already finished.
 */
-func (self Instance) GetLoopsLeft() int {
+func (self Instance) GetLoopsLeft() int { //gd:Tween.get_loops_left
 	return int(int(class(self).GetLoopsLeft()))
 }
 
 /*
 Scales the speed of tweening. This affects all [Tweener]s and their delays.
 */
-func (self Instance) SetSpeedScale(speed Float.X) [1]gdclass.Tween {
+func (self Instance) SetSpeedScale(speed Float.X) [1]gdclass.Tween { //gd:Tween.set_speed_scale
 	return [1]gdclass.Tween(class(self).SetSpeedScale(gd.Float(speed)))
 }
 
@@ -413,7 +413,7 @@ func (self Instance) SetSpeedScale(speed Float.X) [1]gdclass.Tween {
 Sets the default transition type for [PropertyTweener]s and [MethodTweener]s animated by this [Tween].
 If not specified, the default value is [constant TRANS_LINEAR].
 */
-func (self Instance) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Tween {
+func (self Instance) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Tween { //gd:Tween.set_trans
 	return [1]gdclass.Tween(class(self).SetTrans(trans))
 }
 
@@ -421,7 +421,7 @@ func (self Instance) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Twee
 Sets the default ease type for [PropertyTweener]s and [MethodTweener]s animated by this [Tween].
 If not specified, the default value is [constant EASE_IN_OUT].
 */
-func (self Instance) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween {
+func (self Instance) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween { //gd:Tween.set_ease
 	return [1]gdclass.Tween(class(self).SetEase(ease))
 }
 
@@ -445,7 +445,7 @@ tween.Parallel().TweenProperty(...);
 All [Tweener]s in the example will run at the same time.
 You can make the [Tween] parallel by default by using [method set_parallel].
 */
-func (self Instance) Parallel() [1]gdclass.Tween {
+func (self Instance) Parallel() [1]gdclass.Tween { //gd:Tween.parallel
 	return [1]gdclass.Tween(class(self).Parallel())
 }
 
@@ -466,7 +466,7 @@ tween.Chain().TweenProperty(...); // Will run after two above are finished.
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) Chain() [1]gdclass.Tween {
+func (self Instance) Chain() [1]gdclass.Tween { //gd:Tween.chain
 	return [1]gdclass.Tween(class(self).Chain())
 }
 
@@ -478,7 +478,7 @@ This method can be used for manual interpolation of a value, when you don't want
 [param duration] is the total time of the interpolation.
 [b]Note:[/b] If [param duration] is equal to [code]0[/code], the method will always return the final value, regardless of [param elapsed_time] provided.
 */
-func InterpolateValue(initial_value any, delta_value any, elapsed_time Float.X, duration Float.X, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) any {
+func InterpolateValue(initial_value any, delta_value any, elapsed_time Float.X, duration Float.X, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) any { //gd:Tween.interpolate_value
 	self := Instance{}
 	return any(class(self).InterpolateValue(gd.NewVariant(initial_value), gd.NewVariant(delta_value), gd.Float(elapsed_time), gd.Float(duration), trans_type, ease_type).Interface())
 }
@@ -534,7 +534,7 @@ tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) TweenProperty(obj [1]gd.Object, property gd.NodePath, final_val gd.Variant, duration gd.Float) [1]gdclass.PropertyTweener {
+func (self class) TweenProperty(obj [1]gd.Object, property gd.NodePath, final_val gd.Variant, duration gd.Float) [1]gdclass.PropertyTweener { //gd:Tween.tween_property
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(property))
@@ -585,7 +585,7 @@ tween.TweenInterval(2.0f);
 [/codeblocks]
 */
 //go:nosplit
-func (self class) TweenInterval(time gd.Float) [1]gdclass.IntervalTweener {
+func (self class) TweenInterval(time gd.Float) [1]gdclass.IntervalTweener { //gd:Tween.tween_interval
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -624,7 +624,7 @@ tween.TweenCallback(Callable.From(() => sprite.Modulate = Colors.Blue)).SetDelay
 [/codeblocks]
 */
 //go:nosplit
-func (self class) TweenCallback(callback Callable.Function) [1]gdclass.CallbackTweener {
+func (self class) TweenCallback(callback Callable.Function) [1]gdclass.CallbackTweener { //gd:Tween.tween_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -674,7 +674,7 @@ private void SetLabelText(int value)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) TweenMethod(method Callable.Function, from gd.Variant, to gd.Variant, duration gd.Float) [1]gdclass.MethodTweener {
+func (self class) TweenMethod(method Callable.Function, from gd.Variant, to gd.Variant, duration gd.Float) [1]gdclass.MethodTweener { //gd:Tween.tween_method
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(method)))
 	callframe.Arg(frame, pointers.Get(from))
@@ -692,7 +692,7 @@ Processes the [Tween] by the given [param delta] value, in seconds. This is most
 Returns [code]true[/code] if the [Tween] still has [Tweener]s that haven't finished.
 */
 //go:nosplit
-func (self class) CustomStep(delta gd.Float) bool {
+func (self class) CustomStep(delta gd.Float) bool { //gd:Tween.custom_step
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	var r_ret = callframe.Ret[bool](frame)
@@ -707,7 +707,7 @@ Stops the tweening and resets the [Tween] to its initial state. This will not re
 [b]Note:[/b] If a Tween is stopped and not bound to any node, it will exist indefinitely until manually started or invalidated. If you lose a reference to such Tween, you can retrieve it using [method SceneTree.get_processed_tweens].
 */
 //go:nosplit
-func (self class) Stop() {
+func (self class) Stop() { //gd:Tween.stop
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -719,7 +719,7 @@ Pauses the tweening. The animation can be resumed by using [method play].
 [b]Note:[/b] If a Tween is paused and not bound to any node, it will exist indefinitely until manually started or invalidated. If you lose a reference to such Tween, you can retrieve it using [method SceneTree.get_processed_tweens].
 */
 //go:nosplit
-func (self class) Pause() {
+func (self class) Pause() { //gd:Tween.pause
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_pause, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -730,7 +730,7 @@ func (self class) Pause() {
 Resumes a paused or stopped [Tween].
 */
 //go:nosplit
-func (self class) Play() {
+func (self class) Play() { //gd:Tween.play
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_play, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -741,7 +741,7 @@ func (self class) Play() {
 Aborts all tweening operations and invalidates the [Tween].
 */
 //go:nosplit
-func (self class) Kill() {
+func (self class) Kill() { //gd:Tween.kill
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_kill, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -753,7 +753,7 @@ Returns the total time in seconds the [Tween] has been animating (i.e. the time 
 [b]Note:[/b] As it results from accumulating frame deltas, the time returned after the [Tween] has finished animating will be slightly greater than the actual [Tween] duration.
 */
 //go:nosplit
-func (self class) GetTotalElapsedTime() gd.Float {
+func (self class) GetTotalElapsedTime() gd.Float { //gd:Tween.get_total_elapsed_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_get_total_elapsed_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -766,7 +766,7 @@ func (self class) GetTotalElapsedTime() gd.Float {
 Returns whether the [Tween] is currently running, i.e. it wasn't paused and it's not finished.
 */
 //go:nosplit
-func (self class) IsRunning() bool {
+func (self class) IsRunning() bool { //gd:Tween.is_running
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_is_running, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -779,7 +779,7 @@ func (self class) IsRunning() bool {
 Returns whether the [Tween] is valid. A valid [Tween] is a [Tween] contained by the scene tree (i.e. the array from [method SceneTree.get_processed_tweens] will contain this [Tween]). A [Tween] might become invalid when it has finished tweening, is killed, or when created with [code]Tween.new()[/code]. Invalid [Tween]s can't have [Tweener]s appended.
 */
 //go:nosplit
-func (self class) IsValid() bool {
+func (self class) IsValid() bool { //gd:Tween.is_valid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_is_valid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -793,7 +793,7 @@ Binds this [Tween] with the given [param node]. [Tween]s are processed directly 
 For a shorter way to create and bind a [Tween], you can use [method Node.create_tween].
 */
 //go:nosplit
-func (self class) BindNode(node [1]gdclass.Node) [1]gdclass.Tween {
+func (self class) BindNode(node [1]gdclass.Node) [1]gdclass.Tween { //gd:Tween.bind_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -808,7 +808,7 @@ Determines whether the [Tween] should run after process frames (see [method Node
 Default value is [constant TWEEN_PROCESS_IDLE].
 */
 //go:nosplit
-func (self class) SetProcessMode(mode gdclass.TweenTweenProcessMode) [1]gdclass.Tween {
+func (self class) SetProcessMode(mode gdclass.TweenTweenProcessMode) [1]gdclass.Tween { //gd:Tween.set_process_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -823,7 +823,7 @@ Determines the behavior of the [Tween] when the [SceneTree] is paused. Check [en
 Default value is [constant TWEEN_PAUSE_BOUND].
 */
 //go:nosplit
-func (self class) SetPauseMode(mode gdclass.TweenTweenPauseMode) [1]gdclass.Tween {
+func (self class) SetPauseMode(mode gdclass.TweenTweenPauseMode) [1]gdclass.Tween { //gd:Tween.set_pause_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -843,7 +843,7 @@ tween.tween_property(self, "modulate", Color.GREEN, 0.5) # Runs together with th
 [/codeblock]
 */
 //go:nosplit
-func (self class) SetParallel(parallel bool) [1]gdclass.Tween {
+func (self class) SetParallel(parallel bool) [1]gdclass.Tween { //gd:Tween.set_parallel
 	var frame = callframe.New()
 	callframe.Arg(frame, parallel)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -859,7 +859,7 @@ Calling this method without arguments will make the [Tween] run infinitely, unti
 [b]Warning:[/b] Make sure to always add some duration/delay when using infinite loops. To prevent the game freezing, 0-duration looped animations (e.g. a single [CallbackTweener] with no delay) are stopped after a small number of loops, which may produce unexpected results. If a [Tween]'s lifetime depends on some node, always use [method bind_node].
 */
 //go:nosplit
-func (self class) SetLoops(loops gd.Int) [1]gdclass.Tween {
+func (self class) SetLoops(loops gd.Int) [1]gdclass.Tween { //gd:Tween.set_loops
 	var frame = callframe.New()
 	callframe.Arg(frame, loops)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -873,7 +873,7 @@ func (self class) SetLoops(loops gd.Int) [1]gdclass.Tween {
 Returns the number of remaining loops for this [Tween] (see [method set_loops]). A return value of [code]-1[/code] indicates an infinitely looping [Tween], and a return value of [code]0[/code] indicates that the [Tween] has already finished.
 */
 //go:nosplit
-func (self class) GetLoopsLeft() gd.Int {
+func (self class) GetLoopsLeft() gd.Int { //gd:Tween.get_loops_left
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_get_loops_left, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -886,7 +886,7 @@ func (self class) GetLoopsLeft() gd.Int {
 Scales the speed of tweening. This affects all [Tweener]s and their delays.
 */
 //go:nosplit
-func (self class) SetSpeedScale(speed gd.Float) [1]gdclass.Tween {
+func (self class) SetSpeedScale(speed gd.Float) [1]gdclass.Tween { //gd:Tween.set_speed_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, speed)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -901,7 +901,7 @@ Sets the default transition type for [PropertyTweener]s and [MethodTweener]s ani
 If not specified, the default value is [constant TRANS_LINEAR].
 */
 //go:nosplit
-func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Tween {
+func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Tween { //gd:Tween.set_trans
 	var frame = callframe.New()
 	callframe.Arg(frame, trans)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -916,7 +916,7 @@ Sets the default ease type for [PropertyTweener]s and [MethodTweener]s animated 
 If not specified, the default value is [constant EASE_IN_OUT].
 */
 //go:nosplit
-func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween {
+func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween { //gd:Tween.set_ease
 	var frame = callframe.New()
 	callframe.Arg(frame, ease)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -947,7 +947,7 @@ All [Tweener]s in the example will run at the same time.
 You can make the [Tween] parallel by default by using [method set_parallel].
 */
 //go:nosplit
-func (self class) Parallel() [1]gdclass.Tween {
+func (self class) Parallel() [1]gdclass.Tween { //gd:Tween.parallel
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_parallel, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -974,7 +974,7 @@ tween.Chain().TweenProperty(...); // Will run after two above are finished.
 [/codeblocks]
 */
 //go:nosplit
-func (self class) Chain() [1]gdclass.Tween {
+func (self class) Chain() [1]gdclass.Tween { //gd:Tween.chain
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tween.Bind_chain, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -992,7 +992,7 @@ This method can be used for manual interpolation of a value, when you don't want
 [b]Note:[/b] If [param duration] is equal to [code]0[/code], the method will always return the final value, regardless of [param elapsed_time] provided.
 */
 //go:nosplit
-func (self class) InterpolateValue(initial_value gd.Variant, delta_value gd.Variant, elapsed_time gd.Float, duration gd.Float, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) gd.Variant {
+func (self class) InterpolateValue(initial_value gd.Variant, delta_value gd.Variant, elapsed_time gd.Float, duration gd.Float, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) gd.Variant { //gd:Tween.interpolate_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(initial_value))
 	callframe.Arg(frame, pointers.Get(delta_value))
@@ -1044,7 +1044,7 @@ func init() {
 	gdclass.Register("Tween", func(ptr gd.Object) any { return [1]gdclass.Tween{*(*gdclass.Tween)(unsafe.Pointer(&ptr))} })
 }
 
-type TweenProcessMode = gdclass.TweenTweenProcessMode
+type TweenProcessMode = gdclass.TweenTweenProcessMode //gd:Tween.TweenProcessMode
 
 const (
 	/*The [Tween] updates after each physics frame (see [method Node._physics_process]).*/
@@ -1053,7 +1053,7 @@ const (
 	TweenProcessIdle TweenProcessMode = 1
 )
 
-type TweenPauseMode = gdclass.TweenTweenPauseMode
+type TweenPauseMode = gdclass.TweenTweenPauseMode //gd:Tween.TweenPauseMode
 
 const (
 	/*If the [Tween] has a bound node, it will process when that node can process (see [member Node.process_mode]). Otherwise it's the same as [constant TWEEN_PAUSE_STOP].*/
@@ -1064,7 +1064,7 @@ const (
 	TweenPauseProcess TweenPauseMode = 2
 )
 
-type TransitionType = gdclass.TweenTransitionType
+type TransitionType = gdclass.TweenTransitionType //gd:Tween.TransitionType
 
 const (
 	/*The animation is interpolated linearly.*/
@@ -1093,7 +1093,7 @@ const (
 	TransSpring TransitionType = 11
 )
 
-type EaseType = gdclass.TweenEaseType
+type EaseType = gdclass.TweenEaseType //gd:Tween.EaseType
 
 const (
 	/*The interpolation starts slowly and speeds up towards the end.*/

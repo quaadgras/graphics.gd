@@ -109,14 +109,14 @@ func (Instance) _can_use_render_priority(impl func(ptr unsafe.Pointer) bool) (cb
 /*
 Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code.
 */
-func (self Instance) InspectNativeShaderCode() {
+func (self Instance) InspectNativeShaderCode() { //gd:Material.inspect_native_shader_code
 	class(self).InspectNativeShaderCode()
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderMaterial]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource {
+func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Material.create_placeholder
 	return [1]gdclass.Resource(class(self).CreatePlaceholder())
 }
 
@@ -200,7 +200,7 @@ func (class) _can_use_render_priority(impl func(ptr unsafe.Pointer) bool) (cb gd
 }
 
 //go:nosplit
-func (self class) SetNextPass(next_pass [1]gdclass.Material) {
+func (self class) SetNextPass(next_pass [1]gdclass.Material) { //gd:Material.set_next_pass
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(next_pass[0])[0])
 	var r_ret = callframe.Nil
@@ -209,7 +209,7 @@ func (self class) SetNextPass(next_pass [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) GetNextPass() [1]gdclass.Material {
+func (self class) GetNextPass() [1]gdclass.Material { //gd:Material.get_next_pass
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_get_next_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -219,7 +219,7 @@ func (self class) GetNextPass() [1]gdclass.Material {
 }
 
 //go:nosplit
-func (self class) SetRenderPriority(priority gd.Int) {
+func (self class) SetRenderPriority(priority gd.Int) { //gd:Material.set_render_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -228,7 +228,7 @@ func (self class) SetRenderPriority(priority gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRenderPriority() gd.Int {
+func (self class) GetRenderPriority() gd.Int { //gd:Material.get_render_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_get_render_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -241,7 +241,7 @@ func (self class) GetRenderPriority() gd.Int {
 Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code.
 */
 //go:nosplit
-func (self class) InspectNativeShaderCode() {
+func (self class) InspectNativeShaderCode() { //gd:Material.inspect_native_shader_code
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_inspect_native_shader_code, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -252,7 +252,7 @@ func (self class) InspectNativeShaderCode() {
 Creates a placeholder version of this resource ([PlaceholderMaterial]).
 */
 //go:nosplit
-func (self class) CreatePlaceholder() [1]gdclass.Resource {
+func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Material.create_placeholder
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Material.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())

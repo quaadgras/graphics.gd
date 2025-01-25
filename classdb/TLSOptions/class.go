@@ -54,7 +54,7 @@ Creates a TLS client configuration which validates certificates and their common
 You can specify a custom [param trusted_chain] of certification authorities (the default CA list will be used if [code]null[/code]), and optionally provide a [param common_name_override] if you expect the certificate to have a common name other than the server FQDN.
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func Client() [1]gdclass.TLSOptions {
+func Client() [1]gdclass.TLSOptions { //gd:TLSOptions.client
 	self := Instance{}
 	return [1]gdclass.TLSOptions(class(self).Client([1][1]gdclass.X509Certificate{}[0], gd.NewString("")))
 }
@@ -63,7 +63,7 @@ func Client() [1]gdclass.TLSOptions {
 Creates an [b]unsafe[/b] TLS client configuration where certificate validation is optional. You can optionally provide a valid [param trusted_chain], but the common name of the certificates will never be checked. Using this configuration for purposes other than testing [b]is not recommended[/b].
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func ClientUnsafe() [1]gdclass.TLSOptions {
+func ClientUnsafe() [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
 	self := Instance{}
 	return [1]gdclass.TLSOptions(class(self).ClientUnsafe([1][1]gdclass.X509Certificate{}[0]))
 }
@@ -72,7 +72,7 @@ func ClientUnsafe() [1]gdclass.TLSOptions {
 Creates a TLS server configuration using the provided [param key] and [param certificate].
 [b]Note:[/b] The [param certificate] should include the full certificate chain up to the signing CA (certificates file can be concatenated using a general purpose text editor).
 */
-func Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1]gdclass.TLSOptions {
+func Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.server
 	self := Instance{}
 	return [1]gdclass.TLSOptions(class(self).Server(key, certificate))
 }
@@ -80,42 +80,42 @@ func Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1
 /*
 Returns [code]true[/code] if created with [method TLSOptions.server], [code]false[/code] otherwise.
 */
-func (self Instance) IsServer() bool {
+func (self Instance) IsServer() bool { //gd:TLSOptions.is_server
 	return bool(class(self).IsServer())
 }
 
 /*
 Returns [code]true[/code] if created with [method TLSOptions.client_unsafe], [code]false[/code] otherwise.
 */
-func (self Instance) IsUnsafeClient() bool {
+func (self Instance) IsUnsafeClient() bool { //gd:TLSOptions.is_unsafe_client
 	return bool(class(self).IsUnsafeClient())
 }
 
 /*
 Returns the common name (domain name) override specified when creating with [method TLSOptions.client].
 */
-func (self Instance) GetCommonNameOverride() string {
+func (self Instance) GetCommonNameOverride() string { //gd:TLSOptions.get_common_name_override
 	return string(class(self).GetCommonNameOverride().String())
 }
 
 /*
 Returns the CA [X509Certificate] chain specified when creating with [method TLSOptions.client] or [method TLSOptions.client_unsafe].
 */
-func (self Instance) GetTrustedCaChain() [1]gdclass.X509Certificate {
+func (self Instance) GetTrustedCaChain() [1]gdclass.X509Certificate { //gd:TLSOptions.get_trusted_ca_chain
 	return [1]gdclass.X509Certificate(class(self).GetTrustedCaChain())
 }
 
 /*
 Returns the [CryptoKey] specified when creating with [method TLSOptions.server].
 */
-func (self Instance) GetPrivateKey() [1]gdclass.CryptoKey {
+func (self Instance) GetPrivateKey() [1]gdclass.CryptoKey { //gd:TLSOptions.get_private_key
 	return [1]gdclass.CryptoKey(class(self).GetPrivateKey())
 }
 
 /*
 Returns the [X509Certificate] specified when creating with [method TLSOptions.server].
 */
-func (self Instance) GetOwnCertificate() [1]gdclass.X509Certificate {
+func (self Instance) GetOwnCertificate() [1]gdclass.X509Certificate { //gd:TLSOptions.get_own_certificate
 	return [1]gdclass.X509Certificate(class(self).GetOwnCertificate())
 }
 
@@ -144,7 +144,7 @@ You can specify a custom [param trusted_chain] of certification authorities (the
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 //go:nosplit
-func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_override gd.String) [1]gdclass.TLSOptions {
+func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_override gd.String) [1]gdclass.TLSOptions { //gd:TLSOptions.client
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(trusted_chain[0])[0])
 	callframe.Arg(frame, pointers.Get(common_name_override))
@@ -160,7 +160,7 @@ Creates an [b]unsafe[/b] TLS client configuration where certificate validation i
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 //go:nosplit
-func (self class) ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions {
+func (self class) ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(trusted_chain[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -175,7 +175,7 @@ Creates a TLS server configuration using the provided [param key] and [param cer
 [b]Note:[/b] The [param certificate] should include the full certificate chain up to the signing CA (certificates file can be concatenated using a general purpose text editor).
 */
 //go:nosplit
-func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1]gdclass.TLSOptions {
+func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.server
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	callframe.Arg(frame, pointers.Get(certificate[0])[0])
@@ -190,7 +190,7 @@ func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Ce
 Returns [code]true[/code] if created with [method TLSOptions.server], [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self class) IsServer() bool {
+func (self class) IsServer() bool { //gd:TLSOptions.is_server
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_is_server, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -203,7 +203,7 @@ func (self class) IsServer() bool {
 Returns [code]true[/code] if created with [method TLSOptions.client_unsafe], [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self class) IsUnsafeClient() bool {
+func (self class) IsUnsafeClient() bool { //gd:TLSOptions.is_unsafe_client
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_is_unsafe_client, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -216,7 +216,7 @@ func (self class) IsUnsafeClient() bool {
 Returns the common name (domain name) override specified when creating with [method TLSOptions.client].
 */
 //go:nosplit
-func (self class) GetCommonNameOverride() gd.String {
+func (self class) GetCommonNameOverride() gd.String { //gd:TLSOptions.get_common_name_override
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_common_name_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) GetCommonNameOverride() gd.String {
 Returns the CA [X509Certificate] chain specified when creating with [method TLSOptions.client] or [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) GetTrustedCaChain() [1]gdclass.X509Certificate {
+func (self class) GetTrustedCaChain() [1]gdclass.X509Certificate { //gd:TLSOptions.get_trusted_ca_chain
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_trusted_ca_chain, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -242,7 +242,7 @@ func (self class) GetTrustedCaChain() [1]gdclass.X509Certificate {
 Returns the [CryptoKey] specified when creating with [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) GetPrivateKey() [1]gdclass.CryptoKey {
+func (self class) GetPrivateKey() [1]gdclass.CryptoKey { //gd:TLSOptions.get_private_key
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_private_key, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -255,7 +255,7 @@ func (self class) GetPrivateKey() [1]gdclass.CryptoKey {
 Returns the [X509Certificate] specified when creating with [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) GetOwnCertificate() [1]gdclass.X509Certificate {
+func (self class) GetOwnCertificate() [1]gdclass.X509Certificate { //gd:TLSOptions.get_own_certificate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TLSOptions.Bind_get_own_certificate, self.AsObject(), frame.Array(0), r_ret.Addr())

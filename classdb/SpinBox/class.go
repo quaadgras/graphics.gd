@@ -66,7 +66,7 @@ type Any interface {
 /*
 Applies the current value of this [SpinBox].
 */
-func (self Instance) Apply() {
+func (self Instance) Apply() { //gd:SpinBox.apply
 	class(self).Apply()
 }
 
@@ -74,7 +74,7 @@ func (self Instance) Apply() {
 Returns the [LineEdit] instance from this [SpinBox]. You can use it to access properties and methods of [LineEdit].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetLineEdit() [1]gdclass.LineEdit {
+func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:SpinBox.get_line_edit
 	return [1]gdclass.LineEdit(class(self).GetLineEdit())
 }
 
@@ -153,7 +153,7 @@ func (self Instance) SetSelectAllOnFocus(value bool) {
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) {
+func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:SpinBox.set_horizontal_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() HorizontalAlignment {
+func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:SpinBox.get_horizontal_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func (self class) GetHorizontalAlignment() HorizontalAlignment {
 }
 
 //go:nosplit
-func (self class) SetSuffix(suffix gd.String) {
+func (self class) SetSuffix(suffix gd.String) { //gd:SpinBox.set_suffix
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(suffix))
 	var r_ret = callframe.Nil
@@ -181,7 +181,7 @@ func (self class) SetSuffix(suffix gd.String) {
 }
 
 //go:nosplit
-func (self class) GetSuffix() gd.String {
+func (self class) GetSuffix() gd.String { //gd:SpinBox.get_suffix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -191,7 +191,7 @@ func (self class) GetSuffix() gd.String {
 }
 
 //go:nosplit
-func (self class) SetPrefix(prefix gd.String) {
+func (self class) SetPrefix(prefix gd.String) { //gd:SpinBox.set_prefix
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(prefix))
 	var r_ret = callframe.Nil
@@ -200,7 +200,7 @@ func (self class) SetPrefix(prefix gd.String) {
 }
 
 //go:nosplit
-func (self class) GetPrefix() gd.String {
+func (self class) GetPrefix() gd.String { //gd:SpinBox.get_prefix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_prefix, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -210,7 +210,7 @@ func (self class) GetPrefix() gd.String {
 }
 
 //go:nosplit
-func (self class) SetEditable(enabled bool) {
+func (self class) SetEditable(enabled bool) { //gd:SpinBox.set_editable
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -219,7 +219,7 @@ func (self class) SetEditable(enabled bool) {
 }
 
 //go:nosplit
-func (self class) SetCustomArrowStep(arrow_step gd.Float) {
+func (self class) SetCustomArrowStep(arrow_step gd.Float) { //gd:SpinBox.set_custom_arrow_step
 	var frame = callframe.New()
 	callframe.Arg(frame, arrow_step)
 	var r_ret = callframe.Nil
@@ -228,7 +228,7 @@ func (self class) SetCustomArrowStep(arrow_step gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCustomArrowStep() gd.Float {
+func (self class) GetCustomArrowStep() gd.Float { //gd:SpinBox.get_custom_arrow_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_custom_arrow_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -238,7 +238,7 @@ func (self class) GetCustomArrowStep() gd.Float {
 }
 
 //go:nosplit
-func (self class) IsEditable() bool {
+func (self class) IsEditable() bool { //gd:SpinBox.is_editable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -248,7 +248,7 @@ func (self class) IsEditable() bool {
 }
 
 //go:nosplit
-func (self class) SetUpdateOnTextChanged(enabled bool) {
+func (self class) SetUpdateOnTextChanged(enabled bool) { //gd:SpinBox.set_update_on_text_changed
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -257,7 +257,7 @@ func (self class) SetUpdateOnTextChanged(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetUpdateOnTextChanged() bool {
+func (self class) GetUpdateOnTextChanged() bool { //gd:SpinBox.get_update_on_text_changed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_update_on_text_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -267,7 +267,7 @@ func (self class) GetUpdateOnTextChanged() bool {
 }
 
 //go:nosplit
-func (self class) SetSelectAllOnFocus(enabled bool) {
+func (self class) SetSelectAllOnFocus(enabled bool) { //gd:SpinBox.set_select_all_on_focus
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -276,7 +276,7 @@ func (self class) SetSelectAllOnFocus(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsSelectAllOnFocus() bool {
+func (self class) IsSelectAllOnFocus() bool { //gd:SpinBox.is_select_all_on_focus
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_is_select_all_on_focus, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -289,7 +289,7 @@ func (self class) IsSelectAllOnFocus() bool {
 Applies the current value of this [SpinBox].
 */
 //go:nosplit
-func (self class) Apply() {
+func (self class) Apply() { //gd:SpinBox.apply
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_apply, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -301,7 +301,7 @@ Returns the [LineEdit] instance from this [SpinBox]. You can use it to access pr
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 //go:nosplit
-func (self class) GetLineEdit() [1]gdclass.LineEdit {
+func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:SpinBox.get_line_edit
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Addr())

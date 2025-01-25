@@ -66,7 +66,7 @@ func (self Instance) SetSource(value gdclass.VisualShaderNodeSample3DSource) {
 }
 
 //go:nosplit
-func (self class) SetSource(value gdclass.VisualShaderNodeSample3DSource) {
+func (self class) SetSource(value gdclass.VisualShaderNodeSample3DSource) { //gd:VisualShaderNodeSample3D.set_source
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetSource(value gdclass.VisualShaderNodeSample3DSource) {
 }
 
 //go:nosplit
-func (self class) GetSource() gdclass.VisualShaderNodeSample3DSource {
+func (self class) GetSource() gdclass.VisualShaderNodeSample3DSource { //gd:VisualShaderNodeSample3D.get_source
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeSample3DSource](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeSample3D.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -125,7 +125,7 @@ func init() {
 	})
 }
 
-type Source = gdclass.VisualShaderNodeSample3DSource
+type Source = gdclass.VisualShaderNodeSample3DSource //gd:VisualShaderNodeSample3D.Source
 
 const (
 	/*Creates internal uniform and provides a way to assign it within node.*/

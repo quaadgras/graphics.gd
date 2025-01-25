@@ -163,7 +163,7 @@ func (self Instance) SetFeedbackLowpass(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetDry(amount gd.Float) {
+func (self class) SetDry(amount gd.Float) { //gd:AudioEffectDelay.set_dry
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -172,7 +172,7 @@ func (self class) SetDry(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDry() gd.Float {
+func (self class) GetDry() gd.Float { //gd:AudioEffectDelay.get_dry
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_dry, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -182,7 +182,7 @@ func (self class) GetDry() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTap1Active(amount bool) {
+func (self class) SetTap1Active(amount bool) { //gd:AudioEffectDelay.set_tap1_active
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -191,7 +191,7 @@ func (self class) SetTap1Active(amount bool) {
 }
 
 //go:nosplit
-func (self class) IsTap1Active() bool {
+func (self class) IsTap1Active() bool { //gd:AudioEffectDelay.is_tap1_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_is_tap1_active, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -201,7 +201,7 @@ func (self class) IsTap1Active() bool {
 }
 
 //go:nosplit
-func (self class) SetTap1DelayMs(amount gd.Float) {
+func (self class) SetTap1DelayMs(amount gd.Float) { //gd:AudioEffectDelay.set_tap1_delay_ms
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -210,7 +210,7 @@ func (self class) SetTap1DelayMs(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTap1DelayMs() gd.Float {
+func (self class) GetTap1DelayMs() gd.Float { //gd:AudioEffectDelay.get_tap1_delay_ms
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_tap1_delay_ms, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -220,7 +220,7 @@ func (self class) GetTap1DelayMs() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTap1LevelDb(amount gd.Float) {
+func (self class) SetTap1LevelDb(amount gd.Float) { //gd:AudioEffectDelay.set_tap1_level_db
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -229,7 +229,7 @@ func (self class) SetTap1LevelDb(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTap1LevelDb() gd.Float {
+func (self class) GetTap1LevelDb() gd.Float { //gd:AudioEffectDelay.get_tap1_level_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_tap1_level_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -239,7 +239,7 @@ func (self class) GetTap1LevelDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTap1Pan(amount gd.Float) {
+func (self class) SetTap1Pan(amount gd.Float) { //gd:AudioEffectDelay.set_tap1_pan
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -248,7 +248,7 @@ func (self class) SetTap1Pan(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTap1Pan() gd.Float {
+func (self class) GetTap1Pan() gd.Float { //gd:AudioEffectDelay.get_tap1_pan
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_tap1_pan, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -258,7 +258,7 @@ func (self class) GetTap1Pan() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTap2Active(amount bool) {
+func (self class) SetTap2Active(amount bool) { //gd:AudioEffectDelay.set_tap2_active
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -267,7 +267,7 @@ func (self class) SetTap2Active(amount bool) {
 }
 
 //go:nosplit
-func (self class) IsTap2Active() bool {
+func (self class) IsTap2Active() bool { //gd:AudioEffectDelay.is_tap2_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_is_tap2_active, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -277,7 +277,7 @@ func (self class) IsTap2Active() bool {
 }
 
 //go:nosplit
-func (self class) SetTap2DelayMs(amount gd.Float) {
+func (self class) SetTap2DelayMs(amount gd.Float) { //gd:AudioEffectDelay.set_tap2_delay_ms
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -286,7 +286,7 @@ func (self class) SetTap2DelayMs(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTap2DelayMs() gd.Float {
+func (self class) GetTap2DelayMs() gd.Float { //gd:AudioEffectDelay.get_tap2_delay_ms
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_tap2_delay_ms, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -296,7 +296,7 @@ func (self class) GetTap2DelayMs() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTap2LevelDb(amount gd.Float) {
+func (self class) SetTap2LevelDb(amount gd.Float) { //gd:AudioEffectDelay.set_tap2_level_db
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -305,7 +305,7 @@ func (self class) SetTap2LevelDb(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTap2LevelDb() gd.Float {
+func (self class) GetTap2LevelDb() gd.Float { //gd:AudioEffectDelay.get_tap2_level_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_tap2_level_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -315,7 +315,7 @@ func (self class) GetTap2LevelDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTap2Pan(amount gd.Float) {
+func (self class) SetTap2Pan(amount gd.Float) { //gd:AudioEffectDelay.set_tap2_pan
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -324,7 +324,7 @@ func (self class) SetTap2Pan(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTap2Pan() gd.Float {
+func (self class) GetTap2Pan() gd.Float { //gd:AudioEffectDelay.get_tap2_pan
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_tap2_pan, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -334,7 +334,7 @@ func (self class) GetTap2Pan() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFeedbackActive(amount bool) {
+func (self class) SetFeedbackActive(amount bool) { //gd:AudioEffectDelay.set_feedback_active
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -343,7 +343,7 @@ func (self class) SetFeedbackActive(amount bool) {
 }
 
 //go:nosplit
-func (self class) IsFeedbackActive() bool {
+func (self class) IsFeedbackActive() bool { //gd:AudioEffectDelay.is_feedback_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_is_feedback_active, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -353,7 +353,7 @@ func (self class) IsFeedbackActive() bool {
 }
 
 //go:nosplit
-func (self class) SetFeedbackDelayMs(amount gd.Float) {
+func (self class) SetFeedbackDelayMs(amount gd.Float) { //gd:AudioEffectDelay.set_feedback_delay_ms
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -362,7 +362,7 @@ func (self class) SetFeedbackDelayMs(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFeedbackDelayMs() gd.Float {
+func (self class) GetFeedbackDelayMs() gd.Float { //gd:AudioEffectDelay.get_feedback_delay_ms
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_feedback_delay_ms, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -372,7 +372,7 @@ func (self class) GetFeedbackDelayMs() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFeedbackLevelDb(amount gd.Float) {
+func (self class) SetFeedbackLevelDb(amount gd.Float) { //gd:AudioEffectDelay.set_feedback_level_db
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -381,7 +381,7 @@ func (self class) SetFeedbackLevelDb(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFeedbackLevelDb() gd.Float {
+func (self class) GetFeedbackLevelDb() gd.Float { //gd:AudioEffectDelay.get_feedback_level_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_feedback_level_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -391,7 +391,7 @@ func (self class) GetFeedbackLevelDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFeedbackLowpass(amount gd.Float) {
+func (self class) SetFeedbackLowpass(amount gd.Float) { //gd:AudioEffectDelay.set_feedback_lowpass
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -400,7 +400,7 @@ func (self class) SetFeedbackLowpass(amount gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFeedbackLowpass() gd.Float {
+func (self class) GetFeedbackLowpass() gd.Float { //gd:AudioEffectDelay.get_feedback_lowpass
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDelay.Bind_get_feedback_lowpass, self.AsObject(), frame.Array(0), r_ret.Addr())

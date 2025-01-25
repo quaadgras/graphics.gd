@@ -41,42 +41,42 @@ type Any interface {
 /*
 Adds a resource to the preloader with the given [param name]. If a resource with the given [param name] already exists, the new resource will be renamed to "[param name] N" where N is an incrementing number starting from 2.
 */
-func (self Instance) AddResource(name string, resource [1]gdclass.Resource) {
+func (self Instance) AddResource(name string, resource [1]gdclass.Resource) { //gd:ResourcePreloader.add_resource
 	class(self).AddResource(gd.NewStringName(name), resource)
 }
 
 /*
 Removes the resource associated to [param name] from the preloader.
 */
-func (self Instance) RemoveResource(name string) {
+func (self Instance) RemoveResource(name string) { //gd:ResourcePreloader.remove_resource
 	class(self).RemoveResource(gd.NewStringName(name))
 }
 
 /*
 Renames a resource inside the preloader from [param name] to [param newname].
 */
-func (self Instance) RenameResource(name string, newname string) {
+func (self Instance) RenameResource(name string, newname string) { //gd:ResourcePreloader.rename_resource
 	class(self).RenameResource(gd.NewStringName(name), gd.NewStringName(newname))
 }
 
 /*
 Returns [code]true[/code] if the preloader contains a resource associated to [param name].
 */
-func (self Instance) HasResource(name string) bool {
+func (self Instance) HasResource(name string) bool { //gd:ResourcePreloader.has_resource
 	return bool(class(self).HasResource(gd.NewStringName(name)))
 }
 
 /*
 Returns the resource associated to [param name].
 */
-func (self Instance) GetResource(name string) [1]gdclass.Resource {
+func (self Instance) GetResource(name string) [1]gdclass.Resource { //gd:ResourcePreloader.get_resource
 	return [1]gdclass.Resource(class(self).GetResource(gd.NewStringName(name)))
 }
 
 /*
 Returns the list of resources inside the preloader.
 */
-func (self Instance) GetResourceList() []string {
+func (self Instance) GetResourceList() []string { //gd:ResourcePreloader.get_resource_list
 	return []string(class(self).GetResourceList().Strings())
 }
 
@@ -102,7 +102,7 @@ func New() Instance {
 Adds a resource to the preloader with the given [param name]. If a resource with the given [param name] already exists, the new resource will be renamed to "[param name] N" where N is an incrementing number starting from 2.
 */
 //go:nosplit
-func (self class) AddResource(name gd.StringName, resource [1]gdclass.Resource) {
+func (self class) AddResource(name gd.StringName, resource [1]gdclass.Resource) { //gd:ResourcePreloader.add_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
@@ -115,7 +115,7 @@ func (self class) AddResource(name gd.StringName, resource [1]gdclass.Resource) 
 Removes the resource associated to [param name] from the preloader.
 */
 //go:nosplit
-func (self class) RemoveResource(name gd.StringName) {
+func (self class) RemoveResource(name gd.StringName) { //gd:ResourcePreloader.remove_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -127,7 +127,7 @@ func (self class) RemoveResource(name gd.StringName) {
 Renames a resource inside the preloader from [param name] to [param newname].
 */
 //go:nosplit
-func (self class) RenameResource(name gd.StringName, newname gd.StringName) {
+func (self class) RenameResource(name gd.StringName, newname gd.StringName) { //gd:ResourcePreloader.rename_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pointers.Get(newname))
@@ -140,7 +140,7 @@ func (self class) RenameResource(name gd.StringName, newname gd.StringName) {
 Returns [code]true[/code] if the preloader contains a resource associated to [param name].
 */
 //go:nosplit
-func (self class) HasResource(name gd.StringName) bool {
+func (self class) HasResource(name gd.StringName) bool { //gd:ResourcePreloader.has_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -154,7 +154,7 @@ func (self class) HasResource(name gd.StringName) bool {
 Returns the resource associated to [param name].
 */
 //go:nosplit
-func (self class) GetResource(name gd.StringName) [1]gdclass.Resource {
+func (self class) GetResource(name gd.StringName) [1]gdclass.Resource { //gd:ResourcePreloader.get_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -168,7 +168,7 @@ func (self class) GetResource(name gd.StringName) [1]gdclass.Resource {
 Returns the list of resources inside the preloader.
 */
 //go:nosplit
-func (self class) GetResourceList() gd.PackedStringArray {
+func (self class) GetResourceList() gd.PackedStringArray { //gd:ResourcePreloader.get_resource_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourcePreloader.Bind_get_resource_list, self.AsObject(), frame.Array(0), r_ret.Addr())

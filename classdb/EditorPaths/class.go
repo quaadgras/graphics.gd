@@ -47,7 +47,7 @@ Returns the absolute path to the user's data folder. This folder should be used 
 - Linux: ~/.local/share/godot/
 [/codeblock]
 */
-func (self Instance) GetDataDir() string {
+func (self Instance) GetDataDir() string { //gd:EditorPaths.get_data_dir
 	return string(class(self).GetDataDir().String())
 }
 
@@ -60,7 +60,7 @@ Returns the absolute path to the user's configuration folder. This folder should
 - Linux: ~/.config/godot/
 [/codeblock]
 */
-func (self Instance) GetConfigDir() string {
+func (self Instance) GetConfigDir() string { //gd:EditorPaths.get_config_dir
 	return string(class(self).GetConfigDir().String())
 }
 
@@ -73,7 +73,7 @@ Returns the absolute path to the user's cache folder. This folder should be used
 - Linux: ~/.cache/godot/
 [/codeblock]
 */
-func (self Instance) GetCacheDir() string {
+func (self Instance) GetCacheDir() string { //gd:EditorPaths.get_cache_dir
 	return string(class(self).GetCacheDir().String())
 }
 
@@ -84,21 +84,21 @@ Self-contained mode can be enabled by creating a file named [code]._sc_[/code] o
 [b]Note:[/b] On macOS, placing [code]_sc_[/code] or any other file inside .app bundle will break digital signature and make it non-portable, consider placing it in the same folder as the .app bundle instead.
 [b]Note:[/b] The Steam release of Godot uses self-contained mode by default.
 */
-func (self Instance) IsSelfContained() bool {
+func (self Instance) IsSelfContained() bool { //gd:EditorPaths.is_self_contained
 	return bool(class(self).IsSelfContained())
 }
 
 /*
 Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [method is_self_contained].
 */
-func (self Instance) GetSelfContainedFile() string {
+func (self Instance) GetSelfContainedFile() string { //gd:EditorPaths.get_self_contained_file
 	return string(class(self).GetSelfContainedFile().String())
 }
 
 /*
 Returns the project-specific editor settings path. Projects all have a unique subdirectory inside the settings path where project-specific editor settings are saved.
 */
-func (self Instance) GetProjectSettingsDir() string {
+func (self Instance) GetProjectSettingsDir() string { //gd:EditorPaths.get_project_settings_dir
 	return string(class(self).GetProjectSettingsDir().String())
 }
 
@@ -130,7 +130,7 @@ Returns the absolute path to the user's data folder. This folder should be used 
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetDataDir() gd.String {
+func (self class) GetDataDir() gd.String { //gd:EditorPaths.get_data_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ Returns the absolute path to the user's configuration folder. This folder should
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetConfigDir() gd.String {
+func (self class) GetConfigDir() gd.String { //gd:EditorPaths.get_config_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_config_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -168,7 +168,7 @@ Returns the absolute path to the user's cache folder. This folder should be used
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetCacheDir() gd.String {
+func (self class) GetCacheDir() gd.String { //gd:EditorPaths.get_cache_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_cache_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -185,7 +185,7 @@ Self-contained mode can be enabled by creating a file named [code]._sc_[/code] o
 [b]Note:[/b] The Steam release of Godot uses self-contained mode by default.
 */
 //go:nosplit
-func (self class) IsSelfContained() bool {
+func (self class) IsSelfContained() bool { //gd:EditorPaths.is_self_contained
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_is_self_contained, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -198,7 +198,7 @@ func (self class) IsSelfContained() bool {
 Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [method is_self_contained].
 */
 //go:nosplit
-func (self class) GetSelfContainedFile() gd.String {
+func (self class) GetSelfContainedFile() gd.String { //gd:EditorPaths.get_self_contained_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_self_contained_file, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func (self class) GetSelfContainedFile() gd.String {
 Returns the project-specific editor settings path. Projects all have a unique subdirectory inside the settings path where project-specific editor settings are saved.
 */
 //go:nosplit
-func (self class) GetProjectSettingsDir() gd.String {
+func (self class) GetProjectSettingsDir() gd.String { //gd:EditorPaths.get_project_settings_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorPaths.Bind_get_project_settings_dir, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -96,7 +96,7 @@ func (self Instance) SetFrequency(value gdclass.RenderingDeviceVertexFrequency) 
 }
 
 //go:nosplit
-func (self class) SetLocation(p_member gd.Int) {
+func (self class) SetLocation(p_member gd.Int) { //gd:RDVertexAttribute.set_location
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -105,7 +105,7 @@ func (self class) SetLocation(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetLocation() gd.Int {
+func (self class) GetLocation() gd.Int { //gd:RDVertexAttribute.get_location
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_location, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -115,7 +115,7 @@ func (self class) GetLocation() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetOffset(p_member gd.Int) {
+func (self class) SetOffset(p_member gd.Int) { //gd:RDVertexAttribute.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -124,7 +124,7 @@ func (self class) SetOffset(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetOffset() gd.Int {
+func (self class) GetOffset() gd.Int { //gd:RDVertexAttribute.get_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,7 +134,7 @@ func (self class) GetOffset() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) {
+func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) { //gd:RDVertexAttribute.set_format
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -143,7 +143,7 @@ func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) {
 }
 
 //go:nosplit
-func (self class) GetFormat() gdclass.RenderingDeviceDataFormat {
+func (self class) GetFormat() gdclass.RenderingDeviceDataFormat { //gd:RDVertexAttribute.get_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceDataFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -153,7 +153,7 @@ func (self class) GetFormat() gdclass.RenderingDeviceDataFormat {
 }
 
 //go:nosplit
-func (self class) SetStride(p_member gd.Int) {
+func (self class) SetStride(p_member gd.Int) { //gd:RDVertexAttribute.set_stride
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetStride(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetStride() gd.Int {
+func (self class) GetStride() gd.Int { //gd:RDVertexAttribute.get_stride
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func (self class) GetStride() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFrequency(p_member gdclass.RenderingDeviceVertexFrequency) {
+func (self class) SetFrequency(p_member gdclass.RenderingDeviceVertexFrequency) { //gd:RDVertexAttribute.set_frequency
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -181,7 +181,7 @@ func (self class) SetFrequency(p_member gdclass.RenderingDeviceVertexFrequency) 
 }
 
 //go:nosplit
-func (self class) GetFrequency() gdclass.RenderingDeviceVertexFrequency {
+func (self class) GetFrequency() gdclass.RenderingDeviceVertexFrequency { //gd:RDVertexAttribute.get_frequency
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceVertexFrequency](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_frequency, self.AsObject(), frame.Array(0), r_ret.Addr())

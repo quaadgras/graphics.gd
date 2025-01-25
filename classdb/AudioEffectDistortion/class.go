@@ -100,7 +100,7 @@ func (self Instance) SetPostGain(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetMode(mode gdclass.AudioEffectDistortionMode) {
+func (self class) SetMode(mode gdclass.AudioEffectDistortionMode) { //gd:AudioEffectDistortion.set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -109,7 +109,7 @@ func (self class) SetMode(mode gdclass.AudioEffectDistortionMode) {
 }
 
 //go:nosplit
-func (self class) GetMode() gdclass.AudioEffectDistortionMode {
+func (self class) GetMode() gdclass.AudioEffectDistortionMode { //gd:AudioEffectDistortion.get_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioEffectDistortionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDistortion.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -119,7 +119,7 @@ func (self class) GetMode() gdclass.AudioEffectDistortionMode {
 }
 
 //go:nosplit
-func (self class) SetPreGain(pre_gain gd.Float) {
+func (self class) SetPreGain(pre_gain gd.Float) { //gd:AudioEffectDistortion.set_pre_gain
 	var frame = callframe.New()
 	callframe.Arg(frame, pre_gain)
 	var r_ret = callframe.Nil
@@ -128,7 +128,7 @@ func (self class) SetPreGain(pre_gain gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPreGain() gd.Float {
+func (self class) GetPreGain() gd.Float { //gd:AudioEffectDistortion.get_pre_gain
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDistortion.Bind_get_pre_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -138,7 +138,7 @@ func (self class) GetPreGain() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetKeepHfHz(keep_hf_hz gd.Float) {
+func (self class) SetKeepHfHz(keep_hf_hz gd.Float) { //gd:AudioEffectDistortion.set_keep_hf_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, keep_hf_hz)
 	var r_ret = callframe.Nil
@@ -147,7 +147,7 @@ func (self class) SetKeepHfHz(keep_hf_hz gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetKeepHfHz() gd.Float {
+func (self class) GetKeepHfHz() gd.Float { //gd:AudioEffectDistortion.get_keep_hf_hz
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDistortion.Bind_get_keep_hf_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -157,7 +157,7 @@ func (self class) GetKeepHfHz() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDrive(drive gd.Float) {
+func (self class) SetDrive(drive gd.Float) { //gd:AudioEffectDistortion.set_drive
 	var frame = callframe.New()
 	callframe.Arg(frame, drive)
 	var r_ret = callframe.Nil
@@ -166,7 +166,7 @@ func (self class) SetDrive(drive gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDrive() gd.Float {
+func (self class) GetDrive() gd.Float { //gd:AudioEffectDistortion.get_drive
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDistortion.Bind_get_drive, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -176,7 +176,7 @@ func (self class) GetDrive() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPostGain(post_gain gd.Float) {
+func (self class) SetPostGain(post_gain gd.Float) { //gd:AudioEffectDistortion.set_post_gain
 	var frame = callframe.New()
 	callframe.Arg(frame, post_gain)
 	var r_ret = callframe.Nil
@@ -185,7 +185,7 @@ func (self class) SetPostGain(post_gain gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPostGain() gd.Float {
+func (self class) GetPostGain() gd.Float { //gd:AudioEffectDistortion.get_post_gain
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectDistortion.Bind_get_post_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -233,7 +233,7 @@ func init() {
 	})
 }
 
-type Mode = gdclass.AudioEffectDistortionMode
+type Mode = gdclass.AudioEffectDistortionMode //gd:AudioEffectDistortion.Mode
 
 const (
 	/*Digital distortion effect which cuts off peaks at the top and bottom of the waveform.*/

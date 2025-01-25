@@ -42,14 +42,14 @@ type Any interface {
 /*
 Enables the listener. This will override the current camera's listener.
 */
-func (self Instance) MakeCurrent() {
+func (self Instance) MakeCurrent() { //gd:AudioListener3D.make_current
 	class(self).MakeCurrent()
 }
 
 /*
 Disables the listener to use the current camera's listener instead.
 */
-func (self Instance) ClearCurrent() {
+func (self Instance) ClearCurrent() { //gd:AudioListener3D.clear_current
 	class(self).ClearCurrent()
 }
 
@@ -57,14 +57,14 @@ func (self Instance) ClearCurrent() {
 Returns [code]true[/code] if the listener was made current using [method make_current], [code]false[/code] otherwise.
 [b]Note:[/b] There may be more than one AudioListener3D marked as "current" in the scene tree, but only the one that was made current last will be used.
 */
-func (self Instance) IsCurrent() bool {
+func (self Instance) IsCurrent() bool { //gd:AudioListener3D.is_current
 	return bool(class(self).IsCurrent())
 }
 
 /*
 Returns the listener's global orthonormalized [Transform3D].
 */
-func (self Instance) GetListenerTransform() Transform3D.BasisOrigin {
+func (self Instance) GetListenerTransform() Transform3D.BasisOrigin { //gd:AudioListener3D.get_listener_transform
 	return Transform3D.BasisOrigin(class(self).GetListenerTransform())
 }
 
@@ -90,7 +90,7 @@ func New() Instance {
 Enables the listener. This will override the current camera's listener.
 */
 //go:nosplit
-func (self class) MakeCurrent() {
+func (self class) MakeCurrent() { //gd:AudioListener3D.make_current
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioListener3D.Bind_make_current, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) MakeCurrent() {
 Disables the listener to use the current camera's listener instead.
 */
 //go:nosplit
-func (self class) ClearCurrent() {
+func (self class) ClearCurrent() { //gd:AudioListener3D.clear_current
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioListener3D.Bind_clear_current, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -113,7 +113,7 @@ Returns [code]true[/code] if the listener was made current using [method make_cu
 [b]Note:[/b] There may be more than one AudioListener3D marked as "current" in the scene tree, but only the one that was made current last will be used.
 */
 //go:nosplit
-func (self class) IsCurrent() bool {
+func (self class) IsCurrent() bool { //gd:AudioListener3D.is_current
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioListener3D.Bind_is_current, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -126,7 +126,7 @@ func (self class) IsCurrent() bool {
 Returns the listener's global orthonormalized [Transform3D].
 */
 //go:nosplit
-func (self class) GetListenerTransform() gd.Transform3D {
+func (self class) GetListenerTransform() gd.Transform3D { //gd:AudioListener3D.get_listener_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioListener3D.Bind_get_listener_transform, self.AsObject(), frame.Array(0), r_ret.Addr())

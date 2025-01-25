@@ -43,14 +43,14 @@ type Any interface {
 /*
 Returns a boolean that indicates whether the [PhysicalBoneSimulator3D] is running and simulating.
 */
-func (self Instance) IsSimulatingPhysics() bool {
+func (self Instance) IsSimulatingPhysics() bool { //gd:PhysicalBoneSimulator3D.is_simulating_physics
 	return bool(class(self).IsSimulatingPhysics())
 }
 
 /*
 Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
 */
-func (self Instance) PhysicalBonesStopSimulation() {
+func (self Instance) PhysicalBonesStopSimulation() { //gd:PhysicalBoneSimulator3D.physical_bones_stop_simulation
 	class(self).PhysicalBonesStopSimulation()
 }
 
@@ -58,7 +58,7 @@ func (self Instance) PhysicalBonesStopSimulation() {
 Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reacting to the physics world.
 Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
 */
-func (self Instance) PhysicalBonesStartSimulation() {
+func (self Instance) PhysicalBonesStartSimulation() { //gd:PhysicalBoneSimulator3D.physical_bones_start_simulation
 	class(self).PhysicalBonesStartSimulation(gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
 }
 
@@ -66,7 +66,7 @@ func (self Instance) PhysicalBonesStartSimulation() {
 Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
-func (self Instance) PhysicalBonesAddCollisionException(exception Resource.ID) {
+func (self Instance) PhysicalBonesAddCollisionException(exception Resource.ID) { //gd:PhysicalBoneSimulator3D.physical_bones_add_collision_exception
 	class(self).PhysicalBonesAddCollisionException(exception)
 }
 
@@ -74,7 +74,7 @@ func (self Instance) PhysicalBonesAddCollisionException(exception Resource.ID) {
 Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
-func (self Instance) PhysicalBonesRemoveCollisionException(exception Resource.ID) {
+func (self Instance) PhysicalBonesRemoveCollisionException(exception Resource.ID) { //gd:PhysicalBoneSimulator3D.physical_bones_remove_collision_exception
 	class(self).PhysicalBonesRemoveCollisionException(exception)
 }
 
@@ -100,7 +100,7 @@ func New() Instance {
 Returns a boolean that indicates whether the [PhysicalBoneSimulator3D] is running and simulating.
 */
 //go:nosplit
-func (self class) IsSimulatingPhysics() bool {
+func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBoneSimulator3D.is_simulating_physics
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBoneSimulator3D.Bind_is_simulating_physics, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -113,7 +113,7 @@ func (self class) IsSimulatingPhysics() bool {
 Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
 */
 //go:nosplit
-func (self class) PhysicalBonesStopSimulation() {
+func (self class) PhysicalBonesStopSimulation() { //gd:PhysicalBoneSimulator3D.physical_bones_stop_simulation
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBoneSimulator3D.Bind_physical_bones_stop_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -125,7 +125,7 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reactin
 Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
 */
 //go:nosplit
-func (self class) PhysicalBonesStartSimulation(bones Array.Contains[gd.StringName]) {
+func (self class) PhysicalBonesStartSimulation(bones Array.Contains[gd.StringName]) { //gd:PhysicalBoneSimulator3D.physical_bones_start_simulation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(bones)))
 	var r_ret = callframe.Nil
@@ -138,7 +138,7 @@ Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 //go:nosplit
-func (self class) PhysicalBonesAddCollisionException(exception gd.RID) {
+func (self class) PhysicalBonesAddCollisionException(exception gd.RID) { //gd:PhysicalBoneSimulator3D.physical_bones_add_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, exception)
 	var r_ret = callframe.Nil
@@ -151,7 +151,7 @@ Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 //go:nosplit
-func (self class) PhysicalBonesRemoveCollisionException(exception gd.RID) {
+func (self class) PhysicalBonesRemoveCollisionException(exception gd.RID) { //gd:PhysicalBoneSimulator3D.physical_bones_remove_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, exception)
 	var r_ret = callframe.Nil

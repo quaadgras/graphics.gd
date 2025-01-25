@@ -43,35 +43,35 @@ type Any interface {
 /*
 Adds name for a blend shape that will be added with [method add_surface]. Must be called before surface is added.
 */
-func (self Instance) AddBlendShape(name string) {
+func (self Instance) AddBlendShape(name string) { //gd:ImporterMesh.add_blend_shape
 	class(self).AddBlendShape(gd.NewString(name))
 }
 
 /*
 Returns the number of blend shapes that the mesh holds.
 */
-func (self Instance) GetBlendShapeCount() int {
+func (self Instance) GetBlendShapeCount() int { //gd:ImporterMesh.get_blend_shape_count
 	return int(int(class(self).GetBlendShapeCount()))
 }
 
 /*
 Returns the name of the blend shape at this index.
 */
-func (self Instance) GetBlendShapeName(blend_shape_idx int) string {
+func (self Instance) GetBlendShapeName(blend_shape_idx int) string { //gd:ImporterMesh.get_blend_shape_name
 	return string(class(self).GetBlendShapeName(gd.Int(blend_shape_idx)).String())
 }
 
 /*
 Sets the blend shape mode to one of [enum Mesh.BlendShapeMode].
 */
-func (self Instance) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) {
+func (self Instance) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
 	class(self).SetBlendShapeMode(mode)
 }
 
 /*
 Returns the blend shape mode for this Mesh.
 */
-func (self Instance) GetBlendShapeMode() gdclass.MeshBlendShapeMode {
+func (self Instance) GetBlendShapeMode() gdclass.MeshBlendShapeMode { //gd:ImporterMesh.get_blend_shape_mode
 	return gdclass.MeshBlendShapeMode(class(self).GetBlendShapeMode())
 }
 
@@ -84,91 +84,91 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise or of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any) {
+func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any) { //gd:ImporterMesh.add_surface
 	class(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), [1][1]gdclass.Material{}[0], gd.NewString(""), gd.Int(0))
 }
 
 /*
 Returns the number of surfaces that the mesh holds.
 */
-func (self Instance) GetSurfaceCount() int {
+func (self Instance) GetSurfaceCount() int { //gd:ImporterMesh.get_surface_count
 	return int(int(class(self).GetSurfaceCount()))
 }
 
 /*
 Returns the primitive type of the requested surface (see [method add_surface]).
 */
-func (self Instance) GetSurfacePrimitiveType(surface_idx int) gdclass.MeshPrimitiveType {
+func (self Instance) GetSurfacePrimitiveType(surface_idx int) gdclass.MeshPrimitiveType { //gd:ImporterMesh.get_surface_primitive_type
 	return gdclass.MeshPrimitiveType(class(self).GetSurfacePrimitiveType(gd.Int(surface_idx)))
 }
 
 /*
 Gets the name assigned to this surface.
 */
-func (self Instance) GetSurfaceName(surface_idx int) string {
+func (self Instance) GetSurfaceName(surface_idx int) string { //gd:ImporterMesh.get_surface_name
 	return string(class(self).GetSurfaceName(gd.Int(surface_idx)).String())
 }
 
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [method add_surface].
 */
-func (self Instance) GetSurfaceArrays(surface_idx int) []any {
+func (self Instance) GetSurfaceArrays(surface_idx int) []any { //gd:ImporterMesh.get_surface_arrays
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSurfaceArrays(gd.Int(surface_idx)))))
 }
 
 /*
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
-func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) []any {
+func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) []any { //gd:ImporterMesh.get_surface_blend_shape_arrays
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSurfaceBlendShapeArrays(gd.Int(surface_idx), gd.Int(blend_shape_idx)))))
 }
 
 /*
 Returns the number of lods that the mesh holds on a given surface.
 */
-func (self Instance) GetSurfaceLodCount(surface_idx int) int {
+func (self Instance) GetSurfaceLodCount(surface_idx int) int { //gd:ImporterMesh.get_surface_lod_count
 	return int(int(class(self).GetSurfaceLodCount(gd.Int(surface_idx))))
 }
 
 /*
 Returns the screen ratio which activates a lod for a surface.
 */
-func (self Instance) GetSurfaceLodSize(surface_idx int, lod_idx int) Float.X {
+func (self Instance) GetSurfaceLodSize(surface_idx int, lod_idx int) Float.X { //gd:ImporterMesh.get_surface_lod_size
 	return Float.X(Float.X(class(self).GetSurfaceLodSize(gd.Int(surface_idx), gd.Int(lod_idx))))
 }
 
 /*
 Returns the index buffer of a lod for a surface.
 */
-func (self Instance) GetSurfaceLodIndices(surface_idx int, lod_idx int) []int32 {
+func (self Instance) GetSurfaceLodIndices(surface_idx int, lod_idx int) []int32 { //gd:ImporterMesh.get_surface_lod_indices
 	return []int32(class(self).GetSurfaceLodIndices(gd.Int(surface_idx), gd.Int(lod_idx)).AsSlice())
 }
 
 /*
 Returns a [Material] in a given surface. Surface is rendered using this material.
 */
-func (self Instance) GetSurfaceMaterial(surface_idx int) [1]gdclass.Material {
+func (self Instance) GetSurfaceMaterial(surface_idx int) [1]gdclass.Material { //gd:ImporterMesh.get_surface_material
 	return [1]gdclass.Material(class(self).GetSurfaceMaterial(gd.Int(surface_idx)))
 }
 
 /*
 Returns the format of the surface that the mesh holds.
 */
-func (self Instance) GetSurfaceFormat(surface_idx int) int {
+func (self Instance) GetSurfaceFormat(surface_idx int) int { //gd:ImporterMesh.get_surface_format
 	return int(int(class(self).GetSurfaceFormat(gd.Int(surface_idx))))
 }
 
 /*
 Sets a name for a given surface.
 */
-func (self Instance) SetSurfaceName(surface_idx int, name string) {
+func (self Instance) SetSurfaceName(surface_idx int, name string) { //gd:ImporterMesh.set_surface_name
 	class(self).SetSurfaceName(gd.Int(surface_idx), gd.NewString(name))
 }
 
 /*
 Sets a [Material] for a given surface. Surface will be rendered using this material.
 */
-func (self Instance) SetSurfaceMaterial(surface_idx int, material [1]gdclass.Material) {
+func (self Instance) SetSurfaceMaterial(surface_idx int, material [1]gdclass.Material) { //gd:ImporterMesh.set_surface_material
 	class(self).SetSurfaceMaterial(gd.Int(surface_idx), material)
 }
 
@@ -178,7 +178,7 @@ Generates all lods for this ImporterMesh.
 The number of generated lods can be accessed using [method get_surface_lod_count], and each LOD is available in [method get_surface_lod_size] and [method get_surface_lod_indices].
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
-func (self Instance) GenerateLods(normal_merge_angle Float.X, normal_split_angle Float.X, bone_transform_array []any) {
+func (self Instance) GenerateLods(normal_merge_angle Float.X, normal_split_angle Float.X, bone_transform_array []any) { //gd:ImporterMesh.generate_lods
 	class(self).GenerateLods(gd.Float(normal_merge_angle), gd.Float(normal_split_angle), gd.EngineArrayFromSlice(bone_transform_array))
 }
 
@@ -187,28 +187,28 @@ Returns the mesh data represented by this [ImporterMesh] as a usable [ArrayMesh]
 This method caches the returned mesh, and subsequent calls will return the cached data until [method clear] is called.
 If not yet cached and [param base_mesh] is provided, [param base_mesh] will be used and mutated.
 */
-func (self Instance) GetMesh() [1]gdclass.ArrayMesh {
+func (self Instance) GetMesh() [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
 	return [1]gdclass.ArrayMesh(class(self).GetMesh([1][1]gdclass.ArrayMesh{}[0]))
 }
 
 /*
 Removes all surfaces and blend shapes from this [ImporterMesh].
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:ImporterMesh.clear
 	class(self).Clear()
 }
 
 /*
 Sets the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
-func (self Instance) SetLightmapSizeHint(size Vector2i.XY) {
+func (self Instance) SetLightmapSizeHint(size Vector2i.XY) { //gd:ImporterMesh.set_lightmap_size_hint
 	class(self).SetLightmapSizeHint(gd.Vector2i(size))
 }
 
 /*
 Returns the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
-func (self Instance) GetLightmapSizeHint() Vector2i.XY {
+func (self Instance) GetLightmapSizeHint() Vector2i.XY { //gd:ImporterMesh.get_lightmap_size_hint
 	return Vector2i.XY(class(self).GetLightmapSizeHint())
 }
 
@@ -235,7 +235,7 @@ func New() Instance {
 Adds name for a blend shape that will be added with [method add_surface]. Must be called before surface is added.
 */
 //go:nosplit
-func (self class) AddBlendShape(name gd.String) {
+func (self class) AddBlendShape(name gd.String) { //gd:ImporterMesh.add_blend_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -247,7 +247,7 @@ func (self class) AddBlendShape(name gd.String) {
 Returns the number of blend shapes that the mesh holds.
 */
 //go:nosplit
-func (self class) GetBlendShapeCount() gd.Int {
+func (self class) GetBlendShapeCount() gd.Int { //gd:ImporterMesh.get_blend_shape_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_blend_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -260,7 +260,7 @@ func (self class) GetBlendShapeCount() gd.Int {
 Returns the name of the blend shape at this index.
 */
 //go:nosplit
-func (self class) GetBlendShapeName(blend_shape_idx gd.Int) gd.String {
+func (self class) GetBlendShapeName(blend_shape_idx gd.Int) gd.String { //gd:ImporterMesh.get_blend_shape_name
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -274,7 +274,7 @@ func (self class) GetBlendShapeName(blend_shape_idx gd.Int) gd.String {
 Sets the blend shape mode to one of [enum Mesh.BlendShapeMode].
 */
 //go:nosplit
-func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) {
+func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -286,7 +286,7 @@ func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) {
 Returns the blend shape mode for this Mesh.
 */
 //go:nosplit
-func (self class) GetBlendShapeMode() gdclass.MeshBlendShapeMode {
+func (self class) GetBlendShapeMode() gdclass.MeshBlendShapeMode { //gd:ImporterMesh.get_blend_shape_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.MeshBlendShapeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -305,7 +305,7 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 //go:nosplit
-func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods gd.Dictionary, material [1]gdclass.Material, name gd.String, flags gd.Int) {
+func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods gd.Dictionary, material [1]gdclass.Material, name gd.String, flags gd.Int) { //gd:ImporterMesh.add_surface
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
@@ -323,7 +323,7 @@ func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.A
 Returns the number of surfaces that the mesh holds.
 */
 //go:nosplit
-func (self class) GetSurfaceCount() gd.Int {
+func (self class) GetSurfaceCount() gd.Int { //gd:ImporterMesh.get_surface_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -336,7 +336,7 @@ func (self class) GetSurfaceCount() gd.Int {
 Returns the primitive type of the requested surface (see [method add_surface]).
 */
 //go:nosplit
-func (self class) GetSurfacePrimitiveType(surface_idx gd.Int) gdclass.MeshPrimitiveType {
+func (self class) GetSurfacePrimitiveType(surface_idx gd.Int) gdclass.MeshPrimitiveType { //gd:ImporterMesh.get_surface_primitive_type
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[gdclass.MeshPrimitiveType](frame)
@@ -350,7 +350,7 @@ func (self class) GetSurfacePrimitiveType(surface_idx gd.Int) gdclass.MeshPrimit
 Gets the name assigned to this surface.
 */
 //go:nosplit
-func (self class) GetSurfaceName(surface_idx gd.Int) gd.String {
+func (self class) GetSurfaceName(surface_idx gd.Int) gd.String { //gd:ImporterMesh.get_surface_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -364,7 +364,7 @@ func (self class) GetSurfaceName(surface_idx gd.Int) gd.String {
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [method add_surface].
 */
 //go:nosplit
-func (self class) GetSurfaceArrays(surface_idx gd.Int) Array.Any {
+func (self class) GetSurfaceArrays(surface_idx gd.Int) Array.Any { //gd:ImporterMesh.get_surface_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -378,7 +378,7 @@ func (self class) GetSurfaceArrays(surface_idx gd.Int) Array.Any {
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
 //go:nosplit
-func (self class) GetSurfaceBlendShapeArrays(surface_idx gd.Int, blend_shape_idx gd.Int) Array.Any {
+func (self class) GetSurfaceBlendShapeArrays(surface_idx gd.Int, blend_shape_idx gd.Int) Array.Any { //gd:ImporterMesh.get_surface_blend_shape_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	callframe.Arg(frame, blend_shape_idx)
@@ -393,7 +393,7 @@ func (self class) GetSurfaceBlendShapeArrays(surface_idx gd.Int, blend_shape_idx
 Returns the number of lods that the mesh holds on a given surface.
 */
 //go:nosplit
-func (self class) GetSurfaceLodCount(surface_idx gd.Int) gd.Int {
+func (self class) GetSurfaceLodCount(surface_idx gd.Int) gd.Int { //gd:ImporterMesh.get_surface_lod_count
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -407,7 +407,7 @@ func (self class) GetSurfaceLodCount(surface_idx gd.Int) gd.Int {
 Returns the screen ratio which activates a lod for a surface.
 */
 //go:nosplit
-func (self class) GetSurfaceLodSize(surface_idx gd.Int, lod_idx gd.Int) gd.Float {
+func (self class) GetSurfaceLodSize(surface_idx gd.Int, lod_idx gd.Int) gd.Float { //gd:ImporterMesh.get_surface_lod_size
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	callframe.Arg(frame, lod_idx)
@@ -422,7 +422,7 @@ func (self class) GetSurfaceLodSize(surface_idx gd.Int, lod_idx gd.Int) gd.Float
 Returns the index buffer of a lod for a surface.
 */
 //go:nosplit
-func (self class) GetSurfaceLodIndices(surface_idx gd.Int, lod_idx gd.Int) gd.PackedInt32Array {
+func (self class) GetSurfaceLodIndices(surface_idx gd.Int, lod_idx gd.Int) gd.PackedInt32Array { //gd:ImporterMesh.get_surface_lod_indices
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	callframe.Arg(frame, lod_idx)
@@ -437,7 +437,7 @@ func (self class) GetSurfaceLodIndices(surface_idx gd.Int, lod_idx gd.Int) gd.Pa
 Returns a [Material] in a given surface. Surface is rendered using this material.
 */
 //go:nosplit
-func (self class) GetSurfaceMaterial(surface_idx gd.Int) [1]gdclass.Material {
+func (self class) GetSurfaceMaterial(surface_idx gd.Int) [1]gdclass.Material { //gd:ImporterMesh.get_surface_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -451,7 +451,7 @@ func (self class) GetSurfaceMaterial(surface_idx gd.Int) [1]gdclass.Material {
 Returns the format of the surface that the mesh holds.
 */
 //go:nosplit
-func (self class) GetSurfaceFormat(surface_idx gd.Int) gd.Int {
+func (self class) GetSurfaceFormat(surface_idx gd.Int) gd.Int { //gd:ImporterMesh.get_surface_format
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -465,7 +465,7 @@ func (self class) GetSurfaceFormat(surface_idx gd.Int) gd.Int {
 Sets a name for a given surface.
 */
 //go:nosplit
-func (self class) SetSurfaceName(surface_idx gd.Int, name gd.String) {
+func (self class) SetSurfaceName(surface_idx gd.Int, name gd.String) { //gd:ImporterMesh.set_surface_name
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	callframe.Arg(frame, pointers.Get(name))
@@ -478,7 +478,7 @@ func (self class) SetSurfaceName(surface_idx gd.Int, name gd.String) {
 Sets a [Material] for a given surface. Surface will be rendered using this material.
 */
 //go:nosplit
-func (self class) SetSurfaceMaterial(surface_idx gd.Int, material [1]gdclass.Material) {
+func (self class) SetSurfaceMaterial(surface_idx gd.Int, material [1]gdclass.Material) { //gd:ImporterMesh.set_surface_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	callframe.Arg(frame, pointers.Get(material[0])[0])
@@ -494,7 +494,7 @@ The number of generated lods can be accessed using [method get_surface_lod_count
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
 //go:nosplit
-func (self class) GenerateLods(normal_merge_angle gd.Float, normal_split_angle gd.Float, bone_transform_array Array.Any) {
+func (self class) GenerateLods(normal_merge_angle gd.Float, normal_split_angle gd.Float, bone_transform_array Array.Any) { //gd:ImporterMesh.generate_lods
 	var frame = callframe.New()
 	callframe.Arg(frame, normal_merge_angle)
 	callframe.Arg(frame, normal_split_angle)
@@ -510,7 +510,7 @@ This method caches the returned mesh, and subsequent calls will return the cache
 If not yet cached and [param base_mesh] is provided, [param base_mesh] will be used and mutated.
 */
 //go:nosplit
-func (self class) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh {
+func (self class) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(base_mesh[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -524,7 +524,7 @@ func (self class) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh {
 Removes all surfaces and blend shapes from this [ImporterMesh].
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:ImporterMesh.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -535,7 +535,7 @@ func (self class) Clear() {
 Sets the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
 //go:nosplit
-func (self class) SetLightmapSizeHint(size gd.Vector2i) {
+func (self class) SetLightmapSizeHint(size gd.Vector2i) { //gd:ImporterMesh.set_lightmap_size_hint
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -547,7 +547,7 @@ func (self class) SetLightmapSizeHint(size gd.Vector2i) {
 Returns the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
 //go:nosplit
-func (self class) GetLightmapSizeHint() gd.Vector2i {
+func (self class) GetLightmapSizeHint() gd.Vector2i { //gd:ImporterMesh.get_lightmap_size_hint
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_lightmap_size_hint, self.AsObject(), frame.Array(0), r_ret.Addr())

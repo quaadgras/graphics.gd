@@ -189,7 +189,7 @@ type Any interface {
 /*
 Setup the DTLS server to use the given [param server_options]. See [method TLSOptions.server].
 */
-func (self Instance) Setup(server_options [1]gdclass.TLSOptions) error {
+func (self Instance) Setup(server_options [1]gdclass.TLSOptions) error { //gd:DTLSServer.setup
 	return error(gd.ToError(class(self).Setup(server_options)))
 }
 
@@ -197,7 +197,7 @@ func (self Instance) Setup(server_options [1]gdclass.TLSOptions) error {
 Try to initiate the DTLS handshake with the given [param udp_peer] which must be already connected (see [method PacketPeerUDP.connect_to_host]).
 [b]Note:[/b] You must check that the state of the return PacketPeerUDP is [constant PacketPeerDTLS.STATUS_HANDSHAKING], as it is normal that 50% of the new connections will be invalid due to cookie exchange.
 */
-func (self Instance) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS {
+func (self Instance) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
 	return [1]gdclass.PacketPeerDTLS(class(self).TakeConnection(udp_peer))
 }
 
@@ -224,7 +224,7 @@ func New() Instance {
 Setup the DTLS server to use the given [param server_options]. See [method TLSOptions.server].
 */
 //go:nosplit
-func (self class) Setup(server_options [1]gdclass.TLSOptions) gd.Error {
+func (self class) Setup(server_options [1]gdclass.TLSOptions) gd.Error { //gd:DTLSServer.setup
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(server_options[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -239,7 +239,7 @@ Try to initiate the DTLS handshake with the given [param udp_peer] which must be
 [b]Note:[/b] You must check that the state of the return PacketPeerUDP is [constant PacketPeerDTLS.STATUS_HANDSHAKING], as it is normal that 50% of the new connections will be invalid due to cookie exchange.
 */
 //go:nosplit
-func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS {
+func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(udp_peer[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -274,7 +274,7 @@ func init() {
 	gdclass.Register("DTLSServer", func(ptr gd.Object) any { return [1]gdclass.DTLSServer{*(*gdclass.DTLSServer)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

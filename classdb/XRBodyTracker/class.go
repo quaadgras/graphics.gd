@@ -43,28 +43,28 @@ type Any interface {
 /*
 Sets flags about the validity of the tracking data for the given body joint.
 */
-func (self Instance) SetJointFlags(joint gdclass.XRBodyTrackerJoint, flags gdclass.XRBodyTrackerJointFlags) {
+func (self Instance) SetJointFlags(joint gdclass.XRBodyTrackerJoint, flags gdclass.XRBodyTrackerJointFlags) { //gd:XRBodyTracker.set_joint_flags
 	class(self).SetJointFlags(joint, flags)
 }
 
 /*
 Returns flags about the validity of the tracking data for the given body joint (see [enum XRBodyTracker.JointFlags]).
 */
-func (self Instance) GetJointFlags(joint gdclass.XRBodyTrackerJoint) gdclass.XRBodyTrackerJointFlags {
+func (self Instance) GetJointFlags(joint gdclass.XRBodyTrackerJoint) gdclass.XRBodyTrackerJointFlags { //gd:XRBodyTracker.get_joint_flags
 	return gdclass.XRBodyTrackerJointFlags(class(self).GetJointFlags(joint))
 }
 
 /*
 Sets the transform for the given body joint.
 */
-func (self Instance) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform Transform3D.BasisOrigin) {
+func (self Instance) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform Transform3D.BasisOrigin) { //gd:XRBodyTracker.set_joint_transform
 	class(self).SetJointTransform(joint, gd.Transform3D(transform))
 }
 
 /*
 Returns the transform for the given body joint.
 */
-func (self Instance) GetJointTransform(joint gdclass.XRBodyTrackerJoint) Transform3D.BasisOrigin {
+func (self Instance) GetJointTransform(joint gdclass.XRBodyTrackerJoint) Transform3D.BasisOrigin { //gd:XRBodyTracker.get_joint_transform
 	return Transform3D.BasisOrigin(class(self).GetJointTransform(joint))
 }
 
@@ -104,7 +104,7 @@ func (self Instance) SetBodyFlags(value gdclass.XRBodyTrackerBodyFlags) {
 }
 
 //go:nosplit
-func (self class) SetHasTrackingData(has_data bool) {
+func (self class) SetHasTrackingData(has_data bool) { //gd:XRBodyTracker.set_has_tracking_data
 	var frame = callframe.New()
 	callframe.Arg(frame, has_data)
 	var r_ret = callframe.Nil
@@ -113,7 +113,7 @@ func (self class) SetHasTrackingData(has_data bool) {
 }
 
 //go:nosplit
-func (self class) GetHasTrackingData() bool {
+func (self class) GetHasTrackingData() bool { //gd:XRBodyTracker.get_has_tracking_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,7 +123,7 @@ func (self class) GetHasTrackingData() bool {
 }
 
 //go:nosplit
-func (self class) SetBodyFlags(flags gdclass.XRBodyTrackerBodyFlags) {
+func (self class) SetBodyFlags(flags gdclass.XRBodyTrackerBodyFlags) { //gd:XRBodyTracker.set_body_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -132,7 +132,7 @@ func (self class) SetBodyFlags(flags gdclass.XRBodyTrackerBodyFlags) {
 }
 
 //go:nosplit
-func (self class) GetBodyFlags() gdclass.XRBodyTrackerBodyFlags {
+func (self class) GetBodyFlags() gdclass.XRBodyTrackerBodyFlags { //gd:XRBodyTracker.get_body_flags
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRBodyTrackerBodyFlags](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_body_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -145,7 +145,7 @@ func (self class) GetBodyFlags() gdclass.XRBodyTrackerBodyFlags {
 Sets flags about the validity of the tracking data for the given body joint.
 */
 //go:nosplit
-func (self class) SetJointFlags(joint gdclass.XRBodyTrackerJoint, flags gdclass.XRBodyTrackerJointFlags) {
+func (self class) SetJointFlags(joint gdclass.XRBodyTrackerJoint, flags gdclass.XRBodyTrackerJointFlags) { //gd:XRBodyTracker.set_joint_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flags)
@@ -158,7 +158,7 @@ func (self class) SetJointFlags(joint gdclass.XRBodyTrackerJoint, flags gdclass.
 Returns flags about the validity of the tracking data for the given body joint (see [enum XRBodyTracker.JointFlags]).
 */
 //go:nosplit
-func (self class) GetJointFlags(joint gdclass.XRBodyTrackerJoint) gdclass.XRBodyTrackerJointFlags {
+func (self class) GetJointFlags(joint gdclass.XRBodyTrackerJoint) gdclass.XRBodyTrackerJointFlags { //gd:XRBodyTracker.get_joint_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gdclass.XRBodyTrackerJointFlags](frame)
@@ -172,7 +172,7 @@ func (self class) GetJointFlags(joint gdclass.XRBodyTrackerJoint) gdclass.XRBody
 Sets the transform for the given body joint.
 */
 //go:nosplit
-func (self class) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform gd.Transform3D) {
+func (self class) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform gd.Transform3D) { //gd:XRBodyTracker.set_joint_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, transform)
@@ -185,7 +185,7 @@ func (self class) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform 
 Returns the transform for the given body joint.
 */
 //go:nosplit
-func (self class) GetJointTransform(joint gdclass.XRBodyTrackerJoint) gd.Transform3D {
+func (self class) GetJointTransform(joint gdclass.XRBodyTrackerJoint) gd.Transform3D { //gd:XRBodyTracker.get_joint_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
@@ -234,7 +234,7 @@ func init() {
 	})
 }
 
-type BodyFlags = gdclass.XRBodyTrackerBodyFlags
+type BodyFlags = gdclass.XRBodyTrackerBodyFlags //gd:XRBodyTracker.BodyFlags
 
 const (
 	/*Upper body tracking supported.*/
@@ -245,7 +245,7 @@ const (
 	BodyFlagHandsSupported BodyFlags = 4
 )
 
-type Joint = gdclass.XRBodyTrackerJoint
+type Joint = gdclass.XRBodyTrackerJoint //gd:XRBodyTracker.Joint
 
 const (
 	/*Root joint.*/
@@ -404,7 +404,7 @@ const (
 	JointMax Joint = 76
 )
 
-type JointFlags = gdclass.XRBodyTrackerJointFlags
+type JointFlags = gdclass.XRBodyTrackerJointFlags //gd:XRBodyTracker.JointFlags
 
 const (
 	/*The joint's orientation data is valid.*/

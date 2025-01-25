@@ -453,56 +453,56 @@ func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, t
 /*
 Helper function to create a [Dictionary] for storing a line diff. [param new_line_no] is the line number in the new file (can be [code]-1[/code] if the line is deleted). [param old_line_no] is the line number in the old file (can be [code]-1[/code] if the line is added). [param content] is the diff text. [param status] is a single character string which stores the line origin.
 */
-func (self Instance) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) map[any]any {
+func (self Instance) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) map[any]any { //gd:EditorVCSInterface.create_diff_line
 	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateDiffLine(gd.Int(new_line_no), gd.Int(old_line_no), gd.NewString(content), gd.NewString(status))))
 }
 
 /*
 Helper function to create a [Dictionary] for storing diff hunk data. [param old_start] is the starting line number in old file. [param new_start] is the starting line number in new file. [param old_lines] is the number of lines in the old file. [param new_lines] is the number of lines in the new file.
 */
-func (self Instance) CreateDiffHunk(old_start int, new_start int, old_lines int, new_lines int) map[any]any {
+func (self Instance) CreateDiffHunk(old_start int, new_start int, old_lines int, new_lines int) map[any]any { //gd:EditorVCSInterface.create_diff_hunk
 	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateDiffHunk(gd.Int(old_start), gd.Int(new_start), gd.Int(old_lines), gd.Int(new_lines))))
 }
 
 /*
 Helper function to create a [Dictionary] for storing old and new diff file paths.
 */
-func (self Instance) CreateDiffFile(new_file string, old_file string) map[any]any {
+func (self Instance) CreateDiffFile(new_file string, old_file string) map[any]any { //gd:EditorVCSInterface.create_diff_file
 	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateDiffFile(gd.NewString(new_file), gd.NewString(old_file))))
 }
 
 /*
 Helper function to create a commit [Dictionary] item. [param msg] is the commit message of the commit. [param author] is a single human-readable string containing all the author's details, e.g. the email and name configured in the VCS. [param id] is the identifier of the commit, in whichever format your VCS may provide an identifier to commits. [param unix_timestamp] is the UTC Unix timestamp of when the commit was created. [param offset_minutes] is the timezone offset in minutes, recorded from the system timezone where the commit was created.
 */
-func (self Instance) CreateCommit(msg string, author string, id string, unix_timestamp int, offset_minutes int) map[any]any {
+func (self Instance) CreateCommit(msg string, author string, id string, unix_timestamp int, offset_minutes int) map[any]any { //gd:EditorVCSInterface.create_commit
 	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateCommit(gd.NewString(msg), gd.NewString(author), gd.NewString(id), gd.Int(unix_timestamp), gd.Int(offset_minutes))))
 }
 
 /*
 Helper function to create a [Dictionary] used by editor to read the status of a file.
 */
-func (self Instance) CreateStatusFile(file_path string, change_type gdclass.EditorVCSInterfaceChangeType, area gdclass.EditorVCSInterfaceTreeArea) map[any]any {
+func (self Instance) CreateStatusFile(file_path string, change_type gdclass.EditorVCSInterfaceChangeType, area gdclass.EditorVCSInterfaceTreeArea) map[any]any { //gd:EditorVCSInterface.create_status_file
 	return map[any]any(gd.DictionaryAs[any, any](class(self).CreateStatusFile(gd.NewString(file_path), change_type, area)))
 }
 
 /*
 Helper function to add an array of [param diff_hunks] into a [param diff_file].
 */
-func (self Instance) AddDiffHunksIntoDiffFile(diff_file map[any]any, diff_hunks []map[any]any) map[any]any {
+func (self Instance) AddDiffHunksIntoDiffFile(diff_file map[any]any, diff_hunks []map[any]any) map[any]any { //gd:EditorVCSInterface.add_diff_hunks_into_diff_file
 	return map[any]any(gd.DictionaryAs[any, any](class(self).AddDiffHunksIntoDiffFile(gd.NewVariant(diff_file).Interface().(gd.Dictionary), gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](diff_hunks))))
 }
 
 /*
 Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 */
-func (self Instance) AddLineDiffsIntoDiffHunk(diff_hunk map[any]any, line_diffs []map[any]any) map[any]any {
+func (self Instance) AddLineDiffsIntoDiffHunk(diff_hunk map[any]any, line_diffs []map[any]any) map[any]any { //gd:EditorVCSInterface.add_line_diffs_into_diff_hunk
 	return map[any]any(gd.DictionaryAs[any, any](class(self).AddLineDiffsIntoDiffHunk(gd.NewVariant(diff_hunk).Interface().(gd.Dictionary), gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](line_diffs))))
 }
 
 /*
 Pops up an error message in the editor which is shown as coming from the underlying VCS. Use this to show VCS specific error messages.
 */
-func (self Instance) PopupError(msg string) {
+func (self Instance) PopupError(msg string) { //gd:EditorVCSInterface.popup_error
 	class(self).PopupError(gd.NewString(msg))
 }
 
@@ -859,7 +859,7 @@ func (class) _get_line_diff(impl func(ptr unsafe.Pointer, file_path gd.String, t
 Helper function to create a [Dictionary] for storing a line diff. [param new_line_no] is the line number in the new file (can be [code]-1[/code] if the line is deleted). [param old_line_no] is the line number in the old file (can be [code]-1[/code] if the line is added). [param content] is the diff text. [param status] is a single character string which stores the line origin.
 */
 //go:nosplit
-func (self class) CreateDiffLine(new_line_no gd.Int, old_line_no gd.Int, content gd.String, status gd.String) gd.Dictionary {
+func (self class) CreateDiffLine(new_line_no gd.Int, old_line_no gd.Int, content gd.String, status gd.String) gd.Dictionary { //gd:EditorVCSInterface.create_diff_line
 	var frame = callframe.New()
 	callframe.Arg(frame, new_line_no)
 	callframe.Arg(frame, old_line_no)
@@ -876,7 +876,7 @@ func (self class) CreateDiffLine(new_line_no gd.Int, old_line_no gd.Int, content
 Helper function to create a [Dictionary] for storing diff hunk data. [param old_start] is the starting line number in old file. [param new_start] is the starting line number in new file. [param old_lines] is the number of lines in the old file. [param new_lines] is the number of lines in the new file.
 */
 //go:nosplit
-func (self class) CreateDiffHunk(old_start gd.Int, new_start gd.Int, old_lines gd.Int, new_lines gd.Int) gd.Dictionary {
+func (self class) CreateDiffHunk(old_start gd.Int, new_start gd.Int, old_lines gd.Int, new_lines gd.Int) gd.Dictionary { //gd:EditorVCSInterface.create_diff_hunk
 	var frame = callframe.New()
 	callframe.Arg(frame, old_start)
 	callframe.Arg(frame, new_start)
@@ -893,7 +893,7 @@ func (self class) CreateDiffHunk(old_start gd.Int, new_start gd.Int, old_lines g
 Helper function to create a [Dictionary] for storing old and new diff file paths.
 */
 //go:nosplit
-func (self class) CreateDiffFile(new_file gd.String, old_file gd.String) gd.Dictionary {
+func (self class) CreateDiffFile(new_file gd.String, old_file gd.String) gd.Dictionary { //gd:EditorVCSInterface.create_diff_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(new_file))
 	callframe.Arg(frame, pointers.Get(old_file))
@@ -908,7 +908,7 @@ func (self class) CreateDiffFile(new_file gd.String, old_file gd.String) gd.Dict
 Helper function to create a commit [Dictionary] item. [param msg] is the commit message of the commit. [param author] is a single human-readable string containing all the author's details, e.g. the email and name configured in the VCS. [param id] is the identifier of the commit, in whichever format your VCS may provide an identifier to commits. [param unix_timestamp] is the UTC Unix timestamp of when the commit was created. [param offset_minutes] is the timezone offset in minutes, recorded from the system timezone where the commit was created.
 */
 //go:nosplit
-func (self class) CreateCommit(msg gd.String, author gd.String, id gd.String, unix_timestamp gd.Int, offset_minutes gd.Int) gd.Dictionary {
+func (self class) CreateCommit(msg gd.String, author gd.String, id gd.String, unix_timestamp gd.Int, offset_minutes gd.Int) gd.Dictionary { //gd:EditorVCSInterface.create_commit
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(msg))
 	callframe.Arg(frame, pointers.Get(author))
@@ -926,7 +926,7 @@ func (self class) CreateCommit(msg gd.String, author gd.String, id gd.String, un
 Helper function to create a [Dictionary] used by editor to read the status of a file.
 */
 //go:nosplit
-func (self class) CreateStatusFile(file_path gd.String, change_type gdclass.EditorVCSInterfaceChangeType, area gdclass.EditorVCSInterfaceTreeArea) gd.Dictionary {
+func (self class) CreateStatusFile(file_path gd.String, change_type gdclass.EditorVCSInterfaceChangeType, area gdclass.EditorVCSInterfaceTreeArea) gd.Dictionary { //gd:EditorVCSInterface.create_status_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file_path))
 	callframe.Arg(frame, change_type)
@@ -942,7 +942,7 @@ func (self class) CreateStatusFile(file_path gd.String, change_type gdclass.Edit
 Helper function to add an array of [param diff_hunks] into a [param diff_file].
 */
 //go:nosplit
-func (self class) AddDiffHunksIntoDiffFile(diff_file gd.Dictionary, diff_hunks Array.Contains[gd.Dictionary]) gd.Dictionary {
+func (self class) AddDiffHunksIntoDiffFile(diff_file gd.Dictionary, diff_hunks Array.Contains[gd.Dictionary]) gd.Dictionary { //gd:EditorVCSInterface.add_diff_hunks_into_diff_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(diff_file))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(diff_hunks)))
@@ -957,7 +957,7 @@ func (self class) AddDiffHunksIntoDiffFile(diff_file gd.Dictionary, diff_hunks A
 Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 */
 //go:nosplit
-func (self class) AddLineDiffsIntoDiffHunk(diff_hunk gd.Dictionary, line_diffs Array.Contains[gd.Dictionary]) gd.Dictionary {
+func (self class) AddLineDiffsIntoDiffHunk(diff_hunk gd.Dictionary, line_diffs Array.Contains[gd.Dictionary]) gd.Dictionary { //gd:EditorVCSInterface.add_line_diffs_into_diff_hunk
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(diff_hunk))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(line_diffs)))
@@ -972,7 +972,7 @@ func (self class) AddLineDiffsIntoDiffHunk(diff_hunk gd.Dictionary, line_diffs A
 Pops up an error message in the editor which is shown as coming from the underlying VCS. Use this to show VCS specific error messages.
 */
 //go:nosplit
-func (self class) PopupError(msg gd.String) {
+func (self class) PopupError(msg gd.String) { //gd:EditorVCSInterface.popup_error
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(msg))
 	var r_ret = callframe.Nil
@@ -1093,7 +1093,7 @@ func init() {
 	})
 }
 
-type ChangeType = gdclass.EditorVCSInterfaceChangeType
+type ChangeType = gdclass.EditorVCSInterfaceChangeType //gd:EditorVCSInterface.ChangeType
 
 const (
 	/*A new file has been added.*/
@@ -1110,7 +1110,7 @@ const (
 	ChangeTypeUnmerged ChangeType = 5
 )
 
-type TreeArea = gdclass.EditorVCSInterfaceTreeArea
+type TreeArea = gdclass.EditorVCSInterfaceTreeArea //gd:EditorVCSInterface.TreeArea
 
 const (
 	/*A commit is encountered from the commit area.*/

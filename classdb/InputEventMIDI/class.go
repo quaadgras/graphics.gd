@@ -183,7 +183,7 @@ func (self Instance) SetControllerValue(value int) {
 }
 
 //go:nosplit
-func (self class) SetChannel(channel gd.Int) {
+func (self class) SetChannel(channel gd.Int) { //gd:InputEventMIDI.set_channel
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Nil
@@ -192,7 +192,7 @@ func (self class) SetChannel(channel gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetChannel() gd.Int {
+func (self class) GetChannel() gd.Int { //gd:InputEventMIDI.get_channel
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -202,7 +202,7 @@ func (self class) GetChannel() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMessage(message MIDIMessage) {
+func (self class) SetMessage(message MIDIMessage) { //gd:InputEventMIDI.set_message
 	var frame = callframe.New()
 	callframe.Arg(frame, message)
 	var r_ret = callframe.Nil
@@ -211,7 +211,7 @@ func (self class) SetMessage(message MIDIMessage) {
 }
 
 //go:nosplit
-func (self class) GetMessage() MIDIMessage {
+func (self class) GetMessage() MIDIMessage { //gd:InputEventMIDI.get_message
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[MIDIMessage](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_message, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -221,7 +221,7 @@ func (self class) GetMessage() MIDIMessage {
 }
 
 //go:nosplit
-func (self class) SetPitch(pitch gd.Int) {
+func (self class) SetPitch(pitch gd.Int) { //gd:InputEventMIDI.set_pitch
 	var frame = callframe.New()
 	callframe.Arg(frame, pitch)
 	var r_ret = callframe.Nil
@@ -230,7 +230,7 @@ func (self class) SetPitch(pitch gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPitch() gd.Int {
+func (self class) GetPitch() gd.Int { //gd:InputEventMIDI.get_pitch
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_pitch, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -240,7 +240,7 @@ func (self class) GetPitch() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetVelocity(velocity gd.Int) {
+func (self class) SetVelocity(velocity gd.Int) { //gd:InputEventMIDI.set_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -249,7 +249,7 @@ func (self class) SetVelocity(velocity gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetVelocity() gd.Int {
+func (self class) GetVelocity() gd.Int { //gd:InputEventMIDI.get_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -259,7 +259,7 @@ func (self class) GetVelocity() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetInstrument(instrument gd.Int) {
+func (self class) SetInstrument(instrument gd.Int) { //gd:InputEventMIDI.set_instrument
 	var frame = callframe.New()
 	callframe.Arg(frame, instrument)
 	var r_ret = callframe.Nil
@@ -268,7 +268,7 @@ func (self class) SetInstrument(instrument gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetInstrument() gd.Int {
+func (self class) GetInstrument() gd.Int { //gd:InputEventMIDI.get_instrument
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_instrument, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -278,7 +278,7 @@ func (self class) GetInstrument() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetPressure(pressure gd.Int) {
+func (self class) SetPressure(pressure gd.Int) { //gd:InputEventMIDI.set_pressure
 	var frame = callframe.New()
 	callframe.Arg(frame, pressure)
 	var r_ret = callframe.Nil
@@ -287,7 +287,7 @@ func (self class) SetPressure(pressure gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetPressure() gd.Int {
+func (self class) GetPressure() gd.Int { //gd:InputEventMIDI.get_pressure
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_pressure, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -297,7 +297,7 @@ func (self class) GetPressure() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetControllerNumber(controller_number gd.Int) {
+func (self class) SetControllerNumber(controller_number gd.Int) { //gd:InputEventMIDI.set_controller_number
 	var frame = callframe.New()
 	callframe.Arg(frame, controller_number)
 	var r_ret = callframe.Nil
@@ -306,7 +306,7 @@ func (self class) SetControllerNumber(controller_number gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetControllerNumber() gd.Int {
+func (self class) GetControllerNumber() gd.Int { //gd:InputEventMIDI.get_controller_number
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_controller_number, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -316,7 +316,7 @@ func (self class) GetControllerNumber() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetControllerValue(controller_value gd.Int) {
+func (self class) SetControllerValue(controller_value gd.Int) { //gd:InputEventMIDI.set_controller_value
 	var frame = callframe.New()
 	callframe.Arg(frame, controller_value)
 	var r_ret = callframe.Nil
@@ -325,7 +325,7 @@ func (self class) SetControllerValue(controller_value gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetControllerValue() gd.Int {
+func (self class) GetControllerValue() gd.Int { //gd:InputEventMIDI.get_controller_value
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_controller_value, self.AsObject(), frame.Array(0), r_ret.Addr())

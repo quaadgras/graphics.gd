@@ -41,7 +41,7 @@ type Any interface {
 Gets additional arbitrary data in this [GLTFMesh] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
-func (self Instance) GetAdditionalData(extension_name string) any {
+func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFMesh.get_additional_data
 	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
 }
 
@@ -49,7 +49,7 @@ func (self Instance) GetAdditionalData(extension_name string) any {
 Sets additional arbitrary data in this [GLTFMesh] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
-func (self Instance) SetAdditionalData(extension_name string, additional_data any) {
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFMesh.set_additional_data
 	class(self).SetAdditionalData(gd.NewStringName(extension_name), gd.NewVariant(additional_data))
 }
 
@@ -105,7 +105,7 @@ func (self Instance) SetInstanceMaterials(value [][1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) GetOriginalName() gd.String {
+func (self class) GetOriginalName() gd.String { //gd:GLTFMesh.get_original_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_original_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -115,7 +115,7 @@ func (self class) GetOriginalName() gd.String {
 }
 
 //go:nosplit
-func (self class) SetOriginalName(original_name gd.String) {
+func (self class) SetOriginalName(original_name gd.String) { //gd:GLTFMesh.set_original_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(original_name))
 	var r_ret = callframe.Nil
@@ -124,7 +124,7 @@ func (self class) SetOriginalName(original_name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetMesh() [1]gdclass.ImporterMesh {
+func (self class) GetMesh() [1]gdclass.ImporterMesh { //gd:GLTFMesh.get_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,7 +134,7 @@ func (self class) GetMesh() [1]gdclass.ImporterMesh {
 }
 
 //go:nosplit
-func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) {
+func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:GLTFMesh.set_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -143,7 +143,7 @@ func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) {
 }
 
 //go:nosplit
-func (self class) GetBlendWeights() gd.PackedFloat32Array {
+func (self class) GetBlendWeights() gd.PackedFloat32Array { //gd:GLTFMesh.get_blend_weights
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_blend_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -153,7 +153,7 @@ func (self class) GetBlendWeights() gd.PackedFloat32Array {
 }
 
 //go:nosplit
-func (self class) SetBlendWeights(blend_weights gd.PackedFloat32Array) {
+func (self class) SetBlendWeights(blend_weights gd.PackedFloat32Array) { //gd:GLTFMesh.set_blend_weights
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(blend_weights))
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetBlendWeights(blend_weights gd.PackedFloat32Array) {
 }
 
 //go:nosplit
-func (self class) GetInstanceMaterials() Array.Contains[[1]gdclass.Material] {
+func (self class) GetInstanceMaterials() Array.Contains[[1]gdclass.Material] { //gd:GLTFMesh.get_instance_materials
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_instance_materials, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func (self class) GetInstanceMaterials() Array.Contains[[1]gdclass.Material] {
 }
 
 //go:nosplit
-func (self class) SetInstanceMaterials(instance_materials Array.Contains[[1]gdclass.Material]) {
+func (self class) SetInstanceMaterials(instance_materials Array.Contains[[1]gdclass.Material]) { //gd:GLTFMesh.set_instance_materials
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(instance_materials)))
 	var r_ret = callframe.Nil
@@ -185,7 +185,7 @@ Gets additional arbitrary data in this [GLTFMesh] instance. This can be used to 
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the return value can be anything you set. If nothing was set, the return value is null.
 */
 //go:nosplit
-func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant {
+func (self class) GetAdditionalData(extension_name gd.StringName) gd.Variant { //gd:GLTFMesh.get_additional_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -200,7 +200,7 @@ Sets additional arbitrary data in this [GLTFMesh] instance. This can be used to 
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the GLTF file), and the second argument can be anything you want.
 */
 //go:nosplit
-func (self class) SetAdditionalData(extension_name gd.StringName, additional_data gd.Variant) {
+func (self class) SetAdditionalData(extension_name gd.StringName, additional_data gd.Variant) { //gd:GLTFMesh.set_additional_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension_name))
 	callframe.Arg(frame, pointers.Get(additional_data))

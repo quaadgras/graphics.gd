@@ -46,43 +46,43 @@ func singleton() {
 	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.PhysicsServer3D)
 	self = *(*[1]gdclass.PhysicsServer3D)(unsafe.Pointer(&obj))
 }
-func WorldBoundaryShapeCreate() Resource.ID {
+func WorldBoundaryShapeCreate() Resource.ID { //gd:PhysicsServer3D.world_boundary_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).WorldBoundaryShapeCreate())
 }
-func SeparationRayShapeCreate() Resource.ID {
+func SeparationRayShapeCreate() Resource.ID { //gd:PhysicsServer3D.separation_ray_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).SeparationRayShapeCreate())
 }
-func SphereShapeCreate() Resource.ID {
+func SphereShapeCreate() Resource.ID { //gd:PhysicsServer3D.sphere_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).SphereShapeCreate())
 }
-func BoxShapeCreate() Resource.ID {
+func BoxShapeCreate() Resource.ID { //gd:PhysicsServer3D.box_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).BoxShapeCreate())
 }
-func CapsuleShapeCreate() Resource.ID {
+func CapsuleShapeCreate() Resource.ID { //gd:PhysicsServer3D.capsule_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).CapsuleShapeCreate())
 }
-func CylinderShapeCreate() Resource.ID {
+func CylinderShapeCreate() Resource.ID { //gd:PhysicsServer3D.cylinder_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).CylinderShapeCreate())
 }
-func ConvexPolygonShapeCreate() Resource.ID {
+func ConvexPolygonShapeCreate() Resource.ID { //gd:PhysicsServer3D.convex_polygon_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).ConvexPolygonShapeCreate())
 }
-func ConcavePolygonShapeCreate() Resource.ID {
+func ConcavePolygonShapeCreate() Resource.ID { //gd:PhysicsServer3D.concave_polygon_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).ConcavePolygonShapeCreate())
 }
-func HeightmapShapeCreate() Resource.ID {
+func HeightmapShapeCreate() Resource.ID { //gd:PhysicsServer3D.heightmap_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).HeightmapShapeCreate())
 }
-func CustomShapeCreate() Resource.ID {
+func CustomShapeCreate() Resource.ID { //gd:PhysicsServer3D.custom_shape_create
 	once.Do(singleton)
 	return Resource.ID(class(self).CustomShapeCreate())
 }
@@ -90,7 +90,7 @@ func CustomShapeCreate() Resource.ID {
 /*
 Sets the shape data that defines its shape and size. The data to be passed depends on the kind of shape created [method shape_get_type].
 */
-func ShapeSetData(shape Resource.ID, data any) {
+func ShapeSetData(shape Resource.ID, data any) { //gd:PhysicsServer3D.shape_set_data
 	once.Do(singleton)
 	class(self).ShapeSetData(shape, gd.NewVariant(data))
 }
@@ -99,7 +99,7 @@ func ShapeSetData(shape Resource.ID, data any) {
 Sets the collision margin for the shape.
 [b]Note:[/b] This is not used in Godot Physics.
 */
-func ShapeSetMargin(shape Resource.ID, margin Float.X) {
+func ShapeSetMargin(shape Resource.ID, margin Float.X) { //gd:PhysicsServer3D.shape_set_margin
 	once.Do(singleton)
 	class(self).ShapeSetMargin(shape, gd.Float(margin))
 }
@@ -107,7 +107,7 @@ func ShapeSetMargin(shape Resource.ID, margin Float.X) {
 /*
 Returns the type of shape (see [enum ShapeType] constants).
 */
-func ShapeGetType(shape Resource.ID) gdclass.PhysicsServer3DShapeType {
+func ShapeGetType(shape Resource.ID) gdclass.PhysicsServer3DShapeType { //gd:PhysicsServer3D.shape_get_type
 	once.Do(singleton)
 	return gdclass.PhysicsServer3DShapeType(class(self).ShapeGetType(shape))
 }
@@ -115,7 +115,7 @@ func ShapeGetType(shape Resource.ID) gdclass.PhysicsServer3DShapeType {
 /*
 Returns the shape data.
 */
-func ShapeGetData(shape Resource.ID) any {
+func ShapeGetData(shape Resource.ID) any { //gd:PhysicsServer3D.shape_get_data
 	once.Do(singleton)
 	return any(class(self).ShapeGetData(shape).Interface())
 }
@@ -124,7 +124,7 @@ func ShapeGetData(shape Resource.ID) any {
 Returns the collision margin for the shape.
 [b]Note:[/b] This is not used in Godot Physics, so will always return [code]0[/code].
 */
-func ShapeGetMargin(shape Resource.ID) Float.X {
+func ShapeGetMargin(shape Resource.ID) Float.X { //gd:PhysicsServer3D.shape_get_margin
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).ShapeGetMargin(shape)))
 }
@@ -132,7 +132,7 @@ func ShapeGetMargin(shape Resource.ID) Float.X {
 /*
 Creates a space. A space is a collection of parameters for the physics engine that can be assigned to an area or a body. It can be assigned to an area with [method area_set_space], or to a body with [method body_set_space].
 */
-func SpaceCreate() Resource.ID {
+func SpaceCreate() Resource.ID { //gd:PhysicsServer3D.space_create
 	once.Do(singleton)
 	return Resource.ID(class(self).SpaceCreate())
 }
@@ -140,7 +140,7 @@ func SpaceCreate() Resource.ID {
 /*
 Marks a space as active. It will not have an effect, unless it is assigned to an area or body.
 */
-func SpaceSetActive(space Resource.ID, active bool) {
+func SpaceSetActive(space Resource.ID, active bool) { //gd:PhysicsServer3D.space_set_active
 	once.Do(singleton)
 	class(self).SpaceSetActive(space, active)
 }
@@ -148,7 +148,7 @@ func SpaceSetActive(space Resource.ID, active bool) {
 /*
 Returns whether the space is active.
 */
-func SpaceIsActive(space Resource.ID) bool {
+func SpaceIsActive(space Resource.ID) bool { //gd:PhysicsServer3D.space_is_active
 	once.Do(singleton)
 	return bool(class(self).SpaceIsActive(space))
 }
@@ -156,7 +156,7 @@ func SpaceIsActive(space Resource.ID) bool {
 /*
 Sets the value for a space parameter. A list of available parameters is on the [enum SpaceParameter] constants.
 */
-func SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter, value Float.X) {
+func SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter, value Float.X) { //gd:PhysicsServer3D.space_set_param
 	once.Do(singleton)
 	class(self).SpaceSetParam(space, param, gd.Float(value))
 }
@@ -164,7 +164,7 @@ func SpaceSetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParamete
 /*
 Returns the value of a space parameter.
 */
-func SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter) Float.X {
+func SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParameter) Float.X { //gd:PhysicsServer3D.space_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).SpaceGetParam(space, param)))
 }
@@ -172,7 +172,7 @@ func SpaceGetParam(space Resource.ID, param gdclass.PhysicsServer3DSpaceParamete
 /*
 Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
 */
-func SpaceGetDirectState(space Resource.ID) [1]gdclass.PhysicsDirectSpaceState3D {
+func SpaceGetDirectState(space Resource.ID) [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsServer3D.space_get_direct_state
 	once.Do(singleton)
 	return [1]gdclass.PhysicsDirectSpaceState3D(class(self).SpaceGetDirectState(space))
 }
@@ -181,7 +181,7 @@ func SpaceGetDirectState(space Resource.ID) [1]gdclass.PhysicsDirectSpaceState3D
 Creates a 3D area object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to [code]1[/code], and [code]monitorable[/code] set to [code]false[/code].
 Use [method area_add_shape] to add shapes to it, use [method area_set_transform] to set its transform, and use [method area_set_space] to add the area to a space. If you want the area to be detectable use [method area_set_monitorable].
 */
-func AreaCreate() Resource.ID {
+func AreaCreate() Resource.ID { //gd:PhysicsServer3D.area_create
 	once.Do(singleton)
 	return Resource.ID(class(self).AreaCreate())
 }
@@ -189,7 +189,7 @@ func AreaCreate() Resource.ID {
 /*
 Assigns a space to the area.
 */
-func AreaSetSpace(area Resource.ID, space Resource.ID) {
+func AreaSetSpace(area Resource.ID, space Resource.ID) { //gd:PhysicsServer3D.area_set_space
 	once.Do(singleton)
 	class(self).AreaSetSpace(area, space)
 }
@@ -197,7 +197,7 @@ func AreaSetSpace(area Resource.ID, space Resource.ID) {
 /*
 Returns the space assigned to the area.
 */
-func AreaGetSpace(area Resource.ID) Resource.ID {
+func AreaGetSpace(area Resource.ID) Resource.ID { //gd:PhysicsServer3D.area_get_space
 	once.Do(singleton)
 	return Resource.ID(class(self).AreaGetSpace(area))
 }
@@ -205,7 +205,7 @@ func AreaGetSpace(area Resource.ID) Resource.ID {
 /*
 Adds a shape to the area, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
-func AreaAddShape(area Resource.ID, shape Resource.ID) {
+func AreaAddShape(area Resource.ID, shape Resource.ID) { //gd:PhysicsServer3D.area_add_shape
 	once.Do(singleton)
 	class(self).AreaAddShape(area, shape, gd.Transform3D(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), false)
 }
@@ -213,7 +213,7 @@ func AreaAddShape(area Resource.ID, shape Resource.ID) {
 /*
 Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [RID].
 */
-func AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID) {
+func AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID) { //gd:PhysicsServer3D.area_set_shape
 	once.Do(singleton)
 	class(self).AreaSetShape(area, gd.Int(shape_idx), shape)
 }
@@ -221,11 +221,11 @@ func AreaSetShape(area Resource.ID, shape_idx int, shape Resource.ID) {
 /*
 Sets the transform matrix for an area shape.
 */
-func AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform3D.BasisOrigin) {
+func AreaSetShapeTransform(area Resource.ID, shape_idx int, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.area_set_shape_transform
 	once.Do(singleton)
 	class(self).AreaSetShapeTransform(area, gd.Int(shape_idx), gd.Transform3D(transform))
 }
-func AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool) {
+func AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool) { //gd:PhysicsServer3D.area_set_shape_disabled
 	once.Do(singleton)
 	class(self).AreaSetShapeDisabled(area, gd.Int(shape_idx), disabled)
 }
@@ -233,7 +233,7 @@ func AreaSetShapeDisabled(area Resource.ID, shape_idx int, disabled bool) {
 /*
 Returns the number of shapes assigned to an area.
 */
-func AreaGetShapeCount(area Resource.ID) int {
+func AreaGetShapeCount(area Resource.ID) int { //gd:PhysicsServer3D.area_get_shape_count
 	once.Do(singleton)
 	return int(int(class(self).AreaGetShapeCount(area)))
 }
@@ -241,7 +241,7 @@ func AreaGetShapeCount(area Resource.ID) int {
 /*
 Returns the [RID] of the nth shape of an area.
 */
-func AreaGetShape(area Resource.ID, shape_idx int) Resource.ID {
+func AreaGetShape(area Resource.ID, shape_idx int) Resource.ID { //gd:PhysicsServer3D.area_get_shape
 	once.Do(singleton)
 	return Resource.ID(class(self).AreaGetShape(area, gd.Int(shape_idx)))
 }
@@ -249,7 +249,7 @@ func AreaGetShape(area Resource.ID, shape_idx int) Resource.ID {
 /*
 Returns the transform matrix of a shape within an area.
 */
-func AreaGetShapeTransform(area Resource.ID, shape_idx int) Transform3D.BasisOrigin {
+func AreaGetShapeTransform(area Resource.ID, shape_idx int) Transform3D.BasisOrigin { //gd:PhysicsServer3D.area_get_shape_transform
 	once.Do(singleton)
 	return Transform3D.BasisOrigin(class(self).AreaGetShapeTransform(area, gd.Int(shape_idx)))
 }
@@ -257,7 +257,7 @@ func AreaGetShapeTransform(area Resource.ID, shape_idx int) Transform3D.BasisOri
 /*
 Removes a shape from an area. It does not delete the shape, so it can be reassigned later.
 */
-func AreaRemoveShape(area Resource.ID, shape_idx int) {
+func AreaRemoveShape(area Resource.ID, shape_idx int) { //gd:PhysicsServer3D.area_remove_shape
 	once.Do(singleton)
 	class(self).AreaRemoveShape(area, gd.Int(shape_idx))
 }
@@ -265,7 +265,7 @@ func AreaRemoveShape(area Resource.ID, shape_idx int) {
 /*
 Removes all shapes from an area. It does not delete the shapes, so they can be reassigned later.
 */
-func AreaClearShapes(area Resource.ID) {
+func AreaClearShapes(area Resource.ID) { //gd:PhysicsServer3D.area_clear_shapes
 	once.Do(singleton)
 	class(self).AreaClearShapes(area)
 }
@@ -273,7 +273,7 @@ func AreaClearShapes(area Resource.ID) {
 /*
 Assigns the area to one or many physics layers.
 */
-func AreaSetCollisionLayer(area Resource.ID, layer int) {
+func AreaSetCollisionLayer(area Resource.ID, layer int) { //gd:PhysicsServer3D.area_set_collision_layer
 	once.Do(singleton)
 	class(self).AreaSetCollisionLayer(area, gd.Int(layer))
 }
@@ -281,7 +281,7 @@ func AreaSetCollisionLayer(area Resource.ID, layer int) {
 /*
 Returns the physics layer or layers an area belongs to.
 */
-func AreaGetCollisionLayer(area Resource.ID) int {
+func AreaGetCollisionLayer(area Resource.ID) int { //gd:PhysicsServer3D.area_get_collision_layer
 	once.Do(singleton)
 	return int(int(class(self).AreaGetCollisionLayer(area)))
 }
@@ -289,7 +289,7 @@ func AreaGetCollisionLayer(area Resource.ID) int {
 /*
 Sets which physics layers the area will monitor.
 */
-func AreaSetCollisionMask(area Resource.ID, mask int) {
+func AreaSetCollisionMask(area Resource.ID, mask int) { //gd:PhysicsServer3D.area_set_collision_mask
 	once.Do(singleton)
 	class(self).AreaSetCollisionMask(area, gd.Int(mask))
 }
@@ -297,7 +297,7 @@ func AreaSetCollisionMask(area Resource.ID, mask int) {
 /*
 Returns the physics layer or layers an area can contact with.
 */
-func AreaGetCollisionMask(area Resource.ID) int {
+func AreaGetCollisionMask(area Resource.ID) int { //gd:PhysicsServer3D.area_get_collision_mask
 	once.Do(singleton)
 	return int(int(class(self).AreaGetCollisionMask(area)))
 }
@@ -305,7 +305,7 @@ func AreaGetCollisionMask(area Resource.ID) int {
 /*
 Sets the value for an area parameter. A list of available parameters is on the [enum AreaParameter] constants.
 */
-func AreaSetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter, value any) {
+func AreaSetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter, value any) { //gd:PhysicsServer3D.area_set_param
 	once.Do(singleton)
 	class(self).AreaSetParam(area, param, gd.NewVariant(value))
 }
@@ -313,7 +313,7 @@ func AreaSetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter, 
 /*
 Sets the transform matrix for an area.
 */
-func AreaSetTransform(area Resource.ID, transform Transform3D.BasisOrigin) {
+func AreaSetTransform(area Resource.ID, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.area_set_transform
 	once.Do(singleton)
 	class(self).AreaSetTransform(area, gd.Transform3D(transform))
 }
@@ -321,7 +321,7 @@ func AreaSetTransform(area Resource.ID, transform Transform3D.BasisOrigin) {
 /*
 Returns an area parameter value. A list of available parameters is on the [enum AreaParameter] constants.
 */
-func AreaGetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter) any {
+func AreaGetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter) any { //gd:PhysicsServer3D.area_get_param
 	once.Do(singleton)
 	return any(class(self).AreaGetParam(area, param).Interface())
 }
@@ -329,7 +329,7 @@ func AreaGetParam(area Resource.ID, param gdclass.PhysicsServer3DAreaParameter) 
 /*
 Returns the transform matrix for an area.
 */
-func AreaGetTransform(area Resource.ID) Transform3D.BasisOrigin {
+func AreaGetTransform(area Resource.ID) Transform3D.BasisOrigin { //gd:PhysicsServer3D.area_get_transform
 	once.Do(singleton)
 	return Transform3D.BasisOrigin(class(self).AreaGetTransform(area))
 }
@@ -337,7 +337,7 @@ func AreaGetTransform(area Resource.ID) Transform3D.BasisOrigin {
 /*
 Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
-func AreaAttachObjectInstanceId(area Resource.ID, id int) {
+func AreaAttachObjectInstanceId(area Resource.ID, id int) { //gd:PhysicsServer3D.area_attach_object_instance_id
 	once.Do(singleton)
 	class(self).AreaAttachObjectInstanceId(area, gd.Int(id))
 }
@@ -345,7 +345,7 @@ func AreaAttachObjectInstanceId(area Resource.ID, id int) {
 /*
 Gets the instance ID of the object the area is assigned to.
 */
-func AreaGetObjectInstanceId(area Resource.ID) int {
+func AreaGetObjectInstanceId(area Resource.ID) int { //gd:PhysicsServer3D.area_get_object_instance_id
 	once.Do(singleton)
 	return int(int(class(self).AreaGetObjectInstanceId(area)))
 }
@@ -359,7 +359,7 @@ Sets the area's body monitor callback. This callback will be called when any oth
 5. an integer [code]self_shape_idx[/code]: the index of the shape of the area where the body entered or exited.
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
-func AreaSetMonitorCallback(area Resource.ID, callback func(status int, body_rid Resource.ID, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
+func AreaSetMonitorCallback(area Resource.ID, callback func(status int, body_rid Resource.ID, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer3D.area_set_monitor_callback
 	once.Do(singleton)
 	class(self).AreaSetMonitorCallback(area, Callable.New(callback))
 }
@@ -373,11 +373,11 @@ Sets the area's area monitor callback. This callback will be called when any oth
 5. an integer [code]self_shape_idx[/code]: the index of the shape of the area where the other area entered or exited.
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
-func AreaSetAreaMonitorCallback(area Resource.ID, callback func(status int, body_rid Resource.ID, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
+func AreaSetAreaMonitorCallback(area Resource.ID, callback func(status int, body_rid Resource.ID, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer3D.area_set_area_monitor_callback
 	once.Do(singleton)
 	class(self).AreaSetAreaMonitorCallback(area, Callable.New(callback))
 }
-func AreaSetMonitorable(area Resource.ID, monitorable bool) {
+func AreaSetMonitorable(area Resource.ID, monitorable bool) { //gd:PhysicsServer3D.area_set_monitorable
 	once.Do(singleton)
 	class(self).AreaSetMonitorable(area, monitorable)
 }
@@ -385,7 +385,7 @@ func AreaSetMonitorable(area Resource.ID, monitorable bool) {
 /*
 Sets object pickable with rays.
 */
-func AreaSetRayPickable(area Resource.ID, enable bool) {
+func AreaSetRayPickable(area Resource.ID, enable bool) { //gd:PhysicsServer3D.area_set_ray_pickable
 	once.Do(singleton)
 	class(self).AreaSetRayPickable(area, enable)
 }
@@ -394,7 +394,7 @@ func AreaSetRayPickable(area Resource.ID, enable bool) {
 Creates a 3D body object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to [code]1[/code], and body mode set to [constant BODY_MODE_RIGID].
 Use [method body_add_shape] to add shapes to it, use [method body_set_state] to set its transform, and use [method body_set_space] to add the body to a space.
 */
-func BodyCreate() Resource.ID {
+func BodyCreate() Resource.ID { //gd:PhysicsServer3D.body_create
 	once.Do(singleton)
 	return Resource.ID(class(self).BodyCreate())
 }
@@ -402,7 +402,7 @@ func BodyCreate() Resource.ID {
 /*
 Assigns a space to the body (see [method space_create]).
 */
-func BodySetSpace(body Resource.ID, space Resource.ID) {
+func BodySetSpace(body Resource.ID, space Resource.ID) { //gd:PhysicsServer3D.body_set_space
 	once.Do(singleton)
 	class(self).BodySetSpace(body, space)
 }
@@ -410,7 +410,7 @@ func BodySetSpace(body Resource.ID, space Resource.ID) {
 /*
 Returns the [RID] of the space assigned to a body.
 */
-func BodyGetSpace(body Resource.ID) Resource.ID {
+func BodyGetSpace(body Resource.ID) Resource.ID { //gd:PhysicsServer3D.body_get_space
 	once.Do(singleton)
 	return Resource.ID(class(self).BodyGetSpace(body))
 }
@@ -418,7 +418,7 @@ func BodyGetSpace(body Resource.ID) Resource.ID {
 /*
 Sets the body mode, from one of the [enum BodyMode] constants.
 */
-func BodySetMode(body Resource.ID, mode gdclass.PhysicsServer3DBodyMode) {
+func BodySetMode(body Resource.ID, mode gdclass.PhysicsServer3DBodyMode) { //gd:PhysicsServer3D.body_set_mode
 	once.Do(singleton)
 	class(self).BodySetMode(body, mode)
 }
@@ -426,7 +426,7 @@ func BodySetMode(body Resource.ID, mode gdclass.PhysicsServer3DBodyMode) {
 /*
 Returns the body mode.
 */
-func BodyGetMode(body Resource.ID) gdclass.PhysicsServer3DBodyMode {
+func BodyGetMode(body Resource.ID) gdclass.PhysicsServer3DBodyMode { //gd:PhysicsServer3D.body_get_mode
 	once.Do(singleton)
 	return gdclass.PhysicsServer3DBodyMode(class(self).BodyGetMode(body))
 }
@@ -434,7 +434,7 @@ func BodyGetMode(body Resource.ID) gdclass.PhysicsServer3DBodyMode {
 /*
 Sets the physics layer or layers a body belongs to.
 */
-func BodySetCollisionLayer(body Resource.ID, layer int) {
+func BodySetCollisionLayer(body Resource.ID, layer int) { //gd:PhysicsServer3D.body_set_collision_layer
 	once.Do(singleton)
 	class(self).BodySetCollisionLayer(body, gd.Int(layer))
 }
@@ -442,7 +442,7 @@ func BodySetCollisionLayer(body Resource.ID, layer int) {
 /*
 Returns the physics layer or layers a body belongs to.
 */
-func BodyGetCollisionLayer(body Resource.ID) int {
+func BodyGetCollisionLayer(body Resource.ID) int { //gd:PhysicsServer3D.body_get_collision_layer
 	once.Do(singleton)
 	return int(int(class(self).BodyGetCollisionLayer(body)))
 }
@@ -450,7 +450,7 @@ func BodyGetCollisionLayer(body Resource.ID) int {
 /*
 Sets the physics layer or layers a body can collide with.
 */
-func BodySetCollisionMask(body Resource.ID, mask int) {
+func BodySetCollisionMask(body Resource.ID, mask int) { //gd:PhysicsServer3D.body_set_collision_mask
 	once.Do(singleton)
 	class(self).BodySetCollisionMask(body, gd.Int(mask))
 }
@@ -458,7 +458,7 @@ func BodySetCollisionMask(body Resource.ID, mask int) {
 /*
 Returns the physics layer or layers a body can collide with.
 */
-func BodyGetCollisionMask(body Resource.ID) int {
+func BodyGetCollisionMask(body Resource.ID) int { //gd:PhysicsServer3D.body_get_collision_mask
 	once.Do(singleton)
 	return int(int(class(self).BodyGetCollisionMask(body)))
 }
@@ -466,7 +466,7 @@ func BodyGetCollisionMask(body Resource.ID) int {
 /*
 Sets the body's collision priority.
 */
-func BodySetCollisionPriority(body Resource.ID, priority Float.X) {
+func BodySetCollisionPriority(body Resource.ID, priority Float.X) { //gd:PhysicsServer3D.body_set_collision_priority
 	once.Do(singleton)
 	class(self).BodySetCollisionPriority(body, gd.Float(priority))
 }
@@ -474,7 +474,7 @@ func BodySetCollisionPriority(body Resource.ID, priority Float.X) {
 /*
 Returns the body's collision priority.
 */
-func BodyGetCollisionPriority(body Resource.ID) Float.X {
+func BodyGetCollisionPriority(body Resource.ID) Float.X { //gd:PhysicsServer3D.body_get_collision_priority
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).BodyGetCollisionPriority(body)))
 }
@@ -482,7 +482,7 @@ func BodyGetCollisionPriority(body Resource.ID) Float.X {
 /*
 Adds a shape to the body, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
-func BodyAddShape(body Resource.ID, shape Resource.ID) {
+func BodyAddShape(body Resource.ID, shape Resource.ID) { //gd:PhysicsServer3D.body_add_shape
 	once.Do(singleton)
 	class(self).BodyAddShape(body, shape, gd.Transform3D(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), false)
 }
@@ -490,7 +490,7 @@ func BodyAddShape(body Resource.ID, shape Resource.ID) {
 /*
 Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [RID].
 */
-func BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID) {
+func BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID) { //gd:PhysicsServer3D.body_set_shape
 	once.Do(singleton)
 	class(self).BodySetShape(body, gd.Int(shape_idx), shape)
 }
@@ -498,11 +498,11 @@ func BodySetShape(body Resource.ID, shape_idx int, shape Resource.ID) {
 /*
 Sets the transform matrix for a body shape.
 */
-func BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform3D.BasisOrigin) {
+func BodySetShapeTransform(body Resource.ID, shape_idx int, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.body_set_shape_transform
 	once.Do(singleton)
 	class(self).BodySetShapeTransform(body, gd.Int(shape_idx), gd.Transform3D(transform))
 }
-func BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool) {
+func BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool) { //gd:PhysicsServer3D.body_set_shape_disabled
 	once.Do(singleton)
 	class(self).BodySetShapeDisabled(body, gd.Int(shape_idx), disabled)
 }
@@ -510,7 +510,7 @@ func BodySetShapeDisabled(body Resource.ID, shape_idx int, disabled bool) {
 /*
 Returns the number of shapes assigned to a body.
 */
-func BodyGetShapeCount(body Resource.ID) int {
+func BodyGetShapeCount(body Resource.ID) int { //gd:PhysicsServer3D.body_get_shape_count
 	once.Do(singleton)
 	return int(int(class(self).BodyGetShapeCount(body)))
 }
@@ -518,7 +518,7 @@ func BodyGetShapeCount(body Resource.ID) int {
 /*
 Returns the [RID] of the nth shape of a body.
 */
-func BodyGetShape(body Resource.ID, shape_idx int) Resource.ID {
+func BodyGetShape(body Resource.ID, shape_idx int) Resource.ID { //gd:PhysicsServer3D.body_get_shape
 	once.Do(singleton)
 	return Resource.ID(class(self).BodyGetShape(body, gd.Int(shape_idx)))
 }
@@ -526,7 +526,7 @@ func BodyGetShape(body Resource.ID, shape_idx int) Resource.ID {
 /*
 Returns the transform matrix of a body shape.
 */
-func BodyGetShapeTransform(body Resource.ID, shape_idx int) Transform3D.BasisOrigin {
+func BodyGetShapeTransform(body Resource.ID, shape_idx int) Transform3D.BasisOrigin { //gd:PhysicsServer3D.body_get_shape_transform
 	once.Do(singleton)
 	return Transform3D.BasisOrigin(class(self).BodyGetShapeTransform(body, gd.Int(shape_idx)))
 }
@@ -534,7 +534,7 @@ func BodyGetShapeTransform(body Resource.ID, shape_idx int) Transform3D.BasisOri
 /*
 Removes a shape from a body. The shape is not deleted, so it can be reused afterwards.
 */
-func BodyRemoveShape(body Resource.ID, shape_idx int) {
+func BodyRemoveShape(body Resource.ID, shape_idx int) { //gd:PhysicsServer3D.body_remove_shape
 	once.Do(singleton)
 	class(self).BodyRemoveShape(body, gd.Int(shape_idx))
 }
@@ -542,7 +542,7 @@ func BodyRemoveShape(body Resource.ID, shape_idx int) {
 /*
 Removes all shapes from a body.
 */
-func BodyClearShapes(body Resource.ID) {
+func BodyClearShapes(body Resource.ID) { //gd:PhysicsServer3D.body_clear_shapes
 	once.Do(singleton)
 	class(self).BodyClearShapes(body)
 }
@@ -550,7 +550,7 @@ func BodyClearShapes(body Resource.ID) {
 /*
 Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
-func BodyAttachObjectInstanceId(body Resource.ID, id int) {
+func BodyAttachObjectInstanceId(body Resource.ID, id int) { //gd:PhysicsServer3D.body_attach_object_instance_id
 	once.Do(singleton)
 	class(self).BodyAttachObjectInstanceId(body, gd.Int(id))
 }
@@ -558,7 +558,7 @@ func BodyAttachObjectInstanceId(body Resource.ID, id int) {
 /*
 Gets the instance ID of the object the area is assigned to.
 */
-func BodyGetObjectInstanceId(body Resource.ID) int {
+func BodyGetObjectInstanceId(body Resource.ID) int { //gd:PhysicsServer3D.body_get_object_instance_id
 	once.Do(singleton)
 	return int(int(class(self).BodyGetObjectInstanceId(body)))
 }
@@ -567,7 +567,7 @@ func BodyGetObjectInstanceId(body Resource.ID) int {
 If [code]true[/code], the continuous collision detection mode is enabled.
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
-func BodySetEnableContinuousCollisionDetection(body Resource.ID, enable bool) {
+func BodySetEnableContinuousCollisionDetection(body Resource.ID, enable bool) { //gd:PhysicsServer3D.body_set_enable_continuous_collision_detection
 	once.Do(singleton)
 	class(self).BodySetEnableContinuousCollisionDetection(body, enable)
 }
@@ -575,7 +575,7 @@ func BodySetEnableContinuousCollisionDetection(body Resource.ID, enable bool) {
 /*
 If [code]true[/code], the continuous collision detection mode is enabled.
 */
-func BodyIsContinuousCollisionDetectionEnabled(body Resource.ID) bool {
+func BodyIsContinuousCollisionDetectionEnabled(body Resource.ID) bool { //gd:PhysicsServer3D.body_is_continuous_collision_detection_enabled
 	once.Do(singleton)
 	return bool(class(self).BodyIsContinuousCollisionDetectionEnabled(body))
 }
@@ -583,7 +583,7 @@ func BodyIsContinuousCollisionDetectionEnabled(body Resource.ID) bool {
 /*
 Sets a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
-func BodySetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter, value any) {
+func BodySetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter, value any) { //gd:PhysicsServer3D.body_set_param
 	once.Do(singleton)
 	class(self).BodySetParam(body, param, gd.NewVariant(value))
 }
@@ -591,7 +591,7 @@ func BodySetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter, 
 /*
 Returns the value of a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
-func BodyGetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter) any {
+func BodyGetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter) any { //gd:PhysicsServer3D.body_get_param
 	once.Do(singleton)
 	return any(class(self).BodyGetParam(body, param).Interface())
 }
@@ -599,7 +599,7 @@ func BodyGetParam(body Resource.ID, param gdclass.PhysicsServer3DBodyParameter) 
 /*
 Restores the default inertia and center of mass based on shapes to cancel any custom values previously set using [method body_set_param].
 */
-func BodyResetMassProperties(body Resource.ID) {
+func BodyResetMassProperties(body Resource.ID) { //gd:PhysicsServer3D.body_reset_mass_properties
 	once.Do(singleton)
 	class(self).BodyResetMassProperties(body)
 }
@@ -607,7 +607,7 @@ func BodyResetMassProperties(body Resource.ID) {
 /*
 Sets a body state (see [enum BodyState] constants).
 */
-func BodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, value any) {
+func BodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, value any) { //gd:PhysicsServer3D.body_set_state
 	once.Do(singleton)
 	class(self).BodySetState(body, state, gd.NewVariant(value))
 }
@@ -615,7 +615,7 @@ func BodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, valu
 /*
 Returns a body state.
 */
-func BodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) any {
+func BodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) any { //gd:PhysicsServer3D.body_get_state
 	once.Do(singleton)
 	return any(class(self).BodyGetState(body, state).Interface())
 }
@@ -625,7 +625,7 @@ Applies a directional impulse without affecting rotation.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 This is equivalent to using [method body_apply_impulse] at the body's center of mass.
 */
-func BodyApplyCentralImpulse(body Resource.ID, impulse Vector3.XYZ) {
+func BodyApplyCentralImpulse(body Resource.ID, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_impulse
 	once.Do(singleton)
 	class(self).BodyApplyCentralImpulse(body, gd.Vector3(impulse))
 }
@@ -635,7 +635,7 @@ Applies a positioned impulse to the body.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyImpulse(body Resource.ID, impulse Vector3.XYZ) {
+func BodyApplyImpulse(body Resource.ID, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_impulse
 	once.Do(singleton)
 	class(self).BodyApplyImpulse(body, gd.Vector3(impulse), gd.Vector3(gd.Vector3{0, 0, 0}))
 }
@@ -644,7 +644,7 @@ func BodyApplyImpulse(body Resource.ID, impulse Vector3.XYZ) {
 Applies a rotational impulse to the body without affecting the position.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 */
-func BodyApplyTorqueImpulse(body Resource.ID, impulse Vector3.XYZ) {
+func BodyApplyTorqueImpulse(body Resource.ID, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_torque_impulse
 	once.Do(singleton)
 	class(self).BodyApplyTorqueImpulse(body, gd.Vector3(impulse))
 }
@@ -653,7 +653,7 @@ func BodyApplyTorqueImpulse(body Resource.ID, impulse Vector3.XYZ) {
 Applies a directional force without affecting rotation. A force is time dependent and meant to be applied every physics update.
 This is equivalent to using [method body_apply_force] at the body's center of mass.
 */
-func BodyApplyCentralForce(body Resource.ID, force Vector3.XYZ) {
+func BodyApplyCentralForce(body Resource.ID, force Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_force
 	once.Do(singleton)
 	class(self).BodyApplyCentralForce(body, gd.Vector3(force))
 }
@@ -662,7 +662,7 @@ func BodyApplyCentralForce(body Resource.ID, force Vector3.XYZ) {
 Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyForce(body Resource.ID, force Vector3.XYZ) {
+func BodyApplyForce(body Resource.ID, force Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_force
 	once.Do(singleton)
 	class(self).BodyApplyForce(body, gd.Vector3(force), gd.Vector3(gd.Vector3{0, 0, 0}))
 }
@@ -670,7 +670,7 @@ func BodyApplyForce(body Resource.ID, force Vector3.XYZ) {
 /*
 Applies a rotational force without affecting position. A force is time dependent and meant to be applied every physics update.
 */
-func BodyApplyTorque(body Resource.ID, torque Vector3.XYZ) {
+func BodyApplyTorque(body Resource.ID, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_torque
 	once.Do(singleton)
 	class(self).BodyApplyTorque(body, gd.Vector3(torque))
 }
@@ -679,7 +679,7 @@ func BodyApplyTorque(body Resource.ID, torque Vector3.XYZ) {
 Adds a constant directional force without affecting rotation that keeps being applied over time until cleared with [code]body_set_constant_force(body, Vector3(0, 0, 0))[/code].
 This is equivalent to using [method body_add_constant_force] at the body's center of mass.
 */
-func BodyAddConstantCentralForce(body Resource.ID, force Vector3.XYZ) {
+func BodyAddConstantCentralForce(body Resource.ID, force Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_central_force
 	once.Do(singleton)
 	class(self).BodyAddConstantCentralForce(body, gd.Vector3(force))
 }
@@ -688,7 +688,7 @@ func BodyAddConstantCentralForce(body Resource.ID, force Vector3.XYZ) {
 Adds a constant positioned force to the body that keeps being applied over time until cleared with [code]body_set_constant_force(body, Vector3(0, 0, 0))[/code].
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyAddConstantForce(body Resource.ID, force Vector3.XYZ) {
+func BodyAddConstantForce(body Resource.ID, force Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_force
 	once.Do(singleton)
 	class(self).BodyAddConstantForce(body, gd.Vector3(force), gd.Vector3(gd.Vector3{0, 0, 0}))
 }
@@ -696,7 +696,7 @@ func BodyAddConstantForce(body Resource.ID, force Vector3.XYZ) {
 /*
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]body_set_constant_torque(body, Vector3(0, 0, 0))[/code].
 */
-func BodyAddConstantTorque(body Resource.ID, torque Vector3.XYZ) {
+func BodyAddConstantTorque(body Resource.ID, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_torque
 	once.Do(singleton)
 	class(self).BodyAddConstantTorque(body, gd.Vector3(torque))
 }
@@ -705,7 +705,7 @@ func BodyAddConstantTorque(body Resource.ID, torque Vector3.XYZ) {
 Sets the body's total constant positional forces applied during each physics update.
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
-func BodySetConstantForce(body Resource.ID, force Vector3.XYZ) {
+func BodySetConstantForce(body Resource.ID, force Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_force
 	once.Do(singleton)
 	class(self).BodySetConstantForce(body, gd.Vector3(force))
 }
@@ -714,7 +714,7 @@ func BodySetConstantForce(body Resource.ID, force Vector3.XYZ) {
 Returns the body's total constant positional forces applied during each physics update.
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
-func BodyGetConstantForce(body Resource.ID) Vector3.XYZ {
+func BodyGetConstantForce(body Resource.ID) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_force
 	once.Do(singleton)
 	return Vector3.XYZ(class(self).BodyGetConstantForce(body))
 }
@@ -723,7 +723,7 @@ func BodyGetConstantForce(body Resource.ID) Vector3.XYZ {
 Sets the body's total constant rotational forces applied during each physics update.
 See [method body_add_constant_torque].
 */
-func BodySetConstantTorque(body Resource.ID, torque Vector3.XYZ) {
+func BodySetConstantTorque(body Resource.ID, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_torque
 	once.Do(singleton)
 	class(self).BodySetConstantTorque(body, gd.Vector3(torque))
 }
@@ -732,7 +732,7 @@ func BodySetConstantTorque(body Resource.ID, torque Vector3.XYZ) {
 Returns the body's total constant rotational forces applied during each physics update.
 See [method body_add_constant_torque].
 */
-func BodyGetConstantTorque(body Resource.ID) Vector3.XYZ {
+func BodyGetConstantTorque(body Resource.ID) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_torque
 	once.Do(singleton)
 	return Vector3.XYZ(class(self).BodyGetConstantTorque(body))
 }
@@ -740,15 +740,15 @@ func BodyGetConstantTorque(body Resource.ID) Vector3.XYZ {
 /*
 Sets an axis velocity. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
 */
-func BodySetAxisVelocity(body Resource.ID, axis_velocity Vector3.XYZ) {
+func BodySetAxisVelocity(body Resource.ID, axis_velocity Vector3.XYZ) { //gd:PhysicsServer3D.body_set_axis_velocity
 	once.Do(singleton)
 	class(self).BodySetAxisVelocity(body, gd.Vector3(axis_velocity))
 }
-func BodySetAxisLock(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis, lock bool) {
+func BodySetAxisLock(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis, lock bool) { //gd:PhysicsServer3D.body_set_axis_lock
 	once.Do(singleton)
 	class(self).BodySetAxisLock(body, axis, lock)
 }
-func BodyIsAxisLocked(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis) bool {
+func BodyIsAxisLocked(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis) bool { //gd:PhysicsServer3D.body_is_axis_locked
 	once.Do(singleton)
 	return bool(class(self).BodyIsAxisLocked(body, axis))
 }
@@ -756,7 +756,7 @@ func BodyIsAxisLocked(body Resource.ID, axis gdclass.PhysicsServer3DBodyAxis) bo
 /*
 Adds a body to the list of bodies exempt from collisions.
 */
-func BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID) {
+func BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID) { //gd:PhysicsServer3D.body_add_collision_exception
 	once.Do(singleton)
 	class(self).BodyAddCollisionException(body, excepted_body)
 }
@@ -765,7 +765,7 @@ func BodyAddCollisionException(body Resource.ID, excepted_body Resource.ID) {
 Removes a body from the list of bodies exempt from collisions.
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
-func BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
+func BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) { //gd:PhysicsServer3D.body_remove_collision_exception
 	once.Do(singleton)
 	class(self).BodyRemoveCollisionException(body, excepted_body)
 }
@@ -773,7 +773,7 @@ func BodyRemoveCollisionException(body Resource.ID, excepted_body Resource.ID) {
 /*
 Sets the maximum contacts to report. Bodies can keep a log of the contacts with other bodies. This is enabled by setting the maximum number of contacts reported to a number greater than 0.
 */
-func BodySetMaxContactsReported(body Resource.ID, amount int) {
+func BodySetMaxContactsReported(body Resource.ID, amount int) { //gd:PhysicsServer3D.body_set_max_contacts_reported
 	once.Do(singleton)
 	class(self).BodySetMaxContactsReported(body, gd.Int(amount))
 }
@@ -781,7 +781,7 @@ func BodySetMaxContactsReported(body Resource.ID, amount int) {
 /*
 Returns the maximum contacts that can be reported. See [method body_set_max_contacts_reported].
 */
-func BodyGetMaxContactsReported(body Resource.ID) int {
+func BodyGetMaxContactsReported(body Resource.ID) int { //gd:PhysicsServer3D.body_get_max_contacts_reported
 	once.Do(singleton)
 	return int(int(class(self).BodyGetMaxContactsReported(body)))
 }
@@ -790,7 +790,7 @@ func BodyGetMaxContactsReported(body Resource.ID) int {
 Sets whether the body omits the standard force integration. If [param enable] is [code]true[/code], the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [method body_set_force_integration_callback] can be used to manually update the linear and angular velocity instead.
 This method is called when the property [member RigidBody3D.custom_integrator] is set.
 */
-func BodySetOmitForceIntegration(body Resource.ID, enable bool) {
+func BodySetOmitForceIntegration(body Resource.ID, enable bool) { //gd:PhysicsServer3D.body_set_omit_force_integration
 	once.Do(singleton)
 	class(self).BodySetOmitForceIntegration(body, enable)
 }
@@ -798,7 +798,7 @@ func BodySetOmitForceIntegration(body Resource.ID, enable bool) {
 /*
 Returns [code]true[/code] if the body is omitting the standard force integration. See [method body_set_omit_force_integration].
 */
-func BodyIsOmittingForceIntegration(body Resource.ID) bool {
+func BodyIsOmittingForceIntegration(body Resource.ID) bool { //gd:PhysicsServer3D.body_is_omitting_force_integration
 	once.Do(singleton)
 	return bool(class(self).BodyIsOmittingForceIntegration(body))
 }
@@ -809,7 +809,7 @@ The function [param callable] will be called every physics frame, assuming that 
 The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
 */
-func BodySetStateSyncCallback(body Resource.ID, callable func(state [1]gdclass.PhysicsDirectBodyState3D)) {
+func BodySetStateSyncCallback(body Resource.ID, callable func(state [1]gdclass.PhysicsDirectBodyState3D)) { //gd:PhysicsServer3D.body_set_state_sync_callback
 	once.Do(singleton)
 	class(self).BodySetStateSyncCallback(body, Callable.New(callable))
 }
@@ -822,7 +822,7 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallback(body Resource.ID, callable func(state [1]gdclass.PhysicsDirectBodyState3D, userdata any)) {
+func BodySetForceIntegrationCallback(body Resource.ID, callable func(state [1]gdclass.PhysicsDirectBodyState3D, userdata any)) { //gd:PhysicsServer3D.body_set_force_integration_callback
 	once.Do(singleton)
 	class(self).BodySetForceIntegrationCallback(body, Callable.New(callable), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))
 }
@@ -830,7 +830,7 @@ func BodySetForceIntegrationCallback(body Resource.ID, callable func(state [1]gd
 /*
 Sets the body pickable with rays if [param enable] is set.
 */
-func BodySetRayPickable(body Resource.ID, enable bool) {
+func BodySetRayPickable(body Resource.ID, enable bool) { //gd:PhysicsServer3D.body_set_ray_pickable
 	once.Do(singleton)
 	class(self).BodySetRayPickable(body, enable)
 }
@@ -838,7 +838,7 @@ func BodySetRayPickable(body Resource.ID, enable bool) {
 /*
 Returns [code]true[/code] if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
 */
-func BodyTestMotion(body Resource.ID, parameters [1]gdclass.PhysicsTestMotionParameters3D) bool {
+func BodyTestMotion(body Resource.ID, parameters [1]gdclass.PhysicsTestMotionParameters3D) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
 	return bool(class(self).BodyTestMotion(body, parameters, [1][1]gdclass.PhysicsTestMotionResult3D{}[0]))
 }
@@ -846,7 +846,7 @@ func BodyTestMotion(body Resource.ID, parameters [1]gdclass.PhysicsTestMotionPar
 /*
 Returns the [PhysicsDirectBodyState3D] of the body. Returns [code]null[/code] if the body is destroyed or removed from the physics space.
 */
-func BodyGetDirectState(body Resource.ID) [1]gdclass.PhysicsDirectBodyState3D {
+func BodyGetDirectState(body Resource.ID) [1]gdclass.PhysicsDirectBodyState3D { //gd:PhysicsServer3D.body_get_direct_state
 	once.Do(singleton)
 	return [1]gdclass.PhysicsDirectBodyState3D(class(self).BodyGetDirectState(body))
 }
@@ -854,7 +854,7 @@ func BodyGetDirectState(body Resource.ID) [1]gdclass.PhysicsDirectBodyState3D {
 /*
 Creates a new soft body and returns its internal [RID].
 */
-func SoftBodyCreate() Resource.ID {
+func SoftBodyCreate() Resource.ID { //gd:PhysicsServer3D.soft_body_create
 	once.Do(singleton)
 	return Resource.ID(class(self).SoftBodyCreate())
 }
@@ -862,7 +862,7 @@ func SoftBodyCreate() Resource.ID {
 /*
 Requests that the physics server updates the rendering server with the latest positions of the given soft body's points through the [param rendering_server_handler] interface.
 */
-func SoftBodyUpdateRenderingServer(body Resource.ID, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler) {
+func SoftBodyUpdateRenderingServer(body Resource.ID, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler) { //gd:PhysicsServer3D.soft_body_update_rendering_server
 	once.Do(singleton)
 	class(self).SoftBodyUpdateRenderingServer(body, rendering_server_handler)
 }
@@ -870,7 +870,7 @@ func SoftBodyUpdateRenderingServer(body Resource.ID, rendering_server_handler [1
 /*
 Assigns a space to the given soft body (see [method space_create]).
 */
-func SoftBodySetSpace(body Resource.ID, space Resource.ID) {
+func SoftBodySetSpace(body Resource.ID, space Resource.ID) { //gd:PhysicsServer3D.soft_body_set_space
 	once.Do(singleton)
 	class(self).SoftBodySetSpace(body, space)
 }
@@ -878,7 +878,7 @@ func SoftBodySetSpace(body Resource.ID, space Resource.ID) {
 /*
 Returns the [RID] of the space assigned to the given soft body.
 */
-func SoftBodyGetSpace(body Resource.ID) Resource.ID {
+func SoftBodyGetSpace(body Resource.ID) Resource.ID { //gd:PhysicsServer3D.soft_body_get_space
 	once.Do(singleton)
 	return Resource.ID(class(self).SoftBodyGetSpace(body))
 }
@@ -886,7 +886,7 @@ func SoftBodyGetSpace(body Resource.ID) Resource.ID {
 /*
 Sets the mesh of the given soft body.
 */
-func SoftBodySetMesh(body Resource.ID, mesh Resource.ID) {
+func SoftBodySetMesh(body Resource.ID, mesh Resource.ID) { //gd:PhysicsServer3D.soft_body_set_mesh
 	once.Do(singleton)
 	class(self).SoftBodySetMesh(body, mesh)
 }
@@ -894,7 +894,7 @@ func SoftBodySetMesh(body Resource.ID, mesh Resource.ID) {
 /*
 Returns the bounds of the given soft body in global coordinates.
 */
-func SoftBodyGetBounds(body Resource.ID) AABB.PositionSize {
+func SoftBodyGetBounds(body Resource.ID) AABB.PositionSize { //gd:PhysicsServer3D.soft_body_get_bounds
 	once.Do(singleton)
 	return AABB.PositionSize(class(self).SoftBodyGetBounds(body))
 }
@@ -902,7 +902,7 @@ func SoftBodyGetBounds(body Resource.ID) AABB.PositionSize {
 /*
 Sets the physics layer or layers the given soft body belongs to.
 */
-func SoftBodySetCollisionLayer(body Resource.ID, layer int) {
+func SoftBodySetCollisionLayer(body Resource.ID, layer int) { //gd:PhysicsServer3D.soft_body_set_collision_layer
 	once.Do(singleton)
 	class(self).SoftBodySetCollisionLayer(body, gd.Int(layer))
 }
@@ -910,7 +910,7 @@ func SoftBodySetCollisionLayer(body Resource.ID, layer int) {
 /*
 Returns the physics layer or layers that the given soft body belongs to.
 */
-func SoftBodyGetCollisionLayer(body Resource.ID) int {
+func SoftBodyGetCollisionLayer(body Resource.ID) int { //gd:PhysicsServer3D.soft_body_get_collision_layer
 	once.Do(singleton)
 	return int(int(class(self).SoftBodyGetCollisionLayer(body)))
 }
@@ -918,7 +918,7 @@ func SoftBodyGetCollisionLayer(body Resource.ID) int {
 /*
 Sets the physics layer or layers the given soft body can collide with.
 */
-func SoftBodySetCollisionMask(body Resource.ID, mask int) {
+func SoftBodySetCollisionMask(body Resource.ID, mask int) { //gd:PhysicsServer3D.soft_body_set_collision_mask
 	once.Do(singleton)
 	class(self).SoftBodySetCollisionMask(body, gd.Int(mask))
 }
@@ -926,7 +926,7 @@ func SoftBodySetCollisionMask(body Resource.ID, mask int) {
 /*
 Returns the physics layer or layers that the given soft body can collide with.
 */
-func SoftBodyGetCollisionMask(body Resource.ID) int {
+func SoftBodyGetCollisionMask(body Resource.ID) int { //gd:PhysicsServer3D.soft_body_get_collision_mask
 	once.Do(singleton)
 	return int(int(class(self).SoftBodyGetCollisionMask(body)))
 }
@@ -934,7 +934,7 @@ func SoftBodyGetCollisionMask(body Resource.ID) int {
 /*
 Adds the given body to the list of bodies exempt from collisions.
 */
-func SoftBodyAddCollisionException(body Resource.ID, body_b Resource.ID) {
+func SoftBodyAddCollisionException(body Resource.ID, body_b Resource.ID) { //gd:PhysicsServer3D.soft_body_add_collision_exception
 	once.Do(singleton)
 	class(self).SoftBodyAddCollisionException(body, body_b)
 }
@@ -942,7 +942,7 @@ func SoftBodyAddCollisionException(body Resource.ID, body_b Resource.ID) {
 /*
 Removes the given body from the list of bodies exempt from collisions.
 */
-func SoftBodyRemoveCollisionException(body Resource.ID, body_b Resource.ID) {
+func SoftBodyRemoveCollisionException(body Resource.ID, body_b Resource.ID) { //gd:PhysicsServer3D.soft_body_remove_collision_exception
 	once.Do(singleton)
 	class(self).SoftBodyRemoveCollisionException(body, body_b)
 }
@@ -951,7 +951,7 @@ func SoftBodyRemoveCollisionException(body Resource.ID, body_b Resource.ID) {
 Sets the given body state for the given body (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
-func SoftBodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, variant any) {
+func SoftBodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, variant any) { //gd:PhysicsServer3D.soft_body_set_state
 	once.Do(singleton)
 	class(self).SoftBodySetState(body, state, gd.NewVariant(variant))
 }
@@ -960,7 +960,7 @@ func SoftBodySetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState, 
 Returns the given soft body state (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
-func SoftBodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) any {
+func SoftBodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) any { //gd:PhysicsServer3D.soft_body_get_state
 	once.Do(singleton)
 	return any(class(self).SoftBodyGetState(body, state).Interface())
 }
@@ -968,7 +968,7 @@ func SoftBodyGetState(body Resource.ID, state gdclass.PhysicsServer3DBodyState) 
 /*
 Sets the global transform of the given soft body.
 */
-func SoftBodySetTransform(body Resource.ID, transform Transform3D.BasisOrigin) {
+func SoftBodySetTransform(body Resource.ID, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.soft_body_set_transform
 	once.Do(singleton)
 	class(self).SoftBodySetTransform(body, gd.Transform3D(transform))
 }
@@ -976,7 +976,7 @@ func SoftBodySetTransform(body Resource.ID, transform Transform3D.BasisOrigin) {
 /*
 Sets whether the given soft body will be pickable when using object picking.
 */
-func SoftBodySetRayPickable(body Resource.ID, enable bool) {
+func SoftBodySetRayPickable(body Resource.ID, enable bool) { //gd:PhysicsServer3D.soft_body_set_ray_pickable
 	once.Do(singleton)
 	class(self).SoftBodySetRayPickable(body, enable)
 }
@@ -984,7 +984,7 @@ func SoftBodySetRayPickable(body Resource.ID, enable bool) {
 /*
 Sets the simulation precision of the given soft body. Increasing this value will improve the resulting simulation, but can affect performance. Use with care.
 */
-func SoftBodySetSimulationPrecision(body Resource.ID, simulation_precision int) {
+func SoftBodySetSimulationPrecision(body Resource.ID, simulation_precision int) { //gd:PhysicsServer3D.soft_body_set_simulation_precision
 	once.Do(singleton)
 	class(self).SoftBodySetSimulationPrecision(body, gd.Int(simulation_precision))
 }
@@ -992,7 +992,7 @@ func SoftBodySetSimulationPrecision(body Resource.ID, simulation_precision int) 
 /*
 Returns the simulation precision of the given soft body.
 */
-func SoftBodyGetSimulationPrecision(body Resource.ID) int {
+func SoftBodyGetSimulationPrecision(body Resource.ID) int { //gd:PhysicsServer3D.soft_body_get_simulation_precision
 	once.Do(singleton)
 	return int(int(class(self).SoftBodyGetSimulationPrecision(body)))
 }
@@ -1000,7 +1000,7 @@ func SoftBodyGetSimulationPrecision(body Resource.ID) int {
 /*
 Sets the total mass for the given soft body.
 */
-func SoftBodySetTotalMass(body Resource.ID, total_mass Float.X) {
+func SoftBodySetTotalMass(body Resource.ID, total_mass Float.X) { //gd:PhysicsServer3D.soft_body_set_total_mass
 	once.Do(singleton)
 	class(self).SoftBodySetTotalMass(body, gd.Float(total_mass))
 }
@@ -1008,7 +1008,7 @@ func SoftBodySetTotalMass(body Resource.ID, total_mass Float.X) {
 /*
 Returns the total mass assigned to the given soft body.
 */
-func SoftBodyGetTotalMass(body Resource.ID) Float.X {
+func SoftBodyGetTotalMass(body Resource.ID) Float.X { //gd:PhysicsServer3D.soft_body_get_total_mass
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).SoftBodyGetTotalMass(body)))
 }
@@ -1016,7 +1016,7 @@ func SoftBodyGetTotalMass(body Resource.ID) Float.X {
 /*
 Sets the linear stiffness of the given soft body. Higher values will result in a stiffer body, while lower values will increase the body's ability to bend. The value can be between [code]0.0[/code] and [code]1.0[/code] (inclusive).
 */
-func SoftBodySetLinearStiffness(body Resource.ID, stiffness Float.X) {
+func SoftBodySetLinearStiffness(body Resource.ID, stiffness Float.X) { //gd:PhysicsServer3D.soft_body_set_linear_stiffness
 	once.Do(singleton)
 	class(self).SoftBodySetLinearStiffness(body, gd.Float(stiffness))
 }
@@ -1024,7 +1024,7 @@ func SoftBodySetLinearStiffness(body Resource.ID, stiffness Float.X) {
 /*
 Returns the linear stiffness of the given soft body.
 */
-func SoftBodyGetLinearStiffness(body Resource.ID) Float.X {
+func SoftBodyGetLinearStiffness(body Resource.ID) Float.X { //gd:PhysicsServer3D.soft_body_get_linear_stiffness
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).SoftBodyGetLinearStiffness(body)))
 }
@@ -1032,7 +1032,7 @@ func SoftBodyGetLinearStiffness(body Resource.ID) Float.X {
 /*
 Sets the pressure coefficient of the given soft body. Simulates pressure build-up from inside this body. Higher values increase the strength of this effect.
 */
-func SoftBodySetPressureCoefficient(body Resource.ID, pressure_coefficient Float.X) {
+func SoftBodySetPressureCoefficient(body Resource.ID, pressure_coefficient Float.X) { //gd:PhysicsServer3D.soft_body_set_pressure_coefficient
 	once.Do(singleton)
 	class(self).SoftBodySetPressureCoefficient(body, gd.Float(pressure_coefficient))
 }
@@ -1040,7 +1040,7 @@ func SoftBodySetPressureCoefficient(body Resource.ID, pressure_coefficient Float
 /*
 Returns the pressure coefficient of the given soft body.
 */
-func SoftBodyGetPressureCoefficient(body Resource.ID) Float.X {
+func SoftBodyGetPressureCoefficient(body Resource.ID) Float.X { //gd:PhysicsServer3D.soft_body_get_pressure_coefficient
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).SoftBodyGetPressureCoefficient(body)))
 }
@@ -1048,7 +1048,7 @@ func SoftBodyGetPressureCoefficient(body Resource.ID) Float.X {
 /*
 Sets the damping coefficient of the given soft body. Higher values will slow down the body more noticeably when forces are applied.
 */
-func SoftBodySetDampingCoefficient(body Resource.ID, damping_coefficient Float.X) {
+func SoftBodySetDampingCoefficient(body Resource.ID, damping_coefficient Float.X) { //gd:PhysicsServer3D.soft_body_set_damping_coefficient
 	once.Do(singleton)
 	class(self).SoftBodySetDampingCoefficient(body, gd.Float(damping_coefficient))
 }
@@ -1056,7 +1056,7 @@ func SoftBodySetDampingCoefficient(body Resource.ID, damping_coefficient Float.X
 /*
 Returns the damping coefficient of the given soft body.
 */
-func SoftBodyGetDampingCoefficient(body Resource.ID) Float.X {
+func SoftBodyGetDampingCoefficient(body Resource.ID) Float.X { //gd:PhysicsServer3D.soft_body_get_damping_coefficient
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).SoftBodyGetDampingCoefficient(body)))
 }
@@ -1065,7 +1065,7 @@ func SoftBodyGetDampingCoefficient(body Resource.ID) Float.X {
 Sets the drag coefficient of the given soft body. Higher values increase this body's air resistance.
 [b]Note:[/b] This value is currently unused by Godot's default physics implementation.
 */
-func SoftBodySetDragCoefficient(body Resource.ID, drag_coefficient Float.X) {
+func SoftBodySetDragCoefficient(body Resource.ID, drag_coefficient Float.X) { //gd:PhysicsServer3D.soft_body_set_drag_coefficient
 	once.Do(singleton)
 	class(self).SoftBodySetDragCoefficient(body, gd.Float(drag_coefficient))
 }
@@ -1073,7 +1073,7 @@ func SoftBodySetDragCoefficient(body Resource.ID, drag_coefficient Float.X) {
 /*
 Returns the drag coefficient of the given soft body.
 */
-func SoftBodyGetDragCoefficient(body Resource.ID) Float.X {
+func SoftBodyGetDragCoefficient(body Resource.ID) Float.X { //gd:PhysicsServer3D.soft_body_get_drag_coefficient
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).SoftBodyGetDragCoefficient(body)))
 }
@@ -1081,7 +1081,7 @@ func SoftBodyGetDragCoefficient(body Resource.ID) Float.X {
 /*
 Moves the given soft body point to a position in global coordinates.
 */
-func SoftBodyMovePoint(body Resource.ID, point_index int, global_position Vector3.XYZ) {
+func SoftBodyMovePoint(body Resource.ID, point_index int, global_position Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_move_point
 	once.Do(singleton)
 	class(self).SoftBodyMovePoint(body, gd.Int(point_index), gd.Vector3(global_position))
 }
@@ -1089,7 +1089,7 @@ func SoftBodyMovePoint(body Resource.ID, point_index int, global_position Vector
 /*
 Returns the current position of the given soft body point in global coordinates.
 */
-func SoftBodyGetPointGlobalPosition(body Resource.ID, point_index int) Vector3.XYZ {
+func SoftBodyGetPointGlobalPosition(body Resource.ID, point_index int) Vector3.XYZ { //gd:PhysicsServer3D.soft_body_get_point_global_position
 	once.Do(singleton)
 	return Vector3.XYZ(class(self).SoftBodyGetPointGlobalPosition(body, gd.Int(point_index)))
 }
@@ -1097,7 +1097,7 @@ func SoftBodyGetPointGlobalPosition(body Resource.ID, point_index int) Vector3.X
 /*
 Unpins all points of the given soft body.
 */
-func SoftBodyRemoveAllPinnedPoints(body Resource.ID) {
+func SoftBodyRemoveAllPinnedPoints(body Resource.ID) { //gd:PhysicsServer3D.soft_body_remove_all_pinned_points
 	once.Do(singleton)
 	class(self).SoftBodyRemoveAllPinnedPoints(body)
 }
@@ -1106,7 +1106,7 @@ func SoftBodyRemoveAllPinnedPoints(body Resource.ID) {
 Pins or unpins the given soft body point based on the value of [param pin].
 [b]Note:[/b] Pinning a point effectively makes it kinematic, preventing it from being affected by forces, but you can still move it using [method soft_body_move_point].
 */
-func SoftBodyPinPoint(body Resource.ID, point_index int, pin bool) {
+func SoftBodyPinPoint(body Resource.ID, point_index int, pin bool) { //gd:PhysicsServer3D.soft_body_pin_point
 	once.Do(singleton)
 	class(self).SoftBodyPinPoint(body, gd.Int(point_index), pin)
 }
@@ -1114,19 +1114,19 @@ func SoftBodyPinPoint(body Resource.ID, point_index int, pin bool) {
 /*
 Returns whether the given soft body point is pinned.
 */
-func SoftBodyIsPointPinned(body Resource.ID, point_index int) bool {
+func SoftBodyIsPointPinned(body Resource.ID, point_index int) bool { //gd:PhysicsServer3D.soft_body_is_point_pinned
 	once.Do(singleton)
 	return bool(class(self).SoftBodyIsPointPinned(body, gd.Int(point_index)))
 }
-func JointCreate() Resource.ID {
+func JointCreate() Resource.ID { //gd:PhysicsServer3D.joint_create
 	once.Do(singleton)
 	return Resource.ID(class(self).JointCreate())
 }
-func JointClear(joint Resource.ID) {
+func JointClear(joint Resource.ID) { //gd:PhysicsServer3D.joint_clear
 	once.Do(singleton)
 	class(self).JointClear(joint)
 }
-func JointMakePin(joint Resource.ID, body_A Resource.ID, local_A Vector3.XYZ, body_B Resource.ID, local_B Vector3.XYZ) {
+func JointMakePin(joint Resource.ID, body_A Resource.ID, local_A Vector3.XYZ, body_B Resource.ID, local_B Vector3.XYZ) { //gd:PhysicsServer3D.joint_make_pin
 	once.Do(singleton)
 	class(self).JointMakePin(joint, body_A, gd.Vector3(local_A), body_B, gd.Vector3(local_B))
 }
@@ -1134,7 +1134,7 @@ func JointMakePin(joint Resource.ID, body_A Resource.ID, local_A Vector3.XYZ, bo
 /*
 Sets a pin_joint parameter (see [enum PinJointParam] constants).
 */
-func PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam, value Float.X) {
+func PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam, value Float.X) { //gd:PhysicsServer3D.pin_joint_set_param
 	once.Do(singleton)
 	class(self).PinJointSetParam(joint, param, gd.Float(value))
 }
@@ -1142,7 +1142,7 @@ func PinJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointPa
 /*
 Gets a pin_joint parameter (see [enum PinJointParam] constants).
 */
-func PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam) Float.X {
+func PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointParam) Float.X { //gd:PhysicsServer3D.pin_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).PinJointGetParam(joint, param)))
 }
@@ -1150,7 +1150,7 @@ func PinJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DPinJointPa
 /*
 Sets position of the joint in the local space of body a of the joint.
 */
-func PinJointSetLocalA(joint Resource.ID, local_A Vector3.XYZ) {
+func PinJointSetLocalA(joint Resource.ID, local_A Vector3.XYZ) { //gd:PhysicsServer3D.pin_joint_set_local_a
 	once.Do(singleton)
 	class(self).PinJointSetLocalA(joint, gd.Vector3(local_A))
 }
@@ -1158,7 +1158,7 @@ func PinJointSetLocalA(joint Resource.ID, local_A Vector3.XYZ) {
 /*
 Returns position of the joint in the local space of body a of the joint.
 */
-func PinJointGetLocalA(joint Resource.ID) Vector3.XYZ {
+func PinJointGetLocalA(joint Resource.ID) Vector3.XYZ { //gd:PhysicsServer3D.pin_joint_get_local_a
 	once.Do(singleton)
 	return Vector3.XYZ(class(self).PinJointGetLocalA(joint))
 }
@@ -1166,7 +1166,7 @@ func PinJointGetLocalA(joint Resource.ID) Vector3.XYZ {
 /*
 Sets position of the joint in the local space of body b of the joint.
 */
-func PinJointSetLocalB(joint Resource.ID, local_B Vector3.XYZ) {
+func PinJointSetLocalB(joint Resource.ID, local_B Vector3.XYZ) { //gd:PhysicsServer3D.pin_joint_set_local_b
 	once.Do(singleton)
 	class(self).PinJointSetLocalB(joint, gd.Vector3(local_B))
 }
@@ -1174,11 +1174,11 @@ func PinJointSetLocalB(joint Resource.ID, local_B Vector3.XYZ) {
 /*
 Returns position of the joint in the local space of body b of the joint.
 */
-func PinJointGetLocalB(joint Resource.ID) Vector3.XYZ {
+func PinJointGetLocalB(joint Resource.ID) Vector3.XYZ { //gd:PhysicsServer3D.pin_joint_get_local_b
 	once.Do(singleton)
 	return Vector3.XYZ(class(self).PinJointGetLocalB(joint))
 }
-func JointMakeHinge(joint Resource.ID, body_A Resource.ID, hinge_A Transform3D.BasisOrigin, body_B Resource.ID, hinge_B Transform3D.BasisOrigin) {
+func JointMakeHinge(joint Resource.ID, body_A Resource.ID, hinge_A Transform3D.BasisOrigin, body_B Resource.ID, hinge_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_hinge
 	once.Do(singleton)
 	class(self).JointMakeHinge(joint, body_A, gd.Transform3D(hinge_A), body_B, gd.Transform3D(hinge_B))
 }
@@ -1186,7 +1186,7 @@ func JointMakeHinge(joint Resource.ID, body_A Resource.ID, hinge_A Transform3D.B
 /*
 Sets a hinge_joint parameter (see [enum HingeJointParam] constants).
 */
-func HingeJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam, value Float.X) {
+func HingeJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam, value Float.X) { //gd:PhysicsServer3D.hinge_joint_set_param
 	once.Do(singleton)
 	class(self).HingeJointSetParam(joint, param, gd.Float(value))
 }
@@ -1194,7 +1194,7 @@ func HingeJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJoi
 /*
 Gets a hinge_joint parameter (see [enum HingeJointParam]).
 */
-func HingeJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam) Float.X {
+func HingeJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJointParam) Float.X { //gd:PhysicsServer3D.hinge_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).HingeJointGetParam(joint, param)))
 }
@@ -1202,7 +1202,7 @@ func HingeJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DHingeJoi
 /*
 Sets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
-func HingeJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag, enabled bool) {
+func HingeJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
 	once.Do(singleton)
 	class(self).HingeJointSetFlag(joint, flag, enabled)
 }
@@ -1210,11 +1210,11 @@ func HingeJointSetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJoint
 /*
 Gets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
-func HingeJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag) bool {
+func HingeJointGetFlag(joint Resource.ID, flag gdclass.PhysicsServer3DHingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
 	once.Do(singleton)
 	return bool(class(self).HingeJointGetFlag(joint, flag))
 }
-func JointMakeSlider(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) {
+func JointMakeSlider(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_slider
 	once.Do(singleton)
 	class(self).JointMakeSlider(joint, body_A, gd.Transform3D(local_ref_A), body_B, gd.Transform3D(local_ref_B))
 }
@@ -1222,7 +1222,7 @@ func JointMakeSlider(joint Resource.ID, body_A Resource.ID, local_ref_A Transfor
 /*
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
-func SliderJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam, value Float.X) {
+func SliderJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam, value Float.X) { //gd:PhysicsServer3D.slider_joint_set_param
 	once.Do(singleton)
 	class(self).SliderJointSetParam(joint, param, gd.Float(value))
 }
@@ -1230,11 +1230,11 @@ func SliderJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJ
 /*
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
-func SliderJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam) Float.X {
+func SliderJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DSliderJointParam) Float.X { //gd:PhysicsServer3D.slider_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).SliderJointGetParam(joint, param)))
 }
-func JointMakeConeTwist(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) {
+func JointMakeConeTwist(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_cone_twist
 	once.Do(singleton)
 	class(self).JointMakeConeTwist(joint, body_A, gd.Transform3D(local_ref_A), body_B, gd.Transform3D(local_ref_B))
 }
@@ -1242,7 +1242,7 @@ func JointMakeConeTwist(joint Resource.ID, body_A Resource.ID, local_ref_A Trans
 /*
 Sets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
-func ConeTwistJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam, value Float.X) {
+func ConeTwistJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam, value Float.X) { //gd:PhysicsServer3D.cone_twist_joint_set_param
 	once.Do(singleton)
 	class(self).ConeTwistJointSetParam(joint, param, gd.Float(value))
 }
@@ -1250,7 +1250,7 @@ func ConeTwistJointSetParam(joint Resource.ID, param gdclass.PhysicsServer3DCone
 /*
 Gets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
-func ConeTwistJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam) Float.X {
+func ConeTwistJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DConeTwistJointParam) Float.X { //gd:PhysicsServer3D.cone_twist_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).ConeTwistJointGetParam(joint, param)))
 }
@@ -1258,7 +1258,7 @@ func ConeTwistJointGetParam(joint Resource.ID, param gdclass.PhysicsServer3DCone
 /*
 Returns the type of the Joint3D.
 */
-func JointGetType(joint Resource.ID) gdclass.PhysicsServer3DJointType {
+func JointGetType(joint Resource.ID) gdclass.PhysicsServer3DJointType { //gd:PhysicsServer3D.joint_get_type
 	once.Do(singleton)
 	return gdclass.PhysicsServer3DJointType(class(self).JointGetType(joint))
 }
@@ -1266,7 +1266,7 @@ func JointGetType(joint Resource.ID) gdclass.PhysicsServer3DJointType {
 /*
 Sets the priority value of the Joint3D.
 */
-func JointSetSolverPriority(joint Resource.ID, priority int) {
+func JointSetSolverPriority(joint Resource.ID, priority int) { //gd:PhysicsServer3D.joint_set_solver_priority
 	once.Do(singleton)
 	class(self).JointSetSolverPriority(joint, gd.Int(priority))
 }
@@ -1274,7 +1274,7 @@ func JointSetSolverPriority(joint Resource.ID, priority int) {
 /*
 Gets the priority value of the Joint3D.
 */
-func JointGetSolverPriority(joint Resource.ID) int {
+func JointGetSolverPriority(joint Resource.ID) int { //gd:PhysicsServer3D.joint_get_solver_priority
 	once.Do(singleton)
 	return int(int(class(self).JointGetSolverPriority(joint)))
 }
@@ -1282,7 +1282,7 @@ func JointGetSolverPriority(joint Resource.ID) int {
 /*
 Sets whether the bodies attached to the [Joint3D] will collide with each other.
 */
-func JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool) {
+func JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool) { //gd:PhysicsServer3D.joint_disable_collisions_between_bodies
 	once.Do(singleton)
 	class(self).JointDisableCollisionsBetweenBodies(joint, disable)
 }
@@ -1290,7 +1290,7 @@ func JointDisableCollisionsBetweenBodies(joint Resource.ID, disable bool) {
 /*
 Returns whether the bodies attached to the [Joint3D] will collide with each other.
 */
-func JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) bool {
+func JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) bool { //gd:PhysicsServer3D.joint_is_disabled_collisions_between_bodies
 	once.Do(singleton)
 	return bool(class(self).JointIsDisabledCollisionsBetweenBodies(joint))
 }
@@ -1298,7 +1298,7 @@ func JointIsDisabledCollisionsBetweenBodies(joint Resource.ID) bool {
 /*
 Make the joint a generic six degrees of freedom (6DOF) joint. Use [method generic_6dof_joint_set_flag] and [method generic_6dof_joint_set_param] to set the joint's flags and parameters respectively.
 */
-func JointMakeGeneric6dof(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) {
+func JointMakeGeneric6dof(joint Resource.ID, body_A Resource.ID, local_ref_A Transform3D.BasisOrigin, body_B Resource.ID, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_generic_6dof
 	once.Do(singleton)
 	class(self).JointMakeGeneric6dof(joint, body_A, gd.Transform3D(local_ref_A), body_B, gd.Transform3D(local_ref_B))
 }
@@ -1306,7 +1306,7 @@ func JointMakeGeneric6dof(joint Resource.ID, body_A Resource.ID, local_ref_A Tra
 /*
 Sets the value of a given generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
-func Generic6dofJointSetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam, value Float.X) {
+func Generic6dofJointSetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam, value Float.X) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
 	once.Do(singleton)
 	class(self).Generic6dofJointSetParam(joint, axis, param, gd.Float(value))
 }
@@ -1314,7 +1314,7 @@ func Generic6dofJointSetParam(joint Resource.ID, axis gd.Vector3Axis, param gdcl
 /*
 Returns the value of a generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
-func Generic6dofJointGetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam) Float.X {
+func Generic6dofJointGetParam(joint Resource.ID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam) Float.X { //gd:PhysicsServer3D.generic_6dof_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).Generic6dofJointGetParam(joint, axis, param)))
 }
@@ -1322,7 +1322,7 @@ func Generic6dofJointGetParam(joint Resource.ID, axis gd.Vector3Axis, param gdcl
 /*
 Sets the value of a given generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
-func Generic6dofJointSetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag, enable bool) {
+func Generic6dofJointSetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
 	once.Do(singleton)
 	class(self).Generic6dofJointSetFlag(joint, axis, flag, enable)
 }
@@ -1330,7 +1330,7 @@ func Generic6dofJointSetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclas
 /*
 Returns the value of a generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
-func Generic6dofJointGetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag) bool {
+func Generic6dofJointGetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
 	once.Do(singleton)
 	return bool(class(self).Generic6dofJointGetFlag(joint, axis, flag))
 }
@@ -1338,7 +1338,7 @@ func Generic6dofJointGetFlag(joint Resource.ID, axis gd.Vector3Axis, flag gdclas
 /*
 Destroys any of the objects created by PhysicsServer3D. If the [RID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
 */
-func FreeRid(rid Resource.ID) {
+func FreeRid(rid Resource.ID) { //gd:PhysicsServer3D.free_rid
 	once.Do(singleton)
 	class(self).FreeRid(rid)
 }
@@ -1346,7 +1346,7 @@ func FreeRid(rid Resource.ID) {
 /*
 Activates or deactivates the 3D physics engine.
 */
-func SetActive(active bool) {
+func SetActive(active bool) { //gd:PhysicsServer3D.set_active
 	once.Do(singleton)
 	class(self).SetActive(active)
 }
@@ -1354,7 +1354,7 @@ func SetActive(active bool) {
 /*
 Returns information about the current state of the 3D physics engine. See [enum ProcessInfo] for a list of available states.
 */
-func GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo) int {
+func GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo) int { //gd:PhysicsServer3D.get_process_info
 	once.Do(singleton)
 	return int(int(class(self).GetProcessInfo(process_info)))
 }
@@ -1370,7 +1370,7 @@ func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 
 //go:nosplit
-func (self class) WorldBoundaryShapeCreate() gd.RID {
+func (self class) WorldBoundaryShapeCreate() gd.RID { //gd:PhysicsServer3D.world_boundary_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_world_boundary_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1380,7 +1380,7 @@ func (self class) WorldBoundaryShapeCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) SeparationRayShapeCreate() gd.RID {
+func (self class) SeparationRayShapeCreate() gd.RID { //gd:PhysicsServer3D.separation_ray_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_separation_ray_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1390,7 +1390,7 @@ func (self class) SeparationRayShapeCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) SphereShapeCreate() gd.RID {
+func (self class) SphereShapeCreate() gd.RID { //gd:PhysicsServer3D.sphere_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_sphere_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1400,7 +1400,7 @@ func (self class) SphereShapeCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) BoxShapeCreate() gd.RID {
+func (self class) BoxShapeCreate() gd.RID { //gd:PhysicsServer3D.box_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_box_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1410,7 +1410,7 @@ func (self class) BoxShapeCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) CapsuleShapeCreate() gd.RID {
+func (self class) CapsuleShapeCreate() gd.RID { //gd:PhysicsServer3D.capsule_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_capsule_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1420,7 +1420,7 @@ func (self class) CapsuleShapeCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) CylinderShapeCreate() gd.RID {
+func (self class) CylinderShapeCreate() gd.RID { //gd:PhysicsServer3D.cylinder_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_cylinder_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1430,7 +1430,7 @@ func (self class) CylinderShapeCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) ConvexPolygonShapeCreate() gd.RID {
+func (self class) ConvexPolygonShapeCreate() gd.RID { //gd:PhysicsServer3D.convex_polygon_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_convex_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1440,7 +1440,7 @@ func (self class) ConvexPolygonShapeCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) ConcavePolygonShapeCreate() gd.RID {
+func (self class) ConcavePolygonShapeCreate() gd.RID { //gd:PhysicsServer3D.concave_polygon_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_concave_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1450,7 +1450,7 @@ func (self class) ConcavePolygonShapeCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) HeightmapShapeCreate() gd.RID {
+func (self class) HeightmapShapeCreate() gd.RID { //gd:PhysicsServer3D.heightmap_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_heightmap_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1460,7 +1460,7 @@ func (self class) HeightmapShapeCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) CustomShapeCreate() gd.RID {
+func (self class) CustomShapeCreate() gd.RID { //gd:PhysicsServer3D.custom_shape_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_custom_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1473,7 +1473,7 @@ func (self class) CustomShapeCreate() gd.RID {
 Sets the shape data that defines its shape and size. The data to be passed depends on the kind of shape created [method shape_get_type].
 */
 //go:nosplit
-func (self class) ShapeSetData(shape gd.RID, data gd.Variant) {
+func (self class) ShapeSetData(shape gd.RID, data gd.Variant) { //gd:PhysicsServer3D.shape_set_data
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	callframe.Arg(frame, pointers.Get(data))
@@ -1487,7 +1487,7 @@ Sets the collision margin for the shape.
 [b]Note:[/b] This is not used in Godot Physics.
 */
 //go:nosplit
-func (self class) ShapeSetMargin(shape gd.RID, margin gd.Float) {
+func (self class) ShapeSetMargin(shape gd.RID, margin gd.Float) { //gd:PhysicsServer3D.shape_set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	callframe.Arg(frame, margin)
@@ -1500,7 +1500,7 @@ func (self class) ShapeSetMargin(shape gd.RID, margin gd.Float) {
 Returns the type of shape (see [enum ShapeType] constants).
 */
 //go:nosplit
-func (self class) ShapeGetType(shape gd.RID) gdclass.PhysicsServer3DShapeType {
+func (self class) ShapeGetType(shape gd.RID) gdclass.PhysicsServer3DShapeType { //gd:PhysicsServer3D.shape_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Ret[gdclass.PhysicsServer3DShapeType](frame)
@@ -1514,7 +1514,7 @@ func (self class) ShapeGetType(shape gd.RID) gdclass.PhysicsServer3DShapeType {
 Returns the shape data.
 */
 //go:nosplit
-func (self class) ShapeGetData(shape gd.RID) gd.Variant {
+func (self class) ShapeGetData(shape gd.RID) gd.Variant { //gd:PhysicsServer3D.shape_get_data
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -1529,7 +1529,7 @@ Returns the collision margin for the shape.
 [b]Note:[/b] This is not used in Godot Physics, so will always return [code]0[/code].
 */
 //go:nosplit
-func (self class) ShapeGetMargin(shape gd.RID) gd.Float {
+func (self class) ShapeGetMargin(shape gd.RID) gd.Float { //gd:PhysicsServer3D.shape_get_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -1543,7 +1543,7 @@ func (self class) ShapeGetMargin(shape gd.RID) gd.Float {
 Creates a space. A space is a collection of parameters for the physics engine that can be assigned to an area or a body. It can be assigned to an area with [method area_set_space], or to a body with [method body_set_space].
 */
 //go:nosplit
-func (self class) SpaceCreate() gd.RID {
+func (self class) SpaceCreate() gd.RID { //gd:PhysicsServer3D.space_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1556,7 +1556,7 @@ func (self class) SpaceCreate() gd.RID {
 Marks a space as active. It will not have an effect, unless it is assigned to an area or body.
 */
 //go:nosplit
-func (self class) SpaceSetActive(space gd.RID, active bool) {
+func (self class) SpaceSetActive(space gd.RID, active bool) { //gd:PhysicsServer3D.space_set_active
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, active)
@@ -1569,7 +1569,7 @@ func (self class) SpaceSetActive(space gd.RID, active bool) {
 Returns whether the space is active.
 */
 //go:nosplit
-func (self class) SpaceIsActive(space gd.RID) bool {
+func (self class) SpaceIsActive(space gd.RID) bool { //gd:PhysicsServer3D.space_is_active
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1583,7 +1583,7 @@ func (self class) SpaceIsActive(space gd.RID) bool {
 Sets the value for a space parameter. A list of available parameters is on the [enum SpaceParameter] constants.
 */
 //go:nosplit
-func (self class) SpaceSetParam(space gd.RID, param gdclass.PhysicsServer3DSpaceParameter, value gd.Float) {
+func (self class) SpaceSetParam(space gd.RID, param gdclass.PhysicsServer3DSpaceParameter, value gd.Float) { //gd:PhysicsServer3D.space_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
@@ -1597,7 +1597,7 @@ func (self class) SpaceSetParam(space gd.RID, param gdclass.PhysicsServer3DSpace
 Returns the value of a space parameter.
 */
 //go:nosplit
-func (self class) SpaceGetParam(space gd.RID, param gdclass.PhysicsServer3DSpaceParameter) gd.Float {
+func (self class) SpaceGetParam(space gd.RID, param gdclass.PhysicsServer3DSpaceParameter) gd.Float { //gd:PhysicsServer3D.space_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
@@ -1612,7 +1612,7 @@ func (self class) SpaceGetParam(space gd.RID, param gdclass.PhysicsServer3DSpace
 Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
 */
 //go:nosplit
-func (self class) SpaceGetDirectState(space gd.RID) [1]gdclass.PhysicsDirectSpaceState3D {
+func (self class) SpaceGetDirectState(space gd.RID) [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsServer3D.space_get_direct_state
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1627,7 +1627,7 @@ Creates a 3D area object in the physics server, and returns the [RID] that ident
 Use [method area_add_shape] to add shapes to it, use [method area_set_transform] to set its transform, and use [method area_set_space] to add the area to a space. If you want the area to be detectable use [method area_set_monitorable].
 */
 //go:nosplit
-func (self class) AreaCreate() gd.RID {
+func (self class) AreaCreate() gd.RID { //gd:PhysicsServer3D.area_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1640,7 +1640,7 @@ func (self class) AreaCreate() gd.RID {
 Assigns a space to the area.
 */
 //go:nosplit
-func (self class) AreaSetSpace(area gd.RID, space gd.RID) {
+func (self class) AreaSetSpace(area gd.RID, space gd.RID) { //gd:PhysicsServer3D.area_set_space
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, space)
@@ -1653,7 +1653,7 @@ func (self class) AreaSetSpace(area gd.RID, space gd.RID) {
 Returns the space assigned to the area.
 */
 //go:nosplit
-func (self class) AreaGetSpace(area gd.RID) gd.RID {
+func (self class) AreaGetSpace(area gd.RID) gd.RID { //gd:PhysicsServer3D.area_get_space
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -1667,7 +1667,7 @@ func (self class) AreaGetSpace(area gd.RID) gd.RID {
 Adds a shape to the area, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
 //go:nosplit
-func (self class) AreaAddShape(area gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool) {
+func (self class) AreaAddShape(area gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool) { //gd:PhysicsServer3D.area_add_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape)
@@ -1682,7 +1682,7 @@ func (self class) AreaAddShape(area gd.RID, shape gd.RID, transform gd.Transform
 Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [RID].
 */
 //go:nosplit
-func (self class) AreaSetShape(area gd.RID, shape_idx gd.Int, shape gd.RID) {
+func (self class) AreaSetShape(area gd.RID, shape_idx gd.Int, shape gd.RID) { //gd:PhysicsServer3D.area_set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1696,7 +1696,7 @@ func (self class) AreaSetShape(area gd.RID, shape_idx gd.Int, shape gd.RID) {
 Sets the transform matrix for an area shape.
 */
 //go:nosplit
-func (self class) AreaSetShapeTransform(area gd.RID, shape_idx gd.Int, transform gd.Transform3D) {
+func (self class) AreaSetShapeTransform(area gd.RID, shape_idx gd.Int, transform gd.Transform3D) { //gd:PhysicsServer3D.area_set_shape_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1707,7 +1707,7 @@ func (self class) AreaSetShapeTransform(area gd.RID, shape_idx gd.Int, transform
 }
 
 //go:nosplit
-func (self class) AreaSetShapeDisabled(area gd.RID, shape_idx gd.Int, disabled bool) {
+func (self class) AreaSetShapeDisabled(area gd.RID, shape_idx gd.Int, disabled bool) { //gd:PhysicsServer3D.area_set_shape_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1721,7 +1721,7 @@ func (self class) AreaSetShapeDisabled(area gd.RID, shape_idx gd.Int, disabled b
 Returns the number of shapes assigned to an area.
 */
 //go:nosplit
-func (self class) AreaGetShapeCount(area gd.RID) gd.Int {
+func (self class) AreaGetShapeCount(area gd.RID) gd.Int { //gd:PhysicsServer3D.area_get_shape_count
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1735,7 +1735,7 @@ func (self class) AreaGetShapeCount(area gd.RID) gd.Int {
 Returns the [RID] of the nth shape of an area.
 */
 //go:nosplit
-func (self class) AreaGetShape(area gd.RID, shape_idx gd.Int) gd.RID {
+func (self class) AreaGetShape(area gd.RID, shape_idx gd.Int) gd.RID { //gd:PhysicsServer3D.area_get_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1750,7 +1750,7 @@ func (self class) AreaGetShape(area gd.RID, shape_idx gd.Int) gd.RID {
 Returns the transform matrix of a shape within an area.
 */
 //go:nosplit
-func (self class) AreaGetShapeTransform(area gd.RID, shape_idx gd.Int) gd.Transform3D {
+func (self class) AreaGetShapeTransform(area gd.RID, shape_idx gd.Int) gd.Transform3D { //gd:PhysicsServer3D.area_get_shape_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1765,7 +1765,7 @@ func (self class) AreaGetShapeTransform(area gd.RID, shape_idx gd.Int) gd.Transf
 Removes a shape from an area. It does not delete the shape, so it can be reassigned later.
 */
 //go:nosplit
-func (self class) AreaRemoveShape(area gd.RID, shape_idx gd.Int) {
+func (self class) AreaRemoveShape(area gd.RID, shape_idx gd.Int) { //gd:PhysicsServer3D.area_remove_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
@@ -1778,7 +1778,7 @@ func (self class) AreaRemoveShape(area gd.RID, shape_idx gd.Int) {
 Removes all shapes from an area. It does not delete the shapes, so they can be reassigned later.
 */
 //go:nosplit
-func (self class) AreaClearShapes(area gd.RID) {
+func (self class) AreaClearShapes(area gd.RID) { //gd:PhysicsServer3D.area_clear_shapes
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Nil
@@ -1790,7 +1790,7 @@ func (self class) AreaClearShapes(area gd.RID) {
 Assigns the area to one or many physics layers.
 */
 //go:nosplit
-func (self class) AreaSetCollisionLayer(area gd.RID, layer gd.Int) {
+func (self class) AreaSetCollisionLayer(area gd.RID, layer gd.Int) { //gd:PhysicsServer3D.area_set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, layer)
@@ -1803,7 +1803,7 @@ func (self class) AreaSetCollisionLayer(area gd.RID, layer gd.Int) {
 Returns the physics layer or layers an area belongs to.
 */
 //go:nosplit
-func (self class) AreaGetCollisionLayer(area gd.RID) gd.Int {
+func (self class) AreaGetCollisionLayer(area gd.RID) gd.Int { //gd:PhysicsServer3D.area_get_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1817,7 +1817,7 @@ func (self class) AreaGetCollisionLayer(area gd.RID) gd.Int {
 Sets which physics layers the area will monitor.
 */
 //go:nosplit
-func (self class) AreaSetCollisionMask(area gd.RID, mask gd.Int) {
+func (self class) AreaSetCollisionMask(area gd.RID, mask gd.Int) { //gd:PhysicsServer3D.area_set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, mask)
@@ -1830,7 +1830,7 @@ func (self class) AreaSetCollisionMask(area gd.RID, mask gd.Int) {
 Returns the physics layer or layers an area can contact with.
 */
 //go:nosplit
-func (self class) AreaGetCollisionMask(area gd.RID) gd.Int {
+func (self class) AreaGetCollisionMask(area gd.RID) gd.Int { //gd:PhysicsServer3D.area_get_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1844,7 +1844,7 @@ func (self class) AreaGetCollisionMask(area gd.RID) gd.Int {
 Sets the value for an area parameter. A list of available parameters is on the [enum AreaParameter] constants.
 */
 //go:nosplit
-func (self class) AreaSetParam(area gd.RID, param gdclass.PhysicsServer3DAreaParameter, value gd.Variant) {
+func (self class) AreaSetParam(area gd.RID, param gdclass.PhysicsServer3DAreaParameter, value gd.Variant) { //gd:PhysicsServer3D.area_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
@@ -1858,7 +1858,7 @@ func (self class) AreaSetParam(area gd.RID, param gdclass.PhysicsServer3DAreaPar
 Sets the transform matrix for an area.
 */
 //go:nosplit
-func (self class) AreaSetTransform(area gd.RID, transform gd.Transform3D) {
+func (self class) AreaSetTransform(area gd.RID, transform gd.Transform3D) { //gd:PhysicsServer3D.area_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, transform)
@@ -1871,7 +1871,7 @@ func (self class) AreaSetTransform(area gd.RID, transform gd.Transform3D) {
 Returns an area parameter value. A list of available parameters is on the [enum AreaParameter] constants.
 */
 //go:nosplit
-func (self class) AreaGetParam(area gd.RID, param gdclass.PhysicsServer3DAreaParameter) gd.Variant {
+func (self class) AreaGetParam(area gd.RID, param gdclass.PhysicsServer3DAreaParameter) gd.Variant { //gd:PhysicsServer3D.area_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
@@ -1886,7 +1886,7 @@ func (self class) AreaGetParam(area gd.RID, param gdclass.PhysicsServer3DAreaPar
 Returns the transform matrix for an area.
 */
 //go:nosplit
-func (self class) AreaGetTransform(area gd.RID) gd.Transform3D {
+func (self class) AreaGetTransform(area gd.RID) gd.Transform3D { //gd:PhysicsServer3D.area_get_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
@@ -1900,7 +1900,7 @@ func (self class) AreaGetTransform(area gd.RID) gd.Transform3D {
 Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
 //go:nosplit
-func (self class) AreaAttachObjectInstanceId(area gd.RID, id gd.Int) {
+func (self class) AreaAttachObjectInstanceId(area gd.RID, id gd.Int) { //gd:PhysicsServer3D.area_attach_object_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, id)
@@ -1913,7 +1913,7 @@ func (self class) AreaAttachObjectInstanceId(area gd.RID, id gd.Int) {
 Gets the instance ID of the object the area is assigned to.
 */
 //go:nosplit
-func (self class) AreaGetObjectInstanceId(area gd.RID) gd.Int {
+func (self class) AreaGetObjectInstanceId(area gd.RID) gd.Int { //gd:PhysicsServer3D.area_get_object_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1933,7 +1933,7 @@ Sets the area's body monitor callback. This callback will be called when any oth
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
 //go:nosplit
-func (self class) AreaSetMonitorCallback(area gd.RID, callback Callable.Function) {
+func (self class) AreaSetMonitorCallback(area gd.RID, callback Callable.Function) { //gd:PhysicsServer3D.area_set_monitor_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
@@ -1952,7 +1952,7 @@ Sets the area's area monitor callback. This callback will be called when any oth
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
 //go:nosplit
-func (self class) AreaSetAreaMonitorCallback(area gd.RID, callback Callable.Function) {
+func (self class) AreaSetAreaMonitorCallback(area gd.RID, callback Callable.Function) { //gd:PhysicsServer3D.area_set_area_monitor_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
@@ -1962,7 +1962,7 @@ func (self class) AreaSetAreaMonitorCallback(area gd.RID, callback Callable.Func
 }
 
 //go:nosplit
-func (self class) AreaSetMonitorable(area gd.RID, monitorable bool) {
+func (self class) AreaSetMonitorable(area gd.RID, monitorable bool) { //gd:PhysicsServer3D.area_set_monitorable
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, monitorable)
@@ -1975,7 +1975,7 @@ func (self class) AreaSetMonitorable(area gd.RID, monitorable bool) {
 Sets object pickable with rays.
 */
 //go:nosplit
-func (self class) AreaSetRayPickable(area gd.RID, enable bool) {
+func (self class) AreaSetRayPickable(area gd.RID, enable bool) { //gd:PhysicsServer3D.area_set_ray_pickable
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, enable)
@@ -1989,7 +1989,7 @@ Creates a 3D body object in the physics server, and returns the [RID] that ident
 Use [method body_add_shape] to add shapes to it, use [method body_set_state] to set its transform, and use [method body_set_space] to add the body to a space.
 */
 //go:nosplit
-func (self class) BodyCreate() gd.RID {
+func (self class) BodyCreate() gd.RID { //gd:PhysicsServer3D.body_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2002,7 +2002,7 @@ func (self class) BodyCreate() gd.RID {
 Assigns a space to the body (see [method space_create]).
 */
 //go:nosplit
-func (self class) BodySetSpace(body gd.RID, space gd.RID) {
+func (self class) BodySetSpace(body gd.RID, space gd.RID) { //gd:PhysicsServer3D.body_set_space
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, space)
@@ -2015,7 +2015,7 @@ func (self class) BodySetSpace(body gd.RID, space gd.RID) {
 Returns the [RID] of the space assigned to a body.
 */
 //go:nosplit
-func (self class) BodyGetSpace(body gd.RID) gd.RID {
+func (self class) BodyGetSpace(body gd.RID) gd.RID { //gd:PhysicsServer3D.body_get_space
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -2029,7 +2029,7 @@ func (self class) BodyGetSpace(body gd.RID) gd.RID {
 Sets the body mode, from one of the [enum BodyMode] constants.
 */
 //go:nosplit
-func (self class) BodySetMode(body gd.RID, mode gdclass.PhysicsServer3DBodyMode) {
+func (self class) BodySetMode(body gd.RID, mode gdclass.PhysicsServer3DBodyMode) { //gd:PhysicsServer3D.body_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mode)
@@ -2042,7 +2042,7 @@ func (self class) BodySetMode(body gd.RID, mode gdclass.PhysicsServer3DBodyMode)
 Returns the body mode.
 */
 //go:nosplit
-func (self class) BodyGetMode(body gd.RID) gdclass.PhysicsServer3DBodyMode {
+func (self class) BodyGetMode(body gd.RID) gdclass.PhysicsServer3DBodyMode { //gd:PhysicsServer3D.body_get_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gdclass.PhysicsServer3DBodyMode](frame)
@@ -2056,7 +2056,7 @@ func (self class) BodyGetMode(body gd.RID) gdclass.PhysicsServer3DBodyMode {
 Sets the physics layer or layers a body belongs to.
 */
 //go:nosplit
-func (self class) BodySetCollisionLayer(body gd.RID, layer gd.Int) {
+func (self class) BodySetCollisionLayer(body gd.RID, layer gd.Int) { //gd:PhysicsServer3D.body_set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, layer)
@@ -2069,7 +2069,7 @@ func (self class) BodySetCollisionLayer(body gd.RID, layer gd.Int) {
 Returns the physics layer or layers a body belongs to.
 */
 //go:nosplit
-func (self class) BodyGetCollisionLayer(body gd.RID) gd.Int {
+func (self class) BodyGetCollisionLayer(body gd.RID) gd.Int { //gd:PhysicsServer3D.body_get_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -2083,7 +2083,7 @@ func (self class) BodyGetCollisionLayer(body gd.RID) gd.Int {
 Sets the physics layer or layers a body can collide with.
 */
 //go:nosplit
-func (self class) BodySetCollisionMask(body gd.RID, mask gd.Int) {
+func (self class) BodySetCollisionMask(body gd.RID, mask gd.Int) { //gd:PhysicsServer3D.body_set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mask)
@@ -2096,7 +2096,7 @@ func (self class) BodySetCollisionMask(body gd.RID, mask gd.Int) {
 Returns the physics layer or layers a body can collide with.
 */
 //go:nosplit
-func (self class) BodyGetCollisionMask(body gd.RID) gd.Int {
+func (self class) BodyGetCollisionMask(body gd.RID) gd.Int { //gd:PhysicsServer3D.body_get_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -2110,7 +2110,7 @@ func (self class) BodyGetCollisionMask(body gd.RID) gd.Int {
 Sets the body's collision priority.
 */
 //go:nosplit
-func (self class) BodySetCollisionPriority(body gd.RID, priority gd.Float) {
+func (self class) BodySetCollisionPriority(body gd.RID, priority gd.Float) { //gd:PhysicsServer3D.body_set_collision_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, priority)
@@ -2123,7 +2123,7 @@ func (self class) BodySetCollisionPriority(body gd.RID, priority gd.Float) {
 Returns the body's collision priority.
 */
 //go:nosplit
-func (self class) BodyGetCollisionPriority(body gd.RID) gd.Float {
+func (self class) BodyGetCollisionPriority(body gd.RID) gd.Float { //gd:PhysicsServer3D.body_get_collision_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -2137,7 +2137,7 @@ func (self class) BodyGetCollisionPriority(body gd.RID) gd.Float {
 Adds a shape to the body, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
 //go:nosplit
-func (self class) BodyAddShape(body gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool) {
+func (self class) BodyAddShape(body gd.RID, shape gd.RID, transform gd.Transform3D, disabled bool) { //gd:PhysicsServer3D.body_add_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape)
@@ -2152,7 +2152,7 @@ func (self class) BodyAddShape(body gd.RID, shape gd.RID, transform gd.Transform
 Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [RID].
 */
 //go:nosplit
-func (self class) BodySetShape(body gd.RID, shape_idx gd.Int, shape gd.RID) {
+func (self class) BodySetShape(body gd.RID, shape_idx gd.Int, shape gd.RID) { //gd:PhysicsServer3D.body_set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -2166,7 +2166,7 @@ func (self class) BodySetShape(body gd.RID, shape_idx gd.Int, shape gd.RID) {
 Sets the transform matrix for a body shape.
 */
 //go:nosplit
-func (self class) BodySetShapeTransform(body gd.RID, shape_idx gd.Int, transform gd.Transform3D) {
+func (self class) BodySetShapeTransform(body gd.RID, shape_idx gd.Int, transform gd.Transform3D) { //gd:PhysicsServer3D.body_set_shape_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -2177,7 +2177,7 @@ func (self class) BodySetShapeTransform(body gd.RID, shape_idx gd.Int, transform
 }
 
 //go:nosplit
-func (self class) BodySetShapeDisabled(body gd.RID, shape_idx gd.Int, disabled bool) {
+func (self class) BodySetShapeDisabled(body gd.RID, shape_idx gd.Int, disabled bool) { //gd:PhysicsServer3D.body_set_shape_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -2191,7 +2191,7 @@ func (self class) BodySetShapeDisabled(body gd.RID, shape_idx gd.Int, disabled b
 Returns the number of shapes assigned to a body.
 */
 //go:nosplit
-func (self class) BodyGetShapeCount(body gd.RID) gd.Int {
+func (self class) BodyGetShapeCount(body gd.RID) gd.Int { //gd:PhysicsServer3D.body_get_shape_count
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -2205,7 +2205,7 @@ func (self class) BodyGetShapeCount(body gd.RID) gd.Int {
 Returns the [RID] of the nth shape of a body.
 */
 //go:nosplit
-func (self class) BodyGetShape(body gd.RID, shape_idx gd.Int) gd.RID {
+func (self class) BodyGetShape(body gd.RID, shape_idx gd.Int) gd.RID { //gd:PhysicsServer3D.body_get_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -2220,7 +2220,7 @@ func (self class) BodyGetShape(body gd.RID, shape_idx gd.Int) gd.RID {
 Returns the transform matrix of a body shape.
 */
 //go:nosplit
-func (self class) BodyGetShapeTransform(body gd.RID, shape_idx gd.Int) gd.Transform3D {
+func (self class) BodyGetShapeTransform(body gd.RID, shape_idx gd.Int) gd.Transform3D { //gd:PhysicsServer3D.body_get_shape_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -2235,7 +2235,7 @@ func (self class) BodyGetShapeTransform(body gd.RID, shape_idx gd.Int) gd.Transf
 Removes a shape from a body. The shape is not deleted, so it can be reused afterwards.
 */
 //go:nosplit
-func (self class) BodyRemoveShape(body gd.RID, shape_idx gd.Int) {
+func (self class) BodyRemoveShape(body gd.RID, shape_idx gd.Int) { //gd:PhysicsServer3D.body_remove_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
@@ -2248,7 +2248,7 @@ func (self class) BodyRemoveShape(body gd.RID, shape_idx gd.Int) {
 Removes all shapes from a body.
 */
 //go:nosplit
-func (self class) BodyClearShapes(body gd.RID) {
+func (self class) BodyClearShapes(body gd.RID) { //gd:PhysicsServer3D.body_clear_shapes
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Nil
@@ -2260,7 +2260,7 @@ func (self class) BodyClearShapes(body gd.RID) {
 Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
 //go:nosplit
-func (self class) BodyAttachObjectInstanceId(body gd.RID, id gd.Int) {
+func (self class) BodyAttachObjectInstanceId(body gd.RID, id gd.Int) { //gd:PhysicsServer3D.body_attach_object_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, id)
@@ -2273,7 +2273,7 @@ func (self class) BodyAttachObjectInstanceId(body gd.RID, id gd.Int) {
 Gets the instance ID of the object the area is assigned to.
 */
 //go:nosplit
-func (self class) BodyGetObjectInstanceId(body gd.RID) gd.Int {
+func (self class) BodyGetObjectInstanceId(body gd.RID) gd.Int { //gd:PhysicsServer3D.body_get_object_instance_id
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -2288,7 +2288,7 @@ If [code]true[/code], the continuous collision detection mode is enabled.
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
 //go:nosplit
-func (self class) BodySetEnableContinuousCollisionDetection(body gd.RID, enable bool) {
+func (self class) BodySetEnableContinuousCollisionDetection(body gd.RID, enable bool) { //gd:PhysicsServer3D.body_set_enable_continuous_collision_detection
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, enable)
@@ -2301,7 +2301,7 @@ func (self class) BodySetEnableContinuousCollisionDetection(body gd.RID, enable 
 If [code]true[/code], the continuous collision detection mode is enabled.
 */
 //go:nosplit
-func (self class) BodyIsContinuousCollisionDetectionEnabled(body gd.RID) bool {
+func (self class) BodyIsContinuousCollisionDetectionEnabled(body gd.RID) bool { //gd:PhysicsServer3D.body_is_continuous_collision_detection_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[bool](frame)
@@ -2315,7 +2315,7 @@ func (self class) BodyIsContinuousCollisionDetectionEnabled(body gd.RID) bool {
 Sets a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
 //go:nosplit
-func (self class) BodySetParam(body gd.RID, param gdclass.PhysicsServer3DBodyParameter, value gd.Variant) {
+func (self class) BodySetParam(body gd.RID, param gdclass.PhysicsServer3DBodyParameter, value gd.Variant) { //gd:PhysicsServer3D.body_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
@@ -2329,7 +2329,7 @@ func (self class) BodySetParam(body gd.RID, param gdclass.PhysicsServer3DBodyPar
 Returns the value of a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
 //go:nosplit
-func (self class) BodyGetParam(body gd.RID, param gdclass.PhysicsServer3DBodyParameter) gd.Variant {
+func (self class) BodyGetParam(body gd.RID, param gdclass.PhysicsServer3DBodyParameter) gd.Variant { //gd:PhysicsServer3D.body_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
@@ -2344,7 +2344,7 @@ func (self class) BodyGetParam(body gd.RID, param gdclass.PhysicsServer3DBodyPar
 Restores the default inertia and center of mass based on shapes to cancel any custom values previously set using [method body_set_param].
 */
 //go:nosplit
-func (self class) BodyResetMassProperties(body gd.RID) {
+func (self class) BodyResetMassProperties(body gd.RID) { //gd:PhysicsServer3D.body_reset_mass_properties
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Nil
@@ -2356,7 +2356,7 @@ func (self class) BodyResetMassProperties(body gd.RID) {
 Sets a body state (see [enum BodyState] constants).
 */
 //go:nosplit
-func (self class) BodySetState(body gd.RID, state gdclass.PhysicsServer3DBodyState, value gd.Variant) {
+func (self class) BodySetState(body gd.RID, state gdclass.PhysicsServer3DBodyState, value gd.Variant) { //gd:PhysicsServer3D.body_set_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -2370,7 +2370,7 @@ func (self class) BodySetState(body gd.RID, state gdclass.PhysicsServer3DBodySta
 Returns a body state.
 */
 //go:nosplit
-func (self class) BodyGetState(body gd.RID, state gdclass.PhysicsServer3DBodyState) gd.Variant {
+func (self class) BodyGetState(body gd.RID, state gdclass.PhysicsServer3DBodyState) gd.Variant { //gd:PhysicsServer3D.body_get_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -2387,7 +2387,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method body_apply_impulse] at the body's center of mass.
 */
 //go:nosplit
-func (self class) BodyApplyCentralImpulse(body gd.RID, impulse gd.Vector3) {
+func (self class) BodyApplyCentralImpulse(body gd.RID, impulse gd.Vector3) { //gd:PhysicsServer3D.body_apply_central_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, impulse)
@@ -2402,7 +2402,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) BodyApplyImpulse(body gd.RID, impulse gd.Vector3, position gd.Vector3) {
+func (self class) BodyApplyImpulse(body gd.RID, impulse gd.Vector3, position gd.Vector3) { //gd:PhysicsServer3D.body_apply_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, impulse)
@@ -2417,7 +2417,7 @@ Applies a rotational impulse to the body without affecting the position.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 */
 //go:nosplit
-func (self class) BodyApplyTorqueImpulse(body gd.RID, impulse gd.Vector3) {
+func (self class) BodyApplyTorqueImpulse(body gd.RID, impulse gd.Vector3) { //gd:PhysicsServer3D.body_apply_torque_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, impulse)
@@ -2431,7 +2431,7 @@ Applies a directional force without affecting rotation. A force is time dependen
 This is equivalent to using [method body_apply_force] at the body's center of mass.
 */
 //go:nosplit
-func (self class) BodyApplyCentralForce(body gd.RID, force gd.Vector3) {
+func (self class) BodyApplyCentralForce(body gd.RID, force gd.Vector3) { //gd:PhysicsServer3D.body_apply_central_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2445,7 +2445,7 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) BodyApplyForce(body gd.RID, force gd.Vector3, position gd.Vector3) {
+func (self class) BodyApplyForce(body gd.RID, force gd.Vector3, position gd.Vector3) { //gd:PhysicsServer3D.body_apply_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2459,7 +2459,7 @@ func (self class) BodyApplyForce(body gd.RID, force gd.Vector3, position gd.Vect
 Applies a rotational force without affecting position. A force is time dependent and meant to be applied every physics update.
 */
 //go:nosplit
-func (self class) BodyApplyTorque(body gd.RID, torque gd.Vector3) {
+func (self class) BodyApplyTorque(body gd.RID, torque gd.Vector3) { //gd:PhysicsServer3D.body_apply_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, torque)
@@ -2473,7 +2473,7 @@ Adds a constant directional force without affecting rotation that keeps being ap
 This is equivalent to using [method body_add_constant_force] at the body's center of mass.
 */
 //go:nosplit
-func (self class) BodyAddConstantCentralForce(body gd.RID, force gd.Vector3) {
+func (self class) BodyAddConstantCentralForce(body gd.RID, force gd.Vector3) { //gd:PhysicsServer3D.body_add_constant_central_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2487,7 +2487,7 @@ Adds a constant positioned force to the body that keeps being applied over time 
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) BodyAddConstantForce(body gd.RID, force gd.Vector3, position gd.Vector3) {
+func (self class) BodyAddConstantForce(body gd.RID, force gd.Vector3, position gd.Vector3) { //gd:PhysicsServer3D.body_add_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2501,7 +2501,7 @@ func (self class) BodyAddConstantForce(body gd.RID, force gd.Vector3, position g
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]body_set_constant_torque(body, Vector3(0, 0, 0))[/code].
 */
 //go:nosplit
-func (self class) BodyAddConstantTorque(body gd.RID, torque gd.Vector3) {
+func (self class) BodyAddConstantTorque(body gd.RID, torque gd.Vector3) { //gd:PhysicsServer3D.body_add_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, torque)
@@ -2515,7 +2515,7 @@ Sets the body's total constant positional forces applied during each physics upd
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
 //go:nosplit
-func (self class) BodySetConstantForce(body gd.RID, force gd.Vector3) {
+func (self class) BodySetConstantForce(body gd.RID, force gd.Vector3) { //gd:PhysicsServer3D.body_set_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, force)
@@ -2529,7 +2529,7 @@ Returns the body's total constant positional forces applied during each physics 
 See [method body_add_constant_force] and [method body_add_constant_central_force].
 */
 //go:nosplit
-func (self class) BodyGetConstantForce(body gd.RID) gd.Vector3 {
+func (self class) BodyGetConstantForce(body gd.RID) gd.Vector3 { //gd:PhysicsServer3D.body_get_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -2544,7 +2544,7 @@ Sets the body's total constant rotational forces applied during each physics upd
 See [method body_add_constant_torque].
 */
 //go:nosplit
-func (self class) BodySetConstantTorque(body gd.RID, torque gd.Vector3) {
+func (self class) BodySetConstantTorque(body gd.RID, torque gd.Vector3) { //gd:PhysicsServer3D.body_set_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, torque)
@@ -2558,7 +2558,7 @@ Returns the body's total constant rotational forces applied during each physics 
 See [method body_add_constant_torque].
 */
 //go:nosplit
-func (self class) BodyGetConstantTorque(body gd.RID) gd.Vector3 {
+func (self class) BodyGetConstantTorque(body gd.RID) gd.Vector3 { //gd:PhysicsServer3D.body_get_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -2572,7 +2572,7 @@ func (self class) BodyGetConstantTorque(body gd.RID) gd.Vector3 {
 Sets an axis velocity. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
 */
 //go:nosplit
-func (self class) BodySetAxisVelocity(body gd.RID, axis_velocity gd.Vector3) {
+func (self class) BodySetAxisVelocity(body gd.RID, axis_velocity gd.Vector3) { //gd:PhysicsServer3D.body_set_axis_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, axis_velocity)
@@ -2582,7 +2582,7 @@ func (self class) BodySetAxisVelocity(body gd.RID, axis_velocity gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) BodySetAxisLock(body gd.RID, axis gdclass.PhysicsServer3DBodyAxis, lock bool) {
+func (self class) BodySetAxisLock(body gd.RID, axis gdclass.PhysicsServer3DBodyAxis, lock bool) { //gd:PhysicsServer3D.body_set_axis_lock
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, axis)
@@ -2593,7 +2593,7 @@ func (self class) BodySetAxisLock(body gd.RID, axis gdclass.PhysicsServer3DBodyA
 }
 
 //go:nosplit
-func (self class) BodyIsAxisLocked(body gd.RID, axis gdclass.PhysicsServer3DBodyAxis) bool {
+func (self class) BodyIsAxisLocked(body gd.RID, axis gdclass.PhysicsServer3DBodyAxis) bool { //gd:PhysicsServer3D.body_is_axis_locked
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, axis)
@@ -2608,7 +2608,7 @@ func (self class) BodyIsAxisLocked(body gd.RID, axis gdclass.PhysicsServer3DBody
 Adds a body to the list of bodies exempt from collisions.
 */
 //go:nosplit
-func (self class) BodyAddCollisionException(body gd.RID, excepted_body gd.RID) {
+func (self class) BodyAddCollisionException(body gd.RID, excepted_body gd.RID) { //gd:PhysicsServer3D.body_add_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, excepted_body)
@@ -2622,7 +2622,7 @@ Removes a body from the list of bodies exempt from collisions.
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
 //go:nosplit
-func (self class) BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID) {
+func (self class) BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID) { //gd:PhysicsServer3D.body_remove_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, excepted_body)
@@ -2635,7 +2635,7 @@ func (self class) BodyRemoveCollisionException(body gd.RID, excepted_body gd.RID
 Sets the maximum contacts to report. Bodies can keep a log of the contacts with other bodies. This is enabled by setting the maximum number of contacts reported to a number greater than 0.
 */
 //go:nosplit
-func (self class) BodySetMaxContactsReported(body gd.RID, amount gd.Int) {
+func (self class) BodySetMaxContactsReported(body gd.RID, amount gd.Int) { //gd:PhysicsServer3D.body_set_max_contacts_reported
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, amount)
@@ -2648,7 +2648,7 @@ func (self class) BodySetMaxContactsReported(body gd.RID, amount gd.Int) {
 Returns the maximum contacts that can be reported. See [method body_set_max_contacts_reported].
 */
 //go:nosplit
-func (self class) BodyGetMaxContactsReported(body gd.RID) gd.Int {
+func (self class) BodyGetMaxContactsReported(body gd.RID) gd.Int { //gd:PhysicsServer3D.body_get_max_contacts_reported
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -2663,7 +2663,7 @@ Sets whether the body omits the standard force integration. If [param enable] is
 This method is called when the property [member RigidBody3D.custom_integrator] is set.
 */
 //go:nosplit
-func (self class) BodySetOmitForceIntegration(body gd.RID, enable bool) {
+func (self class) BodySetOmitForceIntegration(body gd.RID, enable bool) { //gd:PhysicsServer3D.body_set_omit_force_integration
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, enable)
@@ -2676,7 +2676,7 @@ func (self class) BodySetOmitForceIntegration(body gd.RID, enable bool) {
 Returns [code]true[/code] if the body is omitting the standard force integration. See [method body_set_omit_force_integration].
 */
 //go:nosplit
-func (self class) BodyIsOmittingForceIntegration(body gd.RID) bool {
+func (self class) BodyIsOmittingForceIntegration(body gd.RID) bool { //gd:PhysicsServer3D.body_is_omitting_force_integration
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[bool](frame)
@@ -2693,7 +2693,7 @@ The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
 */
 //go:nosplit
-func (self class) BodySetStateSyncCallback(body gd.RID, callable Callable.Function) {
+func (self class) BodySetStateSyncCallback(body gd.RID, callable Callable.Function) { //gd:PhysicsServer3D.body_set_state_sync_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
@@ -2711,7 +2711,7 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
 //go:nosplit
-func (self class) BodySetForceIntegrationCallback(body gd.RID, callable Callable.Function, userdata gd.Variant) {
+func (self class) BodySetForceIntegrationCallback(body gd.RID, callable Callable.Function, userdata gd.Variant) { //gd:PhysicsServer3D.body_set_force_integration_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
@@ -2725,7 +2725,7 @@ func (self class) BodySetForceIntegrationCallback(body gd.RID, callable Callable
 Sets the body pickable with rays if [param enable] is set.
 */
 //go:nosplit
-func (self class) BodySetRayPickable(body gd.RID, enable bool) {
+func (self class) BodySetRayPickable(body gd.RID, enable bool) { //gd:PhysicsServer3D.body_set_ray_pickable
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, enable)
@@ -2738,7 +2738,7 @@ func (self class) BodySetRayPickable(body gd.RID, enable bool) {
 Returns [code]true[/code] if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
 */
 //go:nosplit
-func (self class) BodyTestMotion(body gd.RID, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool {
+func (self class) BodyTestMotion(body gd.RID, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool { //gd:PhysicsServer3D.body_test_motion
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
@@ -2754,7 +2754,7 @@ func (self class) BodyTestMotion(body gd.RID, parameters [1]gdclass.PhysicsTestM
 Returns the [PhysicsDirectBodyState3D] of the body. Returns [code]null[/code] if the body is destroyed or removed from the physics space.
 */
 //go:nosplit
-func (self class) BodyGetDirectState(body gd.RID) [1]gdclass.PhysicsDirectBodyState3D {
+func (self class) BodyGetDirectState(body gd.RID) [1]gdclass.PhysicsDirectBodyState3D { //gd:PhysicsServer3D.body_get_direct_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -2768,7 +2768,7 @@ func (self class) BodyGetDirectState(body gd.RID) [1]gdclass.PhysicsDirectBodySt
 Creates a new soft body and returns its internal [RID].
 */
 //go:nosplit
-func (self class) SoftBodyCreate() gd.RID {
+func (self class) SoftBodyCreate() gd.RID { //gd:PhysicsServer3D.soft_body_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2781,7 +2781,7 @@ func (self class) SoftBodyCreate() gd.RID {
 Requests that the physics server updates the rendering server with the latest positions of the given soft body's points through the [param rendering_server_handler] interface.
 */
 //go:nosplit
-func (self class) SoftBodyUpdateRenderingServer(body gd.RID, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler) {
+func (self class) SoftBodyUpdateRenderingServer(body gd.RID, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler) { //gd:PhysicsServer3D.soft_body_update_rendering_server
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, pointers.Get(rendering_server_handler[0])[0])
@@ -2794,7 +2794,7 @@ func (self class) SoftBodyUpdateRenderingServer(body gd.RID, rendering_server_ha
 Assigns a space to the given soft body (see [method space_create]).
 */
 //go:nosplit
-func (self class) SoftBodySetSpace(body gd.RID, space gd.RID) {
+func (self class) SoftBodySetSpace(body gd.RID, space gd.RID) { //gd:PhysicsServer3D.soft_body_set_space
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, space)
@@ -2807,7 +2807,7 @@ func (self class) SoftBodySetSpace(body gd.RID, space gd.RID) {
 Returns the [RID] of the space assigned to the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodyGetSpace(body gd.RID) gd.RID {
+func (self class) SoftBodyGetSpace(body gd.RID) gd.RID { //gd:PhysicsServer3D.soft_body_get_space
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -2821,7 +2821,7 @@ func (self class) SoftBodyGetSpace(body gd.RID) gd.RID {
 Sets the mesh of the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodySetMesh(body gd.RID, mesh gd.RID) {
+func (self class) SoftBodySetMesh(body gd.RID, mesh gd.RID) { //gd:PhysicsServer3D.soft_body_set_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mesh)
@@ -2834,7 +2834,7 @@ func (self class) SoftBodySetMesh(body gd.RID, mesh gd.RID) {
 Returns the bounds of the given soft body in global coordinates.
 */
 //go:nosplit
-func (self class) SoftBodyGetBounds(body gd.RID) gd.AABB {
+func (self class) SoftBodyGetBounds(body gd.RID) gd.AABB { //gd:PhysicsServer3D.soft_body_get_bounds
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.AABB](frame)
@@ -2848,7 +2848,7 @@ func (self class) SoftBodyGetBounds(body gd.RID) gd.AABB {
 Sets the physics layer or layers the given soft body belongs to.
 */
 //go:nosplit
-func (self class) SoftBodySetCollisionLayer(body gd.RID, layer gd.Int) {
+func (self class) SoftBodySetCollisionLayer(body gd.RID, layer gd.Int) { //gd:PhysicsServer3D.soft_body_set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, layer)
@@ -2861,7 +2861,7 @@ func (self class) SoftBodySetCollisionLayer(body gd.RID, layer gd.Int) {
 Returns the physics layer or layers that the given soft body belongs to.
 */
 //go:nosplit
-func (self class) SoftBodyGetCollisionLayer(body gd.RID) gd.Int {
+func (self class) SoftBodyGetCollisionLayer(body gd.RID) gd.Int { //gd:PhysicsServer3D.soft_body_get_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -2875,7 +2875,7 @@ func (self class) SoftBodyGetCollisionLayer(body gd.RID) gd.Int {
 Sets the physics layer or layers the given soft body can collide with.
 */
 //go:nosplit
-func (self class) SoftBodySetCollisionMask(body gd.RID, mask gd.Int) {
+func (self class) SoftBodySetCollisionMask(body gd.RID, mask gd.Int) { //gd:PhysicsServer3D.soft_body_set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mask)
@@ -2888,7 +2888,7 @@ func (self class) SoftBodySetCollisionMask(body gd.RID, mask gd.Int) {
 Returns the physics layer or layers that the given soft body can collide with.
 */
 //go:nosplit
-func (self class) SoftBodyGetCollisionMask(body gd.RID) gd.Int {
+func (self class) SoftBodyGetCollisionMask(body gd.RID) gd.Int { //gd:PhysicsServer3D.soft_body_get_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -2902,7 +2902,7 @@ func (self class) SoftBodyGetCollisionMask(body gd.RID) gd.Int {
 Adds the given body to the list of bodies exempt from collisions.
 */
 //go:nosplit
-func (self class) SoftBodyAddCollisionException(body gd.RID, body_b gd.RID) {
+func (self class) SoftBodyAddCollisionException(body gd.RID, body_b gd.RID) { //gd:PhysicsServer3D.soft_body_add_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, body_b)
@@ -2915,7 +2915,7 @@ func (self class) SoftBodyAddCollisionException(body gd.RID, body_b gd.RID) {
 Removes the given body from the list of bodies exempt from collisions.
 */
 //go:nosplit
-func (self class) SoftBodyRemoveCollisionException(body gd.RID, body_b gd.RID) {
+func (self class) SoftBodyRemoveCollisionException(body gd.RID, body_b gd.RID) { //gd:PhysicsServer3D.soft_body_remove_collision_exception
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, body_b)
@@ -2929,7 +2929,7 @@ Sets the given body state for the given body (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
 //go:nosplit
-func (self class) SoftBodySetState(body gd.RID, state gdclass.PhysicsServer3DBodyState, variant gd.Variant) {
+func (self class) SoftBodySetState(body gd.RID, state gdclass.PhysicsServer3DBodyState, variant gd.Variant) { //gd:PhysicsServer3D.soft_body_set_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -2944,7 +2944,7 @@ Returns the given soft body state (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
 //go:nosplit
-func (self class) SoftBodyGetState(body gd.RID, state gdclass.PhysicsServer3DBodyState) gd.Variant {
+func (self class) SoftBodyGetState(body gd.RID, state gdclass.PhysicsServer3DBodyState) gd.Variant { //gd:PhysicsServer3D.soft_body_get_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -2959,7 +2959,7 @@ func (self class) SoftBodyGetState(body gd.RID, state gdclass.PhysicsServer3DBod
 Sets the global transform of the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodySetTransform(body gd.RID, transform gd.Transform3D) {
+func (self class) SoftBodySetTransform(body gd.RID, transform gd.Transform3D) { //gd:PhysicsServer3D.soft_body_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, transform)
@@ -2972,7 +2972,7 @@ func (self class) SoftBodySetTransform(body gd.RID, transform gd.Transform3D) {
 Sets whether the given soft body will be pickable when using object picking.
 */
 //go:nosplit
-func (self class) SoftBodySetRayPickable(body gd.RID, enable bool) {
+func (self class) SoftBodySetRayPickable(body gd.RID, enable bool) { //gd:PhysicsServer3D.soft_body_set_ray_pickable
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, enable)
@@ -2985,7 +2985,7 @@ func (self class) SoftBodySetRayPickable(body gd.RID, enable bool) {
 Sets the simulation precision of the given soft body. Increasing this value will improve the resulting simulation, but can affect performance. Use with care.
 */
 //go:nosplit
-func (self class) SoftBodySetSimulationPrecision(body gd.RID, simulation_precision gd.Int) {
+func (self class) SoftBodySetSimulationPrecision(body gd.RID, simulation_precision gd.Int) { //gd:PhysicsServer3D.soft_body_set_simulation_precision
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, simulation_precision)
@@ -2998,7 +2998,7 @@ func (self class) SoftBodySetSimulationPrecision(body gd.RID, simulation_precisi
 Returns the simulation precision of the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodyGetSimulationPrecision(body gd.RID) gd.Int {
+func (self class) SoftBodyGetSimulationPrecision(body gd.RID) gd.Int { //gd:PhysicsServer3D.soft_body_get_simulation_precision
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -3012,7 +3012,7 @@ func (self class) SoftBodyGetSimulationPrecision(body gd.RID) gd.Int {
 Sets the total mass for the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodySetTotalMass(body gd.RID, total_mass gd.Float) {
+func (self class) SoftBodySetTotalMass(body gd.RID, total_mass gd.Float) { //gd:PhysicsServer3D.soft_body_set_total_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, total_mass)
@@ -3025,7 +3025,7 @@ func (self class) SoftBodySetTotalMass(body gd.RID, total_mass gd.Float) {
 Returns the total mass assigned to the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodyGetTotalMass(body gd.RID) gd.Float {
+func (self class) SoftBodyGetTotalMass(body gd.RID) gd.Float { //gd:PhysicsServer3D.soft_body_get_total_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -3039,7 +3039,7 @@ func (self class) SoftBodyGetTotalMass(body gd.RID) gd.Float {
 Sets the linear stiffness of the given soft body. Higher values will result in a stiffer body, while lower values will increase the body's ability to bend. The value can be between [code]0.0[/code] and [code]1.0[/code] (inclusive).
 */
 //go:nosplit
-func (self class) SoftBodySetLinearStiffness(body gd.RID, stiffness gd.Float) {
+func (self class) SoftBodySetLinearStiffness(body gd.RID, stiffness gd.Float) { //gd:PhysicsServer3D.soft_body_set_linear_stiffness
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, stiffness)
@@ -3052,7 +3052,7 @@ func (self class) SoftBodySetLinearStiffness(body gd.RID, stiffness gd.Float) {
 Returns the linear stiffness of the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodyGetLinearStiffness(body gd.RID) gd.Float {
+func (self class) SoftBodyGetLinearStiffness(body gd.RID) gd.Float { //gd:PhysicsServer3D.soft_body_get_linear_stiffness
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -3066,7 +3066,7 @@ func (self class) SoftBodyGetLinearStiffness(body gd.RID) gd.Float {
 Sets the pressure coefficient of the given soft body. Simulates pressure build-up from inside this body. Higher values increase the strength of this effect.
 */
 //go:nosplit
-func (self class) SoftBodySetPressureCoefficient(body gd.RID, pressure_coefficient gd.Float) {
+func (self class) SoftBodySetPressureCoefficient(body gd.RID, pressure_coefficient gd.Float) { //gd:PhysicsServer3D.soft_body_set_pressure_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, pressure_coefficient)
@@ -3079,7 +3079,7 @@ func (self class) SoftBodySetPressureCoefficient(body gd.RID, pressure_coefficie
 Returns the pressure coefficient of the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodyGetPressureCoefficient(body gd.RID) gd.Float {
+func (self class) SoftBodyGetPressureCoefficient(body gd.RID) gd.Float { //gd:PhysicsServer3D.soft_body_get_pressure_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -3093,7 +3093,7 @@ func (self class) SoftBodyGetPressureCoefficient(body gd.RID) gd.Float {
 Sets the damping coefficient of the given soft body. Higher values will slow down the body more noticeably when forces are applied.
 */
 //go:nosplit
-func (self class) SoftBodySetDampingCoefficient(body gd.RID, damping_coefficient gd.Float) {
+func (self class) SoftBodySetDampingCoefficient(body gd.RID, damping_coefficient gd.Float) { //gd:PhysicsServer3D.soft_body_set_damping_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, damping_coefficient)
@@ -3106,7 +3106,7 @@ func (self class) SoftBodySetDampingCoefficient(body gd.RID, damping_coefficient
 Returns the damping coefficient of the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodyGetDampingCoefficient(body gd.RID) gd.Float {
+func (self class) SoftBodyGetDampingCoefficient(body gd.RID) gd.Float { //gd:PhysicsServer3D.soft_body_get_damping_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -3121,7 +3121,7 @@ Sets the drag coefficient of the given soft body. Higher values increase this bo
 [b]Note:[/b] This value is currently unused by Godot's default physics implementation.
 */
 //go:nosplit
-func (self class) SoftBodySetDragCoefficient(body gd.RID, drag_coefficient gd.Float) {
+func (self class) SoftBodySetDragCoefficient(body gd.RID, drag_coefficient gd.Float) { //gd:PhysicsServer3D.soft_body_set_drag_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, drag_coefficient)
@@ -3134,7 +3134,7 @@ func (self class) SoftBodySetDragCoefficient(body gd.RID, drag_coefficient gd.Fl
 Returns the drag coefficient of the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodyGetDragCoefficient(body gd.RID) gd.Float {
+func (self class) SoftBodyGetDragCoefficient(body gd.RID) gd.Float { //gd:PhysicsServer3D.soft_body_get_drag_coefficient
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -3148,7 +3148,7 @@ func (self class) SoftBodyGetDragCoefficient(body gd.RID) gd.Float {
 Moves the given soft body point to a position in global coordinates.
 */
 //go:nosplit
-func (self class) SoftBodyMovePoint(body gd.RID, point_index gd.Int, global_position gd.Vector3) {
+func (self class) SoftBodyMovePoint(body gd.RID, point_index gd.Int, global_position gd.Vector3) { //gd:PhysicsServer3D.soft_body_move_point
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, point_index)
@@ -3162,7 +3162,7 @@ func (self class) SoftBodyMovePoint(body gd.RID, point_index gd.Int, global_posi
 Returns the current position of the given soft body point in global coordinates.
 */
 //go:nosplit
-func (self class) SoftBodyGetPointGlobalPosition(body gd.RID, point_index gd.Int) gd.Vector3 {
+func (self class) SoftBodyGetPointGlobalPosition(body gd.RID, point_index gd.Int) gd.Vector3 { //gd:PhysicsServer3D.soft_body_get_point_global_position
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, point_index)
@@ -3177,7 +3177,7 @@ func (self class) SoftBodyGetPointGlobalPosition(body gd.RID, point_index gd.Int
 Unpins all points of the given soft body.
 */
 //go:nosplit
-func (self class) SoftBodyRemoveAllPinnedPoints(body gd.RID) {
+func (self class) SoftBodyRemoveAllPinnedPoints(body gd.RID) { //gd:PhysicsServer3D.soft_body_remove_all_pinned_points
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Nil
@@ -3190,7 +3190,7 @@ Pins or unpins the given soft body point based on the value of [param pin].
 [b]Note:[/b] Pinning a point effectively makes it kinematic, preventing it from being affected by forces, but you can still move it using [method soft_body_move_point].
 */
 //go:nosplit
-func (self class) SoftBodyPinPoint(body gd.RID, point_index gd.Int, pin bool) {
+func (self class) SoftBodyPinPoint(body gd.RID, point_index gd.Int, pin bool) { //gd:PhysicsServer3D.soft_body_pin_point
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, point_index)
@@ -3204,7 +3204,7 @@ func (self class) SoftBodyPinPoint(body gd.RID, point_index gd.Int, pin bool) {
 Returns whether the given soft body point is pinned.
 */
 //go:nosplit
-func (self class) SoftBodyIsPointPinned(body gd.RID, point_index gd.Int) bool {
+func (self class) SoftBodyIsPointPinned(body gd.RID, point_index gd.Int) bool { //gd:PhysicsServer3D.soft_body_is_point_pinned
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, point_index)
@@ -3216,7 +3216,7 @@ func (self class) SoftBodyIsPointPinned(body gd.RID, point_index gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) JointCreate() gd.RID {
+func (self class) JointCreate() gd.RID { //gd:PhysicsServer3D.joint_create
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -3226,7 +3226,7 @@ func (self class) JointCreate() gd.RID {
 }
 
 //go:nosplit
-func (self class) JointClear(joint gd.RID) {
+func (self class) JointClear(joint gd.RID) { //gd:PhysicsServer3D.joint_clear
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Nil
@@ -3235,7 +3235,7 @@ func (self class) JointClear(joint gd.RID) {
 }
 
 //go:nosplit
-func (self class) JointMakePin(joint gd.RID, body_A gd.RID, local_A gd.Vector3, body_B gd.RID, local_B gd.Vector3) {
+func (self class) JointMakePin(joint gd.RID, body_A gd.RID, local_A gd.Vector3, body_B gd.RID, local_B gd.Vector3) { //gd:PhysicsServer3D.joint_make_pin
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3251,7 +3251,7 @@ func (self class) JointMakePin(joint gd.RID, body_A gd.RID, local_A gd.Vector3, 
 Sets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 //go:nosplit
-func (self class) PinJointSetParam(joint gd.RID, param gdclass.PhysicsServer3DPinJointParam, value gd.Float) {
+func (self class) PinJointSetParam(joint gd.RID, param gdclass.PhysicsServer3DPinJointParam, value gd.Float) { //gd:PhysicsServer3D.pin_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3265,7 +3265,7 @@ func (self class) PinJointSetParam(joint gd.RID, param gdclass.PhysicsServer3DPi
 Gets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 //go:nosplit
-func (self class) PinJointGetParam(joint gd.RID, param gdclass.PhysicsServer3DPinJointParam) gd.Float {
+func (self class) PinJointGetParam(joint gd.RID, param gdclass.PhysicsServer3DPinJointParam) gd.Float { //gd:PhysicsServer3D.pin_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3280,7 +3280,7 @@ func (self class) PinJointGetParam(joint gd.RID, param gdclass.PhysicsServer3DPi
 Sets position of the joint in the local space of body a of the joint.
 */
 //go:nosplit
-func (self class) PinJointSetLocalA(joint gd.RID, local_A gd.Vector3) {
+func (self class) PinJointSetLocalA(joint gd.RID, local_A gd.Vector3) { //gd:PhysicsServer3D.pin_joint_set_local_a
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, local_A)
@@ -3293,7 +3293,7 @@ func (self class) PinJointSetLocalA(joint gd.RID, local_A gd.Vector3) {
 Returns position of the joint in the local space of body a of the joint.
 */
 //go:nosplit
-func (self class) PinJointGetLocalA(joint gd.RID) gd.Vector3 {
+func (self class) PinJointGetLocalA(joint gd.RID) gd.Vector3 { //gd:PhysicsServer3D.pin_joint_get_local_a
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -3307,7 +3307,7 @@ func (self class) PinJointGetLocalA(joint gd.RID) gd.Vector3 {
 Sets position of the joint in the local space of body b of the joint.
 */
 //go:nosplit
-func (self class) PinJointSetLocalB(joint gd.RID, local_B gd.Vector3) {
+func (self class) PinJointSetLocalB(joint gd.RID, local_B gd.Vector3) { //gd:PhysicsServer3D.pin_joint_set_local_b
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, local_B)
@@ -3320,7 +3320,7 @@ func (self class) PinJointSetLocalB(joint gd.RID, local_B gd.Vector3) {
 Returns position of the joint in the local space of body b of the joint.
 */
 //go:nosplit
-func (self class) PinJointGetLocalB(joint gd.RID) gd.Vector3 {
+func (self class) PinJointGetLocalB(joint gd.RID) gd.Vector3 { //gd:PhysicsServer3D.pin_joint_get_local_b
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Vector3](frame)
@@ -3331,7 +3331,7 @@ func (self class) PinJointGetLocalB(joint gd.RID) gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) JointMakeHinge(joint gd.RID, body_A gd.RID, hinge_A gd.Transform3D, body_B gd.RID, hinge_B gd.Transform3D) {
+func (self class) JointMakeHinge(joint gd.RID, body_A gd.RID, hinge_A gd.Transform3D, body_B gd.RID, hinge_B gd.Transform3D) { //gd:PhysicsServer3D.joint_make_hinge
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3347,7 +3347,7 @@ func (self class) JointMakeHinge(joint gd.RID, body_A gd.RID, hinge_A gd.Transfo
 Sets a hinge_joint parameter (see [enum HingeJointParam] constants).
 */
 //go:nosplit
-func (self class) HingeJointSetParam(joint gd.RID, param gdclass.PhysicsServer3DHingeJointParam, value gd.Float) {
+func (self class) HingeJointSetParam(joint gd.RID, param gdclass.PhysicsServer3DHingeJointParam, value gd.Float) { //gd:PhysicsServer3D.hinge_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3361,7 +3361,7 @@ func (self class) HingeJointSetParam(joint gd.RID, param gdclass.PhysicsServer3D
 Gets a hinge_joint parameter (see [enum HingeJointParam]).
 */
 //go:nosplit
-func (self class) HingeJointGetParam(joint gd.RID, param gdclass.PhysicsServer3DHingeJointParam) gd.Float {
+func (self class) HingeJointGetParam(joint gd.RID, param gdclass.PhysicsServer3DHingeJointParam) gd.Float { //gd:PhysicsServer3D.hinge_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3376,7 +3376,7 @@ func (self class) HingeJointGetParam(joint gd.RID, param gdclass.PhysicsServer3D
 Sets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 //go:nosplit
-func (self class) HingeJointSetFlag(joint gd.RID, flag gdclass.PhysicsServer3DHingeJointFlag, enabled bool) {
+func (self class) HingeJointSetFlag(joint gd.RID, flag gdclass.PhysicsServer3DHingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
@@ -3390,7 +3390,7 @@ func (self class) HingeJointSetFlag(joint gd.RID, flag gdclass.PhysicsServer3DHi
 Gets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 //go:nosplit
-func (self class) HingeJointGetFlag(joint gd.RID, flag gdclass.PhysicsServer3DHingeJointFlag) bool {
+func (self class) HingeJointGetFlag(joint gd.RID, flag gdclass.PhysicsServer3DHingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
@@ -3402,7 +3402,7 @@ func (self class) HingeJointGetFlag(joint gd.RID, flag gdclass.PhysicsServer3DHi
 }
 
 //go:nosplit
-func (self class) JointMakeSlider(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) {
+func (self class) JointMakeSlider(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) { //gd:PhysicsServer3D.joint_make_slider
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3418,7 +3418,7 @@ func (self class) JointMakeSlider(joint gd.RID, body_A gd.RID, local_ref_A gd.Tr
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 //go:nosplit
-func (self class) SliderJointSetParam(joint gd.RID, param gdclass.PhysicsServer3DSliderJointParam, value gd.Float) {
+func (self class) SliderJointSetParam(joint gd.RID, param gdclass.PhysicsServer3DSliderJointParam, value gd.Float) { //gd:PhysicsServer3D.slider_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3432,7 +3432,7 @@ func (self class) SliderJointSetParam(joint gd.RID, param gdclass.PhysicsServer3
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 //go:nosplit
-func (self class) SliderJointGetParam(joint gd.RID, param gdclass.PhysicsServer3DSliderJointParam) gd.Float {
+func (self class) SliderJointGetParam(joint gd.RID, param gdclass.PhysicsServer3DSliderJointParam) gd.Float { //gd:PhysicsServer3D.slider_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3444,7 +3444,7 @@ func (self class) SliderJointGetParam(joint gd.RID, param gdclass.PhysicsServer3
 }
 
 //go:nosplit
-func (self class) JointMakeConeTwist(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) {
+func (self class) JointMakeConeTwist(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) { //gd:PhysicsServer3D.joint_make_cone_twist
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3460,7 +3460,7 @@ func (self class) JointMakeConeTwist(joint gd.RID, body_A gd.RID, local_ref_A gd
 Sets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 //go:nosplit
-func (self class) ConeTwistJointSetParam(joint gd.RID, param gdclass.PhysicsServer3DConeTwistJointParam, value gd.Float) {
+func (self class) ConeTwistJointSetParam(joint gd.RID, param gdclass.PhysicsServer3DConeTwistJointParam, value gd.Float) { //gd:PhysicsServer3D.cone_twist_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3474,7 +3474,7 @@ func (self class) ConeTwistJointSetParam(joint gd.RID, param gdclass.PhysicsServ
 Gets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 //go:nosplit
-func (self class) ConeTwistJointGetParam(joint gd.RID, param gdclass.PhysicsServer3DConeTwistJointParam) gd.Float {
+func (self class) ConeTwistJointGetParam(joint gd.RID, param gdclass.PhysicsServer3DConeTwistJointParam) gd.Float { //gd:PhysicsServer3D.cone_twist_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3489,7 +3489,7 @@ func (self class) ConeTwistJointGetParam(joint gd.RID, param gdclass.PhysicsServ
 Returns the type of the Joint3D.
 */
 //go:nosplit
-func (self class) JointGetType(joint gd.RID) gdclass.PhysicsServer3DJointType {
+func (self class) JointGetType(joint gd.RID) gdclass.PhysicsServer3DJointType { //gd:PhysicsServer3D.joint_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gdclass.PhysicsServer3DJointType](frame)
@@ -3503,7 +3503,7 @@ func (self class) JointGetType(joint gd.RID) gdclass.PhysicsServer3DJointType {
 Sets the priority value of the Joint3D.
 */
 //go:nosplit
-func (self class) JointSetSolverPriority(joint gd.RID, priority gd.Int) {
+func (self class) JointSetSolverPriority(joint gd.RID, priority gd.Int) { //gd:PhysicsServer3D.joint_set_solver_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, priority)
@@ -3516,7 +3516,7 @@ func (self class) JointSetSolverPriority(joint gd.RID, priority gd.Int) {
 Gets the priority value of the Joint3D.
 */
 //go:nosplit
-func (self class) JointGetSolverPriority(joint gd.RID) gd.Int {
+func (self class) JointGetSolverPriority(joint gd.RID) gd.Int { //gd:PhysicsServer3D.joint_get_solver_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -3530,7 +3530,7 @@ func (self class) JointGetSolverPriority(joint gd.RID) gd.Int {
 Sets whether the bodies attached to the [Joint3D] will collide with each other.
 */
 //go:nosplit
-func (self class) JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool) {
+func (self class) JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool) { //gd:PhysicsServer3D.joint_disable_collisions_between_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, disable)
@@ -3543,7 +3543,7 @@ func (self class) JointDisableCollisionsBetweenBodies(joint gd.RID, disable bool
 Returns whether the bodies attached to the [Joint3D] will collide with each other.
 */
 //go:nosplit
-func (self class) JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool {
+func (self class) JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool { //gd:PhysicsServer3D.joint_is_disabled_collisions_between_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[bool](frame)
@@ -3557,7 +3557,7 @@ func (self class) JointIsDisabledCollisionsBetweenBodies(joint gd.RID) bool {
 Make the joint a generic six degrees of freedom (6DOF) joint. Use [method generic_6dof_joint_set_flag] and [method generic_6dof_joint_set_param] to set the joint's flags and parameters respectively.
 */
 //go:nosplit
-func (self class) JointMakeGeneric6dof(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) {
+func (self class) JointMakeGeneric6dof(joint gd.RID, body_A gd.RID, local_ref_A gd.Transform3D, body_B gd.RID, local_ref_B gd.Transform3D) { //gd:PhysicsServer3D.joint_make_generic_6dof
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
@@ -3573,7 +3573,7 @@ func (self class) JointMakeGeneric6dof(joint gd.RID, body_A gd.RID, local_ref_A 
 Sets the value of a given generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) Generic6dofJointSetParam(joint gd.RID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam, value gd.Float) {
+func (self class) Generic6dofJointSetParam(joint gd.RID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam, value gd.Float) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
@@ -3588,7 +3588,7 @@ func (self class) Generic6dofJointSetParam(joint gd.RID, axis gd.Vector3Axis, pa
 Returns the value of a generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) Generic6dofJointGetParam(joint gd.RID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam) gd.Float {
+func (self class) Generic6dofJointGetParam(joint gd.RID, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam) gd.Float { //gd:PhysicsServer3D.generic_6dof_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
@@ -3604,7 +3604,7 @@ func (self class) Generic6dofJointGetParam(joint gd.RID, axis gd.Vector3Axis, pa
 Sets the value of a given generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
 //go:nosplit
-func (self class) Generic6dofJointSetFlag(joint gd.RID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag, enable bool) {
+func (self class) Generic6dofJointSetFlag(joint gd.RID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
@@ -3619,7 +3619,7 @@ func (self class) Generic6dofJointSetFlag(joint gd.RID, axis gd.Vector3Axis, fla
 Returns the value of a generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
 //go:nosplit
-func (self class) Generic6dofJointGetFlag(joint gd.RID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag) bool {
+func (self class) Generic6dofJointGetFlag(joint gd.RID, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
@@ -3635,7 +3635,7 @@ func (self class) Generic6dofJointGetFlag(joint gd.RID, axis gd.Vector3Axis, fla
 Destroys any of the objects created by PhysicsServer3D. If the [RID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
 */
 //go:nosplit
-func (self class) FreeRid(rid gd.RID) {
+func (self class) FreeRid(rid gd.RID) { //gd:PhysicsServer3D.free_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Nil
@@ -3647,7 +3647,7 @@ func (self class) FreeRid(rid gd.RID) {
 Activates or deactivates the 3D physics engine.
 */
 //go:nosplit
-func (self class) SetActive(active bool) {
+func (self class) SetActive(active bool) { //gd:PhysicsServer3D.set_active
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	var r_ret = callframe.Nil
@@ -3659,7 +3659,7 @@ func (self class) SetActive(active bool) {
 Returns information about the current state of the 3D physics engine. See [enum ProcessInfo] for a list of available states.
 */
 //go:nosplit
-func (self class) GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo) gd.Int {
+func (self class) GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo) gd.Int { //gd:PhysicsServer3D.get_process_info
 	var frame = callframe.New()
 	callframe.Arg(frame, process_info)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -3680,7 +3680,7 @@ func init() {
 	})
 }
 
-type JointType = gdclass.PhysicsServer3DJointType
+type JointType = gdclass.PhysicsServer3DJointType //gd:PhysicsServer3D.JointType
 
 const (
 	/*The [Joint3D] is a [PinJoint3D].*/
@@ -3697,7 +3697,7 @@ const (
 	JointTypeMax JointType = 5
 )
 
-type PinJointParam = gdclass.PhysicsServer3DPinJointParam
+type PinJointParam = gdclass.PhysicsServer3DPinJointParam //gd:PhysicsServer3D.PinJointParam
 
 const (
 	/*The strength with which the pinned objects try to stay in positional relation to each other.
@@ -3710,7 +3710,7 @@ const (
 	PinJointImpulseClamp PinJointParam = 2
 )
 
-type HingeJointParam = gdclass.PhysicsServer3DHingeJointParam
+type HingeJointParam = gdclass.PhysicsServer3DHingeJointParam //gd:PhysicsServer3D.HingeJointParam
 
 const (
 	/*The speed with which the two bodies get pulled together when they move in different directions.*/
@@ -3730,7 +3730,7 @@ const (
 	HingeJointMotorMaxImpulse HingeJointParam = 7
 )
 
-type HingeJointFlag = gdclass.PhysicsServer3DHingeJointFlag
+type HingeJointFlag = gdclass.PhysicsServer3DHingeJointFlag //gd:PhysicsServer3D.HingeJointFlag
 
 const (
 	/*If [code]true[/code], the Hinge has a maximum and a minimum rotation.*/
@@ -3739,7 +3739,7 @@ const (
 	HingeJointFlagEnableMotor HingeJointFlag = 1
 )
 
-type SliderJointParam = gdclass.PhysicsServer3DSliderJointParam
+type SliderJointParam = gdclass.PhysicsServer3DSliderJointParam //gd:PhysicsServer3D.SliderJointParam
 
 const (
 	/*The maximum difference between the pivot points on their X axis before damping happens.*/
@@ -3790,7 +3790,7 @@ const (
 	SliderJointMax SliderJointParam = 22
 )
 
-type ConeTwistJointParam = gdclass.PhysicsServer3DConeTwistJointParam
+type ConeTwistJointParam = gdclass.PhysicsServer3DConeTwistJointParam //gd:PhysicsServer3D.ConeTwistJointParam
 
 const (
 	/*Swing is rotation from side to side, around the axis perpendicular to the twist axis.
@@ -3810,7 +3810,7 @@ const (
 	ConeTwistJointRelaxation ConeTwistJointParam = 4
 )
 
-type G6DOFJointAxisParam = gdclass.PhysicsServer3DG6DOFJointAxisParam
+type G6DOFJointAxisParam = gdclass.PhysicsServer3DG6DOFJointAxisParam //gd:PhysicsServer3D.G6DOFJointAxisParam
 
 const (
 	/*The minimum difference between the pivot points' axes.*/
@@ -3855,7 +3855,7 @@ const (
 	G6dofJointMax G6DOFJointAxisParam = 22
 )
 
-type G6DOFJointAxisFlag = gdclass.PhysicsServer3DG6DOFJointAxisFlag
+type G6DOFJointAxisFlag = gdclass.PhysicsServer3DG6DOFJointAxisFlag //gd:PhysicsServer3D.G6DOFJointAxisFlag
 
 const (
 	/*If set, linear motion is possible within the given limits.*/
@@ -3872,7 +3872,7 @@ const (
 	G6dofJointFlagMax G6DOFJointAxisFlag = 6
 )
 
-type ShapeType = gdclass.PhysicsServer3DShapeType
+type ShapeType = gdclass.PhysicsServer3DShapeType //gd:PhysicsServer3D.ShapeType
 
 const (
 	/*The [Shape3D] is a [WorldBoundaryShape3D].*/
@@ -3899,7 +3899,7 @@ const (
 	ShapeCustom ShapeType = 10
 )
 
-type AreaParameter = gdclass.PhysicsServer3DAreaParameter
+type AreaParameter = gdclass.PhysicsServer3DAreaParameter //gd:PhysicsServer3D.AreaParameter
 
 const (
 	/*Constant to set/get gravity override mode in an area. See [enum AreaSpaceOverrideMode] for possible values.*/
@@ -3933,7 +3933,7 @@ const (
 	AreaParamWindAttenuationFactor AreaParameter = 13
 )
 
-type AreaSpaceOverrideMode = gdclass.PhysicsServer3DAreaSpaceOverrideMode
+type AreaSpaceOverrideMode = gdclass.PhysicsServer3DAreaSpaceOverrideMode //gd:PhysicsServer3D.AreaSpaceOverrideMode
 
 const (
 	/*This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.*/
@@ -3948,7 +3948,7 @@ const (
 	AreaSpaceOverrideReplaceCombine AreaSpaceOverrideMode = 4
 )
 
-type BodyMode = gdclass.PhysicsServer3DBodyMode
+type BodyMode = gdclass.PhysicsServer3DBodyMode //gd:PhysicsServer3D.BodyMode
 
 const (
 	/*Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.*/
@@ -3961,7 +3961,7 @@ const (
 	BodyModeRigidLinear BodyMode = 3
 )
 
-type BodyParameter = gdclass.PhysicsServer3DBodyParameter
+type BodyParameter = gdclass.PhysicsServer3DBodyParameter //gd:PhysicsServer3D.BodyParameter
 
 const (
 	/*Constant to set/get a body's bounce factor.*/
@@ -3988,7 +3988,7 @@ const (
 	BodyParamMax BodyParameter = 10
 )
 
-type BodyDampMode = gdclass.PhysicsServer3DBodyDampMode
+type BodyDampMode = gdclass.PhysicsServer3DBodyDampMode //gd:PhysicsServer3D.BodyDampMode
 
 const (
 	/*The body's damping value is added to any value set in areas or the default value.*/
@@ -3997,7 +3997,7 @@ const (
 	BodyDampModeReplace BodyDampMode = 1
 )
 
-type BodyState = gdclass.PhysicsServer3DBodyState
+type BodyState = gdclass.PhysicsServer3DBodyState //gd:PhysicsServer3D.BodyState
 
 const (
 	/*Constant to set/get the current transform matrix of the body.*/
@@ -4012,7 +4012,7 @@ const (
 	BodyStateCanSleep BodyState = 4
 )
 
-type AreaBodyStatus = gdclass.PhysicsServer3DAreaBodyStatus
+type AreaBodyStatus = gdclass.PhysicsServer3DAreaBodyStatus //gd:PhysicsServer3D.AreaBodyStatus
 
 const (
 	/*The value of the first parameter and area callback function receives, when an object enters one of its shapes.*/
@@ -4021,7 +4021,7 @@ const (
 	AreaBodyRemoved AreaBodyStatus = 1
 )
 
-type ProcessInfo = gdclass.PhysicsServer3DProcessInfo
+type ProcessInfo = gdclass.PhysicsServer3DProcessInfo //gd:PhysicsServer3D.ProcessInfo
 
 const (
 	/*Constant to get the number of objects that are not sleeping.*/
@@ -4032,7 +4032,7 @@ const (
 	InfoIslandCount ProcessInfo = 2
 )
 
-type SpaceParameter = gdclass.PhysicsServer3DSpaceParameter
+type SpaceParameter = gdclass.PhysicsServer3DSpaceParameter //gd:PhysicsServer3D.SpaceParameter
 
 const (
 	/*Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated.*/
@@ -4053,7 +4053,7 @@ const (
 	SpaceParamSolverIterations SpaceParameter = 7
 )
 
-type BodyAxis = gdclass.PhysicsServer3DBodyAxis
+type BodyAxis = gdclass.PhysicsServer3DBodyAxis //gd:PhysicsServer3D.BodyAxis
 
 const (
 	BodyAxisLinearX  BodyAxis = 1

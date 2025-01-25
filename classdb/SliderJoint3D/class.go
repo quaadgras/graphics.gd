@@ -43,14 +43,14 @@ type Any interface {
 /*
 Assigns [param value] to the given parameter (see [enum Param] constants).
 */
-func (self Instance) SetParam(param gdclass.SliderJoint3DParam, value Float.X) {
+func (self Instance) SetParam(param gdclass.SliderJoint3DParam, value Float.X) { //gd:SliderJoint3D.set_param
 	class(self).SetParam(param, gd.Float(value))
 }
 
 /*
 Returns the value of the given parameter (see [enum Param] constants).
 */
-func (self Instance) GetParam(param gdclass.SliderJoint3DParam) Float.X {
+func (self Instance) GetParam(param gdclass.SliderJoint3DParam) Float.X { //gd:SliderJoint3D.get_param
 	return Float.X(Float.X(class(self).GetParam(param)))
 }
 
@@ -76,7 +76,7 @@ func New() Instance {
 Assigns [param value] to the given parameter (see [enum Param] constants).
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.SliderJoint3DParam, value gd.Float) {
+func (self class) SetParam(param gdclass.SliderJoint3DParam, value gd.Float) { //gd:SliderJoint3D.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -89,7 +89,7 @@ func (self class) SetParam(param gdclass.SliderJoint3DParam, value gd.Float) {
 Returns the value of the given parameter (see [enum Param] constants).
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.SliderJoint3DParam) gd.Float {
+func (self class) GetParam(param gdclass.SliderJoint3DParam) gd.Float { //gd:SliderJoint3D.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -128,7 +128,7 @@ func init() {
 	})
 }
 
-type Param = gdclass.SliderJoint3DParam
+type Param = gdclass.SliderJoint3DParam //gd:SliderJoint3D.Param
 
 const (
 	/*Constant for accessing [member linear_limit/upper_distance]. The maximum difference between the pivot points on their X axis before damping happens.*/

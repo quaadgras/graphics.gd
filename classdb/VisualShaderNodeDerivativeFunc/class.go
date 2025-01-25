@@ -82,7 +82,7 @@ func (self Instance) SetPrecision(value gdclass.VisualShaderNodeDerivativeFuncPr
 }
 
 //go:nosplit
-func (self class) SetOpType(atype gdclass.VisualShaderNodeDerivativeFuncOpType) {
+func (self class) SetOpType(atype gdclass.VisualShaderNodeDerivativeFuncOpType) { //gd:VisualShaderNodeDerivativeFunc.set_op_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -91,7 +91,7 @@ func (self class) SetOpType(atype gdclass.VisualShaderNodeDerivativeFuncOpType) 
 }
 
 //go:nosplit
-func (self class) GetOpType() gdclass.VisualShaderNodeDerivativeFuncOpType {
+func (self class) GetOpType() gdclass.VisualShaderNodeDerivativeFuncOpType { //gd:VisualShaderNodeDerivativeFunc.get_op_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeDerivativeFuncOpType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) GetOpType() gdclass.VisualShaderNodeDerivativeFuncOpType {
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeDerivativeFuncFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeDerivativeFuncFunction) { //gd:VisualShaderNodeDerivativeFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -110,7 +110,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeDerivativeFuncFunction)
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeDerivativeFuncFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeDerivativeFuncFunction { //gd:VisualShaderNodeDerivativeFunc.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeDerivativeFuncFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func (self class) GetFunction() gdclass.VisualShaderNodeDerivativeFuncFunction {
 }
 
 //go:nosplit
-func (self class) SetPrecision(precision gdclass.VisualShaderNodeDerivativeFuncPrecision) {
+func (self class) SetPrecision(precision gdclass.VisualShaderNodeDerivativeFuncPrecision) { //gd:VisualShaderNodeDerivativeFunc.set_precision
 	var frame = callframe.New()
 	callframe.Arg(frame, precision)
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetPrecision(precision gdclass.VisualShaderNodeDerivativeFuncP
 }
 
 //go:nosplit
-func (self class) GetPrecision() gdclass.VisualShaderNodeDerivativeFuncPrecision {
+func (self class) GetPrecision() gdclass.VisualShaderNodeDerivativeFuncPrecision { //gd:VisualShaderNodeDerivativeFunc.get_precision
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeDerivativeFuncPrecision](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -181,7 +181,7 @@ func init() {
 	})
 }
 
-type OpType = gdclass.VisualShaderNodeDerivativeFuncOpType
+type OpType = gdclass.VisualShaderNodeDerivativeFuncOpType //gd:VisualShaderNodeDerivativeFunc.OpType
 
 const (
 	/*A floating-point scalar.*/
@@ -196,7 +196,7 @@ const (
 	OpTypeMax OpType = 4
 )
 
-type Function = gdclass.VisualShaderNodeDerivativeFuncFunction
+type Function = gdclass.VisualShaderNodeDerivativeFuncFunction //gd:VisualShaderNodeDerivativeFunc.Function
 
 const (
 	/*Sum of absolute derivative in [code]x[/code] and [code]y[/code].*/
@@ -209,7 +209,7 @@ const (
 	FuncMax Function = 3
 )
 
-type Precision = gdclass.VisualShaderNodeDerivativeFuncPrecision
+type Precision = gdclass.VisualShaderNodeDerivativeFuncPrecision //gd:VisualShaderNodeDerivativeFunc.Precision
 
 const (
 	/*No precision is specified, the GPU driver is allowed to use whatever level of precision it chooses. This is the default option and is equivalent to using [code]dFdx()[/code] or [code]dFdy()[/code] in text shaders.*/

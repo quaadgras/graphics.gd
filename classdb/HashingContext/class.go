@@ -94,21 +94,21 @@ type Any interface {
 /*
 Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA256] to start computation of an SHA-256).
 */
-func (self Instance) Start(atype gdclass.HashingContextHashType) error {
+func (self Instance) Start(atype gdclass.HashingContextHashType) error { //gd:HashingContext.start
 	return error(gd.ToError(class(self).Start(atype)))
 }
 
 /*
 Updates the computation with the given [param chunk] of data.
 */
-func (self Instance) Update(chunk []byte) error {
+func (self Instance) Update(chunk []byte) error { //gd:HashingContext.update
 	return error(gd.ToError(class(self).Update(gd.NewPackedByteSlice(chunk))))
 }
 
 /*
 Closes the current context, and return the computed hash.
 */
-func (self Instance) Finish() []byte {
+func (self Instance) Finish() []byte { //gd:HashingContext.finish
 	return []byte(class(self).Finish().Bytes())
 }
 
@@ -135,7 +135,7 @@ func New() Instance {
 Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA256] to start computation of an SHA-256).
 */
 //go:nosplit
-func (self class) Start(atype gdclass.HashingContextHashType) gd.Error {
+func (self class) Start(atype gdclass.HashingContextHashType) gd.Error { //gd:HashingContext.start
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -149,7 +149,7 @@ func (self class) Start(atype gdclass.HashingContextHashType) gd.Error {
 Updates the computation with the given [param chunk] of data.
 */
 //go:nosplit
-func (self class) Update(chunk gd.PackedByteArray) gd.Error {
+func (self class) Update(chunk gd.PackedByteArray) gd.Error { //gd:HashingContext.update
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(chunk))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -163,7 +163,7 @@ func (self class) Update(chunk gd.PackedByteArray) gd.Error {
 Closes the current context, and return the computed hash.
 */
 //go:nosplit
-func (self class) Finish() gd.PackedByteArray {
+func (self class) Finish() gd.PackedByteArray { //gd:HashingContext.finish
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -199,7 +199,7 @@ func init() {
 	})
 }
 
-type HashType = gdclass.HashingContextHashType
+type HashType = gdclass.HashingContextHashType //gd:HashingContext.HashType
 
 const (
 	/*Hashing algorithm: MD5.*/
@@ -210,7 +210,7 @@ const (
 	HashSha256 HashType = 2
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

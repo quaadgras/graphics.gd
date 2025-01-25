@@ -71,19 +71,19 @@ func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass
 		impl(self, state)
 	}
 }
-func (self Instance) ApplyCentralImpulse(impulse Vector3.XYZ) {
+func (self Instance) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_central_impulse
 	class(self).ApplyCentralImpulse(gd.Vector3(impulse))
 }
-func (self Instance) ApplyImpulse(impulse Vector3.XYZ) {
+func (self Instance) ApplyImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_impulse
 	class(self).ApplyImpulse(gd.Vector3(impulse), gd.Vector3(gd.Vector3{0, 0, 0}))
 }
-func (self Instance) GetSimulatePhysics() bool {
+func (self Instance) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_physics
 	return bool(class(self).GetSimulatePhysics())
 }
-func (self Instance) IsSimulatingPhysics() bool {
+func (self Instance) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating_physics
 	return bool(class(self).IsSimulatingPhysics())
 }
-func (self Instance) GetBoneId() int {
+func (self Instance) GetBoneId() int { //gd:PhysicalBone3D.get_bone_id
 	return int(int(class(self).GetBoneId()))
 }
 
@@ -247,7 +247,7 @@ func (class) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.Ph
 }
 
 //go:nosplit
-func (self class) ApplyCentralImpulse(impulse gd.Vector3) {
+func (self class) ApplyCentralImpulse(impulse gd.Vector3) { //gd:PhysicalBone3D.apply_central_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	var r_ret = callframe.Nil
@@ -256,7 +256,7 @@ func (self class) ApplyCentralImpulse(impulse gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) ApplyImpulse(impulse gd.Vector3, position gd.Vector3) {
+func (self class) ApplyImpulse(impulse gd.Vector3, position gd.Vector3) { //gd:PhysicalBone3D.apply_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	callframe.Arg(frame, position)
@@ -266,7 +266,7 @@ func (self class) ApplyImpulse(impulse gd.Vector3, position gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) SetJointType(joint_type gdclass.PhysicalBone3DJointType) {
+func (self class) SetJointType(joint_type gdclass.PhysicalBone3DJointType) { //gd:PhysicalBone3D.set_joint_type
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_type)
 	var r_ret = callframe.Nil
@@ -275,7 +275,7 @@ func (self class) SetJointType(joint_type gdclass.PhysicalBone3DJointType) {
 }
 
 //go:nosplit
-func (self class) GetJointType() gdclass.PhysicalBone3DJointType {
+func (self class) GetJointType() gdclass.PhysicalBone3DJointType { //gd:PhysicalBone3D.get_joint_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.PhysicalBone3DJointType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -285,7 +285,7 @@ func (self class) GetJointType() gdclass.PhysicalBone3DJointType {
 }
 
 //go:nosplit
-func (self class) SetJointOffset(offset gd.Transform3D) {
+func (self class) SetJointOffset(offset gd.Transform3D) { //gd:PhysicalBone3D.set_joint_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -294,7 +294,7 @@ func (self class) SetJointOffset(offset gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) GetJointOffset() gd.Transform3D {
+func (self class) GetJointOffset() gd.Transform3D { //gd:PhysicalBone3D.get_joint_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -304,7 +304,7 @@ func (self class) GetJointOffset() gd.Transform3D {
 }
 
 //go:nosplit
-func (self class) SetJointRotation(euler gd.Vector3) {
+func (self class) SetJointRotation(euler gd.Vector3) { //gd:PhysicalBone3D.set_joint_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, euler)
 	var r_ret = callframe.Nil
@@ -313,7 +313,7 @@ func (self class) SetJointRotation(euler gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetJointRotation() gd.Vector3 {
+func (self class) GetJointRotation() gd.Vector3 { //gd:PhysicalBone3D.get_joint_rotation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -323,7 +323,7 @@ func (self class) GetJointRotation() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetBodyOffset(offset gd.Transform3D) {
+func (self class) SetBodyOffset(offset gd.Transform3D) { //gd:PhysicalBone3D.set_body_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Nil
@@ -332,7 +332,7 @@ func (self class) SetBodyOffset(offset gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) GetBodyOffset() gd.Transform3D {
+func (self class) GetBodyOffset() gd.Transform3D { //gd:PhysicalBone3D.get_body_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_body_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,7 +342,7 @@ func (self class) GetBodyOffset() gd.Transform3D {
 }
 
 //go:nosplit
-func (self class) GetSimulatePhysics() bool {
+func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_physics
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_simulate_physics, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -352,7 +352,7 @@ func (self class) GetSimulatePhysics() bool {
 }
 
 //go:nosplit
-func (self class) IsSimulatingPhysics() bool {
+func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating_physics
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_is_simulating_physics, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -362,7 +362,7 @@ func (self class) IsSimulatingPhysics() bool {
 }
 
 //go:nosplit
-func (self class) GetBoneId() gd.Int {
+func (self class) GetBoneId() gd.Int { //gd:PhysicalBone3D.get_bone_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_bone_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -372,7 +372,7 @@ func (self class) GetBoneId() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMass(mass gd.Float) {
+func (self class) SetMass(mass gd.Float) { //gd:PhysicalBone3D.set_mass
 	var frame = callframe.New()
 	callframe.Arg(frame, mass)
 	var r_ret = callframe.Nil
@@ -381,7 +381,7 @@ func (self class) SetMass(mass gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMass() gd.Float {
+func (self class) GetMass() gd.Float { //gd:PhysicalBone3D.get_mass
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -391,7 +391,7 @@ func (self class) GetMass() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFriction(friction gd.Float) {
+func (self class) SetFriction(friction gd.Float) { //gd:PhysicalBone3D.set_friction
 	var frame = callframe.New()
 	callframe.Arg(frame, friction)
 	var r_ret = callframe.Nil
@@ -400,7 +400,7 @@ func (self class) SetFriction(friction gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFriction() gd.Float {
+func (self class) GetFriction() gd.Float { //gd:PhysicalBone3D.get_friction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_friction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -410,7 +410,7 @@ func (self class) GetFriction() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBounce(bounce gd.Float) {
+func (self class) SetBounce(bounce gd.Float) { //gd:PhysicalBone3D.set_bounce
 	var frame = callframe.New()
 	callframe.Arg(frame, bounce)
 	var r_ret = callframe.Nil
@@ -419,7 +419,7 @@ func (self class) SetBounce(bounce gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBounce() gd.Float {
+func (self class) GetBounce() gd.Float { //gd:PhysicalBone3D.get_bounce
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_bounce, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -429,7 +429,7 @@ func (self class) GetBounce() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetGravityScale(gravity_scale gd.Float) {
+func (self class) SetGravityScale(gravity_scale gd.Float) { //gd:PhysicalBone3D.set_gravity_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, gravity_scale)
 	var r_ret = callframe.Nil
@@ -438,7 +438,7 @@ func (self class) SetGravityScale(gravity_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetGravityScale() gd.Float {
+func (self class) GetGravityScale() gd.Float { //gd:PhysicalBone3D.get_gravity_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_gravity_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -448,7 +448,7 @@ func (self class) GetGravityScale() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetLinearDampMode(linear_damp_mode gdclass.PhysicalBone3DDampMode) {
+func (self class) SetLinearDampMode(linear_damp_mode gdclass.PhysicalBone3DDampMode) { //gd:PhysicalBone3D.set_linear_damp_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp_mode)
 	var r_ret = callframe.Nil
@@ -457,7 +457,7 @@ func (self class) SetLinearDampMode(linear_damp_mode gdclass.PhysicalBone3DDampM
 }
 
 //go:nosplit
-func (self class) GetLinearDampMode() gdclass.PhysicalBone3DDampMode {
+func (self class) GetLinearDampMode() gdclass.PhysicalBone3DDampMode { //gd:PhysicalBone3D.get_linear_damp_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.PhysicalBone3DDampMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -467,7 +467,7 @@ func (self class) GetLinearDampMode() gdclass.PhysicalBone3DDampMode {
 }
 
 //go:nosplit
-func (self class) SetAngularDampMode(angular_damp_mode gdclass.PhysicalBone3DDampMode) {
+func (self class) SetAngularDampMode(angular_damp_mode gdclass.PhysicalBone3DDampMode) { //gd:PhysicalBone3D.set_angular_damp_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp_mode)
 	var r_ret = callframe.Nil
@@ -476,7 +476,7 @@ func (self class) SetAngularDampMode(angular_damp_mode gdclass.PhysicalBone3DDam
 }
 
 //go:nosplit
-func (self class) GetAngularDampMode() gdclass.PhysicalBone3DDampMode {
+func (self class) GetAngularDampMode() gdclass.PhysicalBone3DDampMode { //gd:PhysicalBone3D.get_angular_damp_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.PhysicalBone3DDampMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -486,7 +486,7 @@ func (self class) GetAngularDampMode() gdclass.PhysicalBone3DDampMode {
 }
 
 //go:nosplit
-func (self class) SetLinearDamp(linear_damp gd.Float) {
+func (self class) SetLinearDamp(linear_damp gd.Float) { //gd:PhysicalBone3D.set_linear_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp)
 	var r_ret = callframe.Nil
@@ -495,7 +495,7 @@ func (self class) SetLinearDamp(linear_damp gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLinearDamp() gd.Float {
+func (self class) GetLinearDamp() gd.Float { //gd:PhysicalBone3D.get_linear_damp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -505,7 +505,7 @@ func (self class) GetLinearDamp() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAngularDamp(angular_damp gd.Float) {
+func (self class) SetAngularDamp(angular_damp gd.Float) { //gd:PhysicalBone3D.set_angular_damp
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp)
 	var r_ret = callframe.Nil
@@ -514,7 +514,7 @@ func (self class) SetAngularDamp(angular_damp gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAngularDamp() gd.Float {
+func (self class) GetAngularDamp() gd.Float { //gd:PhysicalBone3D.get_angular_damp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -524,7 +524,7 @@ func (self class) GetAngularDamp() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetLinearVelocity(linear_velocity gd.Vector3) {
+func (self class) SetLinearVelocity(linear_velocity gd.Vector3) { //gd:PhysicalBone3D.set_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_velocity)
 	var r_ret = callframe.Nil
@@ -533,7 +533,7 @@ func (self class) SetLinearVelocity(linear_velocity gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetLinearVelocity() gd.Vector3 {
+func (self class) GetLinearVelocity() gd.Vector3 { //gd:PhysicalBone3D.get_linear_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -543,7 +543,7 @@ func (self class) GetLinearVelocity() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetAngularVelocity(angular_velocity gd.Vector3) {
+func (self class) SetAngularVelocity(angular_velocity gd.Vector3) { //gd:PhysicalBone3D.set_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_velocity)
 	var r_ret = callframe.Nil
@@ -552,7 +552,7 @@ func (self class) SetAngularVelocity(angular_velocity gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetAngularVelocity() gd.Vector3 {
+func (self class) GetAngularVelocity() gd.Vector3 { //gd:PhysicalBone3D.get_angular_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -562,7 +562,7 @@ func (self class) GetAngularVelocity() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetUseCustomIntegrator(enable bool) {
+func (self class) SetUseCustomIntegrator(enable bool) { //gd:PhysicalBone3D.set_use_custom_integrator
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -571,7 +571,7 @@ func (self class) SetUseCustomIntegrator(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingCustomIntegrator() bool {
+func (self class) IsUsingCustomIntegrator() bool { //gd:PhysicalBone3D.is_using_custom_integrator
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_is_using_custom_integrator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -581,7 +581,7 @@ func (self class) IsUsingCustomIntegrator() bool {
 }
 
 //go:nosplit
-func (self class) SetCanSleep(able_to_sleep bool) {
+func (self class) SetCanSleep(able_to_sleep bool) { //gd:PhysicalBone3D.set_can_sleep
 	var frame = callframe.New()
 	callframe.Arg(frame, able_to_sleep)
 	var r_ret = callframe.Nil
@@ -590,7 +590,7 @@ func (self class) SetCanSleep(able_to_sleep bool) {
 }
 
 //go:nosplit
-func (self class) IsAbleToSleep() bool {
+func (self class) IsAbleToSleep() bool { //gd:PhysicalBone3D.is_able_to_sleep
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_is_able_to_sleep, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -640,7 +640,7 @@ func init() {
 	})
 }
 
-type DampMode = gdclass.PhysicalBone3DDampMode
+type DampMode = gdclass.PhysicalBone3DDampMode //gd:PhysicalBone3D.DampMode
 
 const (
 	/*In this mode, the body's damping value is added to any value set in areas or the default value.*/
@@ -649,7 +649,7 @@ const (
 	DampModeReplace DampMode = 1
 )
 
-type JointType = gdclass.PhysicalBone3DJointType
+type JointType = gdclass.PhysicalBone3DJointType //gd:PhysicalBone3D.JointType
 
 const (
 	JointTypeNone   JointType = 0

@@ -84,7 +84,7 @@ func (self Instance) SetEditorOnly(value bool) {
 }
 
 //go:nosplit
-func (self class) GetBorderColor() gd.Color {
+func (self class) GetBorderColor() gd.Color { //gd:ReferenceRect.get_border_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReferenceRect.Bind_get_border_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -94,7 +94,7 @@ func (self class) GetBorderColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetBorderColor(color gd.Color) {
+func (self class) SetBorderColor(color gd.Color) { //gd:ReferenceRect.set_border_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -103,7 +103,7 @@ func (self class) SetBorderColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetBorderWidth() gd.Float {
+func (self class) GetBorderWidth() gd.Float { //gd:ReferenceRect.get_border_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReferenceRect.Bind_get_border_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -113,7 +113,7 @@ func (self class) GetBorderWidth() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBorderWidth(width gd.Float) {
+func (self class) SetBorderWidth(width gd.Float) { //gd:ReferenceRect.set_border_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -122,7 +122,7 @@ func (self class) SetBorderWidth(width gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEditorOnly() bool {
+func (self class) GetEditorOnly() bool { //gd:ReferenceRect.get_editor_only
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReferenceRect.Bind_get_editor_only, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -132,7 +132,7 @@ func (self class) GetEditorOnly() bool {
 }
 
 //go:nosplit
-func (self class) SetEditorOnly(enabled bool) {
+func (self class) SetEditorOnly(enabled bool) { //gd:ReferenceRect.set_editor_only
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil

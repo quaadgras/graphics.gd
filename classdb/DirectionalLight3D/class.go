@@ -83,7 +83,7 @@ func (self Instance) SetSkyMode(value gdclass.DirectionalLight3DSkyMode) {
 }
 
 //go:nosplit
-func (self class) SetShadowMode(mode gdclass.DirectionalLight3DShadowMode) {
+func (self class) SetShadowMode(mode gdclass.DirectionalLight3DShadowMode) { //gd:DirectionalLight3D.set_shadow_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -92,7 +92,7 @@ func (self class) SetShadowMode(mode gdclass.DirectionalLight3DShadowMode) {
 }
 
 //go:nosplit
-func (self class) GetShadowMode() gdclass.DirectionalLight3DShadowMode {
+func (self class) GetShadowMode() gdclass.DirectionalLight3DShadowMode { //gd:DirectionalLight3D.get_shadow_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.DirectionalLight3DShadowMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight3D.Bind_get_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -102,7 +102,7 @@ func (self class) GetShadowMode() gdclass.DirectionalLight3DShadowMode {
 }
 
 //go:nosplit
-func (self class) SetBlendSplits(enabled bool) {
+func (self class) SetBlendSplits(enabled bool) { //gd:DirectionalLight3D.set_blend_splits
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -111,7 +111,7 @@ func (self class) SetBlendSplits(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsBlendSplitsEnabled() bool {
+func (self class) IsBlendSplitsEnabled() bool { //gd:DirectionalLight3D.is_blend_splits_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight3D.Bind_is_blend_splits_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -121,7 +121,7 @@ func (self class) IsBlendSplitsEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetSkyMode(mode gdclass.DirectionalLight3DSkyMode) {
+func (self class) SetSkyMode(mode gdclass.DirectionalLight3DSkyMode) { //gd:DirectionalLight3D.set_sky_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -130,7 +130,7 @@ func (self class) SetSkyMode(mode gdclass.DirectionalLight3DSkyMode) {
 }
 
 //go:nosplit
-func (self class) GetSkyMode() gdclass.DirectionalLight3DSkyMode {
+func (self class) GetSkyMode() gdclass.DirectionalLight3DSkyMode { //gd:DirectionalLight3D.get_sky_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.DirectionalLight3DSkyMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight3D.Bind_get_sky_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func init() {
 	})
 }
 
-type ShadowMode = gdclass.DirectionalLight3DShadowMode
+type ShadowMode = gdclass.DirectionalLight3DShadowMode //gd:DirectionalLight3D.ShadowMode
 
 const (
 	/*Renders the entire scene's shadow map from an orthogonal point of view. This is the fastest directional shadow mode. May result in blurrier shadows on close objects.*/
@@ -185,7 +185,7 @@ const (
 	ShadowParallel4Splits ShadowMode = 2
 )
 
-type SkyMode = gdclass.DirectionalLight3DSkyMode
+type SkyMode = gdclass.DirectionalLight3DSkyMode //gd:DirectionalLight3D.SkyMode
 
 const (
 	/*Makes the light visible in both scene lighting and sky rendering.*/

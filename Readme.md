@@ -91,14 +91,12 @@ media, managing assets and designing the visual and spatial aspects  of a projec
 **NOTE:** Don't forget to write tests!
 
 ## Where Do I Find?
-
+Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbol.
 ```
-* Engine Class           -> graphics.gd/classdb/{ClassName}
-* Engine Class Method    -> graphics.gd/classdb/{ClassName}.Instance.{pascal(MethodName)}
-* Utility Functions      -> graphics.gd/variant/* and/or use the Go standard library.
-* Enum                   -> graphics.gd/classdb/{ClassName}.{EnumName}
-* Enum Value             -> graphics.gd/classdb/{ClassName}.{EnumName}{EnumValueName}
-* Singletons             -> graphics.gd/classdb/{ClassName}.{pascal(MethodName)} // package-level functions.
+* Engine Class           -> `//gd:ClassName`
+* Engine Class Method    -> `//gd:ClassName.method_name`
+* Utility Functions      -> `//gd:utility_function_name`
+* Enum                   -> `//gd:ClassName.EnumName`
 ```
 
 ## Performance

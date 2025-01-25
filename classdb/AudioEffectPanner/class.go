@@ -67,7 +67,7 @@ func (self Instance) SetPan(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetPan(cpanume gd.Float) {
+func (self class) SetPan(cpanume gd.Float) { //gd:AudioEffectPanner.set_pan
 	var frame = callframe.New()
 	callframe.Arg(frame, cpanume)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetPan(cpanume gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPan() gd.Float {
+func (self class) GetPan() gd.Float { //gd:AudioEffectPanner.get_pan
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPanner.Bind_get_pan, self.AsObject(), frame.Array(0), r_ret.Addr())

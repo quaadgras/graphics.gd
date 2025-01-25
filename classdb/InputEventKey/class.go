@@ -46,7 +46,7 @@ type Any interface {
 Returns the Latin keycode combined with modifier keys such as [kbd]Shift[/kbd] or [kbd]Alt[/kbd]. See also [InputEventWithModifiers].
 To get a human-readable representation of the [InputEventKey] with modifiers, use [code]OS.get_keycode_string(event.get_keycode_with_modifiers())[/code] where [code]event[/code] is the [InputEventKey].
 */
-func (self Instance) GetKeycodeWithModifiers() Key {
+func (self Instance) GetKeycodeWithModifiers() Key { //gd:InputEventKey.get_keycode_with_modifiers
 	return Key(class(self).GetKeycodeWithModifiers())
 }
 
@@ -54,7 +54,7 @@ func (self Instance) GetKeycodeWithModifiers() Key {
 Returns the physical keycode combined with modifier keys such as [kbd]Shift[/kbd] or [kbd]Alt[/kbd]. See also [InputEventWithModifiers].
 To get a human-readable representation of the [InputEventKey] with modifiers, use [code]OS.get_keycode_string(event.get_physical_keycode_with_modifiers())[/code] where [code]event[/code] is the [InputEventKey].
 */
-func (self Instance) GetPhysicalKeycodeWithModifiers() Key {
+func (self Instance) GetPhysicalKeycodeWithModifiers() Key { //gd:InputEventKey.get_physical_keycode_with_modifiers
 	return Key(class(self).GetPhysicalKeycodeWithModifiers())
 }
 
@@ -62,35 +62,35 @@ func (self Instance) GetPhysicalKeycodeWithModifiers() Key {
 Returns the localized key label combined with modifier keys such as [kbd]Shift[/kbd] or [kbd]Alt[/kbd]. See also [InputEventWithModifiers].
 To get a human-readable representation of the [InputEventKey] with modifiers, use [code]OS.get_keycode_string(event.get_key_label_with_modifiers())[/code] where [code]event[/code] is the [InputEventKey].
 */
-func (self Instance) GetKeyLabelWithModifiers() Key {
+func (self Instance) GetKeyLabelWithModifiers() Key { //gd:InputEventKey.get_key_label_with_modifiers
 	return Key(class(self).GetKeyLabelWithModifiers())
 }
 
 /*
 Returns a [String] representation of the event's [member keycode] and modifiers.
 */
-func (self Instance) AsTextKeycode() string {
+func (self Instance) AsTextKeycode() string { //gd:InputEventKey.as_text_keycode
 	return string(class(self).AsTextKeycode().String())
 }
 
 /*
 Returns a [String] representation of the event's [member physical_keycode] and modifiers.
 */
-func (self Instance) AsTextPhysicalKeycode() string {
+func (self Instance) AsTextPhysicalKeycode() string { //gd:InputEventKey.as_text_physical_keycode
 	return string(class(self).AsTextPhysicalKeycode().String())
 }
 
 /*
 Returns a [String] representation of the event's [member key_label] and modifiers.
 */
-func (self Instance) AsTextKeyLabel() string {
+func (self Instance) AsTextKeyLabel() string { //gd:InputEventKey.as_text_key_label
 	return string(class(self).AsTextKeyLabel().String())
 }
 
 /*
 Returns a [String] representation of the event's [member location]. This will be a blank string if the event is not specific to a location.
 */
-func (self Instance) AsTextLocation() string {
+func (self Instance) AsTextLocation() string { //gd:InputEventKey.as_text_location
 	return string(class(self).AsTextLocation().String())
 }
 
@@ -162,7 +162,7 @@ func (self Instance) SetEcho(value bool) {
 }
 
 //go:nosplit
-func (self class) SetPressed(pressed bool) {
+func (self class) SetPressed(pressed bool) { //gd:InputEventKey.set_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -171,7 +171,7 @@ func (self class) SetPressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) SetKeycode(keycode Key) {
+func (self class) SetKeycode(keycode Key) { //gd:InputEventKey.set_keycode
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
 	var r_ret = callframe.Nil
@@ -180,7 +180,7 @@ func (self class) SetKeycode(keycode Key) {
 }
 
 //go:nosplit
-func (self class) GetKeycode() Key {
+func (self class) GetKeycode() Key { //gd:InputEventKey.get_keycode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -190,7 +190,7 @@ func (self class) GetKeycode() Key {
 }
 
 //go:nosplit
-func (self class) SetPhysicalKeycode(physical_keycode Key) {
+func (self class) SetPhysicalKeycode(physical_keycode Key) { //gd:InputEventKey.set_physical_keycode
 	var frame = callframe.New()
 	callframe.Arg(frame, physical_keycode)
 	var r_ret = callframe.Nil
@@ -199,7 +199,7 @@ func (self class) SetPhysicalKeycode(physical_keycode Key) {
 }
 
 //go:nosplit
-func (self class) GetPhysicalKeycode() Key {
+func (self class) GetPhysicalKeycode() Key { //gd:InputEventKey.get_physical_keycode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -209,7 +209,7 @@ func (self class) GetPhysicalKeycode() Key {
 }
 
 //go:nosplit
-func (self class) SetKeyLabel(key_label Key) {
+func (self class) SetKeyLabel(key_label Key) { //gd:InputEventKey.set_key_label
 	var frame = callframe.New()
 	callframe.Arg(frame, key_label)
 	var r_ret = callframe.Nil
@@ -218,7 +218,7 @@ func (self class) SetKeyLabel(key_label Key) {
 }
 
 //go:nosplit
-func (self class) GetKeyLabel() Key {
+func (self class) GetKeyLabel() Key { //gd:InputEventKey.get_key_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_key_label, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -228,7 +228,7 @@ func (self class) GetKeyLabel() Key {
 }
 
 //go:nosplit
-func (self class) SetUnicode(unicode gd.Int) {
+func (self class) SetUnicode(unicode gd.Int) { //gd:InputEventKey.set_unicode
 	var frame = callframe.New()
 	callframe.Arg(frame, unicode)
 	var r_ret = callframe.Nil
@@ -237,7 +237,7 @@ func (self class) SetUnicode(unicode gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetUnicode() gd.Int {
+func (self class) GetUnicode() gd.Int { //gd:InputEventKey.get_unicode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_unicode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -247,7 +247,7 @@ func (self class) GetUnicode() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetLocation(location KeyLocation) {
+func (self class) SetLocation(location KeyLocation) { //gd:InputEventKey.set_location
 	var frame = callframe.New()
 	callframe.Arg(frame, location)
 	var r_ret = callframe.Nil
@@ -256,7 +256,7 @@ func (self class) SetLocation(location KeyLocation) {
 }
 
 //go:nosplit
-func (self class) GetLocation() KeyLocation {
+func (self class) GetLocation() KeyLocation { //gd:InputEventKey.get_location
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[KeyLocation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_location, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -266,7 +266,7 @@ func (self class) GetLocation() KeyLocation {
 }
 
 //go:nosplit
-func (self class) SetEcho(echo bool) {
+func (self class) SetEcho(echo bool) { //gd:InputEventKey.set_echo
 	var frame = callframe.New()
 	callframe.Arg(frame, echo)
 	var r_ret = callframe.Nil
@@ -279,7 +279,7 @@ Returns the Latin keycode combined with modifier keys such as [kbd]Shift[/kbd] o
 To get a human-readable representation of the [InputEventKey] with modifiers, use [code]OS.get_keycode_string(event.get_keycode_with_modifiers())[/code] where [code]event[/code] is the [InputEventKey].
 */
 //go:nosplit
-func (self class) GetKeycodeWithModifiers() Key {
+func (self class) GetKeycodeWithModifiers() Key { //gd:InputEventKey.get_keycode_with_modifiers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_keycode_with_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -293,7 +293,7 @@ Returns the physical keycode combined with modifier keys such as [kbd]Shift[/kbd
 To get a human-readable representation of the [InputEventKey] with modifiers, use [code]OS.get_keycode_string(event.get_physical_keycode_with_modifiers())[/code] where [code]event[/code] is the [InputEventKey].
 */
 //go:nosplit
-func (self class) GetPhysicalKeycodeWithModifiers() Key {
+func (self class) GetPhysicalKeycodeWithModifiers() Key { //gd:InputEventKey.get_physical_keycode_with_modifiers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode_with_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -307,7 +307,7 @@ Returns the localized key label combined with modifier keys such as [kbd]Shift[/
 To get a human-readable representation of the [InputEventKey] with modifiers, use [code]OS.get_keycode_string(event.get_key_label_with_modifiers())[/code] where [code]event[/code] is the [InputEventKey].
 */
 //go:nosplit
-func (self class) GetKeyLabelWithModifiers() Key {
+func (self class) GetKeyLabelWithModifiers() Key { //gd:InputEventKey.get_key_label_with_modifiers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_get_key_label_with_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -320,7 +320,7 @@ func (self class) GetKeyLabelWithModifiers() Key {
 Returns a [String] representation of the event's [member keycode] and modifiers.
 */
 //go:nosplit
-func (self class) AsTextKeycode() gd.String {
+func (self class) AsTextKeycode() gd.String { //gd:InputEventKey.as_text_keycode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -333,7 +333,7 @@ func (self class) AsTextKeycode() gd.String {
 Returns a [String] representation of the event's [member physical_keycode] and modifiers.
 */
 //go:nosplit
-func (self class) AsTextPhysicalKeycode() gd.String {
+func (self class) AsTextPhysicalKeycode() gd.String { //gd:InputEventKey.as_text_physical_keycode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_physical_keycode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -346,7 +346,7 @@ func (self class) AsTextPhysicalKeycode() gd.String {
 Returns a [String] representation of the event's [member key_label] and modifiers.
 */
 //go:nosplit
-func (self class) AsTextKeyLabel() gd.String {
+func (self class) AsTextKeyLabel() gd.String { //gd:InputEventKey.as_text_key_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_key_label, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -359,7 +359,7 @@ func (self class) AsTextKeyLabel() gd.String {
 Returns a [String] representation of the event's [member location]. This will be a blank string if the event is not specific to a location.
 */
 //go:nosplit
-func (self class) AsTextLocation() gd.String {
+func (self class) AsTextLocation() gd.String { //gd:InputEventKey.as_text_location
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventKey.Bind_as_text_location, self.AsObject(), frame.Array(0), r_ret.Addr())

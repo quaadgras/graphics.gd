@@ -73,42 +73,42 @@ type Any interface {
 /*
 Enables or disables auto-advance for the given [param input] index. If enabled, state changes to the next input after playing the animation once. If enabled for the last input state, it loops to the first.
 */
-func (self Instance) SetInputAsAutoAdvance(input int, enable bool) {
+func (self Instance) SetInputAsAutoAdvance(input int, enable bool) { //gd:AnimationNodeTransition.set_input_as_auto_advance
 	class(self).SetInputAsAutoAdvance(gd.Int(input), enable)
 }
 
 /*
 Returns [code]true[/code] if auto-advance is enabled for the given [param input] index.
 */
-func (self Instance) IsInputSetAsAutoAdvance(input int) bool {
+func (self Instance) IsInputSetAsAutoAdvance(input int) bool { //gd:AnimationNodeTransition.is_input_set_as_auto_advance
 	return bool(class(self).IsInputSetAsAutoAdvance(gd.Int(input)))
 }
 
 /*
 If [code]true[/code], breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
 */
-func (self Instance) SetInputBreakLoopAtEnd(input int, enable bool) {
+func (self Instance) SetInputBreakLoopAtEnd(input int, enable bool) { //gd:AnimationNodeTransition.set_input_break_loop_at_end
 	class(self).SetInputBreakLoopAtEnd(gd.Int(input), enable)
 }
 
 /*
 Returns whether the animation breaks the loop at the end of the loop cycle for transition.
 */
-func (self Instance) IsInputLoopBrokenAtEnd(input int) bool {
+func (self Instance) IsInputLoopBrokenAtEnd(input int) bool { //gd:AnimationNodeTransition.is_input_loop_broken_at_end
 	return bool(class(self).IsInputLoopBrokenAtEnd(gd.Int(input)))
 }
 
 /*
 If [code]true[/code], the destination animation is restarted when the animation transitions.
 */
-func (self Instance) SetInputReset(input int, enable bool) {
+func (self Instance) SetInputReset(input int, enable bool) { //gd:AnimationNodeTransition.set_input_reset
 	class(self).SetInputReset(gd.Int(input), enable)
 }
 
 /*
 Returns whether the animation restarts when the animation transitions from the other animation.
 */
-func (self Instance) IsInputReset(input int) bool {
+func (self Instance) IsInputReset(input int) bool { //gd:AnimationNodeTransition.is_input_reset
 	return bool(class(self).IsInputReset(gd.Int(input)))
 }
 
@@ -160,7 +160,7 @@ func (self Instance) SetInputCount(value int) {
 }
 
 //go:nosplit
-func (self class) SetInputCount(input_count gd.Int) {
+func (self class) SetInputCount(input_count gd.Int) { //gd:AnimationNodeTransition.set_input_count
 	var frame = callframe.New()
 	callframe.Arg(frame, input_count)
 	var r_ret = callframe.Nil
@@ -172,7 +172,7 @@ func (self class) SetInputCount(input_count gd.Int) {
 Enables or disables auto-advance for the given [param input] index. If enabled, state changes to the next input after playing the animation once. If enabled for the last input state, it loops to the first.
 */
 //go:nosplit
-func (self class) SetInputAsAutoAdvance(input gd.Int, enable bool) {
+func (self class) SetInputAsAutoAdvance(input gd.Int, enable bool) { //gd:AnimationNodeTransition.set_input_as_auto_advance
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	callframe.Arg(frame, enable)
@@ -185,7 +185,7 @@ func (self class) SetInputAsAutoAdvance(input gd.Int, enable bool) {
 Returns [code]true[/code] if auto-advance is enabled for the given [param input] index.
 */
 //go:nosplit
-func (self class) IsInputSetAsAutoAdvance(input gd.Int) bool {
+func (self class) IsInputSetAsAutoAdvance(input gd.Int) bool { //gd:AnimationNodeTransition.is_input_set_as_auto_advance
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	var r_ret = callframe.Ret[bool](frame)
@@ -199,7 +199,7 @@ func (self class) IsInputSetAsAutoAdvance(input gd.Int) bool {
 If [code]true[/code], breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
 */
 //go:nosplit
-func (self class) SetInputBreakLoopAtEnd(input gd.Int, enable bool) {
+func (self class) SetInputBreakLoopAtEnd(input gd.Int, enable bool) { //gd:AnimationNodeTransition.set_input_break_loop_at_end
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	callframe.Arg(frame, enable)
@@ -212,7 +212,7 @@ func (self class) SetInputBreakLoopAtEnd(input gd.Int, enable bool) {
 Returns whether the animation breaks the loop at the end of the loop cycle for transition.
 */
 //go:nosplit
-func (self class) IsInputLoopBrokenAtEnd(input gd.Int) bool {
+func (self class) IsInputLoopBrokenAtEnd(input gd.Int) bool { //gd:AnimationNodeTransition.is_input_loop_broken_at_end
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	var r_ret = callframe.Ret[bool](frame)
@@ -226,7 +226,7 @@ func (self class) IsInputLoopBrokenAtEnd(input gd.Int) bool {
 If [code]true[/code], the destination animation is restarted when the animation transitions.
 */
 //go:nosplit
-func (self class) SetInputReset(input gd.Int, enable bool) {
+func (self class) SetInputReset(input gd.Int, enable bool) { //gd:AnimationNodeTransition.set_input_reset
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	callframe.Arg(frame, enable)
@@ -239,7 +239,7 @@ func (self class) SetInputReset(input gd.Int, enable bool) {
 Returns whether the animation restarts when the animation transitions from the other animation.
 */
 //go:nosplit
-func (self class) IsInputReset(input gd.Int) bool {
+func (self class) IsInputReset(input gd.Int) bool { //gd:AnimationNodeTransition.is_input_reset
 	var frame = callframe.New()
 	callframe.Arg(frame, input)
 	var r_ret = callframe.Ret[bool](frame)
@@ -250,7 +250,7 @@ func (self class) IsInputReset(input gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) SetXfadeTime(time gd.Float) {
+func (self class) SetXfadeTime(time gd.Float) { //gd:AnimationNodeTransition.set_xfade_time
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Nil
@@ -259,7 +259,7 @@ func (self class) SetXfadeTime(time gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetXfadeTime() gd.Float {
+func (self class) GetXfadeTime() gd.Float { //gd:AnimationNodeTransition.get_xfade_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_get_xfade_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -269,7 +269,7 @@ func (self class) GetXfadeTime() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetXfadeCurve(curve [1]gdclass.Curve) {
+func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeTransition.set_xfade_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -278,7 +278,7 @@ func (self class) SetXfadeCurve(curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetXfadeCurve() [1]gdclass.Curve {
+func (self class) GetXfadeCurve() [1]gdclass.Curve { //gd:AnimationNodeTransition.get_xfade_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_get_xfade_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -288,7 +288,7 @@ func (self class) GetXfadeCurve() [1]gdclass.Curve {
 }
 
 //go:nosplit
-func (self class) SetAllowTransitionToSelf(enable bool) {
+func (self class) SetAllowTransitionToSelf(enable bool) { //gd:AnimationNodeTransition.set_allow_transition_to_self
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -297,7 +297,7 @@ func (self class) SetAllowTransitionToSelf(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsAllowTransitionToSelf() bool {
+func (self class) IsAllowTransitionToSelf() bool { //gd:AnimationNodeTransition.is_allow_transition_to_self
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_is_allow_transition_to_self, self.AsObject(), frame.Array(0), r_ret.Addr())

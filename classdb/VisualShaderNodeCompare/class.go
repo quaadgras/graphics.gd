@@ -82,7 +82,7 @@ func (self Instance) SetCondition(value gdclass.VisualShaderNodeCompareCondition
 }
 
 //go:nosplit
-func (self class) SetComparisonType(atype gdclass.VisualShaderNodeCompareComparisonType) {
+func (self class) SetComparisonType(atype gdclass.VisualShaderNodeCompareComparisonType) { //gd:VisualShaderNodeCompare.set_comparison_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -91,7 +91,7 @@ func (self class) SetComparisonType(atype gdclass.VisualShaderNodeCompareCompari
 }
 
 //go:nosplit
-func (self class) GetComparisonType() gdclass.VisualShaderNodeCompareComparisonType {
+func (self class) GetComparisonType() gdclass.VisualShaderNodeCompareComparisonType { //gd:VisualShaderNodeCompare.get_comparison_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeCompareComparisonType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCompare.Bind_get_comparison_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) GetComparisonType() gdclass.VisualShaderNodeCompareComparisonT
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeCompareFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeCompareFunction) { //gd:VisualShaderNodeCompare.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -110,7 +110,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeCompareFunction) {
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeCompareFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeCompareFunction { //gd:VisualShaderNodeCompare.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeCompareFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCompare.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func (self class) GetFunction() gdclass.VisualShaderNodeCompareFunction {
 }
 
 //go:nosplit
-func (self class) SetCondition(condition gdclass.VisualShaderNodeCompareCondition) {
+func (self class) SetCondition(condition gdclass.VisualShaderNodeCompareCondition) { //gd:VisualShaderNodeCompare.set_condition
 	var frame = callframe.New()
 	callframe.Arg(frame, condition)
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetCondition(condition gdclass.VisualShaderNodeCompareConditio
 }
 
 //go:nosplit
-func (self class) GetCondition() gdclass.VisualShaderNodeCompareCondition {
+func (self class) GetCondition() gdclass.VisualShaderNodeCompareCondition { //gd:VisualShaderNodeCompare.get_condition
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeCompareCondition](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCompare.Bind_get_condition, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -179,7 +179,7 @@ func init() {
 	})
 }
 
-type ComparisonType = gdclass.VisualShaderNodeCompareComparisonType
+type ComparisonType = gdclass.VisualShaderNodeCompareComparisonType //gd:VisualShaderNodeCompare.ComparisonType
 
 const (
 	/*A floating-point scalar.*/
@@ -202,7 +202,7 @@ const (
 	CtypeMax ComparisonType = 8
 )
 
-type Function = gdclass.VisualShaderNodeCompareFunction
+type Function = gdclass.VisualShaderNodeCompareFunction //gd:VisualShaderNodeCompare.Function
 
 const (
 	/*Comparison for equality ([code]a == b[/code]).*/
@@ -221,7 +221,7 @@ const (
 	FuncMax Function = 6
 )
 
-type Condition = gdclass.VisualShaderNodeCompareCondition
+type Condition = gdclass.VisualShaderNodeCompareCondition //gd:VisualShaderNodeCompare.Condition
 
 const (
 	/*The result will be true if all of component in vector satisfy the comparison condition.*/

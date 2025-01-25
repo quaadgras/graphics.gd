@@ -139,168 +139,168 @@ func (Instance) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx int)) 
 /*
 Returns the object's [RID].
 */
-func (self Instance) GetRid() Resource.ID {
+func (self Instance) GetRid() Resource.ID { //gd:CollisionObject2D.get_rid
 	return Resource.ID(class(self).GetRid())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetCollisionLayerValue(layer_number int, value bool) {
+func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:CollisionObject2D.set_collision_layer_value
 	class(self).SetCollisionLayerValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetCollisionLayerValue(layer_number int) bool {
+func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:CollisionObject2D.get_collision_layer_value
 	return bool(class(self).GetCollisionLayerValue(gd.Int(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) {
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:CollisionObject2D.set_collision_mask_value
 	class(self).SetCollisionMaskValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetCollisionMaskValue(layer_number int) bool {
+func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:CollisionObject2D.get_collision_mask_value
 	return bool(class(self).GetCollisionMaskValue(gd.Int(layer_number)))
 }
 
 /*
 Creates a new shape owner for the given object. Returns [code]owner_id[/code] of the new owner for future reference.
 */
-func (self Instance) CreateShapeOwner(owner Object.Instance) int {
+func (self Instance) CreateShapeOwner(owner Object.Instance) int { //gd:CollisionObject2D.create_shape_owner
 	return int(int(class(self).CreateShapeOwner(owner)))
 }
 
 /*
 Removes the given shape owner.
 */
-func (self Instance) RemoveShapeOwner(owner_id int) {
+func (self Instance) RemoveShapeOwner(owner_id int) { //gd:CollisionObject2D.remove_shape_owner
 	class(self).RemoveShapeOwner(gd.Int(owner_id))
 }
 
 /*
 Returns an [Array] of [code]owner_id[/code] identifiers. You can use these ids in other methods that take [code]owner_id[/code] as an argument.
 */
-func (self Instance) GetShapeOwners() []int32 {
+func (self Instance) GetShapeOwners() []int32 { //gd:CollisionObject2D.get_shape_owners
 	return []int32(class(self).GetShapeOwners().AsSlice())
 }
 
 /*
 Sets the [Transform2D] of the given shape owner.
 */
-func (self Instance) ShapeOwnerSetTransform(owner_id int, transform Transform2D.OriginXY) {
+func (self Instance) ShapeOwnerSetTransform(owner_id int, transform Transform2D.OriginXY) { //gd:CollisionObject2D.shape_owner_set_transform
 	class(self).ShapeOwnerSetTransform(gd.Int(owner_id), gd.Transform2D(transform))
 }
 
 /*
 Returns the shape owner's [Transform2D].
 */
-func (self Instance) ShapeOwnerGetTransform(owner_id int) Transform2D.OriginXY {
+func (self Instance) ShapeOwnerGetTransform(owner_id int) Transform2D.OriginXY { //gd:CollisionObject2D.shape_owner_get_transform
 	return Transform2D.OriginXY(class(self).ShapeOwnerGetTransform(gd.Int(owner_id)))
 }
 
 /*
 Returns the parent object of the given shape owner.
 */
-func (self Instance) ShapeOwnerGetOwner(owner_id int) Object.Instance {
+func (self Instance) ShapeOwnerGetOwner(owner_id int) Object.Instance { //gd:CollisionObject2D.shape_owner_get_owner
 	return Object.Instance(class(self).ShapeOwnerGetOwner(gd.Int(owner_id)))
 }
 
 /*
 If [code]true[/code], disables the given shape owner.
 */
-func (self Instance) ShapeOwnerSetDisabled(owner_id int, disabled bool) {
+func (self Instance) ShapeOwnerSetDisabled(owner_id int, disabled bool) { //gd:CollisionObject2D.shape_owner_set_disabled
 	class(self).ShapeOwnerSetDisabled(gd.Int(owner_id), disabled)
 }
 
 /*
 If [code]true[/code], the shape owner and its shapes are disabled.
 */
-func (self Instance) IsShapeOwnerDisabled(owner_id int) bool {
+func (self Instance) IsShapeOwnerDisabled(owner_id int) bool { //gd:CollisionObject2D.is_shape_owner_disabled
 	return bool(class(self).IsShapeOwnerDisabled(gd.Int(owner_id)))
 }
 
 /*
 If [param enable] is [code]true[/code], collisions for the shape owner originating from this [CollisionObject2D] will not be reported to collided with [CollisionObject2D]s.
 */
-func (self Instance) ShapeOwnerSetOneWayCollision(owner_id int, enable bool) {
+func (self Instance) ShapeOwnerSetOneWayCollision(owner_id int, enable bool) { //gd:CollisionObject2D.shape_owner_set_one_way_collision
 	class(self).ShapeOwnerSetOneWayCollision(gd.Int(owner_id), enable)
 }
 
 /*
 Returns [code]true[/code] if collisions for the shape owner originating from this [CollisionObject2D] will not be reported to collided with [CollisionObject2D]s.
 */
-func (self Instance) IsShapeOwnerOneWayCollisionEnabled(owner_id int) bool {
+func (self Instance) IsShapeOwnerOneWayCollisionEnabled(owner_id int) bool { //gd:CollisionObject2D.is_shape_owner_one_way_collision_enabled
 	return bool(class(self).IsShapeOwnerOneWayCollisionEnabled(gd.Int(owner_id)))
 }
 
 /*
 Sets the [code]one_way_collision_margin[/code] of the shape owner identified by given [param owner_id] to [param margin] pixels.
 */
-func (self Instance) ShapeOwnerSetOneWayCollisionMargin(owner_id int, margin Float.X) {
+func (self Instance) ShapeOwnerSetOneWayCollisionMargin(owner_id int, margin Float.X) { //gd:CollisionObject2D.shape_owner_set_one_way_collision_margin
 	class(self).ShapeOwnerSetOneWayCollisionMargin(gd.Int(owner_id), gd.Float(margin))
 }
 
 /*
 Returns the [code]one_way_collision_margin[/code] of the shape owner identified by given [param owner_id].
 */
-func (self Instance) GetShapeOwnerOneWayCollisionMargin(owner_id int) Float.X {
+func (self Instance) GetShapeOwnerOneWayCollisionMargin(owner_id int) Float.X { //gd:CollisionObject2D.get_shape_owner_one_way_collision_margin
 	return Float.X(Float.X(class(self).GetShapeOwnerOneWayCollisionMargin(gd.Int(owner_id))))
 }
 
 /*
 Adds a [Shape2D] to the shape owner.
 */
-func (self Instance) ShapeOwnerAddShape(owner_id int, shape [1]gdclass.Shape2D) {
+func (self Instance) ShapeOwnerAddShape(owner_id int, shape [1]gdclass.Shape2D) { //gd:CollisionObject2D.shape_owner_add_shape
 	class(self).ShapeOwnerAddShape(gd.Int(owner_id), shape)
 }
 
 /*
 Returns the number of shapes the given shape owner contains.
 */
-func (self Instance) ShapeOwnerGetShapeCount(owner_id int) int {
+func (self Instance) ShapeOwnerGetShapeCount(owner_id int) int { //gd:CollisionObject2D.shape_owner_get_shape_count
 	return int(int(class(self).ShapeOwnerGetShapeCount(gd.Int(owner_id))))
 }
 
 /*
 Returns the [Shape2D] with the given ID from the given shape owner.
 */
-func (self Instance) ShapeOwnerGetShape(owner_id int, shape_id int) [1]gdclass.Shape2D {
+func (self Instance) ShapeOwnerGetShape(owner_id int, shape_id int) [1]gdclass.Shape2D { //gd:CollisionObject2D.shape_owner_get_shape
 	return [1]gdclass.Shape2D(class(self).ShapeOwnerGetShape(gd.Int(owner_id), gd.Int(shape_id)))
 }
 
 /*
 Returns the child index of the [Shape2D] with the given ID from the given shape owner.
 */
-func (self Instance) ShapeOwnerGetShapeIndex(owner_id int, shape_id int) int {
+func (self Instance) ShapeOwnerGetShapeIndex(owner_id int, shape_id int) int { //gd:CollisionObject2D.shape_owner_get_shape_index
 	return int(int(class(self).ShapeOwnerGetShapeIndex(gd.Int(owner_id), gd.Int(shape_id))))
 }
 
 /*
 Removes a shape from the given shape owner.
 */
-func (self Instance) ShapeOwnerRemoveShape(owner_id int, shape_id int) {
+func (self Instance) ShapeOwnerRemoveShape(owner_id int, shape_id int) { //gd:CollisionObject2D.shape_owner_remove_shape
 	class(self).ShapeOwnerRemoveShape(gd.Int(owner_id), gd.Int(shape_id))
 }
 
 /*
 Removes all shapes from the shape owner.
 */
-func (self Instance) ShapeOwnerClearShapes(owner_id int) {
+func (self Instance) ShapeOwnerClearShapes(owner_id int) { //gd:CollisionObject2D.shape_owner_clear_shapes
 	class(self).ShapeOwnerClearShapes(gd.Int(owner_id))
 }
 
 /*
 Returns the [code]owner_id[/code] of the given shape.
 */
-func (self Instance) ShapeFindOwner(shape_index int) int {
+func (self Instance) ShapeFindOwner(shape_index int) int { //gd:CollisionObject2D.shape_find_owner
 	return int(int(class(self).ShapeFindOwner(gd.Int(shape_index))))
 }
 
@@ -429,7 +429,7 @@ func (class) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx gd.Int)) 
 Returns the object's [RID].
 */
 //go:nosplit
-func (self class) GetRid() gd.RID {
+func (self class) GetRid() gd.RID { //gd:CollisionObject2D.get_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -439,7 +439,7 @@ func (self class) GetRid() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetCollisionLayer(layer gd.Int) {
+func (self class) SetCollisionLayer(layer gd.Int) { //gd:CollisionObject2D.set_collision_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -448,7 +448,7 @@ func (self class) SetCollisionLayer(layer gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionLayer() gd.Int {
+func (self class) GetCollisionLayer() gd.Int { //gd:CollisionObject2D.get_collision_layer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -458,7 +458,7 @@ func (self class) GetCollisionLayer() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(mask gd.Int) {
+func (self class) SetCollisionMask(mask gd.Int) { //gd:CollisionObject2D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -467,7 +467,7 @@ func (self class) SetCollisionMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int {
+func (self class) GetCollisionMask() gd.Int { //gd:CollisionObject2D.get_collision_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -480,7 +480,7 @@ func (self class) GetCollisionMask() gd.Int {
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) {
+func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) { //gd:CollisionObject2D.set_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -493,7 +493,7 @@ func (self class) SetCollisionLayerValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionLayerValue(layer_number gd.Int) bool {
+func (self class) GetCollisionLayerValue(layer_number gd.Int) bool { //gd:CollisionObject2D.get_collision_layer_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -507,7 +507,7 @@ func (self class) GetCollisionLayerValue(layer_number gd.Int) bool {
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
+func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) { //gd:CollisionObject2D.set_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -520,7 +520,7 @@ func (self class) SetCollisionMaskValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
+func (self class) GetCollisionMaskValue(layer_number gd.Int) bool { //gd:CollisionObject2D.get_collision_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -531,7 +531,7 @@ func (self class) GetCollisionMaskValue(layer_number gd.Int) bool {
 }
 
 //go:nosplit
-func (self class) SetCollisionPriority(priority gd.Float) {
+func (self class) SetCollisionPriority(priority gd.Float) { //gd:CollisionObject2D.set_collision_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -540,7 +540,7 @@ func (self class) SetCollisionPriority(priority gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCollisionPriority() gd.Float {
+func (self class) GetCollisionPriority() gd.Float { //gd:CollisionObject2D.get_collision_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -550,7 +550,7 @@ func (self class) GetCollisionPriority() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDisableMode(mode gdclass.CollisionObject2DDisableMode) {
+func (self class) SetDisableMode(mode gdclass.CollisionObject2DDisableMode) { //gd:CollisionObject2D.set_disable_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -559,7 +559,7 @@ func (self class) SetDisableMode(mode gdclass.CollisionObject2DDisableMode) {
 }
 
 //go:nosplit
-func (self class) GetDisableMode() gdclass.CollisionObject2DDisableMode {
+func (self class) GetDisableMode() gdclass.CollisionObject2DDisableMode { //gd:CollisionObject2D.get_disable_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CollisionObject2DDisableMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -569,7 +569,7 @@ func (self class) GetDisableMode() gdclass.CollisionObject2DDisableMode {
 }
 
 //go:nosplit
-func (self class) SetPickable(enabled bool) {
+func (self class) SetPickable(enabled bool) { //gd:CollisionObject2D.set_pickable
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -578,7 +578,7 @@ func (self class) SetPickable(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsPickable() bool {
+func (self class) IsPickable() bool { //gd:CollisionObject2D.is_pickable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_is_pickable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -591,7 +591,7 @@ func (self class) IsPickable() bool {
 Creates a new shape owner for the given object. Returns [code]owner_id[/code] of the new owner for future reference.
 */
 //go:nosplit
-func (self class) CreateShapeOwner(owner [1]gd.Object) gd.Int {
+func (self class) CreateShapeOwner(owner [1]gd.Object) gd.Int { //gd:CollisionObject2D.create_shape_owner
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(owner[0])[0])
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -605,7 +605,7 @@ func (self class) CreateShapeOwner(owner [1]gd.Object) gd.Int {
 Removes the given shape owner.
 */
 //go:nosplit
-func (self class) RemoveShapeOwner(owner_id gd.Int) {
+func (self class) RemoveShapeOwner(owner_id gd.Int) { //gd:CollisionObject2D.remove_shape_owner
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Nil
@@ -617,7 +617,7 @@ func (self class) RemoveShapeOwner(owner_id gd.Int) {
 Returns an [Array] of [code]owner_id[/code] identifiers. You can use these ids in other methods that take [code]owner_id[/code] as an argument.
 */
 //go:nosplit
-func (self class) GetShapeOwners() gd.PackedInt32Array {
+func (self class) GetShapeOwners() gd.PackedInt32Array { //gd:CollisionObject2D.get_shape_owners
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_shape_owners, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -630,7 +630,7 @@ func (self class) GetShapeOwners() gd.PackedInt32Array {
 Sets the [Transform2D] of the given shape owner.
 */
 //go:nosplit
-func (self class) ShapeOwnerSetTransform(owner_id gd.Int, transform gd.Transform2D) {
+func (self class) ShapeOwnerSetTransform(owner_id gd.Int, transform gd.Transform2D) { //gd:CollisionObject2D.shape_owner_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, transform)
@@ -643,7 +643,7 @@ func (self class) ShapeOwnerSetTransform(owner_id gd.Int, transform gd.Transform
 Returns the shape owner's [Transform2D].
 */
 //go:nosplit
-func (self class) ShapeOwnerGetTransform(owner_id gd.Int) gd.Transform2D {
+func (self class) ShapeOwnerGetTransform(owner_id gd.Int) gd.Transform2D { //gd:CollisionObject2D.shape_owner_get_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
@@ -657,7 +657,7 @@ func (self class) ShapeOwnerGetTransform(owner_id gd.Int) gd.Transform2D {
 Returns the parent object of the given shape owner.
 */
 //go:nosplit
-func (self class) ShapeOwnerGetOwner(owner_id gd.Int) [1]gd.Object {
+func (self class) ShapeOwnerGetOwner(owner_id gd.Int) [1]gd.Object { //gd:CollisionObject2D.shape_owner_get_owner
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -671,7 +671,7 @@ func (self class) ShapeOwnerGetOwner(owner_id gd.Int) [1]gd.Object {
 If [code]true[/code], disables the given shape owner.
 */
 //go:nosplit
-func (self class) ShapeOwnerSetDisabled(owner_id gd.Int, disabled bool) {
+func (self class) ShapeOwnerSetDisabled(owner_id gd.Int, disabled bool) { //gd:CollisionObject2D.shape_owner_set_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, disabled)
@@ -684,7 +684,7 @@ func (self class) ShapeOwnerSetDisabled(owner_id gd.Int, disabled bool) {
 If [code]true[/code], the shape owner and its shapes are disabled.
 */
 //go:nosplit
-func (self class) IsShapeOwnerDisabled(owner_id gd.Int) bool {
+func (self class) IsShapeOwnerDisabled(owner_id gd.Int) bool { //gd:CollisionObject2D.is_shape_owner_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -698,7 +698,7 @@ func (self class) IsShapeOwnerDisabled(owner_id gd.Int) bool {
 If [param enable] is [code]true[/code], collisions for the shape owner originating from this [CollisionObject2D] will not be reported to collided with [CollisionObject2D]s.
 */
 //go:nosplit
-func (self class) ShapeOwnerSetOneWayCollision(owner_id gd.Int, enable bool) {
+func (self class) ShapeOwnerSetOneWayCollision(owner_id gd.Int, enable bool) { //gd:CollisionObject2D.shape_owner_set_one_way_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, enable)
@@ -711,7 +711,7 @@ func (self class) ShapeOwnerSetOneWayCollision(owner_id gd.Int, enable bool) {
 Returns [code]true[/code] if collisions for the shape owner originating from this [CollisionObject2D] will not be reported to collided with [CollisionObject2D]s.
 */
 //go:nosplit
-func (self class) IsShapeOwnerOneWayCollisionEnabled(owner_id gd.Int) bool {
+func (self class) IsShapeOwnerOneWayCollisionEnabled(owner_id gd.Int) bool { //gd:CollisionObject2D.is_shape_owner_one_way_collision_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -725,7 +725,7 @@ func (self class) IsShapeOwnerOneWayCollisionEnabled(owner_id gd.Int) bool {
 Sets the [code]one_way_collision_margin[/code] of the shape owner identified by given [param owner_id] to [param margin] pixels.
 */
 //go:nosplit
-func (self class) ShapeOwnerSetOneWayCollisionMargin(owner_id gd.Int, margin gd.Float) {
+func (self class) ShapeOwnerSetOneWayCollisionMargin(owner_id gd.Int, margin gd.Float) { //gd:CollisionObject2D.shape_owner_set_one_way_collision_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, margin)
@@ -738,7 +738,7 @@ func (self class) ShapeOwnerSetOneWayCollisionMargin(owner_id gd.Int, margin gd.
 Returns the [code]one_way_collision_margin[/code] of the shape owner identified by given [param owner_id].
 */
 //go:nosplit
-func (self class) GetShapeOwnerOneWayCollisionMargin(owner_id gd.Int) gd.Float {
+func (self class) GetShapeOwnerOneWayCollisionMargin(owner_id gd.Int) gd.Float { //gd:CollisionObject2D.get_shape_owner_one_way_collision_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -752,7 +752,7 @@ func (self class) GetShapeOwnerOneWayCollisionMargin(owner_id gd.Int) gd.Float {
 Adds a [Shape2D] to the shape owner.
 */
 //go:nosplit
-func (self class) ShapeOwnerAddShape(owner_id gd.Int, shape [1]gdclass.Shape2D) {
+func (self class) ShapeOwnerAddShape(owner_id gd.Int, shape [1]gdclass.Shape2D) { //gd:CollisionObject2D.shape_owner_add_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, pointers.Get(shape[0])[0])
@@ -765,7 +765,7 @@ func (self class) ShapeOwnerAddShape(owner_id gd.Int, shape [1]gdclass.Shape2D) 
 Returns the number of shapes the given shape owner contains.
 */
 //go:nosplit
-func (self class) ShapeOwnerGetShapeCount(owner_id gd.Int) gd.Int {
+func (self class) ShapeOwnerGetShapeCount(owner_id gd.Int) gd.Int { //gd:CollisionObject2D.shape_owner_get_shape_count
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -779,7 +779,7 @@ func (self class) ShapeOwnerGetShapeCount(owner_id gd.Int) gd.Int {
 Returns the [Shape2D] with the given ID from the given shape owner.
 */
 //go:nosplit
-func (self class) ShapeOwnerGetShape(owner_id gd.Int, shape_id gd.Int) [1]gdclass.Shape2D {
+func (self class) ShapeOwnerGetShape(owner_id gd.Int, shape_id gd.Int) [1]gdclass.Shape2D { //gd:CollisionObject2D.shape_owner_get_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, shape_id)
@@ -794,7 +794,7 @@ func (self class) ShapeOwnerGetShape(owner_id gd.Int, shape_id gd.Int) [1]gdclas
 Returns the child index of the [Shape2D] with the given ID from the given shape owner.
 */
 //go:nosplit
-func (self class) ShapeOwnerGetShapeIndex(owner_id gd.Int, shape_id gd.Int) gd.Int {
+func (self class) ShapeOwnerGetShapeIndex(owner_id gd.Int, shape_id gd.Int) gd.Int { //gd:CollisionObject2D.shape_owner_get_shape_index
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, shape_id)
@@ -809,7 +809,7 @@ func (self class) ShapeOwnerGetShapeIndex(owner_id gd.Int, shape_id gd.Int) gd.I
 Removes a shape from the given shape owner.
 */
 //go:nosplit
-func (self class) ShapeOwnerRemoveShape(owner_id gd.Int, shape_id gd.Int) {
+func (self class) ShapeOwnerRemoveShape(owner_id gd.Int, shape_id gd.Int) { //gd:CollisionObject2D.shape_owner_remove_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	callframe.Arg(frame, shape_id)
@@ -822,7 +822,7 @@ func (self class) ShapeOwnerRemoveShape(owner_id gd.Int, shape_id gd.Int) {
 Removes all shapes from the shape owner.
 */
 //go:nosplit
-func (self class) ShapeOwnerClearShapes(owner_id gd.Int) {
+func (self class) ShapeOwnerClearShapes(owner_id gd.Int) { //gd:CollisionObject2D.shape_owner_clear_shapes
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Nil
@@ -834,7 +834,7 @@ func (self class) ShapeOwnerClearShapes(owner_id gd.Int) {
 Returns the [code]owner_id[/code] of the given shape.
 */
 //go:nosplit
-func (self class) ShapeFindOwner(shape_index gd.Int) gd.Int {
+func (self class) ShapeFindOwner(shape_index gd.Int) gd.Int { //gd:CollisionObject2D.shape_find_owner
 	var frame = callframe.New()
 	callframe.Arg(frame, shape_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -915,7 +915,7 @@ func init() {
 	})
 }
 
-type DisableMode = gdclass.CollisionObject2DDisableMode
+type DisableMode = gdclass.CollisionObject2DDisableMode //gd:CollisionObject2D.DisableMode
 
 const (
 	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], remove from the physics simulation to stop all physics interactions with this [CollisionObject2D].

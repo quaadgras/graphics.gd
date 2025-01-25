@@ -42,28 +42,28 @@ type Any interface {
 /*
 Poll the connection to check for incoming packets. Call this frequently to update the status and keep the connection working.
 */
-func (self Instance) Poll() {
+func (self Instance) Poll() { //gd:PacketPeerDTLS.poll
 	class(self).Poll()
 }
 
 /*
 Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
-func (self Instance) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname string) error {
+func (self Instance) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname string) error { //gd:PacketPeerDTLS.connect_to_peer
 	return error(gd.ToError(class(self).ConnectToPeer(packet_peer, gd.NewString(hostname), [1][1]gdclass.TLSOptions{}[0])))
 }
 
 /*
 Returns the status of the connection. See [enum Status] for values.
 */
-func (self Instance) GetStatus() gdclass.PacketPeerDTLSStatus {
+func (self Instance) GetStatus() gdclass.PacketPeerDTLSStatus { //gd:PacketPeerDTLS.get_status
 	return gdclass.PacketPeerDTLSStatus(class(self).GetStatus())
 }
 
 /*
 Disconnects this peer, terminating the DTLS session.
 */
-func (self Instance) DisconnectFromPeer() {
+func (self Instance) DisconnectFromPeer() { //gd:PacketPeerDTLS.disconnect_from_peer
 	class(self).DisconnectFromPeer()
 }
 
@@ -90,7 +90,7 @@ func New() Instance {
 Poll the connection to check for incoming packets. Call this frequently to update the status and keep the connection working.
 */
 //go:nosplit
-func (self class) Poll() {
+func (self class) Poll() { //gd:PacketPeerDTLS.poll
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) Poll() {
 Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 //go:nosplit
-func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname gd.String, client_options [1]gdclass.TLSOptions) gd.Error {
+func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname gd.String, client_options [1]gdclass.TLSOptions) gd.Error { //gd:PacketPeerDTLS.connect_to_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(packet_peer[0])[0])
 	callframe.Arg(frame, pointers.Get(hostname))
@@ -117,7 +117,7 @@ func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname g
 Returns the status of the connection. See [enum Status] for values.
 */
 //go:nosplit
-func (self class) GetStatus() gdclass.PacketPeerDTLSStatus {
+func (self class) GetStatus() gdclass.PacketPeerDTLSStatus { //gd:PacketPeerDTLS.get_status
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.PacketPeerDTLSStatus](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,7 +130,7 @@ func (self class) GetStatus() gdclass.PacketPeerDTLSStatus {
 Disconnects this peer, terminating the DTLS session.
 */
 //go:nosplit
-func (self class) DisconnectFromPeer() {
+func (self class) DisconnectFromPeer() { //gd:PacketPeerDTLS.disconnect_from_peer
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_disconnect_from_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -170,7 +170,7 @@ func init() {
 	})
 }
 
-type Status = gdclass.PacketPeerDTLSStatus
+type Status = gdclass.PacketPeerDTLSStatus //gd:PacketPeerDTLS.Status
 
 const (
 	/*A status representing a [PacketPeerDTLS] that is disconnected.*/
@@ -185,7 +185,7 @@ const (
 	StatusErrorHostnameMismatch Status = 4
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

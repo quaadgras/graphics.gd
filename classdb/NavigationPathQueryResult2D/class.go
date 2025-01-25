@@ -41,7 +41,7 @@ type Any interface {
 /*
 Reset the result object to its initial state. This is useful to reuse the object across multiple queries.
 */
-func (self Instance) Reset() {
+func (self Instance) Reset() { //gd:NavigationPathQueryResult2D.reset
 	class(self).Reset()
 }
 
@@ -97,7 +97,7 @@ func (self Instance) SetPathOwnerIds(value []int64) {
 }
 
 //go:nosplit
-func (self class) SetPath(path gd.PackedVector2Array) {
+func (self class) SetPath(path gd.PackedVector2Array) { //gd:NavigationPathQueryResult2D.set_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -106,7 +106,7 @@ func (self class) SetPath(path gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetPath() gd.PackedVector2Array {
+func (self class) GetPath() gd.PackedVector2Array { //gd:NavigationPathQueryResult2D.get_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -116,7 +116,7 @@ func (self class) GetPath() gd.PackedVector2Array {
 }
 
 //go:nosplit
-func (self class) SetPathTypes(path_types gd.PackedInt32Array) {
+func (self class) SetPathTypes(path_types gd.PackedInt32Array) { //gd:NavigationPathQueryResult2D.set_path_types
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path_types))
 	var r_ret = callframe.Nil
@@ -125,7 +125,7 @@ func (self class) SetPathTypes(path_types gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetPathTypes() gd.PackedInt32Array {
+func (self class) GetPathTypes() gd.PackedInt32Array { //gd:NavigationPathQueryResult2D.get_path_types
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_get_path_types, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func (self class) GetPathTypes() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetPathRids(path_rids Array.Contains[gd.RID]) {
+func (self class) SetPathRids(path_rids Array.Contains[gd.RID]) { //gd:NavigationPathQueryResult2D.set_path_rids
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(path_rids)))
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetPathRids(path_rids Array.Contains[gd.RID]) {
 }
 
 //go:nosplit
-func (self class) GetPathRids() Array.Contains[gd.RID] {
+func (self class) GetPathRids() Array.Contains[gd.RID] { //gd:NavigationPathQueryResult2D.get_path_rids
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_get_path_rids, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func (self class) GetPathRids() Array.Contains[gd.RID] {
 }
 
 //go:nosplit
-func (self class) SetPathOwnerIds(path_owner_ids gd.PackedInt64Array) {
+func (self class) SetPathOwnerIds(path_owner_ids gd.PackedInt64Array) { //gd:NavigationPathQueryResult2D.set_path_owner_ids
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path_owner_ids))
 	var r_ret = callframe.Nil
@@ -163,7 +163,7 @@ func (self class) SetPathOwnerIds(path_owner_ids gd.PackedInt64Array) {
 }
 
 //go:nosplit
-func (self class) GetPathOwnerIds() gd.PackedInt64Array {
+func (self class) GetPathOwnerIds() gd.PackedInt64Array { //gd:NavigationPathQueryResult2D.get_path_owner_ids
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_get_path_owner_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -176,7 +176,7 @@ func (self class) GetPathOwnerIds() gd.PackedInt64Array {
 Reset the result object to its initial state. This is useful to reuse the object across multiple queries.
 */
 //go:nosplit
-func (self class) Reset() {
+func (self class) Reset() { //gd:NavigationPathQueryResult2D.reset
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult2D.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -214,7 +214,7 @@ func init() {
 	})
 }
 
-type PathSegmentType = gdclass.NavigationPathQueryResult2DPathSegmentType
+type PathSegmentType = gdclass.NavigationPathQueryResult2DPathSegmentType //gd:NavigationPathQueryResult2D.PathSegmentType
 
 const (
 	/*This segment of the path goes through a region.*/

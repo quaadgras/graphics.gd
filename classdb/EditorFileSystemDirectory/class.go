@@ -39,98 +39,98 @@ type Any interface {
 /*
 Returns the number of subdirectories in this directory.
 */
-func (self Instance) GetSubdirCount() int {
+func (self Instance) GetSubdirCount() int { //gd:EditorFileSystemDirectory.get_subdir_count
 	return int(int(class(self).GetSubdirCount()))
 }
 
 /*
 Returns the subdirectory at index [param idx].
 */
-func (self Instance) GetSubdir(idx int) [1]gdclass.EditorFileSystemDirectory {
+func (self Instance) GetSubdir(idx int) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_subdir
 	return [1]gdclass.EditorFileSystemDirectory(class(self).GetSubdir(gd.Int(idx)))
 }
 
 /*
 Returns the number of files in this directory.
 */
-func (self Instance) GetFileCount() int {
+func (self Instance) GetFileCount() int { //gd:EditorFileSystemDirectory.get_file_count
 	return int(int(class(self).GetFileCount()))
 }
 
 /*
 Returns the name of the file at index [param idx].
 */
-func (self Instance) GetFile(idx int) string {
+func (self Instance) GetFile(idx int) string { //gd:EditorFileSystemDirectory.get_file
 	return string(class(self).GetFile(gd.Int(idx)).String())
 }
 
 /*
 Returns the path to the file at index [param idx].
 */
-func (self Instance) GetFilePath(idx int) string {
+func (self Instance) GetFilePath(idx int) string { //gd:EditorFileSystemDirectory.get_file_path
 	return string(class(self).GetFilePath(gd.Int(idx)).String())
 }
 
 /*
 Returns the resource type of the file at index [param idx]. This returns a string such as [code]"Resource"[/code] or [code]"GDScript"[/code], [i]not[/i] a file extension such as [code]".gd"[/code].
 */
-func (self Instance) GetFileType(idx int) string {
+func (self Instance) GetFileType(idx int) string { //gd:EditorFileSystemDirectory.get_file_type
 	return string(class(self).GetFileType(gd.Int(idx)).String())
 }
 
 /*
 Returns the name of the script class defined in the file at index [param idx]. If the file doesn't define a script class using the [code]class_name[/code] syntax, this will return an empty string.
 */
-func (self Instance) GetFileScriptClassName(idx int) string {
+func (self Instance) GetFileScriptClassName(idx int) string { //gd:EditorFileSystemDirectory.get_file_script_class_name
 	return string(class(self).GetFileScriptClassName(gd.Int(idx)).String())
 }
 
 /*
 Returns the base class of the script class defined in the file at index [param idx]. If the file doesn't define a script class using the [code]class_name[/code] syntax, this will return an empty string.
 */
-func (self Instance) GetFileScriptClassExtends(idx int) string {
+func (self Instance) GetFileScriptClassExtends(idx int) string { //gd:EditorFileSystemDirectory.get_file_script_class_extends
 	return string(class(self).GetFileScriptClassExtends(gd.Int(idx)).String())
 }
 
 /*
 Returns [code]true[/code] if the file at index [param idx] imported properly.
 */
-func (self Instance) GetFileImportIsValid(idx int) bool {
+func (self Instance) GetFileImportIsValid(idx int) bool { //gd:EditorFileSystemDirectory.get_file_import_is_valid
 	return bool(class(self).GetFileImportIsValid(gd.Int(idx)))
 }
 
 /*
 Returns the name of this directory.
 */
-func (self Instance) GetName() string {
+func (self Instance) GetName() string { //gd:EditorFileSystemDirectory.get_name
 	return string(class(self).GetName().String())
 }
 
 /*
 Returns the path to this directory.
 */
-func (self Instance) GetPath() string {
+func (self Instance) GetPath() string { //gd:EditorFileSystemDirectory.get_path
 	return string(class(self).GetPath().String())
 }
 
 /*
 Returns the parent directory for this directory or [code]null[/code] if called on a directory at [code]res://[/code] or [code]user://[/code].
 */
-func (self Instance) GetParent() [1]gdclass.EditorFileSystemDirectory {
+func (self Instance) GetParent() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_parent
 	return [1]gdclass.EditorFileSystemDirectory(class(self).GetParent())
 }
 
 /*
 Returns the index of the file with name [param name] or [code]-1[/code] if not found.
 */
-func (self Instance) FindFileIndex(name string) int {
+func (self Instance) FindFileIndex(name string) int { //gd:EditorFileSystemDirectory.find_file_index
 	return int(int(class(self).FindFileIndex(gd.NewString(name))))
 }
 
 /*
 Returns the index of the directory with name [param name] or [code]-1[/code] if not found.
 */
-func (self Instance) FindDirIndex(name string) int {
+func (self Instance) FindDirIndex(name string) int { //gd:EditorFileSystemDirectory.find_dir_index
 	return int(int(class(self).FindDirIndex(gd.NewString(name))))
 }
 
@@ -156,7 +156,7 @@ func New() Instance {
 Returns the number of subdirectories in this directory.
 */
 //go:nosplit
-func (self class) GetSubdirCount() gd.Int {
+func (self class) GetSubdirCount() gd.Int { //gd:EditorFileSystemDirectory.get_subdir_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_subdir_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -169,7 +169,7 @@ func (self class) GetSubdirCount() gd.Int {
 Returns the subdirectory at index [param idx].
 */
 //go:nosplit
-func (self class) GetSubdir(idx gd.Int) [1]gdclass.EditorFileSystemDirectory {
+func (self class) GetSubdir(idx gd.Int) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_subdir
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -183,7 +183,7 @@ func (self class) GetSubdir(idx gd.Int) [1]gdclass.EditorFileSystemDirectory {
 Returns the number of files in this directory.
 */
 //go:nosplit
-func (self class) GetFileCount() gd.Int {
+func (self class) GetFileCount() gd.Int { //gd:EditorFileSystemDirectory.get_file_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -196,7 +196,7 @@ func (self class) GetFileCount() gd.Int {
 Returns the name of the file at index [param idx].
 */
 //go:nosplit
-func (self class) GetFile(idx gd.Int) gd.String {
+func (self class) GetFile(idx gd.Int) gd.String { //gd:EditorFileSystemDirectory.get_file
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -210,7 +210,7 @@ func (self class) GetFile(idx gd.Int) gd.String {
 Returns the path to the file at index [param idx].
 */
 //go:nosplit
-func (self class) GetFilePath(idx gd.Int) gd.String {
+func (self class) GetFilePath(idx gd.Int) gd.String { //gd:EditorFileSystemDirectory.get_file_path
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -224,7 +224,7 @@ func (self class) GetFilePath(idx gd.Int) gd.String {
 Returns the resource type of the file at index [param idx]. This returns a string such as [code]"Resource"[/code] or [code]"GDScript"[/code], [i]not[/i] a file extension such as [code]".gd"[/code].
 */
 //go:nosplit
-func (self class) GetFileType(idx gd.Int) gd.StringName {
+func (self class) GetFileType(idx gd.Int) gd.StringName { //gd:EditorFileSystemDirectory.get_file_type
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -238,7 +238,7 @@ func (self class) GetFileType(idx gd.Int) gd.StringName {
 Returns the name of the script class defined in the file at index [param idx]. If the file doesn't define a script class using the [code]class_name[/code] syntax, this will return an empty string.
 */
 //go:nosplit
-func (self class) GetFileScriptClassName(idx gd.Int) gd.String {
+func (self class) GetFileScriptClassName(idx gd.Int) gd.String { //gd:EditorFileSystemDirectory.get_file_script_class_name
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -252,7 +252,7 @@ func (self class) GetFileScriptClassName(idx gd.Int) gd.String {
 Returns the base class of the script class defined in the file at index [param idx]. If the file doesn't define a script class using the [code]class_name[/code] syntax, this will return an empty string.
 */
 //go:nosplit
-func (self class) GetFileScriptClassExtends(idx gd.Int) gd.String {
+func (self class) GetFileScriptClassExtends(idx gd.Int) gd.String { //gd:EditorFileSystemDirectory.get_file_script_class_extends
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -266,7 +266,7 @@ func (self class) GetFileScriptClassExtends(idx gd.Int) gd.String {
 Returns [code]true[/code] if the file at index [param idx] imported properly.
 */
 //go:nosplit
-func (self class) GetFileImportIsValid(idx gd.Int) bool {
+func (self class) GetFileImportIsValid(idx gd.Int) bool { //gd:EditorFileSystemDirectory.get_file_import_is_valid
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[bool](frame)
@@ -280,7 +280,7 @@ func (self class) GetFileImportIsValid(idx gd.Int) bool {
 Returns the name of this directory.
 */
 //go:nosplit
-func (self class) GetName() gd.String {
+func (self class) GetName() gd.String { //gd:EditorFileSystemDirectory.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -293,7 +293,7 @@ func (self class) GetName() gd.String {
 Returns the path to this directory.
 */
 //go:nosplit
-func (self class) GetPath() gd.String {
+func (self class) GetPath() gd.String { //gd:EditorFileSystemDirectory.get_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -306,7 +306,7 @@ func (self class) GetPath() gd.String {
 Returns the parent directory for this directory or [code]null[/code] if called on a directory at [code]res://[/code] or [code]user://[/code].
 */
 //go:nosplit
-func (self class) GetParent() [1]gdclass.EditorFileSystemDirectory {
+func (self class) GetParent() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_parent
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -319,7 +319,7 @@ func (self class) GetParent() [1]gdclass.EditorFileSystemDirectory {
 Returns the index of the file with name [param name] or [code]-1[/code] if not found.
 */
 //go:nosplit
-func (self class) FindFileIndex(name gd.String) gd.Int {
+func (self class) FindFileIndex(name gd.String) gd.Int { //gd:EditorFileSystemDirectory.find_file_index
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -333,7 +333,7 @@ func (self class) FindFileIndex(name gd.String) gd.Int {
 Returns the index of the directory with name [param name] or [code]-1[/code] if not found.
 */
 //go:nosplit
-func (self class) FindDirIndex(name gd.String) gd.Int {
+func (self class) FindDirIndex(name gd.String) gd.Int { //gd:EditorFileSystemDirectory.find_dir_index
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)

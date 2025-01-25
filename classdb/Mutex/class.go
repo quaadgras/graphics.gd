@@ -45,7 +45,7 @@ type Any interface {
 Locks this [Mutex], blocks until it is unlocked by the current owner.
 [b]Note:[/b] This function returns without blocking if the thread already has ownership of the mutex.
 */
-func (self Instance) Lock() {
+func (self Instance) Lock() { //gd:Mutex.lock
 	class(self).Lock()
 }
 
@@ -53,7 +53,7 @@ func (self Instance) Lock() {
 Tries locking this [Mutex], but does not block. Returns [code]true[/code] on success, [code]false[/code] otherwise.
 [b]Note:[/b] This function returns [code]true[/code] if the thread already has ownership of the mutex.
 */
-func (self Instance) TryLock() bool {
+func (self Instance) TryLock() bool { //gd:Mutex.try_lock
 	return bool(class(self).TryLock())
 }
 
@@ -62,7 +62,7 @@ Unlocks this [Mutex], leaving it to other threads.
 [b]Note:[/b] If a thread called [method lock] or [method try_lock] multiple times while already having ownership of the mutex, it must also call [method unlock] the same number of times in order to unlock it correctly.
 [b]Warning:[/b] Calling [method unlock] more times that [method lock] on a given thread, thus ending up trying to unlock a non-locked mutex, is wrong and may causes crashes or deadlocks.
 */
-func (self Instance) Unlock() {
+func (self Instance) Unlock() { //gd:Mutex.unlock
 	class(self).Unlock()
 }
 
@@ -90,7 +90,7 @@ Locks this [Mutex], blocks until it is unlocked by the current owner.
 [b]Note:[/b] This function returns without blocking if the thread already has ownership of the mutex.
 */
 //go:nosplit
-func (self class) Lock() {
+func (self class) Lock() { //gd:Mutex.lock
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mutex.Bind_lock, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -102,7 +102,7 @@ Tries locking this [Mutex], but does not block. Returns [code]true[/code] on suc
 [b]Note:[/b] This function returns [code]true[/code] if the thread already has ownership of the mutex.
 */
 //go:nosplit
-func (self class) TryLock() bool {
+func (self class) TryLock() bool { //gd:Mutex.try_lock
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mutex.Bind_try_lock, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -117,7 +117,7 @@ Unlocks this [Mutex], leaving it to other threads.
 [b]Warning:[/b] Calling [method unlock] more times that [method lock] on a given thread, thus ending up trying to unlock a non-locked mutex, is wrong and may causes crashes or deadlocks.
 */
 //go:nosplit
-func (self class) Unlock() {
+func (self class) Unlock() { //gd:Mutex.unlock
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Mutex.Bind_unlock, self.AsObject(), frame.Array(0), r_ret.Addr())

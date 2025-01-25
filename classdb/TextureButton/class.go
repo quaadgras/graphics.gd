@@ -141,7 +141,7 @@ func (self Instance) SetFlipV(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) {
+func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -150,7 +150,7 @@ func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) {
+func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -159,7 +159,7 @@ func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) SetTextureHover(texture [1]gdclass.Texture2D) {
+func (self class) SetTextureHover(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_hover
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -168,7 +168,7 @@ func (self class) SetTextureHover(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) SetTextureDisabled(texture [1]gdclass.Texture2D) {
+func (self class) SetTextureDisabled(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -177,7 +177,7 @@ func (self class) SetTextureDisabled(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) SetTextureFocused(texture [1]gdclass.Texture2D) {
+func (self class) SetTextureFocused(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_focused
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -186,7 +186,7 @@ func (self class) SetTextureFocused(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) SetClickMask(mask [1]gdclass.BitMap) {
+func (self class) SetClickMask(mask [1]gdclass.BitMap) { //gd:TextureButton.set_click_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mask[0])[0])
 	var r_ret = callframe.Nil
@@ -195,7 +195,7 @@ func (self class) SetClickMask(mask [1]gdclass.BitMap) {
 }
 
 //go:nosplit
-func (self class) SetIgnoreTextureSize(ignore bool) {
+func (self class) SetIgnoreTextureSize(ignore bool) { //gd:TextureButton.set_ignore_texture_size
 	var frame = callframe.New()
 	callframe.Arg(frame, ignore)
 	var r_ret = callframe.Nil
@@ -204,7 +204,7 @@ func (self class) SetIgnoreTextureSize(ignore bool) {
 }
 
 //go:nosplit
-func (self class) SetStretchMode(mode gdclass.TextureButtonStretchMode) {
+func (self class) SetStretchMode(mode gdclass.TextureButtonStretchMode) { //gd:TextureButton.set_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -213,7 +213,7 @@ func (self class) SetStretchMode(mode gdclass.TextureButtonStretchMode) {
 }
 
 //go:nosplit
-func (self class) SetFlipH(enable bool) {
+func (self class) SetFlipH(enable bool) { //gd:TextureButton.set_flip_h
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -222,7 +222,7 @@ func (self class) SetFlipH(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsFlippedH() bool {
+func (self class) IsFlippedH() bool { //gd:TextureButton.is_flipped_h
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_is_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -232,7 +232,7 @@ func (self class) IsFlippedH() bool {
 }
 
 //go:nosplit
-func (self class) SetFlipV(enable bool) {
+func (self class) SetFlipV(enable bool) { //gd:TextureButton.set_flip_v
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -241,7 +241,7 @@ func (self class) SetFlipV(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsFlippedV() bool {
+func (self class) IsFlippedV() bool { //gd:TextureButton.is_flipped_v
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_is_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -251,7 +251,7 @@ func (self class) IsFlippedV() bool {
 }
 
 //go:nosplit
-func (self class) GetTextureNormal() [1]gdclass.Texture2D {
+func (self class) GetTextureNormal() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_normal
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_get_texture_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -261,7 +261,7 @@ func (self class) GetTextureNormal() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) GetTexturePressed() [1]gdclass.Texture2D {
+func (self class) GetTexturePressed() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_pressed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_get_texture_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -271,7 +271,7 @@ func (self class) GetTexturePressed() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) GetTextureHover() [1]gdclass.Texture2D {
+func (self class) GetTextureHover() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_hover
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_get_texture_hover, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -281,7 +281,7 @@ func (self class) GetTextureHover() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) GetTextureDisabled() [1]gdclass.Texture2D {
+func (self class) GetTextureDisabled() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_get_texture_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -291,7 +291,7 @@ func (self class) GetTextureDisabled() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) GetTextureFocused() [1]gdclass.Texture2D {
+func (self class) GetTextureFocused() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_focused
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_get_texture_focused, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -301,7 +301,7 @@ func (self class) GetTextureFocused() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) GetClickMask() [1]gdclass.BitMap {
+func (self class) GetClickMask() [1]gdclass.BitMap { //gd:TextureButton.get_click_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_get_click_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -311,7 +311,7 @@ func (self class) GetClickMask() [1]gdclass.BitMap {
 }
 
 //go:nosplit
-func (self class) GetIgnoreTextureSize() bool {
+func (self class) GetIgnoreTextureSize() bool { //gd:TextureButton.get_ignore_texture_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_get_ignore_texture_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -321,7 +321,7 @@ func (self class) GetIgnoreTextureSize() bool {
 }
 
 //go:nosplit
-func (self class) GetStretchMode() gdclass.TextureButtonStretchMode {
+func (self class) GetStretchMode() gdclass.TextureButtonStretchMode { //gd:TextureButton.get_stretch_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextureButtonStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_get_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -369,7 +369,7 @@ func init() {
 	})
 }
 
-type StretchMode = gdclass.TextureButtonStretchMode
+type StretchMode = gdclass.TextureButtonStretchMode //gd:TextureButton.StretchMode
 
 const (
 	/*Scale to fit the node's bounding rectangle.*/

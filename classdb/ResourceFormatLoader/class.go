@@ -536,7 +536,7 @@ func init() {
 	})
 }
 
-type CacheMode = gdclass.ResourceFormatLoaderCacheMode
+type CacheMode = gdclass.ResourceFormatLoaderCacheMode //gd:ResourceFormatLoader.CacheMode
 
 const (
 	/*Neither the main resource (the one requested to be loaded) nor any of its subresources are retrieved from cache nor stored into it. Dependencies (external resources) are loaded with [constant CACHE_MODE_REUSE].*/
@@ -551,7 +551,7 @@ const (
 	CacheModeReplaceDeep CacheMode = 4
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

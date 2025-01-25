@@ -40,7 +40,7 @@ type Any interface {
 /*
 Clear the selection.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:EditorSelection.clear
 	class(self).Clear()
 }
 
@@ -48,28 +48,28 @@ func (self Instance) Clear() {
 Adds a node to the selection.
 [b]Note:[/b] The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [method EditorInterface.edit_node].
 */
-func (self Instance) AddNode(node [1]gdclass.Node) {
+func (self Instance) AddNode(node [1]gdclass.Node) { //gd:EditorSelection.add_node
 	class(self).AddNode(node)
 }
 
 /*
 Removes a node from the selection.
 */
-func (self Instance) RemoveNode(node [1]gdclass.Node) {
+func (self Instance) RemoveNode(node [1]gdclass.Node) { //gd:EditorSelection.remove_node
 	class(self).RemoveNode(node)
 }
 
 /*
 Returns the list of selected nodes.
 */
-func (self Instance) GetSelectedNodes() [][1]gdclass.Node {
+func (self Instance) GetSelectedNodes() [][1]gdclass.Node { //gd:EditorSelection.get_selected_nodes
 	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetSelectedNodes())))
 }
 
 /*
 Returns the list of selected nodes, optimized for transform operations (i.e. moving them, rotating, etc.). This list can be used to avoid situations where a node is selected and is also a child/grandchild.
 */
-func (self Instance) GetTransformableSelectedNodes() [][1]gdclass.Node {
+func (self Instance) GetTransformableSelectedNodes() [][1]gdclass.Node { //gd:EditorSelection.get_transformable_selected_nodes
 	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetTransformableSelectedNodes())))
 }
 
@@ -95,7 +95,7 @@ func New() Instance {
 Clear the selection.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:EditorSelection.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSelection.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -107,7 +107,7 @@ Adds a node to the selection.
 [b]Note:[/b] The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [method EditorInterface.edit_node].
 */
 //go:nosplit
-func (self class) AddNode(node [1]gdclass.Node) {
+func (self class) AddNode(node [1]gdclass.Node) { //gd:EditorSelection.add_node
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -119,7 +119,7 @@ func (self class) AddNode(node [1]gdclass.Node) {
 Removes a node from the selection.
 */
 //go:nosplit
-func (self class) RemoveNode(node [1]gdclass.Node) {
+func (self class) RemoveNode(node [1]gdclass.Node) { //gd:EditorSelection.remove_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node[0])[0])
 	var r_ret = callframe.Nil
@@ -131,7 +131,7 @@ func (self class) RemoveNode(node [1]gdclass.Node) {
 Returns the list of selected nodes.
 */
 //go:nosplit
-func (self class) GetSelectedNodes() Array.Contains[[1]gdclass.Node] {
+func (self class) GetSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_selected_nodes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSelection.Bind_get_selected_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -144,7 +144,7 @@ func (self class) GetSelectedNodes() Array.Contains[[1]gdclass.Node] {
 Returns the list of selected nodes, optimized for transform operations (i.e. moving them, rotating, etc.). This list can be used to avoid situations where a node is selected and is also a child/grandchild.
 */
 //go:nosplit
-func (self class) GetTransformableSelectedNodes() Array.Contains[[1]gdclass.Node] {
+func (self class) GetTransformableSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_transformable_selected_nodes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSelection.Bind_get_transformable_selected_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())

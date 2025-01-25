@@ -84,7 +84,7 @@ func (self Instance) SetCameraIsActive(value bool) {
 }
 
 //go:nosplit
-func (self class) SetCameraFeedId(feed_id gd.Int) {
+func (self class) SetCameraFeedId(feed_id gd.Int) { //gd:CameraTexture.set_camera_feed_id
 	var frame = callframe.New()
 	callframe.Arg(frame, feed_id)
 	var r_ret = callframe.Nil
@@ -93,7 +93,7 @@ func (self class) SetCameraFeedId(feed_id gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCameraFeedId() gd.Int {
+func (self class) GetCameraFeedId() gd.Int { //gd:CameraTexture.get_camera_feed_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraTexture.Bind_get_camera_feed_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -103,7 +103,7 @@ func (self class) GetCameraFeedId() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetWhichFeed(which_feed gdclass.CameraServerFeedImage) {
+func (self class) SetWhichFeed(which_feed gdclass.CameraServerFeedImage) { //gd:CameraTexture.set_which_feed
 	var frame = callframe.New()
 	callframe.Arg(frame, which_feed)
 	var r_ret = callframe.Nil
@@ -112,7 +112,7 @@ func (self class) SetWhichFeed(which_feed gdclass.CameraServerFeedImage) {
 }
 
 //go:nosplit
-func (self class) GetWhichFeed() gdclass.CameraServerFeedImage {
+func (self class) GetWhichFeed() gdclass.CameraServerFeedImage { //gd:CameraTexture.get_which_feed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CameraServerFeedImage](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraTexture.Bind_get_which_feed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -122,7 +122,7 @@ func (self class) GetWhichFeed() gdclass.CameraServerFeedImage {
 }
 
 //go:nosplit
-func (self class) SetCameraActive(active bool) {
+func (self class) SetCameraActive(active bool) { //gd:CameraTexture.set_camera_active
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	var r_ret = callframe.Nil
@@ -131,7 +131,7 @@ func (self class) SetCameraActive(active bool) {
 }
 
 //go:nosplit
-func (self class) GetCameraActive() bool {
+func (self class) GetCameraActive() bool { //gd:CameraTexture.get_camera_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraTexture.Bind_get_camera_active, self.AsObject(), frame.Array(0), r_ret.Addr())

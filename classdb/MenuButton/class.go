@@ -46,21 +46,21 @@ type Any interface {
 Returns the [PopupMenu] contained in this button.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
-func (self Instance) GetPopup() [1]gdclass.PopupMenu {
+func (self Instance) GetPopup() [1]gdclass.PopupMenu { //gd:MenuButton.get_popup
 	return [1]gdclass.PopupMenu(class(self).GetPopup())
 }
 
 /*
 Adjusts popup position and sizing for the [MenuButton], then shows the [PopupMenu]. Prefer this over using [code]get_popup().popup()[/code].
 */
-func (self Instance) ShowPopup() {
+func (self Instance) ShowPopup() { //gd:MenuButton.show_popup
 	class(self).ShowPopup()
 }
 
 /*
 If [code]true[/code], shortcuts are disabled and cannot be used to trigger the button.
 */
-func (self Instance) SetDisableShortcuts(disabled bool) {
+func (self Instance) SetDisableShortcuts(disabled bool) { //gd:MenuButton.set_disable_shortcuts
 	class(self).SetDisableShortcuts(disabled)
 }
 
@@ -103,7 +103,7 @@ Returns the [PopupMenu] contained in this button.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 //go:nosplit
-func (self class) GetPopup() [1]gdclass.PopupMenu {
+func (self class) GetPopup() [1]gdclass.PopupMenu { //gd:MenuButton.get_popup
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuButton.Bind_get_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -116,7 +116,7 @@ func (self class) GetPopup() [1]gdclass.PopupMenu {
 Adjusts popup position and sizing for the [MenuButton], then shows the [PopupMenu]. Prefer this over using [code]get_popup().popup()[/code].
 */
 //go:nosplit
-func (self class) ShowPopup() {
+func (self class) ShowPopup() { //gd:MenuButton.show_popup
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuButton.Bind_show_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -124,7 +124,7 @@ func (self class) ShowPopup() {
 }
 
 //go:nosplit
-func (self class) SetSwitchOnHover(enable bool) {
+func (self class) SetSwitchOnHover(enable bool) { //gd:MenuButton.set_switch_on_hover
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -133,7 +133,7 @@ func (self class) SetSwitchOnHover(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSwitchOnHover() bool {
+func (self class) IsSwitchOnHover() bool { //gd:MenuButton.is_switch_on_hover
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuButton.Bind_is_switch_on_hover, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -146,7 +146,7 @@ func (self class) IsSwitchOnHover() bool {
 If [code]true[/code], shortcuts are disabled and cannot be used to trigger the button.
 */
 //go:nosplit
-func (self class) SetDisableShortcuts(disabled bool) {
+func (self class) SetDisableShortcuts(disabled bool) { //gd:MenuButton.set_disable_shortcuts
 	var frame = callframe.New()
 	callframe.Arg(frame, disabled)
 	var r_ret = callframe.Nil
@@ -155,7 +155,7 @@ func (self class) SetDisableShortcuts(disabled bool) {
 }
 
 //go:nosplit
-func (self class) SetItemCount(count gd.Int) {
+func (self class) SetItemCount(count gd.Int) { //gd:MenuButton.set_item_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -164,7 +164,7 @@ func (self class) SetItemCount(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetItemCount() gd.Int {
+func (self class) GetItemCount() gd.Int { //gd:MenuButton.get_item_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuButton.Bind_get_item_count, self.AsObject(), frame.Array(0), r_ret.Addr())

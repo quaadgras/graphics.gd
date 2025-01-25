@@ -80,7 +80,7 @@ func (self Instance) SetUsageFlags(value int) {
 }
 
 //go:nosplit
-func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) {
+func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) { //gd:RDAttachmentFormat.set_format
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -89,7 +89,7 @@ func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) {
 }
 
 //go:nosplit
-func (self class) GetFormat() gdclass.RenderingDeviceDataFormat {
+func (self class) GetFormat() gdclass.RenderingDeviceDataFormat { //gd:RDAttachmentFormat.get_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceDataFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDAttachmentFormat.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -99,7 +99,7 @@ func (self class) GetFormat() gdclass.RenderingDeviceDataFormat {
 }
 
 //go:nosplit
-func (self class) SetSamples(p_member gdclass.RenderingDeviceTextureSamples) {
+func (self class) SetSamples(p_member gdclass.RenderingDeviceTextureSamples) { //gd:RDAttachmentFormat.set_samples
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -108,7 +108,7 @@ func (self class) SetSamples(p_member gdclass.RenderingDeviceTextureSamples) {
 }
 
 //go:nosplit
-func (self class) GetSamples() gdclass.RenderingDeviceTextureSamples {
+func (self class) GetSamples() gdclass.RenderingDeviceTextureSamples { //gd:RDAttachmentFormat.get_samples
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureSamples](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDAttachmentFormat.Bind_get_samples, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -118,7 +118,7 @@ func (self class) GetSamples() gdclass.RenderingDeviceTextureSamples {
 }
 
 //go:nosplit
-func (self class) SetUsageFlags(p_member gd.Int) {
+func (self class) SetUsageFlags(p_member gd.Int) { //gd:RDAttachmentFormat.set_usage_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -127,7 +127,7 @@ func (self class) SetUsageFlags(p_member gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetUsageFlags() gd.Int {
+func (self class) GetUsageFlags() gd.Int { //gd:RDAttachmentFormat.get_usage_flags
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDAttachmentFormat.Bind_get_usage_flags, self.AsObject(), frame.Array(0), r_ret.Addr())

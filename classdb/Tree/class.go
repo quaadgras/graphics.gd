@@ -75,7 +75,7 @@ type Any interface {
 /*
 Clears the tree. This removes all items.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:Tree.clear
 	class(self).Clear()
 }
 
@@ -84,70 +84,70 @@ Creates an item in the tree and adds it as a child of [param parent], which can 
 If [param parent] is [code]null[/code], the root item will be the parent, or the new item will be the root itself if the tree is empty.
 The new item will be the [param index]-th child of parent, or it will be the last child if there are not enough siblings.
 */
-func (self Instance) CreateItem() [1]gdclass.TreeItem {
+func (self Instance) CreateItem() [1]gdclass.TreeItem { //gd:Tree.create_item
 	return [1]gdclass.TreeItem(class(self).CreateItem([1][1]gdclass.TreeItem{}[0], gd.Int(-1)))
 }
 
 /*
 Returns the tree's root item, or [code]null[/code] if the tree is empty.
 */
-func (self Instance) GetRoot() [1]gdclass.TreeItem {
+func (self Instance) GetRoot() [1]gdclass.TreeItem { //gd:Tree.get_root
 	return [1]gdclass.TreeItem(class(self).GetRoot())
 }
 
 /*
 Overrides the calculated minimum width of a column. It can be set to [code]0[/code] to restore the default behavior. Columns that have the "Expand" flag will use their "min_width" in a similar fashion to [member Control.size_flags_stretch_ratio].
 */
-func (self Instance) SetColumnCustomMinimumWidth(column int, min_width int) {
+func (self Instance) SetColumnCustomMinimumWidth(column int, min_width int) { //gd:Tree.set_column_custom_minimum_width
 	class(self).SetColumnCustomMinimumWidth(gd.Int(column), gd.Int(min_width))
 }
 
 /*
 If [code]true[/code], the column will have the "Expand" flag of [Control]. Columns that have the "Expand" flag will use their expand ratio in a similar fashion to [member Control.size_flags_stretch_ratio] (see [method set_column_expand_ratio]).
 */
-func (self Instance) SetColumnExpand(column int, expand bool) {
+func (self Instance) SetColumnExpand(column int, expand bool) { //gd:Tree.set_column_expand
 	class(self).SetColumnExpand(gd.Int(column), expand)
 }
 
 /*
 Sets the relative expand ratio for a column. See [method set_column_expand].
 */
-func (self Instance) SetColumnExpandRatio(column int, ratio int) {
+func (self Instance) SetColumnExpandRatio(column int, ratio int) { //gd:Tree.set_column_expand_ratio
 	class(self).SetColumnExpandRatio(gd.Int(column), gd.Int(ratio))
 }
 
 /*
 Allows to enable clipping for column's content, making the content size ignored.
 */
-func (self Instance) SetColumnClipContent(column int, enable bool) {
+func (self Instance) SetColumnClipContent(column int, enable bool) { //gd:Tree.set_column_clip_content
 	class(self).SetColumnClipContent(gd.Int(column), enable)
 }
 
 /*
 Returns [code]true[/code] if the column has enabled expanding (see [method set_column_expand]).
 */
-func (self Instance) IsColumnExpanding(column int) bool {
+func (self Instance) IsColumnExpanding(column int) bool { //gd:Tree.is_column_expanding
 	return bool(class(self).IsColumnExpanding(gd.Int(column)))
 }
 
 /*
 Returns [code]true[/code] if the column has enabled clipping (see [method set_column_clip_content]).
 */
-func (self Instance) IsColumnClippingContent(column int) bool {
+func (self Instance) IsColumnClippingContent(column int) bool { //gd:Tree.is_column_clipping_content
 	return bool(class(self).IsColumnClippingContent(gd.Int(column)))
 }
 
 /*
 Returns the expand ratio assigned to the column.
 */
-func (self Instance) GetColumnExpandRatio(column int) int {
+func (self Instance) GetColumnExpandRatio(column int) int { //gd:Tree.get_column_expand_ratio
 	return int(int(class(self).GetColumnExpandRatio(gd.Int(column))))
 }
 
 /*
 Returns the column's width in pixels.
 */
-func (self Instance) GetColumnWidth(column int) int {
+func (self Instance) GetColumnWidth(column int) int { //gd:Tree.get_column_width
 	return int(int(class(self).GetColumnWidth(gd.Int(column))))
 }
 
@@ -155,7 +155,7 @@ func (self Instance) GetColumnWidth(column int) int {
 Returns the next selected [TreeItem] after the given one, or [code]null[/code] if the end is reached.
 If [param from] is [code]null[/code], this returns the first selected item.
 */
-func (self Instance) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem {
+func (self Instance) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
 	return [1]gdclass.TreeItem(class(self).GetNextSelected(from))
 }
 
@@ -164,14 +164,14 @@ Returns the currently focused item, or [code]null[/code] if no item is focused.
 In [constant SELECT_ROW] and [constant SELECT_SINGLE] modes, the focused item is same as the selected item. In [constant SELECT_MULTI] mode, the focused item is the item under the focus cursor, not necessarily selected.
 To get the currently selected item(s), use [method get_next_selected].
 */
-func (self Instance) GetSelected() [1]gdclass.TreeItem {
+func (self Instance) GetSelected() [1]gdclass.TreeItem { //gd:Tree.get_selected
 	return [1]gdclass.TreeItem(class(self).GetSelected())
 }
 
 /*
 Selects the specified [TreeItem] and column.
 */
-func (self Instance) SetSelected(item [1]gdclass.TreeItem, column int) {
+func (self Instance) SetSelected(item [1]gdclass.TreeItem, column int) { //gd:Tree.set_selected
 	class(self).SetSelected(item, gd.Int(column))
 }
 
@@ -180,21 +180,21 @@ Returns the currently focused column, or -1 if no column is focused.
 In [constant SELECT_SINGLE] mode, the focused column is the selected column. In [constant SELECT_ROW] mode, the focused column is always 0 if any item is selected. In [constant SELECT_MULTI] mode, the focused column is the column under the focus cursor, and there are not necessarily any column selected.
 To tell whether a column of an item is selected, use [method TreeItem.is_selected].
 */
-func (self Instance) GetSelectedColumn() int {
+func (self Instance) GetSelectedColumn() int { //gd:Tree.get_selected_column
 	return int(int(class(self).GetSelectedColumn()))
 }
 
 /*
 Returns the last pressed button's index.
 */
-func (self Instance) GetPressedButton() int {
+func (self Instance) GetPressedButton() int { //gd:Tree.get_pressed_button
 	return int(int(class(self).GetPressedButton()))
 }
 
 /*
 Deselects all tree items (rows and columns). In [constant SELECT_MULTI] mode also removes selection cursor.
 */
-func (self Instance) DeselectAll() {
+func (self Instance) DeselectAll() { //gd:Tree.deselect_all
 	class(self).DeselectAll()
 }
 
@@ -227,14 +227,14 @@ public void OnTreeItemEdited()
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetEdited() [1]gdclass.TreeItem {
+func (self Instance) GetEdited() [1]gdclass.TreeItem { //gd:Tree.get_edited
 	return [1]gdclass.TreeItem(class(self).GetEdited())
 }
 
 /*
 Returns the column for the currently edited item.
 */
-func (self Instance) GetEditedColumn() int {
+func (self Instance) GetEditedColumn() int { //gd:Tree.get_edited_column
 	return int(int(class(self).GetEditedColumn()))
 }
 
@@ -243,35 +243,35 @@ Edits the selected tree item as if it was clicked.
 Either the item must be set editable with [method TreeItem.set_editable] or [param force_edit] must be [code]true[/code].
 Returns [code]true[/code] if the item could be edited. Fails if no item is selected.
 */
-func (self Instance) EditSelected() bool {
+func (self Instance) EditSelected() bool { //gd:Tree.edit_selected
 	return bool(class(self).EditSelected(false))
 }
 
 /*
 Returns the rectangle for custom popups. Helper to create custom cell controls that display a popup. See [method TreeItem.set_cell_mode].
 */
-func (self Instance) GetCustomPopupRect() Rect2.PositionSize {
+func (self Instance) GetCustomPopupRect() Rect2.PositionSize { //gd:Tree.get_custom_popup_rect
 	return Rect2.PositionSize(class(self).GetCustomPopupRect())
 }
 
 /*
 Returns the rectangle area for the specified [TreeItem]. If [param column] is specified, only get the position and size of that column, otherwise get the rectangle containing all columns. If a button index is specified, the rectangle of that button will be returned.
 */
-func (self Instance) GetItemAreaRect(item [1]gdclass.TreeItem) Rect2.PositionSize {
+func (self Instance) GetItemAreaRect(item [1]gdclass.TreeItem) Rect2.PositionSize { //gd:Tree.get_item_area_rect
 	return Rect2.PositionSize(class(self).GetItemAreaRect(item, gd.Int(-1), gd.Int(-1)))
 }
 
 /*
 Returns the tree item at the specified position (relative to the tree origin position).
 */
-func (self Instance) GetItemAtPosition(position Vector2.XY) [1]gdclass.TreeItem {
+func (self Instance) GetItemAtPosition(position Vector2.XY) [1]gdclass.TreeItem { //gd:Tree.get_item_at_position
 	return [1]gdclass.TreeItem(class(self).GetItemAtPosition(gd.Vector2(position)))
 }
 
 /*
 Returns the column index at [param position], or -1 if no item is there.
 */
-func (self Instance) GetColumnAtPosition(position Vector2.XY) int {
+func (self Instance) GetColumnAtPosition(position Vector2.XY) int { //gd:Tree.get_column_at_position
 	return int(int(class(self).GetColumnAtPosition(gd.Vector2(position))))
 }
 
@@ -280,14 +280,14 @@ Returns the drop section at [param position], or -100 if no item is there.
 Values -1, 0, or 1 will be returned for the "above item", "on item", and "below item" drop sections, respectively. See [enum DropModeFlags] for a description of each drop section.
 To get the item which the returned drop section is relative to, use [method get_item_at_position].
 */
-func (self Instance) GetDropSectionAtPosition(position Vector2.XY) int {
+func (self Instance) GetDropSectionAtPosition(position Vector2.XY) int { //gd:Tree.get_drop_section_at_position
 	return int(int(class(self).GetDropSectionAtPosition(gd.Vector2(position))))
 }
 
 /*
 Returns the button ID at [param position], or -1 if no button is there.
 */
-func (self Instance) GetButtonIdAtPosition(position Vector2.XY) int {
+func (self Instance) GetButtonIdAtPosition(position Vector2.XY) int { //gd:Tree.get_button_id_at_position
 	return int(int(class(self).GetButtonIdAtPosition(gd.Vector2(position))))
 }
 
@@ -296,77 +296,77 @@ Makes the currently focused cell visible.
 This will scroll the tree if necessary. In [constant SELECT_ROW] mode, this will not do horizontal scrolling, as all the cells in the selected row is focused logically.
 [b]Note:[/b] Despite the name of this method, the focus cursor itself is only visible in [constant SELECT_MULTI] mode.
 */
-func (self Instance) EnsureCursorIsVisible() {
+func (self Instance) EnsureCursorIsVisible() { //gd:Tree.ensure_cursor_is_visible
 	class(self).EnsureCursorIsVisible()
 }
 
 /*
 Sets the title of a column.
 */
-func (self Instance) SetColumnTitle(column int, title string) {
+func (self Instance) SetColumnTitle(column int, title string) { //gd:Tree.set_column_title
 	class(self).SetColumnTitle(gd.Int(column), gd.NewString(title))
 }
 
 /*
 Returns the column's title.
 */
-func (self Instance) GetColumnTitle(column int) string {
+func (self Instance) GetColumnTitle(column int) string { //gd:Tree.get_column_title
 	return string(class(self).GetColumnTitle(gd.Int(column)).String())
 }
 
 /*
 Sets the column title alignment. Note that [constant @GlobalScope.HORIZONTAL_ALIGNMENT_FILL] is not supported for column titles.
 */
-func (self Instance) SetColumnTitleAlignment(column int, title_alignment HorizontalAlignment) {
+func (self Instance) SetColumnTitleAlignment(column int, title_alignment HorizontalAlignment) { //gd:Tree.set_column_title_alignment
 	class(self).SetColumnTitleAlignment(gd.Int(column), title_alignment)
 }
 
 /*
 Returns the column title alignment.
 */
-func (self Instance) GetColumnTitleAlignment(column int) HorizontalAlignment {
+func (self Instance) GetColumnTitleAlignment(column int) HorizontalAlignment { //gd:Tree.get_column_title_alignment
 	return HorizontalAlignment(class(self).GetColumnTitleAlignment(gd.Int(column)))
 }
 
 /*
 Sets column title base writing direction.
 */
-func (self Instance) SetColumnTitleDirection(column int, direction gdclass.ControlTextDirection) {
+func (self Instance) SetColumnTitleDirection(column int, direction gdclass.ControlTextDirection) { //gd:Tree.set_column_title_direction
 	class(self).SetColumnTitleDirection(gd.Int(column), direction)
 }
 
 /*
 Returns column title base writing direction.
 */
-func (self Instance) GetColumnTitleDirection(column int) gdclass.ControlTextDirection {
+func (self Instance) GetColumnTitleDirection(column int) gdclass.ControlTextDirection { //gd:Tree.get_column_title_direction
 	return gdclass.ControlTextDirection(class(self).GetColumnTitleDirection(gd.Int(column)))
 }
 
 /*
 Sets language code of column title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
-func (self Instance) SetColumnTitleLanguage(column int, language string) {
+func (self Instance) SetColumnTitleLanguage(column int, language string) { //gd:Tree.set_column_title_language
 	class(self).SetColumnTitleLanguage(gd.Int(column), gd.NewString(language))
 }
 
 /*
 Returns column title language code.
 */
-func (self Instance) GetColumnTitleLanguage(column int) string {
+func (self Instance) GetColumnTitleLanguage(column int) string { //gd:Tree.get_column_title_language
 	return string(class(self).GetColumnTitleLanguage(gd.Int(column)).String())
 }
 
 /*
 Returns the current scrolling position.
 */
-func (self Instance) GetScroll() Vector2.XY {
+func (self Instance) GetScroll() Vector2.XY { //gd:Tree.get_scroll
 	return Vector2.XY(class(self).GetScroll())
 }
 
 /*
 Causes the [Tree] to jump to the specified [TreeItem].
 */
-func (self Instance) ScrollToItem(item [1]gdclass.TreeItem) {
+func (self Instance) ScrollToItem(item [1]gdclass.TreeItem) { //gd:Tree.scroll_to_item
 	class(self).ScrollToItem(item, false)
 }
 
@@ -488,7 +488,7 @@ func (self Instance) SetScrollVerticalEnabled(value bool) {
 Clears the tree. This removes all items.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:Tree.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -501,7 +501,7 @@ If [param parent] is [code]null[/code], the root item will be the parent, or the
 The new item will be the [param index]-th child of parent, or it will be the last child if there are not enough siblings.
 */
 //go:nosplit
-func (self class) CreateItem(parent [1]gdclass.TreeItem, index gd.Int) [1]gdclass.TreeItem {
+func (self class) CreateItem(parent [1]gdclass.TreeItem, index gd.Int) [1]gdclass.TreeItem { //gd:Tree.create_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parent[0])[0])
 	callframe.Arg(frame, index)
@@ -516,7 +516,7 @@ func (self class) CreateItem(parent [1]gdclass.TreeItem, index gd.Int) [1]gdclas
 Returns the tree's root item, or [code]null[/code] if the tree is empty.
 */
 //go:nosplit
-func (self class) GetRoot() [1]gdclass.TreeItem {
+func (self class) GetRoot() [1]gdclass.TreeItem { //gd:Tree.get_root
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_root, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -529,7 +529,7 @@ func (self class) GetRoot() [1]gdclass.TreeItem {
 Overrides the calculated minimum width of a column. It can be set to [code]0[/code] to restore the default behavior. Columns that have the "Expand" flag will use their "min_width" in a similar fashion to [member Control.size_flags_stretch_ratio].
 */
 //go:nosplit
-func (self class) SetColumnCustomMinimumWidth(column gd.Int, min_width gd.Int) {
+func (self class) SetColumnCustomMinimumWidth(column gd.Int, min_width gd.Int) { //gd:Tree.set_column_custom_minimum_width
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, min_width)
@@ -542,7 +542,7 @@ func (self class) SetColumnCustomMinimumWidth(column gd.Int, min_width gd.Int) {
 If [code]true[/code], the column will have the "Expand" flag of [Control]. Columns that have the "Expand" flag will use their expand ratio in a similar fashion to [member Control.size_flags_stretch_ratio] (see [method set_column_expand_ratio]).
 */
 //go:nosplit
-func (self class) SetColumnExpand(column gd.Int, expand bool) {
+func (self class) SetColumnExpand(column gd.Int, expand bool) { //gd:Tree.set_column_expand
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, expand)
@@ -555,7 +555,7 @@ func (self class) SetColumnExpand(column gd.Int, expand bool) {
 Sets the relative expand ratio for a column. See [method set_column_expand].
 */
 //go:nosplit
-func (self class) SetColumnExpandRatio(column gd.Int, ratio gd.Int) {
+func (self class) SetColumnExpandRatio(column gd.Int, ratio gd.Int) { //gd:Tree.set_column_expand_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, ratio)
@@ -568,7 +568,7 @@ func (self class) SetColumnExpandRatio(column gd.Int, ratio gd.Int) {
 Allows to enable clipping for column's content, making the content size ignored.
 */
 //go:nosplit
-func (self class) SetColumnClipContent(column gd.Int, enable bool) {
+func (self class) SetColumnClipContent(column gd.Int, enable bool) { //gd:Tree.set_column_clip_content
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, enable)
@@ -581,7 +581,7 @@ func (self class) SetColumnClipContent(column gd.Int, enable bool) {
 Returns [code]true[/code] if the column has enabled expanding (see [method set_column_expand]).
 */
 //go:nosplit
-func (self class) IsColumnExpanding(column gd.Int) bool {
+func (self class) IsColumnExpanding(column gd.Int) bool { //gd:Tree.is_column_expanding
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -595,7 +595,7 @@ func (self class) IsColumnExpanding(column gd.Int) bool {
 Returns [code]true[/code] if the column has enabled clipping (see [method set_column_clip_content]).
 */
 //go:nosplit
-func (self class) IsColumnClippingContent(column gd.Int) bool {
+func (self class) IsColumnClippingContent(column gd.Int) bool { //gd:Tree.is_column_clipping_content
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[bool](frame)
@@ -609,7 +609,7 @@ func (self class) IsColumnClippingContent(column gd.Int) bool {
 Returns the expand ratio assigned to the column.
 */
 //go:nosplit
-func (self class) GetColumnExpandRatio(column gd.Int) gd.Int {
+func (self class) GetColumnExpandRatio(column gd.Int) gd.Int { //gd:Tree.get_column_expand_ratio
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -623,7 +623,7 @@ func (self class) GetColumnExpandRatio(column gd.Int) gd.Int {
 Returns the column's width in pixels.
 */
 //go:nosplit
-func (self class) GetColumnWidth(column gd.Int) gd.Int {
+func (self class) GetColumnWidth(column gd.Int) gd.Int { //gd:Tree.get_column_width
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -634,7 +634,7 @@ func (self class) GetColumnWidth(column gd.Int) gd.Int {
 }
 
 //go:nosplit
-func (self class) SetHideRoot(enable bool) {
+func (self class) SetHideRoot(enable bool) { //gd:Tree.set_hide_root
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -643,7 +643,7 @@ func (self class) SetHideRoot(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsRootHidden() bool {
+func (self class) IsRootHidden() bool { //gd:Tree.is_root_hidden
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_is_root_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -657,7 +657,7 @@ Returns the next selected [TreeItem] after the given one, or [code]null[/code] i
 If [param from] is [code]null[/code], this returns the first selected item.
 */
 //go:nosplit
-func (self class) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem {
+func (self class) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -673,7 +673,7 @@ In [constant SELECT_ROW] and [constant SELECT_SINGLE] modes, the focused item is
 To get the currently selected item(s), use [method get_next_selected].
 */
 //go:nosplit
-func (self class) GetSelected() [1]gdclass.TreeItem {
+func (self class) GetSelected() [1]gdclass.TreeItem { //gd:Tree.get_selected
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -686,7 +686,7 @@ func (self class) GetSelected() [1]gdclass.TreeItem {
 Selects the specified [TreeItem] and column.
 */
 //go:nosplit
-func (self class) SetSelected(item [1]gdclass.TreeItem, column gd.Int) {
+func (self class) SetSelected(item [1]gdclass.TreeItem, column gd.Int) { //gd:Tree.set_selected
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(item[0])[0])
 	callframe.Arg(frame, column)
@@ -701,7 +701,7 @@ In [constant SELECT_SINGLE] mode, the focused column is the selected column. In 
 To tell whether a column of an item is selected, use [method TreeItem.is_selected].
 */
 //go:nosplit
-func (self class) GetSelectedColumn() gd.Int {
+func (self class) GetSelectedColumn() gd.Int { //gd:Tree.get_selected_column
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_selected_column, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -714,7 +714,7 @@ func (self class) GetSelectedColumn() gd.Int {
 Returns the last pressed button's index.
 */
 //go:nosplit
-func (self class) GetPressedButton() gd.Int {
+func (self class) GetPressedButton() gd.Int { //gd:Tree.get_pressed_button
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_pressed_button, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -724,7 +724,7 @@ func (self class) GetPressedButton() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetSelectMode(mode gdclass.TreeSelectMode) {
+func (self class) SetSelectMode(mode gdclass.TreeSelectMode) { //gd:Tree.set_select_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -733,7 +733,7 @@ func (self class) SetSelectMode(mode gdclass.TreeSelectMode) {
 }
 
 //go:nosplit
-func (self class) GetSelectMode() gdclass.TreeSelectMode {
+func (self class) GetSelectMode() gdclass.TreeSelectMode { //gd:Tree.get_select_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TreeSelectMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_select_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -746,7 +746,7 @@ func (self class) GetSelectMode() gdclass.TreeSelectMode {
 Deselects all tree items (rows and columns). In [constant SELECT_MULTI] mode also removes selection cursor.
 */
 //go:nosplit
-func (self class) DeselectAll() {
+func (self class) DeselectAll() { //gd:Tree.deselect_all
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_deselect_all, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -754,7 +754,7 @@ func (self class) DeselectAll() {
 }
 
 //go:nosplit
-func (self class) SetColumns(amount gd.Int) {
+func (self class) SetColumns(amount gd.Int) { //gd:Tree.set_columns
 	var frame = callframe.New()
 	callframe.Arg(frame, amount)
 	var r_ret = callframe.Nil
@@ -763,7 +763,7 @@ func (self class) SetColumns(amount gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetColumns() gd.Int {
+func (self class) GetColumns() gd.Int { //gd:Tree.get_columns
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_columns, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -796,7 +796,7 @@ public void OnTreeItemEdited()
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetEdited() [1]gdclass.TreeItem {
+func (self class) GetEdited() [1]gdclass.TreeItem { //gd:Tree.get_edited
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_edited, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -809,7 +809,7 @@ func (self class) GetEdited() [1]gdclass.TreeItem {
 Returns the column for the currently edited item.
 */
 //go:nosplit
-func (self class) GetEditedColumn() gd.Int {
+func (self class) GetEditedColumn() gd.Int { //gd:Tree.get_edited_column
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_edited_column, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -824,7 +824,7 @@ Either the item must be set editable with [method TreeItem.set_editable] or [par
 Returns [code]true[/code] if the item could be edited. Fails if no item is selected.
 */
 //go:nosplit
-func (self class) EditSelected(force_edit bool) bool {
+func (self class) EditSelected(force_edit bool) bool { //gd:Tree.edit_selected
 	var frame = callframe.New()
 	callframe.Arg(frame, force_edit)
 	var r_ret = callframe.Ret[bool](frame)
@@ -838,7 +838,7 @@ func (self class) EditSelected(force_edit bool) bool {
 Returns the rectangle for custom popups. Helper to create custom cell controls that display a popup. See [method TreeItem.set_cell_mode].
 */
 //go:nosplit
-func (self class) GetCustomPopupRect() gd.Rect2 {
+func (self class) GetCustomPopupRect() gd.Rect2 { //gd:Tree.get_custom_popup_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_custom_popup_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -851,7 +851,7 @@ func (self class) GetCustomPopupRect() gd.Rect2 {
 Returns the rectangle area for the specified [TreeItem]. If [param column] is specified, only get the position and size of that column, otherwise get the rectangle containing all columns. If a button index is specified, the rectangle of that button will be returned.
 */
 //go:nosplit
-func (self class) GetItemAreaRect(item [1]gdclass.TreeItem, column gd.Int, button_index gd.Int) gd.Rect2 {
+func (self class) GetItemAreaRect(item [1]gdclass.TreeItem, column gd.Int, button_index gd.Int) gd.Rect2 { //gd:Tree.get_item_area_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(item[0])[0])
 	callframe.Arg(frame, column)
@@ -867,7 +867,7 @@ func (self class) GetItemAreaRect(item [1]gdclass.TreeItem, column gd.Int, butto
 Returns the tree item at the specified position (relative to the tree origin position).
 */
 //go:nosplit
-func (self class) GetItemAtPosition(position gd.Vector2) [1]gdclass.TreeItem {
+func (self class) GetItemAtPosition(position gd.Vector2) [1]gdclass.TreeItem { //gd:Tree.get_item_at_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -881,7 +881,7 @@ func (self class) GetItemAtPosition(position gd.Vector2) [1]gdclass.TreeItem {
 Returns the column index at [param position], or -1 if no item is there.
 */
 //go:nosplit
-func (self class) GetColumnAtPosition(position gd.Vector2) gd.Int {
+func (self class) GetColumnAtPosition(position gd.Vector2) gd.Int { //gd:Tree.get_column_at_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -897,7 +897,7 @@ Values -1, 0, or 1 will be returned for the "above item", "on item", and "below 
 To get the item which the returned drop section is relative to, use [method get_item_at_position].
 */
 //go:nosplit
-func (self class) GetDropSectionAtPosition(position gd.Vector2) gd.Int {
+func (self class) GetDropSectionAtPosition(position gd.Vector2) gd.Int { //gd:Tree.get_drop_section_at_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -911,7 +911,7 @@ func (self class) GetDropSectionAtPosition(position gd.Vector2) gd.Int {
 Returns the button ID at [param position], or -1 if no button is there.
 */
 //go:nosplit
-func (self class) GetButtonIdAtPosition(position gd.Vector2) gd.Int {
+func (self class) GetButtonIdAtPosition(position gd.Vector2) gd.Int { //gd:Tree.get_button_id_at_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -927,7 +927,7 @@ This will scroll the tree if necessary. In [constant SELECT_ROW] mode, this will
 [b]Note:[/b] Despite the name of this method, the focus cursor itself is only visible in [constant SELECT_MULTI] mode.
 */
 //go:nosplit
-func (self class) EnsureCursorIsVisible() {
+func (self class) EnsureCursorIsVisible() { //gd:Tree.ensure_cursor_is_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_ensure_cursor_is_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -935,7 +935,7 @@ func (self class) EnsureCursorIsVisible() {
 }
 
 //go:nosplit
-func (self class) SetColumnTitlesVisible(visible bool) {
+func (self class) SetColumnTitlesVisible(visible bool) { //gd:Tree.set_column_titles_visible
 	var frame = callframe.New()
 	callframe.Arg(frame, visible)
 	var r_ret = callframe.Nil
@@ -944,7 +944,7 @@ func (self class) SetColumnTitlesVisible(visible bool) {
 }
 
 //go:nosplit
-func (self class) AreColumnTitlesVisible() bool {
+func (self class) AreColumnTitlesVisible() bool { //gd:Tree.are_column_titles_visible
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_are_column_titles_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -957,7 +957,7 @@ func (self class) AreColumnTitlesVisible() bool {
 Sets the title of a column.
 */
 //go:nosplit
-func (self class) SetColumnTitle(column gd.Int, title gd.String) {
+func (self class) SetColumnTitle(column gd.Int, title gd.String) { //gd:Tree.set_column_title
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(title))
@@ -970,7 +970,7 @@ func (self class) SetColumnTitle(column gd.Int, title gd.String) {
 Returns the column's title.
 */
 //go:nosplit
-func (self class) GetColumnTitle(column gd.Int) gd.String {
+func (self class) GetColumnTitle(column gd.Int) gd.String { //gd:Tree.get_column_title
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -984,7 +984,7 @@ func (self class) GetColumnTitle(column gd.Int) gd.String {
 Sets the column title alignment. Note that [constant @GlobalScope.HORIZONTAL_ALIGNMENT_FILL] is not supported for column titles.
 */
 //go:nosplit
-func (self class) SetColumnTitleAlignment(column gd.Int, title_alignment HorizontalAlignment) {
+func (self class) SetColumnTitleAlignment(column gd.Int, title_alignment HorizontalAlignment) { //gd:Tree.set_column_title_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, title_alignment)
@@ -997,7 +997,7 @@ func (self class) SetColumnTitleAlignment(column gd.Int, title_alignment Horizon
 Returns the column title alignment.
 */
 //go:nosplit
-func (self class) GetColumnTitleAlignment(column gd.Int) HorizontalAlignment {
+func (self class) GetColumnTitleAlignment(column gd.Int) HorizontalAlignment { //gd:Tree.get_column_title_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
@@ -1011,7 +1011,7 @@ func (self class) GetColumnTitleAlignment(column gd.Int) HorizontalAlignment {
 Sets column title base writing direction.
 */
 //go:nosplit
-func (self class) SetColumnTitleDirection(column gd.Int, direction gdclass.ControlTextDirection) {
+func (self class) SetColumnTitleDirection(column gd.Int, direction gdclass.ControlTextDirection) { //gd:Tree.set_column_title_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, direction)
@@ -1024,7 +1024,7 @@ func (self class) SetColumnTitleDirection(column gd.Int, direction gdclass.Contr
 Returns column title base writing direction.
 */
 //go:nosplit
-func (self class) GetColumnTitleDirection(column gd.Int) gdclass.ControlTextDirection {
+func (self class) GetColumnTitleDirection(column gd.Int) gdclass.ControlTextDirection { //gd:Tree.get_column_title_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
@@ -1038,7 +1038,7 @@ func (self class) GetColumnTitleDirection(column gd.Int) gdclass.ControlTextDire
 Sets language code of column title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 //go:nosplit
-func (self class) SetColumnTitleLanguage(column gd.Int, language gd.String) {
+func (self class) SetColumnTitleLanguage(column gd.Int, language gd.String) { //gd:Tree.set_column_title_language
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, pointers.Get(language))
@@ -1051,7 +1051,7 @@ func (self class) SetColumnTitleLanguage(column gd.Int, language gd.String) {
 Returns column title language code.
 */
 //go:nosplit
-func (self class) GetColumnTitleLanguage(column gd.Int) gd.String {
+func (self class) GetColumnTitleLanguage(column gd.Int) gd.String { //gd:Tree.get_column_title_language
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1065,7 +1065,7 @@ func (self class) GetColumnTitleLanguage(column gd.Int) gd.String {
 Returns the current scrolling position.
 */
 //go:nosplit
-func (self class) GetScroll() gd.Vector2 {
+func (self class) GetScroll() gd.Vector2 { //gd:Tree.get_scroll
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1078,7 +1078,7 @@ func (self class) GetScroll() gd.Vector2 {
 Causes the [Tree] to jump to the specified [TreeItem].
 */
 //go:nosplit
-func (self class) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) {
+func (self class) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) { //gd:Tree.scroll_to_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(item[0])[0])
 	callframe.Arg(frame, center_on_item)
@@ -1088,7 +1088,7 @@ func (self class) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) {
 }
 
 //go:nosplit
-func (self class) SetHScrollEnabled(h_scroll bool) {
+func (self class) SetHScrollEnabled(h_scroll bool) { //gd:Tree.set_h_scroll_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, h_scroll)
 	var r_ret = callframe.Nil
@@ -1097,7 +1097,7 @@ func (self class) SetHScrollEnabled(h_scroll bool) {
 }
 
 //go:nosplit
-func (self class) IsHScrollEnabled() bool {
+func (self class) IsHScrollEnabled() bool { //gd:Tree.is_h_scroll_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_is_h_scroll_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1107,7 +1107,7 @@ func (self class) IsHScrollEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetVScrollEnabled(h_scroll bool) {
+func (self class) SetVScrollEnabled(h_scroll bool) { //gd:Tree.set_v_scroll_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, h_scroll)
 	var r_ret = callframe.Nil
@@ -1116,7 +1116,7 @@ func (self class) SetVScrollEnabled(h_scroll bool) {
 }
 
 //go:nosplit
-func (self class) IsVScrollEnabled() bool {
+func (self class) IsVScrollEnabled() bool { //gd:Tree.is_v_scroll_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_is_v_scroll_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1126,7 +1126,7 @@ func (self class) IsVScrollEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetHideFolding(hide bool) {
+func (self class) SetHideFolding(hide bool) { //gd:Tree.set_hide_folding
 	var frame = callframe.New()
 	callframe.Arg(frame, hide)
 	var r_ret = callframe.Nil
@@ -1135,7 +1135,7 @@ func (self class) SetHideFolding(hide bool) {
 }
 
 //go:nosplit
-func (self class) IsFoldingHidden() bool {
+func (self class) IsFoldingHidden() bool { //gd:Tree.is_folding_hidden
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_is_folding_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1145,7 +1145,7 @@ func (self class) IsFoldingHidden() bool {
 }
 
 //go:nosplit
-func (self class) SetEnableRecursiveFolding(enable bool) {
+func (self class) SetEnableRecursiveFolding(enable bool) { //gd:Tree.set_enable_recursive_folding
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1154,7 +1154,7 @@ func (self class) SetEnableRecursiveFolding(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsRecursiveFoldingEnabled() bool {
+func (self class) IsRecursiveFoldingEnabled() bool { //gd:Tree.is_recursive_folding_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_is_recursive_folding_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1164,7 +1164,7 @@ func (self class) IsRecursiveFoldingEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDropModeFlags(flags gd.Int) {
+func (self class) SetDropModeFlags(flags gd.Int) { //gd:Tree.set_drop_mode_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -1173,7 +1173,7 @@ func (self class) SetDropModeFlags(flags gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetDropModeFlags() gd.Int {
+func (self class) GetDropModeFlags() gd.Int { //gd:Tree.get_drop_mode_flags
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_drop_mode_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1183,7 +1183,7 @@ func (self class) GetDropModeFlags() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetAllowRmbSelect(allow bool) {
+func (self class) SetAllowRmbSelect(allow bool) { //gd:Tree.set_allow_rmb_select
 	var frame = callframe.New()
 	callframe.Arg(frame, allow)
 	var r_ret = callframe.Nil
@@ -1192,7 +1192,7 @@ func (self class) SetAllowRmbSelect(allow bool) {
 }
 
 //go:nosplit
-func (self class) GetAllowRmbSelect() bool {
+func (self class) GetAllowRmbSelect() bool { //gd:Tree.get_allow_rmb_select
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_allow_rmb_select, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1202,7 +1202,7 @@ func (self class) GetAllowRmbSelect() bool {
 }
 
 //go:nosplit
-func (self class) SetAllowReselect(allow bool) {
+func (self class) SetAllowReselect(allow bool) { //gd:Tree.set_allow_reselect
 	var frame = callframe.New()
 	callframe.Arg(frame, allow)
 	var r_ret = callframe.Nil
@@ -1211,7 +1211,7 @@ func (self class) SetAllowReselect(allow bool) {
 }
 
 //go:nosplit
-func (self class) GetAllowReselect() bool {
+func (self class) GetAllowReselect() bool { //gd:Tree.get_allow_reselect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_allow_reselect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1221,7 +1221,7 @@ func (self class) GetAllowReselect() bool {
 }
 
 //go:nosplit
-func (self class) SetAllowSearch(allow bool) {
+func (self class) SetAllowSearch(allow bool) { //gd:Tree.set_allow_search
 	var frame = callframe.New()
 	callframe.Arg(frame, allow)
 	var r_ret = callframe.Nil
@@ -1230,7 +1230,7 @@ func (self class) SetAllowSearch(allow bool) {
 }
 
 //go:nosplit
-func (self class) GetAllowSearch() bool {
+func (self class) GetAllowSearch() bool { //gd:Tree.get_allow_search
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_allow_search, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1330,7 +1330,7 @@ func init() {
 	gdclass.Register("Tree", func(ptr gd.Object) any { return [1]gdclass.Tree{*(*gdclass.Tree)(unsafe.Pointer(&ptr))} })
 }
 
-type SelectMode = gdclass.TreeSelectMode
+type SelectMode = gdclass.TreeSelectMode //gd:Tree.SelectMode
 
 const (
 	/*Allows selection of a single cell at a time. From the perspective of items, only a single item is allowed to be selected. And there is only one column selected in the selected item.
@@ -1344,7 +1344,7 @@ const (
 	SelectMulti SelectMode = 2
 )
 
-type DropModeFlags = gdclass.TreeDropModeFlags
+type DropModeFlags = gdclass.TreeDropModeFlags //gd:Tree.DropModeFlags
 
 const (
 	/*Disables all drop sections, but still allows to detect the "on item" drop section by [method get_drop_section_at_position].

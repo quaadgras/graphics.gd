@@ -71,7 +71,7 @@ func (self Instance) SetCullMask(value int) {
 }
 
 //go:nosplit
-func (self class) SetCullMask(mask gd.Int) {
+func (self class) SetCullMask(mask gd.Int) { //gd:GPUParticlesCollision3D.set_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -80,7 +80,7 @@ func (self class) SetCullMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCullMask() gd.Int {
+func (self class) GetCullMask() gd.Int { //gd:GPUParticlesCollision3D.get_cull_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollision3D.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())

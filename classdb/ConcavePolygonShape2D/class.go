@@ -71,7 +71,7 @@ func (self Instance) SetSegments(value []Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetSegments(segments gd.PackedVector2Array) {
+func (self class) SetSegments(segments gd.PackedVector2Array) { //gd:ConcavePolygonShape2D.set_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(segments))
 	var r_ret = callframe.Nil
@@ -80,7 +80,7 @@ func (self class) SetSegments(segments gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetSegments() gd.PackedVector2Array {
+func (self class) GetSegments() gd.PackedVector2Array { //gd:ConcavePolygonShape2D.get_segments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConcavePolygonShape2D.Bind_get_segments, self.AsObject(), frame.Array(0), r_ret.Addr())

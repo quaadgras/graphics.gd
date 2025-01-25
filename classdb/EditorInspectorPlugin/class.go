@@ -167,7 +167,7 @@ func (Instance) _parse_end(impl func(ptr unsafe.Pointer, obj Object.Instance)) (
 /*
 Adds a custom control, which is not necessarily a property editor.
 */
-func (self Instance) AddCustomControl(control [1]gdclass.Control) {
+func (self Instance) AddCustomControl(control [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_custom_control
 	class(self).AddCustomControl(control)
 }
 
@@ -176,14 +176,14 @@ Adds a property editor for an individual property. The [param editor] control mu
 There can be multiple property editors for a property. If [param add_to_end] is [code]true[/code], this newly added editor will be displayed after all the other editors of the property whose [param add_to_end] is [code]false[/code]. For example, the editor uses this parameter to add an "Edit Region" button for [member Sprite2D.region_rect] below the regular [Rect2] editor.
 [param label] can be used to choose a custom label for the property editor in the inspector. If left empty, the label is computed from the name of the property instead.
 */
-func (self Instance) AddPropertyEditor(property string, editor [1]gdclass.Control) {
+func (self Instance) AddPropertyEditor(property string, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor
 	class(self).AddPropertyEditor(gd.NewString(property), editor, false, gd.NewString(""))
 }
 
 /*
 Adds an editor that allows modifying multiple properties. The [param editor] control must extend [EditorProperty].
 */
-func (self Instance) AddPropertyEditorForMultipleProperties(label string, properties []string, editor [1]gdclass.Control) {
+func (self Instance) AddPropertyEditorForMultipleProperties(label string, properties []string, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
 	class(self).AddPropertyEditorForMultipleProperties(gd.NewString(label), gd.NewPackedStringSlice(properties), editor)
 }
 
@@ -300,7 +300,7 @@ func (class) _parse_end(impl func(ptr unsafe.Pointer, obj [1]gd.Object)) (cb gd.
 Adds a custom control, which is not necessarily a property editor.
 */
 //go:nosplit
-func (self class) AddCustomControl(control [1]gdclass.Control) {
+func (self class) AddCustomControl(control [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_custom_control
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -314,7 +314,7 @@ There can be multiple property editors for a property. If [param add_to_end] is 
 [param label] can be used to choose a custom label for the property editor in the inspector. If left empty, the label is computed from the name of the property instead.
 */
 //go:nosplit
-func (self class) AddPropertyEditor(property gd.String, editor [1]gdclass.Control, add_to_end bool, label gd.String) {
+func (self class) AddPropertyEditor(property gd.String, editor [1]gdclass.Control, add_to_end bool, label gd.String) { //gd:EditorInspectorPlugin.add_property_editor
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
@@ -329,7 +329,7 @@ func (self class) AddPropertyEditor(property gd.String, editor [1]gdclass.Contro
 Adds an editor that allows modifying multiple properties. The [param editor] control must extend [EditorProperty].
 */
 //go:nosplit
-func (self class) AddPropertyEditorForMultipleProperties(label gd.String, properties gd.PackedStringArray, editor [1]gdclass.Control) {
+func (self class) AddPropertyEditorForMultipleProperties(label gd.String, properties gd.PackedStringArray, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(label))
 	callframe.Arg(frame, pointers.Get(properties))

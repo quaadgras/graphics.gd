@@ -242,7 +242,7 @@ func (Instance) _get_mix_rate(impl func(ptr unsafe.Pointer) int) (cb gd.Extensio
 /*
 Render [param num_frames] audio frames (of [method _get_channels] floats each) from [param buffer], starting from index [param offset] in the array. Returns the number of audio frames rendered, or -1 on error.
 */
-func (self Instance) MixAudio(num_frames int) int {
+func (self Instance) MixAudio(num_frames int) int { //gd:VideoStreamPlayback.mix_audio
 	return int(int(class(self).MixAudio(gd.Int(num_frames), gd.NewPackedFloat32Slice([1][]float32{}[0]), gd.Int(0))))
 }
 
@@ -419,7 +419,7 @@ func (class) _get_mix_rate(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Extensio
 Render [param num_frames] audio frames (of [method _get_channels] floats each) from [param buffer], starting from index [param offset] in the array. Returns the number of audio frames rendered, or -1 on error.
 */
 //go:nosplit
-func (self class) MixAudio(num_frames gd.Int, buffer gd.PackedFloat32Array, offset gd.Int) gd.Int {
+func (self class) MixAudio(num_frames gd.Int, buffer gd.PackedFloat32Array, offset gd.Int) gd.Int { //gd:VideoStreamPlayback.mix_audio
 	var frame = callframe.New()
 	callframe.Arg(frame, num_frames)
 	callframe.Arg(frame, pointers.Get(buffer))

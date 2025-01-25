@@ -41,28 +41,28 @@ type Any interface {
 /*
 Start the stream in compression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
-func (self Instance) StartCompression() error {
+func (self Instance) StartCompression() error { //gd:StreamPeerGZIP.start_compression
 	return error(gd.ToError(class(self).StartCompression(false, gd.Int(65535))))
 }
 
 /*
 Start the stream in decompression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
-func (self Instance) StartDecompression() error {
+func (self Instance) StartDecompression() error { //gd:StreamPeerGZIP.start_decompression
 	return error(gd.ToError(class(self).StartDecompression(false, gd.Int(65535))))
 }
 
 /*
 Finalizes the stream, compressing or decompressing any buffered chunk left.
 */
-func (self Instance) Finish() error {
+func (self Instance) Finish() error { //gd:StreamPeerGZIP.finish
 	return error(gd.ToError(class(self).Finish()))
 }
 
 /*
 Clears this stream, resetting the internal state.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:StreamPeerGZIP.clear
 	class(self).Clear()
 }
 
@@ -89,7 +89,7 @@ func New() Instance {
 Start the stream in compression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
 //go:nosplit
-func (self class) StartCompression(use_deflate bool, buffer_size gd.Int) gd.Error {
+func (self class) StartCompression(use_deflate bool, buffer_size gd.Int) gd.Error { //gd:StreamPeerGZIP.start_compression
 	var frame = callframe.New()
 	callframe.Arg(frame, use_deflate)
 	callframe.Arg(frame, buffer_size)
@@ -104,7 +104,7 @@ func (self class) StartCompression(use_deflate bool, buffer_size gd.Int) gd.Erro
 Start the stream in decompression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
 //go:nosplit
-func (self class) StartDecompression(use_deflate bool, buffer_size gd.Int) gd.Error {
+func (self class) StartDecompression(use_deflate bool, buffer_size gd.Int) gd.Error { //gd:StreamPeerGZIP.start_decompression
 	var frame = callframe.New()
 	callframe.Arg(frame, use_deflate)
 	callframe.Arg(frame, buffer_size)
@@ -119,7 +119,7 @@ func (self class) StartDecompression(use_deflate bool, buffer_size gd.Int) gd.Er
 Finalizes the stream, compressing or decompressing any buffered chunk left.
 */
 //go:nosplit
-func (self class) Finish() gd.Error {
+func (self class) Finish() gd.Error { //gd:StreamPeerGZIP.finish
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerGZIP.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -132,7 +132,7 @@ func (self class) Finish() gd.Error {
 Clears this stream, resetting the internal state.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:StreamPeerGZIP.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerGZIP.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

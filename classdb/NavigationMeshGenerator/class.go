@@ -42,7 +42,7 @@ func singleton() {
 /*
 Bakes the [param navigation_mesh] with source geometry collected starting from the [param root_node].
 */
-func Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) {
+func Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationMeshGenerator.bake
 	once.Do(singleton)
 	class(self).Bake(navigation_mesh, root_node)
 }
@@ -50,7 +50,7 @@ func Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) 
 /*
 Removes all polygons and vertices from the provided [param navigation_mesh] resource.
 */
-func Clear(navigation_mesh [1]gdclass.NavigationMesh) {
+func Clear(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationMeshGenerator.clear
 	once.Do(singleton)
 	class(self).Clear(navigation_mesh)
 }
@@ -60,7 +60,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
-func ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node) {
+func ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node) { //gd:NavigationMeshGenerator.parse_source_geometry_data
 	once.Do(singleton)
 	class(self).ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(Callable.Nil))
 }
@@ -68,7 +68,7 @@ func ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_g
 /*
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D) {
+func BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
 	once.Do(singleton)
 	class(self).BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(Callable.Nil))
 }
@@ -87,7 +87,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Bakes the [param navigation_mesh] with source geometry collected starting from the [param root_node].
 */
 //go:nosplit
-func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) {
+func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationMeshGenerator.bake
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(root_node[0])[0])
@@ -100,7 +100,7 @@ func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]g
 Removes all polygons and vertices from the provided [param navigation_mesh] resource.
 */
 //go:nosplit
-func (self class) Clear(navigation_mesh [1]gdclass.NavigationMesh) {
+func (self class) Clear(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationMeshGenerator.clear
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -114,7 +114,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
 //go:nosplit
-func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback Callable.Function) {
+func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback Callable.Function) { //gd:NavigationMeshGenerator.parse_source_geometry_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(source_geometry_data[0])[0])
@@ -129,7 +129,7 @@ func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationM
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
 //go:nosplit
-func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) {
+func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
 	callframe.Arg(frame, pointers.Get(source_geometry_data[0])[0])

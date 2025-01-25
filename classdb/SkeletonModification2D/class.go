@@ -102,42 +102,42 @@ func (Instance) _draw_editor_gizmo(impl func(ptr unsafe.Pointer)) (cb gd.Extensi
 /*
 Returns the [SkeletonModificationStack2D] that this modification is bound to. Through the modification stack, you can access the Skeleton2D the modification is operating on.
 */
-func (self Instance) GetModificationStack() [1]gdclass.SkeletonModificationStack2D {
+func (self Instance) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2D.get_modification_stack
 	return [1]gdclass.SkeletonModificationStack2D(class(self).GetModificationStack())
 }
 
 /*
 Manually allows you to set the setup state of the modification. This function should only rarely be used, as the [SkeletonModificationStack2D] the modification is bound to should handle setting the modification up.
 */
-func (self Instance) SetIsSetup(is_setup bool) {
+func (self Instance) SetIsSetup(is_setup bool) { //gd:SkeletonModification2D.set_is_setup
 	class(self).SetIsSetup(is_setup)
 }
 
 /*
 Returns whether this modification has been successfully setup or not.
 */
-func (self Instance) GetIsSetup() bool {
+func (self Instance) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setup
 	return bool(class(self).GetIsSetup())
 }
 
 /*
 Takes an angle and clamps it so it is within the passed-in [param min] and [param max] range. [param invert] will inversely clamp the angle, clamping it to the range outside of the given bounds.
 */
-func (self Instance) ClampAngle(angle Float.X, min Float.X, max Float.X, invert bool) Float.X {
+func (self Instance) ClampAngle(angle Float.X, min Float.X, max Float.X, invert bool) Float.X { //gd:SkeletonModification2D.clamp_angle
 	return Float.X(Float.X(class(self).ClampAngle(gd.Float(angle), gd.Float(min), gd.Float(max), invert)))
 }
 
 /*
 Sets whether this modification will call [method _draw_editor_gizmo] in the Godot editor to draw modification-specific gizmos.
 */
-func (self Instance) SetEditorDrawGizmo(draw_gizmo bool) {
+func (self Instance) SetEditorDrawGizmo(draw_gizmo bool) { //gd:SkeletonModification2D.set_editor_draw_gizmo
 	class(self).SetEditorDrawGizmo(draw_gizmo)
 }
 
 /*
 Returns whether this modification will call [method _draw_editor_gizmo] in the Godot editor to draw modification-specific gizmos.
 */
-func (self Instance) GetEditorDrawGizmo() bool {
+func (self Instance) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get_editor_draw_gizmo
 	return bool(class(self).GetEditorDrawGizmo())
 }
 
@@ -213,7 +213,7 @@ func (class) _draw_editor_gizmo(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionC
 }
 
 //go:nosplit
-func (self class) SetEnabled(enabled bool) {
+func (self class) SetEnabled(enabled bool) { //gd:SkeletonModification2D.set_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -222,7 +222,7 @@ func (self class) SetEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetEnabled() bool {
+func (self class) GetEnabled() bool { //gd:SkeletonModification2D.get_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2D.Bind_get_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -235,7 +235,7 @@ func (self class) GetEnabled() bool {
 Returns the [SkeletonModificationStack2D] that this modification is bound to. Through the modification stack, you can access the Skeleton2D the modification is operating on.
 */
 //go:nosplit
-func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D {
+func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2D.get_modification_stack
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2D.Bind_get_modification_stack, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -248,7 +248,7 @@ func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D 
 Manually allows you to set the setup state of the modification. This function should only rarely be used, as the [SkeletonModificationStack2D] the modification is bound to should handle setting the modification up.
 */
 //go:nosplit
-func (self class) SetIsSetup(is_setup bool) {
+func (self class) SetIsSetup(is_setup bool) { //gd:SkeletonModification2D.set_is_setup
 	var frame = callframe.New()
 	callframe.Arg(frame, is_setup)
 	var r_ret = callframe.Nil
@@ -260,7 +260,7 @@ func (self class) SetIsSetup(is_setup bool) {
 Returns whether this modification has been successfully setup or not.
 */
 //go:nosplit
-func (self class) GetIsSetup() bool {
+func (self class) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setup
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2D.Bind_get_is_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -270,7 +270,7 @@ func (self class) GetIsSetup() bool {
 }
 
 //go:nosplit
-func (self class) SetExecutionMode(execution_mode gd.Int) {
+func (self class) SetExecutionMode(execution_mode gd.Int) { //gd:SkeletonModification2D.set_execution_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, execution_mode)
 	var r_ret = callframe.Nil
@@ -279,7 +279,7 @@ func (self class) SetExecutionMode(execution_mode gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetExecutionMode() gd.Int {
+func (self class) GetExecutionMode() gd.Int { //gd:SkeletonModification2D.get_execution_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2D.Bind_get_execution_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -292,7 +292,7 @@ func (self class) GetExecutionMode() gd.Int {
 Takes an angle and clamps it so it is within the passed-in [param min] and [param max] range. [param invert] will inversely clamp the angle, clamping it to the range outside of the given bounds.
 */
 //go:nosplit
-func (self class) ClampAngle(angle gd.Float, min gd.Float, max gd.Float, invert bool) gd.Float {
+func (self class) ClampAngle(angle gd.Float, min gd.Float, max gd.Float, invert bool) gd.Float { //gd:SkeletonModification2D.clamp_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, angle)
 	callframe.Arg(frame, min)
@@ -309,7 +309,7 @@ func (self class) ClampAngle(angle gd.Float, min gd.Float, max gd.Float, invert 
 Sets whether this modification will call [method _draw_editor_gizmo] in the Godot editor to draw modification-specific gizmos.
 */
 //go:nosplit
-func (self class) SetEditorDrawGizmo(draw_gizmo bool) {
+func (self class) SetEditorDrawGizmo(draw_gizmo bool) { //gd:SkeletonModification2D.set_editor_draw_gizmo
 	var frame = callframe.New()
 	callframe.Arg(frame, draw_gizmo)
 	var r_ret = callframe.Nil
@@ -321,7 +321,7 @@ func (self class) SetEditorDrawGizmo(draw_gizmo bool) {
 Returns whether this modification will call [method _draw_editor_gizmo] in the Godot editor to draw modification-specific gizmos.
 */
 //go:nosplit
-func (self class) GetEditorDrawGizmo() bool {
+func (self class) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get_editor_draw_gizmo
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2D.Bind_get_editor_draw_gizmo, self.AsObject(), frame.Array(0), r_ret.Addr())

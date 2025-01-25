@@ -98,7 +98,7 @@ func (self Instance) SetCollideWithAreas(value bool) {
 }
 
 //go:nosplit
-func (self class) SetPosition(position gd.Vector3) {
+func (self class) SetPosition(position gd.Vector3) { //gd:PhysicsPointQueryParameters3D.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetPosition(position gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector3 {
+func (self class) GetPosition() gd.Vector3 { //gd:PhysicsPointQueryParameters3D.get_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsPointQueryParameters3D.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -117,7 +117,7 @@ func (self class) GetPosition() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(collision_mask gd.Int) {
+func (self class) SetCollisionMask(collision_mask gd.Int) { //gd:PhysicsPointQueryParameters3D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_mask)
 	var r_ret = callframe.Nil
@@ -126,7 +126,7 @@ func (self class) SetCollisionMask(collision_mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int {
+func (self class) GetCollisionMask() gd.Int { //gd:PhysicsPointQueryParameters3D.get_collision_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsPointQueryParameters3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -136,7 +136,7 @@ func (self class) GetCollisionMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetExclude(exclude Array.Contains[gd.RID]) {
+func (self class) SetExclude(exclude Array.Contains[gd.RID]) { //gd:PhysicsPointQueryParameters3D.set_exclude
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
 	var r_ret = callframe.Nil
@@ -145,7 +145,7 @@ func (self class) SetExclude(exclude Array.Contains[gd.RID]) {
 }
 
 //go:nosplit
-func (self class) GetExclude() Array.Contains[gd.RID] {
+func (self class) GetExclude() Array.Contains[gd.RID] { //gd:PhysicsPointQueryParameters3D.get_exclude
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsPointQueryParameters3D.Bind_get_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -155,7 +155,7 @@ func (self class) GetExclude() Array.Contains[gd.RID] {
 }
 
 //go:nosplit
-func (self class) SetCollideWithBodies(enable bool) {
+func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsPointQueryParameters3D.set_collide_with_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -164,7 +164,7 @@ func (self class) SetCollideWithBodies(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCollideWithBodiesEnabled() bool {
+func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsPointQueryParameters3D.is_collide_with_bodies_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsPointQueryParameters3D.Bind_is_collide_with_bodies_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func (self class) IsCollideWithBodiesEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetCollideWithAreas(enable bool) {
+func (self class) SetCollideWithAreas(enable bool) { //gd:PhysicsPointQueryParameters3D.set_collide_with_areas
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -183,7 +183,7 @@ func (self class) SetCollideWithAreas(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCollideWithAreasEnabled() bool {
+func (self class) IsCollideWithAreasEnabled() bool { //gd:PhysicsPointQueryParameters3D.is_collide_with_areas_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsPointQueryParameters3D.Bind_is_collide_with_areas_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())

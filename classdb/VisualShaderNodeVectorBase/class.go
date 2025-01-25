@@ -66,7 +66,7 @@ func (self Instance) SetOpType(value gdclass.VisualShaderNodeVectorBaseOpType) {
 }
 
 //go:nosplit
-func (self class) SetOpType(atype gdclass.VisualShaderNodeVectorBaseOpType) {
+func (self class) SetOpType(atype gdclass.VisualShaderNodeVectorBaseOpType) { //gd:VisualShaderNodeVectorBase.set_op_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetOpType(atype gdclass.VisualShaderNodeVectorBaseOpType) {
 }
 
 //go:nosplit
-func (self class) GetOpType() gdclass.VisualShaderNodeVectorBaseOpType {
+func (self class) GetOpType() gdclass.VisualShaderNodeVectorBaseOpType { //gd:VisualShaderNodeVectorBase.get_op_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeVectorBaseOpType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVectorBase.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func init() {
 	})
 }
 
-type OpType = gdclass.VisualShaderNodeVectorBaseOpType
+type OpType = gdclass.VisualShaderNodeVectorBaseOpType //gd:VisualShaderNodeVectorBase.OpType
 
 const (
 	/*A 2D vector type.*/

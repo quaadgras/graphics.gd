@@ -68,7 +68,7 @@ func (self Instance) SetConstant(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetConstant(constant gd.Float) {
+func (self class) SetConstant(constant gd.Float) { //gd:VisualShaderNodeFloatConstant.set_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, constant)
 	var r_ret = callframe.Nil
@@ -77,7 +77,7 @@ func (self class) SetConstant(constant gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetConstant() gd.Float {
+func (self class) GetConstant() gd.Float { //gd:VisualShaderNodeFloatConstant.get_constant
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeFloatConstant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())

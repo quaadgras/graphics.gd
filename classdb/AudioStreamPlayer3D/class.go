@@ -45,42 +45,42 @@ type Any interface {
 /*
 Queues the audio to play on the next physics frame, from the given position [param from_position], in seconds.
 */
-func (self Instance) Play() {
+func (self Instance) Play() { //gd:AudioStreamPlayer3D.play
 	class(self).Play(gd.Float(0.0))
 }
 
 /*
 Sets the position from which audio will be played, in seconds.
 */
-func (self Instance) SeekTo(to_position Float.X) {
+func (self Instance) SeekTo(to_position Float.X) { //gd:AudioStreamPlayer3D.seek
 	class(self).SeekTo(gd.Float(to_position))
 }
 
 /*
 Stops the audio.
 */
-func (self Instance) Stop() {
+func (self Instance) Stop() { //gd:AudioStreamPlayer3D.stop
 	class(self).Stop()
 }
 
 /*
 Returns the position in the [AudioStream].
 */
-func (self Instance) GetPlaybackPosition() Float.X {
+func (self Instance) GetPlaybackPosition() Float.X { //gd:AudioStreamPlayer3D.get_playback_position
 	return Float.X(Float.X(class(self).GetPlaybackPosition()))
 }
 
 /*
 Returns whether the [AudioStreamPlayer] can return the [AudioStreamPlayback] object or not.
 */
-func (self Instance) HasStreamPlayback() bool {
+func (self Instance) HasStreamPlayback() bool { //gd:AudioStreamPlayer3D.has_stream_playback
 	return bool(class(self).HasStreamPlayback())
 }
 
 /*
 Returns the [AudioStreamPlayback] object associated with this [AudioStreamPlayer3D].
 */
-func (self Instance) GetStreamPlayback() [1]gdclass.AudioStreamPlayback {
+func (self Instance) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer3D.get_stream_playback
 	return [1]gdclass.AudioStreamPlayback(class(self).GetStreamPlayback())
 }
 
@@ -267,7 +267,7 @@ func (self Instance) SetDopplerTracking(value gdclass.AudioStreamPlayer3DDoppler
 }
 
 //go:nosplit
-func (self class) SetStream(stream [1]gdclass.AudioStream) {
+func (self class) SetStream(stream [1]gdclass.AudioStream) { //gd:AudioStreamPlayer3D.set_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	var r_ret = callframe.Nil
@@ -276,7 +276,7 @@ func (self class) SetStream(stream [1]gdclass.AudioStream) {
 }
 
 //go:nosplit
-func (self class) GetStream() [1]gdclass.AudioStream {
+func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer3D.get_stream
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -286,7 +286,7 @@ func (self class) GetStream() [1]gdclass.AudioStream {
 }
 
 //go:nosplit
-func (self class) SetVolumeDb(volume_db gd.Float) {
+func (self class) SetVolumeDb(volume_db gd.Float) { //gd:AudioStreamPlayer3D.set_volume_db
 	var frame = callframe.New()
 	callframe.Arg(frame, volume_db)
 	var r_ret = callframe.Nil
@@ -295,7 +295,7 @@ func (self class) SetVolumeDb(volume_db gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVolumeDb() gd.Float {
+func (self class) GetVolumeDb() gd.Float { //gd:AudioStreamPlayer3D.get_volume_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -305,7 +305,7 @@ func (self class) GetVolumeDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetUnitSize(unit_size gd.Float) {
+func (self class) SetUnitSize(unit_size gd.Float) { //gd:AudioStreamPlayer3D.set_unit_size
 	var frame = callframe.New()
 	callframe.Arg(frame, unit_size)
 	var r_ret = callframe.Nil
@@ -314,7 +314,7 @@ func (self class) SetUnitSize(unit_size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetUnitSize() gd.Float {
+func (self class) GetUnitSize() gd.Float { //gd:AudioStreamPlayer3D.get_unit_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_unit_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -324,7 +324,7 @@ func (self class) GetUnitSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMaxDb(max_db gd.Float) {
+func (self class) SetMaxDb(max_db gd.Float) { //gd:AudioStreamPlayer3D.set_max_db
 	var frame = callframe.New()
 	callframe.Arg(frame, max_db)
 	var r_ret = callframe.Nil
@@ -333,7 +333,7 @@ func (self class) SetMaxDb(max_db gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMaxDb() gd.Float {
+func (self class) GetMaxDb() gd.Float { //gd:AudioStreamPlayer3D.get_max_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_max_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -343,7 +343,7 @@ func (self class) GetMaxDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPitchScale(pitch_scale gd.Float) {
+func (self class) SetPitchScale(pitch_scale gd.Float) { //gd:AudioStreamPlayer3D.set_pitch_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, pitch_scale)
 	var r_ret = callframe.Nil
@@ -352,7 +352,7 @@ func (self class) SetPitchScale(pitch_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPitchScale() gd.Float {
+func (self class) GetPitchScale() gd.Float { //gd:AudioStreamPlayer3D.get_pitch_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_pitch_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -365,7 +365,7 @@ func (self class) GetPitchScale() gd.Float {
 Queues the audio to play on the next physics frame, from the given position [param from_position], in seconds.
 */
 //go:nosplit
-func (self class) Play(from_position gd.Float) {
+func (self class) Play(from_position gd.Float) { //gd:AudioStreamPlayer3D.play
 	var frame = callframe.New()
 	callframe.Arg(frame, from_position)
 	var r_ret = callframe.Nil
@@ -377,7 +377,7 @@ func (self class) Play(from_position gd.Float) {
 Sets the position from which audio will be played, in seconds.
 */
 //go:nosplit
-func (self class) SeekTo(to_position gd.Float) {
+func (self class) SeekTo(to_position gd.Float) { //gd:AudioStreamPlayer3D.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -389,7 +389,7 @@ func (self class) SeekTo(to_position gd.Float) {
 Stops the audio.
 */
 //go:nosplit
-func (self class) Stop() {
+func (self class) Stop() { //gd:AudioStreamPlayer3D.stop
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -397,7 +397,7 @@ func (self class) Stop() {
 }
 
 //go:nosplit
-func (self class) IsPlaying() bool {
+func (self class) IsPlaying() bool { //gd:AudioStreamPlayer3D.is_playing
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -410,7 +410,7 @@ func (self class) IsPlaying() bool {
 Returns the position in the [AudioStream].
 */
 //go:nosplit
-func (self class) GetPlaybackPosition() gd.Float {
+func (self class) GetPlaybackPosition() gd.Float { //gd:AudioStreamPlayer3D.get_playback_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_playback_position, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -420,7 +420,7 @@ func (self class) GetPlaybackPosition() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBus(bus gd.StringName) {
+func (self class) SetBus(bus gd.StringName) { //gd:AudioStreamPlayer3D.set_bus
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bus))
 	var r_ret = callframe.Nil
@@ -429,7 +429,7 @@ func (self class) SetBus(bus gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetBus() gd.StringName {
+func (self class) GetBus() gd.StringName { //gd:AudioStreamPlayer3D.get_bus
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -439,7 +439,7 @@ func (self class) GetBus() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetAutoplay(enable bool) {
+func (self class) SetAutoplay(enable bool) { //gd:AudioStreamPlayer3D.set_autoplay
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -448,7 +448,7 @@ func (self class) SetAutoplay(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsAutoplayEnabled() bool {
+func (self class) IsAutoplayEnabled() bool { //gd:AudioStreamPlayer3D.is_autoplay_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_is_autoplay_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -458,7 +458,7 @@ func (self class) IsAutoplayEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetMaxDistance(meters gd.Float) {
+func (self class) SetMaxDistance(meters gd.Float) { //gd:AudioStreamPlayer3D.set_max_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, meters)
 	var r_ret = callframe.Nil
@@ -467,7 +467,7 @@ func (self class) SetMaxDistance(meters gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMaxDistance() gd.Float {
+func (self class) GetMaxDistance() gd.Float { //gd:AudioStreamPlayer3D.get_max_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -477,7 +477,7 @@ func (self class) GetMaxDistance() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAreaMask(mask gd.Int) {
+func (self class) SetAreaMask(mask gd.Int) { //gd:AudioStreamPlayer3D.set_area_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -486,7 +486,7 @@ func (self class) SetAreaMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetAreaMask() gd.Int {
+func (self class) GetAreaMask() gd.Int { //gd:AudioStreamPlayer3D.get_area_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_area_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -496,7 +496,7 @@ func (self class) GetAreaMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetEmissionAngle(degrees gd.Float) {
+func (self class) SetEmissionAngle(degrees gd.Float) { //gd:AudioStreamPlayer3D.set_emission_angle
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -505,7 +505,7 @@ func (self class) SetEmissionAngle(degrees gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEmissionAngle() gd.Float {
+func (self class) GetEmissionAngle() gd.Float { //gd:AudioStreamPlayer3D.get_emission_angle
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_emission_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -515,7 +515,7 @@ func (self class) GetEmissionAngle() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEmissionAngleEnabled(enabled bool) {
+func (self class) SetEmissionAngleEnabled(enabled bool) { //gd:AudioStreamPlayer3D.set_emission_angle_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -524,7 +524,7 @@ func (self class) SetEmissionAngleEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsEmissionAngleEnabled() bool {
+func (self class) IsEmissionAngleEnabled() bool { //gd:AudioStreamPlayer3D.is_emission_angle_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_is_emission_angle_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -534,7 +534,7 @@ func (self class) IsEmissionAngleEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetEmissionAngleFilterAttenuationDb(db gd.Float) {
+func (self class) SetEmissionAngleFilterAttenuationDb(db gd.Float) { //gd:AudioStreamPlayer3D.set_emission_angle_filter_attenuation_db
 	var frame = callframe.New()
 	callframe.Arg(frame, db)
 	var r_ret = callframe.Nil
@@ -543,7 +543,7 @@ func (self class) SetEmissionAngleFilterAttenuationDb(db gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetEmissionAngleFilterAttenuationDb() gd.Float {
+func (self class) GetEmissionAngleFilterAttenuationDb() gd.Float { //gd:AudioStreamPlayer3D.get_emission_angle_filter_attenuation_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_emission_angle_filter_attenuation_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -553,7 +553,7 @@ func (self class) GetEmissionAngleFilterAttenuationDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAttenuationFilterCutoffHz(degrees gd.Float) {
+func (self class) SetAttenuationFilterCutoffHz(degrees gd.Float) { //gd:AudioStreamPlayer3D.set_attenuation_filter_cutoff_hz
 	var frame = callframe.New()
 	callframe.Arg(frame, degrees)
 	var r_ret = callframe.Nil
@@ -562,7 +562,7 @@ func (self class) SetAttenuationFilterCutoffHz(degrees gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAttenuationFilterCutoffHz() gd.Float {
+func (self class) GetAttenuationFilterCutoffHz() gd.Float { //gd:AudioStreamPlayer3D.get_attenuation_filter_cutoff_hz
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_attenuation_filter_cutoff_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -572,7 +572,7 @@ func (self class) GetAttenuationFilterCutoffHz() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAttenuationFilterDb(db gd.Float) {
+func (self class) SetAttenuationFilterDb(db gd.Float) { //gd:AudioStreamPlayer3D.set_attenuation_filter_db
 	var frame = callframe.New()
 	callframe.Arg(frame, db)
 	var r_ret = callframe.Nil
@@ -581,7 +581,7 @@ func (self class) SetAttenuationFilterDb(db gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAttenuationFilterDb() gd.Float {
+func (self class) GetAttenuationFilterDb() gd.Float { //gd:AudioStreamPlayer3D.get_attenuation_filter_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_attenuation_filter_db, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -591,7 +591,7 @@ func (self class) GetAttenuationFilterDb() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAttenuationModel(model gdclass.AudioStreamPlayer3DAttenuationModel) {
+func (self class) SetAttenuationModel(model gdclass.AudioStreamPlayer3DAttenuationModel) { //gd:AudioStreamPlayer3D.set_attenuation_model
 	var frame = callframe.New()
 	callframe.Arg(frame, model)
 	var r_ret = callframe.Nil
@@ -600,7 +600,7 @@ func (self class) SetAttenuationModel(model gdclass.AudioStreamPlayer3DAttenuati
 }
 
 //go:nosplit
-func (self class) GetAttenuationModel() gdclass.AudioStreamPlayer3DAttenuationModel {
+func (self class) GetAttenuationModel() gdclass.AudioStreamPlayer3DAttenuationModel { //gd:AudioStreamPlayer3D.get_attenuation_model
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioStreamPlayer3DAttenuationModel](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_attenuation_model, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -610,7 +610,7 @@ func (self class) GetAttenuationModel() gdclass.AudioStreamPlayer3DAttenuationMo
 }
 
 //go:nosplit
-func (self class) SetDopplerTracking(mode gdclass.AudioStreamPlayer3DDopplerTracking) {
+func (self class) SetDopplerTracking(mode gdclass.AudioStreamPlayer3DDopplerTracking) { //gd:AudioStreamPlayer3D.set_doppler_tracking
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -619,7 +619,7 @@ func (self class) SetDopplerTracking(mode gdclass.AudioStreamPlayer3DDopplerTrac
 }
 
 //go:nosplit
-func (self class) GetDopplerTracking() gdclass.AudioStreamPlayer3DDopplerTracking {
+func (self class) GetDopplerTracking() gdclass.AudioStreamPlayer3DDopplerTracking { //gd:AudioStreamPlayer3D.get_doppler_tracking
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioStreamPlayer3DDopplerTracking](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_doppler_tracking, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -629,7 +629,7 @@ func (self class) GetDopplerTracking() gdclass.AudioStreamPlayer3DDopplerTrackin
 }
 
 //go:nosplit
-func (self class) SetStreamPaused(pause bool) {
+func (self class) SetStreamPaused(pause bool) { //gd:AudioStreamPlayer3D.set_stream_paused
 	var frame = callframe.New()
 	callframe.Arg(frame, pause)
 	var r_ret = callframe.Nil
@@ -638,7 +638,7 @@ func (self class) SetStreamPaused(pause bool) {
 }
 
 //go:nosplit
-func (self class) GetStreamPaused() bool {
+func (self class) GetStreamPaused() bool { //gd:AudioStreamPlayer3D.get_stream_paused
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_stream_paused, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -648,7 +648,7 @@ func (self class) GetStreamPaused() bool {
 }
 
 //go:nosplit
-func (self class) SetMaxPolyphony(max_polyphony gd.Int) {
+func (self class) SetMaxPolyphony(max_polyphony gd.Int) { //gd:AudioStreamPlayer3D.set_max_polyphony
 	var frame = callframe.New()
 	callframe.Arg(frame, max_polyphony)
 	var r_ret = callframe.Nil
@@ -657,7 +657,7 @@ func (self class) SetMaxPolyphony(max_polyphony gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMaxPolyphony() gd.Int {
+func (self class) GetMaxPolyphony() gd.Int { //gd:AudioStreamPlayer3D.get_max_polyphony
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_max_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -667,7 +667,7 @@ func (self class) GetMaxPolyphony() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetPanningStrength(panning_strength gd.Float) {
+func (self class) SetPanningStrength(panning_strength gd.Float) { //gd:AudioStreamPlayer3D.set_panning_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, panning_strength)
 	var r_ret = callframe.Nil
@@ -676,7 +676,7 @@ func (self class) SetPanningStrength(panning_strength gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetPanningStrength() gd.Float {
+func (self class) GetPanningStrength() gd.Float { //gd:AudioStreamPlayer3D.get_panning_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_panning_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -689,7 +689,7 @@ func (self class) GetPanningStrength() gd.Float {
 Returns whether the [AudioStreamPlayer] can return the [AudioStreamPlayback] object or not.
 */
 //go:nosplit
-func (self class) HasStreamPlayback() bool {
+func (self class) HasStreamPlayback() bool { //gd:AudioStreamPlayer3D.has_stream_playback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_has_stream_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -702,7 +702,7 @@ func (self class) HasStreamPlayback() bool {
 Returns the [AudioStreamPlayback] object associated with this [AudioStreamPlayer3D].
 */
 //go:nosplit
-func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback {
+func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer3D.get_stream_playback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_stream_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -712,7 +712,7 @@ func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback {
 }
 
 //go:nosplit
-func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType) {
+func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType) { //gd:AudioStreamPlayer3D.set_playback_type
 	var frame = callframe.New()
 	callframe.Arg(frame, playback_type)
 	var r_ret = callframe.Nil
@@ -721,7 +721,7 @@ func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType)
 }
 
 //go:nosplit
-func (self class) GetPlaybackType() gdclass.AudioServerPlaybackType {
+func (self class) GetPlaybackType() gdclass.AudioServerPlaybackType { //gd:AudioStreamPlayer3D.get_playback_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioServerPlaybackType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_playback_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -759,7 +759,7 @@ func init() {
 	})
 }
 
-type AttenuationModel = gdclass.AudioStreamPlayer3DAttenuationModel
+type AttenuationModel = gdclass.AudioStreamPlayer3DAttenuationModel //gd:AudioStreamPlayer3D.AttenuationModel
 
 const (
 	/*Attenuation of loudness according to linear distance.*/
@@ -772,7 +772,7 @@ const (
 	AttenuationDisabled AttenuationModel = 3
 )
 
-type DopplerTracking = gdclass.AudioStreamPlayer3DDopplerTracking
+type DopplerTracking = gdclass.AudioStreamPlayer3DDopplerTracking //gd:AudioStreamPlayer3D.DopplerTracking
 
 const (
 	/*Disables doppler tracking.*/

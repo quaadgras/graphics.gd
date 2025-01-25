@@ -116,7 +116,7 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 }
 
 //go:nosplit
-func (self class) SetText(text gd.String) {
+func (self class) SetText(text gd.String) { //gd:LinkButton.set_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Nil
@@ -125,7 +125,7 @@ func (self class) SetText(text gd.String) {
 }
 
 //go:nosplit
-func (self class) GetText() gd.String {
+func (self class) GetText() gd.String { //gd:LinkButton.get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func (self class) GetText() gd.String {
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.ControlTextDirection) {
+func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //gd:LinkButton.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetTextDirection(direction gdclass.ControlTextDirection) {
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.ControlTextDirection {
+func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:LinkButton.get_text_direction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func (self class) GetTextDirection() gdclass.ControlTextDirection {
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) {
+func (self class) SetLanguage(language gd.String) { //gd:LinkButton.set_language
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
 	var r_ret = callframe.Nil
@@ -163,7 +163,7 @@ func (self class) SetLanguage(language gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String {
+func (self class) GetLanguage() gd.String { //gd:LinkButton.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func (self class) GetLanguage() gd.String {
 }
 
 //go:nosplit
-func (self class) SetUri(uri gd.String) {
+func (self class) SetUri(uri gd.String) { //gd:LinkButton.set_uri
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(uri))
 	var r_ret = callframe.Nil
@@ -182,7 +182,7 @@ func (self class) SetUri(uri gd.String) {
 }
 
 //go:nosplit
-func (self class) GetUri() gd.String {
+func (self class) GetUri() gd.String { //gd:LinkButton.get_uri
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_uri, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -192,7 +192,7 @@ func (self class) GetUri() gd.String {
 }
 
 //go:nosplit
-func (self class) SetUnderlineMode(underline_mode gdclass.LinkButtonUnderlineMode) {
+func (self class) SetUnderlineMode(underline_mode gdclass.LinkButtonUnderlineMode) { //gd:LinkButton.set_underline_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, underline_mode)
 	var r_ret = callframe.Nil
@@ -201,7 +201,7 @@ func (self class) SetUnderlineMode(underline_mode gdclass.LinkButtonUnderlineMod
 }
 
 //go:nosplit
-func (self class) GetUnderlineMode() gdclass.LinkButtonUnderlineMode {
+func (self class) GetUnderlineMode() gdclass.LinkButtonUnderlineMode { //gd:LinkButton.get_underline_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.LinkButtonUnderlineMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_underline_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func (self class) GetUnderlineMode() gdclass.LinkButtonUnderlineMode {
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) {
+func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) { //gd:LinkButton.set_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
 	var r_ret = callframe.Nil
@@ -220,7 +220,7 @@ func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructu
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
+func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser { //gd:LinkButton.get_structured_text_bidi_override
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -230,7 +230,7 @@ func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTe
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) {
+func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:LinkButton.set_structured_text_bidi_override_options
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	var r_ret = callframe.Nil
@@ -239,7 +239,7 @@ func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) {
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverrideOptions() Array.Any {
+func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:LinkButton.get_structured_text_bidi_override_options
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -285,7 +285,7 @@ func init() {
 	gdclass.Register("LinkButton", func(ptr gd.Object) any { return [1]gdclass.LinkButton{*(*gdclass.LinkButton)(unsafe.Pointer(&ptr))} })
 }
 
-type UnderlineMode = gdclass.LinkButtonUnderlineMode
+type UnderlineMode = gdclass.LinkButtonUnderlineMode //gd:LinkButton.UnderlineMode
 
 const (
 	/*The LinkButton will always show an underline at the bottom of its text.*/

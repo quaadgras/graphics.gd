@@ -67,7 +67,7 @@ func (self Instance) SetCurve(value [1]gdclass.Curve2D) {
 }
 
 //go:nosplit
-func (self class) SetCurve(curve [1]gdclass.Curve2D) {
+func (self class) SetCurve(curve [1]gdclass.Curve2D) { //gd:Path2D.set_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve2D) {
 }
 
 //go:nosplit
-func (self class) GetCurve() [1]gdclass.Curve2D {
+func (self class) GetCurve() [1]gdclass.Curve2D { //gd:Path2D.get_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Path2D.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Addr())

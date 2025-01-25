@@ -94,7 +94,7 @@ func (self Instance) SetFilterClip(value bool) {
 }
 
 //go:nosplit
-func (self class) SetAtlas(atlas [1]gdclass.Texture2D) {
+func (self class) SetAtlas(atlas [1]gdclass.Texture2D) { //gd:AtlasTexture.set_atlas
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(atlas[0])[0])
 	var r_ret = callframe.Nil
@@ -103,7 +103,7 @@ func (self class) SetAtlas(atlas [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetAtlas() [1]gdclass.Texture2D {
+func (self class) GetAtlas() [1]gdclass.Texture2D { //gd:AtlasTexture.get_atlas
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AtlasTexture.Bind_get_atlas, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -113,7 +113,7 @@ func (self class) GetAtlas() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetRegion(region gd.Rect2) {
+func (self class) SetRegion(region gd.Rect2) { //gd:AtlasTexture.set_region
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
 	var r_ret = callframe.Nil
@@ -122,7 +122,7 @@ func (self class) SetRegion(region gd.Rect2) {
 }
 
 //go:nosplit
-func (self class) GetRegion() gd.Rect2 {
+func (self class) GetRegion() gd.Rect2 { //gd:AtlasTexture.get_region
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AtlasTexture.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -132,7 +132,7 @@ func (self class) GetRegion() gd.Rect2 {
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Rect2) {
+func (self class) SetMargin(margin gd.Rect2) { //gd:AtlasTexture.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -141,7 +141,7 @@ func (self class) SetMargin(margin gd.Rect2) {
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Rect2 {
+func (self class) GetMargin() gd.Rect2 { //gd:AtlasTexture.get_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AtlasTexture.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -151,7 +151,7 @@ func (self class) GetMargin() gd.Rect2 {
 }
 
 //go:nosplit
-func (self class) SetFilterClip(enable bool) {
+func (self class) SetFilterClip(enable bool) { //gd:AtlasTexture.set_filter_clip
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -160,7 +160,7 @@ func (self class) SetFilterClip(enable bool) {
 }
 
 //go:nosplit
-func (self class) HasFilterClip() bool {
+func (self class) HasFilterClip() bool { //gd:AtlasTexture.has_filter_clip
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AtlasTexture.Bind_has_filter_clip, self.AsObject(), frame.Array(0), r_ret.Addr())

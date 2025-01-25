@@ -67,7 +67,7 @@ func (self Instance) SetQuadSize(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetQuadSize(size gd.Vector2) {
+func (self class) SetQuadSize(size gd.Vector2) { //gd:OpenXRCompositionLayerQuad.set_quad_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetQuadSize(size gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetQuadSize() gd.Vector2 {
+func (self class) GetQuadSize() gd.Vector2 { //gd:OpenXRCompositionLayerQuad.get_quad_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_get_quad_size, self.AsObject(), frame.Array(0), r_ret.Addr())

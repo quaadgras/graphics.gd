@@ -88,7 +88,7 @@ func (self Instance) SetCurveZ(value [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Int) {
+func (self class) SetWidth(width gd.Int) { //gd:CurveXYZTexture.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -97,7 +97,7 @@ func (self class) SetWidth(width gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetCurveX(curve [1]gdclass.Curve) {
+func (self class) SetCurveX(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_curve_x
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -106,7 +106,7 @@ func (self class) SetCurveX(curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetCurveX() [1]gdclass.Curve {
+func (self class) GetCurveX() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_x
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_x, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -116,7 +116,7 @@ func (self class) GetCurveX() [1]gdclass.Curve {
 }
 
 //go:nosplit
-func (self class) SetCurveY(curve [1]gdclass.Curve) {
+func (self class) SetCurveY(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_curve_y
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -125,7 +125,7 @@ func (self class) SetCurveY(curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetCurveY() [1]gdclass.Curve {
+func (self class) GetCurveY() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_y
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_y, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func (self class) GetCurveY() [1]gdclass.Curve {
 }
 
 //go:nosplit
-func (self class) SetCurveZ(curve [1]gdclass.Curve) {
+func (self class) SetCurveZ(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_curve_z
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetCurveZ(curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetCurveZ() [1]gdclass.Curve {
+func (self class) GetCurveZ() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_z
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_z, self.AsObject(), frame.Array(0), r_ret.Addr())

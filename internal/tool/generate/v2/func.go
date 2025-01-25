@@ -72,7 +72,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	if method.ReturnValue.Type != "" {
 		fmt.Fprintf(w, "%v ", resultSimple)
 	}
-	fmt.Fprint(w, "{\n\t")
+	fmt.Fprintf(w, "{ //gd:%s.%s\n\t", class.Name, method.Name)
 	if singleton {
 		fmt.Fprintf(w, "once.Do(singleton)\n\t")
 	}
@@ -291,7 +291,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		}
 		fmt.Fprintf(w, "args ..."+prefix+"Variant")
 	}
-	fmt.Fprintf(w, ") %v {\n", result)
+	fmt.Fprintf(w, ") %v { //gd:%s.%s\n", result, class.Name, method.Name)
 	fmt.Fprintf(w, "\tvar frame = callframe.New()\n")
 	for _, arg := range method.Arguments {
 		_, ok := classDB[arg.Type]

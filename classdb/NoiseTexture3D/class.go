@@ -127,7 +127,7 @@ func (self Instance) SetNoise(value [1]gdclass.Noise) {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Int) {
+func (self class) SetWidth(width gd.Int) { //gd:NoiseTexture3D.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -136,7 +136,7 @@ func (self class) SetWidth(width gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Int) {
+func (self class) SetHeight(height gd.Int) { //gd:NoiseTexture3D.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -145,7 +145,7 @@ func (self class) SetHeight(height gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetDepth(depth gd.Int) {
+func (self class) SetDepth(depth gd.Int) { //gd:NoiseTexture3D.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -154,7 +154,7 @@ func (self class) SetDepth(depth gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetInvert(invert bool) {
+func (self class) SetInvert(invert bool) { //gd:NoiseTexture3D.set_invert
 	var frame = callframe.New()
 	callframe.Arg(frame, invert)
 	var r_ret = callframe.Nil
@@ -163,7 +163,7 @@ func (self class) SetInvert(invert bool) {
 }
 
 //go:nosplit
-func (self class) GetInvert() bool {
+func (self class) GetInvert() bool { //gd:NoiseTexture3D.get_invert
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture3D.Bind_get_invert, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func (self class) GetInvert() bool {
 }
 
 //go:nosplit
-func (self class) SetSeamless(seamless bool) {
+func (self class) SetSeamless(seamless bool) { //gd:NoiseTexture3D.set_seamless
 	var frame = callframe.New()
 	callframe.Arg(frame, seamless)
 	var r_ret = callframe.Nil
@@ -182,7 +182,7 @@ func (self class) SetSeamless(seamless bool) {
 }
 
 //go:nosplit
-func (self class) GetSeamless() bool {
+func (self class) GetSeamless() bool { //gd:NoiseTexture3D.get_seamless
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture3D.Bind_get_seamless, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -192,7 +192,7 @@ func (self class) GetSeamless() bool {
 }
 
 //go:nosplit
-func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt gd.Float) {
+func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt gd.Float) { //gd:NoiseTexture3D.set_seamless_blend_skirt
 	var frame = callframe.New()
 	callframe.Arg(frame, seamless_blend_skirt)
 	var r_ret = callframe.Nil
@@ -201,7 +201,7 @@ func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSeamlessBlendSkirt() gd.Float {
+func (self class) GetSeamlessBlendSkirt() gd.Float { //gd:NoiseTexture3D.get_seamless_blend_skirt
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture3D.Bind_get_seamless_blend_skirt, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func (self class) GetSeamlessBlendSkirt() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetNormalize(normalize bool) {
+func (self class) SetNormalize(normalize bool) { //gd:NoiseTexture3D.set_normalize
 	var frame = callframe.New()
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Nil
@@ -220,7 +220,7 @@ func (self class) SetNormalize(normalize bool) {
 }
 
 //go:nosplit
-func (self class) IsNormalized() bool {
+func (self class) IsNormalized() bool { //gd:NoiseTexture3D.is_normalized
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture3D.Bind_is_normalized, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -230,7 +230,7 @@ func (self class) IsNormalized() bool {
 }
 
 //go:nosplit
-func (self class) SetColorRamp(gradient [1]gdclass.Gradient) {
+func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture3D.set_color_ramp
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gradient[0])[0])
 	var r_ret = callframe.Nil
@@ -239,7 +239,7 @@ func (self class) SetColorRamp(gradient [1]gdclass.Gradient) {
 }
 
 //go:nosplit
-func (self class) GetColorRamp() [1]gdclass.Gradient {
+func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture3D.get_color_ramp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture3D.Bind_get_color_ramp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -249,7 +249,7 @@ func (self class) GetColorRamp() [1]gdclass.Gradient {
 }
 
 //go:nosplit
-func (self class) SetNoise(noise [1]gdclass.Noise) {
+func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture3D.set_noise
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(noise[0])[0])
 	var r_ret = callframe.Nil
@@ -258,7 +258,7 @@ func (self class) SetNoise(noise [1]gdclass.Noise) {
 }
 
 //go:nosplit
-func (self class) GetNoise() [1]gdclass.Noise {
+func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture3D.get_noise
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NoiseTexture3D.Bind_get_noise, self.AsObject(), frame.Array(0), r_ret.Addr())

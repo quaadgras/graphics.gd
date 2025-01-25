@@ -66,7 +66,7 @@ func (self Instance) SetFlags(value gdclass.VisualShaderNodeParticleEmitEmitFlag
 }
 
 //go:nosplit
-func (self class) SetFlags(flags gdclass.VisualShaderNodeParticleEmitEmitFlags) {
+func (self class) SetFlags(flags gdclass.VisualShaderNodeParticleEmitEmitFlags) { //gd:VisualShaderNodeParticleEmit.set_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetFlags(flags gdclass.VisualShaderNodeParticleEmitEmitFlags) 
 }
 
 //go:nosplit
-func (self class) GetFlags() gdclass.VisualShaderNodeParticleEmitEmitFlags {
+func (self class) GetFlags() gdclass.VisualShaderNodeParticleEmitEmitFlags { //gd:VisualShaderNodeParticleEmit.get_flags
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeParticleEmitEmitFlags](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleEmit.Bind_get_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func init() {
 	})
 }
 
-type EmitFlags = gdclass.VisualShaderNodeParticleEmitEmitFlags
+type EmitFlags = gdclass.VisualShaderNodeParticleEmitEmitFlags //gd:VisualShaderNodeParticleEmit.EmitFlags
 
 const (
 	/*If enabled, the particle starts with the position defined by this node.*/

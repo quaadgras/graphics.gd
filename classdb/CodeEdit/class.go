@@ -112,21 +112,21 @@ func (Instance) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer,
 /*
 Perform an indent as if the user activated the "ui_text_indent" action.
 */
-func (self Instance) DoIndent() {
+func (self Instance) DoIndent() { //gd:CodeEdit.do_indent
 	class(self).DoIndent()
 }
 
 /*
 Indents selected lines, or in the case of no selection the caret line by one.
 */
-func (self Instance) IndentLines() {
+func (self Instance) IndentLines() { //gd:CodeEdit.indent_lines
 	class(self).IndentLines()
 }
 
 /*
 Unindents selected lines, or in the case of no selection the caret line by one. Same as performing "ui_text_unindent" action.
 */
-func (self Instance) UnindentLines() {
+func (self Instance) UnindentLines() { //gd:CodeEdit.unindent_lines
 	class(self).UnindentLines()
 }
 
@@ -134,7 +134,7 @@ func (self Instance) UnindentLines() {
 Converts the indents of lines between [param from_line] and [param to_line] to tabs or spaces as set by [member indent_use_spaces].
 Values of [code]-1[/code] convert the entire text.
 */
-func (self Instance) ConvertIndent() {
+func (self Instance) ConvertIndent() { //gd:CodeEdit.convert_indent
 	class(self).ConvertIndent(gd.Int(-1), gd.Int(-1))
 }
 
@@ -142,175 +142,175 @@ func (self Instance) ConvertIndent() {
 Adds a brace pair.
 Both the start and end keys must be symbols. Only the start key has to be unique.
 */
-func (self Instance) AddAutoBraceCompletionPair(start_key string, end_key string) {
+func (self Instance) AddAutoBraceCompletionPair(start_key string, end_key string) { //gd:CodeEdit.add_auto_brace_completion_pair
 	class(self).AddAutoBraceCompletionPair(gd.NewString(start_key), gd.NewString(end_key))
 }
 
 /*
 Returns [code]true[/code] if open key [param open_key] exists.
 */
-func (self Instance) HasAutoBraceCompletionOpenKey(open_key string) bool {
+func (self Instance) HasAutoBraceCompletionOpenKey(open_key string) bool { //gd:CodeEdit.has_auto_brace_completion_open_key
 	return bool(class(self).HasAutoBraceCompletionOpenKey(gd.NewString(open_key)))
 }
 
 /*
 Returns [code]true[/code] if close key [param close_key] exists.
 */
-func (self Instance) HasAutoBraceCompletionCloseKey(close_key string) bool {
+func (self Instance) HasAutoBraceCompletionCloseKey(close_key string) bool { //gd:CodeEdit.has_auto_brace_completion_close_key
 	return bool(class(self).HasAutoBraceCompletionCloseKey(gd.NewString(close_key)))
 }
 
 /*
 Gets the matching auto brace close key for [param open_key].
 */
-func (self Instance) GetAutoBraceCompletionCloseKey(open_key string) string {
+func (self Instance) GetAutoBraceCompletionCloseKey(open_key string) string { //gd:CodeEdit.get_auto_brace_completion_close_key
 	return string(class(self).GetAutoBraceCompletionCloseKey(gd.NewString(open_key)).String())
 }
 
 /*
 Sets the line as breakpointed.
 */
-func (self Instance) SetLineAsBreakpoint(line int, breakpointed bool) {
+func (self Instance) SetLineAsBreakpoint(line int, breakpointed bool) { //gd:CodeEdit.set_line_as_breakpoint
 	class(self).SetLineAsBreakpoint(gd.Int(line), breakpointed)
 }
 
 /*
 Returns whether the line at the specified index is breakpointed or not.
 */
-func (self Instance) IsLineBreakpointed(line int) bool {
+func (self Instance) IsLineBreakpointed(line int) bool { //gd:CodeEdit.is_line_breakpointed
 	return bool(class(self).IsLineBreakpointed(gd.Int(line)))
 }
 
 /*
 Clears all breakpointed lines.
 */
-func (self Instance) ClearBreakpointedLines() {
+func (self Instance) ClearBreakpointedLines() { //gd:CodeEdit.clear_breakpointed_lines
 	class(self).ClearBreakpointedLines()
 }
 
 /*
 Gets all breakpointed lines.
 */
-func (self Instance) GetBreakpointedLines() []int32 {
+func (self Instance) GetBreakpointedLines() []int32 { //gd:CodeEdit.get_breakpointed_lines
 	return []int32(class(self).GetBreakpointedLines().AsSlice())
 }
 
 /*
 Sets the line as bookmarked.
 */
-func (self Instance) SetLineAsBookmarked(line int, bookmarked bool) {
+func (self Instance) SetLineAsBookmarked(line int, bookmarked bool) { //gd:CodeEdit.set_line_as_bookmarked
 	class(self).SetLineAsBookmarked(gd.Int(line), bookmarked)
 }
 
 /*
 Returns whether the line at the specified index is bookmarked or not.
 */
-func (self Instance) IsLineBookmarked(line int) bool {
+func (self Instance) IsLineBookmarked(line int) bool { //gd:CodeEdit.is_line_bookmarked
 	return bool(class(self).IsLineBookmarked(gd.Int(line)))
 }
 
 /*
 Clears all bookmarked lines.
 */
-func (self Instance) ClearBookmarkedLines() {
+func (self Instance) ClearBookmarkedLines() { //gd:CodeEdit.clear_bookmarked_lines
 	class(self).ClearBookmarkedLines()
 }
 
 /*
 Gets all bookmarked lines.
 */
-func (self Instance) GetBookmarkedLines() []int32 {
+func (self Instance) GetBookmarkedLines() []int32 { //gd:CodeEdit.get_bookmarked_lines
 	return []int32(class(self).GetBookmarkedLines().AsSlice())
 }
 
 /*
 Sets the line as executing.
 */
-func (self Instance) SetLineAsExecuting(line int, executing bool) {
+func (self Instance) SetLineAsExecuting(line int, executing bool) { //gd:CodeEdit.set_line_as_executing
 	class(self).SetLineAsExecuting(gd.Int(line), executing)
 }
 
 /*
 Returns whether the line at the specified index is marked as executing or not.
 */
-func (self Instance) IsLineExecuting(line int) bool {
+func (self Instance) IsLineExecuting(line int) bool { //gd:CodeEdit.is_line_executing
 	return bool(class(self).IsLineExecuting(gd.Int(line)))
 }
 
 /*
 Clears all executed lines.
 */
-func (self Instance) ClearExecutingLines() {
+func (self Instance) ClearExecutingLines() { //gd:CodeEdit.clear_executing_lines
 	class(self).ClearExecutingLines()
 }
 
 /*
 Gets all executing lines.
 */
-func (self Instance) GetExecutingLines() []int32 {
+func (self Instance) GetExecutingLines() []int32 { //gd:CodeEdit.get_executing_lines
 	return []int32(class(self).GetExecutingLines().AsSlice())
 }
 
 /*
 Returns if the given line is foldable, that is, it has indented lines right below it or a comment / string block.
 */
-func (self Instance) CanFoldLine(line int) bool {
+func (self Instance) CanFoldLine(line int) bool { //gd:CodeEdit.can_fold_line
 	return bool(class(self).CanFoldLine(gd.Int(line)))
 }
 
 /*
 Folds the given line, if possible (see [method can_fold_line]).
 */
-func (self Instance) FoldLine(line int) {
+func (self Instance) FoldLine(line int) { //gd:CodeEdit.fold_line
 	class(self).FoldLine(gd.Int(line))
 }
 
 /*
 Unfolds all lines that were previously folded.
 */
-func (self Instance) UnfoldLine(line int) {
+func (self Instance) UnfoldLine(line int) { //gd:CodeEdit.unfold_line
 	class(self).UnfoldLine(gd.Int(line))
 }
 
 /*
 Folds all lines that are possible to be folded (see [method can_fold_line]).
 */
-func (self Instance) FoldAllLines() {
+func (self Instance) FoldAllLines() { //gd:CodeEdit.fold_all_lines
 	class(self).FoldAllLines()
 }
 
 /*
 Unfolds all lines, folded or not.
 */
-func (self Instance) UnfoldAllLines() {
+func (self Instance) UnfoldAllLines() { //gd:CodeEdit.unfold_all_lines
 	class(self).UnfoldAllLines()
 }
 
 /*
 Toggle the folding of the code block at the given line.
 */
-func (self Instance) ToggleFoldableLine(line int) {
+func (self Instance) ToggleFoldableLine(line int) { //gd:CodeEdit.toggle_foldable_line
 	class(self).ToggleFoldableLine(gd.Int(line))
 }
 
 /*
 Toggle the folding of the code block on all lines with a caret on them.
 */
-func (self Instance) ToggleFoldableLinesAtCarets() {
+func (self Instance) ToggleFoldableLinesAtCarets() { //gd:CodeEdit.toggle_foldable_lines_at_carets
 	class(self).ToggleFoldableLinesAtCarets()
 }
 
 /*
 Returns whether the line at the specified index is folded or not.
 */
-func (self Instance) IsLineFolded(line int) bool {
+func (self Instance) IsLineFolded(line int) bool { //gd:CodeEdit.is_line_folded
 	return bool(class(self).IsLineFolded(gd.Int(line)))
 }
 
 /*
 Returns all lines that are current folded.
 */
-func (self Instance) GetFoldedLines() []int {
+func (self Instance) GetFoldedLines() []int { //gd:CodeEdit.get_folded_lines
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetFoldedLines())))
 }
 
@@ -320,42 +320,42 @@ A code region is a part of code that is highlighted when folded and can help org
 Code region start and end tags can be customized (see [method set_code_region_tags]).
 Code regions are delimited using start and end tags (respectively [code]region[/code] and [code]endregion[/code] by default) preceded by one line comment delimiter. (eg. [code]#region[/code] and [code]#endregion[/code])
 */
-func (self Instance) CreateCodeRegion() {
+func (self Instance) CreateCodeRegion() { //gd:CodeEdit.create_code_region
 	class(self).CreateCodeRegion()
 }
 
 /*
 Returns the code region start tag (without comment delimiter).
 */
-func (self Instance) GetCodeRegionStartTag() string {
+func (self Instance) GetCodeRegionStartTag() string { //gd:CodeEdit.get_code_region_start_tag
 	return string(class(self).GetCodeRegionStartTag().String())
 }
 
 /*
 Returns the code region end tag (without comment delimiter).
 */
-func (self Instance) GetCodeRegionEndTag() string {
+func (self Instance) GetCodeRegionEndTag() string { //gd:CodeEdit.get_code_region_end_tag
 	return string(class(self).GetCodeRegionEndTag().String())
 }
 
 /*
 Sets the code region start and end tags (without comment delimiter).
 */
-func (self Instance) SetCodeRegionTags() {
+func (self Instance) SetCodeRegionTags() { //gd:CodeEdit.set_code_region_tags
 	class(self).SetCodeRegionTags(gd.NewString("region"), gd.NewString("endregion"))
 }
 
 /*
 Returns whether the line at the specified index is a code region start.
 */
-func (self Instance) IsLineCodeRegionStart(line int) bool {
+func (self Instance) IsLineCodeRegionStart(line int) bool { //gd:CodeEdit.is_line_code_region_start
 	return bool(class(self).IsLineCodeRegionStart(gd.Int(line)))
 }
 
 /*
 Returns whether the line at the specified index is a code region end.
 */
-func (self Instance) IsLineCodeRegionEnd(line int) bool {
+func (self Instance) IsLineCodeRegionEnd(line int) bool { //gd:CodeEdit.is_line_code_region_end
 	return bool(class(self).IsLineCodeRegionEnd(gd.Int(line)))
 }
 
@@ -363,35 +363,35 @@ func (self Instance) IsLineCodeRegionEnd(line int) bool {
 Defines a string delimiter from [param start_key] to [param end_key]. Both keys should be symbols, and [param start_key] must not be shared with other delimiters.
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
-func (self Instance) AddStringDelimiter(start_key string, end_key string) {
+func (self Instance) AddStringDelimiter(start_key string, end_key string) { //gd:CodeEdit.add_string_delimiter
 	class(self).AddStringDelimiter(gd.NewString(start_key), gd.NewString(end_key), false)
 }
 
 /*
 Removes the string delimiter with [param start_key].
 */
-func (self Instance) RemoveStringDelimiter(start_key string) {
+func (self Instance) RemoveStringDelimiter(start_key string) { //gd:CodeEdit.remove_string_delimiter
 	class(self).RemoveStringDelimiter(gd.NewString(start_key))
 }
 
 /*
 Returns [code]true[/code] if string [param start_key] exists.
 */
-func (self Instance) HasStringDelimiter(start_key string) bool {
+func (self Instance) HasStringDelimiter(start_key string) bool { //gd:CodeEdit.has_string_delimiter
 	return bool(class(self).HasStringDelimiter(gd.NewString(start_key)))
 }
 
 /*
 Removes all string delimiters.
 */
-func (self Instance) ClearStringDelimiters() {
+func (self Instance) ClearStringDelimiters() { //gd:CodeEdit.clear_string_delimiters
 	class(self).ClearStringDelimiters()
 }
 
 /*
 Returns the delimiter index if [param line] [param column] is in a string. If [param column] is not provided, will return the delimiter index if the entire [param line] is a string. Otherwise [code]-1[/code].
 */
-func (self Instance) IsInString(line int) int {
+func (self Instance) IsInString(line int) int { //gd:CodeEdit.is_in_string
 	return int(int(class(self).IsInString(gd.Int(line), gd.Int(-1))))
 }
 
@@ -399,91 +399,91 @@ func (self Instance) IsInString(line int) int {
 Adds a comment delimiter from [param start_key] to [param end_key]. Both keys should be symbols, and [param start_key] must not be shared with other delimiters.
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
-func (self Instance) AddCommentDelimiter(start_key string, end_key string) {
+func (self Instance) AddCommentDelimiter(start_key string, end_key string) { //gd:CodeEdit.add_comment_delimiter
 	class(self).AddCommentDelimiter(gd.NewString(start_key), gd.NewString(end_key), false)
 }
 
 /*
 Removes the comment delimiter with [param start_key].
 */
-func (self Instance) RemoveCommentDelimiter(start_key string) {
+func (self Instance) RemoveCommentDelimiter(start_key string) { //gd:CodeEdit.remove_comment_delimiter
 	class(self).RemoveCommentDelimiter(gd.NewString(start_key))
 }
 
 /*
 Returns [code]true[/code] if comment [param start_key] exists.
 */
-func (self Instance) HasCommentDelimiter(start_key string) bool {
+func (self Instance) HasCommentDelimiter(start_key string) bool { //gd:CodeEdit.has_comment_delimiter
 	return bool(class(self).HasCommentDelimiter(gd.NewString(start_key)))
 }
 
 /*
 Removes all comment delimiters.
 */
-func (self Instance) ClearCommentDelimiters() {
+func (self Instance) ClearCommentDelimiters() { //gd:CodeEdit.clear_comment_delimiters
 	class(self).ClearCommentDelimiters()
 }
 
 /*
 Returns delimiter index if [param line] [param column] is in a comment. If [param column] is not provided, will return delimiter index if the entire [param line] is a comment. Otherwise [code]-1[/code].
 */
-func (self Instance) IsInComment(line int) int {
+func (self Instance) IsInComment(line int) int { //gd:CodeEdit.is_in_comment
 	return int(int(class(self).IsInComment(gd.Int(line), gd.Int(-1))))
 }
 
 /*
 Gets the start key for a string or comment region index.
 */
-func (self Instance) GetDelimiterStartKey(delimiter_index int) string {
+func (self Instance) GetDelimiterStartKey(delimiter_index int) string { //gd:CodeEdit.get_delimiter_start_key
 	return string(class(self).GetDelimiterStartKey(gd.Int(delimiter_index)).String())
 }
 
 /*
 Gets the end key for a string or comment region index.
 */
-func (self Instance) GetDelimiterEndKey(delimiter_index int) string {
+func (self Instance) GetDelimiterEndKey(delimiter_index int) string { //gd:CodeEdit.get_delimiter_end_key
 	return string(class(self).GetDelimiterEndKey(gd.Int(delimiter_index)).String())
 }
 
 /*
 If [param line] [param column] is in a string or comment, returns the start position of the region. If not or no start could be found, both [Vector2] values will be [code]-1[/code].
 */
-func (self Instance) GetDelimiterStartPosition(line int, column int) Vector2.XY {
+func (self Instance) GetDelimiterStartPosition(line int, column int) Vector2.XY { //gd:CodeEdit.get_delimiter_start_position
 	return Vector2.XY(class(self).GetDelimiterStartPosition(gd.Int(line), gd.Int(column)))
 }
 
 /*
 If [param line] [param column] is in a string or comment, returns the end position of the region. If not or no end could be found, both [Vector2] values will be [code]-1[/code].
 */
-func (self Instance) GetDelimiterEndPosition(line int, column int) Vector2.XY {
+func (self Instance) GetDelimiterEndPosition(line int, column int) Vector2.XY { //gd:CodeEdit.get_delimiter_end_position
 	return Vector2.XY(class(self).GetDelimiterEndPosition(gd.Int(line), gd.Int(column)))
 }
 
 /*
 Sets the code hint text. Pass an empty string to clear.
 */
-func (self Instance) SetCodeHint(code_hint string) {
+func (self Instance) SetCodeHint(code_hint string) { //gd:CodeEdit.set_code_hint
 	class(self).SetCodeHint(gd.NewString(code_hint))
 }
 
 /*
 Sets if the code hint should draw below the text.
 */
-func (self Instance) SetCodeHintDrawBelow(draw_below bool) {
+func (self Instance) SetCodeHintDrawBelow(draw_below bool) { //gd:CodeEdit.set_code_hint_draw_below
 	class(self).SetCodeHintDrawBelow(draw_below)
 }
 
 /*
 Returns the full text with char [code]0xFFFF[/code] at the caret location.
 */
-func (self Instance) GetTextForCodeCompletion() string {
+func (self Instance) GetTextForCodeCompletion() string { //gd:CodeEdit.get_text_for_code_completion
 	return string(class(self).GetTextForCodeCompletion().String())
 }
 
 /*
 Emits [signal code_completion_requested], if [param force] is [code]true[/code] will bypass all checks. Otherwise will check that the caret is in a word or in front of a prefix. Will ignore the request if all current options are of type file path, node path, or signal.
 */
-func (self Instance) RequestCodeCompletion() {
+func (self Instance) RequestCodeCompletion() { //gd:CodeEdit.request_code_completion
 	class(self).RequestCodeCompletion(false)
 }
 
@@ -492,7 +492,7 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 [param location] indicates location of the option relative to the location of the code completion query. See [enum CodeEdit.CodeCompletionLocation] for how to set this value.
 [b]Note:[/b] This list will replace all current candidates.
 */
-func (self Instance) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text string, insert_text string) {
+func (self Instance) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text string, insert_text string) { //gd:CodeEdit.add_code_completion_option
 	class(self).AddCodeCompletionOption(atype, gd.NewString(display_text), gd.NewString(insert_text), gd.Color(gd.Color{1, 1, 1, 1}), [1][1]gdclass.Resource{}[0], gd.NewVariant(gd.NewVariant(([1]any{}[0]))), gd.Int(1024))
 }
 
@@ -500,14 +500,14 @@ func (self Instance) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletio
 Submits all completion options added with [method add_code_completion_option]. Will try to force the autocomplete menu to popup, if [param force] is [code]true[/code].
 [b]Note:[/b] This will replace all current candidates.
 */
-func (self Instance) UpdateCodeCompletionOptions(force bool) {
+func (self Instance) UpdateCodeCompletionOptions(force bool) { //gd:CodeEdit.update_code_completion_options
 	class(self).UpdateCodeCompletionOptions(force)
 }
 
 /*
 Gets all completion options, see [method get_code_completion_option] for return content.
 */
-func (self Instance) GetCodeCompletionOptions() []map[any]any {
+func (self Instance) GetCodeCompletionOptions() []map[any]any { //gd:CodeEdit.get_code_completion_options
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetCodeCompletionOptions())))
 }
 
@@ -520,91 +520,91 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 [code]icon[/code]: Icon to draw on the autocomplete menu.
 [code]default_value[/code]: Value of the symbol.
 */
-func (self Instance) GetCodeCompletionOption(index int) map[any]any {
+func (self Instance) GetCodeCompletionOption(index int) map[any]any { //gd:CodeEdit.get_code_completion_option
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetCodeCompletionOption(gd.Int(index))))
 }
 
 /*
 Gets the index of the current selected completion option.
 */
-func (self Instance) GetCodeCompletionSelectedIndex() int {
+func (self Instance) GetCodeCompletionSelectedIndex() int { //gd:CodeEdit.get_code_completion_selected_index
 	return int(int(class(self).GetCodeCompletionSelectedIndex()))
 }
 
 /*
 Sets the current selected completion option.
 */
-func (self Instance) SetCodeCompletionSelectedIndex(index int) {
+func (self Instance) SetCodeCompletionSelectedIndex(index int) { //gd:CodeEdit.set_code_completion_selected_index
 	class(self).SetCodeCompletionSelectedIndex(gd.Int(index))
 }
 
 /*
 Inserts the selected entry into the text. If [param replace] is [code]true[/code], any existing text is replaced rather than merged.
 */
-func (self Instance) ConfirmCodeCompletion() {
+func (self Instance) ConfirmCodeCompletion() { //gd:CodeEdit.confirm_code_completion
 	class(self).ConfirmCodeCompletion(false)
 }
 
 /*
 Cancels the autocomplete menu.
 */
-func (self Instance) CancelCodeCompletion() {
+func (self Instance) CancelCodeCompletion() { //gd:CodeEdit.cancel_code_completion
 	class(self).CancelCodeCompletion()
 }
 
 /*
 Returns the full text with char [code]0xFFFF[/code] at the cursor location.
 */
-func (self Instance) GetTextForSymbolLookup() string {
+func (self Instance) GetTextForSymbolLookup() string { //gd:CodeEdit.get_text_for_symbol_lookup
 	return string(class(self).GetTextForSymbolLookup().String())
 }
 
 /*
 Returns the full text with char [code]0xFFFF[/code] at the specified location.
 */
-func (self Instance) GetTextWithCursorChar(line int, column int) string {
+func (self Instance) GetTextWithCursorChar(line int, column int) string { //gd:CodeEdit.get_text_with_cursor_char
 	return string(class(self).GetTextWithCursorChar(gd.Int(line), gd.Int(column)).String())
 }
 
 /*
 Sets the symbol emitted by [signal symbol_validate] as a valid lookup.
 */
-func (self Instance) SetSymbolLookupWordAsValid(valid bool) {
+func (self Instance) SetSymbolLookupWordAsValid(valid bool) { //gd:CodeEdit.set_symbol_lookup_word_as_valid
 	class(self).SetSymbolLookupWordAsValid(valid)
 }
 
 /*
 Moves all lines up that are selected or have a caret on them.
 */
-func (self Instance) MoveLinesUp() {
+func (self Instance) MoveLinesUp() { //gd:CodeEdit.move_lines_up
 	class(self).MoveLinesUp()
 }
 
 /*
 Moves all lines down that are selected or have a caret on them.
 */
-func (self Instance) MoveLinesDown() {
+func (self Instance) MoveLinesDown() { //gd:CodeEdit.move_lines_down
 	class(self).MoveLinesDown()
 }
 
 /*
 Deletes all lines that are selected or have a caret on them.
 */
-func (self Instance) DeleteLines() {
+func (self Instance) DeleteLines() { //gd:CodeEdit.delete_lines
 	class(self).DeleteLines()
 }
 
 /*
 Duplicates all selected text and duplicates all lines with a caret on them.
 */
-func (self Instance) DuplicateSelection() {
+func (self Instance) DuplicateSelection() { //gd:CodeEdit.duplicate_selection
 	class(self).DuplicateSelection()
 }
 
 /*
 Duplicates all lines currently selected with any caret. Duplicates the entire line beneath the current one no matter where the caret is within the line.
 */
-func (self Instance) DuplicateLines() {
+func (self Instance) DuplicateLines() { //gd:CodeEdit.duplicate_lines
 	class(self).DuplicateLines()
 }
 
@@ -830,7 +830,7 @@ func (class) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, ca
 }
 
 //go:nosplit
-func (self class) SetIndentSize(size gd.Int) {
+func (self class) SetIndentSize(size gd.Int) { //gd:CodeEdit.set_indent_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -839,7 +839,7 @@ func (self class) SetIndentSize(size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetIndentSize() gd.Int {
+func (self class) GetIndentSize() gd.Int { //gd:CodeEdit.get_indent_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_indent_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -849,7 +849,7 @@ func (self class) GetIndentSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetIndentUsingSpaces(use_spaces bool) {
+func (self class) SetIndentUsingSpaces(use_spaces bool) { //gd:CodeEdit.set_indent_using_spaces
 	var frame = callframe.New()
 	callframe.Arg(frame, use_spaces)
 	var r_ret = callframe.Nil
@@ -858,7 +858,7 @@ func (self class) SetIndentUsingSpaces(use_spaces bool) {
 }
 
 //go:nosplit
-func (self class) IsIndentUsingSpaces() bool {
+func (self class) IsIndentUsingSpaces() bool { //gd:CodeEdit.is_indent_using_spaces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_indent_using_spaces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -868,7 +868,7 @@ func (self class) IsIndentUsingSpaces() bool {
 }
 
 //go:nosplit
-func (self class) SetAutoIndentEnabled(enable bool) {
+func (self class) SetAutoIndentEnabled(enable bool) { //gd:CodeEdit.set_auto_indent_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -877,7 +877,7 @@ func (self class) SetAutoIndentEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsAutoIndentEnabled() bool {
+func (self class) IsAutoIndentEnabled() bool { //gd:CodeEdit.is_auto_indent_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_auto_indent_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -887,7 +887,7 @@ func (self class) IsAutoIndentEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetAutoIndentPrefixes(prefixes Array.Contains[gd.String]) {
+func (self class) SetAutoIndentPrefixes(prefixes Array.Contains[gd.String]) { //gd:CodeEdit.set_auto_indent_prefixes
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(prefixes)))
 	var r_ret = callframe.Nil
@@ -896,7 +896,7 @@ func (self class) SetAutoIndentPrefixes(prefixes Array.Contains[gd.String]) {
 }
 
 //go:nosplit
-func (self class) GetAutoIndentPrefixes() Array.Contains[gd.String] {
+func (self class) GetAutoIndentPrefixes() Array.Contains[gd.String] { //gd:CodeEdit.get_auto_indent_prefixes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_indent_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -909,7 +909,7 @@ func (self class) GetAutoIndentPrefixes() Array.Contains[gd.String] {
 Perform an indent as if the user activated the "ui_text_indent" action.
 */
 //go:nosplit
-func (self class) DoIndent() {
+func (self class) DoIndent() { //gd:CodeEdit.do_indent
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_do_indent, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -920,7 +920,7 @@ func (self class) DoIndent() {
 Indents selected lines, or in the case of no selection the caret line by one.
 */
 //go:nosplit
-func (self class) IndentLines() {
+func (self class) IndentLines() { //gd:CodeEdit.indent_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_indent_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -931,7 +931,7 @@ func (self class) IndentLines() {
 Unindents selected lines, or in the case of no selection the caret line by one. Same as performing "ui_text_unindent" action.
 */
 //go:nosplit
-func (self class) UnindentLines() {
+func (self class) UnindentLines() { //gd:CodeEdit.unindent_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_unindent_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -943,7 +943,7 @@ Converts the indents of lines between [param from_line] and [param to_line] to t
 Values of [code]-1[/code] convert the entire text.
 */
 //go:nosplit
-func (self class) ConvertIndent(from_line gd.Int, to_line gd.Int) {
+func (self class) ConvertIndent(from_line gd.Int, to_line gd.Int) { //gd:CodeEdit.convert_indent
 	var frame = callframe.New()
 	callframe.Arg(frame, from_line)
 	callframe.Arg(frame, to_line)
@@ -953,7 +953,7 @@ func (self class) ConvertIndent(from_line gd.Int, to_line gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetAutoBraceCompletionEnabled(enable bool) {
+func (self class) SetAutoBraceCompletionEnabled(enable bool) { //gd:CodeEdit.set_auto_brace_completion_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -962,7 +962,7 @@ func (self class) SetAutoBraceCompletionEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsAutoBraceCompletionEnabled() bool {
+func (self class) IsAutoBraceCompletionEnabled() bool { //gd:CodeEdit.is_auto_brace_completion_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_auto_brace_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -972,7 +972,7 @@ func (self class) IsAutoBraceCompletionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetHighlightMatchingBracesEnabled(enable bool) {
+func (self class) SetHighlightMatchingBracesEnabled(enable bool) { //gd:CodeEdit.set_highlight_matching_braces_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -981,7 +981,7 @@ func (self class) SetHighlightMatchingBracesEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsHighlightMatchingBracesEnabled() bool {
+func (self class) IsHighlightMatchingBracesEnabled() bool { //gd:CodeEdit.is_highlight_matching_braces_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_highlight_matching_braces_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -995,7 +995,7 @@ Adds a brace pair.
 Both the start and end keys must be symbols. Only the start key has to be unique.
 */
 //go:nosplit
-func (self class) AddAutoBraceCompletionPair(start_key gd.String, end_key gd.String) {
+func (self class) AddAutoBraceCompletionPair(start_key gd.String, end_key gd.String) { //gd:CodeEdit.add_auto_brace_completion_pair
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	callframe.Arg(frame, pointers.Get(end_key))
@@ -1005,7 +1005,7 @@ func (self class) AddAutoBraceCompletionPair(start_key gd.String, end_key gd.Str
 }
 
 //go:nosplit
-func (self class) SetAutoBraceCompletionPairs(pairs gd.Dictionary) {
+func (self class) SetAutoBraceCompletionPairs(pairs gd.Dictionary) { //gd:CodeEdit.set_auto_brace_completion_pairs
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pairs))
 	var r_ret = callframe.Nil
@@ -1014,7 +1014,7 @@ func (self class) SetAutoBraceCompletionPairs(pairs gd.Dictionary) {
 }
 
 //go:nosplit
-func (self class) GetAutoBraceCompletionPairs() gd.Dictionary {
+func (self class) GetAutoBraceCompletionPairs() gd.Dictionary { //gd:CodeEdit.get_auto_brace_completion_pairs
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1027,7 +1027,7 @@ func (self class) GetAutoBraceCompletionPairs() gd.Dictionary {
 Returns [code]true[/code] if open key [param open_key] exists.
 */
 //go:nosplit
-func (self class) HasAutoBraceCompletionOpenKey(open_key gd.String) bool {
+func (self class) HasAutoBraceCompletionOpenKey(open_key gd.String) bool { //gd:CodeEdit.has_auto_brace_completion_open_key
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(open_key))
 	var r_ret = callframe.Ret[bool](frame)
@@ -1041,7 +1041,7 @@ func (self class) HasAutoBraceCompletionOpenKey(open_key gd.String) bool {
 Returns [code]true[/code] if close key [param close_key] exists.
 */
 //go:nosplit
-func (self class) HasAutoBraceCompletionCloseKey(close_key gd.String) bool {
+func (self class) HasAutoBraceCompletionCloseKey(close_key gd.String) bool { //gd:CodeEdit.has_auto_brace_completion_close_key
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(close_key))
 	var r_ret = callframe.Ret[bool](frame)
@@ -1055,7 +1055,7 @@ func (self class) HasAutoBraceCompletionCloseKey(close_key gd.String) bool {
 Gets the matching auto brace close key for [param open_key].
 */
 //go:nosplit
-func (self class) GetAutoBraceCompletionCloseKey(open_key gd.String) gd.String {
+func (self class) GetAutoBraceCompletionCloseKey(open_key gd.String) gd.String { //gd:CodeEdit.get_auto_brace_completion_close_key
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(open_key))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1066,7 +1066,7 @@ func (self class) GetAutoBraceCompletionCloseKey(open_key gd.String) gd.String {
 }
 
 //go:nosplit
-func (self class) SetDrawBreakpointsGutter(enable bool) {
+func (self class) SetDrawBreakpointsGutter(enable bool) { //gd:CodeEdit.set_draw_breakpoints_gutter
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1075,7 +1075,7 @@ func (self class) SetDrawBreakpointsGutter(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawingBreakpointsGutter() bool {
+func (self class) IsDrawingBreakpointsGutter() bool { //gd:CodeEdit.is_drawing_breakpoints_gutter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_breakpoints_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1085,7 +1085,7 @@ func (self class) IsDrawingBreakpointsGutter() bool {
 }
 
 //go:nosplit
-func (self class) SetDrawBookmarksGutter(enable bool) {
+func (self class) SetDrawBookmarksGutter(enable bool) { //gd:CodeEdit.set_draw_bookmarks_gutter
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1094,7 +1094,7 @@ func (self class) SetDrawBookmarksGutter(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawingBookmarksGutter() bool {
+func (self class) IsDrawingBookmarksGutter() bool { //gd:CodeEdit.is_drawing_bookmarks_gutter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_bookmarks_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1104,7 +1104,7 @@ func (self class) IsDrawingBookmarksGutter() bool {
 }
 
 //go:nosplit
-func (self class) SetDrawExecutingLinesGutter(enable bool) {
+func (self class) SetDrawExecutingLinesGutter(enable bool) { //gd:CodeEdit.set_draw_executing_lines_gutter
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1113,7 +1113,7 @@ func (self class) SetDrawExecutingLinesGutter(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawingExecutingLinesGutter() bool {
+func (self class) IsDrawingExecutingLinesGutter() bool { //gd:CodeEdit.is_drawing_executing_lines_gutter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_executing_lines_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1126,7 +1126,7 @@ func (self class) IsDrawingExecutingLinesGutter() bool {
 Sets the line as breakpointed.
 */
 //go:nosplit
-func (self class) SetLineAsBreakpoint(line gd.Int, breakpointed bool) {
+func (self class) SetLineAsBreakpoint(line gd.Int, breakpointed bool) { //gd:CodeEdit.set_line_as_breakpoint
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, breakpointed)
@@ -1139,7 +1139,7 @@ func (self class) SetLineAsBreakpoint(line gd.Int, breakpointed bool) {
 Returns whether the line at the specified index is breakpointed or not.
 */
 //go:nosplit
-func (self class) IsLineBreakpointed(line gd.Int) bool {
+func (self class) IsLineBreakpointed(line gd.Int) bool { //gd:CodeEdit.is_line_breakpointed
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1153,7 +1153,7 @@ func (self class) IsLineBreakpointed(line gd.Int) bool {
 Clears all breakpointed lines.
 */
 //go:nosplit
-func (self class) ClearBreakpointedLines() {
+func (self class) ClearBreakpointedLines() { //gd:CodeEdit.clear_breakpointed_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_breakpointed_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1164,7 +1164,7 @@ func (self class) ClearBreakpointedLines() {
 Gets all breakpointed lines.
 */
 //go:nosplit
-func (self class) GetBreakpointedLines() gd.PackedInt32Array {
+func (self class) GetBreakpointedLines() gd.PackedInt32Array { //gd:CodeEdit.get_breakpointed_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_breakpointed_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1177,7 +1177,7 @@ func (self class) GetBreakpointedLines() gd.PackedInt32Array {
 Sets the line as bookmarked.
 */
 //go:nosplit
-func (self class) SetLineAsBookmarked(line gd.Int, bookmarked bool) {
+func (self class) SetLineAsBookmarked(line gd.Int, bookmarked bool) { //gd:CodeEdit.set_line_as_bookmarked
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, bookmarked)
@@ -1190,7 +1190,7 @@ func (self class) SetLineAsBookmarked(line gd.Int, bookmarked bool) {
 Returns whether the line at the specified index is bookmarked or not.
 */
 //go:nosplit
-func (self class) IsLineBookmarked(line gd.Int) bool {
+func (self class) IsLineBookmarked(line gd.Int) bool { //gd:CodeEdit.is_line_bookmarked
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1204,7 +1204,7 @@ func (self class) IsLineBookmarked(line gd.Int) bool {
 Clears all bookmarked lines.
 */
 //go:nosplit
-func (self class) ClearBookmarkedLines() {
+func (self class) ClearBookmarkedLines() { //gd:CodeEdit.clear_bookmarked_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_bookmarked_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1215,7 +1215,7 @@ func (self class) ClearBookmarkedLines() {
 Gets all bookmarked lines.
 */
 //go:nosplit
-func (self class) GetBookmarkedLines() gd.PackedInt32Array {
+func (self class) GetBookmarkedLines() gd.PackedInt32Array { //gd:CodeEdit.get_bookmarked_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_bookmarked_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1228,7 +1228,7 @@ func (self class) GetBookmarkedLines() gd.PackedInt32Array {
 Sets the line as executing.
 */
 //go:nosplit
-func (self class) SetLineAsExecuting(line gd.Int, executing bool) {
+func (self class) SetLineAsExecuting(line gd.Int, executing bool) { //gd:CodeEdit.set_line_as_executing
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, executing)
@@ -1241,7 +1241,7 @@ func (self class) SetLineAsExecuting(line gd.Int, executing bool) {
 Returns whether the line at the specified index is marked as executing or not.
 */
 //go:nosplit
-func (self class) IsLineExecuting(line gd.Int) bool {
+func (self class) IsLineExecuting(line gd.Int) bool { //gd:CodeEdit.is_line_executing
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1255,7 +1255,7 @@ func (self class) IsLineExecuting(line gd.Int) bool {
 Clears all executed lines.
 */
 //go:nosplit
-func (self class) ClearExecutingLines() {
+func (self class) ClearExecutingLines() { //gd:CodeEdit.clear_executing_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_executing_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1266,7 +1266,7 @@ func (self class) ClearExecutingLines() {
 Gets all executing lines.
 */
 //go:nosplit
-func (self class) GetExecutingLines() gd.PackedInt32Array {
+func (self class) GetExecutingLines() gd.PackedInt32Array { //gd:CodeEdit.get_executing_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_executing_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1276,7 +1276,7 @@ func (self class) GetExecutingLines() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetDrawLineNumbers(enable bool) {
+func (self class) SetDrawLineNumbers(enable bool) { //gd:CodeEdit.set_draw_line_numbers
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1285,7 +1285,7 @@ func (self class) SetDrawLineNumbers(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawLineNumbersEnabled() bool {
+func (self class) IsDrawLineNumbersEnabled() bool { //gd:CodeEdit.is_draw_line_numbers_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_draw_line_numbers_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1295,7 +1295,7 @@ func (self class) IsDrawLineNumbersEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetLineNumbersZeroPadded(enable bool) {
+func (self class) SetLineNumbersZeroPadded(enable bool) { //gd:CodeEdit.set_line_numbers_zero_padded
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1304,7 +1304,7 @@ func (self class) SetLineNumbersZeroPadded(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsLineNumbersZeroPadded() bool {
+func (self class) IsLineNumbersZeroPadded() bool { //gd:CodeEdit.is_line_numbers_zero_padded
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_numbers_zero_padded, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1314,7 +1314,7 @@ func (self class) IsLineNumbersZeroPadded() bool {
 }
 
 //go:nosplit
-func (self class) SetDrawFoldGutter(enable bool) {
+func (self class) SetDrawFoldGutter(enable bool) { //gd:CodeEdit.set_draw_fold_gutter
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1323,7 +1323,7 @@ func (self class) SetDrawFoldGutter(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawingFoldGutter() bool {
+func (self class) IsDrawingFoldGutter() bool { //gd:CodeEdit.is_drawing_fold_gutter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_drawing_fold_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1333,7 +1333,7 @@ func (self class) IsDrawingFoldGutter() bool {
 }
 
 //go:nosplit
-func (self class) SetLineFoldingEnabled(enabled bool) {
+func (self class) SetLineFoldingEnabled(enabled bool) { //gd:CodeEdit.set_line_folding_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -1342,7 +1342,7 @@ func (self class) SetLineFoldingEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsLineFoldingEnabled() bool {
+func (self class) IsLineFoldingEnabled() bool { //gd:CodeEdit.is_line_folding_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_line_folding_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1355,7 +1355,7 @@ func (self class) IsLineFoldingEnabled() bool {
 Returns if the given line is foldable, that is, it has indented lines right below it or a comment / string block.
 */
 //go:nosplit
-func (self class) CanFoldLine(line gd.Int) bool {
+func (self class) CanFoldLine(line gd.Int) bool { //gd:CodeEdit.can_fold_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1369,7 +1369,7 @@ func (self class) CanFoldLine(line gd.Int) bool {
 Folds the given line, if possible (see [method can_fold_line]).
 */
 //go:nosplit
-func (self class) FoldLine(line gd.Int) {
+func (self class) FoldLine(line gd.Int) { //gd:CodeEdit.fold_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Nil
@@ -1381,7 +1381,7 @@ func (self class) FoldLine(line gd.Int) {
 Unfolds all lines that were previously folded.
 */
 //go:nosplit
-func (self class) UnfoldLine(line gd.Int) {
+func (self class) UnfoldLine(line gd.Int) { //gd:CodeEdit.unfold_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Nil
@@ -1393,7 +1393,7 @@ func (self class) UnfoldLine(line gd.Int) {
 Folds all lines that are possible to be folded (see [method can_fold_line]).
 */
 //go:nosplit
-func (self class) FoldAllLines() {
+func (self class) FoldAllLines() { //gd:CodeEdit.fold_all_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_fold_all_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1404,7 +1404,7 @@ func (self class) FoldAllLines() {
 Unfolds all lines, folded or not.
 */
 //go:nosplit
-func (self class) UnfoldAllLines() {
+func (self class) UnfoldAllLines() { //gd:CodeEdit.unfold_all_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_unfold_all_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1415,7 +1415,7 @@ func (self class) UnfoldAllLines() {
 Toggle the folding of the code block at the given line.
 */
 //go:nosplit
-func (self class) ToggleFoldableLine(line gd.Int) {
+func (self class) ToggleFoldableLine(line gd.Int) { //gd:CodeEdit.toggle_foldable_line
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Nil
@@ -1427,7 +1427,7 @@ func (self class) ToggleFoldableLine(line gd.Int) {
 Toggle the folding of the code block on all lines with a caret on them.
 */
 //go:nosplit
-func (self class) ToggleFoldableLinesAtCarets() {
+func (self class) ToggleFoldableLinesAtCarets() { //gd:CodeEdit.toggle_foldable_lines_at_carets
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_toggle_foldable_lines_at_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1438,7 +1438,7 @@ func (self class) ToggleFoldableLinesAtCarets() {
 Returns whether the line at the specified index is folded or not.
 */
 //go:nosplit
-func (self class) IsLineFolded(line gd.Int) bool {
+func (self class) IsLineFolded(line gd.Int) bool { //gd:CodeEdit.is_line_folded
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1452,7 +1452,7 @@ func (self class) IsLineFolded(line gd.Int) bool {
 Returns all lines that are current folded.
 */
 //go:nosplit
-func (self class) GetFoldedLines() Array.Contains[gd.Int] {
+func (self class) GetFoldedLines() Array.Contains[gd.Int] { //gd:CodeEdit.get_folded_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_folded_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1468,7 +1468,7 @@ Code region start and end tags can be customized (see [method set_code_region_ta
 Code regions are delimited using start and end tags (respectively [code]region[/code] and [code]endregion[/code] by default) preceded by one line comment delimiter. (eg. [code]#region[/code] and [code]#endregion[/code])
 */
 //go:nosplit
-func (self class) CreateCodeRegion() {
+func (self class) CreateCodeRegion() { //gd:CodeEdit.create_code_region
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_create_code_region, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1479,7 +1479,7 @@ func (self class) CreateCodeRegion() {
 Returns the code region start tag (without comment delimiter).
 */
 //go:nosplit
-func (self class) GetCodeRegionStartTag() gd.String {
+func (self class) GetCodeRegionStartTag() gd.String { //gd:CodeEdit.get_code_region_start_tag
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_region_start_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1492,7 +1492,7 @@ func (self class) GetCodeRegionStartTag() gd.String {
 Returns the code region end tag (without comment delimiter).
 */
 //go:nosplit
-func (self class) GetCodeRegionEndTag() gd.String {
+func (self class) GetCodeRegionEndTag() gd.String { //gd:CodeEdit.get_code_region_end_tag
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_region_end_tag, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1505,7 +1505,7 @@ func (self class) GetCodeRegionEndTag() gd.String {
 Sets the code region start and end tags (without comment delimiter).
 */
 //go:nosplit
-func (self class) SetCodeRegionTags(start gd.String, end gd.String) {
+func (self class) SetCodeRegionTags(start gd.String, end gd.String) { //gd:CodeEdit.set_code_region_tags
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start))
 	callframe.Arg(frame, pointers.Get(end))
@@ -1518,7 +1518,7 @@ func (self class) SetCodeRegionTags(start gd.String, end gd.String) {
 Returns whether the line at the specified index is a code region start.
 */
 //go:nosplit
-func (self class) IsLineCodeRegionStart(line gd.Int) bool {
+func (self class) IsLineCodeRegionStart(line gd.Int) bool { //gd:CodeEdit.is_line_code_region_start
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1532,7 +1532,7 @@ func (self class) IsLineCodeRegionStart(line gd.Int) bool {
 Returns whether the line at the specified index is a code region end.
 */
 //go:nosplit
-func (self class) IsLineCodeRegionEnd(line gd.Int) bool {
+func (self class) IsLineCodeRegionEnd(line gd.Int) bool { //gd:CodeEdit.is_line_code_region_end
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1547,7 +1547,7 @@ Defines a string delimiter from [param start_key] to [param end_key]. Both keys 
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
 //go:nosplit
-func (self class) AddStringDelimiter(start_key gd.String, end_key gd.String, line_only bool) {
+func (self class) AddStringDelimiter(start_key gd.String, end_key gd.String, line_only bool) { //gd:CodeEdit.add_string_delimiter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	callframe.Arg(frame, pointers.Get(end_key))
@@ -1561,7 +1561,7 @@ func (self class) AddStringDelimiter(start_key gd.String, end_key gd.String, lin
 Removes the string delimiter with [param start_key].
 */
 //go:nosplit
-func (self class) RemoveStringDelimiter(start_key gd.String) {
+func (self class) RemoveStringDelimiter(start_key gd.String) { //gd:CodeEdit.remove_string_delimiter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	var r_ret = callframe.Nil
@@ -1573,7 +1573,7 @@ func (self class) RemoveStringDelimiter(start_key gd.String) {
 Returns [code]true[/code] if string [param start_key] exists.
 */
 //go:nosplit
-func (self class) HasStringDelimiter(start_key gd.String) bool {
+func (self class) HasStringDelimiter(start_key gd.String) bool { //gd:CodeEdit.has_string_delimiter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	var r_ret = callframe.Ret[bool](frame)
@@ -1584,7 +1584,7 @@ func (self class) HasStringDelimiter(start_key gd.String) bool {
 }
 
 //go:nosplit
-func (self class) SetStringDelimiters(string_delimiters Array.Contains[gd.String]) {
+func (self class) SetStringDelimiters(string_delimiters Array.Contains[gd.String]) { //gd:CodeEdit.set_string_delimiters
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(string_delimiters)))
 	var r_ret = callframe.Nil
@@ -1596,7 +1596,7 @@ func (self class) SetStringDelimiters(string_delimiters Array.Contains[gd.String
 Removes all string delimiters.
 */
 //go:nosplit
-func (self class) ClearStringDelimiters() {
+func (self class) ClearStringDelimiters() { //gd:CodeEdit.clear_string_delimiters
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1604,7 +1604,7 @@ func (self class) ClearStringDelimiters() {
 }
 
 //go:nosplit
-func (self class) GetStringDelimiters() Array.Contains[gd.String] {
+func (self class) GetStringDelimiters() Array.Contains[gd.String] { //gd:CodeEdit.get_string_delimiters
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1617,7 +1617,7 @@ func (self class) GetStringDelimiters() Array.Contains[gd.String] {
 Returns the delimiter index if [param line] [param column] is in a string. If [param column] is not provided, will return the delimiter index if the entire [param line] is a string. Otherwise [code]-1[/code].
 */
 //go:nosplit
-func (self class) IsInString(line gd.Int, column gd.Int) gd.Int {
+func (self class) IsInString(line gd.Int, column gd.Int) gd.Int { //gd:CodeEdit.is_in_string
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
@@ -1633,7 +1633,7 @@ Adds a comment delimiter from [param start_key] to [param end_key]. Both keys sh
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
 //go:nosplit
-func (self class) AddCommentDelimiter(start_key gd.String, end_key gd.String, line_only bool) {
+func (self class) AddCommentDelimiter(start_key gd.String, end_key gd.String, line_only bool) { //gd:CodeEdit.add_comment_delimiter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	callframe.Arg(frame, pointers.Get(end_key))
@@ -1647,7 +1647,7 @@ func (self class) AddCommentDelimiter(start_key gd.String, end_key gd.String, li
 Removes the comment delimiter with [param start_key].
 */
 //go:nosplit
-func (self class) RemoveCommentDelimiter(start_key gd.String) {
+func (self class) RemoveCommentDelimiter(start_key gd.String) { //gd:CodeEdit.remove_comment_delimiter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	var r_ret = callframe.Nil
@@ -1659,7 +1659,7 @@ func (self class) RemoveCommentDelimiter(start_key gd.String) {
 Returns [code]true[/code] if comment [param start_key] exists.
 */
 //go:nosplit
-func (self class) HasCommentDelimiter(start_key gd.String) bool {
+func (self class) HasCommentDelimiter(start_key gd.String) bool { //gd:CodeEdit.has_comment_delimiter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(start_key))
 	var r_ret = callframe.Ret[bool](frame)
@@ -1670,7 +1670,7 @@ func (self class) HasCommentDelimiter(start_key gd.String) bool {
 }
 
 //go:nosplit
-func (self class) SetCommentDelimiters(comment_delimiters Array.Contains[gd.String]) {
+func (self class) SetCommentDelimiters(comment_delimiters Array.Contains[gd.String]) { //gd:CodeEdit.set_comment_delimiters
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(comment_delimiters)))
 	var r_ret = callframe.Nil
@@ -1682,7 +1682,7 @@ func (self class) SetCommentDelimiters(comment_delimiters Array.Contains[gd.Stri
 Removes all comment delimiters.
 */
 //go:nosplit
-func (self class) ClearCommentDelimiters() {
+func (self class) ClearCommentDelimiters() { //gd:CodeEdit.clear_comment_delimiters
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_clear_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1690,7 +1690,7 @@ func (self class) ClearCommentDelimiters() {
 }
 
 //go:nosplit
-func (self class) GetCommentDelimiters() Array.Contains[gd.String] {
+func (self class) GetCommentDelimiters() Array.Contains[gd.String] { //gd:CodeEdit.get_comment_delimiters
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1703,7 +1703,7 @@ func (self class) GetCommentDelimiters() Array.Contains[gd.String] {
 Returns delimiter index if [param line] [param column] is in a comment. If [param column] is not provided, will return delimiter index if the entire [param line] is a comment. Otherwise [code]-1[/code].
 */
 //go:nosplit
-func (self class) IsInComment(line gd.Int, column gd.Int) gd.Int {
+func (self class) IsInComment(line gd.Int, column gd.Int) gd.Int { //gd:CodeEdit.is_in_comment
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
@@ -1718,7 +1718,7 @@ func (self class) IsInComment(line gd.Int, column gd.Int) gd.Int {
 Gets the start key for a string or comment region index.
 */
 //go:nosplit
-func (self class) GetDelimiterStartKey(delimiter_index gd.Int) gd.String {
+func (self class) GetDelimiterStartKey(delimiter_index gd.Int) gd.String { //gd:CodeEdit.get_delimiter_start_key
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1732,7 +1732,7 @@ func (self class) GetDelimiterStartKey(delimiter_index gd.Int) gd.String {
 Gets the end key for a string or comment region index.
 */
 //go:nosplit
-func (self class) GetDelimiterEndKey(delimiter_index gd.Int) gd.String {
+func (self class) GetDelimiterEndKey(delimiter_index gd.Int) gd.String { //gd:CodeEdit.get_delimiter_end_key
 	var frame = callframe.New()
 	callframe.Arg(frame, delimiter_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1746,7 +1746,7 @@ func (self class) GetDelimiterEndKey(delimiter_index gd.Int) gd.String {
 If [param line] [param column] is in a string or comment, returns the start position of the region. If not or no start could be found, both [Vector2] values will be [code]-1[/code].
 */
 //go:nosplit
-func (self class) GetDelimiterStartPosition(line gd.Int, column gd.Int) gd.Vector2 {
+func (self class) GetDelimiterStartPosition(line gd.Int, column gd.Int) gd.Vector2 { //gd:CodeEdit.get_delimiter_start_position
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
@@ -1761,7 +1761,7 @@ func (self class) GetDelimiterStartPosition(line gd.Int, column gd.Int) gd.Vecto
 If [param line] [param column] is in a string or comment, returns the end position of the region. If not or no end could be found, both [Vector2] values will be [code]-1[/code].
 */
 //go:nosplit
-func (self class) GetDelimiterEndPosition(line gd.Int, column gd.Int) gd.Vector2 {
+func (self class) GetDelimiterEndPosition(line gd.Int, column gd.Int) gd.Vector2 { //gd:CodeEdit.get_delimiter_end_position
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
@@ -1776,7 +1776,7 @@ func (self class) GetDelimiterEndPosition(line gd.Int, column gd.Int) gd.Vector2
 Sets the code hint text. Pass an empty string to clear.
 */
 //go:nosplit
-func (self class) SetCodeHint(code_hint gd.String) {
+func (self class) SetCodeHint(code_hint gd.String) { //gd:CodeEdit.set_code_hint
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(code_hint))
 	var r_ret = callframe.Nil
@@ -1788,7 +1788,7 @@ func (self class) SetCodeHint(code_hint gd.String) {
 Sets if the code hint should draw below the text.
 */
 //go:nosplit
-func (self class) SetCodeHintDrawBelow(draw_below bool) {
+func (self class) SetCodeHintDrawBelow(draw_below bool) { //gd:CodeEdit.set_code_hint_draw_below
 	var frame = callframe.New()
 	callframe.Arg(frame, draw_below)
 	var r_ret = callframe.Nil
@@ -1800,7 +1800,7 @@ func (self class) SetCodeHintDrawBelow(draw_below bool) {
 Returns the full text with char [code]0xFFFF[/code] at the caret location.
 */
 //go:nosplit
-func (self class) GetTextForCodeCompletion() gd.String {
+func (self class) GetTextForCodeCompletion() gd.String { //gd:CodeEdit.get_text_for_code_completion
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_for_code_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1813,7 +1813,7 @@ func (self class) GetTextForCodeCompletion() gd.String {
 Emits [signal code_completion_requested], if [param force] is [code]true[/code] will bypass all checks. Otherwise will check that the caret is in a word or in front of a prefix. Will ignore the request if all current options are of type file path, node path, or signal.
 */
 //go:nosplit
-func (self class) RequestCodeCompletion(force bool) {
+func (self class) RequestCodeCompletion(force bool) { //gd:CodeEdit.request_code_completion
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	var r_ret = callframe.Nil
@@ -1827,7 +1827,7 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 [b]Note:[/b] This list will replace all current candidates.
 */
 //go:nosplit
-func (self class) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text gd.String, insert_text gd.String, text_color gd.Color, icon [1]gdclass.Resource, value gd.Variant, location gd.Int) {
+func (self class) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text gd.String, insert_text gd.String, text_color gd.Color, icon [1]gdclass.Resource, value gd.Variant, location gd.Int) { //gd:CodeEdit.add_code_completion_option
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, pointers.Get(display_text))
@@ -1846,7 +1846,7 @@ Submits all completion options added with [method add_code_completion_option]. W
 [b]Note:[/b] This will replace all current candidates.
 */
 //go:nosplit
-func (self class) UpdateCodeCompletionOptions(force bool) {
+func (self class) UpdateCodeCompletionOptions(force bool) { //gd:CodeEdit.update_code_completion_options
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	var r_ret = callframe.Nil
@@ -1858,7 +1858,7 @@ func (self class) UpdateCodeCompletionOptions(force bool) {
 Gets all completion options, see [method get_code_completion_option] for return content.
 */
 //go:nosplit
-func (self class) GetCodeCompletionOptions() Array.Contains[gd.Dictionary] {
+func (self class) GetCodeCompletionOptions() Array.Contains[gd.Dictionary] { //gd:CodeEdit.get_code_completion_options
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_options, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1877,7 +1877,7 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 [code]default_value[/code]: Value of the symbol.
 */
 //go:nosplit
-func (self class) GetCodeCompletionOption(index gd.Int) gd.Dictionary {
+func (self class) GetCodeCompletionOption(index gd.Int) gd.Dictionary { //gd:CodeEdit.get_code_completion_option
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1891,7 +1891,7 @@ func (self class) GetCodeCompletionOption(index gd.Int) gd.Dictionary {
 Gets the index of the current selected completion option.
 */
 //go:nosplit
-func (self class) GetCodeCompletionSelectedIndex() gd.Int {
+func (self class) GetCodeCompletionSelectedIndex() gd.Int { //gd:CodeEdit.get_code_completion_selected_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_selected_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1904,7 +1904,7 @@ func (self class) GetCodeCompletionSelectedIndex() gd.Int {
 Sets the current selected completion option.
 */
 //go:nosplit
-func (self class) SetCodeCompletionSelectedIndex(index gd.Int) {
+func (self class) SetCodeCompletionSelectedIndex(index gd.Int) { //gd:CodeEdit.set_code_completion_selected_index
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -1916,7 +1916,7 @@ func (self class) SetCodeCompletionSelectedIndex(index gd.Int) {
 Inserts the selected entry into the text. If [param replace] is [code]true[/code], any existing text is replaced rather than merged.
 */
 //go:nosplit
-func (self class) ConfirmCodeCompletion(replace bool) {
+func (self class) ConfirmCodeCompletion(replace bool) { //gd:CodeEdit.confirm_code_completion
 	var frame = callframe.New()
 	callframe.Arg(frame, replace)
 	var r_ret = callframe.Nil
@@ -1928,7 +1928,7 @@ func (self class) ConfirmCodeCompletion(replace bool) {
 Cancels the autocomplete menu.
 */
 //go:nosplit
-func (self class) CancelCodeCompletion() {
+func (self class) CancelCodeCompletion() { //gd:CodeEdit.cancel_code_completion
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_cancel_code_completion, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1936,7 +1936,7 @@ func (self class) CancelCodeCompletion() {
 }
 
 //go:nosplit
-func (self class) SetCodeCompletionEnabled(enable bool) {
+func (self class) SetCodeCompletionEnabled(enable bool) { //gd:CodeEdit.set_code_completion_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1945,7 +1945,7 @@ func (self class) SetCodeCompletionEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsCodeCompletionEnabled() bool {
+func (self class) IsCodeCompletionEnabled() bool { //gd:CodeEdit.is_code_completion_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_code_completion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1955,7 +1955,7 @@ func (self class) IsCodeCompletionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetCodeCompletionPrefixes(prefixes Array.Contains[gd.String]) {
+func (self class) SetCodeCompletionPrefixes(prefixes Array.Contains[gd.String]) { //gd:CodeEdit.set_code_completion_prefixes
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(prefixes)))
 	var r_ret = callframe.Nil
@@ -1964,7 +1964,7 @@ func (self class) SetCodeCompletionPrefixes(prefixes Array.Contains[gd.String]) 
 }
 
 //go:nosplit
-func (self class) GetCodeCompletionPrefixes() Array.Contains[gd.String] {
+func (self class) GetCodeCompletionPrefixes() Array.Contains[gd.String] { //gd:CodeEdit.get_code_completion_prefixes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1974,7 +1974,7 @@ func (self class) GetCodeCompletionPrefixes() Array.Contains[gd.String] {
 }
 
 //go:nosplit
-func (self class) SetLineLengthGuidelines(guideline_columns Array.Contains[gd.Int]) {
+func (self class) SetLineLengthGuidelines(guideline_columns Array.Contains[gd.Int]) { //gd:CodeEdit.set_line_length_guidelines
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(guideline_columns)))
 	var r_ret = callframe.Nil
@@ -1983,7 +1983,7 @@ func (self class) SetLineLengthGuidelines(guideline_columns Array.Contains[gd.In
 }
 
 //go:nosplit
-func (self class) GetLineLengthGuidelines() Array.Contains[gd.Int] {
+func (self class) GetLineLengthGuidelines() Array.Contains[gd.Int] { //gd:CodeEdit.get_line_length_guidelines
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_line_length_guidelines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1993,7 +1993,7 @@ func (self class) GetLineLengthGuidelines() Array.Contains[gd.Int] {
 }
 
 //go:nosplit
-func (self class) SetSymbolLookupOnClickEnabled(enable bool) {
+func (self class) SetSymbolLookupOnClickEnabled(enable bool) { //gd:CodeEdit.set_symbol_lookup_on_click_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -2002,7 +2002,7 @@ func (self class) SetSymbolLookupOnClickEnabled(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSymbolLookupOnClickEnabled() bool {
+func (self class) IsSymbolLookupOnClickEnabled() bool { //gd:CodeEdit.is_symbol_lookup_on_click_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_is_symbol_lookup_on_click_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2015,7 +2015,7 @@ func (self class) IsSymbolLookupOnClickEnabled() bool {
 Returns the full text with char [code]0xFFFF[/code] at the cursor location.
 */
 //go:nosplit
-func (self class) GetTextForSymbolLookup() gd.String {
+func (self class) GetTextForSymbolLookup() gd.String { //gd:CodeEdit.get_text_for_symbol_lookup
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_text_for_symbol_lookup, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2028,7 +2028,7 @@ func (self class) GetTextForSymbolLookup() gd.String {
 Returns the full text with char [code]0xFFFF[/code] at the specified location.
 */
 //go:nosplit
-func (self class) GetTextWithCursorChar(line gd.Int, column gd.Int) gd.String {
+func (self class) GetTextWithCursorChar(line gd.Int, column gd.Int) gd.String { //gd:CodeEdit.get_text_with_cursor_char
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
 	callframe.Arg(frame, column)
@@ -2043,7 +2043,7 @@ func (self class) GetTextWithCursorChar(line gd.Int, column gd.Int) gd.String {
 Sets the symbol emitted by [signal symbol_validate] as a valid lookup.
 */
 //go:nosplit
-func (self class) SetSymbolLookupWordAsValid(valid bool) {
+func (self class) SetSymbolLookupWordAsValid(valid bool) { //gd:CodeEdit.set_symbol_lookup_word_as_valid
 	var frame = callframe.New()
 	callframe.Arg(frame, valid)
 	var r_ret = callframe.Nil
@@ -2055,7 +2055,7 @@ func (self class) SetSymbolLookupWordAsValid(valid bool) {
 Moves all lines up that are selected or have a caret on them.
 */
 //go:nosplit
-func (self class) MoveLinesUp() {
+func (self class) MoveLinesUp() { //gd:CodeEdit.move_lines_up
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_move_lines_up, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2066,7 +2066,7 @@ func (self class) MoveLinesUp() {
 Moves all lines down that are selected or have a caret on them.
 */
 //go:nosplit
-func (self class) MoveLinesDown() {
+func (self class) MoveLinesDown() { //gd:CodeEdit.move_lines_down
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_move_lines_down, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2077,7 +2077,7 @@ func (self class) MoveLinesDown() {
 Deletes all lines that are selected or have a caret on them.
 */
 //go:nosplit
-func (self class) DeleteLines() {
+func (self class) DeleteLines() { //gd:CodeEdit.delete_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_delete_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2088,7 +2088,7 @@ func (self class) DeleteLines() {
 Duplicates all selected text and duplicates all lines with a caret on them.
 */
 //go:nosplit
-func (self class) DuplicateSelection() {
+func (self class) DuplicateSelection() { //gd:CodeEdit.duplicate_selection
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_duplicate_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2099,7 +2099,7 @@ func (self class) DuplicateSelection() {
 Duplicates all lines currently selected with any caret. Duplicates the entire line beneath the current one no matter where the caret is within the line.
 */
 //go:nosplit
-func (self class) DuplicateLines() {
+func (self class) DuplicateLines() { //gd:CodeEdit.duplicate_lines
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_duplicate_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2171,7 +2171,7 @@ func init() {
 	gdclass.Register("CodeEdit", func(ptr gd.Object) any { return [1]gdclass.CodeEdit{*(*gdclass.CodeEdit)(unsafe.Pointer(&ptr))} })
 }
 
-type CodeCompletionKind = gdclass.CodeEditCodeCompletionKind
+type CodeCompletionKind = gdclass.CodeEditCodeCompletionKind //gd:CodeEdit.CodeCompletionKind
 
 const (
 	/*Marks the option as a class.*/
@@ -2196,7 +2196,7 @@ const (
 	KindPlainText CodeCompletionKind = 9
 )
 
-type CodeCompletionLocation = gdclass.CodeEditCodeCompletionLocation
+type CodeCompletionLocation = gdclass.CodeEditCodeCompletionLocation //gd:CodeEdit.CodeCompletionLocation
 
 const (
 	/*The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).*/

@@ -52,21 +52,21 @@ type Any interface {
 Starts the timer, if it was not started already. Fails if the timer is not inside the tree. If [param time_sec] is greater than [code]0[/code], this value is used for the [member wait_time].
 [b]Note:[/b] This method does not resume a paused timer. See [member paused].
 */
-func (self Instance) Start() {
+func (self Instance) Start() { //gd:Timer.start
 	class(self).Start(gd.Float(-1))
 }
 
 /*
 Stops the timer.
 */
-func (self Instance) Stop() {
+func (self Instance) Stop() { //gd:Timer.stop
 	class(self).Stop()
 }
 
 /*
 Returns [code]true[/code] if the timer is stopped or has not started.
 */
-func (self Instance) IsStopped() bool {
+func (self Instance) IsStopped() bool { //gd:Timer.is_stopped
 	return bool(class(self).IsStopped())
 }
 
@@ -133,7 +133,7 @@ func (self Instance) TimeLeft() Float.X {
 }
 
 //go:nosplit
-func (self class) SetWaitTime(time_sec gd.Float) {
+func (self class) SetWaitTime(time_sec gd.Float) { //gd:Timer.set_wait_time
 	var frame = callframe.New()
 	callframe.Arg(frame, time_sec)
 	var r_ret = callframe.Nil
@@ -142,7 +142,7 @@ func (self class) SetWaitTime(time_sec gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetWaitTime() gd.Float {
+func (self class) GetWaitTime() gd.Float { //gd:Timer.get_wait_time
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_get_wait_time, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -152,7 +152,7 @@ func (self class) GetWaitTime() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetOneShot(enable bool) {
+func (self class) SetOneShot(enable bool) { //gd:Timer.set_one_shot
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -161,7 +161,7 @@ func (self class) SetOneShot(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsOneShot() bool {
+func (self class) IsOneShot() bool { //gd:Timer.is_one_shot
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_is_one_shot, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -171,7 +171,7 @@ func (self class) IsOneShot() bool {
 }
 
 //go:nosplit
-func (self class) SetAutostart(enable bool) {
+func (self class) SetAutostart(enable bool) { //gd:Timer.set_autostart
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -180,7 +180,7 @@ func (self class) SetAutostart(enable bool) {
 }
 
 //go:nosplit
-func (self class) HasAutostart() bool {
+func (self class) HasAutostart() bool { //gd:Timer.has_autostart
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_has_autostart, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -194,7 +194,7 @@ Starts the timer, if it was not started already. Fails if the timer is not insid
 [b]Note:[/b] This method does not resume a paused timer. See [member paused].
 */
 //go:nosplit
-func (self class) Start(time_sec gd.Float) {
+func (self class) Start(time_sec gd.Float) { //gd:Timer.start
 	var frame = callframe.New()
 	callframe.Arg(frame, time_sec)
 	var r_ret = callframe.Nil
@@ -206,7 +206,7 @@ func (self class) Start(time_sec gd.Float) {
 Stops the timer.
 */
 //go:nosplit
-func (self class) Stop() {
+func (self class) Stop() { //gd:Timer.stop
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -214,7 +214,7 @@ func (self class) Stop() {
 }
 
 //go:nosplit
-func (self class) SetPaused(paused bool) {
+func (self class) SetPaused(paused bool) { //gd:Timer.set_paused
 	var frame = callframe.New()
 	callframe.Arg(frame, paused)
 	var r_ret = callframe.Nil
@@ -223,7 +223,7 @@ func (self class) SetPaused(paused bool) {
 }
 
 //go:nosplit
-func (self class) IsPaused() bool {
+func (self class) IsPaused() bool { //gd:Timer.is_paused
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_is_paused, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -236,7 +236,7 @@ func (self class) IsPaused() bool {
 Returns [code]true[/code] if the timer is stopped or has not started.
 */
 //go:nosplit
-func (self class) IsStopped() bool {
+func (self class) IsStopped() bool { //gd:Timer.is_stopped
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_is_stopped, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -246,7 +246,7 @@ func (self class) IsStopped() bool {
 }
 
 //go:nosplit
-func (self class) GetTimeLeft() gd.Float {
+func (self class) GetTimeLeft() gd.Float { //gd:Timer.get_time_left
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_get_time_left, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -256,7 +256,7 @@ func (self class) GetTimeLeft() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTimerProcessCallback(callback gdclass.TimerTimerProcessCallback) {
+func (self class) SetTimerProcessCallback(callback gdclass.TimerTimerProcessCallback) { //gd:Timer.set_timer_process_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, callback)
 	var r_ret = callframe.Nil
@@ -265,7 +265,7 @@ func (self class) SetTimerProcessCallback(callback gdclass.TimerTimerProcessCall
 }
 
 //go:nosplit
-func (self class) GetTimerProcessCallback() gdclass.TimerTimerProcessCallback {
+func (self class) GetTimerProcessCallback() gdclass.TimerTimerProcessCallback { //gd:Timer.get_timer_process_callback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TimerTimerProcessCallback](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_get_timer_process_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -299,7 +299,7 @@ func init() {
 	gdclass.Register("Timer", func(ptr gd.Object) any { return [1]gdclass.Timer{*(*gdclass.Timer)(unsafe.Pointer(&ptr))} })
 }
 
-type TimerProcessCallback = gdclass.TimerTimerProcessCallback
+type TimerProcessCallback = gdclass.TimerTimerProcessCallback //gd:Timer.TimerProcessCallback
 
 const (
 	/*Update the timer every physics process frame (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/

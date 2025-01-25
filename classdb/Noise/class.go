@@ -45,35 +45,35 @@ type Any interface {
 /*
 Returns the 1D noise value at the given (x) coordinate.
 */
-func (self Instance) GetNoise1d(x Float.X) Float.X {
+func (self Instance) GetNoise1d(x Float.X) Float.X { //gd:Noise.get_noise_1d
 	return Float.X(Float.X(class(self).GetNoise1d(gd.Float(x))))
 }
 
 /*
 Returns the 2D noise value at the given position.
 */
-func (self Instance) GetNoise2d(x Float.X, y Float.X) Float.X {
+func (self Instance) GetNoise2d(x Float.X, y Float.X) Float.X { //gd:Noise.get_noise_2d
 	return Float.X(Float.X(class(self).GetNoise2d(gd.Float(x), gd.Float(y))))
 }
 
 /*
 Returns the 2D noise value at the given position.
 */
-func (self Instance) GetNoise2dv(v Vector2.XY) Float.X {
+func (self Instance) GetNoise2dv(v Vector2.XY) Float.X { //gd:Noise.get_noise_2dv
 	return Float.X(Float.X(class(self).GetNoise2dv(gd.Vector2(v))))
 }
 
 /*
 Returns the 3D noise value at the given position.
 */
-func (self Instance) GetNoise3d(x Float.X, y Float.X, z Float.X) Float.X {
+func (self Instance) GetNoise3d(x Float.X, y Float.X, z Float.X) Float.X { //gd:Noise.get_noise_3d
 	return Float.X(Float.X(class(self).GetNoise3d(gd.Float(x), gd.Float(y), gd.Float(z))))
 }
 
 /*
 Returns the 3D noise value at the given position.
 */
-func (self Instance) GetNoise3dv(v Vector3.XYZ) Float.X {
+func (self Instance) GetNoise3dv(v Vector3.XYZ) Float.X { //gd:Noise.get_noise_3dv
 	return Float.X(Float.X(class(self).GetNoise3dv(gd.Vector3(v))))
 }
 
@@ -81,7 +81,7 @@ func (self Instance) GetNoise3dv(v Vector3.XYZ) Float.X {
 Returns an [Image] containing 2D noise values.
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetImage(width int, height int) [1]gdclass.Image {
+func (self Instance) GetImage(width int, height int) [1]gdclass.Image { //gd:Noise.get_image
 	return [1]gdclass.Image(class(self).GetImage(gd.Int(width), gd.Int(height), false, false, true))
 }
 
@@ -89,7 +89,7 @@ func (self Instance) GetImage(width int, height int) [1]gdclass.Image {
 Returns an [Image] containing seamless 2D noise values.
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetSeamlessImage(width int, height int) [1]gdclass.Image {
+func (self Instance) GetSeamlessImage(width int, height int) [1]gdclass.Image { //gd:Noise.get_seamless_image
 	return [1]gdclass.Image(class(self).GetSeamlessImage(gd.Int(width), gd.Int(height), false, false, gd.Float(0.1), true))
 }
 
@@ -97,7 +97,7 @@ func (self Instance) GetSeamlessImage(width int, height int) [1]gdclass.Image {
 Returns an [Array] of [Image]s containing 3D noise values for use with [method ImageTexture3D.create].
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetImage3d(width int, height int, depth int) [][1]gdclass.Image {
+func (self Instance) GetImage3d(width int, height int, depth int) [][1]gdclass.Image { //gd:Noise.get_image_3d
 	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).GetImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, true))))
 }
 
@@ -105,7 +105,7 @@ func (self Instance) GetImage3d(width int, height int, depth int) [][1]gdclass.I
 Returns an [Array] of [Image]s containing seamless 3D noise values for use with [method ImageTexture3D.create].
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetSeamlessImage3d(width int, height int, depth int) [][1]gdclass.Image {
+func (self Instance) GetSeamlessImage3d(width int, height int, depth int) [][1]gdclass.Image { //gd:Noise.get_seamless_image_3d
 	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).GetSeamlessImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, gd.Float(0.1), true))))
 }
 
@@ -132,7 +132,7 @@ func New() Instance {
 Returns the 1D noise value at the given (x) coordinate.
 */
 //go:nosplit
-func (self class) GetNoise1d(x gd.Float) gd.Float {
+func (self class) GetNoise1d(x gd.Float) gd.Float { //gd:Noise.get_noise_1d
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -146,7 +146,7 @@ func (self class) GetNoise1d(x gd.Float) gd.Float {
 Returns the 2D noise value at the given position.
 */
 //go:nosplit
-func (self class) GetNoise2d(x gd.Float, y gd.Float) gd.Float {
+func (self class) GetNoise2d(x gd.Float, y gd.Float) gd.Float { //gd:Noise.get_noise_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
@@ -161,7 +161,7 @@ func (self class) GetNoise2d(x gd.Float, y gd.Float) gd.Float {
 Returns the 2D noise value at the given position.
 */
 //go:nosplit
-func (self class) GetNoise2dv(v gd.Vector2) gd.Float {
+func (self class) GetNoise2dv(v gd.Vector2) gd.Float { //gd:Noise.get_noise_2dv
 	var frame = callframe.New()
 	callframe.Arg(frame, v)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -175,7 +175,7 @@ func (self class) GetNoise2dv(v gd.Vector2) gd.Float {
 Returns the 3D noise value at the given position.
 */
 //go:nosplit
-func (self class) GetNoise3d(x gd.Float, y gd.Float, z gd.Float) gd.Float {
+func (self class) GetNoise3d(x gd.Float, y gd.Float, z gd.Float) gd.Float { //gd:Noise.get_noise_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, x)
 	callframe.Arg(frame, y)
@@ -191,7 +191,7 @@ func (self class) GetNoise3d(x gd.Float, y gd.Float, z gd.Float) gd.Float {
 Returns the 3D noise value at the given position.
 */
 //go:nosplit
-func (self class) GetNoise3dv(v gd.Vector3) gd.Float {
+func (self class) GetNoise3dv(v gd.Vector3) gd.Float { //gd:Noise.get_noise_3dv
 	var frame = callframe.New()
 	callframe.Arg(frame, v)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -206,7 +206,7 @@ Returns an [Image] containing 2D noise values.
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
 //go:nosplit
-func (self class) GetImage(width gd.Int, height gd.Int, invert bool, in_3d_space bool, normalize bool) [1]gdclass.Image {
+func (self class) GetImage(width gd.Int, height gd.Int, invert bool, in_3d_space bool, normalize bool) [1]gdclass.Image { //gd:Noise.get_image
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -225,7 +225,7 @@ Returns an [Image] containing seamless 2D noise values.
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
 //go:nosplit
-func (self class) GetSeamlessImage(width gd.Int, height gd.Int, invert bool, in_3d_space bool, skirt gd.Float, normalize bool) [1]gdclass.Image {
+func (self class) GetSeamlessImage(width gd.Int, height gd.Int, invert bool, in_3d_space bool, skirt gd.Float, normalize bool) [1]gdclass.Image { //gd:Noise.get_seamless_image
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -245,7 +245,7 @@ Returns an [Array] of [Image]s containing 3D noise values for use with [method I
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
 //go:nosplit
-func (self class) GetImage3d(width gd.Int, height gd.Int, depth gd.Int, invert bool, normalize bool) Array.Contains[[1]gdclass.Image] {
+func (self class) GetImage3d(width gd.Int, height gd.Int, depth gd.Int, invert bool, normalize bool) Array.Contains[[1]gdclass.Image] { //gd:Noise.get_image_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -264,7 +264,7 @@ Returns an [Array] of [Image]s containing seamless 3D noise values for use with 
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
 //go:nosplit
-func (self class) GetSeamlessImage3d(width gd.Int, height gd.Int, depth gd.Int, invert bool, skirt gd.Float, normalize bool) Array.Contains[[1]gdclass.Image] {
+func (self class) GetSeamlessImage3d(width gd.Int, height gd.Int, depth gd.Int, invert bool, skirt gd.Float, normalize bool) Array.Contains[[1]gdclass.Image] { //gd:Noise.get_seamless_image_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)

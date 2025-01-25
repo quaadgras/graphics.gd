@@ -75,14 +75,14 @@ type Any interface {
 /*
 Parses the next node in the file. This method returns an error code.
 */
-func (self Instance) Read() error {
+func (self Instance) Read() error { //gd:XMLParser.read
 	return error(gd.ToError(class(self).Read()))
 }
 
 /*
 Returns the type of the current node. Compare with [enum NodeType] constants.
 */
-func (self Instance) GetNodeType() gdclass.XMLParserNodeType {
+func (self Instance) GetNodeType() gdclass.XMLParserNodeType { //gd:XMLParser.get_node_type
 	return gdclass.XMLParserNodeType(class(self).GetNodeType())
 }
 
@@ -90,21 +90,21 @@ func (self Instance) GetNodeType() gdclass.XMLParserNodeType {
 Returns the name of a node. This method will raise an error if the currently parsed node is a text node.
 [b]Note:[/b] The content of a [constant NODE_CDATA] node and the comment string of a [constant NODE_COMMENT] node are also considered names.
 */
-func (self Instance) GetNodeName() string {
+func (self Instance) GetNodeName() string { //gd:XMLParser.get_node_name
 	return string(class(self).GetNodeName().String())
 }
 
 /*
 Returns the contents of a text node. This method will raise an error if the current parsed node is of any other type.
 */
-func (self Instance) GetNodeData() string {
+func (self Instance) GetNodeData() string { //gd:XMLParser.get_node_data
 	return string(class(self).GetNodeData().String())
 }
 
 /*
 Returns the byte offset of the currently parsed node since the beginning of the file or buffer. This is usually equivalent to the number of characters before the read position.
 */
-func (self Instance) GetNodeOffset() int {
+func (self Instance) GetNodeOffset() int { //gd:XMLParser.get_node_offset
 	return int(int(class(self).GetNodeOffset()))
 }
 
@@ -112,84 +112,84 @@ func (self Instance) GetNodeOffset() int {
 Returns the number of attributes in the currently parsed element.
 [b]Note:[/b] If this method is used while the currently parsed node is not [constant NODE_ELEMENT] or [constant NODE_ELEMENT_END], this count will not be updated and will still reflect the last element.
 */
-func (self Instance) GetAttributeCount() int {
+func (self Instance) GetAttributeCount() int { //gd:XMLParser.get_attribute_count
 	return int(int(class(self).GetAttributeCount()))
 }
 
 /*
 Returns the name of an attribute of the currently parsed element, specified by the [param idx] index.
 */
-func (self Instance) GetAttributeName(idx int) string {
+func (self Instance) GetAttributeName(idx int) string { //gd:XMLParser.get_attribute_name
 	return string(class(self).GetAttributeName(gd.Int(idx)).String())
 }
 
 /*
 Returns the value of an attribute of the currently parsed element, specified by the [param idx] index.
 */
-func (self Instance) GetAttributeValue(idx int) string {
+func (self Instance) GetAttributeValue(idx int) string { //gd:XMLParser.get_attribute_value
 	return string(class(self).GetAttributeValue(gd.Int(idx)).String())
 }
 
 /*
 Returns [code]true[/code] if the currently parsed element has an attribute with the [param name].
 */
-func (self Instance) HasAttribute(name string) bool {
+func (self Instance) HasAttribute(name string) bool { //gd:XMLParser.has_attribute
 	return bool(class(self).HasAttribute(gd.NewString(name)))
 }
 
 /*
 Returns the value of an attribute of the currently parsed element, specified by its [param name]. This method will raise an error if the element has no such attribute.
 */
-func (self Instance) GetNamedAttributeValue(name string) string {
+func (self Instance) GetNamedAttributeValue(name string) string { //gd:XMLParser.get_named_attribute_value
 	return string(class(self).GetNamedAttributeValue(gd.NewString(name)).String())
 }
 
 /*
 Returns the value of an attribute of the currently parsed element, specified by its [param name]. This method will return an empty string if the element has no such attribute.
 */
-func (self Instance) GetNamedAttributeValueSafe(name string) string {
+func (self Instance) GetNamedAttributeValueSafe(name string) string { //gd:XMLParser.get_named_attribute_value_safe
 	return string(class(self).GetNamedAttributeValueSafe(gd.NewString(name)).String())
 }
 
 /*
 Returns [code]true[/code] if the currently parsed element is empty, e.g. [code]<element />[/code].
 */
-func (self Instance) IsEmpty() bool {
+func (self Instance) IsEmpty() bool { //gd:XMLParser.is_empty
 	return bool(class(self).IsEmpty())
 }
 
 /*
 Returns the current line in the parsed file, counting from 0.
 */
-func (self Instance) GetCurrentLine() int {
+func (self Instance) GetCurrentLine() int { //gd:XMLParser.get_current_line
 	return int(int(class(self).GetCurrentLine()))
 }
 
 /*
 Skips the current section. If the currently parsed node contains more inner nodes, they will be ignored and the cursor will go to the closing of the current element.
 */
-func (self Instance) SkipSection() {
+func (self Instance) SkipSection() { //gd:XMLParser.skip_section
 	class(self).SkipSection()
 }
 
 /*
 Moves the buffer cursor to a certain offset (since the beginning) and reads the next node there. This method returns an error code.
 */
-func (self Instance) SeekTo(position int) error {
+func (self Instance) SeekTo(position int) error { //gd:XMLParser.seek
 	return error(gd.ToError(class(self).SeekTo(gd.Int(position))))
 }
 
 /*
 Opens an XML [param file] for parsing. This method returns an error code.
 */
-func (self Instance) Open(file string) error {
+func (self Instance) Open(file string) error { //gd:XMLParser.open
 	return error(gd.ToError(class(self).Open(gd.NewString(file))))
 }
 
 /*
 Opens an XML raw [param buffer] for parsing. This method returns an error code.
 */
-func (self Instance) OpenBuffer(buffer []byte) error {
+func (self Instance) OpenBuffer(buffer []byte) error { //gd:XMLParser.open_buffer
 	return error(gd.ToError(class(self).OpenBuffer(gd.NewPackedByteSlice(buffer))))
 }
 
@@ -216,7 +216,7 @@ func New() Instance {
 Parses the next node in the file. This method returns an error code.
 */
 //go:nosplit
-func (self class) Read() gd.Error {
+func (self class) Read() gd.Error { //gd:XMLParser.read
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_read, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) Read() gd.Error {
 Returns the type of the current node. Compare with [enum NodeType] constants.
 */
 //go:nosplit
-func (self class) GetNodeType() gdclass.XMLParserNodeType {
+func (self class) GetNodeType() gdclass.XMLParserNodeType { //gd:XMLParser.get_node_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XMLParserNodeType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_get_node_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -243,7 +243,7 @@ Returns the name of a node. This method will raise an error if the currently par
 [b]Note:[/b] The content of a [constant NODE_CDATA] node and the comment string of a [constant NODE_COMMENT] node are also considered names.
 */
 //go:nosplit
-func (self class) GetNodeName() gd.String {
+func (self class) GetNodeName() gd.String { //gd:XMLParser.get_node_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_get_node_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -256,7 +256,7 @@ func (self class) GetNodeName() gd.String {
 Returns the contents of a text node. This method will raise an error if the current parsed node is of any other type.
 */
 //go:nosplit
-func (self class) GetNodeData() gd.String {
+func (self class) GetNodeData() gd.String { //gd:XMLParser.get_node_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_get_node_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -269,7 +269,7 @@ func (self class) GetNodeData() gd.String {
 Returns the byte offset of the currently parsed node since the beginning of the file or buffer. This is usually equivalent to the number of characters before the read position.
 */
 //go:nosplit
-func (self class) GetNodeOffset() gd.Int {
+func (self class) GetNodeOffset() gd.Int { //gd:XMLParser.get_node_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_get_node_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -283,7 +283,7 @@ Returns the number of attributes in the currently parsed element.
 [b]Note:[/b] If this method is used while the currently parsed node is not [constant NODE_ELEMENT] or [constant NODE_ELEMENT_END], this count will not be updated and will still reflect the last element.
 */
 //go:nosplit
-func (self class) GetAttributeCount() gd.Int {
+func (self class) GetAttributeCount() gd.Int { //gd:XMLParser.get_attribute_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_get_attribute_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -296,7 +296,7 @@ func (self class) GetAttributeCount() gd.Int {
 Returns the name of an attribute of the currently parsed element, specified by the [param idx] index.
 */
 //go:nosplit
-func (self class) GetAttributeName(idx gd.Int) gd.String {
+func (self class) GetAttributeName(idx gd.Int) gd.String { //gd:XMLParser.get_attribute_name
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -310,7 +310,7 @@ func (self class) GetAttributeName(idx gd.Int) gd.String {
 Returns the value of an attribute of the currently parsed element, specified by the [param idx] index.
 */
 //go:nosplit
-func (self class) GetAttributeValue(idx gd.Int) gd.String {
+func (self class) GetAttributeValue(idx gd.Int) gd.String { //gd:XMLParser.get_attribute_value
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -324,7 +324,7 @@ func (self class) GetAttributeValue(idx gd.Int) gd.String {
 Returns [code]true[/code] if the currently parsed element has an attribute with the [param name].
 */
 //go:nosplit
-func (self class) HasAttribute(name gd.String) bool {
+func (self class) HasAttribute(name gd.String) bool { //gd:XMLParser.has_attribute
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -338,7 +338,7 @@ func (self class) HasAttribute(name gd.String) bool {
 Returns the value of an attribute of the currently parsed element, specified by its [param name]. This method will raise an error if the element has no such attribute.
 */
 //go:nosplit
-func (self class) GetNamedAttributeValue(name gd.String) gd.String {
+func (self class) GetNamedAttributeValue(name gd.String) gd.String { //gd:XMLParser.get_named_attribute_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -352,7 +352,7 @@ func (self class) GetNamedAttributeValue(name gd.String) gd.String {
 Returns the value of an attribute of the currently parsed element, specified by its [param name]. This method will return an empty string if the element has no such attribute.
 */
 //go:nosplit
-func (self class) GetNamedAttributeValueSafe(name gd.String) gd.String {
+func (self class) GetNamedAttributeValueSafe(name gd.String) gd.String { //gd:XMLParser.get_named_attribute_value_safe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -366,7 +366,7 @@ func (self class) GetNamedAttributeValueSafe(name gd.String) gd.String {
 Returns [code]true[/code] if the currently parsed element is empty, e.g. [code]<element />[/code].
 */
 //go:nosplit
-func (self class) IsEmpty() bool {
+func (self class) IsEmpty() bool { //gd:XMLParser.is_empty
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_is_empty, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -379,7 +379,7 @@ func (self class) IsEmpty() bool {
 Returns the current line in the parsed file, counting from 0.
 */
 //go:nosplit
-func (self class) GetCurrentLine() gd.Int {
+func (self class) GetCurrentLine() gd.Int { //gd:XMLParser.get_current_line
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_get_current_line, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -392,7 +392,7 @@ func (self class) GetCurrentLine() gd.Int {
 Skips the current section. If the currently parsed node contains more inner nodes, they will be ignored and the cursor will go to the closing of the current element.
 */
 //go:nosplit
-func (self class) SkipSection() {
+func (self class) SkipSection() { //gd:XMLParser.skip_section
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XMLParser.Bind_skip_section, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -403,7 +403,7 @@ func (self class) SkipSection() {
 Moves the buffer cursor to a certain offset (since the beginning) and reads the next node there. This method returns an error code.
 */
 //go:nosplit
-func (self class) SeekTo(position gd.Int) gd.Error {
+func (self class) SeekTo(position gd.Int) gd.Error { //gd:XMLParser.seek
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -417,7 +417,7 @@ func (self class) SeekTo(position gd.Int) gd.Error {
 Opens an XML [param file] for parsing. This method returns an error code.
 */
 //go:nosplit
-func (self class) Open(file gd.String) gd.Error {
+func (self class) Open(file gd.String) gd.Error { //gd:XMLParser.open
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -431,7 +431,7 @@ func (self class) Open(file gd.String) gd.Error {
 Opens an XML raw [param buffer] for parsing. This method returns an error code.
 */
 //go:nosplit
-func (self class) OpenBuffer(buffer gd.PackedByteArray) gd.Error {
+func (self class) OpenBuffer(buffer gd.PackedByteArray) gd.Error { //gd:XMLParser.open_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -466,7 +466,7 @@ func init() {
 	gdclass.Register("XMLParser", func(ptr gd.Object) any { return [1]gdclass.XMLParser{*(*gdclass.XMLParser)(unsafe.Pointer(&ptr))} })
 }
 
-type NodeType = gdclass.XMLParserNodeType
+type NodeType = gdclass.XMLParserNodeType //gd:XMLParser.NodeType
 
 const (
 	/*There's no node (no file or buffer opened).*/
@@ -485,7 +485,7 @@ const (
 	NodeUnknown NodeType = 6
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

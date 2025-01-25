@@ -66,7 +66,7 @@ func (self Instance) SetParameterName(value string) {
 }
 
 //go:nosplit
-func (self class) SetParameterName(name gd.String) {
+func (self class) SetParameterName(name gd.String) { //gd:VisualShaderNodeParameterRef.set_parameter_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetParameterName(name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetParameterName() gd.String {
+func (self class) GetParameterName() gd.String { //gd:VisualShaderNodeParameterRef.get_parameter_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParameterRef.Bind_get_parameter_name, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -38,7 +38,7 @@ func singleton() {
 /*
 Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [enum Type] constant given as [param ip_type].
 */
-func ResolveHostname(host string) string {
+func ResolveHostname(host string) string { //gd:IP.resolve_hostname
 	once.Do(singleton)
 	return string(class(self).ResolveHostname(gd.NewString(host), 3).String())
 }
@@ -46,7 +46,7 @@ func ResolveHostname(host string) string {
 /*
 Resolves a given hostname in a blocking way. Addresses are returned as an [Array] of IPv4 or IPv6 addresses depending on [param ip_type].
 */
-func ResolveHostnameAddresses(host string) []string {
+func ResolveHostnameAddresses(host string) []string { //gd:IP.resolve_hostname_addresses
 	once.Do(singleton)
 	return []string(class(self).ResolveHostnameAddresses(gd.NewString(host), 3).Strings())
 }
@@ -54,7 +54,7 @@ func ResolveHostnameAddresses(host string) []string {
 /*
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [enum Type] constant given as [param ip_type]. Returns the queue ID if successful, or [constant RESOLVER_INVALID_ID] on error.
 */
-func ResolveHostnameQueueItem(host string) int {
+func ResolveHostnameQueueItem(host string) int { //gd:IP.resolve_hostname_queue_item
 	once.Do(singleton)
 	return int(int(class(self).ResolveHostnameQueueItem(gd.NewString(host), 3)))
 }
@@ -62,7 +62,7 @@ func ResolveHostnameQueueItem(host string) int {
 /*
 Returns a queued hostname's status as a [enum ResolverStatus] constant, given its queue [param id].
 */
-func GetResolveItemStatus(id int) gdclass.IPResolverStatus {
+func GetResolveItemStatus(id int) gdclass.IPResolverStatus { //gd:IP.get_resolve_item_status
 	once.Do(singleton)
 	return gdclass.IPResolverStatus(class(self).GetResolveItemStatus(gd.Int(id)))
 }
@@ -70,7 +70,7 @@ func GetResolveItemStatus(id int) gdclass.IPResolverStatus {
 /*
 Returns a queued hostname's IP address, given its queue [param id]. Returns an empty string on error or if resolution hasn't happened yet (see [method get_resolve_item_status]).
 */
-func GetResolveItemAddress(id int) string {
+func GetResolveItemAddress(id int) string { //gd:IP.get_resolve_item_address
 	once.Do(singleton)
 	return string(class(self).GetResolveItemAddress(gd.Int(id)).String())
 }
@@ -78,7 +78,7 @@ func GetResolveItemAddress(id int) string {
 /*
 Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [method get_resolve_item_status]).
 */
-func GetResolveItemAddresses(id int) []any {
+func GetResolveItemAddresses(id int) []any { //gd:IP.get_resolve_item_addresses
 	once.Do(singleton)
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetResolveItemAddresses(gd.Int(id)))))
 }
@@ -86,7 +86,7 @@ func GetResolveItemAddresses(id int) []any {
 /*
 Removes a given item [param id] from the queue. This should be used to free a queue after it has completed to enable more queries to happen.
 */
-func EraseResolveItem(id int) {
+func EraseResolveItem(id int) { //gd:IP.erase_resolve_item
 	once.Do(singleton)
 	class(self).EraseResolveItem(gd.Int(id))
 }
@@ -94,7 +94,7 @@ func EraseResolveItem(id int) {
 /*
 Returns all the user's current IPv4 and IPv6 addresses as an array.
 */
-func GetLocalAddresses() []string {
+func GetLocalAddresses() []string { //gd:IP.get_local_addresses
 	once.Do(singleton)
 	return []string(class(self).GetLocalAddresses().Strings())
 }
@@ -113,7 +113,7 @@ Each adapter is a dictionary of the form:
 
 [/codeblock]
 */
-func GetLocalInterfaces() []map[any]any {
+func GetLocalInterfaces() []map[any]any { //gd:IP.get_local_interfaces
 	once.Do(singleton)
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetLocalInterfaces())))
 }
@@ -121,7 +121,7 @@ func GetLocalInterfaces() []map[any]any {
 /*
 Removes all of a [param hostname]'s cached references. If no [param hostname] is given, all cached IP addresses are removed.
 */
-func ClearCache() {
+func ClearCache() { //gd:IP.clear_cache
 	once.Do(singleton)
 	class(self).ClearCache(gd.NewString(""))
 }
@@ -140,7 +140,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [enum Type] constant given as [param ip_type].
 */
 //go:nosplit
-func (self class) ResolveHostname(host gd.String, ip_type gdclass.IPType) gd.String {
+func (self class) ResolveHostname(host gd.String, ip_type gdclass.IPType) gd.String { //gd:IP.resolve_hostname
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, ip_type)
@@ -155,7 +155,7 @@ func (self class) ResolveHostname(host gd.String, ip_type gdclass.IPType) gd.Str
 Resolves a given hostname in a blocking way. Addresses are returned as an [Array] of IPv4 or IPv6 addresses depending on [param ip_type].
 */
 //go:nosplit
-func (self class) ResolveHostnameAddresses(host gd.String, ip_type gdclass.IPType) gd.PackedStringArray {
+func (self class) ResolveHostnameAddresses(host gd.String, ip_type gdclass.IPType) gd.PackedStringArray { //gd:IP.resolve_hostname_addresses
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, ip_type)
@@ -170,7 +170,7 @@ func (self class) ResolveHostnameAddresses(host gd.String, ip_type gdclass.IPTyp
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [enum Type] constant given as [param ip_type]. Returns the queue ID if successful, or [constant RESOLVER_INVALID_ID] on error.
 */
 //go:nosplit
-func (self class) ResolveHostnameQueueItem(host gd.String, ip_type gdclass.IPType) gd.Int {
+func (self class) ResolveHostnameQueueItem(host gd.String, ip_type gdclass.IPType) gd.Int { //gd:IP.resolve_hostname_queue_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(host))
 	callframe.Arg(frame, ip_type)
@@ -185,7 +185,7 @@ func (self class) ResolveHostnameQueueItem(host gd.String, ip_type gdclass.IPTyp
 Returns a queued hostname's status as a [enum ResolverStatus] constant, given its queue [param id].
 */
 //go:nosplit
-func (self class) GetResolveItemStatus(id gd.Int) gdclass.IPResolverStatus {
+func (self class) GetResolveItemStatus(id gd.Int) gdclass.IPResolverStatus { //gd:IP.get_resolve_item_status
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[gdclass.IPResolverStatus](frame)
@@ -199,7 +199,7 @@ func (self class) GetResolveItemStatus(id gd.Int) gdclass.IPResolverStatus {
 Returns a queued hostname's IP address, given its queue [param id]. Returns an empty string on error or if resolution hasn't happened yet (see [method get_resolve_item_status]).
 */
 //go:nosplit
-func (self class) GetResolveItemAddress(id gd.Int) gd.String {
+func (self class) GetResolveItemAddress(id gd.Int) gd.String { //gd:IP.get_resolve_item_address
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -213,7 +213,7 @@ func (self class) GetResolveItemAddress(id gd.Int) gd.String {
 Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [method get_resolve_item_status]).
 */
 //go:nosplit
-func (self class) GetResolveItemAddresses(id gd.Int) Array.Any {
+func (self class) GetResolveItemAddresses(id gd.Int) Array.Any { //gd:IP.get_resolve_item_addresses
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -227,7 +227,7 @@ func (self class) GetResolveItemAddresses(id gd.Int) Array.Any {
 Removes a given item [param id] from the queue. This should be used to free a queue after it has completed to enable more queries to happen.
 */
 //go:nosplit
-func (self class) EraseResolveItem(id gd.Int) {
+func (self class) EraseResolveItem(id gd.Int) { //gd:IP.erase_resolve_item
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Nil
@@ -239,7 +239,7 @@ func (self class) EraseResolveItem(id gd.Int) {
 Returns all the user's current IPv4 and IPv6 addresses as an array.
 */
 //go:nosplit
-func (self class) GetLocalAddresses() gd.PackedStringArray {
+func (self class) GetLocalAddresses() gd.PackedStringArray { //gd:IP.get_local_addresses
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -261,7 +261,7 @@ Each adapter is a dictionary of the form:
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetLocalInterfaces() Array.Contains[gd.Dictionary] {
+func (self class) GetLocalInterfaces() Array.Contains[gd.Dictionary] { //gd:IP.get_local_interfaces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -274,7 +274,7 @@ func (self class) GetLocalInterfaces() Array.Contains[gd.Dictionary] {
 Removes all of a [param hostname]'s cached references. If no [param hostname] is given, all cached IP addresses are removed.
 */
 //go:nosplit
-func (self class) ClearCache(hostname gd.String) {
+func (self class) ClearCache(hostname gd.String) { //gd:IP.clear_cache
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(hostname))
 	var r_ret = callframe.Nil
@@ -291,7 +291,7 @@ func init() {
 	gdclass.Register("IP", func(ptr gd.Object) any { return [1]gdclass.IP{*(*gdclass.IP)(unsafe.Pointer(&ptr))} })
 }
 
-type ResolverStatus = gdclass.IPResolverStatus
+type ResolverStatus = gdclass.IPResolverStatus //gd:IP.ResolverStatus
 
 const (
 	/*DNS hostname resolver status: No status.*/
@@ -304,7 +304,7 @@ const (
 	ResolverStatusError ResolverStatus = 3
 )
 
-type Type = gdclass.IPType
+type Type = gdclass.IPType //gd:IP.Type
 
 const (
 	/*Address type: None.*/

@@ -74,7 +74,7 @@ func (self Instance) SetVaryingType(value gdclass.VisualShaderVaryingType) {
 }
 
 //go:nosplit
-func (self class) SetVaryingName(name gd.String) {
+func (self class) SetVaryingName(name gd.String) { //gd:VisualShaderNodeVarying.set_varying_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Nil
@@ -83,7 +83,7 @@ func (self class) SetVaryingName(name gd.String) {
 }
 
 //go:nosplit
-func (self class) GetVaryingName() gd.String {
+func (self class) GetVaryingName() gd.String { //gd:VisualShaderNodeVarying.get_varying_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVarying.Bind_get_varying_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -93,7 +93,7 @@ func (self class) GetVaryingName() gd.String {
 }
 
 //go:nosplit
-func (self class) SetVaryingType(atype gdclass.VisualShaderVaryingType) {
+func (self class) SetVaryingType(atype gdclass.VisualShaderVaryingType) { //gd:VisualShaderNodeVarying.set_varying_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -102,7 +102,7 @@ func (self class) SetVaryingType(atype gdclass.VisualShaderVaryingType) {
 }
 
 //go:nosplit
-func (self class) GetVaryingType() gdclass.VisualShaderVaryingType {
+func (self class) GetVaryingType() gdclass.VisualShaderVaryingType { //gd:VisualShaderNodeVarying.get_varying_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderVaryingType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVarying.Bind_get_varying_type, self.AsObject(), frame.Array(0), r_ret.Addr())

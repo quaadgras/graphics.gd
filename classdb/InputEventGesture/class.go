@@ -69,7 +69,7 @@ func (self Instance) SetPosition(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetPosition(position gd.Vector2) {
+func (self class) SetPosition(position gd.Vector2) { //gd:InputEventGesture.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -78,7 +78,7 @@ func (self class) SetPosition(position gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetPosition() gd.Vector2 {
+func (self class) GetPosition() gd.Vector2 { //gd:InputEventGesture.get_position
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventGesture.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())

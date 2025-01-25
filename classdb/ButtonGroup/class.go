@@ -41,14 +41,14 @@ type Any interface {
 /*
 Returns the current pressed button.
 */
-func (self Instance) GetPressedButton() [1]gdclass.BaseButton {
+func (self Instance) GetPressedButton() [1]gdclass.BaseButton { //gd:ButtonGroup.get_pressed_button
 	return [1]gdclass.BaseButton(class(self).GetPressedButton())
 }
 
 /*
 Returns an [Array] of [Button]s who have this as their [ButtonGroup] (see [member BaseButton.button_group]).
 */
-func (self Instance) GetButtons() [][1]gdclass.BaseButton {
+func (self Instance) GetButtons() [][1]gdclass.BaseButton { //gd:ButtonGroup.get_buttons
 	return [][1]gdclass.BaseButton(gd.ArrayAs[[][1]gdclass.BaseButton](gd.InternalArray(class(self).GetButtons())))
 }
 
@@ -83,7 +83,7 @@ func (self Instance) SetAllowUnpress(value bool) {
 Returns the current pressed button.
 */
 //go:nosplit
-func (self class) GetPressedButton() [1]gdclass.BaseButton {
+func (self class) GetPressedButton() [1]gdclass.BaseButton { //gd:ButtonGroup.get_pressed_button
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ButtonGroup.Bind_get_pressed_button, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -96,7 +96,7 @@ func (self class) GetPressedButton() [1]gdclass.BaseButton {
 Returns an [Array] of [Button]s who have this as their [ButtonGroup] (see [member BaseButton.button_group]).
 */
 //go:nosplit
-func (self class) GetButtons() Array.Contains[[1]gdclass.BaseButton] {
+func (self class) GetButtons() Array.Contains[[1]gdclass.BaseButton] { //gd:ButtonGroup.get_buttons
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ButtonGroup.Bind_get_buttons, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -106,7 +106,7 @@ func (self class) GetButtons() Array.Contains[[1]gdclass.BaseButton] {
 }
 
 //go:nosplit
-func (self class) SetAllowUnpress(enabled bool) {
+func (self class) SetAllowUnpress(enabled bool) { //gd:ButtonGroup.set_allow_unpress
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -115,7 +115,7 @@ func (self class) SetAllowUnpress(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsAllowUnpress() bool {
+func (self class) IsAllowUnpress() bool { //gd:ButtonGroup.is_allow_unpress
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ButtonGroup.Bind_is_allow_unpress, self.AsObject(), frame.Array(0), r_ret.Addr())

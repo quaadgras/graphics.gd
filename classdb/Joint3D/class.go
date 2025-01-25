@@ -43,7 +43,7 @@ type Any interface {
 /*
 Returns the joint's internal [RID] from the [PhysicsServer3D].
 */
-func (self Instance) GetRid() Resource.ID {
+func (self Instance) GetRid() Resource.ID { //gd:Joint3D.get_rid
 	return Resource.ID(class(self).GetRid())
 }
 
@@ -98,7 +98,7 @@ func (self Instance) SetExcludeNodesFromCollision(value bool) {
 }
 
 //go:nosplit
-func (self class) SetNodeA(node gd.NodePath) {
+func (self class) SetNodeA(node gd.NodePath) { //gd:Joint3D.set_node_a
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node))
 	var r_ret = callframe.Nil
@@ -107,7 +107,7 @@ func (self class) SetNodeA(node gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetNodeA() gd.NodePath {
+func (self class) GetNodeA() gd.NodePath { //gd:Joint3D.get_node_a
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_node_a, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -117,7 +117,7 @@ func (self class) GetNodeA() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetNodeB(node gd.NodePath) {
+func (self class) SetNodeB(node gd.NodePath) { //gd:Joint3D.set_node_b
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(node))
 	var r_ret = callframe.Nil
@@ -126,7 +126,7 @@ func (self class) SetNodeB(node gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetNodeB() gd.NodePath {
+func (self class) GetNodeB() gd.NodePath { //gd:Joint3D.get_node_b
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_node_b, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -136,7 +136,7 @@ func (self class) GetNodeB() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetSolverPriority(priority gd.Int) {
+func (self class) SetSolverPriority(priority gd.Int) { //gd:Joint3D.set_solver_priority
 	var frame = callframe.New()
 	callframe.Arg(frame, priority)
 	var r_ret = callframe.Nil
@@ -145,7 +145,7 @@ func (self class) SetSolverPriority(priority gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSolverPriority() gd.Int {
+func (self class) GetSolverPriority() gd.Int { //gd:Joint3D.get_solver_priority
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_solver_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -155,7 +155,7 @@ func (self class) GetSolverPriority() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetExcludeNodesFromCollision(enable bool) {
+func (self class) SetExcludeNodesFromCollision(enable bool) { //gd:Joint3D.set_exclude_nodes_from_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -164,7 +164,7 @@ func (self class) SetExcludeNodesFromCollision(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetExcludeNodesFromCollision() bool {
+func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint3D.get_exclude_nodes_from_collision
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_exclude_nodes_from_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -177,7 +177,7 @@ func (self class) GetExcludeNodesFromCollision() bool {
 Returns the joint's internal [RID] from the [PhysicsServer3D].
 */
 //go:nosplit
-func (self class) GetRid() gd.RID {
+func (self class) GetRid() gd.RID { //gd:Joint3D.get_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())

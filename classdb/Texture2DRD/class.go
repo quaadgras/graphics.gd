@@ -67,7 +67,7 @@ func (self Instance) SetTextureRdRid(value Resource.ID) {
 }
 
 //go:nosplit
-func (self class) SetTextureRdRid(texture_rd_rid gd.RID) {
+func (self class) SetTextureRdRid(texture_rd_rid gd.RID) { //gd:Texture2DRD.set_texture_rd_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_rd_rid)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetTextureRdRid(texture_rd_rid gd.RID) {
 }
 
 //go:nosplit
-func (self class) GetTextureRdRid() gd.RID {
+func (self class) GetTextureRdRid() gd.RID { //gd:Texture2DRD.get_texture_rd_rid
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2DRD.Bind_get_texture_rd_rid, self.AsObject(), frame.Array(0), r_ret.Addr())

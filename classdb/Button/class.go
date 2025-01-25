@@ -190,7 +190,7 @@ func (self Instance) SetLanguage(value string) {
 }
 
 //go:nosplit
-func (self class) SetText(text gd.String) {
+func (self class) SetText(text gd.String) { //gd:Button.set_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Nil
@@ -199,7 +199,7 @@ func (self class) SetText(text gd.String) {
 }
 
 //go:nosplit
-func (self class) GetText() gd.String {
+func (self class) GetText() gd.String { //gd:Button.get_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -209,7 +209,7 @@ func (self class) GetText() gd.String {
 }
 
 //go:nosplit
-func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOverrunBehavior) {
+func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:Button.set_text_overrun_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, overrun_behavior)
 	var r_ret = callframe.Nil
@@ -218,7 +218,7 @@ func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOver
 }
 
 //go:nosplit
-func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior {
+func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior { //gd:Button.get_text_overrun_behavior
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -228,7 +228,7 @@ func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior {
 }
 
 //go:nosplit
-func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) {
+func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) { //gd:Button.set_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, autowrap_mode)
 	var r_ret = callframe.Nil
@@ -237,7 +237,7 @@ func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) 
 }
 
 //go:nosplit
-func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode {
+func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:Button.get_autowrap_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -247,7 +247,7 @@ func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode {
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.ControlTextDirection) {
+func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //gd:Button.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -256,7 +256,7 @@ func (self class) SetTextDirection(direction gdclass.ControlTextDirection) {
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.ControlTextDirection {
+func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:Button.get_text_direction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -266,7 +266,7 @@ func (self class) GetTextDirection() gdclass.ControlTextDirection {
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) {
+func (self class) SetLanguage(language gd.String) { //gd:Button.set_language
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
 	var r_ret = callframe.Nil
@@ -275,7 +275,7 @@ func (self class) SetLanguage(language gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String {
+func (self class) GetLanguage() gd.String { //gd:Button.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -285,7 +285,7 @@ func (self class) GetLanguage() gd.String {
 }
 
 //go:nosplit
-func (self class) SetButtonIcon(texture [1]gdclass.Texture2D) {
+func (self class) SetButtonIcon(texture [1]gdclass.Texture2D) { //gd:Button.set_button_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -294,7 +294,7 @@ func (self class) SetButtonIcon(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetButtonIcon() [1]gdclass.Texture2D {
+func (self class) GetButtonIcon() [1]gdclass.Texture2D { //gd:Button.get_button_icon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_button_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -304,7 +304,7 @@ func (self class) GetButtonIcon() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetFlat(enabled bool) {
+func (self class) SetFlat(enabled bool) { //gd:Button.set_flat
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -313,7 +313,7 @@ func (self class) SetFlat(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsFlat() bool {
+func (self class) IsFlat() bool { //gd:Button.is_flat
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_is_flat, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -323,7 +323,7 @@ func (self class) IsFlat() bool {
 }
 
 //go:nosplit
-func (self class) SetClipText(enabled bool) {
+func (self class) SetClipText(enabled bool) { //gd:Button.set_clip_text
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -332,7 +332,7 @@ func (self class) SetClipText(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetClipText() bool {
+func (self class) GetClipText() bool { //gd:Button.get_clip_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_clip_text, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -342,7 +342,7 @@ func (self class) GetClipText() bool {
 }
 
 //go:nosplit
-func (self class) SetTextAlignment(alignment HorizontalAlignment) {
+func (self class) SetTextAlignment(alignment HorizontalAlignment) { //gd:Button.set_text_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -351,7 +351,7 @@ func (self class) SetTextAlignment(alignment HorizontalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetTextAlignment() HorizontalAlignment {
+func (self class) GetTextAlignment() HorizontalAlignment { //gd:Button.get_text_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -361,7 +361,7 @@ func (self class) GetTextAlignment() HorizontalAlignment {
 }
 
 //go:nosplit
-func (self class) SetIconAlignment(icon_alignment HorizontalAlignment) {
+func (self class) SetIconAlignment(icon_alignment HorizontalAlignment) { //gd:Button.set_icon_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, icon_alignment)
 	var r_ret = callframe.Nil
@@ -370,7 +370,7 @@ func (self class) SetIconAlignment(icon_alignment HorizontalAlignment) {
 }
 
 //go:nosplit
-func (self class) GetIconAlignment() HorizontalAlignment {
+func (self class) GetIconAlignment() HorizontalAlignment { //gd:Button.get_icon_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_icon_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -380,7 +380,7 @@ func (self class) GetIconAlignment() HorizontalAlignment {
 }
 
 //go:nosplit
-func (self class) SetVerticalIconAlignment(vertical_icon_alignment VerticalAlignment) {
+func (self class) SetVerticalIconAlignment(vertical_icon_alignment VerticalAlignment) { //gd:Button.set_vertical_icon_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, vertical_icon_alignment)
 	var r_ret = callframe.Nil
@@ -389,7 +389,7 @@ func (self class) SetVerticalIconAlignment(vertical_icon_alignment VerticalAlign
 }
 
 //go:nosplit
-func (self class) GetVerticalIconAlignment() VerticalAlignment {
+func (self class) GetVerticalIconAlignment() VerticalAlignment { //gd:Button.get_vertical_icon_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[VerticalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_vertical_icon_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -399,7 +399,7 @@ func (self class) GetVerticalIconAlignment() VerticalAlignment {
 }
 
 //go:nosplit
-func (self class) SetExpandIcon(enabled bool) {
+func (self class) SetExpandIcon(enabled bool) { //gd:Button.set_expand_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -408,7 +408,7 @@ func (self class) SetExpandIcon(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsExpandIcon() bool {
+func (self class) IsExpandIcon() bool { //gd:Button.is_expand_icon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_is_expand_icon, self.AsObject(), frame.Array(0), r_ret.Addr())

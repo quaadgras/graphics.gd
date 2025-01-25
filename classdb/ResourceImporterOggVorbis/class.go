@@ -42,7 +42,7 @@ type Any interface {
 /*
 This method loads audio data from a PackedByteArray buffer into an AudioStreamOggVorbis object.
 */
-func LoadFromBuffer(buffer []byte) [1]gdclass.AudioStreamOggVorbis {
+func LoadFromBuffer(buffer []byte) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
 	self := Instance{}
 	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
@@ -50,7 +50,7 @@ func LoadFromBuffer(buffer []byte) [1]gdclass.AudioStreamOggVorbis {
 /*
 This method loads audio data from a file into an AudioStreamOggVorbis object. The file path is provided as a string.
 */
-func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis {
+func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_file
 	self := Instance{}
 	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromFile(gd.NewString(path)))
 }
@@ -78,7 +78,7 @@ func New() Instance {
 This method loads audio data from a PackedByteArray buffer into an AudioStreamOggVorbis object.
 */
 //go:nosplit
-func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStreamOggVorbis {
+func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -92,7 +92,7 @@ func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStre
 This method loads audio data from a file into an AudioStreamOggVorbis object. The file path is provided as a string.
 */
 //go:nosplit
-func (self class) LoadFromFile(path gd.String) [1]gdclass.AudioStreamOggVorbis {
+func (self class) LoadFromFile(path gd.String) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

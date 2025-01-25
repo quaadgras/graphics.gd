@@ -38,7 +38,7 @@ func singleton() {
 /*
 Returns the names of all the classes available.
 */
-func GetClassList() []string {
+func GetClassList() []string { //gd:ClassDB.get_class_list
 	once.Do(singleton)
 	return []string(class(self).GetClassList().Strings())
 }
@@ -46,7 +46,7 @@ func GetClassList() []string {
 /*
 Returns the names of all the classes that directly or indirectly inherit from [param class].
 */
-func GetInheritersFromClass(class_ string) []string {
+func GetInheritersFromClass(class_ string) []string { //gd:ClassDB.get_inheriters_from_class
 	once.Do(singleton)
 	return []string(class(self).GetInheritersFromClass(gd.NewStringName(class_)).Strings())
 }
@@ -54,7 +54,7 @@ func GetInheritersFromClass(class_ string) []string {
 /*
 Returns the parent class of [param class].
 */
-func GetParentClass(class_ string) string {
+func GetParentClass(class_ string) string { //gd:ClassDB.get_parent_class
 	once.Do(singleton)
 	return string(class(self).GetParentClass(gd.NewStringName(class_)).String())
 }
@@ -62,7 +62,7 @@ func GetParentClass(class_ string) string {
 /*
 Returns whether the specified [param class] is available or not.
 */
-func ClassExists(class_ string) bool {
+func ClassExists(class_ string) bool { //gd:ClassDB.class_exists
 	once.Do(singleton)
 	return bool(class(self).ClassExists(gd.NewStringName(class_)))
 }
@@ -70,7 +70,7 @@ func ClassExists(class_ string) bool {
 /*
 Returns whether [param inherits] is an ancestor of [param class] or not.
 */
-func IsParentClass(class_ string, inherits string) bool {
+func IsParentClass(class_ string, inherits string) bool { //gd:ClassDB.is_parent_class
 	once.Do(singleton)
 	return bool(class(self).IsParentClass(gd.NewStringName(class_), gd.NewStringName(inherits)))
 }
@@ -78,7 +78,7 @@ func IsParentClass(class_ string, inherits string) bool {
 /*
 Returns [code]true[/code] if objects can be instantiated from the specified [param class], otherwise returns [code]false[/code].
 */
-func CanInstantiate(class_ string) bool {
+func CanInstantiate(class_ string) bool { //gd:ClassDB.can_instantiate
 	once.Do(singleton)
 	return bool(class(self).CanInstantiate(gd.NewStringName(class_)))
 }
@@ -86,7 +86,7 @@ func CanInstantiate(class_ string) bool {
 /*
 Creates an instance of [param class].
 */
-func Instantiate(class_ string) any {
+func Instantiate(class_ string) any { //gd:ClassDB.instantiate
 	once.Do(singleton)
 	return any(class(self).Instantiate(gd.NewStringName(class_)).Interface())
 }
@@ -94,7 +94,7 @@ func Instantiate(class_ string) any {
 /*
 Returns whether [param class] or its ancestry has a signal called [param signal] or not.
 */
-func ClassHasSignal(class_ string, signal string) bool {
+func ClassHasSignal(class_ string, signal string) bool { //gd:ClassDB.class_has_signal
 	once.Do(singleton)
 	return bool(class(self).ClassHasSignal(gd.NewStringName(class_), gd.NewStringName(signal)))
 }
@@ -102,7 +102,7 @@ func ClassHasSignal(class_ string, signal string) bool {
 /*
 Returns the [param signal] data of [param class] or its ancestry. The returned value is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 */
-func ClassGetSignal(class_ string, signal string) map[any]any {
+func ClassGetSignal(class_ string, signal string) map[any]any { //gd:ClassDB.class_get_signal
 	once.Do(singleton)
 	return map[any]any(gd.DictionaryAs[any, any](class(self).ClassGetSignal(gd.NewStringName(class_), gd.NewStringName(signal))))
 }
@@ -110,7 +110,7 @@ func ClassGetSignal(class_ string, signal string) map[any]any {
 /*
 Returns an array with all the signals of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] as described in [method class_get_signal].
 */
-func ClassGetSignalList(class_ string) []map[any]any {
+func ClassGetSignalList(class_ string) []map[any]any { //gd:ClassDB.class_get_signal_list
 	once.Do(singleton)
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ClassGetSignalList(gd.NewStringName(class_), false))))
 }
@@ -118,7 +118,7 @@ func ClassGetSignalList(class_ string) []map[any]any {
 /*
 Returns an array with all the properties of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
-func ClassGetPropertyList(class_ string) []map[any]any {
+func ClassGetPropertyList(class_ string) []map[any]any { //gd:ClassDB.class_get_property_list
 	once.Do(singleton)
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ClassGetPropertyList(gd.NewStringName(class_), false))))
 }
@@ -126,7 +126,7 @@ func ClassGetPropertyList(class_ string) []map[any]any {
 /*
 Returns the value of [param property] of [param object] or its ancestry.
 */
-func ClassGetProperty(obj Object.Instance, property string) any {
+func ClassGetProperty(obj Object.Instance, property string) any { //gd:ClassDB.class_get_property
 	once.Do(singleton)
 	return any(class(self).ClassGetProperty(obj, gd.NewStringName(property)).Interface())
 }
@@ -134,7 +134,7 @@ func ClassGetProperty(obj Object.Instance, property string) any {
 /*
 Sets [param property] value of [param object] to [param value].
 */
-func ClassSetProperty(obj Object.Instance, property string, value any) error {
+func ClassSetProperty(obj Object.Instance, property string, value any) error { //gd:ClassDB.class_set_property
 	once.Do(singleton)
 	return error(gd.ToError(class(self).ClassSetProperty(obj, gd.NewStringName(property), gd.NewVariant(value))))
 }
@@ -142,7 +142,7 @@ func ClassSetProperty(obj Object.Instance, property string, value any) error {
 /*
 Returns the default value of [param property] of [param class] or its ancestor classes.
 */
-func ClassGetPropertyDefaultValue(class_ string, property string) any {
+func ClassGetPropertyDefaultValue(class_ string, property string) any { //gd:ClassDB.class_get_property_default_value
 	once.Do(singleton)
 	return any(class(self).ClassGetPropertyDefaultValue(gd.NewStringName(class_), gd.NewStringName(property)).Interface())
 }
@@ -150,7 +150,7 @@ func ClassGetPropertyDefaultValue(class_ string, property string) any {
 /*
 Returns whether [param class] (or its ancestry if [param no_inheritance] is [code]false[/code]) has a method called [param method] or not.
 */
-func ClassHasMethod(class_ string, method string) bool {
+func ClassHasMethod(class_ string, method string) bool { //gd:ClassDB.class_has_method
 	once.Do(singleton)
 	return bool(class(self).ClassHasMethod(gd.NewStringName(class_), gd.NewStringName(method), false))
 }
@@ -158,7 +158,7 @@ func ClassHasMethod(class_ string, method string) bool {
 /*
 Returns the number of arguments of the method [param method] of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
-func ClassGetMethodArgumentCount(class_ string, method string) int {
+func ClassGetMethodArgumentCount(class_ string, method string) int { //gd:ClassDB.class_get_method_argument_count
 	once.Do(singleton)
 	return int(int(class(self).ClassGetMethodArgumentCount(gd.NewStringName(class_), gd.NewStringName(method), false)))
 }
@@ -167,7 +167,7 @@ func ClassGetMethodArgumentCount(class_ string, method string) int {
 Returns an array with all the methods of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 [b]Note:[/b] In exported release builds the debug info is not available, so the returned dictionaries will contain only method names.
 */
-func ClassGetMethodList(class_ string) []map[any]any {
+func ClassGetMethodList(class_ string) []map[any]any { //gd:ClassDB.class_get_method_list
 	once.Do(singleton)
 	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ClassGetMethodList(gd.NewStringName(class_), false))))
 }
@@ -175,7 +175,7 @@ func ClassGetMethodList(class_ string) []map[any]any {
 /*
 Returns an array with the names all the integer constants of [param class] or its ancestry.
 */
-func ClassGetIntegerConstantList(class_ string) []string {
+func ClassGetIntegerConstantList(class_ string) []string { //gd:ClassDB.class_get_integer_constant_list
 	once.Do(singleton)
 	return []string(class(self).ClassGetIntegerConstantList(gd.NewStringName(class_), false).Strings())
 }
@@ -183,7 +183,7 @@ func ClassGetIntegerConstantList(class_ string) []string {
 /*
 Returns whether [param class] or its ancestry has an integer constant called [param name] or not.
 */
-func ClassHasIntegerConstant(class_ string, name string) bool {
+func ClassHasIntegerConstant(class_ string, name string) bool { //gd:ClassDB.class_has_integer_constant
 	once.Do(singleton)
 	return bool(class(self).ClassHasIntegerConstant(gd.NewStringName(class_), gd.NewStringName(name)))
 }
@@ -191,7 +191,7 @@ func ClassHasIntegerConstant(class_ string, name string) bool {
 /*
 Returns the value of the integer constant [param name] of [param class] or its ancestry. Always returns 0 when the constant could not be found.
 */
-func ClassGetIntegerConstant(class_ string, name string) int {
+func ClassGetIntegerConstant(class_ string, name string) int { //gd:ClassDB.class_get_integer_constant
 	once.Do(singleton)
 	return int(int(class(self).ClassGetIntegerConstant(gd.NewStringName(class_), gd.NewStringName(name))))
 }
@@ -199,7 +199,7 @@ func ClassGetIntegerConstant(class_ string, name string) int {
 /*
 Returns whether [param class] or its ancestry has an enum called [param name] or not.
 */
-func ClassHasEnum(class_ string, name string) bool {
+func ClassHasEnum(class_ string, name string) bool { //gd:ClassDB.class_has_enum
 	once.Do(singleton)
 	return bool(class(self).ClassHasEnum(gd.NewStringName(class_), gd.NewStringName(name), false))
 }
@@ -207,7 +207,7 @@ func ClassHasEnum(class_ string, name string) bool {
 /*
 Returns an array with all the enums of [param class] or its ancestry.
 */
-func ClassGetEnumList(class_ string) []string {
+func ClassGetEnumList(class_ string) []string { //gd:ClassDB.class_get_enum_list
 	once.Do(singleton)
 	return []string(class(self).ClassGetEnumList(gd.NewStringName(class_), false).Strings())
 }
@@ -215,7 +215,7 @@ func ClassGetEnumList(class_ string) []string {
 /*
 Returns an array with all the keys in [param enum] of [param class] or its ancestry.
 */
-func ClassGetEnumConstants(class_ string, enum string) []string {
+func ClassGetEnumConstants(class_ string, enum string) []string { //gd:ClassDB.class_get_enum_constants
 	once.Do(singleton)
 	return []string(class(self).ClassGetEnumConstants(gd.NewStringName(class_), gd.NewStringName(enum), false).Strings())
 }
@@ -223,7 +223,7 @@ func ClassGetEnumConstants(class_ string, enum string) []string {
 /*
 Returns which enum the integer constant [param name] of [param class] or its ancestry belongs to.
 */
-func ClassGetIntegerConstantEnum(class_ string, name string) string {
+func ClassGetIntegerConstantEnum(class_ string, name string) string { //gd:ClassDB.class_get_integer_constant_enum
 	once.Do(singleton)
 	return string(class(self).ClassGetIntegerConstantEnum(gd.NewStringName(class_), gd.NewStringName(name), false).String())
 }
@@ -231,7 +231,7 @@ func ClassGetIntegerConstantEnum(class_ string, name string) string {
 /*
 Returns whether [param class] (or its ancestor classes if [param no_inheritance] is [code]false[/code]) has an enum called [param enum] that is a bitfield.
 */
-func IsClassEnumBitfield(class_ string, enum string) bool {
+func IsClassEnumBitfield(class_ string, enum string) bool { //gd:ClassDB.is_class_enum_bitfield
 	once.Do(singleton)
 	return bool(class(self).IsClassEnumBitfield(gd.NewStringName(class_), gd.NewStringName(enum), false))
 }
@@ -239,7 +239,7 @@ func IsClassEnumBitfield(class_ string, enum string) bool {
 /*
 Returns whether this [param class] is enabled or not.
 */
-func IsClassEnabled(class_ string) bool {
+func IsClassEnabled(class_ string) bool { //gd:ClassDB.is_class_enabled
 	once.Do(singleton)
 	return bool(class(self).IsClassEnabled(gd.NewStringName(class_)))
 }
@@ -258,7 +258,7 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns the names of all the classes available.
 */
 //go:nosplit
-func (self class) GetClassList() gd.PackedStringArray {
+func (self class) GetClassList() gd.PackedStringArray { //gd:ClassDB.get_class_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_get_class_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -271,7 +271,7 @@ func (self class) GetClassList() gd.PackedStringArray {
 Returns the names of all the classes that directly or indirectly inherit from [param class].
 */
 //go:nosplit
-func (self class) GetInheritersFromClass(class_ gd.StringName) gd.PackedStringArray {
+func (self class) GetInheritersFromClass(class_ gd.StringName) gd.PackedStringArray { //gd:ClassDB.get_inheriters_from_class
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -285,7 +285,7 @@ func (self class) GetInheritersFromClass(class_ gd.StringName) gd.PackedStringAr
 Returns the parent class of [param class].
 */
 //go:nosplit
-func (self class) GetParentClass(class_ gd.StringName) gd.StringName {
+func (self class) GetParentClass(class_ gd.StringName) gd.StringName { //gd:ClassDB.get_parent_class
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -299,7 +299,7 @@ func (self class) GetParentClass(class_ gd.StringName) gd.StringName {
 Returns whether the specified [param class] is available or not.
 */
 //go:nosplit
-func (self class) ClassExists(class_ gd.StringName) bool {
+func (self class) ClassExists(class_ gd.StringName) bool { //gd:ClassDB.class_exists
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	var r_ret = callframe.Ret[bool](frame)
@@ -313,7 +313,7 @@ func (self class) ClassExists(class_ gd.StringName) bool {
 Returns whether [param inherits] is an ancestor of [param class] or not.
 */
 //go:nosplit
-func (self class) IsParentClass(class_ gd.StringName, inherits gd.StringName) bool {
+func (self class) IsParentClass(class_ gd.StringName, inherits gd.StringName) bool { //gd:ClassDB.is_parent_class
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(inherits))
@@ -328,7 +328,7 @@ func (self class) IsParentClass(class_ gd.StringName, inherits gd.StringName) bo
 Returns [code]true[/code] if objects can be instantiated from the specified [param class], otherwise returns [code]false[/code].
 */
 //go:nosplit
-func (self class) CanInstantiate(class_ gd.StringName) bool {
+func (self class) CanInstantiate(class_ gd.StringName) bool { //gd:ClassDB.can_instantiate
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	var r_ret = callframe.Ret[bool](frame)
@@ -342,7 +342,7 @@ func (self class) CanInstantiate(class_ gd.StringName) bool {
 Creates an instance of [param class].
 */
 //go:nosplit
-func (self class) Instantiate(class_ gd.StringName) gd.Variant {
+func (self class) Instantiate(class_ gd.StringName) gd.Variant { //gd:ClassDB.instantiate
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -356,7 +356,7 @@ func (self class) Instantiate(class_ gd.StringName) gd.Variant {
 Returns whether [param class] or its ancestry has a signal called [param signal] or not.
 */
 //go:nosplit
-func (self class) ClassHasSignal(class_ gd.StringName, signal gd.StringName) bool {
+func (self class) ClassHasSignal(class_ gd.StringName, signal gd.StringName) bool { //gd:ClassDB.class_has_signal
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(signal))
@@ -371,7 +371,7 @@ func (self class) ClassHasSignal(class_ gd.StringName, signal gd.StringName) boo
 Returns the [param signal] data of [param class] or its ancestry. The returned value is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 */
 //go:nosplit
-func (self class) ClassGetSignal(class_ gd.StringName, signal gd.StringName) gd.Dictionary {
+func (self class) ClassGetSignal(class_ gd.StringName, signal gd.StringName) gd.Dictionary { //gd:ClassDB.class_get_signal
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(signal))
@@ -386,7 +386,7 @@ func (self class) ClassGetSignal(class_ gd.StringName, signal gd.StringName) gd.
 Returns an array with all the signals of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] as described in [method class_get_signal].
 */
 //go:nosplit
-func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] {
+func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] { //gd:ClassDB.class_get_signal_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
@@ -401,7 +401,7 @@ func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) 
 Returns an array with all the properties of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
 //go:nosplit
-func (self class) ClassGetPropertyList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] {
+func (self class) ClassGetPropertyList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] { //gd:ClassDB.class_get_property_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
@@ -416,7 +416,7 @@ func (self class) ClassGetPropertyList(class_ gd.StringName, no_inheritance bool
 Returns the value of [param property] of [param object] or its ancestry.
 */
 //go:nosplit
-func (self class) ClassGetProperty(obj [1]gd.Object, property gd.StringName) gd.Variant {
+func (self class) ClassGetProperty(obj [1]gd.Object, property gd.StringName) gd.Variant { //gd:ClassDB.class_get_property
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(property))
@@ -431,7 +431,7 @@ func (self class) ClassGetProperty(obj [1]gd.Object, property gd.StringName) gd.
 Sets [param property] value of [param object] to [param value].
 */
 //go:nosplit
-func (self class) ClassSetProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) gd.Error {
+func (self class) ClassSetProperty(obj [1]gd.Object, property gd.StringName, value gd.Variant) gd.Error { //gd:ClassDB.class_set_property
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(property))
@@ -447,7 +447,7 @@ func (self class) ClassSetProperty(obj [1]gd.Object, property gd.StringName, val
 Returns the default value of [param property] of [param class] or its ancestor classes.
 */
 //go:nosplit
-func (self class) ClassGetPropertyDefaultValue(class_ gd.StringName, property gd.StringName) gd.Variant {
+func (self class) ClassGetPropertyDefaultValue(class_ gd.StringName, property gd.StringName) gd.Variant { //gd:ClassDB.class_get_property_default_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(property))
@@ -462,7 +462,7 @@ func (self class) ClassGetPropertyDefaultValue(class_ gd.StringName, property gd
 Returns whether [param class] (or its ancestry if [param no_inheritance] is [code]false[/code]) has a method called [param method] or not.
 */
 //go:nosplit
-func (self class) ClassHasMethod(class_ gd.StringName, method gd.StringName, no_inheritance bool) bool {
+func (self class) ClassHasMethod(class_ gd.StringName, method gd.StringName, no_inheritance bool) bool { //gd:ClassDB.class_has_method
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(method))
@@ -478,7 +478,7 @@ func (self class) ClassHasMethod(class_ gd.StringName, method gd.StringName, no_
 Returns the number of arguments of the method [param method] of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
 //go:nosplit
-func (self class) ClassGetMethodArgumentCount(class_ gd.StringName, method gd.StringName, no_inheritance bool) gd.Int {
+func (self class) ClassGetMethodArgumentCount(class_ gd.StringName, method gd.StringName, no_inheritance bool) gd.Int { //gd:ClassDB.class_get_method_argument_count
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(method))
@@ -495,7 +495,7 @@ Returns an array with all the methods of [param class] or its ancestry if [param
 [b]Note:[/b] In exported release builds the debug info is not available, so the returned dictionaries will contain only method names.
 */
 //go:nosplit
-func (self class) ClassGetMethodList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] {
+func (self class) ClassGetMethodList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] { //gd:ClassDB.class_get_method_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
@@ -510,7 +510,7 @@ func (self class) ClassGetMethodList(class_ gd.StringName, no_inheritance bool) 
 Returns an array with the names all the integer constants of [param class] or its ancestry.
 */
 //go:nosplit
-func (self class) ClassGetIntegerConstantList(class_ gd.StringName, no_inheritance bool) gd.PackedStringArray {
+func (self class) ClassGetIntegerConstantList(class_ gd.StringName, no_inheritance bool) gd.PackedStringArray { //gd:ClassDB.class_get_integer_constant_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
@@ -525,7 +525,7 @@ func (self class) ClassGetIntegerConstantList(class_ gd.StringName, no_inheritan
 Returns whether [param class] or its ancestry has an integer constant called [param name] or not.
 */
 //go:nosplit
-func (self class) ClassHasIntegerConstant(class_ gd.StringName, name gd.StringName) bool {
+func (self class) ClassHasIntegerConstant(class_ gd.StringName, name gd.StringName) bool { //gd:ClassDB.class_has_integer_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(name))
@@ -540,7 +540,7 @@ func (self class) ClassHasIntegerConstant(class_ gd.StringName, name gd.StringNa
 Returns the value of the integer constant [param name] of [param class] or its ancestry. Always returns 0 when the constant could not be found.
 */
 //go:nosplit
-func (self class) ClassGetIntegerConstant(class_ gd.StringName, name gd.StringName) gd.Int {
+func (self class) ClassGetIntegerConstant(class_ gd.StringName, name gd.StringName) gd.Int { //gd:ClassDB.class_get_integer_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(name))
@@ -555,7 +555,7 @@ func (self class) ClassGetIntegerConstant(class_ gd.StringName, name gd.StringNa
 Returns whether [param class] or its ancestry has an enum called [param name] or not.
 */
 //go:nosplit
-func (self class) ClassHasEnum(class_ gd.StringName, name gd.StringName, no_inheritance bool) bool {
+func (self class) ClassHasEnum(class_ gd.StringName, name gd.StringName, no_inheritance bool) bool { //gd:ClassDB.class_has_enum
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(name))
@@ -571,7 +571,7 @@ func (self class) ClassHasEnum(class_ gd.StringName, name gd.StringName, no_inhe
 Returns an array with all the enums of [param class] or its ancestry.
 */
 //go:nosplit
-func (self class) ClassGetEnumList(class_ gd.StringName, no_inheritance bool) gd.PackedStringArray {
+func (self class) ClassGetEnumList(class_ gd.StringName, no_inheritance bool) gd.PackedStringArray { //gd:ClassDB.class_get_enum_list
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
@@ -586,7 +586,7 @@ func (self class) ClassGetEnumList(class_ gd.StringName, no_inheritance bool) gd
 Returns an array with all the keys in [param enum] of [param class] or its ancestry.
 */
 //go:nosplit
-func (self class) ClassGetEnumConstants(class_ gd.StringName, enum gd.StringName, no_inheritance bool) gd.PackedStringArray {
+func (self class) ClassGetEnumConstants(class_ gd.StringName, enum gd.StringName, no_inheritance bool) gd.PackedStringArray { //gd:ClassDB.class_get_enum_constants
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(enum))
@@ -602,7 +602,7 @@ func (self class) ClassGetEnumConstants(class_ gd.StringName, enum gd.StringName
 Returns which enum the integer constant [param name] of [param class] or its ancestry belongs to.
 */
 //go:nosplit
-func (self class) ClassGetIntegerConstantEnum(class_ gd.StringName, name gd.StringName, no_inheritance bool) gd.StringName {
+func (self class) ClassGetIntegerConstantEnum(class_ gd.StringName, name gd.StringName, no_inheritance bool) gd.StringName { //gd:ClassDB.class_get_integer_constant_enum
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(name))
@@ -618,7 +618,7 @@ func (self class) ClassGetIntegerConstantEnum(class_ gd.StringName, name gd.Stri
 Returns whether [param class] (or its ancestor classes if [param no_inheritance] is [code]false[/code]) has an enum called [param enum] that is a bitfield.
 */
 //go:nosplit
-func (self class) IsClassEnumBitfield(class_ gd.StringName, enum gd.StringName, no_inheritance bool) bool {
+func (self class) IsClassEnumBitfield(class_ gd.StringName, enum gd.StringName, no_inheritance bool) bool { //gd:ClassDB.is_class_enum_bitfield
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(enum))
@@ -634,7 +634,7 @@ func (self class) IsClassEnumBitfield(class_ gd.StringName, enum gd.StringName, 
 Returns whether this [param class] is enabled or not.
 */
 //go:nosplit
-func (self class) IsClassEnabled(class_ gd.StringName) bool {
+func (self class) IsClassEnabled(class_ gd.StringName) bool { //gd:ClassDB.is_class_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	var r_ret = callframe.Ret[bool](frame)
@@ -653,7 +653,7 @@ func init() {
 	gdclass.Register("ClassDB", func(ptr gd.Object) any { return [1]gdclass.ClassDB{*(*gdclass.ClassDB)(unsafe.Pointer(&ptr))} })
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

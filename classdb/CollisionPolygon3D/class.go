@@ -92,7 +92,7 @@ func (self Instance) SetMargin(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetDepth(depth gd.Float) {
+func (self class) SetDepth(depth gd.Float) { //gd:CollisionPolygon3D.set_depth
 	var frame = callframe.New()
 	callframe.Arg(frame, depth)
 	var r_ret = callframe.Nil
@@ -101,7 +101,7 @@ func (self class) SetDepth(depth gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDepth() gd.Float {
+func (self class) GetDepth() gd.Float { //gd:CollisionPolygon3D.get_depth
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -111,7 +111,7 @@ func (self class) GetDepth() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetPolygon(polygon gd.PackedVector2Array) {
+func (self class) SetPolygon(polygon gd.PackedVector2Array) { //gd:CollisionPolygon3D.set_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Nil
@@ -120,7 +120,7 @@ func (self class) SetPolygon(polygon gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetPolygon() gd.PackedVector2Array {
+func (self class) GetPolygon() gd.PackedVector2Array { //gd:CollisionPolygon3D.get_polygon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_get_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,7 +130,7 @@ func (self class) GetPolygon() gd.PackedVector2Array {
 }
 
 //go:nosplit
-func (self class) SetDisabled(disabled bool) {
+func (self class) SetDisabled(disabled bool) { //gd:CollisionPolygon3D.set_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, disabled)
 	var r_ret = callframe.Nil
@@ -139,7 +139,7 @@ func (self class) SetDisabled(disabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDisabled() bool {
+func (self class) IsDisabled() bool { //gd:CollisionPolygon3D.is_disabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_is_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ func (self class) IsDisabled() bool {
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Float) {
+func (self class) SetMargin(margin gd.Float) { //gd:CollisionPolygon3D.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -158,7 +158,7 @@ func (self class) SetMargin(margin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Float {
+func (self class) GetMargin() gd.Float { //gd:CollisionPolygon3D.get_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionPolygon3D.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -43,7 +43,7 @@ type Any interface {
 Generates the VRS texture based on a render [param target_size] adjusted by our VRS tile size. For each eyes focal point passed in [param eye_foci] a layer is created. Focal point should be in NDC.
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
-func (self Instance) MakeVrsTexture(target_size Vector2.XY, eye_foci []Vector2.XY) Resource.ID {
+func (self Instance) MakeVrsTexture(target_size Vector2.XY, eye_foci []Vector2.XY) Resource.ID { //gd:XRVRS.make_vrs_texture
 	return Resource.ID(class(self).MakeVrsTexture(gd.Vector2(target_size), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&eye_foci)))))
 }
 
@@ -82,7 +82,7 @@ func (self Instance) SetVrsStrength(value Float.X) {
 }
 
 //go:nosplit
-func (self class) GetVrsMinRadius() gd.Float {
+func (self class) GetVrsMinRadius() gd.Float { //gd:XRVRS.get_vrs_min_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_get_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -92,7 +92,7 @@ func (self class) GetVrsMinRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVrsMinRadius(radius gd.Float) {
+func (self class) SetVrsMinRadius(radius gd.Float) { //gd:XRVRS.set_vrs_min_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -101,7 +101,7 @@ func (self class) SetVrsMinRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVrsStrength() gd.Float {
+func (self class) GetVrsStrength() gd.Float { //gd:XRVRS.get_vrs_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRVRS.Bind_get_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -111,7 +111,7 @@ func (self class) GetVrsStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVrsStrength(strength gd.Float) {
+func (self class) SetVrsStrength(strength gd.Float) { //gd:XRVRS.set_vrs_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -124,7 +124,7 @@ Generates the VRS texture based on a render [param target_size] adjusted by our 
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
 //go:nosplit
-func (self class) MakeVrsTexture(target_size gd.Vector2, eye_foci gd.PackedVector2Array) gd.RID {
+func (self class) MakeVrsTexture(target_size gd.Vector2, eye_foci gd.PackedVector2Array) gd.RID { //gd:XRVRS.make_vrs_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, target_size)
 	callframe.Arg(frame, pointers.Get(eye_foci))

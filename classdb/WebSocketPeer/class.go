@@ -72,7 +72,7 @@ type Any interface {
 Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the [code]wss://[/code] protocol. You can pass the optional [param tls_client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
-func (self Instance) ConnectToUrl(url string) error {
+func (self Instance) ConnectToUrl(url string) error { //gd:WebSocketPeer.connect_to_url
 	return error(gd.ToError(class(self).ConnectToUrl(gd.NewString(url), [1][1]gdclass.TLSOptions{}[0])))
 }
 
@@ -80,35 +80,35 @@ func (self Instance) ConnectToUrl(url string) error {
 Accepts a peer connection performing the HTTP handshake as a WebSocket server. The [param stream] must be a valid TCP stream retrieved via [method TCPServer.take_connection], or a TLS stream accepted via [method StreamPeerTLS.accept_stream].
 [b]Note:[/b] Not supported in Web exports due to browsers' restrictions.
 */
-func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer) error {
+func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer) error { //gd:WebSocketPeer.accept_stream
 	return error(gd.ToError(class(self).AcceptStream(stream)))
 }
 
 /*
 Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
 */
-func (self Instance) Send(message []byte) error {
+func (self Instance) Send(message []byte) error { //gd:WebSocketPeer.send
 	return error(gd.ToError(class(self).Send(gd.NewPackedByteSlice(message), 1)))
 }
 
 /*
 Sends the given [param message] using WebSocket text mode. Prefer this method over [method PacketPeer.put_packet] when interacting with third-party text-based API (e.g. when using [JSON] formatted messages).
 */
-func (self Instance) SendText(message string) error {
+func (self Instance) SendText(message string) error { //gd:WebSocketPeer.send_text
 	return error(gd.ToError(class(self).SendText(gd.NewString(message))))
 }
 
 /*
 Returns [code]true[/code] if the last received packet was sent as a text payload. See [enum WriteMode].
 */
-func (self Instance) WasStringPacket() bool {
+func (self Instance) WasStringPacket() bool { //gd:WebSocketPeer.was_string_packet
 	return bool(class(self).WasStringPacket())
 }
 
 /*
 Updates the connection state and receive incoming packets. Call this function regularly to keep it in a clean state.
 */
-func (self Instance) Poll() {
+func (self Instance) Poll() { //gd:WebSocketPeer.poll
 	class(self).Poll()
 }
 
@@ -117,7 +117,7 @@ Closes this WebSocket connection. [param code] is the status code for the closur
 [b]Note:[/b] To achieve a clean close, you will need to keep polling until [constant STATE_CLOSED] is reached.
 [b]Note:[/b] The Web export might not support all status codes. Please refer to browser-specific documentation for more details.
 */
-func (self Instance) Close() {
+func (self Instance) Close() { //gd:WebSocketPeer.close
 	class(self).Close(gd.Int(1000), gd.NewString(""))
 }
 
@@ -125,7 +125,7 @@ func (self Instance) Close() {
 Returns the IP address of the connected peer.
 [b]Note:[/b] Not available in the Web export.
 */
-func (self Instance) GetConnectedHost() string {
+func (self Instance) GetConnectedHost() string { //gd:WebSocketPeer.get_connected_host
 	return string(class(self).GetConnectedHost().String())
 }
 
@@ -133,21 +133,21 @@ func (self Instance) GetConnectedHost() string {
 Returns the remote port of the connected peer.
 [b]Note:[/b] Not available in the Web export.
 */
-func (self Instance) GetConnectedPort() int {
+func (self Instance) GetConnectedPort() int { //gd:WebSocketPeer.get_connected_port
 	return int(int(class(self).GetConnectedPort()))
 }
 
 /*
 Returns the selected WebSocket sub-protocol for this connection or an empty string if the sub-protocol has not been selected yet.
 */
-func (self Instance) GetSelectedProtocol() string {
+func (self Instance) GetSelectedProtocol() string { //gd:WebSocketPeer.get_selected_protocol
 	return string(class(self).GetSelectedProtocol().String())
 }
 
 /*
 Returns the URL requested by this peer. The URL is derived from the [code]url[/code] passed to [method connect_to_url] or from the HTTP headers when acting as server (i.e. when using [method accept_stream]).
 */
-func (self Instance) GetRequestedUrl() string {
+func (self Instance) GetRequestedUrl() string { //gd:WebSocketPeer.get_requested_url
 	return string(class(self).GetRequestedUrl().String())
 }
 
@@ -155,35 +155,35 @@ func (self Instance) GetRequestedUrl() string {
 Disable Nagle's algorithm on the underlying TCP socket (default). See [method StreamPeerTCP.set_no_delay] for more information.
 [b]Note:[/b] Not available in the Web export.
 */
-func (self Instance) SetNoDelay(enabled bool) {
+func (self Instance) SetNoDelay(enabled bool) { //gd:WebSocketPeer.set_no_delay
 	class(self).SetNoDelay(enabled)
 }
 
 /*
 Returns the current amount of data in the outbound websocket buffer. [b]Note:[/b] Web exports use WebSocket.bufferedAmount, while other platforms use an internal buffer.
 */
-func (self Instance) GetCurrentOutboundBufferedAmount() int {
+func (self Instance) GetCurrentOutboundBufferedAmount() int { //gd:WebSocketPeer.get_current_outbound_buffered_amount
 	return int(int(class(self).GetCurrentOutboundBufferedAmount()))
 }
 
 /*
 Returns the ready state of the connection. See [enum State].
 */
-func (self Instance) GetReadyState() gdclass.WebSocketPeerState {
+func (self Instance) GetReadyState() gdclass.WebSocketPeerState { //gd:WebSocketPeer.get_ready_state
 	return gdclass.WebSocketPeerState(class(self).GetReadyState())
 }
 
 /*
 Returns the received WebSocket close frame status code, or [code]-1[/code] when the connection was not cleanly closed. Only call this method when [method get_ready_state] returns [constant STATE_CLOSED].
 */
-func (self Instance) GetCloseCode() int {
+func (self Instance) GetCloseCode() int { //gd:WebSocketPeer.get_close_code
 	return int(int(class(self).GetCloseCode()))
 }
 
 /*
 Returns the received WebSocket close frame status reason string. Only call this method when [method get_ready_state] returns [constant STATE_CLOSED].
 */
-func (self Instance) GetCloseReason() string {
+func (self Instance) GetCloseReason() string { //gd:WebSocketPeer.get_close_reason
 	return string(class(self).GetCloseReason().String())
 }
 
@@ -251,7 +251,7 @@ Connects to the given URL. TLS certificates will be verified against the hostnam
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
 //go:nosplit
-func (self class) ConnectToUrl(url gd.String, tls_client_options [1]gdclass.TLSOptions) gd.Error {
+func (self class) ConnectToUrl(url gd.String, tls_client_options [1]gdclass.TLSOptions) gd.Error { //gd:WebSocketPeer.connect_to_url
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(url))
 	callframe.Arg(frame, pointers.Get(tls_client_options[0])[0])
@@ -267,7 +267,7 @@ Accepts a peer connection performing the HTTP handshake as a WebSocket server. T
 [b]Note:[/b] Not supported in Web exports due to browsers' restrictions.
 */
 //go:nosplit
-func (self class) AcceptStream(stream [1]gdclass.StreamPeer) gd.Error {
+func (self class) AcceptStream(stream [1]gdclass.StreamPeer) gd.Error { //gd:WebSocketPeer.accept_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -281,7 +281,7 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer) gd.Error {
 Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
 */
 //go:nosplit
-func (self class) Send(message gd.PackedByteArray, write_mode gdclass.WebSocketPeerWriteMode) gd.Error {
+func (self class) Send(message gd.PackedByteArray, write_mode gdclass.WebSocketPeerWriteMode) gd.Error { //gd:WebSocketPeer.send
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, write_mode)
@@ -296,7 +296,7 @@ func (self class) Send(message gd.PackedByteArray, write_mode gdclass.WebSocketP
 Sends the given [param message] using WebSocket text mode. Prefer this method over [method PacketPeer.put_packet] when interacting with third-party text-based API (e.g. when using [JSON] formatted messages).
 */
 //go:nosplit
-func (self class) SendText(message gd.String) gd.Error {
+func (self class) SendText(message gd.String) gd.Error { //gd:WebSocketPeer.send_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -310,7 +310,7 @@ func (self class) SendText(message gd.String) gd.Error {
 Returns [code]true[/code] if the last received packet was sent as a text payload. See [enum WriteMode].
 */
 //go:nosplit
-func (self class) WasStringPacket() bool {
+func (self class) WasStringPacket() bool { //gd:WebSocketPeer.was_string_packet
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_was_string_packet, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -323,7 +323,7 @@ func (self class) WasStringPacket() bool {
 Updates the connection state and receive incoming packets. Call this function regularly to keep it in a clean state.
 */
 //go:nosplit
-func (self class) Poll() {
+func (self class) Poll() { //gd:WebSocketPeer.poll
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -336,7 +336,7 @@ Closes this WebSocket connection. [param code] is the status code for the closur
 [b]Note:[/b] The Web export might not support all status codes. Please refer to browser-specific documentation for more details.
 */
 //go:nosplit
-func (self class) Close(code gd.Int, reason gd.String) {
+func (self class) Close(code gd.Int, reason gd.String) { //gd:WebSocketPeer.close
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
 	callframe.Arg(frame, pointers.Get(reason))
@@ -350,7 +350,7 @@ Returns the IP address of the connected peer.
 [b]Note:[/b] Not available in the Web export.
 */
 //go:nosplit
-func (self class) GetConnectedHost() gd.String {
+func (self class) GetConnectedHost() gd.String { //gd:WebSocketPeer.get_connected_host
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_connected_host, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -364,7 +364,7 @@ Returns the remote port of the connected peer.
 [b]Note:[/b] Not available in the Web export.
 */
 //go:nosplit
-func (self class) GetConnectedPort() gd.Int {
+func (self class) GetConnectedPort() gd.Int { //gd:WebSocketPeer.get_connected_port
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_connected_port, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -377,7 +377,7 @@ func (self class) GetConnectedPort() gd.Int {
 Returns the selected WebSocket sub-protocol for this connection or an empty string if the sub-protocol has not been selected yet.
 */
 //go:nosplit
-func (self class) GetSelectedProtocol() gd.String {
+func (self class) GetSelectedProtocol() gd.String { //gd:WebSocketPeer.get_selected_protocol
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_selected_protocol, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -390,7 +390,7 @@ func (self class) GetSelectedProtocol() gd.String {
 Returns the URL requested by this peer. The URL is derived from the [code]url[/code] passed to [method connect_to_url] or from the HTTP headers when acting as server (i.e. when using [method accept_stream]).
 */
 //go:nosplit
-func (self class) GetRequestedUrl() gd.String {
+func (self class) GetRequestedUrl() gd.String { //gd:WebSocketPeer.get_requested_url
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_requested_url, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -404,7 +404,7 @@ Disable Nagle's algorithm on the underlying TCP socket (default). See [method St
 [b]Note:[/b] Not available in the Web export.
 */
 //go:nosplit
-func (self class) SetNoDelay(enabled bool) {
+func (self class) SetNoDelay(enabled bool) { //gd:WebSocketPeer.set_no_delay
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -416,7 +416,7 @@ func (self class) SetNoDelay(enabled bool) {
 Returns the current amount of data in the outbound websocket buffer. [b]Note:[/b] Web exports use WebSocket.bufferedAmount, while other platforms use an internal buffer.
 */
 //go:nosplit
-func (self class) GetCurrentOutboundBufferedAmount() gd.Int {
+func (self class) GetCurrentOutboundBufferedAmount() gd.Int { //gd:WebSocketPeer.get_current_outbound_buffered_amount
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_current_outbound_buffered_amount, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -429,7 +429,7 @@ func (self class) GetCurrentOutboundBufferedAmount() gd.Int {
 Returns the ready state of the connection. See [enum State].
 */
 //go:nosplit
-func (self class) GetReadyState() gdclass.WebSocketPeerState {
+func (self class) GetReadyState() gdclass.WebSocketPeerState { //gd:WebSocketPeer.get_ready_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.WebSocketPeerState](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_ready_state, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -442,7 +442,7 @@ func (self class) GetReadyState() gdclass.WebSocketPeerState {
 Returns the received WebSocket close frame status code, or [code]-1[/code] when the connection was not cleanly closed. Only call this method when [method get_ready_state] returns [constant STATE_CLOSED].
 */
 //go:nosplit
-func (self class) GetCloseCode() gd.Int {
+func (self class) GetCloseCode() gd.Int { //gd:WebSocketPeer.get_close_code
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_close_code, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -455,7 +455,7 @@ func (self class) GetCloseCode() gd.Int {
 Returns the received WebSocket close frame status reason string. Only call this method when [method get_ready_state] returns [constant STATE_CLOSED].
 */
 //go:nosplit
-func (self class) GetCloseReason() gd.String {
+func (self class) GetCloseReason() gd.String { //gd:WebSocketPeer.get_close_reason
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_close_reason, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -465,7 +465,7 @@ func (self class) GetCloseReason() gd.String {
 }
 
 //go:nosplit
-func (self class) GetSupportedProtocols() gd.PackedStringArray {
+func (self class) GetSupportedProtocols() gd.PackedStringArray { //gd:WebSocketPeer.get_supported_protocols
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_supported_protocols, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -475,7 +475,7 @@ func (self class) GetSupportedProtocols() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) SetSupportedProtocols(protocols gd.PackedStringArray) {
+func (self class) SetSupportedProtocols(protocols gd.PackedStringArray) { //gd:WebSocketPeer.set_supported_protocols
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(protocols))
 	var r_ret = callframe.Nil
@@ -484,7 +484,7 @@ func (self class) SetSupportedProtocols(protocols gd.PackedStringArray) {
 }
 
 //go:nosplit
-func (self class) GetHandshakeHeaders() gd.PackedStringArray {
+func (self class) GetHandshakeHeaders() gd.PackedStringArray { //gd:WebSocketPeer.get_handshake_headers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_handshake_headers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -494,7 +494,7 @@ func (self class) GetHandshakeHeaders() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) SetHandshakeHeaders(protocols gd.PackedStringArray) {
+func (self class) SetHandshakeHeaders(protocols gd.PackedStringArray) { //gd:WebSocketPeer.set_handshake_headers
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(protocols))
 	var r_ret = callframe.Nil
@@ -503,7 +503,7 @@ func (self class) SetHandshakeHeaders(protocols gd.PackedStringArray) {
 }
 
 //go:nosplit
-func (self class) GetInboundBufferSize() gd.Int {
+func (self class) GetInboundBufferSize() gd.Int { //gd:WebSocketPeer.get_inbound_buffer_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_inbound_buffer_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -513,7 +513,7 @@ func (self class) GetInboundBufferSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetInboundBufferSize(buffer_size gd.Int) {
+func (self class) SetInboundBufferSize(buffer_size gd.Int) { //gd:WebSocketPeer.set_inbound_buffer_size
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
 	var r_ret = callframe.Nil
@@ -522,7 +522,7 @@ func (self class) SetInboundBufferSize(buffer_size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetOutboundBufferSize() gd.Int {
+func (self class) GetOutboundBufferSize() gd.Int { //gd:WebSocketPeer.get_outbound_buffer_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_outbound_buffer_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -532,7 +532,7 @@ func (self class) GetOutboundBufferSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetOutboundBufferSize(buffer_size gd.Int) {
+func (self class) SetOutboundBufferSize(buffer_size gd.Int) { //gd:WebSocketPeer.set_outbound_buffer_size
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
 	var r_ret = callframe.Nil
@@ -541,7 +541,7 @@ func (self class) SetOutboundBufferSize(buffer_size gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetMaxQueuedPackets(buffer_size gd.Int) {
+func (self class) SetMaxQueuedPackets(buffer_size gd.Int) { //gd:WebSocketPeer.set_max_queued_packets
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
 	var r_ret = callframe.Nil
@@ -550,7 +550,7 @@ func (self class) SetMaxQueuedPackets(buffer_size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMaxQueuedPackets() gd.Int {
+func (self class) GetMaxQueuedPackets() gd.Int { //gd:WebSocketPeer.get_max_queued_packets
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_max_queued_packets, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -592,7 +592,7 @@ func init() {
 	})
 }
 
-type WriteMode = gdclass.WebSocketPeerWriteMode
+type WriteMode = gdclass.WebSocketPeerWriteMode //gd:WebSocketPeer.WriteMode
 
 const (
 	/*Specifies that WebSockets messages should be transferred as text payload (only valid UTF-8 is allowed).*/
@@ -601,7 +601,7 @@ const (
 	WriteModeBinary WriteMode = 1
 )
 
-type State = gdclass.WebSocketPeerState
+type State = gdclass.WebSocketPeerState //gd:WebSocketPeer.State
 
 const (
 	/*Socket has been created. The connection is not yet open.*/
@@ -614,7 +614,7 @@ const (
 	StateClosed State = 3
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

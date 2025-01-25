@@ -55,7 +55,7 @@ type Any interface {
 Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
-func (self Instance) Open(path string) error {
+func (self Instance) Open(path string) error { //gd:ZIPPacker.open
 	return error(gd.ToError(class(self).Open(gd.NewString(path), 0)))
 }
 
@@ -63,7 +63,7 @@ func (self Instance) Open(path string) error {
 Starts writing to a file within the archive. Only one file can be written at the same time.
 Must be called after [method open].
 */
-func (self Instance) StartFile(path string) error {
+func (self Instance) StartFile(path string) error { //gd:ZIPPacker.start_file
 	return error(gd.ToError(class(self).StartFile(gd.NewString(path))))
 }
 
@@ -71,7 +71,7 @@ func (self Instance) StartFile(path string) error {
 Write the given [param data] to the file.
 Needs to be called after [method start_file].
 */
-func (self Instance) WriteFile(data []byte) error {
+func (self Instance) WriteFile(data []byte) error { //gd:ZIPPacker.write_file
 	return error(gd.ToError(class(self).WriteFile(gd.NewPackedByteSlice(data))))
 }
 
@@ -79,14 +79,14 @@ func (self Instance) WriteFile(data []byte) error {
 Stops writing to a file within the archive.
 It will fail if there is no open file.
 */
-func (self Instance) CloseFile() error {
+func (self Instance) CloseFile() error { //gd:ZIPPacker.close_file
 	return error(gd.ToError(class(self).CloseFile()))
 }
 
 /*
 Closes the underlying resources used by this instance.
 */
-func (self Instance) Close() error {
+func (self Instance) Close() error { //gd:ZIPPacker.close
 	return error(gd.ToError(class(self).Close()))
 }
 
@@ -114,7 +114,7 @@ Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
 //go:nosplit
-func (self class) Open(path gd.String, append gdclass.ZIPPackerZipAppend) gd.Error {
+func (self class) Open(path gd.String, append gdclass.ZIPPackerZipAppend) gd.Error { //gd:ZIPPacker.open
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, append)
@@ -130,7 +130,7 @@ Starts writing to a file within the archive. Only one file can be written at the
 Must be called after [method open].
 */
 //go:nosplit
-func (self class) StartFile(path gd.String) gd.Error {
+func (self class) StartFile(path gd.String) gd.Error { //gd:ZIPPacker.start_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -145,7 +145,7 @@ Write the given [param data] to the file.
 Needs to be called after [method start_file].
 */
 //go:nosplit
-func (self class) WriteFile(data gd.PackedByteArray) gd.Error {
+func (self class) WriteFile(data gd.PackedByteArray) gd.Error { //gd:ZIPPacker.write_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -160,7 +160,7 @@ Stops writing to a file within the archive.
 It will fail if there is no open file.
 */
 //go:nosplit
-func (self class) CloseFile() gd.Error {
+func (self class) CloseFile() gd.Error { //gd:ZIPPacker.close_file
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_close_file, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func (self class) CloseFile() gd.Error {
 Closes the underlying resources used by this instance.
 */
 //go:nosplit
-func (self class) Close() gd.Error {
+func (self class) Close() gd.Error { //gd:ZIPPacker.close
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPPacker.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -207,7 +207,7 @@ func init() {
 	gdclass.Register("ZIPPacker", func(ptr gd.Object) any { return [1]gdclass.ZIPPacker{*(*gdclass.ZIPPacker)(unsafe.Pointer(&ptr))} })
 }
 
-type ZipAppend = gdclass.ZIPPackerZipAppend
+type ZipAppend = gdclass.ZIPPackerZipAppend //gd:ZIPPacker.ZipAppend
 
 const (
 	/*Create a new zip archive at the given path.*/
@@ -218,7 +218,7 @@ const (
 	AppendAddinzip ZipAppend = 2
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

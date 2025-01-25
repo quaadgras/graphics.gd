@@ -40,56 +40,56 @@ type Any interface {
 /*
 Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
 */
-func (self Instance) SendMessage(message string) {
+func (self Instance) SendMessage(message string) { //gd:EditorDebuggerSession.send_message
 	class(self).SendMessage(gd.NewString(message), Array.Nil)
 }
 
 /*
 Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
 */
-func (self Instance) ToggleProfiler(profiler string, enable bool) {
+func (self Instance) ToggleProfiler(profiler string, enable bool) { //gd:EditorDebuggerSession.toggle_profiler
 	class(self).ToggleProfiler(gd.NewString(profiler), enable, Array.Nil)
 }
 
 /*
 Returns [code]true[/code] if the attached remote instance is currently in the debug loop.
 */
-func (self Instance) IsBreaked() bool {
+func (self Instance) IsBreaked() bool { //gd:EditorDebuggerSession.is_breaked
 	return bool(class(self).IsBreaked())
 }
 
 /*
 Returns [code]true[/code] if the attached remote instance can be debugged.
 */
-func (self Instance) IsDebuggable() bool {
+func (self Instance) IsDebuggable() bool { //gd:EditorDebuggerSession.is_debuggable
 	return bool(class(self).IsDebuggable())
 }
 
 /*
 Returns [code]true[/code] if the debug session is currently attached to a remote instance.
 */
-func (self Instance) IsActive() bool {
+func (self Instance) IsActive() bool { //gd:EditorDebuggerSession.is_active
 	return bool(class(self).IsActive())
 }
 
 /*
 Adds the given [param control] to the debug session UI in the debugger bottom panel.
 */
-func (self Instance) AddSessionTab(control [1]gdclass.Control) {
+func (self Instance) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.add_session_tab
 	class(self).AddSessionTab(control)
 }
 
 /*
 Removes the given [param control] from the debug session UI in the debugger bottom panel.
 */
-func (self Instance) RemoveSessionTab(control [1]gdclass.Control) {
+func (self Instance) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.remove_session_tab
 	class(self).RemoveSessionTab(control)
 }
 
 /*
 Enables or disables a specific breakpoint based on [param enabled], updating the Editor Breakpoint Panel accordingly.
 */
-func (self Instance) SetBreakpoint(path string, line int, enabled bool) {
+func (self Instance) SetBreakpoint(path string, line int, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
 	class(self).SetBreakpoint(gd.NewString(path), gd.Int(line), enabled)
 }
 
@@ -116,7 +116,7 @@ func New() Instance {
 Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
 */
 //go:nosplit
-func (self class) SendMessage(message gd.String, data Array.Any) {
+func (self class) SendMessage(message gd.String, data Array.Any) { //gd:EditorDebuggerSession.send_message
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
@@ -129,7 +129,7 @@ func (self class) SendMessage(message gd.String, data Array.Any) {
 Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
 */
 //go:nosplit
-func (self class) ToggleProfiler(profiler gd.String, enable bool, data Array.Any) {
+func (self class) ToggleProfiler(profiler gd.String, enable bool, data Array.Any) { //gd:EditorDebuggerSession.toggle_profiler
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profiler))
 	callframe.Arg(frame, enable)
@@ -143,7 +143,7 @@ func (self class) ToggleProfiler(profiler gd.String, enable bool, data Array.Any
 Returns [code]true[/code] if the attached remote instance is currently in the debug loop.
 */
 //go:nosplit
-func (self class) IsBreaked() bool {
+func (self class) IsBreaked() bool { //gd:EditorDebuggerSession.is_breaked
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_is_breaked, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -156,7 +156,7 @@ func (self class) IsBreaked() bool {
 Returns [code]true[/code] if the attached remote instance can be debugged.
 */
 //go:nosplit
-func (self class) IsDebuggable() bool {
+func (self class) IsDebuggable() bool { //gd:EditorDebuggerSession.is_debuggable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_is_debuggable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -169,7 +169,7 @@ func (self class) IsDebuggable() bool {
 Returns [code]true[/code] if the debug session is currently attached to a remote instance.
 */
 //go:nosplit
-func (self class) IsActive() bool {
+func (self class) IsActive() bool { //gd:EditorDebuggerSession.is_active
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -182,7 +182,7 @@ func (self class) IsActive() bool {
 Adds the given [param control] to the debug session UI in the debugger bottom panel.
 */
 //go:nosplit
-func (self class) AddSessionTab(control [1]gdclass.Control) {
+func (self class) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.add_session_tab
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -194,7 +194,7 @@ func (self class) AddSessionTab(control [1]gdclass.Control) {
 Removes the given [param control] from the debug session UI in the debugger bottom panel.
 */
 //go:nosplit
-func (self class) RemoveSessionTab(control [1]gdclass.Control) {
+func (self class) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.remove_session_tab
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(control[0])[0])
 	var r_ret = callframe.Nil
@@ -206,7 +206,7 @@ func (self class) RemoveSessionTab(control [1]gdclass.Control) {
 Enables or disables a specific breakpoint based on [param enabled], updating the Editor Breakpoint Panel accordingly.
 */
 //go:nosplit
-func (self class) SetBreakpoint(path gd.String, line gd.Int, enabled bool) {
+func (self class) SetBreakpoint(path gd.String, line gd.Int, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, line)

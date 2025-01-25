@@ -66,7 +66,7 @@ func (self Instance) SetOpType(value gdclass.VisualShaderNodeParticleRandomnessO
 }
 
 //go:nosplit
-func (self class) SetOpType(atype gdclass.VisualShaderNodeParticleRandomnessOpType) {
+func (self class) SetOpType(atype gdclass.VisualShaderNodeParticleRandomnessOpType) { //gd:VisualShaderNodeParticleRandomness.set_op_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetOpType(atype gdclass.VisualShaderNodeParticleRandomnessOpTy
 }
 
 //go:nosplit
-func (self class) GetOpType() gdclass.VisualShaderNodeParticleRandomnessOpType {
+func (self class) GetOpType() gdclass.VisualShaderNodeParticleRandomnessOpType { //gd:VisualShaderNodeParticleRandomness.get_op_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeParticleRandomnessOpType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleRandomness.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func init() {
 	})
 }
 
-type OpType = gdclass.VisualShaderNodeParticleRandomnessOpType
+type OpType = gdclass.VisualShaderNodeParticleRandomnessOpType //gd:VisualShaderNodeParticleRandomness.OpType
 
 const (
 	/*A floating-point scalar.*/

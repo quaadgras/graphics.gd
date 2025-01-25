@@ -43,7 +43,7 @@ type Any interface {
 Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM or QOA formats can't be saved.
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
-func (self Instance) SaveToWav(path string) error {
+func (self Instance) SaveToWav(path string) error { //gd:AudioStreamWAV.save_to_wav
 	return error(gd.ToError(class(self).SaveToWav(gd.NewString(path))))
 }
 
@@ -123,7 +123,7 @@ func (self Instance) SetStereo(value bool) {
 }
 
 //go:nosplit
-func (self class) SetData(data gd.PackedByteArray) {
+func (self class) SetData(data gd.PackedByteArray) { //gd:AudioStreamWAV.set_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Nil
@@ -132,7 +132,7 @@ func (self class) SetData(data gd.PackedByteArray) {
 }
 
 //go:nosplit
-func (self class) GetData() gd.PackedByteArray {
+func (self class) GetData() gd.PackedByteArray { //gd:AudioStreamWAV.get_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -142,7 +142,7 @@ func (self class) GetData() gd.PackedByteArray {
 }
 
 //go:nosplit
-func (self class) SetFormat(format gdclass.AudioStreamWAVFormat) {
+func (self class) SetFormat(format gdclass.AudioStreamWAVFormat) { //gd:AudioStreamWAV.set_format
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Nil
@@ -151,7 +151,7 @@ func (self class) SetFormat(format gdclass.AudioStreamWAVFormat) {
 }
 
 //go:nosplit
-func (self class) GetFormat() gdclass.AudioStreamWAVFormat {
+func (self class) GetFormat() gdclass.AudioStreamWAVFormat { //gd:AudioStreamWAV.get_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioStreamWAVFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -161,7 +161,7 @@ func (self class) GetFormat() gdclass.AudioStreamWAVFormat {
 }
 
 //go:nosplit
-func (self class) SetLoopMode(loop_mode gdclass.AudioStreamWAVLoopMode) {
+func (self class) SetLoopMode(loop_mode gdclass.AudioStreamWAVLoopMode) { //gd:AudioStreamWAV.set_loop_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_mode)
 	var r_ret = callframe.Nil
@@ -170,7 +170,7 @@ func (self class) SetLoopMode(loop_mode gdclass.AudioStreamWAVLoopMode) {
 }
 
 //go:nosplit
-func (self class) GetLoopMode() gdclass.AudioStreamWAVLoopMode {
+func (self class) GetLoopMode() gdclass.AudioStreamWAVLoopMode { //gd:AudioStreamWAV.get_loop_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AudioStreamWAVLoopMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_loop_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -180,7 +180,7 @@ func (self class) GetLoopMode() gdclass.AudioStreamWAVLoopMode {
 }
 
 //go:nosplit
-func (self class) SetLoopBegin(loop_begin gd.Int) {
+func (self class) SetLoopBegin(loop_begin gd.Int) { //gd:AudioStreamWAV.set_loop_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_begin)
 	var r_ret = callframe.Nil
@@ -189,7 +189,7 @@ func (self class) SetLoopBegin(loop_begin gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetLoopBegin() gd.Int {
+func (self class) GetLoopBegin() gd.Int { //gd:AudioStreamWAV.get_loop_begin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_loop_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -199,7 +199,7 @@ func (self class) GetLoopBegin() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetLoopEnd(loop_end gd.Int) {
+func (self class) SetLoopEnd(loop_end gd.Int) { //gd:AudioStreamWAV.set_loop_end
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_end)
 	var r_ret = callframe.Nil
@@ -208,7 +208,7 @@ func (self class) SetLoopEnd(loop_end gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetLoopEnd() gd.Int {
+func (self class) GetLoopEnd() gd.Int { //gd:AudioStreamWAV.get_loop_end
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_loop_end, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -218,7 +218,7 @@ func (self class) GetLoopEnd() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMixRate(mix_rate gd.Int) {
+func (self class) SetMixRate(mix_rate gd.Int) { //gd:AudioStreamWAV.set_mix_rate
 	var frame = callframe.New()
 	callframe.Arg(frame, mix_rate)
 	var r_ret = callframe.Nil
@@ -227,7 +227,7 @@ func (self class) SetMixRate(mix_rate gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetMixRate() gd.Int {
+func (self class) GetMixRate() gd.Int { //gd:AudioStreamWAV.get_mix_rate
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_mix_rate, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -237,7 +237,7 @@ func (self class) GetMixRate() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetStereo(stereo bool) {
+func (self class) SetStereo(stereo bool) { //gd:AudioStreamWAV.set_stereo
 	var frame = callframe.New()
 	callframe.Arg(frame, stereo)
 	var r_ret = callframe.Nil
@@ -246,7 +246,7 @@ func (self class) SetStereo(stereo bool) {
 }
 
 //go:nosplit
-func (self class) IsStereo() bool {
+func (self class) IsStereo() bool { //gd:AudioStreamWAV.is_stereo
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_is_stereo, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -260,7 +260,7 @@ Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM o
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
 //go:nosplit
-func (self class) SaveToWav(path gd.String) gd.Error {
+func (self class) SaveToWav(path gd.String) gd.Error { //gd:AudioStreamWAV.save_to_wav
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -309,7 +309,7 @@ func init() {
 	})
 }
 
-type Format = gdclass.AudioStreamWAVFormat
+type Format = gdclass.AudioStreamWAVFormat //gd:AudioStreamWAV.Format
 
 const (
 	/*8-bit audio codec.*/
@@ -322,7 +322,7 @@ const (
 	FormatQoa Format = 3
 )
 
-type LoopMode = gdclass.AudioStreamWAVLoopMode
+type LoopMode = gdclass.AudioStreamWAVLoopMode //gd:AudioStreamWAV.LoopMode
 
 const (
 	/*Audio does not loop.*/
@@ -335,7 +335,7 @@ const (
 	LoopBackward LoopMode = 3
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

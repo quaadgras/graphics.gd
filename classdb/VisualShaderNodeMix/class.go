@@ -66,7 +66,7 @@ func (self Instance) SetOpType(value gdclass.VisualShaderNodeMixOpType) {
 }
 
 //go:nosplit
-func (self class) SetOpType(op_type gdclass.VisualShaderNodeMixOpType) {
+func (self class) SetOpType(op_type gdclass.VisualShaderNodeMixOpType) { //gd:VisualShaderNodeMix.set_op_type
 	var frame = callframe.New()
 	callframe.Arg(frame, op_type)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetOpType(op_type gdclass.VisualShaderNodeMixOpType) {
 }
 
 //go:nosplit
-func (self class) GetOpType() gdclass.VisualShaderNodeMixOpType {
+func (self class) GetOpType() gdclass.VisualShaderNodeMixOpType { //gd:VisualShaderNodeMix.get_op_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeMixOpType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeMix.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,7 +123,7 @@ func init() {
 	})
 }
 
-type OpType = gdclass.VisualShaderNodeMixOpType
+type OpType = gdclass.VisualShaderNodeMixOpType //gd:VisualShaderNodeMix.OpType
 
 const (
 	/*A floating-point scalar.*/

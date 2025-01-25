@@ -66,7 +66,7 @@ func (self Instance) SetOperator(value gdclass.VisualShaderNodeTransformOpOperat
 }
 
 //go:nosplit
-func (self class) SetOperator(op gdclass.VisualShaderNodeTransformOpOperator) {
+func (self class) SetOperator(op gdclass.VisualShaderNodeTransformOpOperator) { //gd:VisualShaderNodeTransformOp.set_operator
 	var frame = callframe.New()
 	callframe.Arg(frame, op)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetOperator(op gdclass.VisualShaderNodeTransformOpOperator) {
 }
 
 //go:nosplit
-func (self class) GetOperator() gdclass.VisualShaderNodeTransformOpOperator {
+func (self class) GetOperator() gdclass.VisualShaderNodeTransformOpOperator { //gd:VisualShaderNodeTransformOp.get_operator
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTransformOpOperator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformOp.Bind_get_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func init() {
 	})
 }
 
-type Operator = gdclass.VisualShaderNodeTransformOpOperator
+type Operator = gdclass.VisualShaderNodeTransformOpOperator //gd:VisualShaderNodeTransformOp.Operator
 
 const (
 	/*Multiplies transform [code]a[/code] by the transform [code]b[/code].*/

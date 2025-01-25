@@ -41,28 +41,28 @@ type Any interface {
 /*
 Returns the [RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
 */
-func (self Instance) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers {
+func (self Instance) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
 	return [1]gdclass.RenderSceneBuffers(class(self).GetRenderSceneBuffers())
 }
 
 /*
 Returns the [RenderSceneData] object managing this frames scene data.
 */
-func (self Instance) GetRenderSceneData() [1]gdclass.RenderSceneData {
+func (self Instance) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
 	return [1]gdclass.RenderSceneData(class(self).GetRenderSceneData())
 }
 
 /*
 Returns the [RID] of the environments object in the [RenderingServer] being used to render this viewport.
 */
-func (self Instance) GetEnvironment() Resource.ID {
+func (self Instance) GetEnvironment() Resource.ID { //gd:RenderData.get_environment
 	return Resource.ID(class(self).GetEnvironment())
 }
 
 /*
 Returns the [RID] of the camera attributes object in the [RenderingServer] being used to render this viewport.
 */
-func (self Instance) GetCameraAttributes() Resource.ID {
+func (self Instance) GetCameraAttributes() Resource.ID { //gd:RenderData.get_camera_attributes
 	return Resource.ID(class(self).GetCameraAttributes())
 }
 
@@ -88,7 +88,7 @@ func New() Instance {
 Returns the [RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
 */
 //go:nosplit
-func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers {
+func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers {
 Returns the [RenderSceneData] object managing this frames scene data.
 */
 //go:nosplit
-func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData {
+func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_render_scene_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -114,7 +114,7 @@ func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData {
 Returns the [RID] of the environments object in the [RenderingServer] being used to render this viewport.
 */
 //go:nosplit
-func (self class) GetEnvironment() gd.RID {
+func (self class) GetEnvironment() gd.RID { //gd:RenderData.get_environment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func (self class) GetEnvironment() gd.RID {
 Returns the [RID] of the camera attributes object in the [RenderingServer] being used to render this viewport.
 */
 //go:nosplit
-func (self class) GetCameraAttributes() gd.RID {
+func (self class) GetCameraAttributes() gd.RID { //gd:RenderData.get_camera_attributes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderData.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())

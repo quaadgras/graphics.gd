@@ -113,7 +113,7 @@ type Any interface {
 /*
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
-func (self Instance) Start(mode gdclass.AESContextMode, key []byte) error {
+func (self Instance) Start(mode gdclass.AESContextMode, key []byte) error { //gd:AESContext.start
 	return error(gd.ToError(class(self).Start(mode, gd.NewPackedByteSlice(key), gd.NewPackedByteSlice([1][]byte{}[0]))))
 }
 
@@ -121,7 +121,7 @@ func (self Instance) Start(mode gdclass.AESContextMode, key []byte) error {
 Run the desired operation for this AES context. Will return a [PackedByteArray] containing the result of encrypting (or decrypting) the given [param src]. See [method start] for mode of operation.
 [b]Note:[/b] The size of [param src] must be a multiple of 16. Apply some padding if needed.
 */
-func (self Instance) Update(src []byte) []byte {
+func (self Instance) Update(src []byte) []byte { //gd:AESContext.update
 	return []byte(class(self).Update(gd.NewPackedByteSlice(src)).Bytes())
 }
 
@@ -129,14 +129,14 @@ func (self Instance) Update(src []byte) []byte {
 Get the current IV state for this context (IV gets updated when calling [method update]). You normally don't need this function.
 [b]Note:[/b] This function only makes sense when the context is started with [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
-func (self Instance) GetIvState() []byte {
+func (self Instance) GetIvState() []byte { //gd:AESContext.get_iv_state
 	return []byte(class(self).GetIvState().Bytes())
 }
 
 /*
 Close this AES context so it can be started again. See [method start].
 */
-func (self Instance) Finish() {
+func (self Instance) Finish() { //gd:AESContext.finish
 	class(self).Finish()
 }
 
@@ -163,7 +163,7 @@ func New() Instance {
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 //go:nosplit
-func (self class) Start(mode gdclass.AESContextMode, key gd.PackedByteArray, iv gd.PackedByteArray) gd.Error {
+func (self class) Start(mode gdclass.AESContextMode, key gd.PackedByteArray, iv gd.PackedByteArray) gd.Error { //gd:AESContext.start
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, pointers.Get(key))
@@ -180,7 +180,7 @@ Run the desired operation for this AES context. Will return a [PackedByteArray] 
 [b]Note:[/b] The size of [param src] must be a multiple of 16. Apply some padding if needed.
 */
 //go:nosplit
-func (self class) Update(src gd.PackedByteArray) gd.PackedByteArray {
+func (self class) Update(src gd.PackedByteArray) gd.PackedByteArray { //gd:AESContext.update
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(src))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -195,7 +195,7 @@ Get the current IV state for this context (IV gets updated when calling [method 
 [b]Note:[/b] This function only makes sense when the context is started with [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 //go:nosplit
-func (self class) GetIvState() gd.PackedByteArray {
+func (self class) GetIvState() gd.PackedByteArray { //gd:AESContext.get_iv_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_get_iv_state, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -208,7 +208,7 @@ func (self class) GetIvState() gd.PackedByteArray {
 Close this AES context so it can be started again. See [method start].
 */
 //go:nosplit
-func (self class) Finish() {
+func (self class) Finish() { //gd:AESContext.finish
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AESContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -240,7 +240,7 @@ func init() {
 	gdclass.Register("AESContext", func(ptr gd.Object) any { return [1]gdclass.AESContext{*(*gdclass.AESContext)(unsafe.Pointer(&ptr))} })
 }
 
-type Mode = gdclass.AESContextMode
+type Mode = gdclass.AESContextMode //gd:AESContext.Mode
 
 const (
 	/*AES electronic codebook encryption mode.*/
@@ -255,7 +255,7 @@ const (
 	ModeMax Mode = 4
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

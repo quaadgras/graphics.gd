@@ -43,56 +43,56 @@ type Any interface {
 /*
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
 */
-func (self Instance) SetAdditionalRotation(rotation Float.X) {
+func (self Instance) SetAdditionalRotation(rotation Float.X) { //gd:SkeletonModification2DLookAt.set_additional_rotation
 	class(self).SetAdditionalRotation(gd.Float(rotation))
 }
 
 /*
 Returns the amount of additional rotation that is applied after the LookAt modification executes.
 */
-func (self Instance) GetAdditionalRotation() Float.X {
+func (self Instance) GetAdditionalRotation() Float.X { //gd:SkeletonModification2DLookAt.get_additional_rotation
 	return Float.X(Float.X(class(self).GetAdditionalRotation()))
 }
 
 /*
 Sets whether this modification will use constraints or not. When [code]true[/code], constraints will be applied when solving the LookAt modification.
 */
-func (self Instance) SetEnableConstraint(enable_constraint bool) {
+func (self Instance) SetEnableConstraint(enable_constraint bool) { //gd:SkeletonModification2DLookAt.set_enable_constraint
 	class(self).SetEnableConstraint(enable_constraint)
 }
 
 /*
 Returns [code]true[/code] if the LookAt modification is using constraints.
 */
-func (self Instance) GetEnableConstraint() bool {
+func (self Instance) GetEnableConstraint() bool { //gd:SkeletonModification2DLookAt.get_enable_constraint
 	return bool(class(self).GetEnableConstraint())
 }
 
 /*
 Sets the constraint's minimum allowed angle.
 */
-func (self Instance) SetConstraintAngleMin(angle_min Float.X) {
+func (self Instance) SetConstraintAngleMin(angle_min Float.X) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
 	class(self).SetConstraintAngleMin(gd.Float(angle_min))
 }
 
 /*
 Returns the constraint's minimum allowed angle.
 */
-func (self Instance) GetConstraintAngleMin() Float.X {
+func (self Instance) GetConstraintAngleMin() Float.X { //gd:SkeletonModification2DLookAt.get_constraint_angle_min
 	return Float.X(Float.X(class(self).GetConstraintAngleMin()))
 }
 
 /*
 Sets the constraint's maximum allowed angle.
 */
-func (self Instance) SetConstraintAngleMax(angle_max Float.X) {
+func (self Instance) SetConstraintAngleMax(angle_max Float.X) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
 	class(self).SetConstraintAngleMax(gd.Float(angle_max))
 }
 
 /*
 Returns the constraint's maximum allowed angle.
 */
-func (self Instance) GetConstraintAngleMax() Float.X {
+func (self Instance) GetConstraintAngleMax() Float.X { //gd:SkeletonModification2DLookAt.get_constraint_angle_max
 	return Float.X(Float.X(class(self).GetConstraintAngleMax()))
 }
 
@@ -100,14 +100,14 @@ func (self Instance) GetConstraintAngleMax() Float.X {
 When [code]true[/code], the modification will use an inverted joint constraint.
 An inverted joint constraint only constraints the [Bone2D] to the angles [i]outside of[/i] the inputted minimum and maximum angles. For this reason, it is referred to as an inverted joint constraint, as it constraints the joint to the outside of the inputted values.
 */
-func (self Instance) SetConstraintAngleInvert(invert bool) {
+func (self Instance) SetConstraintAngleInvert(invert bool) { //gd:SkeletonModification2DLookAt.set_constraint_angle_invert
 	class(self).SetConstraintAngleInvert(invert)
 }
 
 /*
 Returns whether the constraints to this modification are inverted or not.
 */
-func (self Instance) GetConstraintAngleInvert() bool {
+func (self Instance) GetConstraintAngleInvert() bool { //gd:SkeletonModification2DLookAt.get_constraint_angle_invert
 	return bool(class(self).GetConstraintAngleInvert())
 }
 
@@ -155,7 +155,7 @@ func (self Instance) SetTargetNodepath(value NodePath.String) {
 }
 
 //go:nosplit
-func (self class) SetBone2dNode(bone2d_nodepath gd.NodePath) {
+func (self class) SetBone2dNode(bone2d_nodepath gd.NodePath) { //gd:SkeletonModification2DLookAt.set_bone2d_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(bone2d_nodepath))
 	var r_ret = callframe.Nil
@@ -164,7 +164,7 @@ func (self class) SetBone2dNode(bone2d_nodepath gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetBone2dNode() gd.NodePath {
+func (self class) GetBone2dNode() gd.NodePath { //gd:SkeletonModification2DLookAt.get_bone2d_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -174,7 +174,7 @@ func (self class) GetBone2dNode() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetBoneIndex(bone_idx gd.Int) {
+func (self class) SetBoneIndex(bone_idx gd.Int) { //gd:SkeletonModification2DLookAt.set_bone_index
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Nil
@@ -183,7 +183,7 @@ func (self class) SetBoneIndex(bone_idx gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBoneIndex() gd.Int {
+func (self class) GetBoneIndex() gd.Int { //gd:SkeletonModification2DLookAt.get_bone_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_bone_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -193,7 +193,7 @@ func (self class) GetBoneIndex() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetTargetNode(target_nodepath gd.NodePath) {
+func (self class) SetTargetNode(target_nodepath gd.NodePath) { //gd:SkeletonModification2DLookAt.set_target_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(target_nodepath))
 	var r_ret = callframe.Nil
@@ -202,7 +202,7 @@ func (self class) SetTargetNode(target_nodepath gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetTargetNode() gd.NodePath {
+func (self class) GetTargetNode() gd.NodePath { //gd:SkeletonModification2DLookAt.get_target_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -215,7 +215,7 @@ func (self class) GetTargetNode() gd.NodePath {
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
 */
 //go:nosplit
-func (self class) SetAdditionalRotation(rotation gd.Float) {
+func (self class) SetAdditionalRotation(rotation gd.Float) { //gd:SkeletonModification2DLookAt.set_additional_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, rotation)
 	var r_ret = callframe.Nil
@@ -227,7 +227,7 @@ func (self class) SetAdditionalRotation(rotation gd.Float) {
 Returns the amount of additional rotation that is applied after the LookAt modification executes.
 */
 //go:nosplit
-func (self class) GetAdditionalRotation() gd.Float {
+func (self class) GetAdditionalRotation() gd.Float { //gd:SkeletonModification2DLookAt.get_additional_rotation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_additional_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -240,7 +240,7 @@ func (self class) GetAdditionalRotation() gd.Float {
 Sets whether this modification will use constraints or not. When [code]true[/code], constraints will be applied when solving the LookAt modification.
 */
 //go:nosplit
-func (self class) SetEnableConstraint(enable_constraint bool) {
+func (self class) SetEnableConstraint(enable_constraint bool) { //gd:SkeletonModification2DLookAt.set_enable_constraint
 	var frame = callframe.New()
 	callframe.Arg(frame, enable_constraint)
 	var r_ret = callframe.Nil
@@ -252,7 +252,7 @@ func (self class) SetEnableConstraint(enable_constraint bool) {
 Returns [code]true[/code] if the LookAt modification is using constraints.
 */
 //go:nosplit
-func (self class) GetEnableConstraint() bool {
+func (self class) GetEnableConstraint() bool { //gd:SkeletonModification2DLookAt.get_enable_constraint
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_enable_constraint, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -265,7 +265,7 @@ func (self class) GetEnableConstraint() bool {
 Sets the constraint's minimum allowed angle.
 */
 //go:nosplit
-func (self class) SetConstraintAngleMin(angle_min gd.Float) {
+func (self class) SetConstraintAngleMin(angle_min gd.Float) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_min)
 	var r_ret = callframe.Nil
@@ -277,7 +277,7 @@ func (self class) SetConstraintAngleMin(angle_min gd.Float) {
 Returns the constraint's minimum allowed angle.
 */
 //go:nosplit
-func (self class) GetConstraintAngleMin() gd.Float {
+func (self class) GetConstraintAngleMin() gd.Float { //gd:SkeletonModification2DLookAt.get_constraint_angle_min
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_min, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -290,7 +290,7 @@ func (self class) GetConstraintAngleMin() gd.Float {
 Sets the constraint's maximum allowed angle.
 */
 //go:nosplit
-func (self class) SetConstraintAngleMax(angle_max gd.Float) {
+func (self class) SetConstraintAngleMax(angle_max gd.Float) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
 	var frame = callframe.New()
 	callframe.Arg(frame, angle_max)
 	var r_ret = callframe.Nil
@@ -302,7 +302,7 @@ func (self class) SetConstraintAngleMax(angle_max gd.Float) {
 Returns the constraint's maximum allowed angle.
 */
 //go:nosplit
-func (self class) GetConstraintAngleMax() gd.Float {
+func (self class) GetConstraintAngleMax() gd.Float { //gd:SkeletonModification2DLookAt.get_constraint_angle_max
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_max, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -316,7 +316,7 @@ When [code]true[/code], the modification will use an inverted joint constraint.
 An inverted joint constraint only constraints the [Bone2D] to the angles [i]outside of[/i] the inputted minimum and maximum angles. For this reason, it is referred to as an inverted joint constraint, as it constraints the joint to the outside of the inputted values.
 */
 //go:nosplit
-func (self class) SetConstraintAngleInvert(invert bool) {
+func (self class) SetConstraintAngleInvert(invert bool) { //gd:SkeletonModification2DLookAt.set_constraint_angle_invert
 	var frame = callframe.New()
 	callframe.Arg(frame, invert)
 	var r_ret = callframe.Nil
@@ -328,7 +328,7 @@ func (self class) SetConstraintAngleInvert(invert bool) {
 Returns whether the constraints to this modification are inverted or not.
 */
 //go:nosplit
-func (self class) GetConstraintAngleInvert() bool {
+func (self class) GetConstraintAngleInvert() bool { //gd:SkeletonModification2DLookAt.get_constraint_angle_invert
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_invert, self.AsObject(), frame.Array(0), r_ret.Addr())

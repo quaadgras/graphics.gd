@@ -75,7 +75,7 @@ func (self Instance) SetSlideOnSlope(value bool) {
 }
 
 //go:nosplit
-func (self class) SetLength(length gd.Float) {
+func (self class) SetLength(length gd.Float) { //gd:SeparationRayShape2D.set_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -84,7 +84,7 @@ func (self class) SetLength(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLength() gd.Float {
+func (self class) GetLength() gd.Float { //gd:SeparationRayShape2D.get_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape2D.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -94,7 +94,7 @@ func (self class) GetLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSlideOnSlope(active bool) {
+func (self class) SetSlideOnSlope(active bool) { //gd:SeparationRayShape2D.set_slide_on_slope
 	var frame = callframe.New()
 	callframe.Arg(frame, active)
 	var r_ret = callframe.Nil
@@ -103,7 +103,7 @@ func (self class) SetSlideOnSlope(active bool) {
 }
 
 //go:nosplit
-func (self class) GetSlideOnSlope() bool {
+func (self class) GetSlideOnSlope() bool { //gd:SeparationRayShape2D.get_slide_on_slope
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SeparationRayShape2D.Bind_get_slide_on_slope, self.AsObject(), frame.Array(0), r_ret.Addr())

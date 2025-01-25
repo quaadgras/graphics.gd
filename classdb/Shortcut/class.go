@@ -41,21 +41,21 @@ type Any interface {
 /*
 Returns whether [member events] contains an [InputEvent] which is valid.
 */
-func (self Instance) HasValidEvent() bool {
+func (self Instance) HasValidEvent() bool { //gd:Shortcut.has_valid_event
 	return bool(class(self).HasValidEvent())
 }
 
 /*
 Returns whether any [InputEvent] in [member events] equals [param event].
 */
-func (self Instance) MatchesEvent(event [1]gdclass.InputEvent) bool {
+func (self Instance) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
 	return bool(class(self).MatchesEvent(event))
 }
 
 /*
 Returns the shortcut's first valid [InputEvent] as a [String].
 */
-func (self Instance) GetAsText() string {
+func (self Instance) GetAsText() string { //gd:Shortcut.get_as_text
 	return string(class(self).GetAsText().String())
 }
 
@@ -87,7 +87,7 @@ func (self Instance) SetEvents(value []any) {
 }
 
 //go:nosplit
-func (self class) SetEvents(events Array.Any) {
+func (self class) SetEvents(events Array.Any) { //gd:Shortcut.set_events
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(events)))
 	var r_ret = callframe.Nil
@@ -96,7 +96,7 @@ func (self class) SetEvents(events Array.Any) {
 }
 
 //go:nosplit
-func (self class) GetEvents() Array.Any {
+func (self class) GetEvents() Array.Any { //gd:Shortcut.get_events
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_get_events, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -109,7 +109,7 @@ func (self class) GetEvents() Array.Any {
 Returns whether [member events] contains an [InputEvent] which is valid.
 */
 //go:nosplit
-func (self class) HasValidEvent() bool {
+func (self class) HasValidEvent() bool { //gd:Shortcut.has_valid_event
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_has_valid_event, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -122,7 +122,7 @@ func (self class) HasValidEvent() bool {
 Returns whether any [InputEvent] in [member events] equals [param event].
 */
 //go:nosplit
-func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool {
+func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(event[0])[0])
 	var r_ret = callframe.Ret[bool](frame)
@@ -136,7 +136,7 @@ func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool {
 Returns the shortcut's first valid [InputEvent] as a [String].
 */
 //go:nosplit
-func (self class) GetAsText() gd.String {
+func (self class) GetAsText() gd.String { //gd:Shortcut.get_as_text
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_get_as_text, self.AsObject(), frame.Array(0), r_ret.Addr())

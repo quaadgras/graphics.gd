@@ -81,7 +81,7 @@ func (self Instance) SetRadianceSize(value gdclass.SkyRadianceSize) {
 }
 
 //go:nosplit
-func (self class) SetRadianceSize(size gdclass.SkyRadianceSize) {
+func (self class) SetRadianceSize(size gdclass.SkyRadianceSize) { //gd:Sky.set_radiance_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -90,7 +90,7 @@ func (self class) SetRadianceSize(size gdclass.SkyRadianceSize) {
 }
 
 //go:nosplit
-func (self class) GetRadianceSize() gdclass.SkyRadianceSize {
+func (self class) GetRadianceSize() gdclass.SkyRadianceSize { //gd:Sky.get_radiance_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SkyRadianceSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_radiance_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -100,7 +100,7 @@ func (self class) GetRadianceSize() gdclass.SkyRadianceSize {
 }
 
 //go:nosplit
-func (self class) SetProcessMode(mode gdclass.SkyProcessMode) {
+func (self class) SetProcessMode(mode gdclass.SkyProcessMode) { //gd:Sky.set_process_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -109,7 +109,7 @@ func (self class) SetProcessMode(mode gdclass.SkyProcessMode) {
 }
 
 //go:nosplit
-func (self class) GetProcessMode() gdclass.SkyProcessMode {
+func (self class) GetProcessMode() gdclass.SkyProcessMode { //gd:Sky.get_process_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.SkyProcessMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -119,7 +119,7 @@ func (self class) GetProcessMode() gdclass.SkyProcessMode {
 }
 
 //go:nosplit
-func (self class) SetMaterial(material [1]gdclass.Material) {
+func (self class) SetMaterial(material [1]gdclass.Material) { //gd:Sky.set_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	var r_ret = callframe.Nil
@@ -128,7 +128,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) GetMaterial() [1]gdclass.Material {
+func (self class) GetMaterial() [1]gdclass.Material { //gd:Sky.get_material
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -168,7 +168,7 @@ func init() {
 	gdclass.Register("Sky", func(ptr gd.Object) any { return [1]gdclass.Sky{*(*gdclass.Sky)(unsafe.Pointer(&ptr))} })
 }
 
-type RadianceSize = gdclass.SkyRadianceSize
+type RadianceSize = gdclass.SkyRadianceSize //gd:Sky.RadianceSize
 
 const (
 	/*Radiance texture size is 32×32 pixels.*/
@@ -189,7 +189,7 @@ const (
 	RadianceSizeMax RadianceSize = 7
 )
 
-type ProcessMode = gdclass.SkyProcessMode
+type ProcessMode = gdclass.SkyProcessMode //gd:Sky.ProcessMode
 
 const (
 	/*Automatically selects the appropriate process mode based on your sky shader. If your shader uses [code]TIME[/code] or [code]POSITION[/code], this will use [constant PROCESS_MODE_REALTIME]. If your shader uses any of the [code]LIGHT_*[/code] variables or any custom uniforms, this uses [constant PROCESS_MODE_INCREMENTAL]. Otherwise, this defaults to [constant PROCESS_MODE_QUALITY].*/

@@ -40,7 +40,7 @@ type Any interface {
 /*
 Creates/returns a cached uniform set based on the provided uniforms for a given shader.
 */
-func GetCache(shader Resource.ID, set int, uniforms [][1]gdclass.RDUniform) Resource.ID {
+func GetCache(shader Resource.ID, set int, uniforms [][1]gdclass.RDUniform) Resource.ID { //gd:UniformSetCacheRD.get_cache
 	self := Instance{}
 	return Resource.ID(class(self).GetCache(shader, gd.Int(set), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms)))
 }
@@ -67,7 +67,7 @@ func New() Instance {
 Creates/returns a cached uniform set based on the provided uniforms for a given shader.
 */
 //go:nosplit
-func (self class) GetCache(shader gd.RID, set gd.Int, uniforms Array.Contains[[1]gdclass.RDUniform]) gd.RID {
+func (self class) GetCache(shader gd.RID, set gd.Int, uniforms Array.Contains[[1]gdclass.RDUniform]) gd.RID { //gd:UniformSetCacheRD.get_cache
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	callframe.Arg(frame, set)

@@ -85,7 +85,7 @@ func (self Instance) SetTextureScale(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:PointLight2D.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -94,7 +94,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture2D {
+func (self class) GetTexture() [1]gdclass.Texture2D { //gd:PointLight2D.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PointLight2D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -104,7 +104,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetTextureOffset(texture_offset gd.Vector2) {
+func (self class) SetTextureOffset(texture_offset gd.Vector2) { //gd:PointLight2D.set_texture_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_offset)
 	var r_ret = callframe.Nil
@@ -113,7 +113,7 @@ func (self class) SetTextureOffset(texture_offset gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetTextureOffset() gd.Vector2 {
+func (self class) GetTextureOffset() gd.Vector2 { //gd:PointLight2D.get_texture_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PointLight2D.Bind_get_texture_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -123,7 +123,7 @@ func (self class) GetTextureOffset() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetTextureScale(texture_scale gd.Float) {
+func (self class) SetTextureScale(texture_scale gd.Float) { //gd:PointLight2D.set_texture_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_scale)
 	var r_ret = callframe.Nil
@@ -132,7 +132,7 @@ func (self class) SetTextureScale(texture_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTextureScale() gd.Float {
+func (self class) GetTextureScale() gd.Float { //gd:PointLight2D.get_texture_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PointLight2D.Bind_get_texture_scale, self.AsObject(), frame.Array(0), r_ret.Addr())

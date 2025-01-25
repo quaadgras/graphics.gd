@@ -68,7 +68,7 @@ func (self Instance) SetConstant(value Transform3D.BasisOrigin) {
 }
 
 //go:nosplit
-func (self class) SetConstant(constant gd.Transform3D) {
+func (self class) SetConstant(constant gd.Transform3D) { //gd:VisualShaderNodeTransformConstant.set_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, constant)
 	var r_ret = callframe.Nil
@@ -77,7 +77,7 @@ func (self class) SetConstant(constant gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) GetConstant() gd.Transform3D {
+func (self class) GetConstant() gd.Transform3D { //gd:VisualShaderNodeTransformConstant.get_constant
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())

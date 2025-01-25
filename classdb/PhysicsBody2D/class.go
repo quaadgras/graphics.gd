@@ -49,7 +49,7 @@ If [param test_only] is [code]true[/code], the body does not move but the would-
 [param safe_margin] is the extra margin used for collision recovery (see [member CharacterBody2D.safe_margin] for more details).
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody2D] for improving floor detection during floor snapping.
 */
-func (self Instance) MoveAndCollide(motion Vector2.XY) [1]gdclass.KinematicCollision2D {
+func (self Instance) MoveAndCollide(motion Vector2.XY) [1]gdclass.KinematicCollision2D { //gd:PhysicsBody2D.move_and_collide
 	return [1]gdclass.KinematicCollision2D(class(self).MoveAndCollide(gd.Vector2(motion), false, gd.Float(0.08), false))
 }
 
@@ -60,35 +60,35 @@ Virtually sets the node's position, scale and rotation to that of the given [Tra
 [param safe_margin] is the extra margin used for collision recovery (see [member CharacterBody2D.safe_margin] for more details).
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
 */
-func (self Instance) TestMove(from Transform2D.OriginXY, motion Vector2.XY) bool {
+func (self Instance) TestMove(from Transform2D.OriginXY, motion Vector2.XY) bool { //gd:PhysicsBody2D.test_move
 	return bool(class(self).TestMove(gd.Transform2D(from), gd.Vector2(motion), [1][1]gdclass.KinematicCollision2D{}[0], gd.Float(0.08), false))
 }
 
 /*
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area2D] nodes and the global world gravity.
 */
-func (self Instance) GetGravity() Vector2.XY {
+func (self Instance) GetGravity() Vector2.XY { //gd:PhysicsBody2D.get_gravity
 	return Vector2.XY(class(self).GetGravity())
 }
 
 /*
 Returns an array of nodes that were added as collision exceptions for this body.
 */
-func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody2D {
+func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody2D { //gd:PhysicsBody2D.get_collision_exceptions
 	return [][1]gdclass.PhysicsBody2D(gd.ArrayAs[[][1]gdclass.PhysicsBody2D](gd.InternalArray(class(self).GetCollisionExceptions())))
 }
 
 /*
 Adds a body to the list of bodies that this body can't collide with.
 */
-func (self Instance) AddCollisionExceptionWith(body [1]gdclass.Node) {
+func (self Instance) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.add_collision_exception_with
 	class(self).AddCollisionExceptionWith(body)
 }
 
 /*
 Removes a body from the list of bodies that this body can't collide with.
 */
-func (self Instance) RemoveCollisionExceptionWith(body [1]gdclass.Node) {
+func (self Instance) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.remove_collision_exception_with
 	class(self).RemoveCollisionExceptionWith(body)
 }
 
@@ -118,7 +118,7 @@ If [param test_only] is [code]true[/code], the body does not move but the would-
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody2D] for improving floor detection during floor snapping.
 */
 //go:nosplit
-func (self class) MoveAndCollide(motion gd.Vector2, test_only bool, safe_margin gd.Float, recovery_as_collision bool) [1]gdclass.KinematicCollision2D {
+func (self class) MoveAndCollide(motion gd.Vector2, test_only bool, safe_margin gd.Float, recovery_as_collision bool) [1]gdclass.KinematicCollision2D { //gd:PhysicsBody2D.move_and_collide
 	var frame = callframe.New()
 	callframe.Arg(frame, motion)
 	callframe.Arg(frame, test_only)
@@ -139,7 +139,7 @@ Virtually sets the node's position, scale and rotation to that of the given [Tra
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
 */
 //go:nosplit
-func (self class) TestMove(from gd.Transform2D, motion gd.Vector2, collision [1]gdclass.KinematicCollision2D, safe_margin gd.Float, recovery_as_collision bool) bool {
+func (self class) TestMove(from gd.Transform2D, motion gd.Vector2, collision [1]gdclass.KinematicCollision2D, safe_margin gd.Float, recovery_as_collision bool) bool { //gd:PhysicsBody2D.test_move
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, motion)
@@ -157,7 +157,7 @@ func (self class) TestMove(from gd.Transform2D, motion gd.Vector2, collision [1]
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area2D] nodes and the global world gravity.
 */
 //go:nosplit
-func (self class) GetGravity() gd.Vector2 {
+func (self class) GetGravity() gd.Vector2 { //gd:PhysicsBody2D.get_gravity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsBody2D.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -170,7 +170,7 @@ func (self class) GetGravity() gd.Vector2 {
 Returns an array of nodes that were added as collision exceptions for this body.
 */
 //go:nosplit
-func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody2D] {
+func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody2D] { //gd:PhysicsBody2D.get_collision_exceptions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsBody2D.Bind_get_collision_exceptions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -183,7 +183,7 @@ func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody
 Adds a body to the list of bodies that this body can't collide with.
 */
 //go:nosplit
-func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) {
+func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.add_collision_exception_with
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(body[0])[0])
 	var r_ret = callframe.Nil
@@ -195,7 +195,7 @@ func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) {
 Removes a body from the list of bodies that this body can't collide with.
 */
 //go:nosplit
-func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) {
+func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.remove_collision_exception_with
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(body[0])[0])
 	var r_ret = callframe.Nil

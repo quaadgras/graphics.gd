@@ -45,14 +45,14 @@ type Any interface {
 /*
 Returns the underlying [Control] used for editing scripts. For text scripts, this is a [CodeEdit].
 */
-func (self Instance) GetBaseEditor() [1]gdclass.Control {
+func (self Instance) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get_base_editor
 	return [1]gdclass.Control(class(self).GetBaseEditor())
 }
 
 /*
 Adds a [EditorSyntaxHighlighter] to the open script.
 */
-func (self Instance) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) {
+func (self Instance) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
 	class(self).AddSyntaxHighlighter(highlighter)
 }
 
@@ -78,7 +78,7 @@ func New() Instance {
 Returns the underlying [Control] used for editing scripts. For text scripts, this is a [CodeEdit].
 */
 //go:nosplit
-func (self class) GetBaseEditor() [1]gdclass.Control {
+func (self class) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get_base_editor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditorBase.Bind_get_base_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -91,7 +91,7 @@ func (self class) GetBaseEditor() [1]gdclass.Control {
 Adds a [EditorSyntaxHighlighter] to the open script.
 */
 //go:nosplit
-func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) {
+func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(highlighter[0])[0])
 	var r_ret = callframe.Nil

@@ -111,49 +111,49 @@ func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer in
 /*
 Assigns [param map] as a [NavigationServer2D] navigation map for the specified TileMap layer [param layer].
 */
-func (self Instance) SetNavigationMap(layer int, mapping Resource.ID) {
+func (self Instance) SetNavigationMap(layer int, mapping Resource.ID) { //gd:TileMap.set_navigation_map
 	class(self).SetNavigationMap(gd.Int(layer), mapping)
 }
 
 /*
 Returns the [RID] of the [NavigationServer2D] navigation map assigned to the specified TileMap layer [param layer].
 */
-func (self Instance) GetNavigationMap(layer int) Resource.ID {
+func (self Instance) GetNavigationMap(layer int) Resource.ID { //gd:TileMap.get_navigation_map
 	return Resource.ID(class(self).GetNavigationMap(gd.Int(layer)))
 }
 
 /*
 Forces the TileMap and the layer [param layer] to update.
 */
-func (self Instance) ForceUpdate() {
+func (self Instance) ForceUpdate() { //gd:TileMap.force_update
 	class(self).ForceUpdate(gd.Int(-1))
 }
 
 /*
 Returns the number of layers in the TileMap.
 */
-func (self Instance) GetLayersCount() int {
+func (self Instance) GetLayersCount() int { //gd:TileMap.get_layers_count
 	return int(int(class(self).GetLayersCount()))
 }
 
 /*
 Adds a layer at the given position [param to_position] in the array. If [param to_position] is negative, the position is counted from the end, with [code]-1[/code] adding the layer at the end of the array.
 */
-func (self Instance) AddLayer(to_position int) {
+func (self Instance) AddLayer(to_position int) { //gd:TileMap.add_layer
 	class(self).AddLayer(gd.Int(to_position))
 }
 
 /*
 Moves the layer at index [param layer] to the given position [param to_position] in the array.
 */
-func (self Instance) MoveLayer(layer int, to_position int) {
+func (self Instance) MoveLayer(layer int, to_position int) { //gd:TileMap.move_layer
 	class(self).MoveLayer(gd.Int(layer), gd.Int(to_position))
 }
 
 /*
 Removes the layer at index [param layer].
 */
-func (self Instance) RemoveLayer(layer int) {
+func (self Instance) RemoveLayer(layer int) { //gd:TileMap.remove_layer
 	class(self).RemoveLayer(gd.Int(layer))
 }
 
@@ -161,7 +161,7 @@ func (self Instance) RemoveLayer(layer int) {
 Sets a layer's name. This is mostly useful in the editor.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerName(layer int, name string) {
+func (self Instance) SetLayerName(layer int, name string) { //gd:TileMap.set_layer_name
 	class(self).SetLayerName(gd.Int(layer), gd.NewString(name))
 }
 
@@ -169,7 +169,7 @@ func (self Instance) SetLayerName(layer int, name string) {
 Returns a TileMap layer's name.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetLayerName(layer int) string {
+func (self Instance) GetLayerName(layer int) string { //gd:TileMap.get_layer_name
 	return string(class(self).GetLayerName(gd.Int(layer)).String())
 }
 
@@ -177,7 +177,7 @@ func (self Instance) GetLayerName(layer int) string {
 Enables or disables the layer [param layer]. A disabled layer is not processed at all (no rendering, no physics, etc.).
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerEnabled(layer int, enabled bool) {
+func (self Instance) SetLayerEnabled(layer int, enabled bool) { //gd:TileMap.set_layer_enabled
 	class(self).SetLayerEnabled(gd.Int(layer), enabled)
 }
 
@@ -185,7 +185,7 @@ func (self Instance) SetLayerEnabled(layer int, enabled bool) {
 Returns if a layer is enabled.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) IsLayerEnabled(layer int) bool {
+func (self Instance) IsLayerEnabled(layer int) bool { //gd:TileMap.is_layer_enabled
 	return bool(class(self).IsLayerEnabled(gd.Int(layer)))
 }
 
@@ -193,7 +193,7 @@ func (self Instance) IsLayerEnabled(layer int) bool {
 Sets a layer's color. It will be multiplied by tile's color and TileMap's modulate.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerModulate(layer int, modulate Color.RGBA) {
+func (self Instance) SetLayerModulate(layer int, modulate Color.RGBA) { //gd:TileMap.set_layer_modulate
 	class(self).SetLayerModulate(gd.Int(layer), gd.Color(modulate))
 }
 
@@ -201,7 +201,7 @@ func (self Instance) SetLayerModulate(layer int, modulate Color.RGBA) {
 Returns a TileMap layer's modulate.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetLayerModulate(layer int) Color.RGBA {
+func (self Instance) GetLayerModulate(layer int) Color.RGBA { //gd:TileMap.get_layer_modulate
 	return Color.RGBA(class(self).GetLayerModulate(gd.Int(layer)))
 }
 
@@ -210,7 +210,7 @@ Enables or disables a layer's Y-sorting. If a layer is Y-sorted, the layer will 
 Y-sorted layers should usually be on different Z-index values than not Y-sorted layers, otherwise, each of those layer will be Y-sorted as whole with the Y-sorted one. This is usually an undesired behavior.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerYSortEnabled(layer int, y_sort_enabled bool) {
+func (self Instance) SetLayerYSortEnabled(layer int, y_sort_enabled bool) { //gd:TileMap.set_layer_y_sort_enabled
 	class(self).SetLayerYSortEnabled(gd.Int(layer), y_sort_enabled)
 }
 
@@ -218,7 +218,7 @@ func (self Instance) SetLayerYSortEnabled(layer int, y_sort_enabled bool) {
 Returns if a layer Y-sorts its tiles.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) IsLayerYSortEnabled(layer int) bool {
+func (self Instance) IsLayerYSortEnabled(layer int) bool { //gd:TileMap.is_layer_y_sort_enabled
 	return bool(class(self).IsLayerYSortEnabled(gd.Int(layer)))
 }
 
@@ -227,7 +227,7 @@ Sets a layer's Y-sort origin value. This Y-sort origin value is added to each ti
 This allows, for example, to fake a different height level on each layer. This can be useful for top-down view games.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerYSortOrigin(layer int, y_sort_origin int) {
+func (self Instance) SetLayerYSortOrigin(layer int, y_sort_origin int) { //gd:TileMap.set_layer_y_sort_origin
 	class(self).SetLayerYSortOrigin(gd.Int(layer), gd.Int(y_sort_origin))
 }
 
@@ -235,7 +235,7 @@ func (self Instance) SetLayerYSortOrigin(layer int, y_sort_origin int) {
 Returns a TileMap layer's Y sort origin.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetLayerYSortOrigin(layer int) int {
+func (self Instance) GetLayerYSortOrigin(layer int) int { //gd:TileMap.get_layer_y_sort_origin
 	return int(int(class(self).GetLayerYSortOrigin(gd.Int(layer))))
 }
 
@@ -243,7 +243,7 @@ func (self Instance) GetLayerYSortOrigin(layer int) int {
 Sets a layers Z-index value. This Z-index is added to each tile's Z-index value.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerZIndex(layer int, z_index int) {
+func (self Instance) SetLayerZIndex(layer int, z_index int) { //gd:TileMap.set_layer_z_index
 	class(self).SetLayerZIndex(gd.Int(layer), gd.Int(z_index))
 }
 
@@ -251,21 +251,21 @@ func (self Instance) SetLayerZIndex(layer int, z_index int) {
 Returns a TileMap layer's Z-index value.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetLayerZIndex(layer int) int {
+func (self Instance) GetLayerZIndex(layer int) int { //gd:TileMap.get_layer_z_index
 	return int(int(class(self).GetLayerZIndex(gd.Int(layer))))
 }
 
 /*
 Enables or disables a layer's built-in navigation regions generation. Disable this if you need to bake navigation regions from a TileMap using a [NavigationRegion2D] node.
 */
-func (self Instance) SetLayerNavigationEnabled(layer int, enabled bool) {
+func (self Instance) SetLayerNavigationEnabled(layer int, enabled bool) { //gd:TileMap.set_layer_navigation_enabled
 	class(self).SetLayerNavigationEnabled(gd.Int(layer), enabled)
 }
 
 /*
 Returns if a layer's built-in navigation regions generation is enabled.
 */
-func (self Instance) IsLayerNavigationEnabled(layer int) bool {
+func (self Instance) IsLayerNavigationEnabled(layer int) bool { //gd:TileMap.is_layer_navigation_enabled
 	return bool(class(self).IsLayerNavigationEnabled(gd.Int(layer)))
 }
 
@@ -275,7 +275,7 @@ By default the TileMap uses the default [World2D] navigation map for the first T
 In order to make [NavigationAgent2D] switch between TileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetLayerNavigationMap(layer int, mapping Resource.ID) {
+func (self Instance) SetLayerNavigationMap(layer int, mapping Resource.ID) { //gd:TileMap.set_layer_navigation_map
 	class(self).SetLayerNavigationMap(gd.Int(layer), mapping)
 }
 
@@ -285,7 +285,7 @@ By default the TileMap uses the default [World2D] navigation map for the first T
 In order to make [NavigationAgent2D] switch between TileMap layer navigation maps use [method NavigationAgent2D.set_navigation_map] with the navigation map received from [method get_layer_navigation_map].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetLayerNavigationMap(layer int) Resource.ID {
+func (self Instance) GetLayerNavigationMap(layer int) Resource.ID { //gd:TileMap.get_layer_navigation_map
 	return Resource.ID(class(self).GetLayerNavigationMap(gd.Int(layer)))
 }
 
@@ -297,7 +297,7 @@ Sets the tile identifiers for the cell on layer [param layer] at coordinates [pa
 If [param source_id] is set to [code]-1[/code], [param atlas_coords] to [code]Vector2i(-1, -1)[/code] or [param alternative_tile] to [code]-1[/code], the cell will be erased. An erased cell gets [b]all[/b] its identifiers automatically set to their respective invalid values, namely [code]-1[/code], [code]Vector2i(-1, -1)[/code] and [code]-1[/code].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetCell(layer int, coords Vector2i.XY) {
+func (self Instance) SetCell(layer int, coords Vector2i.XY) { //gd:TileMap.set_cell
 	class(self).SetCell(gd.Int(layer), gd.Vector2i(coords), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(0))
 }
 
@@ -305,7 +305,7 @@ func (self Instance) SetCell(layer int, coords Vector2i.XY) {
 Erases the cell on layer [param layer] at coordinates [param coords].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) EraseCell(layer int, coords Vector2i.XY) {
+func (self Instance) EraseCell(layer int, coords Vector2i.XY) { //gd:TileMap.erase_cell
 	class(self).EraseCell(gd.Int(layer), gd.Vector2i(coords))
 }
 
@@ -314,7 +314,7 @@ Returns the tile source ID of the cell on layer [param layer] at coordinates [pa
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw source identifier. See [method TileSet.map_tile_proxy].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetCellSourceId(layer int, coords Vector2i.XY) int {
+func (self Instance) GetCellSourceId(layer int, coords Vector2i.XY) int { //gd:TileMap.get_cell_source_id
 	return int(int(class(self).GetCellSourceId(gd.Int(layer), gd.Vector2i(coords), false)))
 }
 
@@ -323,7 +323,7 @@ Returns the tile atlas coordinates ID of the cell on layer [param layer] at coor
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw atlas coordinate identifier. See [method TileSet.map_tile_proxy].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetCellAtlasCoords(layer int, coords Vector2i.XY) Vector2i.XY {
+func (self Instance) GetCellAtlasCoords(layer int, coords Vector2i.XY) Vector2i.XY { //gd:TileMap.get_cell_atlas_coords
 	return Vector2i.XY(class(self).GetCellAtlasCoords(gd.Int(layer), gd.Vector2i(coords), false))
 }
 
@@ -332,7 +332,7 @@ Returns the tile alternative ID of the cell on layer [param layer] at [param coo
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies, returning the raw alternative identifier. See [method TileSet.map_tile_proxy].
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetCellAlternativeTile(layer int, coords Vector2i.XY) int {
+func (self Instance) GetCellAlternativeTile(layer int, coords Vector2i.XY) int { //gd:TileMap.get_cell_alternative_tile
 	return int(int(class(self).GetCellAlternativeTile(gd.Int(layer), gd.Vector2i(coords), false)))
 }
 
@@ -352,21 +352,21 @@ func get_clicked_tile_power():
 [/codeblock]
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies. See [method TileSet.map_tile_proxy].
 */
-func (self Instance) GetCellTileData(layer int, coords Vector2i.XY) [1]gdclass.TileData {
+func (self Instance) GetCellTileData(layer int, coords Vector2i.XY) [1]gdclass.TileData { //gd:TileMap.get_cell_tile_data
 	return [1]gdclass.TileData(class(self).GetCellTileData(gd.Int(layer), gd.Vector2i(coords), false))
 }
 
 /*
 Returns the coordinates of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
-func (self Instance) GetCoordsForBodyRid(body Resource.ID) Vector2i.XY {
+func (self Instance) GetCoordsForBodyRid(body Resource.ID) Vector2i.XY { //gd:TileMap.get_coords_for_body_rid
 	return Vector2i.XY(class(self).GetCoordsForBodyRid(body))
 }
 
 /*
 Returns the tilemap layer of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
-func (self Instance) GetLayerForBodyRid(body Resource.ID) int {
+func (self Instance) GetLayerForBodyRid(body Resource.ID) int { //gd:TileMap.get_layer_for_body_rid
 	return int(int(class(self).GetLayerForBodyRid(body)))
 }
 
@@ -374,14 +374,14 @@ func (self Instance) GetLayerForBodyRid(body Resource.ID) int {
 Creates a new [TileMapPattern] from the given layer and set of cells.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetPattern(layer int, coords_array []Vector2i.XY) [1]gdclass.TileMapPattern {
+func (self Instance) GetPattern(layer int, coords_array []Vector2i.XY) [1]gdclass.TileMapPattern { //gd:TileMap.get_pattern
 	return [1]gdclass.TileMapPattern(class(self).GetPattern(gd.Int(layer), gd.ArrayFromSlice[Array.Contains[gd.Vector2i]](coords_array)))
 }
 
 /*
 Returns for the given coordinate [param coords_in_pattern] in a [TileMapPattern] the corresponding cell coordinates if the pattern was pasted at the [param position_in_tilemap] coordinates (see [method set_pattern]). This mapping is required as in half-offset tile shapes, the mapping might not work by calculating [code]position_in_tile_map + coords_in_pattern[/code].
 */
-func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern [1]gdclass.TileMapPattern) Vector2i.XY {
+func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern [1]gdclass.TileMapPattern) Vector2i.XY { //gd:TileMap.map_pattern
 	return Vector2i.XY(class(self).MapPattern(gd.Vector2i(position_in_tilemap), gd.Vector2i(coords_in_pattern), pattern))
 }
 
@@ -389,7 +389,7 @@ func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_patte
 Paste the given [TileMapPattern] at the given [param position] and [param layer] in the tile map.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetPattern(layer int, position Vector2i.XY, pattern [1]gdclass.TileMapPattern) {
+func (self Instance) SetPattern(layer int, position Vector2i.XY, pattern [1]gdclass.TileMapPattern) { //gd:TileMap.set_pattern
 	class(self).SetPattern(gd.Int(layer), gd.Vector2i(position), pattern)
 }
 
@@ -399,7 +399,7 @@ If [param ignore_empty_terrains] is true, empty terrains will be ignored when tr
 If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
-func (self Instance) SetCellsTerrainConnect(layer int, cells []Vector2i.XY, terrain_set int, terrain int) {
+func (self Instance) SetCellsTerrainConnect(layer int, cells []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMap.set_cells_terrain_connect
 	class(self).SetCellsTerrainConnect(gd.Int(layer), gd.ArrayFromSlice[Array.Contains[gd.Vector2i]](cells), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
@@ -409,14 +409,14 @@ If [param ignore_empty_terrains] is true, empty terrains will be ignored when tr
 If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
-func (self Instance) SetCellsTerrainPath(layer int, path []Vector2i.XY, terrain_set int, terrain int) {
+func (self Instance) SetCellsTerrainPath(layer int, path []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMap.set_cells_terrain_path
 	class(self).SetCellsTerrainPath(gd.Int(layer), gd.ArrayFromSlice[Array.Contains[gd.Vector2i]](path), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
 /*
 Clears cells that do not exist in the tileset.
 */
-func (self Instance) FixInvalidTiles() {
+func (self Instance) FixInvalidTiles() { //gd:TileMap.fix_invalid_tiles
 	class(self).FixInvalidTiles()
 }
 
@@ -424,14 +424,14 @@ func (self Instance) FixInvalidTiles() {
 Clears all cells on the given layer.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) ClearLayer(layer int) {
+func (self Instance) ClearLayer(layer int) { //gd:TileMap.clear_layer
 	class(self).ClearLayer(gd.Int(layer))
 }
 
 /*
 Clears all cells.
 */
-func (self Instance) Clear() {
+func (self Instance) Clear() { //gd:TileMap.clear
 	class(self).Clear()
 }
 
@@ -440,7 +440,7 @@ Triggers a direct update of the TileMap. Usually, calling this function is not n
 However, for performance reasons, those updates are batched and delayed to the end of the frame. Calling this function will force the TileMap to update right away instead.
 [b]Warning:[/b] Updating the TileMap is computationally expensive and may impact performance. Try to limit the number of updates and how many tiles they impact.
 */
-func (self Instance) UpdateInternals() {
+func (self Instance) UpdateInternals() { //gd:TileMap.update_internals
 	class(self).UpdateInternals()
 }
 
@@ -450,14 +450,14 @@ If [param layer] is provided, only notifies changes for the given layer. Providi
 [b]Warning:[/b] Updating the TileMap is computationally expensive and may impact performance. Try to limit the number of calls to this function to avoid unnecessary update.
 [b]Note:[/b] This does not trigger a direct update of the TileMap, the update will be done at the end of the frame as usual (unless you call [method update_internals]).
 */
-func (self Instance) NotifyRuntimeTileDataUpdate() {
+func (self Instance) NotifyRuntimeTileDataUpdate() { //gd:TileMap.notify_runtime_tile_data_update
 	class(self).NotifyRuntimeTileDataUpdate(gd.Int(-1))
 }
 
 /*
 Returns the list of all neighbourings cells to the one at [param coords].
 */
-func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY {
+func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY { //gd:TileMap.get_surrounding_cells
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetSurroundingCells(gd.Vector2i(coords)))))
 }
 
@@ -465,7 +465,7 @@ func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY {
 Returns a [Vector2i] array with the positions of all cells containing a tile in the given layer. A cell is considered empty if its source identifier equals -1, its atlas coordinates identifiers is [code]Vector2(-1, -1)[/code] and its alternative identifier is -1.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetUsedCells(layer int) []Vector2i.XY {
+func (self Instance) GetUsedCells(layer int) []Vector2i.XY { //gd:TileMap.get_used_cells
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetUsedCells(gd.Int(layer)))))
 }
 
@@ -475,14 +475,14 @@ If a parameter has its value set to the default one, this parameter is not used 
 A cell is considered empty if its source identifier equals -1, its atlas coordinates identifiers is [code]Vector2(-1, -1)[/code] and its alternative identifier is -1.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetUsedCellsById(layer int) []Vector2i.XY {
+func (self Instance) GetUsedCellsById(layer int) []Vector2i.XY { //gd:TileMap.get_used_cells_by_id
 	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetUsedCellsById(gd.Int(layer), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1)))))
 }
 
 /*
 Returns a rectangle enclosing the used (non-empty) tiles of the map, including all layers.
 */
-func (self Instance) GetUsedRect() Rect2i.PositionSize {
+func (self Instance) GetUsedRect() Rect2i.PositionSize { //gd:TileMap.get_used_rect
 	return Rect2i.PositionSize(class(self).GetUsedRect())
 }
 
@@ -490,21 +490,21 @@ func (self Instance) GetUsedRect() Rect2i.PositionSize {
 Returns the centered position of a cell in the TileMap's local coordinate space. To convert the returned value into global coordinates, use [method Node2D.to_global]. See also [method local_to_map].
 [b]Note:[/b] This may not correspond to the visual position of the tile, i.e. it ignores the [member TileData.texture_origin] property of individual tiles.
 */
-func (self Instance) MapToLocal(map_position Vector2i.XY) Vector2.XY {
+func (self Instance) MapToLocal(map_position Vector2i.XY) Vector2.XY { //gd:TileMap.map_to_local
 	return Vector2.XY(class(self).MapToLocal(gd.Vector2i(map_position)))
 }
 
 /*
 Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node2D.to_local] before passing it to this method. See also [method map_to_local].
 */
-func (self Instance) LocalToMap(local_position Vector2.XY) Vector2i.XY {
+func (self Instance) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:TileMap.local_to_map
 	return Vector2i.XY(class(self).LocalToMap(gd.Vector2(local_position)))
 }
 
 /*
 Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 */
-func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor gdclass.TileSetCellNeighbor) Vector2i.XY {
+func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor gdclass.TileSetCellNeighbor) Vector2i.XY { //gd:TileMap.get_neighbor_cell
 	return Vector2i.XY(class(self).GetNeighborCell(gd.Vector2i(coords), neighbor))
 }
 
@@ -607,7 +607,7 @@ func (class) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer gd.In
 Assigns [param map] as a [NavigationServer2D] navigation map for the specified TileMap layer [param layer].
 */
 //go:nosplit
-func (self class) SetNavigationMap(layer gd.Int, mapping gd.RID) {
+func (self class) SetNavigationMap(layer gd.Int, mapping gd.RID) { //gd:TileMap.set_navigation_map
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, mapping)
@@ -620,7 +620,7 @@ func (self class) SetNavigationMap(layer gd.Int, mapping gd.RID) {
 Returns the [RID] of the [NavigationServer2D] navigation map assigned to the specified TileMap layer [param layer].
 */
 //go:nosplit
-func (self class) GetNavigationMap(layer gd.Int) gd.RID {
+func (self class) GetNavigationMap(layer gd.Int) gd.RID { //gd:TileMap.get_navigation_map
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -634,7 +634,7 @@ func (self class) GetNavigationMap(layer gd.Int) gd.RID {
 Forces the TileMap and the layer [param layer] to update.
 */
 //go:nosplit
-func (self class) ForceUpdate(layer gd.Int) {
+func (self class) ForceUpdate(layer gd.Int) { //gd:TileMap.force_update
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -643,7 +643,7 @@ func (self class) ForceUpdate(layer gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetTileset(tileset [1]gdclass.TileSet) {
+func (self class) SetTileset(tileset [1]gdclass.TileSet) { //gd:TileMap.set_tileset
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tileset[0])[0])
 	var r_ret = callframe.Nil
@@ -652,7 +652,7 @@ func (self class) SetTileset(tileset [1]gdclass.TileSet) {
 }
 
 //go:nosplit
-func (self class) GetTileset() [1]gdclass.TileSet {
+func (self class) GetTileset() [1]gdclass.TileSet { //gd:TileMap.get_tileset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_tileset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -662,7 +662,7 @@ func (self class) GetTileset() [1]gdclass.TileSet {
 }
 
 //go:nosplit
-func (self class) SetRenderingQuadrantSize(size gd.Int) {
+func (self class) SetRenderingQuadrantSize(size gd.Int) { //gd:TileMap.set_rendering_quadrant_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -671,7 +671,7 @@ func (self class) SetRenderingQuadrantSize(size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRenderingQuadrantSize() gd.Int {
+func (self class) GetRenderingQuadrantSize() gd.Int { //gd:TileMap.get_rendering_quadrant_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_rendering_quadrant_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -684,7 +684,7 @@ func (self class) GetRenderingQuadrantSize() gd.Int {
 Returns the number of layers in the TileMap.
 */
 //go:nosplit
-func (self class) GetLayersCount() gd.Int {
+func (self class) GetLayersCount() gd.Int { //gd:TileMap.get_layers_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -697,7 +697,7 @@ func (self class) GetLayersCount() gd.Int {
 Adds a layer at the given position [param to_position] in the array. If [param to_position] is negative, the position is counted from the end, with [code]-1[/code] adding the layer at the end of the array.
 */
 //go:nosplit
-func (self class) AddLayer(to_position gd.Int) {
+func (self class) AddLayer(to_position gd.Int) { //gd:TileMap.add_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, to_position)
 	var r_ret = callframe.Nil
@@ -709,7 +709,7 @@ func (self class) AddLayer(to_position gd.Int) {
 Moves the layer at index [param layer] to the given position [param to_position] in the array.
 */
 //go:nosplit
-func (self class) MoveLayer(layer gd.Int, to_position gd.Int) {
+func (self class) MoveLayer(layer gd.Int, to_position gd.Int) { //gd:TileMap.move_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, to_position)
@@ -722,7 +722,7 @@ func (self class) MoveLayer(layer gd.Int, to_position gd.Int) {
 Removes the layer at index [param layer].
 */
 //go:nosplit
-func (self class) RemoveLayer(layer gd.Int) {
+func (self class) RemoveLayer(layer gd.Int) { //gd:TileMap.remove_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -735,7 +735,7 @@ Sets a layer's name. This is mostly useful in the editor.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetLayerName(layer gd.Int, name gd.String) {
+func (self class) SetLayerName(layer gd.Int, name gd.String) { //gd:TileMap.set_layer_name
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(name))
@@ -749,7 +749,7 @@ Returns a TileMap layer's name.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetLayerName(layer gd.Int) gd.String {
+func (self class) GetLayerName(layer gd.Int) gd.String { //gd:TileMap.get_layer_name
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -764,7 +764,7 @@ Enables or disables the layer [param layer]. A disabled layer is not processed a
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetLayerEnabled(layer gd.Int, enabled bool) {
+func (self class) SetLayerEnabled(layer gd.Int, enabled bool) { //gd:TileMap.set_layer_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, enabled)
@@ -778,7 +778,7 @@ Returns if a layer is enabled.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) IsLayerEnabled(layer gd.Int) bool {
+func (self class) IsLayerEnabled(layer gd.Int) bool { //gd:TileMap.is_layer_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
@@ -793,7 +793,7 @@ Sets a layer's color. It will be multiplied by tile's color and TileMap's modula
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetLayerModulate(layer gd.Int, modulate gd.Color) {
+func (self class) SetLayerModulate(layer gd.Int, modulate gd.Color) { //gd:TileMap.set_layer_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, modulate)
@@ -807,7 +807,7 @@ Returns a TileMap layer's modulate.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetLayerModulate(layer gd.Int) gd.Color {
+func (self class) GetLayerModulate(layer gd.Int) gd.Color { //gd:TileMap.get_layer_modulate
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.Color](frame)
@@ -823,7 +823,7 @@ Y-sorted layers should usually be on different Z-index values than not Y-sorted 
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetLayerYSortEnabled(layer gd.Int, y_sort_enabled bool) {
+func (self class) SetLayerYSortEnabled(layer gd.Int, y_sort_enabled bool) { //gd:TileMap.set_layer_y_sort_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, y_sort_enabled)
@@ -837,7 +837,7 @@ Returns if a layer Y-sorts its tiles.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) IsLayerYSortEnabled(layer gd.Int) bool {
+func (self class) IsLayerYSortEnabled(layer gd.Int) bool { //gd:TileMap.is_layer_y_sort_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
@@ -853,7 +853,7 @@ This allows, for example, to fake a different height level on each layer. This c
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetLayerYSortOrigin(layer gd.Int, y_sort_origin gd.Int) {
+func (self class) SetLayerYSortOrigin(layer gd.Int, y_sort_origin gd.Int) { //gd:TileMap.set_layer_y_sort_origin
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, y_sort_origin)
@@ -867,7 +867,7 @@ Returns a TileMap layer's Y sort origin.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetLayerYSortOrigin(layer gd.Int) gd.Int {
+func (self class) GetLayerYSortOrigin(layer gd.Int) gd.Int { //gd:TileMap.get_layer_y_sort_origin
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -882,7 +882,7 @@ Sets a layers Z-index value. This Z-index is added to each tile's Z-index value.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetLayerZIndex(layer gd.Int, z_index gd.Int) {
+func (self class) SetLayerZIndex(layer gd.Int, z_index gd.Int) { //gd:TileMap.set_layer_z_index
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, z_index)
@@ -896,7 +896,7 @@ Returns a TileMap layer's Z-index value.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetLayerZIndex(layer gd.Int) gd.Int {
+func (self class) GetLayerZIndex(layer gd.Int) gd.Int { //gd:TileMap.get_layer_z_index
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -910,7 +910,7 @@ func (self class) GetLayerZIndex(layer gd.Int) gd.Int {
 Enables or disables a layer's built-in navigation regions generation. Disable this if you need to bake navigation regions from a TileMap using a [NavigationRegion2D] node.
 */
 //go:nosplit
-func (self class) SetLayerNavigationEnabled(layer gd.Int, enabled bool) {
+func (self class) SetLayerNavigationEnabled(layer gd.Int, enabled bool) { //gd:TileMap.set_layer_navigation_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, enabled)
@@ -923,7 +923,7 @@ func (self class) SetLayerNavigationEnabled(layer gd.Int, enabled bool) {
 Returns if a layer's built-in navigation regions generation is enabled.
 */
 //go:nosplit
-func (self class) IsLayerNavigationEnabled(layer gd.Int) bool {
+func (self class) IsLayerNavigationEnabled(layer gd.Int) bool { //gd:TileMap.is_layer_navigation_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[bool](frame)
@@ -940,7 +940,7 @@ In order to make [NavigationAgent2D] switch between TileMap layer navigation map
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetLayerNavigationMap(layer gd.Int, mapping gd.RID) {
+func (self class) SetLayerNavigationMap(layer gd.Int, mapping gd.RID) { //gd:TileMap.set_layer_navigation_map
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, mapping)
@@ -956,7 +956,7 @@ In order to make [NavigationAgent2D] switch between TileMap layer navigation map
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetLayerNavigationMap(layer gd.Int) gd.RID {
+func (self class) GetLayerNavigationMap(layer gd.Int) gd.RID { //gd:TileMap.get_layer_navigation_map
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -967,7 +967,7 @@ func (self class) GetLayerNavigationMap(layer gd.Int) gd.RID {
 }
 
 //go:nosplit
-func (self class) SetCollisionAnimatable(enabled bool) {
+func (self class) SetCollisionAnimatable(enabled bool) { //gd:TileMap.set_collision_animatable
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -976,7 +976,7 @@ func (self class) SetCollisionAnimatable(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsCollisionAnimatable() bool {
+func (self class) IsCollisionAnimatable() bool { //gd:TileMap.is_collision_animatable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_collision_animatable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -986,7 +986,7 @@ func (self class) IsCollisionAnimatable() bool {
 }
 
 //go:nosplit
-func (self class) SetCollisionVisibilityMode(collision_visibility_mode gdclass.TileMapVisibilityMode) {
+func (self class) SetCollisionVisibilityMode(collision_visibility_mode gdclass.TileMapVisibilityMode) { //gd:TileMap.set_collision_visibility_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_visibility_mode)
 	var r_ret = callframe.Nil
@@ -995,7 +995,7 @@ func (self class) SetCollisionVisibilityMode(collision_visibility_mode gdclass.T
 }
 
 //go:nosplit
-func (self class) GetCollisionVisibilityMode() gdclass.TileMapVisibilityMode {
+func (self class) GetCollisionVisibilityMode() gdclass.TileMapVisibilityMode { //gd:TileMap.get_collision_visibility_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileMapVisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1005,7 +1005,7 @@ func (self class) GetCollisionVisibilityMode() gdclass.TileMapVisibilityMode {
 }
 
 //go:nosplit
-func (self class) SetNavigationVisibilityMode(navigation_visibility_mode gdclass.TileMapVisibilityMode) {
+func (self class) SetNavigationVisibilityMode(navigation_visibility_mode gdclass.TileMapVisibilityMode) { //gd:TileMap.set_navigation_visibility_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_visibility_mode)
 	var r_ret = callframe.Nil
@@ -1014,7 +1014,7 @@ func (self class) SetNavigationVisibilityMode(navigation_visibility_mode gdclass
 }
 
 //go:nosplit
-func (self class) GetNavigationVisibilityMode() gdclass.TileMapVisibilityMode {
+func (self class) GetNavigationVisibilityMode() gdclass.TileMapVisibilityMode { //gd:TileMap.get_navigation_visibility_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.TileMapVisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1032,7 +1032,7 @@ If [param source_id] is set to [code]-1[/code], [param atlas_coords] to [code]Ve
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetCell(layer gd.Int, coords gd.Vector2i, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) {
+func (self class) SetCell(layer gd.Int, coords gd.Vector2i, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) { //gd:TileMap.set_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, coords)
@@ -1049,7 +1049,7 @@ Erases the cell on layer [param layer] at coordinates [param coords].
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) EraseCell(layer gd.Int, coords gd.Vector2i) {
+func (self class) EraseCell(layer gd.Int, coords gd.Vector2i) { //gd:TileMap.erase_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, coords)
@@ -1064,7 +1064,7 @@ If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxi
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetCellSourceId(layer gd.Int, coords gd.Vector2i, use_proxies bool) gd.Int {
+func (self class) GetCellSourceId(layer gd.Int, coords gd.Vector2i, use_proxies bool) gd.Int { //gd:TileMap.get_cell_source_id
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, coords)
@@ -1082,7 +1082,7 @@ If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxi
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetCellAtlasCoords(layer gd.Int, coords gd.Vector2i, use_proxies bool) gd.Vector2i {
+func (self class) GetCellAtlasCoords(layer gd.Int, coords gd.Vector2i, use_proxies bool) gd.Vector2i { //gd:TileMap.get_cell_atlas_coords
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, coords)
@@ -1100,7 +1100,7 @@ If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxi
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetCellAlternativeTile(layer gd.Int, coords gd.Vector2i, use_proxies bool) gd.Int {
+func (self class) GetCellAlternativeTile(layer gd.Int, coords gd.Vector2i, use_proxies bool) gd.Int { //gd:TileMap.get_cell_alternative_tile
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, coords)
@@ -1127,7 +1127,7 @@ func get_clicked_tile_power():
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies. See [method TileSet.map_tile_proxy].
 */
 //go:nosplit
-func (self class) GetCellTileData(layer gd.Int, coords gd.Vector2i, use_proxies bool) [1]gdclass.TileData {
+func (self class) GetCellTileData(layer gd.Int, coords gd.Vector2i, use_proxies bool) [1]gdclass.TileData { //gd:TileMap.get_cell_tile_data
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, coords)
@@ -1143,7 +1143,7 @@ func (self class) GetCellTileData(layer gd.Int, coords gd.Vector2i, use_proxies 
 Returns the coordinates of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
 //go:nosplit
-func (self class) GetCoordsForBodyRid(body gd.RID) gd.Vector2i {
+func (self class) GetCoordsForBodyRid(body gd.RID) gd.Vector2i { //gd:TileMap.get_coords_for_body_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -1157,7 +1157,7 @@ func (self class) GetCoordsForBodyRid(body gd.RID) gd.Vector2i {
 Returns the tilemap layer of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
 //go:nosplit
-func (self class) GetLayerForBodyRid(body gd.RID) gd.Int {
+func (self class) GetLayerForBodyRid(body gd.RID) gd.Int { //gd:TileMap.get_layer_for_body_rid
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1172,7 +1172,7 @@ Creates a new [TileMapPattern] from the given layer and set of cells.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetPattern(layer gd.Int, coords_array Array.Contains[gd.Vector2i]) [1]gdclass.TileMapPattern {
+func (self class) GetPattern(layer gd.Int, coords_array Array.Contains[gd.Vector2i]) [1]gdclass.TileMapPattern { //gd:TileMap.get_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(coords_array)))
@@ -1187,7 +1187,7 @@ func (self class) GetPattern(layer gd.Int, coords_array Array.Contains[gd.Vector
 Returns for the given coordinate [param coords_in_pattern] in a [TileMapPattern] the corresponding cell coordinates if the pattern was pasted at the [param position_in_tilemap] coordinates (see [method set_pattern]). This mapping is required as in half-offset tile shapes, the mapping might not work by calculating [code]position_in_tile_map + coords_in_pattern[/code].
 */
 //go:nosplit
-func (self class) MapPattern(position_in_tilemap gd.Vector2i, coords_in_pattern gd.Vector2i, pattern [1]gdclass.TileMapPattern) gd.Vector2i {
+func (self class) MapPattern(position_in_tilemap gd.Vector2i, coords_in_pattern gd.Vector2i, pattern [1]gdclass.TileMapPattern) gd.Vector2i { //gd:TileMap.map_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, position_in_tilemap)
 	callframe.Arg(frame, coords_in_pattern)
@@ -1204,7 +1204,7 @@ Paste the given [TileMapPattern] at the given [param position] and [param layer]
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) SetPattern(layer gd.Int, position gd.Vector2i, pattern [1]gdclass.TileMapPattern) {
+func (self class) SetPattern(layer gd.Int, position gd.Vector2i, pattern [1]gdclass.TileMapPattern) { //gd:TileMap.set_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, position)
@@ -1221,7 +1221,7 @@ If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 //go:nosplit
-func (self class) SetCellsTerrainConnect(layer gd.Int, cells Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) {
+func (self class) SetCellsTerrainConnect(layer gd.Int, cells Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) { //gd:TileMap.set_cells_terrain_connect
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(cells)))
@@ -1240,7 +1240,7 @@ If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 //go:nosplit
-func (self class) SetCellsTerrainPath(layer gd.Int, path Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) {
+func (self class) SetCellsTerrainPath(layer gd.Int, path Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) { //gd:TileMap.set_cells_terrain_path
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(path)))
@@ -1256,7 +1256,7 @@ func (self class) SetCellsTerrainPath(layer gd.Int, path Array.Contains[gd.Vecto
 Clears cells that do not exist in the tileset.
 */
 //go:nosplit
-func (self class) FixInvalidTiles() {
+func (self class) FixInvalidTiles() { //gd:TileMap.fix_invalid_tiles
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_fix_invalid_tiles, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1268,7 +1268,7 @@ Clears all cells on the given layer.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) ClearLayer(layer gd.Int) {
+func (self class) ClearLayer(layer gd.Int) { //gd:TileMap.clear_layer
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -1280,7 +1280,7 @@ func (self class) ClearLayer(layer gd.Int) {
 Clears all cells.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:TileMap.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1293,7 +1293,7 @@ However, for performance reasons, those updates are batched and delayed to the e
 [b]Warning:[/b] Updating the TileMap is computationally expensive and may impact performance. Try to limit the number of updates and how many tiles they impact.
 */
 //go:nosplit
-func (self class) UpdateInternals() {
+func (self class) UpdateInternals() { //gd:TileMap.update_internals
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_update_internals, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1307,7 +1307,7 @@ If [param layer] is provided, only notifies changes for the given layer. Providi
 [b]Note:[/b] This does not trigger a direct update of the TileMap, the update will be done at the end of the frame as usual (unless you call [method update_internals]).
 */
 //go:nosplit
-func (self class) NotifyRuntimeTileDataUpdate(layer gd.Int) {
+func (self class) NotifyRuntimeTileDataUpdate(layer gd.Int) { //gd:TileMap.notify_runtime_tile_data_update
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Nil
@@ -1319,7 +1319,7 @@ func (self class) NotifyRuntimeTileDataUpdate(layer gd.Int) {
 Returns the list of all neighbourings cells to the one at [param coords].
 */
 //go:nosplit
-func (self class) GetSurroundingCells(coords gd.Vector2i) Array.Contains[gd.Vector2i] {
+func (self class) GetSurroundingCells(coords gd.Vector2i) Array.Contains[gd.Vector2i] { //gd:TileMap.get_surrounding_cells
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1334,7 +1334,7 @@ Returns a [Vector2i] array with the positions of all cells containing a tile in 
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetUsedCells(layer gd.Int) Array.Contains[gd.Vector2i] {
+func (self class) GetUsedCells(layer gd.Int) Array.Contains[gd.Vector2i] { //gd:TileMap.get_used_cells
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1351,7 +1351,7 @@ A cell is considered empty if its source identifier equals -1, its atlas coordin
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetUsedCellsById(layer gd.Int, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) Array.Contains[gd.Vector2i] {
+func (self class) GetUsedCellsById(layer gd.Int, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) Array.Contains[gd.Vector2i] { //gd:TileMap.get_used_cells_by_id
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, source_id)
@@ -1368,7 +1368,7 @@ func (self class) GetUsedCellsById(layer gd.Int, source_id gd.Int, atlas_coords 
 Returns a rectangle enclosing the used (non-empty) tiles of the map, including all layers.
 */
 //go:nosplit
-func (self class) GetUsedRect() gd.Rect2i {
+func (self class) GetUsedRect() gd.Rect2i { //gd:TileMap.get_used_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2i](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1382,7 +1382,7 @@ Returns the centered position of a cell in the TileMap's local coordinate space.
 [b]Note:[/b] This may not correspond to the visual position of the tile, i.e. it ignores the [member TileData.texture_origin] property of individual tiles.
 */
 //go:nosplit
-func (self class) MapToLocal(map_position gd.Vector2i) gd.Vector2 {
+func (self class) MapToLocal(map_position gd.Vector2i) gd.Vector2 { //gd:TileMap.map_to_local
 	var frame = callframe.New()
 	callframe.Arg(frame, map_position)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -1396,7 +1396,7 @@ func (self class) MapToLocal(map_position gd.Vector2i) gd.Vector2 {
 Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node2D.to_local] before passing it to this method. See also [method map_to_local].
 */
 //go:nosplit
-func (self class) LocalToMap(local_position gd.Vector2) gd.Vector2i {
+func (self class) LocalToMap(local_position gd.Vector2) gd.Vector2i { //gd:TileMap.local_to_map
 	var frame = callframe.New()
 	callframe.Arg(frame, local_position)
 	var r_ret = callframe.Ret[gd.Vector2i](frame)
@@ -1410,7 +1410,7 @@ func (self class) LocalToMap(local_position gd.Vector2) gd.Vector2i {
 Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 */
 //go:nosplit
-func (self class) GetNeighborCell(coords gd.Vector2i, neighbor gdclass.TileSetCellNeighbor) gd.Vector2i {
+func (self class) GetNeighborCell(coords gd.Vector2i, neighbor gdclass.TileSetCellNeighbor) gd.Vector2i { //gd:TileMap.get_neighbor_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, neighbor)
@@ -1462,7 +1462,7 @@ func init() {
 	gdclass.Register("TileMap", func(ptr gd.Object) any { return [1]gdclass.TileMap{*(*gdclass.TileMap)(unsafe.Pointer(&ptr))} })
 }
 
-type VisibilityMode = gdclass.TileMapVisibilityMode
+type VisibilityMode = gdclass.TileMapVisibilityMode //gd:TileMap.VisibilityMode
 
 const (
 	/*Use the debug settings to determine visibility.*/

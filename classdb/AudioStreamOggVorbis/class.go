@@ -42,7 +42,7 @@ type Any interface {
 /*
 Creates a new AudioStreamOggVorbis instance from the given buffer. The buffer must contain Ogg Vorbis data.
 */
-func LoadFromBuffer(buffer []byte) [1]gdclass.AudioStreamOggVorbis {
+func LoadFromBuffer(buffer []byte) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
 	self := Instance{}
 	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromBuffer(gd.NewPackedByteSlice(buffer)))
 }
@@ -50,7 +50,7 @@ func LoadFromBuffer(buffer []byte) [1]gdclass.AudioStreamOggVorbis {
 /*
 Creates a new AudioStreamOggVorbis instance from the given file path. The file must be in Ogg Vorbis format.
 */
-func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis {
+func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file
 	self := Instance{}
 	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromFile(gd.NewString(path)))
 }
@@ -126,7 +126,7 @@ func (self Instance) SetLoopOffset(value Float.X) {
 Creates a new AudioStreamOggVorbis instance from the given buffer. The buffer must contain Ogg Vorbis data.
 */
 //go:nosplit
-func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStreamOggVorbis {
+func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -140,7 +140,7 @@ func (self class) LoadFromBuffer(buffer gd.PackedByteArray) [1]gdclass.AudioStre
 Creates a new AudioStreamOggVorbis instance from the given file path. The file must be in Ogg Vorbis format.
 */
 //go:nosplit
-func (self class) LoadFromFile(path gd.String) [1]gdclass.AudioStreamOggVorbis {
+func (self class) LoadFromFile(path gd.String) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -151,7 +151,7 @@ func (self class) LoadFromFile(path gd.String) [1]gdclass.AudioStreamOggVorbis {
 }
 
 //go:nosplit
-func (self class) SetPacketSequence(packet_sequence [1]gdclass.OggPacketSequence) {
+func (self class) SetPacketSequence(packet_sequence [1]gdclass.OggPacketSequence) { //gd:AudioStreamOggVorbis.set_packet_sequence
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(packet_sequence[0])[0])
 	var r_ret = callframe.Nil
@@ -160,7 +160,7 @@ func (self class) SetPacketSequence(packet_sequence [1]gdclass.OggPacketSequence
 }
 
 //go:nosplit
-func (self class) GetPacketSequence() [1]gdclass.OggPacketSequence {
+func (self class) GetPacketSequence() [1]gdclass.OggPacketSequence { //gd:AudioStreamOggVorbis.get_packet_sequence
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_get_packet_sequence, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -170,7 +170,7 @@ func (self class) GetPacketSequence() [1]gdclass.OggPacketSequence {
 }
 
 //go:nosplit
-func (self class) SetLoop(enable bool) {
+func (self class) SetLoop(enable bool) { //gd:AudioStreamOggVorbis.set_loop
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -179,7 +179,7 @@ func (self class) SetLoop(enable bool) {
 }
 
 //go:nosplit
-func (self class) HasLoop() bool {
+func (self class) HasLoop() bool { //gd:AudioStreamOggVorbis.has_loop
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_has_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -189,7 +189,7 @@ func (self class) HasLoop() bool {
 }
 
 //go:nosplit
-func (self class) SetLoopOffset(seconds gd.Float) {
+func (self class) SetLoopOffset(seconds gd.Float) { //gd:AudioStreamOggVorbis.set_loop_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, seconds)
 	var r_ret = callframe.Nil
@@ -198,7 +198,7 @@ func (self class) SetLoopOffset(seconds gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLoopOffset() gd.Float {
+func (self class) GetLoopOffset() gd.Float { //gd:AudioStreamOggVorbis.get_loop_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_get_loop_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -208,7 +208,7 @@ func (self class) GetLoopOffset() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBpm(bpm gd.Float) {
+func (self class) SetBpm(bpm gd.Float) { //gd:AudioStreamOggVorbis.set_bpm
 	var frame = callframe.New()
 	callframe.Arg(frame, bpm)
 	var r_ret = callframe.Nil
@@ -217,7 +217,7 @@ func (self class) SetBpm(bpm gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBpm() gd.Float {
+func (self class) GetBpm() gd.Float { //gd:AudioStreamOggVorbis.get_bpm
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_get_bpm, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -227,7 +227,7 @@ func (self class) GetBpm() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBeatCount(count gd.Int) {
+func (self class) SetBeatCount(count gd.Int) { //gd:AudioStreamOggVorbis.set_beat_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -236,7 +236,7 @@ func (self class) SetBeatCount(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBeatCount() gd.Int {
+func (self class) GetBeatCount() gd.Int { //gd:AudioStreamOggVorbis.get_beat_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_get_beat_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -246,7 +246,7 @@ func (self class) GetBeatCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetBarBeats(count gd.Int) {
+func (self class) SetBarBeats(count gd.Int) { //gd:AudioStreamOggVorbis.set_bar_beats
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -255,7 +255,7 @@ func (self class) SetBarBeats(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBarBeats() gd.Int {
+func (self class) GetBarBeats() gd.Int { //gd:AudioStreamOggVorbis.get_bar_beats
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamOggVorbis.Bind_get_bar_beats, self.AsObject(), frame.Array(0), r_ret.Addr())

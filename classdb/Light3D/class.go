@@ -44,7 +44,7 @@ type Any interface {
 /*
 Returns the [Color] of an idealized blackbody at the given [member light_temperature]. This value is calculated internally based on the [member light_temperature]. This [Color] is multiplied by [member light_color] before being sent to the [RenderingServer].
 */
-func (self Instance) GetCorrelatedColor() Color.RGBA {
+func (self Instance) GetCorrelatedColor() Color.RGBA { //gd:Light3D.get_correlated_color
 	return Color.RGBA(class(self).GetCorrelatedColor())
 }
 
@@ -275,7 +275,7 @@ func (self Instance) SetEditorOnly(value bool) {
 }
 
 //go:nosplit
-func (self class) SetEditorOnly(editor_only bool) {
+func (self class) SetEditorOnly(editor_only bool) { //gd:Light3D.set_editor_only
 	var frame = callframe.New()
 	callframe.Arg(frame, editor_only)
 	var r_ret = callframe.Nil
@@ -284,7 +284,7 @@ func (self class) SetEditorOnly(editor_only bool) {
 }
 
 //go:nosplit
-func (self class) IsEditorOnly() bool {
+func (self class) IsEditorOnly() bool { //gd:Light3D.is_editor_only
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_is_editor_only, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -297,7 +297,7 @@ func (self class) IsEditorOnly() bool {
 Sets the value of the specified [enum Light3D.Param] parameter.
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.Light3DParam, value gd.Float) {
+func (self class) SetParam(param gdclass.Light3DParam, value gd.Float) { //gd:Light3D.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -310,7 +310,7 @@ func (self class) SetParam(param gdclass.Light3DParam, value gd.Float) {
 Returns the value of the specified [enum Light3D.Param] parameter.
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.Light3DParam) gd.Float {
+func (self class) GetParam(param gdclass.Light3DParam) gd.Float { //gd:Light3D.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -321,7 +321,7 @@ func (self class) GetParam(param gdclass.Light3DParam) gd.Float {
 }
 
 //go:nosplit
-func (self class) SetShadow(enabled bool) {
+func (self class) SetShadow(enabled bool) { //gd:Light3D.set_shadow
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -330,7 +330,7 @@ func (self class) SetShadow(enabled bool) {
 }
 
 //go:nosplit
-func (self class) HasShadow() bool {
+func (self class) HasShadow() bool { //gd:Light3D.has_shadow
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_has_shadow, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -340,7 +340,7 @@ func (self class) HasShadow() bool {
 }
 
 //go:nosplit
-func (self class) SetNegative(enabled bool) {
+func (self class) SetNegative(enabled bool) { //gd:Light3D.set_negative
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -349,7 +349,7 @@ func (self class) SetNegative(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsNegative() bool {
+func (self class) IsNegative() bool { //gd:Light3D.is_negative
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_is_negative, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -359,7 +359,7 @@ func (self class) IsNegative() bool {
 }
 
 //go:nosplit
-func (self class) SetCullMask(cull_mask gd.Int) {
+func (self class) SetCullMask(cull_mask gd.Int) { //gd:Light3D.set_cull_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, cull_mask)
 	var r_ret = callframe.Nil
@@ -368,7 +368,7 @@ func (self class) SetCullMask(cull_mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCullMask() gd.Int {
+func (self class) GetCullMask() gd.Int { //gd:Light3D.get_cull_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_cull_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -378,7 +378,7 @@ func (self class) GetCullMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetEnableDistanceFade(enable bool) {
+func (self class) SetEnableDistanceFade(enable bool) { //gd:Light3D.set_enable_distance_fade
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -387,7 +387,7 @@ func (self class) SetEnableDistanceFade(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsDistanceFadeEnabled() bool {
+func (self class) IsDistanceFadeEnabled() bool { //gd:Light3D.is_distance_fade_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_is_distance_fade_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -397,7 +397,7 @@ func (self class) IsDistanceFadeEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetDistanceFadeBegin(distance gd.Float) {
+func (self class) SetDistanceFadeBegin(distance gd.Float) { //gd:Light3D.set_distance_fade_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -406,7 +406,7 @@ func (self class) SetDistanceFadeBegin(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDistanceFadeBegin() gd.Float {
+func (self class) GetDistanceFadeBegin() gd.Float { //gd:Light3D.get_distance_fade_begin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_distance_fade_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -416,7 +416,7 @@ func (self class) GetDistanceFadeBegin() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDistanceFadeShadow(distance gd.Float) {
+func (self class) SetDistanceFadeShadow(distance gd.Float) { //gd:Light3D.set_distance_fade_shadow
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -425,7 +425,7 @@ func (self class) SetDistanceFadeShadow(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDistanceFadeShadow() gd.Float {
+func (self class) GetDistanceFadeShadow() gd.Float { //gd:Light3D.get_distance_fade_shadow
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_distance_fade_shadow, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -435,7 +435,7 @@ func (self class) GetDistanceFadeShadow() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetDistanceFadeLength(distance gd.Float) {
+func (self class) SetDistanceFadeLength(distance gd.Float) { //gd:Light3D.set_distance_fade_length
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -444,7 +444,7 @@ func (self class) SetDistanceFadeLength(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDistanceFadeLength() gd.Float {
+func (self class) GetDistanceFadeLength() gd.Float { //gd:Light3D.get_distance_fade_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_distance_fade_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -454,7 +454,7 @@ func (self class) GetDistanceFadeLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetColor(color gd.Color) {
+func (self class) SetColor(color gd.Color) { //gd:Light3D.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -463,7 +463,7 @@ func (self class) SetColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetColor() gd.Color {
+func (self class) GetColor() gd.Color { //gd:Light3D.get_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -473,7 +473,7 @@ func (self class) GetColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetShadowReverseCullFace(enable bool) {
+func (self class) SetShadowReverseCullFace(enable bool) { //gd:Light3D.set_shadow_reverse_cull_face
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -482,7 +482,7 @@ func (self class) SetShadowReverseCullFace(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetShadowReverseCullFace() bool {
+func (self class) GetShadowReverseCullFace() bool { //gd:Light3D.get_shadow_reverse_cull_face
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_shadow_reverse_cull_face, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -492,7 +492,7 @@ func (self class) GetShadowReverseCullFace() bool {
 }
 
 //go:nosplit
-func (self class) SetBakeMode(bake_mode gdclass.Light3DBakeMode) {
+func (self class) SetBakeMode(bake_mode gdclass.Light3DBakeMode) { //gd:Light3D.set_bake_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, bake_mode)
 	var r_ret = callframe.Nil
@@ -501,7 +501,7 @@ func (self class) SetBakeMode(bake_mode gdclass.Light3DBakeMode) {
 }
 
 //go:nosplit
-func (self class) GetBakeMode() gdclass.Light3DBakeMode {
+func (self class) GetBakeMode() gdclass.Light3DBakeMode { //gd:Light3D.get_bake_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Light3DBakeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_bake_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -511,7 +511,7 @@ func (self class) GetBakeMode() gdclass.Light3DBakeMode {
 }
 
 //go:nosplit
-func (self class) SetProjector(projector [1]gdclass.Texture2D) {
+func (self class) SetProjector(projector [1]gdclass.Texture2D) { //gd:Light3D.set_projector
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(projector[0])[0])
 	var r_ret = callframe.Nil
@@ -520,7 +520,7 @@ func (self class) SetProjector(projector [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetProjector() [1]gdclass.Texture2D {
+func (self class) GetProjector() [1]gdclass.Texture2D { //gd:Light3D.get_projector
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_projector, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -530,7 +530,7 @@ func (self class) GetProjector() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetTemperature(temperature gd.Float) {
+func (self class) SetTemperature(temperature gd.Float) { //gd:Light3D.set_temperature
 	var frame = callframe.New()
 	callframe.Arg(frame, temperature)
 	var r_ret = callframe.Nil
@@ -539,7 +539,7 @@ func (self class) SetTemperature(temperature gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTemperature() gd.Float {
+func (self class) GetTemperature() gd.Float { //gd:Light3D.get_temperature
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_temperature, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -552,7 +552,7 @@ func (self class) GetTemperature() gd.Float {
 Returns the [Color] of an idealized blackbody at the given [member light_temperature]. This value is calculated internally based on the [member light_temperature]. This [Color] is multiplied by [member light_color] before being sent to the [RenderingServer].
 */
 //go:nosplit
-func (self class) GetCorrelatedColor() gd.Color {
+func (self class) GetCorrelatedColor() gd.Color { //gd:Light3D.get_correlated_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_correlated_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -590,7 +590,7 @@ func init() {
 	gdclass.Register("Light3D", func(ptr gd.Object) any { return [1]gdclass.Light3D{*(*gdclass.Light3D)(unsafe.Pointer(&ptr))} })
 }
 
-type Param = gdclass.Light3DParam
+type Param = gdclass.Light3DParam //gd:Light3D.Param
 
 const (
 	/*Constant for accessing [member light_energy].*/
@@ -639,7 +639,7 @@ const (
 	ParamMax Param = 21
 )
 
-type BakeMode = gdclass.Light3DBakeMode
+type BakeMode = gdclass.Light3DBakeMode //gd:Light3D.BakeMode
 
 const (
 	/*Light is ignored when baking. This is the fastest mode, but the light will be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.

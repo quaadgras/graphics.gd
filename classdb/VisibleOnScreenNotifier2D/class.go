@@ -46,7 +46,7 @@ type Any interface {
 If [code]true[/code], the bounding rectangle is on the screen.
 [b]Note:[/b] It takes one frame for the [VisibleOnScreenNotifier2D]'s visibility to be determined once added to the scene tree, so this method will always return [code]false[/code] right after it is instantiated, before the draw pass.
 */
-func (self Instance) IsOnScreen() bool {
+func (self Instance) IsOnScreen() bool { //gd:VisibleOnScreenNotifier2D.is_on_screen
 	return bool(class(self).IsOnScreen())
 }
 
@@ -77,7 +77,7 @@ func (self Instance) SetRect(value Rect2.PositionSize) {
 }
 
 //go:nosplit
-func (self class) SetRect(rect gd.Rect2) {
+func (self class) SetRect(rect gd.Rect2) { //gd:VisibleOnScreenNotifier2D.set_rect
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Nil
@@ -86,7 +86,7 @@ func (self class) SetRect(rect gd.Rect2) {
 }
 
 //go:nosplit
-func (self class) GetRect() gd.Rect2 {
+func (self class) GetRect() gd.Rect2 { //gd:VisibleOnScreenNotifier2D.get_rect
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Rect2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -100,7 +100,7 @@ If [code]true[/code], the bounding rectangle is on the screen.
 [b]Note:[/b] It takes one frame for the [VisibleOnScreenNotifier2D]'s visibility to be determined once added to the scene tree, so this method will always return [code]false[/code] right after it is instantiated, before the draw pass.
 */
 //go:nosplit
-func (self class) IsOnScreen() bool {
+func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier2D.is_on_screen
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_is_on_screen, self.AsObject(), frame.Array(0), r_ret.Addr())

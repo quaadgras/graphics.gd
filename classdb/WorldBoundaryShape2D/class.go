@@ -76,7 +76,7 @@ func (self Instance) SetDistance(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetNormal(normal gd.Vector2) {
+func (self class) SetNormal(normal gd.Vector2) { //gd:WorldBoundaryShape2D.set_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, normal)
 	var r_ret = callframe.Nil
@@ -85,7 +85,7 @@ func (self class) SetNormal(normal gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetNormal() gd.Vector2 {
+func (self class) GetNormal() gd.Vector2 { //gd:WorldBoundaryShape2D.get_normal
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldBoundaryShape2D.Bind_get_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) GetNormal() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetDistance(distance gd.Float) {
+func (self class) SetDistance(distance gd.Float) { //gd:WorldBoundaryShape2D.set_distance
 	var frame = callframe.New()
 	callframe.Arg(frame, distance)
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetDistance(distance gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetDistance() gd.Float {
+func (self class) GetDistance() gd.Float { //gd:WorldBoundaryShape2D.get_distance
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldBoundaryShape2D.Bind_get_distance, self.AsObject(), frame.Array(0), r_ret.Addr())

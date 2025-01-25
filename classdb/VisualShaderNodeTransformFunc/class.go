@@ -66,7 +66,7 @@ func (self Instance) SetFunction(value gdclass.VisualShaderNodeTransformFuncFunc
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeTransformFuncFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeTransformFuncFunction) { //gd:VisualShaderNodeTransformFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeTransformFuncFunction) 
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeTransformFuncFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeTransformFuncFunction { //gd:VisualShaderNodeTransformFunc.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTransformFuncFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeTransformFuncFunction
+type Function = gdclass.VisualShaderNodeTransformFuncFunction //gd:VisualShaderNodeTransformFunc.Function
 
 const (
 	/*Perform the inverse operation on the [Transform3D] matrix.*/

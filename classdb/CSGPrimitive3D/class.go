@@ -69,7 +69,7 @@ func (self Instance) SetFlipFaces(value bool) {
 }
 
 //go:nosplit
-func (self class) SetFlipFaces(flip_faces bool) {
+func (self class) SetFlipFaces(flip_faces bool) { //gd:CSGPrimitive3D.set_flip_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_faces)
 	var r_ret = callframe.Nil
@@ -78,7 +78,7 @@ func (self class) SetFlipFaces(flip_faces bool) {
 }
 
 //go:nosplit
-func (self class) GetFlipFaces() bool {
+func (self class) GetFlipFaces() bool { //gd:CSGPrimitive3D.get_flip_faces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPrimitive3D.Bind_get_flip_faces, self.AsObject(), frame.Array(0), r_ret.Addr())

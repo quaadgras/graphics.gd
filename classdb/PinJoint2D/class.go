@@ -108,7 +108,7 @@ func (self Instance) SetMotorTargetVelocity(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetSoftness(softness gd.Float) {
+func (self class) SetSoftness(softness gd.Float) { //gd:PinJoint2D.set_softness
 	var frame = callframe.New()
 	callframe.Arg(frame, softness)
 	var r_ret = callframe.Nil
@@ -117,7 +117,7 @@ func (self class) SetSoftness(softness gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSoftness() gd.Float {
+func (self class) GetSoftness() gd.Float { //gd:PinJoint2D.get_softness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_get_softness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func (self class) GetSoftness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAngularLimitLower(angular_limit_lower gd.Float) {
+func (self class) SetAngularLimitLower(angular_limit_lower gd.Float) { //gd:PinJoint2D.set_angular_limit_lower
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_limit_lower)
 	var r_ret = callframe.Nil
@@ -136,7 +136,7 @@ func (self class) SetAngularLimitLower(angular_limit_lower gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAngularLimitLower() gd.Float {
+func (self class) GetAngularLimitLower() gd.Float { //gd:PinJoint2D.get_angular_limit_lower
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_get_angular_limit_lower, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -146,7 +146,7 @@ func (self class) GetAngularLimitLower() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetAngularLimitUpper(angular_limit_upper gd.Float) {
+func (self class) SetAngularLimitUpper(angular_limit_upper gd.Float) { //gd:PinJoint2D.set_angular_limit_upper
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_limit_upper)
 	var r_ret = callframe.Nil
@@ -155,7 +155,7 @@ func (self class) SetAngularLimitUpper(angular_limit_upper gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAngularLimitUpper() gd.Float {
+func (self class) GetAngularLimitUpper() gd.Float { //gd:PinJoint2D.get_angular_limit_upper
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_get_angular_limit_upper, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -165,7 +165,7 @@ func (self class) GetAngularLimitUpper() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMotorTargetVelocity(motor_target_velocity gd.Float) {
+func (self class) SetMotorTargetVelocity(motor_target_velocity gd.Float) { //gd:PinJoint2D.set_motor_target_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, motor_target_velocity)
 	var r_ret = callframe.Nil
@@ -174,7 +174,7 @@ func (self class) SetMotorTargetVelocity(motor_target_velocity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMotorTargetVelocity() gd.Float {
+func (self class) GetMotorTargetVelocity() gd.Float { //gd:PinJoint2D.get_motor_target_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_get_motor_target_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -184,7 +184,7 @@ func (self class) GetMotorTargetVelocity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMotorEnabled(enabled bool) {
+func (self class) SetMotorEnabled(enabled bool) { //gd:PinJoint2D.set_motor_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -193,7 +193,7 @@ func (self class) SetMotorEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsMotorEnabled() bool {
+func (self class) IsMotorEnabled() bool { //gd:PinJoint2D.is_motor_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_is_motor_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -203,7 +203,7 @@ func (self class) IsMotorEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetAngularLimitEnabled(enabled bool) {
+func (self class) SetAngularLimitEnabled(enabled bool) { //gd:PinJoint2D.set_angular_limit_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -212,7 +212,7 @@ func (self class) SetAngularLimitEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsAngularLimitEnabled() bool {
+func (self class) IsAngularLimitEnabled() bool { //gd:PinJoint2D.is_angular_limit_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PinJoint2D.Bind_is_angular_limit_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())

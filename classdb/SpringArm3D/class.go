@@ -43,28 +43,28 @@ type Any interface {
 /*
 Returns the spring arm's current length.
 */
-func (self Instance) GetHitLength() Float.X {
+func (self Instance) GetHitLength() Float.X { //gd:SpringArm3D.get_hit_length
 	return Float.X(Float.X(class(self).GetHitLength()))
 }
 
 /*
 Adds the [PhysicsBody3D] object with the given [RID] to the list of [PhysicsBody3D] objects excluded from the collision check.
 */
-func (self Instance) AddExcludedObject(rid Resource.ID) {
+func (self Instance) AddExcludedObject(rid Resource.ID) { //gd:SpringArm3D.add_excluded_object
 	class(self).AddExcludedObject(rid)
 }
 
 /*
 Removes the given [RID] from the list of [PhysicsBody3D] objects excluded from the collision check.
 */
-func (self Instance) RemoveExcludedObject(rid Resource.ID) bool {
+func (self Instance) RemoveExcludedObject(rid Resource.ID) bool { //gd:SpringArm3D.remove_excluded_object
 	return bool(class(self).RemoveExcludedObject(rid))
 }
 
 /*
 Clears the list of [PhysicsBody3D] objects excluded from the collision check.
 */
-func (self Instance) ClearExcludedObjects() {
+func (self Instance) ClearExcludedObjects() { //gd:SpringArm3D.clear_excluded_objects
 	class(self).ClearExcludedObjects()
 }
 
@@ -122,7 +122,7 @@ func (self Instance) SetMargin(value Float.X) {
 Returns the spring arm's current length.
 */
 //go:nosplit
-func (self class) GetHitLength() gd.Float {
+func (self class) GetHitLength() gd.Float { //gd:SpringArm3D.get_hit_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringArm3D.Bind_get_hit_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -132,7 +132,7 @@ func (self class) GetHitLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetLength(length gd.Float) {
+func (self class) SetLength(length gd.Float) { //gd:SpringArm3D.set_length
 	var frame = callframe.New()
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Nil
@@ -141,7 +141,7 @@ func (self class) SetLength(length gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetLength() gd.Float {
+func (self class) GetLength() gd.Float { //gd:SpringArm3D.get_length
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringArm3D.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -151,7 +151,7 @@ func (self class) GetLength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetShape(shape [1]gdclass.Shape3D) {
+func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:SpringArm3D.set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape[0])[0])
 	var r_ret = callframe.Nil
@@ -160,7 +160,7 @@ func (self class) SetShape(shape [1]gdclass.Shape3D) {
 }
 
 //go:nosplit
-func (self class) GetShape() [1]gdclass.Shape3D {
+func (self class) GetShape() [1]gdclass.Shape3D { //gd:SpringArm3D.get_shape
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringArm3D.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func (self class) GetShape() [1]gdclass.Shape3D {
 Adds the [PhysicsBody3D] object with the given [RID] to the list of [PhysicsBody3D] objects excluded from the collision check.
 */
 //go:nosplit
-func (self class) AddExcludedObject(rid gd.RID) {
+func (self class) AddExcludedObject(rid gd.RID) { //gd:SpringArm3D.add_excluded_object
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Nil
@@ -185,7 +185,7 @@ func (self class) AddExcludedObject(rid gd.RID) {
 Removes the given [RID] from the list of [PhysicsBody3D] objects excluded from the collision check.
 */
 //go:nosplit
-func (self class) RemoveExcludedObject(rid gd.RID) bool {
+func (self class) RemoveExcludedObject(rid gd.RID) bool { //gd:SpringArm3D.remove_excluded_object
 	var frame = callframe.New()
 	callframe.Arg(frame, rid)
 	var r_ret = callframe.Ret[bool](frame)
@@ -199,7 +199,7 @@ func (self class) RemoveExcludedObject(rid gd.RID) bool {
 Clears the list of [PhysicsBody3D] objects excluded from the collision check.
 */
 //go:nosplit
-func (self class) ClearExcludedObjects() {
+func (self class) ClearExcludedObjects() { //gd:SpringArm3D.clear_excluded_objects
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringArm3D.Bind_clear_excluded_objects, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -207,7 +207,7 @@ func (self class) ClearExcludedObjects() {
 }
 
 //go:nosplit
-func (self class) SetCollisionMask(mask gd.Int) {
+func (self class) SetCollisionMask(mask gd.Int) { //gd:SpringArm3D.set_collision_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -216,7 +216,7 @@ func (self class) SetCollisionMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetCollisionMask() gd.Int {
+func (self class) GetCollisionMask() gd.Int { //gd:SpringArm3D.get_collision_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringArm3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -226,7 +226,7 @@ func (self class) GetCollisionMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Float) {
+func (self class) SetMargin(margin gd.Float) { //gd:SpringArm3D.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -235,7 +235,7 @@ func (self class) SetMargin(margin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Float {
+func (self class) GetMargin() gd.Float { //gd:SpringArm3D.get_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringArm3D.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())

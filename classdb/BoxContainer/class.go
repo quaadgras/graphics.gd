@@ -43,7 +43,7 @@ type Any interface {
 /*
 Adds a [Control] node to the box as a spacer. If [param begin] is [code]true[/code], it will insert the [Control] node in front of all other children.
 */
-func (self Instance) AddSpacer(begin bool) [1]gdclass.Control {
+func (self Instance) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer
 	return [1]gdclass.Control(class(self).AddSpacer(begin))
 }
 
@@ -85,7 +85,7 @@ func (self Instance) SetVertical(value bool) {
 Adds a [Control] node to the box as a spacer. If [param begin] is [code]true[/code], it will insert the [Control] node in front of all other children.
 */
 //go:nosplit
-func (self class) AddSpacer(begin bool) [1]gdclass.Control {
+func (self class) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer
 	var frame = callframe.New()
 	callframe.Arg(frame, begin)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -96,7 +96,7 @@ func (self class) AddSpacer(begin bool) [1]gdclass.Control {
 }
 
 //go:nosplit
-func (self class) SetAlignment(alignment gdclass.BoxContainerAlignmentMode) {
+func (self class) SetAlignment(alignment gdclass.BoxContainerAlignmentMode) { //gd:BoxContainer.set_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -105,7 +105,7 @@ func (self class) SetAlignment(alignment gdclass.BoxContainerAlignmentMode) {
 }
 
 //go:nosplit
-func (self class) GetAlignment() gdclass.BoxContainerAlignmentMode {
+func (self class) GetAlignment() gdclass.BoxContainerAlignmentMode { //gd:BoxContainer.get_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.BoxContainerAlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -115,7 +115,7 @@ func (self class) GetAlignment() gdclass.BoxContainerAlignmentMode {
 }
 
 //go:nosplit
-func (self class) SetVertical(vertical bool) {
+func (self class) SetVertical(vertical bool) { //gd:BoxContainer.set_vertical
 	var frame = callframe.New()
 	callframe.Arg(frame, vertical)
 	var r_ret = callframe.Nil
@@ -124,7 +124,7 @@ func (self class) SetVertical(vertical bool) {
 }
 
 //go:nosplit
-func (self class) IsVertical() bool {
+func (self class) IsVertical() bool { //gd:BoxContainer.is_vertical
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_is_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func init() {
 	})
 }
 
-type AlignmentMode = gdclass.BoxContainerAlignmentMode
+type AlignmentMode = gdclass.BoxContainerAlignmentMode //gd:BoxContainer.AlignmentMode
 
 const (
 	/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/

@@ -47,21 +47,21 @@ type Any interface {
 /*
 Overwrites the position of the point at the given [param index] with the supplied [param position].
 */
-func (self Instance) SetPointPosition(index int, position Vector2.XY) {
+func (self Instance) SetPointPosition(index int, position Vector2.XY) { //gd:Line2D.set_point_position
 	class(self).SetPointPosition(gd.Int(index), gd.Vector2(position))
 }
 
 /*
 Returns the position of the point at index [param index].
 */
-func (self Instance) GetPointPosition(index int) Vector2.XY {
+func (self Instance) GetPointPosition(index int) Vector2.XY { //gd:Line2D.get_point_position
 	return Vector2.XY(class(self).GetPointPosition(gd.Int(index)))
 }
 
 /*
 Returns the number of points in the polyline.
 */
-func (self Instance) GetPointCount() int {
+func (self Instance) GetPointCount() int { //gd:Line2D.get_point_count
 	return int(int(class(self).GetPointCount()))
 }
 
@@ -69,21 +69,21 @@ func (self Instance) GetPointCount() int {
 Adds a point with the specified [param position] relative to the polyline's own position. If no [param index] is provided, the new point will be added to the end of the points array.
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. The indices of the points after the new point get increased by 1. The provided [param index] must not exceed the number of existing points in the polyline. See [method get_point_count].
 */
-func (self Instance) AddPoint(position Vector2.XY) {
+func (self Instance) AddPoint(position Vector2.XY) { //gd:Line2D.add_point
 	class(self).AddPoint(gd.Vector2(position), gd.Int(-1))
 }
 
 /*
 Removes the point at index [param index] from the polyline.
 */
-func (self Instance) RemovePoint(index int) {
+func (self Instance) RemovePoint(index int) { //gd:Line2D.remove_point
 	class(self).RemovePoint(gd.Int(index))
 }
 
 /*
 Removes all points from the polyline, making it empty.
 */
-func (self Instance) ClearPoints() {
+func (self Instance) ClearPoints() { //gd:Line2D.clear_points
 	class(self).ClearPoints()
 }
 
@@ -218,7 +218,7 @@ func (self Instance) SetAntialiased(value bool) {
 }
 
 //go:nosplit
-func (self class) SetPoints(points gd.PackedVector2Array) {
+func (self class) SetPoints(points gd.PackedVector2Array) { //gd:Line2D.set_points
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	var r_ret = callframe.Nil
@@ -227,7 +227,7 @@ func (self class) SetPoints(points gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetPoints() gd.PackedVector2Array {
+func (self class) GetPoints() gd.PackedVector2Array { //gd:Line2D.get_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_points, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -240,7 +240,7 @@ func (self class) GetPoints() gd.PackedVector2Array {
 Overwrites the position of the point at the given [param index] with the supplied [param position].
 */
 //go:nosplit
-func (self class) SetPointPosition(index gd.Int, position gd.Vector2) {
+func (self class) SetPointPosition(index gd.Int, position gd.Vector2) { //gd:Line2D.set_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, position)
@@ -253,7 +253,7 @@ func (self class) SetPointPosition(index gd.Int, position gd.Vector2) {
 Returns the position of the point at index [param index].
 */
 //go:nosplit
-func (self class) GetPointPosition(index gd.Int) gd.Vector2 {
+func (self class) GetPointPosition(index gd.Int) gd.Vector2 { //gd:Line2D.get_point_position
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -267,7 +267,7 @@ func (self class) GetPointPosition(index gd.Int) gd.Vector2 {
 Returns the number of points in the polyline.
 */
 //go:nosplit
-func (self class) GetPointCount() gd.Int {
+func (self class) GetPointCount() gd.Int { //gd:Line2D.get_point_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -281,7 +281,7 @@ Adds a point with the specified [param position] relative to the polyline's own 
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. The indices of the points after the new point get increased by 1. The provided [param index] must not exceed the number of existing points in the polyline. See [method get_point_count].
 */
 //go:nosplit
-func (self class) AddPoint(position gd.Vector2, index gd.Int) {
+func (self class) AddPoint(position gd.Vector2, index gd.Int) { //gd:Line2D.add_point
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, index)
@@ -294,7 +294,7 @@ func (self class) AddPoint(position gd.Vector2, index gd.Int) {
 Removes the point at index [param index] from the polyline.
 */
 //go:nosplit
-func (self class) RemovePoint(index gd.Int) {
+func (self class) RemovePoint(index gd.Int) { //gd:Line2D.remove_point
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -306,7 +306,7 @@ func (self class) RemovePoint(index gd.Int) {
 Removes all points from the polyline, making it empty.
 */
 //go:nosplit
-func (self class) ClearPoints() {
+func (self class) ClearPoints() { //gd:Line2D.clear_points
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_clear_points, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -314,7 +314,7 @@ func (self class) ClearPoints() {
 }
 
 //go:nosplit
-func (self class) SetClosed(closed bool) {
+func (self class) SetClosed(closed bool) { //gd:Line2D.set_closed
 	var frame = callframe.New()
 	callframe.Arg(frame, closed)
 	var r_ret = callframe.Nil
@@ -323,7 +323,7 @@ func (self class) SetClosed(closed bool) {
 }
 
 //go:nosplit
-func (self class) IsClosed() bool {
+func (self class) IsClosed() bool { //gd:Line2D.is_closed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_is_closed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -333,7 +333,7 @@ func (self class) IsClosed() bool {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Float) {
+func (self class) SetWidth(width gd.Float) { //gd:Line2D.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -342,7 +342,7 @@ func (self class) SetWidth(width gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetWidth() gd.Float {
+func (self class) GetWidth() gd.Float { //gd:Line2D.get_width
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -352,7 +352,7 @@ func (self class) GetWidth() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetCurve(curve [1]gdclass.Curve) {
+func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:Line2D.set_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
 	var r_ret = callframe.Nil
@@ -361,7 +361,7 @@ func (self class) SetCurve(curve [1]gdclass.Curve) {
 }
 
 //go:nosplit
-func (self class) GetCurve() [1]gdclass.Curve {
+func (self class) GetCurve() [1]gdclass.Curve { //gd:Line2D.get_curve
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -371,7 +371,7 @@ func (self class) GetCurve() [1]gdclass.Curve {
 }
 
 //go:nosplit
-func (self class) SetDefaultColor(color gd.Color) {
+func (self class) SetDefaultColor(color gd.Color) { //gd:Line2D.set_default_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -380,7 +380,7 @@ func (self class) SetDefaultColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetDefaultColor() gd.Color {
+func (self class) GetDefaultColor() gd.Color { //gd:Line2D.get_default_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_default_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -390,7 +390,7 @@ func (self class) GetDefaultColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetGradient(color [1]gdclass.Gradient) {
+func (self class) SetGradient(color [1]gdclass.Gradient) { //gd:Line2D.set_gradient
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(color[0])[0])
 	var r_ret = callframe.Nil
@@ -399,7 +399,7 @@ func (self class) SetGradient(color [1]gdclass.Gradient) {
 }
 
 //go:nosplit
-func (self class) GetGradient() [1]gdclass.Gradient {
+func (self class) GetGradient() [1]gdclass.Gradient { //gd:Line2D.get_gradient
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_gradient, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -409,7 +409,7 @@ func (self class) GetGradient() [1]gdclass.Gradient {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Line2D.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -418,7 +418,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture2D {
+func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Line2D.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -428,7 +428,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetTextureMode(mode gdclass.Line2DLineTextureMode) {
+func (self class) SetTextureMode(mode gdclass.Line2DLineTextureMode) { //gd:Line2D.set_texture_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -437,7 +437,7 @@ func (self class) SetTextureMode(mode gdclass.Line2DLineTextureMode) {
 }
 
 //go:nosplit
-func (self class) GetTextureMode() gdclass.Line2DLineTextureMode {
+func (self class) GetTextureMode() gdclass.Line2DLineTextureMode { //gd:Line2D.get_texture_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Line2DLineTextureMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_texture_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -447,7 +447,7 @@ func (self class) GetTextureMode() gdclass.Line2DLineTextureMode {
 }
 
 //go:nosplit
-func (self class) SetJointMode(mode gdclass.Line2DLineJointMode) {
+func (self class) SetJointMode(mode gdclass.Line2DLineJointMode) { //gd:Line2D.set_joint_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -456,7 +456,7 @@ func (self class) SetJointMode(mode gdclass.Line2DLineJointMode) {
 }
 
 //go:nosplit
-func (self class) GetJointMode() gdclass.Line2DLineJointMode {
+func (self class) GetJointMode() gdclass.Line2DLineJointMode { //gd:Line2D.get_joint_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Line2DLineJointMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_joint_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -466,7 +466,7 @@ func (self class) GetJointMode() gdclass.Line2DLineJointMode {
 }
 
 //go:nosplit
-func (self class) SetBeginCapMode(mode gdclass.Line2DLineCapMode) {
+func (self class) SetBeginCapMode(mode gdclass.Line2DLineCapMode) { //gd:Line2D.set_begin_cap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -475,7 +475,7 @@ func (self class) SetBeginCapMode(mode gdclass.Line2DLineCapMode) {
 }
 
 //go:nosplit
-func (self class) GetBeginCapMode() gdclass.Line2DLineCapMode {
+func (self class) GetBeginCapMode() gdclass.Line2DLineCapMode { //gd:Line2D.get_begin_cap_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Line2DLineCapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_begin_cap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -485,7 +485,7 @@ func (self class) GetBeginCapMode() gdclass.Line2DLineCapMode {
 }
 
 //go:nosplit
-func (self class) SetEndCapMode(mode gdclass.Line2DLineCapMode) {
+func (self class) SetEndCapMode(mode gdclass.Line2DLineCapMode) { //gd:Line2D.set_end_cap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -494,7 +494,7 @@ func (self class) SetEndCapMode(mode gdclass.Line2DLineCapMode) {
 }
 
 //go:nosplit
-func (self class) GetEndCapMode() gdclass.Line2DLineCapMode {
+func (self class) GetEndCapMode() gdclass.Line2DLineCapMode { //gd:Line2D.get_end_cap_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.Line2DLineCapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_end_cap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -504,7 +504,7 @@ func (self class) GetEndCapMode() gdclass.Line2DLineCapMode {
 }
 
 //go:nosplit
-func (self class) SetSharpLimit(limit gd.Float) {
+func (self class) SetSharpLimit(limit gd.Float) { //gd:Line2D.set_sharp_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, limit)
 	var r_ret = callframe.Nil
@@ -513,7 +513,7 @@ func (self class) SetSharpLimit(limit gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSharpLimit() gd.Float {
+func (self class) GetSharpLimit() gd.Float { //gd:Line2D.get_sharp_limit
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_sharp_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -523,7 +523,7 @@ func (self class) GetSharpLimit() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRoundPrecision(precision gd.Int) {
+func (self class) SetRoundPrecision(precision gd.Int) { //gd:Line2D.set_round_precision
 	var frame = callframe.New()
 	callframe.Arg(frame, precision)
 	var r_ret = callframe.Nil
@@ -532,7 +532,7 @@ func (self class) SetRoundPrecision(precision gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRoundPrecision() gd.Int {
+func (self class) GetRoundPrecision() gd.Int { //gd:Line2D.get_round_precision
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_round_precision, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -542,7 +542,7 @@ func (self class) GetRoundPrecision() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetAntialiased(antialiased bool) {
+func (self class) SetAntialiased(antialiased bool) { //gd:Line2D.set_antialiased
 	var frame = callframe.New()
 	callframe.Arg(frame, antialiased)
 	var r_ret = callframe.Nil
@@ -551,7 +551,7 @@ func (self class) SetAntialiased(antialiased bool) {
 }
 
 //go:nosplit
-func (self class) GetAntialiased() bool {
+func (self class) GetAntialiased() bool { //gd:Line2D.get_antialiased
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_antialiased, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -589,7 +589,7 @@ func init() {
 	gdclass.Register("Line2D", func(ptr gd.Object) any { return [1]gdclass.Line2D{*(*gdclass.Line2D)(unsafe.Pointer(&ptr))} })
 }
 
-type LineJointMode = gdclass.Line2DLineJointMode
+type LineJointMode = gdclass.Line2DLineJointMode //gd:Line2D.LineJointMode
 
 const (
 	/*Makes the polyline's joints pointy, connecting the sides of the two segments by extending them until they intersect. If the rotation of a joint is too big (based on [member sharp_limit]), the joint falls back to [constant LINE_JOINT_BEVEL] to prevent very long miters.*/
@@ -600,7 +600,7 @@ const (
 	LineJointRound LineJointMode = 2
 )
 
-type LineCapMode = gdclass.Line2DLineCapMode
+type LineCapMode = gdclass.Line2DLineCapMode //gd:Line2D.LineCapMode
 
 const (
 	/*Draws no line cap.*/
@@ -611,7 +611,7 @@ const (
 	LineCapRound LineCapMode = 2
 )
 
-type LineTextureMode = gdclass.Line2DLineTextureMode
+type LineTextureMode = gdclass.Line2DLineTextureMode //gd:Line2D.LineTextureMode
 
 const (
 	/*Takes the left pixels of the texture and renders them over the whole polyline.*/

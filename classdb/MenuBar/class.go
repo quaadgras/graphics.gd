@@ -42,84 +42,84 @@ type Any interface {
 /*
 If [code]true[/code], shortcuts are disabled and cannot be used to trigger the button.
 */
-func (self Instance) SetDisableShortcuts(disabled bool) {
+func (self Instance) SetDisableShortcuts(disabled bool) { //gd:MenuBar.set_disable_shortcuts
 	class(self).SetDisableShortcuts(disabled)
 }
 
 /*
 Returns [code]true[/code], if system global menu is supported and used by this [MenuBar].
 */
-func (self Instance) IsNativeMenu() bool {
+func (self Instance) IsNativeMenu() bool { //gd:MenuBar.is_native_menu
 	return bool(class(self).IsNativeMenu())
 }
 
 /*
 Returns number of menu items.
 */
-func (self Instance) GetMenuCount() int {
+func (self Instance) GetMenuCount() int { //gd:MenuBar.get_menu_count
 	return int(int(class(self).GetMenuCount()))
 }
 
 /*
 Sets menu item title.
 */
-func (self Instance) SetMenuTitle(menu int, title string) {
+func (self Instance) SetMenuTitle(menu int, title string) { //gd:MenuBar.set_menu_title
 	class(self).SetMenuTitle(gd.Int(menu), gd.NewString(title))
 }
 
 /*
 Returns menu item title.
 */
-func (self Instance) GetMenuTitle(menu int) string {
+func (self Instance) GetMenuTitle(menu int) string { //gd:MenuBar.get_menu_title
 	return string(class(self).GetMenuTitle(gd.Int(menu)).String())
 }
 
 /*
 Sets menu item tooltip.
 */
-func (self Instance) SetMenuTooltip(menu int, tooltip string) {
+func (self Instance) SetMenuTooltip(menu int, tooltip string) { //gd:MenuBar.set_menu_tooltip
 	class(self).SetMenuTooltip(gd.Int(menu), gd.NewString(tooltip))
 }
 
 /*
 Returns menu item tooltip.
 */
-func (self Instance) GetMenuTooltip(menu int) string {
+func (self Instance) GetMenuTooltip(menu int) string { //gd:MenuBar.get_menu_tooltip
 	return string(class(self).GetMenuTooltip(gd.Int(menu)).String())
 }
 
 /*
 If [code]true[/code], menu item is disabled.
 */
-func (self Instance) SetMenuDisabled(menu int, disabled bool) {
+func (self Instance) SetMenuDisabled(menu int, disabled bool) { //gd:MenuBar.set_menu_disabled
 	class(self).SetMenuDisabled(gd.Int(menu), disabled)
 }
 
 /*
 Returns [code]true[/code], if menu item is disabled.
 */
-func (self Instance) IsMenuDisabled(menu int) bool {
+func (self Instance) IsMenuDisabled(menu int) bool { //gd:MenuBar.is_menu_disabled
 	return bool(class(self).IsMenuDisabled(gd.Int(menu)))
 }
 
 /*
 If [code]true[/code], menu item is hidden.
 */
-func (self Instance) SetMenuHidden(menu int, hidden bool) {
+func (self Instance) SetMenuHidden(menu int, hidden bool) { //gd:MenuBar.set_menu_hidden
 	class(self).SetMenuHidden(gd.Int(menu), hidden)
 }
 
 /*
 Returns [code]true[/code], if menu item is hidden.
 */
-func (self Instance) IsMenuHidden(menu int) bool {
+func (self Instance) IsMenuHidden(menu int) bool { //gd:MenuBar.is_menu_hidden
 	return bool(class(self).IsMenuHidden(gd.Int(menu)))
 }
 
 /*
 Returns [PopupMenu] associated with menu item.
 */
-func (self Instance) GetMenuPopup(menu int) [1]gdclass.PopupMenu {
+func (self Instance) GetMenuPopup(menu int) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
 	return [1]gdclass.PopupMenu(class(self).GetMenuPopup(gd.Int(menu)))
 }
 
@@ -190,7 +190,7 @@ func (self Instance) SetLanguage(value string) {
 }
 
 //go:nosplit
-func (self class) SetSwitchOnHover(enable bool) {
+func (self class) SetSwitchOnHover(enable bool) { //gd:MenuBar.set_switch_on_hover
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -199,7 +199,7 @@ func (self class) SetSwitchOnHover(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSwitchOnHover() bool {
+func (self class) IsSwitchOnHover() bool { //gd:MenuBar.is_switch_on_hover
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_switch_on_hover, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -212,7 +212,7 @@ func (self class) IsSwitchOnHover() bool {
 If [code]true[/code], shortcuts are disabled and cannot be used to trigger the button.
 */
 //go:nosplit
-func (self class) SetDisableShortcuts(disabled bool) {
+func (self class) SetDisableShortcuts(disabled bool) { //gd:MenuBar.set_disable_shortcuts
 	var frame = callframe.New()
 	callframe.Arg(frame, disabled)
 	var r_ret = callframe.Nil
@@ -221,7 +221,7 @@ func (self class) SetDisableShortcuts(disabled bool) {
 }
 
 //go:nosplit
-func (self class) SetPreferGlobalMenu(enabled bool) {
+func (self class) SetPreferGlobalMenu(enabled bool) { //gd:MenuBar.set_prefer_global_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -230,7 +230,7 @@ func (self class) SetPreferGlobalMenu(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsPreferGlobalMenu() bool {
+func (self class) IsPreferGlobalMenu() bool { //gd:MenuBar.is_prefer_global_menu
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_prefer_global_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -243,7 +243,7 @@ func (self class) IsPreferGlobalMenu() bool {
 Returns [code]true[/code], if system global menu is supported and used by this [MenuBar].
 */
 //go:nosplit
-func (self class) IsNativeMenu() bool {
+func (self class) IsNativeMenu() bool { //gd:MenuBar.is_native_menu
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_native_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -256,7 +256,7 @@ func (self class) IsNativeMenu() bool {
 Returns number of menu items.
 */
 //go:nosplit
-func (self class) GetMenuCount() gd.Int {
+func (self class) GetMenuCount() gd.Int { //gd:MenuBar.get_menu_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_menu_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -266,7 +266,7 @@ func (self class) GetMenuCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.ControlTextDirection) {
+func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //gd:MenuBar.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -275,7 +275,7 @@ func (self class) SetTextDirection(direction gdclass.ControlTextDirection) {
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.ControlTextDirection {
+func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:MenuBar.get_text_direction
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -285,7 +285,7 @@ func (self class) GetTextDirection() gdclass.ControlTextDirection {
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gd.String) {
+func (self class) SetLanguage(language gd.String) { //gd:MenuBar.set_language
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
 	var r_ret = callframe.Nil
@@ -294,7 +294,7 @@ func (self class) SetLanguage(language gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLanguage() gd.String {
+func (self class) GetLanguage() gd.String { //gd:MenuBar.get_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -304,7 +304,7 @@ func (self class) GetLanguage() gd.String {
 }
 
 //go:nosplit
-func (self class) SetFlat(enabled bool) {
+func (self class) SetFlat(enabled bool) { //gd:MenuBar.set_flat
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -313,7 +313,7 @@ func (self class) SetFlat(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsFlat() bool {
+func (self class) IsFlat() bool { //gd:MenuBar.is_flat
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_flat, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -323,7 +323,7 @@ func (self class) IsFlat() bool {
 }
 
 //go:nosplit
-func (self class) SetStartIndex(enabled gd.Int) {
+func (self class) SetStartIndex(enabled gd.Int) { //gd:MenuBar.set_start_index
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -332,7 +332,7 @@ func (self class) SetStartIndex(enabled gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetStartIndex() gd.Int {
+func (self class) GetStartIndex() gd.Int { //gd:MenuBar.get_start_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_start_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -345,7 +345,7 @@ func (self class) GetStartIndex() gd.Int {
 Sets menu item title.
 */
 //go:nosplit
-func (self class) SetMenuTitle(menu gd.Int, title gd.String) {
+func (self class) SetMenuTitle(menu gd.Int, title gd.String) { //gd:MenuBar.set_menu_title
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	callframe.Arg(frame, pointers.Get(title))
@@ -358,7 +358,7 @@ func (self class) SetMenuTitle(menu gd.Int, title gd.String) {
 Returns menu item title.
 */
 //go:nosplit
-func (self class) GetMenuTitle(menu gd.Int) gd.String {
+func (self class) GetMenuTitle(menu gd.Int) gd.String { //gd:MenuBar.get_menu_title
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -372,7 +372,7 @@ func (self class) GetMenuTitle(menu gd.Int) gd.String {
 Sets menu item tooltip.
 */
 //go:nosplit
-func (self class) SetMenuTooltip(menu gd.Int, tooltip gd.String) {
+func (self class) SetMenuTooltip(menu gd.Int, tooltip gd.String) { //gd:MenuBar.set_menu_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	callframe.Arg(frame, pointers.Get(tooltip))
@@ -385,7 +385,7 @@ func (self class) SetMenuTooltip(menu gd.Int, tooltip gd.String) {
 Returns menu item tooltip.
 */
 //go:nosplit
-func (self class) GetMenuTooltip(menu gd.Int) gd.String {
+func (self class) GetMenuTooltip(menu gd.Int) gd.String { //gd:MenuBar.get_menu_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -399,7 +399,7 @@ func (self class) GetMenuTooltip(menu gd.Int) gd.String {
 If [code]true[/code], menu item is disabled.
 */
 //go:nosplit
-func (self class) SetMenuDisabled(menu gd.Int, disabled bool) {
+func (self class) SetMenuDisabled(menu gd.Int, disabled bool) { //gd:MenuBar.set_menu_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	callframe.Arg(frame, disabled)
@@ -412,7 +412,7 @@ func (self class) SetMenuDisabled(menu gd.Int, disabled bool) {
 Returns [code]true[/code], if menu item is disabled.
 */
 //go:nosplit
-func (self class) IsMenuDisabled(menu gd.Int) bool {
+func (self class) IsMenuDisabled(menu gd.Int) bool { //gd:MenuBar.is_menu_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[bool](frame)
@@ -426,7 +426,7 @@ func (self class) IsMenuDisabled(menu gd.Int) bool {
 If [code]true[/code], menu item is hidden.
 */
 //go:nosplit
-func (self class) SetMenuHidden(menu gd.Int, hidden bool) {
+func (self class) SetMenuHidden(menu gd.Int, hidden bool) { //gd:MenuBar.set_menu_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	callframe.Arg(frame, hidden)
@@ -439,7 +439,7 @@ func (self class) SetMenuHidden(menu gd.Int, hidden bool) {
 Returns [code]true[/code], if menu item is hidden.
 */
 //go:nosplit
-func (self class) IsMenuHidden(menu gd.Int) bool {
+func (self class) IsMenuHidden(menu gd.Int) bool { //gd:MenuBar.is_menu_hidden
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[bool](frame)
@@ -453,7 +453,7 @@ func (self class) IsMenuHidden(menu gd.Int) bool {
 Returns [PopupMenu] associated with menu item.
 */
 //go:nosplit
-func (self class) GetMenuPopup(menu gd.Int) [1]gdclass.PopupMenu {
+func (self class) GetMenuPopup(menu gd.Int) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
 	var frame = callframe.New()
 	callframe.Arg(frame, menu)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

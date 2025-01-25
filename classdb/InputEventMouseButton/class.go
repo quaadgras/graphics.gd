@@ -95,7 +95,7 @@ func (self Instance) SetDoubleClick(value bool) {
 }
 
 //go:nosplit
-func (self class) SetFactor(factor gd.Float) {
+func (self class) SetFactor(factor gd.Float) { //gd:InputEventMouseButton.set_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, factor)
 	var r_ret = callframe.Nil
@@ -104,7 +104,7 @@ func (self class) SetFactor(factor gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFactor() gd.Float {
+func (self class) GetFactor() gd.Float { //gd:InputEventMouseButton.get_factor
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseButton.Bind_get_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -114,7 +114,7 @@ func (self class) GetFactor() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetButtonIndex(button_index MouseButton) {
+func (self class) SetButtonIndex(button_index MouseButton) { //gd:InputEventMouseButton.set_button_index
 	var frame = callframe.New()
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Nil
@@ -123,7 +123,7 @@ func (self class) SetButtonIndex(button_index MouseButton) {
 }
 
 //go:nosplit
-func (self class) GetButtonIndex() MouseButton {
+func (self class) GetButtonIndex() MouseButton { //gd:InputEventMouseButton.get_button_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[MouseButton](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseButton.Bind_get_button_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -133,7 +133,7 @@ func (self class) GetButtonIndex() MouseButton {
 }
 
 //go:nosplit
-func (self class) SetPressed(pressed bool) {
+func (self class) SetPressed(pressed bool) { //gd:InputEventMouseButton.set_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -142,7 +142,7 @@ func (self class) SetPressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) SetCanceled(canceled bool) {
+func (self class) SetCanceled(canceled bool) { //gd:InputEventMouseButton.set_canceled
 	var frame = callframe.New()
 	callframe.Arg(frame, canceled)
 	var r_ret = callframe.Nil
@@ -151,7 +151,7 @@ func (self class) SetCanceled(canceled bool) {
 }
 
 //go:nosplit
-func (self class) SetDoubleClick(double_click bool) {
+func (self class) SetDoubleClick(double_click bool) { //gd:InputEventMouseButton.set_double_click
 	var frame = callframe.New()
 	callframe.Arg(frame, double_click)
 	var r_ret = callframe.Nil
@@ -160,7 +160,7 @@ func (self class) SetDoubleClick(double_click bool) {
 }
 
 //go:nosplit
-func (self class) IsDoubleClick() bool {
+func (self class) IsDoubleClick() bool { //gd:InputEventMouseButton.is_double_click
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseButton.Bind_is_double_click, self.AsObject(), frame.Array(0), r_ret.Addr())

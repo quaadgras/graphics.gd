@@ -116,7 +116,7 @@ func (self Instance) SetRepeat(value gdclass.GradientTexture2DRepeat) {
 }
 
 //go:nosplit
-func (self class) SetGradient(gradient [1]gdclass.Gradient) {
+func (self class) SetGradient(gradient [1]gdclass.Gradient) { //gd:GradientTexture2D.set_gradient
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gradient[0])[0])
 	var r_ret = callframe.Nil
@@ -125,7 +125,7 @@ func (self class) SetGradient(gradient [1]gdclass.Gradient) {
 }
 
 //go:nosplit
-func (self class) GetGradient() [1]gdclass.Gradient {
+func (self class) GetGradient() [1]gdclass.Gradient { //gd:GradientTexture2D.get_gradient
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_gradient, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func (self class) GetGradient() [1]gdclass.Gradient {
 }
 
 //go:nosplit
-func (self class) SetWidth(width gd.Int) {
+func (self class) SetWidth(width gd.Int) { //gd:GradientTexture2D.set_width
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetWidth(width gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Int) {
+func (self class) SetHeight(height gd.Int) { //gd:GradientTexture2D.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -153,7 +153,7 @@ func (self class) SetHeight(height gd.Int) {
 }
 
 //go:nosplit
-func (self class) SetUseHdr(enabled bool) {
+func (self class) SetUseHdr(enabled bool) { //gd:GradientTexture2D.set_use_hdr
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetUseHdr(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingHdr() bool {
+func (self class) IsUsingHdr() bool { //gd:GradientTexture2D.is_using_hdr
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_is_using_hdr, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func (self class) IsUsingHdr() bool {
 }
 
 //go:nosplit
-func (self class) SetFill(fill gdclass.GradientTexture2DFill) {
+func (self class) SetFill(fill gdclass.GradientTexture2DFill) { //gd:GradientTexture2D.set_fill
 	var frame = callframe.New()
 	callframe.Arg(frame, fill)
 	var r_ret = callframe.Nil
@@ -181,7 +181,7 @@ func (self class) SetFill(fill gdclass.GradientTexture2DFill) {
 }
 
 //go:nosplit
-func (self class) GetFill() gdclass.GradientTexture2DFill {
+func (self class) GetFill() gdclass.GradientTexture2DFill { //gd:GradientTexture2D.get_fill
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GradientTexture2DFill](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -191,7 +191,7 @@ func (self class) GetFill() gdclass.GradientTexture2DFill {
 }
 
 //go:nosplit
-func (self class) SetFillFrom(fill_from gd.Vector2) {
+func (self class) SetFillFrom(fill_from gd.Vector2) { //gd:GradientTexture2D.set_fill_from
 	var frame = callframe.New()
 	callframe.Arg(frame, fill_from)
 	var r_ret = callframe.Nil
@@ -200,7 +200,7 @@ func (self class) SetFillFrom(fill_from gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetFillFrom() gd.Vector2 {
+func (self class) GetFillFrom() gd.Vector2 { //gd:GradientTexture2D.get_fill_from
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_fill_from, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -210,7 +210,7 @@ func (self class) GetFillFrom() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetFillTo(fill_to gd.Vector2) {
+func (self class) SetFillTo(fill_to gd.Vector2) { //gd:GradientTexture2D.set_fill_to
 	var frame = callframe.New()
 	callframe.Arg(frame, fill_to)
 	var r_ret = callframe.Nil
@@ -219,7 +219,7 @@ func (self class) SetFillTo(fill_to gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetFillTo() gd.Vector2 {
+func (self class) GetFillTo() gd.Vector2 { //gd:GradientTexture2D.get_fill_to
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_fill_to, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) GetFillTo() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetRepeat(repeat gdclass.GradientTexture2DRepeat) {
+func (self class) SetRepeat(repeat gdclass.GradientTexture2DRepeat) { //gd:GradientTexture2D.set_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, repeat)
 	var r_ret = callframe.Nil
@@ -238,7 +238,7 @@ func (self class) SetRepeat(repeat gdclass.GradientTexture2DRepeat) {
 }
 
 //go:nosplit
-func (self class) GetRepeat() gdclass.GradientTexture2DRepeat {
+func (self class) GetRepeat() gdclass.GradientTexture2DRepeat { //gd:GradientTexture2D.get_repeat
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GradientTexture2DRepeat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -290,7 +290,7 @@ func init() {
 	})
 }
 
-type Fill = gdclass.GradientTexture2DFill
+type Fill = gdclass.GradientTexture2DFill //gd:GradientTexture2D.Fill
 
 const (
 	/*The colors are linearly interpolated in a straight line.*/
@@ -301,7 +301,7 @@ const (
 	FillSquare Fill = 2
 )
 
-type Repeat = gdclass.GradientTexture2DRepeat
+type Repeat = gdclass.GradientTexture2DRepeat //gd:GradientTexture2D.Repeat
 
 const (
 	/*The gradient fill is restricted to the range defined by [member fill_from] to [member fill_to] offsets.*/

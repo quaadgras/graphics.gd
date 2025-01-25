@@ -105,7 +105,7 @@ func (self Instance) SetSampleMasks(value []int) {
 }
 
 //go:nosplit
-func (self class) SetSampleCount(p_member gdclass.RenderingDeviceTextureSamples) {
+func (self class) SetSampleCount(p_member gdclass.RenderingDeviceTextureSamples) { //gd:RDPipelineMultisampleState.set_sample_count
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -114,7 +114,7 @@ func (self class) SetSampleCount(p_member gdclass.RenderingDeviceTextureSamples)
 }
 
 //go:nosplit
-func (self class) GetSampleCount() gdclass.RenderingDeviceTextureSamples {
+func (self class) GetSampleCount() gdclass.RenderingDeviceTextureSamples { //gd:RDPipelineMultisampleState.get_sample_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureSamples](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_sample_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -124,7 +124,7 @@ func (self class) GetSampleCount() gdclass.RenderingDeviceTextureSamples {
 }
 
 //go:nosplit
-func (self class) SetEnableSampleShading(p_member bool) {
+func (self class) SetEnableSampleShading(p_member bool) { //gd:RDPipelineMultisampleState.set_enable_sample_shading
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -133,7 +133,7 @@ func (self class) SetEnableSampleShading(p_member bool) {
 }
 
 //go:nosplit
-func (self class) GetEnableSampleShading() bool {
+func (self class) GetEnableSampleShading() bool { //gd:RDPipelineMultisampleState.get_enable_sample_shading
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_enable_sample_shading, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -143,7 +143,7 @@ func (self class) GetEnableSampleShading() bool {
 }
 
 //go:nosplit
-func (self class) SetMinSampleShading(p_member gd.Float) {
+func (self class) SetMinSampleShading(p_member gd.Float) { //gd:RDPipelineMultisampleState.set_min_sample_shading
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -152,7 +152,7 @@ func (self class) SetMinSampleShading(p_member gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMinSampleShading() gd.Float {
+func (self class) GetMinSampleShading() gd.Float { //gd:RDPipelineMultisampleState.get_min_sample_shading
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_min_sample_shading, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -162,7 +162,7 @@ func (self class) GetMinSampleShading() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEnableAlphaToCoverage(p_member bool) {
+func (self class) SetEnableAlphaToCoverage(p_member bool) { //gd:RDPipelineMultisampleState.set_enable_alpha_to_coverage
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -171,7 +171,7 @@ func (self class) SetEnableAlphaToCoverage(p_member bool) {
 }
 
 //go:nosplit
-func (self class) GetEnableAlphaToCoverage() bool {
+func (self class) GetEnableAlphaToCoverage() bool { //gd:RDPipelineMultisampleState.get_enable_alpha_to_coverage
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_enable_alpha_to_coverage, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -181,7 +181,7 @@ func (self class) GetEnableAlphaToCoverage() bool {
 }
 
 //go:nosplit
-func (self class) SetEnableAlphaToOne(p_member bool) {
+func (self class) SetEnableAlphaToOne(p_member bool) { //gd:RDPipelineMultisampleState.set_enable_alpha_to_one
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -190,7 +190,7 @@ func (self class) SetEnableAlphaToOne(p_member bool) {
 }
 
 //go:nosplit
-func (self class) GetEnableAlphaToOne() bool {
+func (self class) GetEnableAlphaToOne() bool { //gd:RDPipelineMultisampleState.get_enable_alpha_to_one
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_enable_alpha_to_one, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -200,7 +200,7 @@ func (self class) GetEnableAlphaToOne() bool {
 }
 
 //go:nosplit
-func (self class) SetSampleMasks(masks Array.Contains[gd.Int]) {
+func (self class) SetSampleMasks(masks Array.Contains[gd.Int]) { //gd:RDPipelineMultisampleState.set_sample_masks
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(masks)))
 	var r_ret = callframe.Nil
@@ -209,7 +209,7 @@ func (self class) SetSampleMasks(masks Array.Contains[gd.Int]) {
 }
 
 //go:nosplit
-func (self class) GetSampleMasks() Array.Contains[gd.Int] {
+func (self class) GetSampleMasks() Array.Contains[gd.Int] { //gd:RDPipelineMultisampleState.get_sample_masks
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_sample_masks, self.AsObject(), frame.Array(0), r_ret.Addr())

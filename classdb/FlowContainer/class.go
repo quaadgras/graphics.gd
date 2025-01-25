@@ -43,7 +43,7 @@ type Any interface {
 /*
 Returns the current line count.
 */
-func (self Instance) GetLineCount() int {
+func (self Instance) GetLineCount() int { //gd:FlowContainer.get_line_count
 	return int(int(class(self).GetLineCount()))
 }
 
@@ -101,7 +101,7 @@ func (self Instance) SetReverseFill(value bool) {
 Returns the current line count.
 */
 //go:nosplit
-func (self class) GetLineCount() gd.Int {
+func (self class) GetLineCount() gd.Int { //gd:FlowContainer.get_line_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -111,7 +111,7 @@ func (self class) GetLineCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetAlignment(alignment gdclass.FlowContainerAlignmentMode) {
+func (self class) SetAlignment(alignment gdclass.FlowContainerAlignmentMode) { //gd:FlowContainer.set_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -120,7 +120,7 @@ func (self class) SetAlignment(alignment gdclass.FlowContainerAlignmentMode) {
 }
 
 //go:nosplit
-func (self class) GetAlignment() gdclass.FlowContainerAlignmentMode {
+func (self class) GetAlignment() gdclass.FlowContainerAlignmentMode { //gd:FlowContainer.get_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FlowContainerAlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,7 +130,7 @@ func (self class) GetAlignment() gdclass.FlowContainerAlignmentMode {
 }
 
 //go:nosplit
-func (self class) SetLastWrapAlignment(last_wrap_alignment gdclass.FlowContainerLastWrapAlignmentMode) {
+func (self class) SetLastWrapAlignment(last_wrap_alignment gdclass.FlowContainerLastWrapAlignmentMode) { //gd:FlowContainer.set_last_wrap_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, last_wrap_alignment)
 	var r_ret = callframe.Nil
@@ -139,7 +139,7 @@ func (self class) SetLastWrapAlignment(last_wrap_alignment gdclass.FlowContainer
 }
 
 //go:nosplit
-func (self class) GetLastWrapAlignment() gdclass.FlowContainerLastWrapAlignmentMode {
+func (self class) GetLastWrapAlignment() gdclass.FlowContainerLastWrapAlignmentMode { //gd:FlowContainer.get_last_wrap_alignment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.FlowContainerLastWrapAlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_last_wrap_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ func (self class) GetLastWrapAlignment() gdclass.FlowContainerLastWrapAlignmentM
 }
 
 //go:nosplit
-func (self class) SetVertical(vertical bool) {
+func (self class) SetVertical(vertical bool) { //gd:FlowContainer.set_vertical
 	var frame = callframe.New()
 	callframe.Arg(frame, vertical)
 	var r_ret = callframe.Nil
@@ -158,7 +158,7 @@ func (self class) SetVertical(vertical bool) {
 }
 
 //go:nosplit
-func (self class) IsVertical() bool {
+func (self class) IsVertical() bool { //gd:FlowContainer.is_vertical
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_is_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -168,7 +168,7 @@ func (self class) IsVertical() bool {
 }
 
 //go:nosplit
-func (self class) SetReverseFill(reverse_fill bool) {
+func (self class) SetReverseFill(reverse_fill bool) { //gd:FlowContainer.set_reverse_fill
 	var frame = callframe.New()
 	callframe.Arg(frame, reverse_fill)
 	var r_ret = callframe.Nil
@@ -177,7 +177,7 @@ func (self class) SetReverseFill(reverse_fill bool) {
 }
 
 //go:nosplit
-func (self class) IsReverseFill() bool {
+func (self class) IsReverseFill() bool { //gd:FlowContainer.is_reverse_fill
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_is_reverse_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -225,7 +225,7 @@ func init() {
 	})
 }
 
-type AlignmentMode = gdclass.FlowContainerAlignmentMode
+type AlignmentMode = gdclass.FlowContainerAlignmentMode //gd:FlowContainer.AlignmentMode
 
 const (
 	/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/
@@ -236,7 +236,7 @@ const (
 	AlignmentEnd AlignmentMode = 2
 )
 
-type LastWrapAlignmentMode = gdclass.FlowContainerLastWrapAlignmentMode
+type LastWrapAlignmentMode = gdclass.FlowContainerLastWrapAlignmentMode //gd:FlowContainer.LastWrapAlignmentMode
 
 const (
 	/*The last partially filled row or column will wrap aligned to the previous row or column in accordance with [member alignment].*/

@@ -74,7 +74,7 @@ func (self Instance) SetKeepScale(value bool) {
 }
 
 //go:nosplit
-func (self class) SetBillboardType(billboard_type gdclass.VisualShaderNodeBillboardBillboardType) {
+func (self class) SetBillboardType(billboard_type gdclass.VisualShaderNodeBillboardBillboardType) { //gd:VisualShaderNodeBillboard.set_billboard_type
 	var frame = callframe.New()
 	callframe.Arg(frame, billboard_type)
 	var r_ret = callframe.Nil
@@ -83,7 +83,7 @@ func (self class) SetBillboardType(billboard_type gdclass.VisualShaderNodeBillbo
 }
 
 //go:nosplit
-func (self class) GetBillboardType() gdclass.VisualShaderNodeBillboardBillboardType {
+func (self class) GetBillboardType() gdclass.VisualShaderNodeBillboardBillboardType { //gd:VisualShaderNodeBillboard.get_billboard_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeBillboardBillboardType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeBillboard.Bind_get_billboard_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -93,7 +93,7 @@ func (self class) GetBillboardType() gdclass.VisualShaderNodeBillboardBillboardT
 }
 
 //go:nosplit
-func (self class) SetKeepScaleEnabled(enabled bool) {
+func (self class) SetKeepScaleEnabled(enabled bool) { //gd:VisualShaderNodeBillboard.set_keep_scale_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -102,7 +102,7 @@ func (self class) SetKeepScaleEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsKeepScaleEnabled() bool {
+func (self class) IsKeepScaleEnabled() bool { //gd:VisualShaderNodeBillboard.is_keep_scale_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeBillboard.Bind_is_keep_scale_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func init() {
 	})
 }
 
-type BillboardType = gdclass.VisualShaderNodeBillboardBillboardType
+type BillboardType = gdclass.VisualShaderNodeBillboardBillboardType //gd:VisualShaderNodeBillboard.BillboardType
 
 const (
 	/*Billboarding is disabled and the node does nothing.*/

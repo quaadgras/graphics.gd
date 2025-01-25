@@ -116,7 +116,7 @@ func (self Instance) SetCapBottom(value bool) {
 }
 
 //go:nosplit
-func (self class) SetTopRadius(radius gd.Float) {
+func (self class) SetTopRadius(radius gd.Float) { //gd:CylinderMesh.set_top_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -125,7 +125,7 @@ func (self class) SetTopRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTopRadius() gd.Float {
+func (self class) GetTopRadius() gd.Float { //gd:CylinderMesh.get_top_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CylinderMesh.Bind_get_top_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func (self class) GetTopRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBottomRadius(radius gd.Float) {
+func (self class) SetBottomRadius(radius gd.Float) { //gd:CylinderMesh.set_bottom_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetBottomRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBottomRadius() gd.Float {
+func (self class) GetBottomRadius() gd.Float { //gd:CylinderMesh.get_bottom_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CylinderMesh.Bind_get_bottom_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -154,7 +154,7 @@ func (self class) GetBottomRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetHeight(height gd.Float) {
+func (self class) SetHeight(height gd.Float) { //gd:CylinderMesh.set_height
 	var frame = callframe.New()
 	callframe.Arg(frame, height)
 	var r_ret = callframe.Nil
@@ -163,7 +163,7 @@ func (self class) SetHeight(height gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetHeight() gd.Float {
+func (self class) GetHeight() gd.Float { //gd:CylinderMesh.get_height
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CylinderMesh.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -173,7 +173,7 @@ func (self class) GetHeight() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRadialSegments(segments gd.Int) {
+func (self class) SetRadialSegments(segments gd.Int) { //gd:CylinderMesh.set_radial_segments
 	var frame = callframe.New()
 	callframe.Arg(frame, segments)
 	var r_ret = callframe.Nil
@@ -182,7 +182,7 @@ func (self class) SetRadialSegments(segments gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRadialSegments() gd.Int {
+func (self class) GetRadialSegments() gd.Int { //gd:CylinderMesh.get_radial_segments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CylinderMesh.Bind_get_radial_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -192,7 +192,7 @@ func (self class) GetRadialSegments() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetRings(rings gd.Int) {
+func (self class) SetRings(rings gd.Int) { //gd:CylinderMesh.set_rings
 	var frame = callframe.New()
 	callframe.Arg(frame, rings)
 	var r_ret = callframe.Nil
@@ -201,7 +201,7 @@ func (self class) SetRings(rings gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRings() gd.Int {
+func (self class) GetRings() gd.Int { //gd:CylinderMesh.get_rings
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CylinderMesh.Bind_get_rings, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func (self class) GetRings() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetCapTop(cap_top bool) {
+func (self class) SetCapTop(cap_top bool) { //gd:CylinderMesh.set_cap_top
 	var frame = callframe.New()
 	callframe.Arg(frame, cap_top)
 	var r_ret = callframe.Nil
@@ -220,7 +220,7 @@ func (self class) SetCapTop(cap_top bool) {
 }
 
 //go:nosplit
-func (self class) IsCapTop() bool {
+func (self class) IsCapTop() bool { //gd:CylinderMesh.is_cap_top
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CylinderMesh.Bind_is_cap_top, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -230,7 +230,7 @@ func (self class) IsCapTop() bool {
 }
 
 //go:nosplit
-func (self class) SetCapBottom(cap_bottom bool) {
+func (self class) SetCapBottom(cap_bottom bool) { //gd:CylinderMesh.set_cap_bottom
 	var frame = callframe.New()
 	callframe.Arg(frame, cap_bottom)
 	var r_ret = callframe.Nil
@@ -239,7 +239,7 @@ func (self class) SetCapBottom(cap_bottom bool) {
 }
 
 //go:nosplit
-func (self class) IsCapBottom() bool {
+func (self class) IsCapBottom() bool { //gd:CylinderMesh.is_cap_bottom
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CylinderMesh.Bind_is_cap_bottom, self.AsObject(), frame.Array(0), r_ret.Addr())

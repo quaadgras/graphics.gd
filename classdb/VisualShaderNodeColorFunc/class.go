@@ -66,7 +66,7 @@ func (self Instance) SetFunction(value gdclass.VisualShaderNodeColorFuncFunction
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeColorFuncFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeColorFuncFunction) { //gd:VisualShaderNodeColorFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeColorFuncFunction) {
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeColorFuncFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeColorFuncFunction { //gd:VisualShaderNodeColorFunc.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeColorFuncFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeColorFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeColorFuncFunction
+type Function = gdclass.VisualShaderNodeColorFuncFunction //gd:VisualShaderNodeColorFunc.Function
 
 const (
 	/*Converts the color to grayscale using the following formula:

@@ -40,7 +40,7 @@ func singleton() {
 /*
 Returns a reference to the default engine [Theme]. This theme resource is responsible for the out-of-the-box look of [Control] nodes and cannot be overridden.
 */
-func GetDefaultTheme() [1]gdclass.Theme {
+func GetDefaultTheme() [1]gdclass.Theme { //gd:ThemeDB.get_default_theme
 	once.Do(singleton)
 	return [1]gdclass.Theme(class(self).GetDefaultTheme())
 }
@@ -49,7 +49,7 @@ func GetDefaultTheme() [1]gdclass.Theme {
 Returns a reference to the custom project [Theme]. This theme resources allows to override the default engine theme for every control node in the project.
 To set the project theme, see [member ProjectSettings.gui/theme/custom].
 */
-func GetProjectTheme() [1]gdclass.Theme {
+func GetProjectTheme() [1]gdclass.Theme { //gd:ThemeDB.get_project_theme
 	once.Do(singleton)
 	return [1]gdclass.Theme(class(self).GetProjectTheme())
 }
@@ -108,7 +108,7 @@ func SetFallbackStylebox(value [1]gdclass.StyleBox) {
 Returns a reference to the default engine [Theme]. This theme resource is responsible for the out-of-the-box look of [Control] nodes and cannot be overridden.
 */
 //go:nosplit
-func (self class) GetDefaultTheme() [1]gdclass.Theme {
+func (self class) GetDefaultTheme() [1]gdclass.Theme { //gd:ThemeDB.get_default_theme
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_default_theme, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -122,7 +122,7 @@ Returns a reference to the custom project [Theme]. This theme resources allows t
 To set the project theme, see [member ProjectSettings.gui/theme/custom].
 */
 //go:nosplit
-func (self class) GetProjectTheme() [1]gdclass.Theme {
+func (self class) GetProjectTheme() [1]gdclass.Theme { //gd:ThemeDB.get_project_theme
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_project_theme, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -132,7 +132,7 @@ func (self class) GetProjectTheme() [1]gdclass.Theme {
 }
 
 //go:nosplit
-func (self class) SetFallbackBaseScale(base_scale gd.Float) {
+func (self class) SetFallbackBaseScale(base_scale gd.Float) { //gd:ThemeDB.set_fallback_base_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, base_scale)
 	var r_ret = callframe.Nil
@@ -141,7 +141,7 @@ func (self class) SetFallbackBaseScale(base_scale gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFallbackBaseScale() gd.Float {
+func (self class) GetFallbackBaseScale() gd.Float { //gd:ThemeDB.get_fallback_base_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_base_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -151,7 +151,7 @@ func (self class) GetFallbackBaseScale() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetFallbackFont(font [1]gdclass.Font) {
+func (self class) SetFallbackFont(font [1]gdclass.Font) { //gd:ThemeDB.set_fallback_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	var r_ret = callframe.Nil
@@ -160,7 +160,7 @@ func (self class) SetFallbackFont(font [1]gdclass.Font) {
 }
 
 //go:nosplit
-func (self class) GetFallbackFont() [1]gdclass.Font {
+func (self class) GetFallbackFont() [1]gdclass.Font { //gd:ThemeDB.get_fallback_font
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_font, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -170,7 +170,7 @@ func (self class) GetFallbackFont() [1]gdclass.Font {
 }
 
 //go:nosplit
-func (self class) SetFallbackFontSize(font_size gd.Int) {
+func (self class) SetFallbackFontSize(font_size gd.Int) { //gd:ThemeDB.set_fallback_font_size
 	var frame = callframe.New()
 	callframe.Arg(frame, font_size)
 	var r_ret = callframe.Nil
@@ -179,7 +179,7 @@ func (self class) SetFallbackFontSize(font_size gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetFallbackFontSize() gd.Int {
+func (self class) GetFallbackFontSize() gd.Int { //gd:ThemeDB.get_fallback_font_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -189,7 +189,7 @@ func (self class) GetFallbackFontSize() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetFallbackIcon(icon [1]gdclass.Texture2D) {
+func (self class) SetFallbackIcon(icon [1]gdclass.Texture2D) { //gd:ThemeDB.set_fallback_icon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
 	var r_ret = callframe.Nil
@@ -198,7 +198,7 @@ func (self class) SetFallbackIcon(icon [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetFallbackIcon() [1]gdclass.Texture2D {
+func (self class) GetFallbackIcon() [1]gdclass.Texture2D { //gd:ThemeDB.get_fallback_icon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -208,7 +208,7 @@ func (self class) GetFallbackIcon() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetFallbackStylebox(stylebox [1]gdclass.StyleBox) {
+func (self class) SetFallbackStylebox(stylebox [1]gdclass.StyleBox) { //gd:ThemeDB.set_fallback_stylebox
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stylebox[0])[0])
 	var r_ret = callframe.Nil
@@ -217,7 +217,7 @@ func (self class) SetFallbackStylebox(stylebox [1]gdclass.StyleBox) {
 }
 
 //go:nosplit
-func (self class) GetFallbackStylebox() [1]gdclass.StyleBox {
+func (self class) GetFallbackStylebox() [1]gdclass.StyleBox { //gd:ThemeDB.get_fallback_stylebox
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_fallback_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())

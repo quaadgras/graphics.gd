@@ -67,7 +67,7 @@ func (self Instance) SetFunction(value gdclass.VisualShaderNodeVectorFuncFunctio
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeVectorFuncFunction) {
+func (self class) SetFunction(fn gdclass.VisualShaderNodeVectorFuncFunction) { //gd:VisualShaderNodeVectorFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeVectorFuncFunction) {
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeVectorFuncFunction {
+func (self class) GetFunction() gdclass.VisualShaderNodeVectorFuncFunction { //gd:VisualShaderNodeVectorFunc.get_function
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeVectorFuncFunction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,7 +134,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeVectorFuncFunction
+type Function = gdclass.VisualShaderNodeVectorFuncFunction //gd:VisualShaderNodeVectorFunc.Function
 
 const (
 	/*Normalizes the vector so that it has a length of [code]1[/code] but points in the same direction.*/

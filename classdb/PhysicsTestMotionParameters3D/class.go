@@ -124,7 +124,7 @@ func (self Instance) SetRecoveryAsCollision(value bool) {
 }
 
 //go:nosplit
-func (self class) GetFrom() gd.Transform3D {
+func (self class) GetFrom() gd.Transform3D { //gd:PhysicsTestMotionParameters3D.get_from
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_get_from, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -134,7 +134,7 @@ func (self class) GetFrom() gd.Transform3D {
 }
 
 //go:nosplit
-func (self class) SetFrom(from gd.Transform3D) {
+func (self class) SetFrom(from gd.Transform3D) { //gd:PhysicsTestMotionParameters3D.set_from
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	var r_ret = callframe.Nil
@@ -143,7 +143,7 @@ func (self class) SetFrom(from gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) GetMotion() gd.Vector3 {
+func (self class) GetMotion() gd.Vector3 { //gd:PhysicsTestMotionParameters3D.get_motion
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_get_motion, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -153,7 +153,7 @@ func (self class) GetMotion() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetMotion(motion gd.Vector3) {
+func (self class) SetMotion(motion gd.Vector3) { //gd:PhysicsTestMotionParameters3D.set_motion
 	var frame = callframe.New()
 	callframe.Arg(frame, motion)
 	var r_ret = callframe.Nil
@@ -162,7 +162,7 @@ func (self class) SetMotion(motion gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetMargin() gd.Float {
+func (self class) GetMargin() gd.Float { //gd:PhysicsTestMotionParameters3D.get_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -172,7 +172,7 @@ func (self class) GetMargin() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetMargin(margin gd.Float) {
+func (self class) SetMargin(margin gd.Float) { //gd:PhysicsTestMotionParameters3D.set_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Nil
@@ -181,7 +181,7 @@ func (self class) SetMargin(margin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetMaxCollisions() gd.Int {
+func (self class) GetMaxCollisions() gd.Int { //gd:PhysicsTestMotionParameters3D.get_max_collisions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_get_max_collisions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -191,7 +191,7 @@ func (self class) GetMaxCollisions() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMaxCollisions(max_collisions gd.Int) {
+func (self class) SetMaxCollisions(max_collisions gd.Int) { //gd:PhysicsTestMotionParameters3D.set_max_collisions
 	var frame = callframe.New()
 	callframe.Arg(frame, max_collisions)
 	var r_ret = callframe.Nil
@@ -200,7 +200,7 @@ func (self class) SetMaxCollisions(max_collisions gd.Int) {
 }
 
 //go:nosplit
-func (self class) IsCollideSeparationRayEnabled() bool {
+func (self class) IsCollideSeparationRayEnabled() bool { //gd:PhysicsTestMotionParameters3D.is_collide_separation_ray_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_is_collide_separation_ray_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -210,7 +210,7 @@ func (self class) IsCollideSeparationRayEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetCollideSeparationRayEnabled(enabled bool) {
+func (self class) SetCollideSeparationRayEnabled(enabled bool) { //gd:PhysicsTestMotionParameters3D.set_collide_separation_ray_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -219,7 +219,7 @@ func (self class) SetCollideSeparationRayEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetExcludeBodies() Array.Contains[gd.RID] {
+func (self class) GetExcludeBodies() Array.Contains[gd.RID] { //gd:PhysicsTestMotionParameters3D.get_exclude_bodies
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_get_exclude_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -229,7 +229,7 @@ func (self class) GetExcludeBodies() Array.Contains[gd.RID] {
 }
 
 //go:nosplit
-func (self class) SetExcludeBodies(exclude_list Array.Contains[gd.RID]) {
+func (self class) SetExcludeBodies(exclude_list Array.Contains[gd.RID]) { //gd:PhysicsTestMotionParameters3D.set_exclude_bodies
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude_list)))
 	var r_ret = callframe.Nil
@@ -238,7 +238,7 @@ func (self class) SetExcludeBodies(exclude_list Array.Contains[gd.RID]) {
 }
 
 //go:nosplit
-func (self class) GetExcludeObjects() Array.Contains[gd.Int] {
+func (self class) GetExcludeObjects() Array.Contains[gd.Int] { //gd:PhysicsTestMotionParameters3D.get_exclude_objects
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_get_exclude_objects, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -248,7 +248,7 @@ func (self class) GetExcludeObjects() Array.Contains[gd.Int] {
 }
 
 //go:nosplit
-func (self class) SetExcludeObjects(exclude_list Array.Contains[gd.Int]) {
+func (self class) SetExcludeObjects(exclude_list Array.Contains[gd.Int]) { //gd:PhysicsTestMotionParameters3D.set_exclude_objects
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude_list)))
 	var r_ret = callframe.Nil
@@ -257,7 +257,7 @@ func (self class) SetExcludeObjects(exclude_list Array.Contains[gd.Int]) {
 }
 
 //go:nosplit
-func (self class) IsRecoveryAsCollisionEnabled() bool {
+func (self class) IsRecoveryAsCollisionEnabled() bool { //gd:PhysicsTestMotionParameters3D.is_recovery_as_collision_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_is_recovery_as_collision_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -267,7 +267,7 @@ func (self class) IsRecoveryAsCollisionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetRecoveryAsCollisionEnabled(enabled bool) {
+func (self class) SetRecoveryAsCollisionEnabled(enabled bool) { //gd:PhysicsTestMotionParameters3D.set_recovery_as_collision_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil

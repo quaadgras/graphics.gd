@@ -69,7 +69,7 @@ func (self Instance) SetOmniShadowMode(value gdclass.OmniLight3DShadowMode) {
 }
 
 //go:nosplit
-func (self class) SetShadowMode(mode gdclass.OmniLight3DShadowMode) {
+func (self class) SetShadowMode(mode gdclass.OmniLight3DShadowMode) { //gd:OmniLight3D.set_shadow_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -78,7 +78,7 @@ func (self class) SetShadowMode(mode gdclass.OmniLight3DShadowMode) {
 }
 
 //go:nosplit
-func (self class) GetShadowMode() gdclass.OmniLight3DShadowMode {
+func (self class) GetShadowMode() gdclass.OmniLight3DShadowMode { //gd:OmniLight3D.get_shadow_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.OmniLight3DShadowMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OmniLight3D.Bind_get_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func init() {
 	gdclass.Register("OmniLight3D", func(ptr gd.Object) any { return [1]gdclass.OmniLight3D{*(*gdclass.OmniLight3D)(unsafe.Pointer(&ptr))} })
 }
 
-type ShadowMode = gdclass.OmniLight3DShadowMode
+type ShadowMode = gdclass.OmniLight3DShadowMode //gd:OmniLight3D.ShadowMode
 
 const (
 	/*Shadows are rendered to a dual-paraboloid texture. Faster than [constant SHADOW_CUBE], but lower-quality.*/

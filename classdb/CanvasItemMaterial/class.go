@@ -106,7 +106,7 @@ func (self Instance) SetParticlesAnimLoop(value bool) {
 }
 
 //go:nosplit
-func (self class) SetBlendMode(blend_mode gdclass.CanvasItemMaterialBlendMode) {
+func (self class) SetBlendMode(blend_mode gdclass.CanvasItemMaterialBlendMode) { //gd:CanvasItemMaterial.set_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_mode)
 	var r_ret = callframe.Nil
@@ -115,7 +115,7 @@ func (self class) SetBlendMode(blend_mode gdclass.CanvasItemMaterialBlendMode) {
 }
 
 //go:nosplit
-func (self class) GetBlendMode() gdclass.CanvasItemMaterialBlendMode {
+func (self class) GetBlendMode() gdclass.CanvasItemMaterialBlendMode { //gd:CanvasItemMaterial.get_blend_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemMaterialBlendMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -125,7 +125,7 @@ func (self class) GetBlendMode() gdclass.CanvasItemMaterialBlendMode {
 }
 
 //go:nosplit
-func (self class) SetLightMode(light_mode gdclass.CanvasItemMaterialLightMode) {
+func (self class) SetLightMode(light_mode gdclass.CanvasItemMaterialLightMode) { //gd:CanvasItemMaterial.set_light_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, light_mode)
 	var r_ret = callframe.Nil
@@ -134,7 +134,7 @@ func (self class) SetLightMode(light_mode gdclass.CanvasItemMaterialLightMode) {
 }
 
 //go:nosplit
-func (self class) GetLightMode() gdclass.CanvasItemMaterialLightMode {
+func (self class) GetLightMode() gdclass.CanvasItemMaterialLightMode { //gd:CanvasItemMaterial.get_light_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemMaterialLightMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_light_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -144,7 +144,7 @@ func (self class) GetLightMode() gdclass.CanvasItemMaterialLightMode {
 }
 
 //go:nosplit
-func (self class) SetParticlesAnimation(particles_anim bool) {
+func (self class) SetParticlesAnimation(particles_anim bool) { //gd:CanvasItemMaterial.set_particles_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_anim)
 	var r_ret = callframe.Nil
@@ -153,7 +153,7 @@ func (self class) SetParticlesAnimation(particles_anim bool) {
 }
 
 //go:nosplit
-func (self class) GetParticlesAnimation() bool {
+func (self class) GetParticlesAnimation() bool { //gd:CanvasItemMaterial.get_particles_animation
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -163,7 +163,7 @@ func (self class) GetParticlesAnimation() bool {
 }
 
 //go:nosplit
-func (self class) SetParticlesAnimHFrames(frames gd.Int) {
+func (self class) SetParticlesAnimHFrames(frames gd.Int) { //gd:CanvasItemMaterial.set_particles_anim_h_frames
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Nil
@@ -172,7 +172,7 @@ func (self class) SetParticlesAnimHFrames(frames gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetParticlesAnimHFrames() gd.Int {
+func (self class) GetParticlesAnimHFrames() gd.Int { //gd:CanvasItemMaterial.get_particles_anim_h_frames
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_h_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -182,7 +182,7 @@ func (self class) GetParticlesAnimHFrames() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetParticlesAnimVFrames(frames gd.Int) {
+func (self class) SetParticlesAnimVFrames(frames gd.Int) { //gd:CanvasItemMaterial.set_particles_anim_v_frames
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Nil
@@ -191,7 +191,7 @@ func (self class) SetParticlesAnimVFrames(frames gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetParticlesAnimVFrames() gd.Int {
+func (self class) GetParticlesAnimVFrames() gd.Int { //gd:CanvasItemMaterial.get_particles_anim_v_frames
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_v_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -201,7 +201,7 @@ func (self class) GetParticlesAnimVFrames() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetParticlesAnimLoop(loop bool) {
+func (self class) SetParticlesAnimLoop(loop bool) { //gd:CanvasItemMaterial.set_particles_anim_loop
 	var frame = callframe.New()
 	callframe.Arg(frame, loop)
 	var r_ret = callframe.Nil
@@ -210,7 +210,7 @@ func (self class) SetParticlesAnimLoop(loop bool) {
 }
 
 //go:nosplit
-func (self class) GetParticlesAnimLoop() bool {
+func (self class) GetParticlesAnimLoop() bool { //gd:CanvasItemMaterial.get_particles_anim_loop
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -258,7 +258,7 @@ func init() {
 	})
 }
 
-type BlendMode = gdclass.CanvasItemMaterialBlendMode
+type BlendMode = gdclass.CanvasItemMaterialBlendMode //gd:CanvasItemMaterial.BlendMode
 
 const (
 	/*Mix blending mode. Colors are assumed to be independent of the alpha (opacity) value.*/
@@ -273,7 +273,7 @@ const (
 	BlendModePremultAlpha BlendMode = 4
 )
 
-type LightMode = gdclass.CanvasItemMaterialLightMode
+type LightMode = gdclass.CanvasItemMaterialLightMode //gd:CanvasItemMaterial.LightMode
 
 const (
 	/*Render the material using both light and non-light sensitive material properties.*/

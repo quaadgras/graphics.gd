@@ -74,7 +74,7 @@ func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) SetMesh(mesh [1]gdclass.Mesh) {
+func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshInstance2D.set_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -83,7 +83,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 }
 
 //go:nosplit
-func (self class) GetMesh() [1]gdclass.Mesh {
+func (self class) GetMesh() [1]gdclass.Mesh { //gd:MeshInstance2D.get_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance2D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -93,7 +93,7 @@ func (self class) GetMesh() [1]gdclass.Mesh {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:MeshInstance2D.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -102,7 +102,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture2D {
+func (self class) GetTexture() [1]gdclass.Texture2D { //gd:MeshInstance2D.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance2D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())

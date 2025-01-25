@@ -71,7 +71,7 @@ func (self Instance) SetDelta(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetDelta(delta gd.Vector2) {
+func (self class) SetDelta(delta gd.Vector2) { //gd:InputEventPanGesture.set_delta
 	var frame = callframe.New()
 	callframe.Arg(frame, delta)
 	var r_ret = callframe.Nil
@@ -80,7 +80,7 @@ func (self class) SetDelta(delta gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetDelta() gd.Vector2 {
+func (self class) GetDelta() gd.Vector2 { //gd:InputEventPanGesture.get_delta
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventPanGesture.Bind_get_delta, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -82,7 +82,7 @@ func (self Instance) SetOccluderLightMask(value int) {
 }
 
 //go:nosplit
-func (self class) SetOccluderPolygon(polygon [1]gdclass.OccluderPolygon2D) {
+func (self class) SetOccluderPolygon(polygon [1]gdclass.OccluderPolygon2D) { //gd:LightOccluder2D.set_occluder_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon[0])[0])
 	var r_ret = callframe.Nil
@@ -91,7 +91,7 @@ func (self class) SetOccluderPolygon(polygon [1]gdclass.OccluderPolygon2D) {
 }
 
 //go:nosplit
-func (self class) GetOccluderPolygon() [1]gdclass.OccluderPolygon2D {
+func (self class) GetOccluderPolygon() [1]gdclass.OccluderPolygon2D { //gd:LightOccluder2D.get_occluder_polygon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightOccluder2D.Bind_get_occluder_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -101,7 +101,7 @@ func (self class) GetOccluderPolygon() [1]gdclass.OccluderPolygon2D {
 }
 
 //go:nosplit
-func (self class) SetOccluderLightMask(mask gd.Int) {
+func (self class) SetOccluderLightMask(mask gd.Int) { //gd:LightOccluder2D.set_occluder_light_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -110,7 +110,7 @@ func (self class) SetOccluderLightMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetOccluderLightMask() gd.Int {
+func (self class) GetOccluderLightMask() gd.Int { //gd:LightOccluder2D.get_occluder_light_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightOccluder2D.Bind_get_occluder_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -120,7 +120,7 @@ func (self class) GetOccluderLightMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetAsSdfCollision(enable bool) {
+func (self class) SetAsSdfCollision(enable bool) { //gd:LightOccluder2D.set_as_sdf_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetAsSdfCollision(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsSetAsSdfCollision() bool {
+func (self class) IsSetAsSdfCollision() bool { //gd:LightOccluder2D.is_set_as_sdf_collision
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightOccluder2D.Bind_is_set_as_sdf_collision, self.AsObject(), frame.Array(0), r_ret.Addr())

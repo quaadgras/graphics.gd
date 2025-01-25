@@ -48,7 +48,7 @@ var tween = get_tree().create_tween()
 tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after 2 seconds
 [/codeblock]
 */
-func (self Instance) SetDelay(delay Float.X) [1]gdclass.CallbackTweener {
+func (self Instance) SetDelay(delay Float.X) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
 	return [1]gdclass.CallbackTweener(class(self).SetDelay(gd.Float(delay)))
 }
 
@@ -80,7 +80,7 @@ tween.tween_callback(queue_free).set_delay(2) #this will call queue_free() after
 [/codeblock]
 */
 //go:nosplit
-func (self class) SetDelay(delay gd.Float) [1]gdclass.CallbackTweener {
+func (self class) SetDelay(delay gd.Float) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
 	var frame = callframe.New()
 	callframe.Arg(frame, delay)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

@@ -86,14 +86,14 @@ arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, c.GetMeshArrays());
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetMeshArrays() []any {
+func (self Instance) GetMeshArrays() []any { //gd:PrimitiveMesh.get_mesh_arrays
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetMeshArrays())))
 }
 
 /*
 Request an update of this primitive mesh based on its properties.
 */
-func (self Instance) RequestUpdate() {
+func (self Instance) RequestUpdate() { //gd:PrimitiveMesh.request_update
 	class(self).RequestUpdate()
 }
 
@@ -173,7 +173,7 @@ func (class) _create_mesh_array(impl func(ptr unsafe.Pointer) Array.Any) (cb gd.
 }
 
 //go:nosplit
-func (self class) SetMaterial(material [1]gdclass.Material) {
+func (self class) SetMaterial(material [1]gdclass.Material) { //gd:PrimitiveMesh.set_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	var r_ret = callframe.Nil
@@ -182,7 +182,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) GetMaterial() [1]gdclass.Material {
+func (self class) GetMaterial() [1]gdclass.Material { //gd:PrimitiveMesh.get_material
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -207,7 +207,7 @@ arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, c.GetMeshArrays());
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetMeshArrays() Array.Any {
+func (self class) GetMeshArrays() Array.Any { //gd:PrimitiveMesh.get_mesh_arrays
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_get_mesh_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -217,7 +217,7 @@ func (self class) GetMeshArrays() Array.Any {
 }
 
 //go:nosplit
-func (self class) SetCustomAabb(aabb gd.AABB) {
+func (self class) SetCustomAabb(aabb gd.AABB) { //gd:PrimitiveMesh.set_custom_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
 	var r_ret = callframe.Nil
@@ -226,7 +226,7 @@ func (self class) SetCustomAabb(aabb gd.AABB) {
 }
 
 //go:nosplit
-func (self class) GetCustomAabb() gd.AABB {
+func (self class) GetCustomAabb() gd.AABB { //gd:PrimitiveMesh.get_custom_aabb
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -236,7 +236,7 @@ func (self class) GetCustomAabb() gd.AABB {
 }
 
 //go:nosplit
-func (self class) SetFlipFaces(flip_faces bool) {
+func (self class) SetFlipFaces(flip_faces bool) { //gd:PrimitiveMesh.set_flip_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, flip_faces)
 	var r_ret = callframe.Nil
@@ -245,7 +245,7 @@ func (self class) SetFlipFaces(flip_faces bool) {
 }
 
 //go:nosplit
-func (self class) GetFlipFaces() bool {
+func (self class) GetFlipFaces() bool { //gd:PrimitiveMesh.get_flip_faces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_get_flip_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -255,7 +255,7 @@ func (self class) GetFlipFaces() bool {
 }
 
 //go:nosplit
-func (self class) SetAddUv2(add_uv2 bool) {
+func (self class) SetAddUv2(add_uv2 bool) { //gd:PrimitiveMesh.set_add_uv2
 	var frame = callframe.New()
 	callframe.Arg(frame, add_uv2)
 	var r_ret = callframe.Nil
@@ -264,7 +264,7 @@ func (self class) SetAddUv2(add_uv2 bool) {
 }
 
 //go:nosplit
-func (self class) GetAddUv2() bool {
+func (self class) GetAddUv2() bool { //gd:PrimitiveMesh.get_add_uv2
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_get_add_uv2, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -274,7 +274,7 @@ func (self class) GetAddUv2() bool {
 }
 
 //go:nosplit
-func (self class) SetUv2Padding(uv2_padding gd.Float) {
+func (self class) SetUv2Padding(uv2_padding gd.Float) { //gd:PrimitiveMesh.set_uv2_padding
 	var frame = callframe.New()
 	callframe.Arg(frame, uv2_padding)
 	var r_ret = callframe.Nil
@@ -283,7 +283,7 @@ func (self class) SetUv2Padding(uv2_padding gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetUv2Padding() gd.Float {
+func (self class) GetUv2Padding() gd.Float { //gd:PrimitiveMesh.get_uv2_padding
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_get_uv2_padding, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -296,7 +296,7 @@ func (self class) GetUv2Padding() gd.Float {
 Request an update of this primitive mesh based on its properties.
 */
 //go:nosplit
-func (self class) RequestUpdate() {
+func (self class) RequestUpdate() { //gd:PrimitiveMesh.request_update
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PrimitiveMesh.Bind_request_update, self.AsObject(), frame.Array(0), r_ret.Addr())

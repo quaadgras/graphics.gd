@@ -111,7 +111,7 @@ func (self Instance) SetMaterial(value [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) SetInnerRadius(radius gd.Float) {
+func (self class) SetInnerRadius(radius gd.Float) { //gd:CSGTorus3D.set_inner_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -120,7 +120,7 @@ func (self class) SetInnerRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetInnerRadius() gd.Float {
+func (self class) GetInnerRadius() gd.Float { //gd:CSGTorus3D.get_inner_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_inner_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,7 +130,7 @@ func (self class) GetInnerRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetOuterRadius(radius gd.Float) {
+func (self class) SetOuterRadius(radius gd.Float) { //gd:CSGTorus3D.set_outer_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	var r_ret = callframe.Nil
@@ -139,7 +139,7 @@ func (self class) SetOuterRadius(radius gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetOuterRadius() gd.Float {
+func (self class) GetOuterRadius() gd.Float { //gd:CSGTorus3D.get_outer_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_outer_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ func (self class) GetOuterRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSides(sides gd.Int) {
+func (self class) SetSides(sides gd.Int) { //gd:CSGTorus3D.set_sides
 	var frame = callframe.New()
 	callframe.Arg(frame, sides)
 	var r_ret = callframe.Nil
@@ -158,7 +158,7 @@ func (self class) SetSides(sides gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetSides() gd.Int {
+func (self class) GetSides() gd.Int { //gd:CSGTorus3D.get_sides
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_sides, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -168,7 +168,7 @@ func (self class) GetSides() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetRingSides(sides gd.Int) {
+func (self class) SetRingSides(sides gd.Int) { //gd:CSGTorus3D.set_ring_sides
 	var frame = callframe.New()
 	callframe.Arg(frame, sides)
 	var r_ret = callframe.Nil
@@ -177,7 +177,7 @@ func (self class) SetRingSides(sides gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetRingSides() gd.Int {
+func (self class) GetRingSides() gd.Int { //gd:CSGTorus3D.get_ring_sides
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_ring_sides, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -187,7 +187,7 @@ func (self class) GetRingSides() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetMaterial(material [1]gdclass.Material) {
+func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGTorus3D.set_material
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	var r_ret = callframe.Nil
@@ -196,7 +196,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) {
 }
 
 //go:nosplit
-func (self class) GetMaterial() [1]gdclass.Material {
+func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGTorus3D.get_material
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -206,7 +206,7 @@ func (self class) GetMaterial() [1]gdclass.Material {
 }
 
 //go:nosplit
-func (self class) SetSmoothFaces(smooth_faces bool) {
+func (self class) SetSmoothFaces(smooth_faces bool) { //gd:CSGTorus3D.set_smooth_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, smooth_faces)
 	var r_ret = callframe.Nil
@@ -215,7 +215,7 @@ func (self class) SetSmoothFaces(smooth_faces bool) {
 }
 
 //go:nosplit
-func (self class) GetSmoothFaces() bool {
+func (self class) GetSmoothFaces() bool { //gd:CSGTorus3D.get_smooth_faces
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGTorus3D.Bind_get_smooth_faces, self.AsObject(), frame.Array(0), r_ret.Addr())

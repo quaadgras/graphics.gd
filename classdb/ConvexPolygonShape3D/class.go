@@ -70,7 +70,7 @@ func (self Instance) SetPoints(value []Vector3.XYZ) {
 }
 
 //go:nosplit
-func (self class) SetPoints(points gd.PackedVector3Array) {
+func (self class) SetPoints(points gd.PackedVector3Array) { //gd:ConvexPolygonShape3D.set_points
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(points))
 	var r_ret = callframe.Nil
@@ -79,7 +79,7 @@ func (self class) SetPoints(points gd.PackedVector3Array) {
 }
 
 //go:nosplit
-func (self class) GetPoints() gd.PackedVector3Array {
+func (self class) GetPoints() gd.PackedVector3Array { //gd:ConvexPolygonShape3D.get_points
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConvexPolygonShape3D.Bind_get_points, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -40,7 +40,7 @@ func singleton() {
 Generates a [PackedByteArray] of cryptographically secure random bytes with given [param size].
 [b]Note:[/b] Generating large quantities of bytes using this method can result in locking and entropy of lower quality on most platforms. Using [method Crypto.generate_random_bytes] is preferred in most cases.
 */
-func GetEntropy(size int) []byte {
+func GetEntropy(size int) []byte { //gd:OS.get_entropy
 	once.Do(singleton)
 	return []byte(class(self).GetEntropy(gd.Int(size)).Bytes())
 }
@@ -48,7 +48,7 @@ func GetEntropy(size int) []byte {
 /*
 Returns the list of certification authorities trusted by the operating system as a string of concatenated certificates in PEM format.
 */
-func GetSystemCaCertificates() string {
+func GetSystemCaCertificates() string { //gd:OS.get_system_ca_certificates
 	once.Do(singleton)
 	return string(class(self).GetSystemCaCertificates().String())
 }
@@ -57,7 +57,7 @@ func GetSystemCaCertificates() string {
 Returns an array of connected MIDI device names, if they exist. Returns an empty array if the system MIDI driver has not previously been initialized with [method open_midi_inputs]. See also [method close_midi_inputs].
 [b]Note:[/b] This method is implemented on Linux, macOS and Windows.
 */
-func GetConnectedMidiInputs() []string {
+func GetConnectedMidiInputs() []string { //gd:OS.get_connected_midi_inputs
 	once.Do(singleton)
 	return []string(class(self).GetConnectedMidiInputs().Strings())
 }
@@ -66,7 +66,7 @@ func GetConnectedMidiInputs() []string {
 Initializes the singleton for the system MIDI driver, allowing Godot to receive [InputEventMIDI]. See also [method get_connected_midi_inputs] and [method close_midi_inputs].
 [b]Note:[/b] This method is implemented on Linux, macOS and Windows.
 */
-func OpenMidiInputs() {
+func OpenMidiInputs() { //gd:OS.open_midi_inputs
 	once.Do(singleton)
 	class(self).OpenMidiInputs()
 }
@@ -75,7 +75,7 @@ func OpenMidiInputs() {
 Shuts down the system MIDI driver. Godot will no longer receive [InputEventMIDI]. See also [method open_midi_inputs] and [method get_connected_midi_inputs].
 [b]Note:[/b] This method is implemented on Linux, macOS and Windows.
 */
-func CloseMidiInputs() {
+func CloseMidiInputs() { //gd:OS.close_midi_inputs
 	once.Do(singleton)
 	class(self).CloseMidiInputs()
 }
@@ -83,7 +83,7 @@ func CloseMidiInputs() {
 /*
 Displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
 */
-func Alert(text string) {
+func Alert(text string) { //gd:OS.alert
 	once.Do(singleton)
 	class(self).Alert(gd.NewString(text), gd.NewString("Alert!"))
 }
@@ -92,7 +92,7 @@ func Alert(text string) {
 Crashes the engine (or the editor if called within a [code]@tool[/code] script). See also [method kill].
 [b]Note:[/b] This method should [i]only[/i] be used for testing the system's crash handler, not for any other purpose. For general error reporting, use (in order of preference) [method @GDScript.assert], [method @GlobalScope.push_error], or [method alert].
 */
-func Crash(message string) {
+func Crash(message string) { //gd:OS.crash
 	once.Do(singleton)
 	class(self).Crash(gd.NewString(message))
 }
@@ -100,7 +100,7 @@ func Crash(message string) {
 /*
 Returns the number of [i]logical[/i] CPU cores available on the host machine. On CPUs with HyperThreading enabled, this number will be greater than the number of [i]physical[/i] CPU cores.
 */
-func GetProcessorCount() int {
+func GetProcessorCount() int { //gd:OS.get_processor_count
 	once.Do(singleton)
 	return int(int(class(self).GetProcessorCount()))
 }
@@ -109,7 +109,7 @@ func GetProcessorCount() int {
 Returns the full name of the CPU model on the host machine (e.g. [code]"Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz"[/code]).
 [b]Note:[/b] This method is only implemented on Windows, macOS, Linux and iOS. On Android and Web, [method get_processor_name] returns an empty string.
 */
-func GetProcessorName() string {
+func GetProcessorName() string { //gd:OS.get_processor_name
 	once.Do(singleton)
 	return string(class(self).GetProcessorName().String())
 }
@@ -118,7 +118,7 @@ func GetProcessorName() string {
 Returns the list of font family names available.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
-func GetSystemFonts() []string {
+func GetSystemFonts() []string { //gd:OS.get_system_fonts
 	once.Do(singleton)
 	return []string(class(self).GetSystemFonts().Strings())
 }
@@ -129,7 +129,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] Returned font might have different style if the requested style is not available.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
-func GetSystemFontPath(font_name string) string {
+func GetSystemFontPath(font_name string) string { //gd:OS.get_system_font_path
 	once.Do(singleton)
 	return string(class(self).GetSystemFontPath(gd.NewString(font_name), gd.Int(400), gd.Int(100), false).String())
 }
@@ -141,7 +141,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] Returned fonts might have different style if the requested style is not available or belong to a different font family.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
-func GetSystemFontPathForText(font_name string, text string) []string {
+func GetSystemFontPathForText(font_name string, text string) []string { //gd:OS.get_system_font_path_for_text
 	once.Do(singleton)
 	return []string(class(self).GetSystemFontPathForText(gd.NewString(font_name), gd.NewString(text), gd.NewString(""), gd.NewString(""), gd.Int(400), gd.Int(100), false).Strings())
 }
@@ -150,7 +150,7 @@ func GetSystemFontPathForText(font_name string, text string) []string {
 Returns the file path to the current engine executable.
 [b]Note:[/b] On macOS, if you want to launch another instance of Godot, always use [method create_instance] instead of relying on the executable path.
 */
-func GetExecutablePath() string {
+func GetExecutablePath() string { //gd:OS.get_executable_path
 	once.Do(singleton)
 	return string(class(self).GetExecutablePath().String())
 }
@@ -160,7 +160,7 @@ Reads a user input string from the standard input (usually the terminal). This o
 [b]Note:[/b] This method is implemented on Linux, macOS and Windows.
 [b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. Otherwise, the standard input will not work correctly. If you need a single executable with console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
 */
-func ReadStringFromStdin() string {
+func ReadStringFromStdin() string { //gd:OS.read_string_from_stdin
 	once.Do(singleton)
 	return string(class(self).ReadStringFromStdin().String())
 }
@@ -200,7 +200,7 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export.
 [b]Note:[/b] On Android, system commands such as [code]dumpsys[/code] can only be run on a rooted device.
 */
-func Execute(path string, arguments []string) int {
+func Execute(path string, arguments []string) int { //gd:OS.execute
 	once.Do(singleton)
 	return int(int(class(self).Execute(gd.NewString(path), gd.NewPackedStringSlice(arguments), Array.Nil, false, false)))
 }
@@ -217,7 +217,7 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] To execute a Unix shell built-in command, specify shell executable name in [param path], [code]-c[/code] as the first argument, and the desired command as the second argument.
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
-func ExecuteWithPipe(path string, arguments []string) map[any]any {
+func ExecuteWithPipe(path string, arguments []string) map[any]any { //gd:OS.execute_with_pipe
 	once.Do(singleton)
 	return map[any]any(gd.DictionaryAs[any, any](class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments))))
 }
@@ -239,7 +239,7 @@ See [method execute] if you wish to run an external command and retrieve the res
 [b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
-func CreateProcess(path string, arguments []string) int {
+func CreateProcess(path string, arguments []string) int { //gd:OS.create_process
 	once.Do(singleton)
 	return int(int(class(self).CreateProcess(gd.NewString(path), gd.NewPackedStringSlice(arguments), false)))
 }
@@ -250,7 +250,7 @@ If the process is successfully created, this method returns the new process' ID,
 See [method create_process] if you wish to run a different process.
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 */
-func CreateInstance(arguments []string) int {
+func CreateInstance(arguments []string) int { //gd:OS.create_instance
 	once.Do(singleton)
 	return int(int(class(self).CreateInstance(gd.NewPackedStringSlice(arguments))))
 }
@@ -260,7 +260,7 @@ Kill (terminate) the process identified by the given process ID ([param pid]), s
 [b]Note:[/b] This method can also be used to kill processes that were not spawned by the engine.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
-func Kill(pid int) error {
+func Kill(pid int) error { //gd:OS.kill
 	once.Do(singleton)
 	return error(gd.ToError(class(self).Kill(gd.Int(pid))))
 }
@@ -274,7 +274,7 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 [b]Note:[/b] Use [method String.uri_encode] to encode characters within URLs in a URL-safe, portable way. This is especially required for line breaks. Otherwise, [method shell_open] may not work correctly in a project exported to the Web platform.
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux, macOS and Windows.
 */
-func ShellOpen(uri string) error {
+func ShellOpen(uri string) error { //gd:OS.shell_open
 	once.Do(singleton)
 	return error(gd.ToError(class(self).ShellOpen(gd.NewString(uri))))
 }
@@ -285,7 +285,7 @@ If [param open_folder] is [code]true[/code] and [param file_or_dir_path] is a va
 Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or [code]user://[/code] project path into a system path to use with this method.
 [b]Note:[/b] This method is currently only implemented on Windows and macOS. On other platforms, it will fallback to [method shell_open] with a directory path of [param file_or_dir_path] prefixed with [code]file://[/code].
 */
-func ShellShowInFileManager(file_or_dir_path string) error {
+func ShellShowInFileManager(file_or_dir_path string) error { //gd:OS.shell_show_in_file_manager
 	once.Do(singleton)
 	return error(gd.ToError(class(self).ShellShowInFileManager(gd.NewString(file_or_dir_path), true)))
 }
@@ -294,7 +294,7 @@ func ShellShowInFileManager(file_or_dir_path string) error {
 Returns [code]true[/code] if the child process ID ([param pid]) is still running or [code]false[/code] if it has terminated. [param pid] must be a valid ID generated from [method create_process].
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS, and Windows.
 */
-func IsProcessRunning(pid int) bool {
+func IsProcessRunning(pid int) bool { //gd:OS.is_process_running
 	once.Do(singleton)
 	return bool(class(self).IsProcessRunning(gd.Int(pid)))
 }
@@ -305,7 +305,7 @@ Returns [code]-1[/code] if the [param pid] is not a PID of a spawned child proce
 [b]Note:[/b] Returns [code]-1[/code] if the [param pid] is a macOS bundled app process.
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 */
-func GetProcessExitCode(pid int) int {
+func GetProcessExitCode(pid int) int { //gd:OS.get_process_exit_code
 	once.Do(singleton)
 	return int(int(class(self).GetProcessExitCode(gd.Int(pid))))
 }
@@ -314,7 +314,7 @@ func GetProcessExitCode(pid int) int {
 Returns the number used by the host machine to uniquely identify this application.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS, and Windows.
 */
-func GetProcessId() int {
+func GetProcessId() int { //gd:OS.get_process_id
 	once.Do(singleton)
 	return int(int(class(self).GetProcessId()))
 }
@@ -323,7 +323,7 @@ func GetProcessId() int {
 Returns [code]true[/code] if the environment variable with the name [param variable] exists.
 [b]Note:[/b] Double-check the casing of [param variable]. Environment variable names are case-sensitive on all platforms except Windows.
 */
-func HasEnvironment(variable string) bool {
+func HasEnvironment(variable string) bool { //gd:OS.has_environment
 	once.Do(singleton)
 	return bool(class(self).HasEnvironment(gd.NewString(variable)))
 }
@@ -333,7 +333,7 @@ Returns the value of the given environment variable, or an empty string if [para
 [b]Note:[/b] Double-check the casing of [param variable]. Environment variable names are case-sensitive on all platforms except Windows.
 [b]Note:[/b] On macOS, applications do not have access to shell environment variables.
 */
-func GetEnvironment(variable string) string {
+func GetEnvironment(variable string) string { //gd:OS.get_environment
 	once.Do(singleton)
 	return string(class(self).GetEnvironment(gd.NewString(variable)).String())
 }
@@ -342,7 +342,7 @@ func GetEnvironment(variable string) string {
 Sets the value of the environment variable [param variable] to [param value]. The environment variable will be set for the Godot process and any process executed with [method execute] after running [method set_environment]. The environment variable will [i]not[/i] persist to processes run after the Godot process was terminated.
 [b]Note:[/b] Environment variable names are case-sensitive on all platforms except Windows. The [param variable] name cannot be empty or include the [code]=[/code] character. On Windows, there is a 32767 characters limit for the combined length of [param variable], [param value], and the [code]=[/code] and null terminator characters that will be registered in the environment block.
 */
-func SetEnvironment(variable string, value string) {
+func SetEnvironment(variable string, value string) { //gd:OS.set_environment
 	once.Do(singleton)
 	class(self).SetEnvironment(gd.NewString(variable), gd.NewString(value))
 }
@@ -351,7 +351,7 @@ func SetEnvironment(variable string, value string) {
 Removes the given environment variable from the current environment, if it exists. The [param variable] name cannot be empty or include the [code]=[/code] character. The environment variable will be removed for the Godot process and any process executed with [method execute] after running [method unset_environment]. The removal of the environment variable will [i]not[/i] persist to processes run after the Godot process was terminated.
 [b]Note:[/b] Environment variable names are case-sensitive on all platforms except Windows.
 */
-func UnsetEnvironment(variable string) {
+func UnsetEnvironment(variable string) { //gd:OS.unset_environment
 	once.Do(singleton)
 	class(self).UnsetEnvironment(gd.NewString(variable))
 }
@@ -416,7 +416,7 @@ switch (OS.GetName())
 [/codeblocks]
 [b]Note:[/b] On Web platforms, it is still possible to determine the host platform's OS with feature tags. See [method has_feature].
 */
-func GetName() string {
+func GetName() string { //gd:OS.get_name
 	once.Do(singleton)
 	return string(class(self).GetName().String())
 }
@@ -427,7 +427,7 @@ Returns the same value as [method get_name] for stock Android ROMs, but attempts
 Returns the same value as [method get_name] for other platforms.
 [b]Note:[/b] This method is not supported on the Web platform. It returns an empty string.
 */
-func GetDistributionName() string {
+func GetDistributionName() string { //gd:OS.get_distribution_name
 	once.Do(singleton)
 	return string(class(self).GetDistributionName().String())
 }
@@ -440,7 +440,7 @@ Returns the exact production and build version of the operating system. This is 
 - For Android, the SDK version and the incremental build number are returned. If it's a custom ROM, it attempts to return its version instead.
 [b]Note:[/b] This method is not supported on the Web platform. It returns an empty string.
 */
-func GetVersion() string {
+func GetVersion() string { //gd:OS.get_version
 	once.Do(singleton)
 	return string(class(self).GetVersion().String())
 }
@@ -487,7 +487,7 @@ foreach (var argument in OS.GetCmdlineArgs())
 [/codeblocks]
 [b]Note:[/b] Passing custom user arguments directly is not recommended, as the engine may discard or modify them. Instead, pass the standard UNIX double dash ([code]--[/code]) and then the custom arguments, which the engine will ignore by design. These can be read via [method get_cmdline_user_args].
 */
-func GetCmdlineArgs() []string {
+func GetCmdlineArgs() []string { //gd:OS.get_cmdline_args
 	once.Do(singleton)
 	return []string(class(self).GetCmdlineArgs().Strings())
 }
@@ -503,7 +503,7 @@ OS.get_cmdline_user_args() # Returns ["--level=2", "--hardcore"]
 [/codeblock]
 To get all passed arguments, use [method get_cmdline_args].
 */
-func GetCmdlineUserArgs() []string {
+func GetCmdlineUserArgs() []string { //gd:OS.get_cmdline_user_args
 	once.Do(singleton)
 	return []string(class(self).GetCmdlineUserArgs().Strings())
 }
@@ -514,7 +514,7 @@ The first element holds the driver name, such as [code]nvidia[/code], [code]amdg
 The second element holds the driver version. For example, on the [code]nvidia[/code] driver on a Linux/BSD platform, the version is in the format [code]510.85.02[/code]. For Windows, the driver's format is [code]31.0.15.1659[/code].
 [b]Note:[/b] This method is only supported on Linux/BSD and Windows when not running in headless mode. On other platforms, it returns an empty array.
 */
-func GetVideoAdapterDriverInfo() []string {
+func GetVideoAdapterDriverInfo() []string { //gd:OS.get_video_adapter_driver_info
 	once.Do(singleton)
 	return []string(class(self).GetVideoAdapterDriverInfo().Strings())
 }
@@ -525,7 +525,7 @@ This method can be used to apply setting changes that require a restart. See als
 [b]Note:[/b] This method is only effective on desktop platforms, and only when the project isn't started from the editor. It will have no effect on mobile and Web platforms, or when the project is started from the editor.
 [b]Note:[/b] If the project process crashes or is [i]killed[/i] by the user (by sending [code]SIGKILL[/code] instead of the usual [code]SIGTERM[/code]), the project won't restart automatically.
 */
-func SetRestartOnExit(restart bool) {
+func SetRestartOnExit(restart bool) { //gd:OS.set_restart_on_exit
 	once.Do(singleton)
 	class(self).SetRestartOnExit(restart, gd.NewPackedStringSlice([1][]string{}[0]))
 }
@@ -533,7 +533,7 @@ func SetRestartOnExit(restart bool) {
 /*
 Returns [code]true[/code] if the project will automatically restart when it exits for any reason, [code]false[/code] otherwise. See also [method set_restart_on_exit] and [method get_restart_on_exit_arguments].
 */
-func IsRestartOnExitSet() bool {
+func IsRestartOnExitSet() bool { //gd:OS.is_restart_on_exit_set
 	once.Do(singleton)
 	return bool(class(self).IsRestartOnExitSet())
 }
@@ -541,7 +541,7 @@ func IsRestartOnExitSet() bool {
 /*
 Returns the list of command line arguments that will be used when the project automatically restarts using [method set_restart_on_exit]. See also [method is_restart_on_exit_set].
 */
-func GetRestartOnExitArguments() []string {
+func GetRestartOnExitArguments() []string { //gd:OS.get_restart_on_exit_arguments
 	once.Do(singleton)
 	return []string(class(self).GetRestartOnExitArguments().Strings())
 }
@@ -551,7 +551,7 @@ Delays execution of the current thread by [param usec] microseconds. [param usec
 [b]Note:[/b] [method delay_usec] is a [i]blocking[/i] way to delay code execution. To delay code execution in a non-blocking way, you may use [method SceneTree.create_timer]. Awaiting with a [SceneTreeTimer] delays the execution of code placed below the [code]await[/code] without affecting the rest of the project (or editor, for [EditorPlugin]s and [EditorScript]s).
 [b]Note:[/b] When [method delay_usec] is called on the main thread, it will freeze the project and will prevent it from redrawing and registering input until the delay has passed. When using [method delay_usec] as part of an [EditorPlugin] or [EditorScript], it will freeze the editor but won't freeze the project if it is currently running (since the project is an independent child process).
 */
-func DelayUsec(usec int) {
+func DelayUsec(usec int) { //gd:OS.delay_usec
 	once.Do(singleton)
 	class(self).DelayUsec(gd.Int(usec))
 }
@@ -561,7 +561,7 @@ Delays execution of the current thread by [param msec] milliseconds. [param msec
 [b]Note:[/b] [method delay_msec] is a [i]blocking[/i] way to delay code execution. To delay code execution in a non-blocking way, you may use [method SceneTree.create_timer]. Awaiting with [SceneTreeTimer] delays the execution of code placed below the [code]await[/code] without affecting the rest of the project (or editor, for [EditorPlugin]s and [EditorScript]s).
 [b]Note:[/b] When [method delay_msec] is called on the main thread, it will freeze the project and will prevent it from redrawing and registering input until the delay has passed. When using [method delay_msec] as part of an [EditorPlugin] or [EditorScript], it will freeze the editor but won't freeze the project if it is currently running (since the project is an independent child process).
 */
-func DelayMsec(msec int) {
+func DelayMsec(msec int) { //gd:OS.delay_msec
 	once.Do(singleton)
 	class(self).DelayMsec(gd.Int(msec))
 }
@@ -575,7 +575,7 @@ Returns the host OS locale as a [String] of the form [code]language_Script_COUNT
 - [code]extra[/code] - semicolon separated list of additional key words. This may include currency, calendar, sort order and numbering system information.
 If you want only the language code and not the fully specified locale from the OS, you can use [method get_locale_language].
 */
-func GetLocale() string {
+func GetLocale() string { //gd:OS.get_locale
 	once.Do(singleton)
 	return string(class(self).GetLocale().String())
 }
@@ -584,7 +584,7 @@ func GetLocale() string {
 Returns the host OS locale's 2 or 3-letter [url=https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes]language code[/url] as a string which should be consistent on all platforms. This is equivalent to extracting the [code]language[/code] part of the [method get_locale] string.
 This can be used to narrow down fully specified locale strings to only the "common" language code, when you don't need the additional information about country code or variants. For example, for a French Canadian user with [code]fr_CA[/code] locale, this would return [code]fr[/code].
 */
-func GetLocaleLanguage() string {
+func GetLocaleLanguage() string { //gd:OS.get_locale_language
 	once.Do(singleton)
 	return string(class(self).GetLocaleLanguage().String())
 }
@@ -593,7 +593,7 @@ func GetLocaleLanguage() string {
 Returns the model name of the current device.
 [b]Note:[/b] This method is implemented on Android and iOS. Returns [code]"GenericDevice"[/code] on unsupported platforms.
 */
-func GetModelName() string {
+func GetModelName() string { //gd:OS.get_model_name
 	once.Do(singleton)
 	return string(class(self).GetModelName().String())
 }
@@ -601,7 +601,7 @@ func GetModelName() string {
 /*
 Returns [code]true[/code] if the [code]user://[/code] file system is persistent, that is, its state is the same after a player quits and starts the game again. Relevant to the Web platform, where this persistence may be unavailable.
 */
-func IsUserfsPersistent() bool {
+func IsUserfsPersistent() bool { //gd:OS.is_userfs_persistent
 	once.Do(singleton)
 	return bool(class(self).IsUserfsPersistent())
 }
@@ -609,7 +609,7 @@ func IsUserfsPersistent() bool {
 /*
 Returns [code]true[/code] if the engine was executed with the [code]--verbose[/code] or [code]-v[/code] command line argument, or if [member ProjectSettings.debug/settings/stdout/verbose_stdout] is [code]true[/code]. See also [method @GlobalScope.print_verbose].
 */
-func IsStdoutVerbose() bool {
+func IsStdoutVerbose() bool { //gd:OS.is_stdout_verbose
 	once.Do(singleton)
 	return bool(class(self).IsStdoutVerbose())
 }
@@ -619,7 +619,7 @@ Returns [code]true[/code] if the Godot binary used to run the project is a [i]de
 Returns [code]false[/code] if the Godot binary used to run the project is a [i]release[/i] export template.
 [b]Note:[/b] To check whether the Godot binary used to run the project is an export template (debug or release), use [code]OS.has_feature("template")[/code] instead.
 */
-func IsDebugBuild() bool {
+func IsDebugBuild() bool { //gd:OS.is_debug_build
 	once.Do(singleton)
 	return bool(class(self).IsDebugBuild())
 }
@@ -627,7 +627,7 @@ func IsDebugBuild() bool {
 /*
 Returns the amount of static memory being used by the program in bytes. Only works in debug builds.
 */
-func GetStaticMemoryUsage() int {
+func GetStaticMemoryUsage() int { //gd:OS.get_static_memory_usage
 	once.Do(singleton)
 	return int(int(class(self).GetStaticMemoryUsage()))
 }
@@ -635,7 +635,7 @@ func GetStaticMemoryUsage() int {
 /*
 Returns the maximum amount of static memory used. Only works in debug builds.
 */
-func GetStaticMemoryPeakUsage() int {
+func GetStaticMemoryPeakUsage() int { //gd:OS.get_static_memory_peak_usage
 	once.Do(singleton)
 	return int(int(class(self).GetStaticMemoryPeakUsage()))
 }
@@ -648,7 +648,7 @@ Returns a [Dictionary] containing information about the current memory with the 
 - [code]"stack"[/code] - size of the current thread stack in bytes.
 [b]Note:[/b] Each entry's value may be [code]-1[/code] if it is unknown.
 */
-func GetMemoryInfo() map[any]any {
+func GetMemoryInfo() map[any]any { //gd:OS.get_memory_info
 	once.Do(singleton)
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetMemoryInfo()))
 }
@@ -670,7 +670,7 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 [b]Note:[/b] If the user has disabled the recycle bin on their system, the file will be permanently deleted instead.
 */
-func MoveToTrash(path string) error {
+func MoveToTrash(path string) error { //gd:OS.move_to_trash
 	once.Do(singleton)
 	return error(gd.ToError(class(self).MoveToTrash(gd.NewString(path))))
 }
@@ -685,7 +685,7 @@ Returns the absolute directory path where user data is written (the [code]user:/
 If the project name is empty, [code][project_name][/code] falls back to [code][unnamed project][/code].
 Not to be confused with [method get_data_dir], which returns the [i]global[/i] (non-project-specific) user home directory.
 */
-func GetUserDataDir() string {
+func GetUserDataDir() string { //gd:OS.get_user_data_dir
 	once.Do(singleton)
 	return string(class(self).GetUserDataDir().String())
 }
@@ -695,7 +695,7 @@ Returns the path to commonly used folders across different platforms, as defined
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 [b]Note:[/b] Shared storage is implemented on Android and allows to differentiate between app specific and shared directories, if [param shared_storage] is [code]true[/code]. Shared directories have additional restrictions on Android.
 */
-func GetSystemDir(dir gdclass.OSSystemDir) string {
+func GetSystemDir(dir gdclass.OSSystemDir) string { //gd:OS.get_system_dir
 	once.Do(singleton)
 	return string(class(self).GetSystemDir(dir, true).String())
 }
@@ -705,7 +705,7 @@ Returns the [i]global[/i] user configuration directory according to the operatin
 On the Linux/BSD platform, this path can be overridden by setting the [code]XDG_CONFIG_HOME[/code] environment variable before starting the project. See [url=$DOCS_URL/tutorials/io/data_paths.html]File paths in Godot projects[/url] in the documentation for more information. See also [method get_cache_dir] and [method get_data_dir].
 Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 */
-func GetConfigDir() string {
+func GetConfigDir() string { //gd:OS.get_config_dir
 	once.Do(singleton)
 	return string(class(self).GetConfigDir().String())
 }
@@ -715,7 +715,7 @@ Returns the [i]global[/i] user data directory according to the operating system'
 On the Linux/BSD platform, this path can be overridden by setting the [code]XDG_DATA_HOME[/code] environment variable before starting the project. See [url=$DOCS_URL/tutorials/io/data_paths.html]File paths in Godot projects[/url] in the documentation for more information. See also [method get_cache_dir] and [method get_config_dir].
 Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 */
-func GetDataDir() string {
+func GetDataDir() string { //gd:OS.get_data_dir
 	once.Do(singleton)
 	return string(class(self).GetDataDir().String())
 }
@@ -725,7 +725,7 @@ Returns the [i]global[/i] cache data directory according to the operating system
 On the Linux/BSD platform, this path can be overridden by setting the [code]XDG_CACHE_HOME[/code] environment variable before starting the project. See [url=$DOCS_URL/tutorials/io/data_paths.html]File paths in Godot projects[/url] in the documentation for more information. See also [method get_config_dir] and [method get_data_dir].
 Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 */
-func GetCacheDir() string {
+func GetCacheDir() string { //gd:OS.get_cache_dir
 	once.Do(singleton)
 	return string(class(self).GetCacheDir().String())
 }
@@ -735,7 +735,7 @@ Returns a string that is unique to the device.
 [b]Note:[/b] This string may change without notice if the user reinstalls their operating system, upgrades it, or modifies their hardware. This means it should generally not be used to encrypt persistent data, as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by this method for security purposes.
 [b]Note:[/b] On Web, returns an empty string and generates an error, as this method cannot be implemented for security reasons.
 */
-func GetUniqueId() string {
+func GetUniqueId() string { //gd:OS.get_unique_id
 	once.Do(singleton)
 	return string(class(self).GetUniqueId().String())
 }
@@ -756,7 +756,7 @@ GD.Print(OS.GetKeycodeString((Key)KeyModifierMask.MaskShift | Key.Tab)); // Prin
 [/codeblocks]
 See also [method find_keycode_from_string], [member InputEventKey.keycode], and [method InputEventKey.get_keycode_with_modifiers].
 */
-func GetKeycodeString(code Key) string {
+func GetKeycodeString(code Key) string { //gd:OS.get_keycode_string
 	once.Do(singleton)
 	return string(class(self).GetKeycodeString(code).String())
 }
@@ -778,7 +778,7 @@ GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints false
 [/csharp]
 [/codeblocks]
 */
-func IsKeycodeUnicode(code int) bool {
+func IsKeycodeUnicode(code int) bool { //gd:OS.is_keycode_unicode
 	once.Do(singleton)
 	return bool(class(self).IsKeycodeUnicode(gd.Int(code)))
 }
@@ -801,7 +801,7 @@ GD.Print(OS.FindKeycodeFromString("Unknown"));   // Prints None (Key.None)
 [/codeblocks]
 See also [method get_keycode_string].
 */
-func FindKeycodeFromString(s string) Key {
+func FindKeycodeFromString(s string) Key { //gd:OS.find_keycode_from_string
 	once.Do(singleton)
 	return Key(class(self).FindKeycodeFromString(gd.NewString(s)))
 }
@@ -810,7 +810,7 @@ func FindKeycodeFromString(s string) Key {
 If [param enabled] is [code]true[/code], when opening a file for writing, a temporary file is used in its place. When closed, it is automatically applied to the target file.
 This can useful when files may be opened by other applications, such as antiviruses, text editors, or even the Godot editor itself.
 */
-func SetUseFileAccessSaveAndSwap(enabled bool) {
+func SetUseFileAccessSaveAndSwap(enabled bool) { //gd:OS.set_use_file_access_save_and_swap
 	once.Do(singleton)
 	class(self).SetUseFileAccessSaveAndSwap(enabled)
 }
@@ -818,7 +818,7 @@ func SetUseFileAccessSaveAndSwap(enabled bool) {
 /*
 Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE] if unavailable on the current platform.
 */
-func SetThreadName(name string) error {
+func SetThreadName(name string) error { //gd:OS.set_thread_name
 	once.Do(singleton)
 	return error(gd.ToError(class(self).SetThreadName(gd.NewString(name))))
 }
@@ -827,7 +827,7 @@ func SetThreadName(name string) error {
 Returns the ID of the current thread. This can be used in logs to ease debugging of multi-threaded applications.
 [b]Note:[/b] Thread IDs are not deterministic and may be reused across application restarts.
 */
-func GetThreadCallerId() int {
+func GetThreadCallerId() int { //gd:OS.get_thread_caller_id
 	once.Do(singleton)
 	return int(int(class(self).GetThreadCallerId()))
 }
@@ -836,7 +836,7 @@ func GetThreadCallerId() int {
 Returns the ID of the main thread. See [method get_thread_caller_id].
 [b]Note:[/b] Thread IDs are not deterministic and may be reused across application restarts.
 */
-func GetMainThreadId() int {
+func GetMainThreadId() int { //gd:OS.get_main_thread_id
 	once.Do(singleton)
 	return int(int(class(self).GetMainThreadId()))
 }
@@ -846,7 +846,7 @@ Returns [code]true[/code] if the feature for the given feature tag is supported 
 [b]Note:[/b] Tag names are case-sensitive.
 [b]Note:[/b] On the Web platform, one of the following additional tags is defined to indicate the host platform: [code]web_android[/code], [code]web_ios[/code], [code]web_linuxbsd[/code], [code]web_macos[/code], or [code]web_windows[/code].
 */
-func HasFeature(tag_name string) bool {
+func HasFeature(tag_name string) bool { //gd:OS.has_feature
 	once.Do(singleton)
 	return bool(class(self).HasFeature(gd.NewString(tag_name)))
 }
@@ -855,7 +855,7 @@ func HasFeature(tag_name string) bool {
 Returns [code]true[/code] if the application is running in the sandbox.
 [b]Note:[/b] This method is only implemented on macOS and Linux.
 */
-func IsSandboxed() bool {
+func IsSandboxed() bool { //gd:OS.is_sandboxed
 	once.Do(singleton)
 	return bool(class(self).IsSandboxed())
 }
@@ -864,7 +864,7 @@ func IsSandboxed() bool {
 Requests permission from the OS for the given [param name]. Returns [code]true[/code] if the permission has been successfully granted.
 [b]Note:[/b] This method is currently only implemented on Android, to specifically request permission for [code]"RECORD_AUDIO"[/code] by [code]AudioDriverOpenSL[/code].
 */
-func RequestPermission(name string) bool {
+func RequestPermission(name string) bool { //gd:OS.request_permission
 	once.Do(singleton)
 	return bool(class(self).RequestPermission(gd.NewString(name)))
 }
@@ -873,7 +873,7 @@ func RequestPermission(name string) bool {
 Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if permissions have been successfully granted.
 [b]Note:[/b] This method is only implemented on Android. Normal permissions are automatically granted at install time in Android applications.
 */
-func RequestPermissions() bool {
+func RequestPermissions() bool { //gd:OS.request_permissions
 	once.Do(singleton)
 	return bool(class(self).RequestPermissions())
 }
@@ -882,7 +882,7 @@ func RequestPermissions() bool {
 On Android devices: Returns the list of dangerous permissions that have been granted.
 On macOS: Returns the list of user selected folders accessible to the application (sandboxed applications only). Use the native file dialog to request folder access permission.
 */
-func GetGrantedPermissions() []string {
+func GetGrantedPermissions() []string { //gd:OS.get_granted_permissions
 	once.Do(singleton)
 	return []string(class(self).GetGrantedPermissions().Strings())
 }
@@ -890,7 +890,7 @@ func GetGrantedPermissions() []string {
 /*
 On macOS (sandboxed applications only), this function clears list of user selected folders accessible to the application.
 */
-func RevokeGrantedPermissions() {
+func RevokeGrantedPermissions() { //gd:OS.revoke_granted_permissions
 	once.Do(singleton)
 	class(self).RevokeGrantedPermissions()
 }
@@ -934,7 +934,7 @@ Generates a [PackedByteArray] of cryptographically secure random bytes with give
 [b]Note:[/b] Generating large quantities of bytes using this method can result in locking and entropy of lower quality on most platforms. Using [method Crypto.generate_random_bytes] is preferred in most cases.
 */
 //go:nosplit
-func (self class) GetEntropy(size gd.Int) gd.PackedByteArray {
+func (self class) GetEntropy(size gd.Int) gd.PackedByteArray { //gd:OS.get_entropy
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -948,7 +948,7 @@ func (self class) GetEntropy(size gd.Int) gd.PackedByteArray {
 Returns the list of certification authorities trusted by the operating system as a string of concatenated certificates in PEM format.
 */
 //go:nosplit
-func (self class) GetSystemCaCertificates() gd.String {
+func (self class) GetSystemCaCertificates() gd.String { //gd:OS.get_system_ca_certificates
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_ca_certificates, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -962,7 +962,7 @@ Returns an array of connected MIDI device names, if they exist. Returns an empty
 [b]Note:[/b] This method is implemented on Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetConnectedMidiInputs() gd.PackedStringArray {
+func (self class) GetConnectedMidiInputs() gd.PackedStringArray { //gd:OS.get_connected_midi_inputs
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_connected_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -976,7 +976,7 @@ Initializes the singleton for the system MIDI driver, allowing Godot to receive 
 [b]Note:[/b] This method is implemented on Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) OpenMidiInputs() {
+func (self class) OpenMidiInputs() { //gd:OS.open_midi_inputs
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_open_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -988,7 +988,7 @@ Shuts down the system MIDI driver. Godot will no longer receive [InputEventMIDI]
 [b]Note:[/b] This method is implemented on Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) CloseMidiInputs() {
+func (self class) CloseMidiInputs() { //gd:OS.close_midi_inputs
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_close_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -999,7 +999,7 @@ func (self class) CloseMidiInputs() {
 Displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
 */
 //go:nosplit
-func (self class) Alert(text gd.String, title gd.String) {
+func (self class) Alert(text gd.String, title gd.String) { //gd:OS.alert
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, pointers.Get(title))
@@ -1013,7 +1013,7 @@ Crashes the engine (or the editor if called within a [code]@tool[/code] script).
 [b]Note:[/b] This method should [i]only[/i] be used for testing the system's crash handler, not for any other purpose. For general error reporting, use (in order of preference) [method @GDScript.assert], [method @GlobalScope.push_error], or [method alert].
 */
 //go:nosplit
-func (self class) Crash(message gd.String) {
+func (self class) Crash(message gd.String) { //gd:OS.crash
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	var r_ret = callframe.Nil
@@ -1022,7 +1022,7 @@ func (self class) Crash(message gd.String) {
 }
 
 //go:nosplit
-func (self class) SetLowProcessorUsageMode(enable bool) {
+func (self class) SetLowProcessorUsageMode(enable bool) { //gd:OS.set_low_processor_usage_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -1031,7 +1031,7 @@ func (self class) SetLowProcessorUsageMode(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsInLowProcessorUsageMode() bool {
+func (self class) IsInLowProcessorUsageMode() bool { //gd:OS.is_in_low_processor_usage_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_in_low_processor_usage_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1041,7 +1041,7 @@ func (self class) IsInLowProcessorUsageMode() bool {
 }
 
 //go:nosplit
-func (self class) SetLowProcessorUsageModeSleepUsec(usec gd.Int) {
+func (self class) SetLowProcessorUsageModeSleepUsec(usec gd.Int) { //gd:OS.set_low_processor_usage_mode_sleep_usec
 	var frame = callframe.New()
 	callframe.Arg(frame, usec)
 	var r_ret = callframe.Nil
@@ -1050,7 +1050,7 @@ func (self class) SetLowProcessorUsageModeSleepUsec(usec gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetLowProcessorUsageModeSleepUsec() gd.Int {
+func (self class) GetLowProcessorUsageModeSleepUsec() gd.Int { //gd:OS.get_low_processor_usage_mode_sleep_usec
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_low_processor_usage_mode_sleep_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1060,7 +1060,7 @@ func (self class) GetLowProcessorUsageModeSleepUsec() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetDeltaSmoothing(delta_smoothing_enabled bool) {
+func (self class) SetDeltaSmoothing(delta_smoothing_enabled bool) { //gd:OS.set_delta_smoothing
 	var frame = callframe.New()
 	callframe.Arg(frame, delta_smoothing_enabled)
 	var r_ret = callframe.Nil
@@ -1069,7 +1069,7 @@ func (self class) SetDeltaSmoothing(delta_smoothing_enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDeltaSmoothingEnabled() bool {
+func (self class) IsDeltaSmoothingEnabled() bool { //gd:OS.is_delta_smoothing_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_delta_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1082,7 +1082,7 @@ func (self class) IsDeltaSmoothingEnabled() bool {
 Returns the number of [i]logical[/i] CPU cores available on the host machine. On CPUs with HyperThreading enabled, this number will be greater than the number of [i]physical[/i] CPU cores.
 */
 //go:nosplit
-func (self class) GetProcessorCount() gd.Int {
+func (self class) GetProcessorCount() gd.Int { //gd:OS.get_processor_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1096,7 +1096,7 @@ Returns the full name of the CPU model on the host machine (e.g. [code]"Intel(R)
 [b]Note:[/b] This method is only implemented on Windows, macOS, Linux and iOS. On Android and Web, [method get_processor_name] returns an empty string.
 */
 //go:nosplit
-func (self class) GetProcessorName() gd.String {
+func (self class) GetProcessorName() gd.String { //gd:OS.get_processor_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1110,7 +1110,7 @@ Returns the list of font family names available.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSystemFonts() gd.PackedStringArray {
+func (self class) GetSystemFonts() gd.PackedStringArray { //gd:OS.get_system_fonts
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_fonts, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1126,7 +1126,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSystemFontPath(font_name gd.String, weight gd.Int, stretch gd.Int, italic bool) gd.String {
+func (self class) GetSystemFontPath(font_name gd.String, weight gd.Int, stretch gd.Int, italic bool) gd.String { //gd:OS.get_system_font_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font_name))
 	callframe.Arg(frame, weight)
@@ -1147,7 +1147,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetSystemFontPathForText(font_name gd.String, text gd.String, locale gd.String, script gd.String, weight gd.Int, stretch gd.Int, italic bool) gd.PackedStringArray {
+func (self class) GetSystemFontPathForText(font_name gd.String, text gd.String, locale gd.String, script gd.String, weight gd.Int, stretch gd.Int, italic bool) gd.PackedStringArray { //gd:OS.get_system_font_path_for_text
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font_name))
 	callframe.Arg(frame, pointers.Get(text))
@@ -1168,7 +1168,7 @@ Returns the file path to the current engine executable.
 [b]Note:[/b] On macOS, if you want to launch another instance of Godot, always use [method create_instance] instead of relying on the executable path.
 */
 //go:nosplit
-func (self class) GetExecutablePath() gd.String {
+func (self class) GetExecutablePath() gd.String { //gd:OS.get_executable_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_executable_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1183,7 +1183,7 @@ Reads a user input string from the standard input (usually the terminal). This o
 [b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. Otherwise, the standard input will not work correctly. If you need a single executable with console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
 */
 //go:nosplit
-func (self class) ReadStringFromStdin() gd.String {
+func (self class) ReadStringFromStdin() gd.String { //gd:OS.read_string_from_stdin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_string_from_stdin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1228,7 +1228,7 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 [b]Note:[/b] On Android, system commands such as [code]dumpsys[/code] can only be run on a rooted device.
 */
 //go:nosplit
-func (self class) Execute(path gd.String, arguments gd.PackedStringArray, output Array.Any, read_stderr bool, open_console bool) gd.Int {
+func (self class) Execute(path gd.String, arguments gd.PackedStringArray, output Array.Any, read_stderr bool, open_console bool) gd.Int { //gd:OS.execute
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(arguments))
@@ -1255,7 +1255,7 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) ExecuteWithPipe(path gd.String, arguments gd.PackedStringArray) gd.Dictionary {
+func (self class) ExecuteWithPipe(path gd.String, arguments gd.PackedStringArray) gd.Dictionary { //gd:OS.execute_with_pipe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(arguments))
@@ -1284,7 +1284,7 @@ See [method execute] if you wish to run an external command and retrieve the res
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) CreateProcess(path gd.String, arguments gd.PackedStringArray, open_console bool) gd.Int {
+func (self class) CreateProcess(path gd.String, arguments gd.PackedStringArray, open_console bool) gd.Int { //gd:OS.create_process
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(arguments))
@@ -1303,7 +1303,7 @@ See [method create_process] if you wish to run a different process.
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) CreateInstance(arguments gd.PackedStringArray) gd.Int {
+func (self class) CreateInstance(arguments gd.PackedStringArray) gd.Int { //gd:OS.create_instance
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(arguments))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1319,7 +1319,7 @@ Kill (terminate) the process identified by the given process ID ([param pid]), s
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) Kill(pid gd.Int) gd.Error {
+func (self class) Kill(pid gd.Int) gd.Error { //gd:OS.kill
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -1339,7 +1339,7 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) ShellOpen(uri gd.String) gd.Error {
+func (self class) ShellOpen(uri gd.String) gd.Error { //gd:OS.shell_open
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(uri))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -1356,7 +1356,7 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 [b]Note:[/b] This method is currently only implemented on Windows and macOS. On other platforms, it will fallback to [method shell_open] with a directory path of [param file_or_dir_path] prefixed with [code]file://[/code].
 */
 //go:nosplit
-func (self class) ShellShowInFileManager(file_or_dir_path gd.String, open_folder bool) gd.Error {
+func (self class) ShellShowInFileManager(file_or_dir_path gd.String, open_folder bool) gd.Error { //gd:OS.shell_show_in_file_manager
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(file_or_dir_path))
 	callframe.Arg(frame, open_folder)
@@ -1372,7 +1372,7 @@ Returns [code]true[/code] if the child process ID ([param pid]) is still running
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS, and Windows.
 */
 //go:nosplit
-func (self class) IsProcessRunning(pid gd.Int) bool {
+func (self class) IsProcessRunning(pid gd.Int) bool { //gd:OS.is_process_running
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1389,7 +1389,7 @@ Returns [code]-1[/code] if the [param pid] is not a PID of a spawned child proce
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 */
 //go:nosplit
-func (self class) GetProcessExitCode(pid gd.Int) gd.Int {
+func (self class) GetProcessExitCode(pid gd.Int) gd.Int { //gd:OS.get_process_exit_code
 	var frame = callframe.New()
 	callframe.Arg(frame, pid)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -1404,7 +1404,7 @@ Returns the number used by the host machine to uniquely identify this applicatio
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS, and Windows.
 */
 //go:nosplit
-func (self class) GetProcessId() gd.Int {
+func (self class) GetProcessId() gd.Int { //gd:OS.get_process_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_process_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1418,7 +1418,7 @@ Returns [code]true[/code] if the environment variable with the name [param varia
 [b]Note:[/b] Double-check the casing of [param variable]. Environment variable names are case-sensitive on all platforms except Windows.
 */
 //go:nosplit
-func (self class) HasEnvironment(variable gd.String) bool {
+func (self class) HasEnvironment(variable gd.String) bool { //gd:OS.has_environment
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Ret[bool](frame)
@@ -1434,7 +1434,7 @@ Returns the value of the given environment variable, or an empty string if [para
 [b]Note:[/b] On macOS, applications do not have access to shell environment variables.
 */
 //go:nosplit
-func (self class) GetEnvironment(variable gd.String) gd.String {
+func (self class) GetEnvironment(variable gd.String) gd.String { //gd:OS.get_environment
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -1449,7 +1449,7 @@ Sets the value of the environment variable [param variable] to [param value]. Th
 [b]Note:[/b] Environment variable names are case-sensitive on all platforms except Windows. The [param variable] name cannot be empty or include the [code]=[/code] character. On Windows, there is a 32767 characters limit for the combined length of [param variable], [param value], and the [code]=[/code] and null terminator characters that will be registered in the environment block.
 */
 //go:nosplit
-func (self class) SetEnvironment(variable gd.String, value gd.String) {
+func (self class) SetEnvironment(variable gd.String, value gd.String) { //gd:OS.set_environment
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	callframe.Arg(frame, pointers.Get(value))
@@ -1463,7 +1463,7 @@ Removes the given environment variable from the current environment, if it exist
 [b]Note:[/b] Environment variable names are case-sensitive on all platforms except Windows.
 */
 //go:nosplit
-func (self class) UnsetEnvironment(variable gd.String) {
+func (self class) UnsetEnvironment(variable gd.String) { //gd:OS.unset_environment
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(variable))
 	var r_ret = callframe.Nil
@@ -1528,7 +1528,7 @@ switch (OS.GetName())
 [b]Note:[/b] On Web platforms, it is still possible to determine the host platform's OS with feature tags. See [method has_feature].
 */
 //go:nosplit
-func (self class) GetName() gd.String {
+func (self class) GetName() gd.String { //gd:OS.get_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1544,7 +1544,7 @@ Returns the same value as [method get_name] for other platforms.
 [b]Note:[/b] This method is not supported on the Web platform. It returns an empty string.
 */
 //go:nosplit
-func (self class) GetDistributionName() gd.String {
+func (self class) GetDistributionName() gd.String { //gd:OS.get_distribution_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_distribution_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1562,7 +1562,7 @@ Returns the exact production and build version of the operating system. This is 
 [b]Note:[/b] This method is not supported on the Web platform. It returns an empty string.
 */
 //go:nosplit
-func (self class) GetVersion() gd.String {
+func (self class) GetVersion() gd.String { //gd:OS.get_version
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1610,7 +1610,7 @@ foreach (var argument in OS.GetCmdlineArgs())
 [b]Note:[/b] Passing custom user arguments directly is not recommended, as the engine may discard or modify them. Instead, pass the standard UNIX double dash ([code]--[/code]) and then the custom arguments, which the engine will ignore by design. These can be read via [method get_cmdline_user_args].
 */
 //go:nosplit
-func (self class) GetCmdlineArgs() gd.PackedStringArray {
+func (self class) GetCmdlineArgs() gd.PackedStringArray { //gd:OS.get_cmdline_args
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_args, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1631,7 +1631,7 @@ OS.get_cmdline_user_args() # Returns ["--level=2", "--hardcore"]
 To get all passed arguments, use [method get_cmdline_args].
 */
 //go:nosplit
-func (self class) GetCmdlineUserArgs() gd.PackedStringArray {
+func (self class) GetCmdlineUserArgs() gd.PackedStringArray { //gd:OS.get_cmdline_user_args
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_user_args, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1647,7 +1647,7 @@ The second element holds the driver version. For example, on the [code]nvidia[/c
 [b]Note:[/b] This method is only supported on Linux/BSD and Windows when not running in headless mode. On other platforms, it returns an empty array.
 */
 //go:nosplit
-func (self class) GetVideoAdapterDriverInfo() gd.PackedStringArray {
+func (self class) GetVideoAdapterDriverInfo() gd.PackedStringArray { //gd:OS.get_video_adapter_driver_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_video_adapter_driver_info, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1663,7 +1663,7 @@ This method can be used to apply setting changes that require a restart. See als
 [b]Note:[/b] If the project process crashes or is [i]killed[/i] by the user (by sending [code]SIGKILL[/code] instead of the usual [code]SIGTERM[/code]), the project won't restart automatically.
 */
 //go:nosplit
-func (self class) SetRestartOnExit(restart bool, arguments gd.PackedStringArray) {
+func (self class) SetRestartOnExit(restart bool, arguments gd.PackedStringArray) { //gd:OS.set_restart_on_exit
 	var frame = callframe.New()
 	callframe.Arg(frame, restart)
 	callframe.Arg(frame, pointers.Get(arguments))
@@ -1676,7 +1676,7 @@ func (self class) SetRestartOnExit(restart bool, arguments gd.PackedStringArray)
 Returns [code]true[/code] if the project will automatically restart when it exits for any reason, [code]false[/code] otherwise. See also [method set_restart_on_exit] and [method get_restart_on_exit_arguments].
 */
 //go:nosplit
-func (self class) IsRestartOnExitSet() bool {
+func (self class) IsRestartOnExitSet() bool { //gd:OS.is_restart_on_exit_set
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_restart_on_exit_set, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1689,7 +1689,7 @@ func (self class) IsRestartOnExitSet() bool {
 Returns the list of command line arguments that will be used when the project automatically restarts using [method set_restart_on_exit]. See also [method is_restart_on_exit_set].
 */
 //go:nosplit
-func (self class) GetRestartOnExitArguments() gd.PackedStringArray {
+func (self class) GetRestartOnExitArguments() gd.PackedStringArray { //gd:OS.get_restart_on_exit_arguments
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_restart_on_exit_arguments, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1704,7 +1704,7 @@ Delays execution of the current thread by [param usec] microseconds. [param usec
 [b]Note:[/b] When [method delay_usec] is called on the main thread, it will freeze the project and will prevent it from redrawing and registering input until the delay has passed. When using [method delay_usec] as part of an [EditorPlugin] or [EditorScript], it will freeze the editor but won't freeze the project if it is currently running (since the project is an independent child process).
 */
 //go:nosplit
-func (self class) DelayUsec(usec gd.Int) {
+func (self class) DelayUsec(usec gd.Int) { //gd:OS.delay_usec
 	var frame = callframe.New()
 	callframe.Arg(frame, usec)
 	var r_ret = callframe.Nil
@@ -1718,7 +1718,7 @@ Delays execution of the current thread by [param msec] milliseconds. [param msec
 [b]Note:[/b] When [method delay_msec] is called on the main thread, it will freeze the project and will prevent it from redrawing and registering input until the delay has passed. When using [method delay_msec] as part of an [EditorPlugin] or [EditorScript], it will freeze the editor but won't freeze the project if it is currently running (since the project is an independent child process).
 */
 //go:nosplit
-func (self class) DelayMsec(msec gd.Int) {
+func (self class) DelayMsec(msec gd.Int) { //gd:OS.delay_msec
 	var frame = callframe.New()
 	callframe.Arg(frame, msec)
 	var r_ret = callframe.Nil
@@ -1736,7 +1736,7 @@ Returns the host OS locale as a [String] of the form [code]language_Script_COUNT
 If you want only the language code and not the fully specified locale from the OS, you can use [method get_locale_language].
 */
 //go:nosplit
-func (self class) GetLocale() gd.String {
+func (self class) GetLocale() gd.String { //gd:OS.get_locale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1750,7 +1750,7 @@ Returns the host OS locale's 2 or 3-letter [url=https://en.wikipedia.org/wiki/Li
 This can be used to narrow down fully specified locale strings to only the "common" language code, when you don't need the additional information about country code or variants. For example, for a French Canadian user with [code]fr_CA[/code] locale, this would return [code]fr[/code].
 */
 //go:nosplit
-func (self class) GetLocaleLanguage() gd.String {
+func (self class) GetLocaleLanguage() gd.String { //gd:OS.get_locale_language
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale_language, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1764,7 +1764,7 @@ Returns the model name of the current device.
 [b]Note:[/b] This method is implemented on Android and iOS. Returns [code]"GenericDevice"[/code] on unsupported platforms.
 */
 //go:nosplit
-func (self class) GetModelName() gd.String {
+func (self class) GetModelName() gd.String { //gd:OS.get_model_name
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_model_name, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1777,7 +1777,7 @@ func (self class) GetModelName() gd.String {
 Returns [code]true[/code] if the [code]user://[/code] file system is persistent, that is, its state is the same after a player quits and starts the game again. Relevant to the Web platform, where this persistence may be unavailable.
 */
 //go:nosplit
-func (self class) IsUserfsPersistent() bool {
+func (self class) IsUserfsPersistent() bool { //gd:OS.is_userfs_persistent
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_userfs_persistent, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1790,7 +1790,7 @@ func (self class) IsUserfsPersistent() bool {
 Returns [code]true[/code] if the engine was executed with the [code]--verbose[/code] or [code]-v[/code] command line argument, or if [member ProjectSettings.debug/settings/stdout/verbose_stdout] is [code]true[/code]. See also [method @GlobalScope.print_verbose].
 */
 //go:nosplit
-func (self class) IsStdoutVerbose() bool {
+func (self class) IsStdoutVerbose() bool { //gd:OS.is_stdout_verbose
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_stdout_verbose, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1805,7 +1805,7 @@ Returns [code]false[/code] if the Godot binary used to run the project is a [i]r
 [b]Note:[/b] To check whether the Godot binary used to run the project is an export template (debug or release), use [code]OS.has_feature("template")[/code] instead.
 */
 //go:nosplit
-func (self class) IsDebugBuild() bool {
+func (self class) IsDebugBuild() bool { //gd:OS.is_debug_build
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_debug_build, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1818,7 +1818,7 @@ func (self class) IsDebugBuild() bool {
 Returns the amount of static memory being used by the program in bytes. Only works in debug builds.
 */
 //go:nosplit
-func (self class) GetStaticMemoryUsage() gd.Int {
+func (self class) GetStaticMemoryUsage() gd.Int { //gd:OS.get_static_memory_usage
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_usage, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1831,7 +1831,7 @@ func (self class) GetStaticMemoryUsage() gd.Int {
 Returns the maximum amount of static memory used. Only works in debug builds.
 */
 //go:nosplit
-func (self class) GetStaticMemoryPeakUsage() gd.Int {
+func (self class) GetStaticMemoryPeakUsage() gd.Int { //gd:OS.get_static_memory_peak_usage
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_peak_usage, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1849,7 +1849,7 @@ Returns a [Dictionary] containing information about the current memory with the 
 [b]Note:[/b] Each entry's value may be [code]-1[/code] if it is unknown.
 */
 //go:nosplit
-func (self class) GetMemoryInfo() gd.Dictionary {
+func (self class) GetMemoryInfo() gd.Dictionary { //gd:OS.get_memory_info
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_memory_info, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1876,7 +1876,7 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 [b]Note:[/b] If the user has disabled the recycle bin on their system, the file will be permanently deleted instead.
 */
 //go:nosplit
-func (self class) MoveToTrash(path gd.String) gd.Error {
+func (self class) MoveToTrash(path gd.String) gd.Error { //gd:OS.move_to_trash
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -1897,7 +1897,7 @@ If the project name is empty, [code][project_name][/code] falls back to [code][u
 Not to be confused with [method get_data_dir], which returns the [i]global[/i] (non-project-specific) user home directory.
 */
 //go:nosplit
-func (self class) GetUserDataDir() gd.String {
+func (self class) GetUserDataDir() gd.String { //gd:OS.get_user_data_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_user_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1912,7 +1912,7 @@ Returns the path to commonly used folders across different platforms, as defined
 [b]Note:[/b] Shared storage is implemented on Android and allows to differentiate between app specific and shared directories, if [param shared_storage] is [code]true[/code]. Shared directories have additional restrictions on Android.
 */
 //go:nosplit
-func (self class) GetSystemDir(dir gdclass.OSSystemDir, shared_storage bool) gd.String {
+func (self class) GetSystemDir(dir gdclass.OSSystemDir, shared_storage bool) gd.String { //gd:OS.get_system_dir
 	var frame = callframe.New()
 	callframe.Arg(frame, dir)
 	callframe.Arg(frame, shared_storage)
@@ -1929,7 +1929,7 @@ On the Linux/BSD platform, this path can be overridden by setting the [code]XDG_
 Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 */
 //go:nosplit
-func (self class) GetConfigDir() gd.String {
+func (self class) GetConfigDir() gd.String { //gd:OS.get_config_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_config_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1944,7 +1944,7 @@ On the Linux/BSD platform, this path can be overridden by setting the [code]XDG_
 Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 */
 //go:nosplit
-func (self class) GetDataDir() gd.String {
+func (self class) GetDataDir() gd.String { //gd:OS.get_data_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1959,7 +1959,7 @@ On the Linux/BSD platform, this path can be overridden by setting the [code]XDG_
 Not to be confused with [method get_user_data_dir], which returns the [i]project-specific[/i] user data path.
 */
 //go:nosplit
-func (self class) GetCacheDir() gd.String {
+func (self class) GetCacheDir() gd.String { //gd:OS.get_cache_dir
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cache_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1974,7 +1974,7 @@ Returns a string that is unique to the device.
 [b]Note:[/b] On Web, returns an empty string and generates an error, as this method cannot be implemented for security reasons.
 */
 //go:nosplit
-func (self class) GetUniqueId() gd.String {
+func (self class) GetUniqueId() gd.String { //gd:OS.get_unique_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2000,7 +2000,7 @@ GD.Print(OS.GetKeycodeString((Key)KeyModifierMask.MaskShift | Key.Tab)); // Prin
 See also [method find_keycode_from_string], [member InputEventKey.keycode], and [method InputEventKey.get_keycode_with_modifiers].
 */
 //go:nosplit
-func (self class) GetKeycodeString(code Key) gd.String {
+func (self class) GetKeycodeString(code Key) gd.String { //gd:OS.get_keycode_string
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -2028,7 +2028,7 @@ GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints false
 [/codeblocks]
 */
 //go:nosplit
-func (self class) IsKeycodeUnicode(code gd.Int) bool {
+func (self class) IsKeycodeUnicode(code gd.Int) bool { //gd:OS.is_keycode_unicode
 	var frame = callframe.New()
 	callframe.Arg(frame, code)
 	var r_ret = callframe.Ret[bool](frame)
@@ -2057,7 +2057,7 @@ GD.Print(OS.FindKeycodeFromString("Unknown"));   // Prints None (Key.None)
 See also [method get_keycode_string].
 */
 //go:nosplit
-func (self class) FindKeycodeFromString(s gd.String) Key {
+func (self class) FindKeycodeFromString(s gd.String) Key { //gd:OS.find_keycode_from_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(s))
 	var r_ret = callframe.Ret[Key](frame)
@@ -2072,7 +2072,7 @@ If [param enabled] is [code]true[/code], when opening a file for writing, a temp
 This can useful when files may be opened by other applications, such as antiviruses, text editors, or even the Godot editor itself.
 */
 //go:nosplit
-func (self class) SetUseFileAccessSaveAndSwap(enabled bool) {
+func (self class) SetUseFileAccessSaveAndSwap(enabled bool) { //gd:OS.set_use_file_access_save_and_swap
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -2084,7 +2084,7 @@ func (self class) SetUseFileAccessSaveAndSwap(enabled bool) {
 Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE] if unavailable on the current platform.
 */
 //go:nosplit
-func (self class) SetThreadName(name gd.String) gd.Error {
+func (self class) SetThreadName(name gd.String) gd.Error { //gd:OS.set_thread_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -2099,7 +2099,7 @@ Returns the ID of the current thread. This can be used in logs to ease debugging
 [b]Note:[/b] Thread IDs are not deterministic and may be reused across application restarts.
 */
 //go:nosplit
-func (self class) GetThreadCallerId() gd.Int {
+func (self class) GetThreadCallerId() gd.Int { //gd:OS.get_thread_caller_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_thread_caller_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2113,7 +2113,7 @@ Returns the ID of the main thread. See [method get_thread_caller_id].
 [b]Note:[/b] Thread IDs are not deterministic and may be reused across application restarts.
 */
 //go:nosplit
-func (self class) GetMainThreadId() gd.Int {
+func (self class) GetMainThreadId() gd.Int { //gd:OS.get_main_thread_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_main_thread_id, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2128,7 +2128,7 @@ Returns [code]true[/code] if the feature for the given feature tag is supported 
 [b]Note:[/b] On the Web platform, one of the following additional tags is defined to indicate the host platform: [code]web_android[/code], [code]web_ios[/code], [code]web_linuxbsd[/code], [code]web_macos[/code], or [code]web_windows[/code].
 */
 //go:nosplit
-func (self class) HasFeature(tag_name gd.String) bool {
+func (self class) HasFeature(tag_name gd.String) bool { //gd:OS.has_feature
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(tag_name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -2143,7 +2143,7 @@ Returns [code]true[/code] if the application is running in the sandbox.
 [b]Note:[/b] This method is only implemented on macOS and Linux.
 */
 //go:nosplit
-func (self class) IsSandboxed() bool {
+func (self class) IsSandboxed() bool { //gd:OS.is_sandboxed
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_sandboxed, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2157,7 +2157,7 @@ Requests permission from the OS for the given [param name]. Returns [code]true[/
 [b]Note:[/b] This method is currently only implemented on Android, to specifically request permission for [code]"RECORD_AUDIO"[/code] by [code]AudioDriverOpenSL[/code].
 */
 //go:nosplit
-func (self class) RequestPermission(name gd.String) bool {
+func (self class) RequestPermission(name gd.String) bool { //gd:OS.request_permission
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -2172,7 +2172,7 @@ Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if 
 [b]Note:[/b] This method is only implemented on Android. Normal permissions are automatically granted at install time in Android applications.
 */
 //go:nosplit
-func (self class) RequestPermissions() bool {
+func (self class) RequestPermissions() bool { //gd:OS.request_permissions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_request_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2186,7 +2186,7 @@ On Android devices: Returns the list of dangerous permissions that have been gra
 On macOS: Returns the list of user selected folders accessible to the application (sandboxed applications only). Use the native file dialog to request folder access permission.
 */
 //go:nosplit
-func (self class) GetGrantedPermissions() gd.PackedStringArray {
+func (self class) GetGrantedPermissions() gd.PackedStringArray { //gd:OS.get_granted_permissions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_granted_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2199,7 +2199,7 @@ func (self class) GetGrantedPermissions() gd.PackedStringArray {
 On macOS (sandboxed applications only), this function clears list of user selected folders accessible to the application.
 */
 //go:nosplit
-func (self class) RevokeGrantedPermissions() {
+func (self class) RevokeGrantedPermissions() { //gd:OS.revoke_granted_permissions
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_revoke_granted_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2215,7 +2215,7 @@ func init() {
 	gdclass.Register("OS", func(ptr gd.Object) any { return [1]gdclass.OS{*(*gdclass.OS)(unsafe.Pointer(&ptr))} })
 }
 
-type RenderingDriver = gdclass.OSRenderingDriver
+type RenderingDriver = gdclass.OSRenderingDriver //gd:OS.RenderingDriver
 
 const (
 	/*The Vulkan rendering driver. It requires Vulkan 1.0 support and automatically uses features from Vulkan 1.1 and 1.2 if available.*/
@@ -2226,7 +2226,7 @@ const (
 	RenderingDriverD3d12 RenderingDriver = 2
 )
 
-type SystemDir = gdclass.OSSystemDir
+type SystemDir = gdclass.OSSystemDir //gd:OS.SystemDir
 
 const (
 	/*Refers to the Desktop directory path.*/
@@ -2247,7 +2247,7 @@ const (
 	SystemDirRingtones SystemDir = 7
 )
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

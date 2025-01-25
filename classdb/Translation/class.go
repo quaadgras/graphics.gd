@@ -105,7 +105,7 @@ func (Instance) _get_message(impl func(ptr unsafe.Pointer, src_message string, c
 Adds a message if nonexistent, followed by its translation.
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
-func (self Instance) AddMessage(src_message string, xlated_message string) {
+func (self Instance) AddMessage(src_message string, xlated_message string) { //gd:Translation.add_message
 	class(self).AddMessage(gd.NewStringName(src_message), gd.NewStringName(xlated_message), gd.NewStringName(""))
 }
 
@@ -113,14 +113,14 @@ func (self Instance) AddMessage(src_message string, xlated_message string) {
 Adds a message involving plural translation if nonexistent, followed by its translation.
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
-func (self Instance) AddPluralMessage(src_message string, xlated_messages []string) {
+func (self Instance) AddPluralMessage(src_message string, xlated_messages []string) { //gd:Translation.add_plural_message
 	class(self).AddPluralMessage(gd.NewStringName(src_message), gd.NewPackedStringSlice(xlated_messages), gd.NewStringName(""))
 }
 
 /*
 Returns a message's translation.
 */
-func (self Instance) GetMessage(src_message string) string {
+func (self Instance) GetMessage(src_message string) string { //gd:Translation.get_message
 	return string(class(self).GetMessage(gd.NewStringName(src_message), gd.NewStringName("")).String())
 }
 
@@ -128,35 +128,35 @@ func (self Instance) GetMessage(src_message string) string {
 Returns a message's translation involving plurals.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
-func (self Instance) GetPluralMessage(src_message string, src_plural_message string, n int) string {
+func (self Instance) GetPluralMessage(src_message string, src_plural_message string, n int) string { //gd:Translation.get_plural_message
 	return string(class(self).GetPluralMessage(gd.NewStringName(src_message), gd.NewStringName(src_plural_message), gd.Int(n), gd.NewStringName("")).String())
 }
 
 /*
 Erases a message.
 */
-func (self Instance) EraseMessage(src_message string) {
+func (self Instance) EraseMessage(src_message string) { //gd:Translation.erase_message
 	class(self).EraseMessage(gd.NewStringName(src_message), gd.NewStringName(""))
 }
 
 /*
 Returns all the messages (keys).
 */
-func (self Instance) GetMessageList() []string {
+func (self Instance) GetMessageList() []string { //gd:Translation.get_message_list
 	return []string(class(self).GetMessageList().Strings())
 }
 
 /*
 Returns all the messages (translated text).
 */
-func (self Instance) GetTranslatedMessageList() []string {
+func (self Instance) GetTranslatedMessageList() []string { //gd:Translation.get_translated_message_list
 	return []string(class(self).GetTranslatedMessageList().Strings())
 }
 
 /*
 Returns the number of existing messages.
 */
-func (self Instance) GetMessageCount() int {
+func (self Instance) GetMessageCount() int { //gd:Translation.get_message_count
 	return int(int(class(self).GetMessageCount()))
 }
 
@@ -232,7 +232,7 @@ func (class) _get_message(impl func(ptr unsafe.Pointer, src_message gd.StringNam
 }
 
 //go:nosplit
-func (self class) SetLocale(locale gd.String) {
+func (self class) SetLocale(locale gd.String) { //gd:Translation.set_locale
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
 	var r_ret = callframe.Nil
@@ -241,7 +241,7 @@ func (self class) SetLocale(locale gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLocale() gd.String {
+func (self class) GetLocale() gd.String { //gd:Translation.get_locale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -255,7 +255,7 @@ Adds a message if nonexistent, followed by its translation.
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 //go:nosplit
-func (self class) AddMessage(src_message gd.StringName, xlated_message gd.StringName, context gd.StringName) {
+func (self class) AddMessage(src_message gd.StringName, xlated_message gd.StringName, context gd.StringName) { //gd:Translation.add_message
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(xlated_message))
@@ -270,7 +270,7 @@ Adds a message involving plural translation if nonexistent, followed by its tran
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 //go:nosplit
-func (self class) AddPluralMessage(src_message gd.StringName, xlated_messages gd.PackedStringArray, context gd.StringName) {
+func (self class) AddPluralMessage(src_message gd.StringName, xlated_messages gd.PackedStringArray, context gd.StringName) { //gd:Translation.add_plural_message
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(xlated_messages))
@@ -284,7 +284,7 @@ func (self class) AddPluralMessage(src_message gd.StringName, xlated_messages gd
 Returns a message's translation.
 */
 //go:nosplit
-func (self class) GetMessage(src_message gd.StringName, context gd.StringName) gd.StringName {
+func (self class) GetMessage(src_message gd.StringName, context gd.StringName) gd.StringName { //gd:Translation.get_message
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(context))
@@ -300,7 +300,7 @@ Returns a message's translation involving plurals.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 //go:nosplit
-func (self class) GetPluralMessage(src_message gd.StringName, src_plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName {
+func (self class) GetPluralMessage(src_message gd.StringName, src_plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName { //gd:Translation.get_plural_message
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(src_plural_message))
@@ -317,7 +317,7 @@ func (self class) GetPluralMessage(src_message gd.StringName, src_plural_message
 Erases a message.
 */
 //go:nosplit
-func (self class) EraseMessage(src_message gd.StringName, context gd.StringName) {
+func (self class) EraseMessage(src_message gd.StringName, context gd.StringName) { //gd:Translation.erase_message
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(src_message))
 	callframe.Arg(frame, pointers.Get(context))
@@ -330,7 +330,7 @@ func (self class) EraseMessage(src_message gd.StringName, context gd.StringName)
 Returns all the messages (keys).
 */
 //go:nosplit
-func (self class) GetMessageList() gd.PackedStringArray {
+func (self class) GetMessageList() gd.PackedStringArray { //gd:Translation.get_message_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -343,7 +343,7 @@ func (self class) GetMessageList() gd.PackedStringArray {
 Returns all the messages (translated text).
 */
 //go:nosplit
-func (self class) GetTranslatedMessageList() gd.PackedStringArray {
+func (self class) GetTranslatedMessageList() gd.PackedStringArray { //gd:Translation.get_translated_message_list
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_translated_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -356,7 +356,7 @@ func (self class) GetTranslatedMessageList() gd.PackedStringArray {
 Returns the number of existing messages.
 */
 //go:nosplit
-func (self class) GetMessageCount() gd.Int {
+func (self class) GetMessageCount() gd.Int { //gd:Translation.get_message_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_count, self.AsObject(), frame.Array(0), r_ret.Addr())

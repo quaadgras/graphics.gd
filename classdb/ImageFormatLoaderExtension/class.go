@@ -99,14 +99,14 @@ func (Instance) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image
 /*
 Add this format loader to the engine, allowing it to recognize the file extensions returned by [method _get_recognized_extensions].
 */
-func (self Instance) AddFormatLoader() {
+func (self Instance) AddFormatLoader() { //gd:ImageFormatLoaderExtension.add_format_loader
 	class(self).AddFormatLoader()
 }
 
 /*
 Remove this format loader from the engine.
 */
-func (self Instance) RemoveFormatLoader() {
+func (self Instance) RemoveFormatLoader() { //gd:ImageFormatLoaderExtension.remove_format_loader
 	class(self).RemoveFormatLoader()
 }
 
@@ -170,7 +170,7 @@ func (class) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, f
 Add this format loader to the engine, allowing it to recognize the file extensions returned by [method _get_recognized_extensions].
 */
 //go:nosplit
-func (self class) AddFormatLoader() {
+func (self class) AddFormatLoader() { //gd:ImageFormatLoaderExtension.add_format_loader
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageFormatLoaderExtension.Bind_add_format_loader, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -181,7 +181,7 @@ func (self class) AddFormatLoader() {
 Remove this format loader from the engine.
 */
 //go:nosplit
-func (self class) RemoveFormatLoader() {
+func (self class) RemoveFormatLoader() { //gd:ImageFormatLoaderExtension.remove_format_loader
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageFormatLoaderExtension.Bind_remove_format_loader, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -233,7 +233,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

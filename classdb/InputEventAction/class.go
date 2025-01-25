@@ -88,7 +88,7 @@ func (self Instance) SetEventIndex(value int) {
 }
 
 //go:nosplit
-func (self class) SetAction(action gd.StringName) {
+func (self class) SetAction(action gd.StringName) { //gd:InputEventAction.set_action
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Nil
@@ -97,7 +97,7 @@ func (self class) SetAction(action gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetAction() gd.StringName {
+func (self class) GetAction() gd.StringName { //gd:InputEventAction.get_action
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventAction.Bind_get_action, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -107,7 +107,7 @@ func (self class) GetAction() gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetPressed(pressed bool) {
+func (self class) SetPressed(pressed bool) { //gd:InputEventAction.set_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pressed)
 	var r_ret = callframe.Nil
@@ -116,7 +116,7 @@ func (self class) SetPressed(pressed bool) {
 }
 
 //go:nosplit
-func (self class) SetStrength(strength gd.Float) {
+func (self class) SetStrength(strength gd.Float) { //gd:InputEventAction.set_strength
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -125,7 +125,7 @@ func (self class) SetStrength(strength gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetStrength() gd.Float {
+func (self class) GetStrength() gd.Float { //gd:InputEventAction.get_strength
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventAction.Bind_get_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func (self class) GetStrength() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetEventIndex(index gd.Int) {
+func (self class) SetEventIndex(index gd.Int) { //gd:InputEventAction.set_event_index
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetEventIndex(index gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetEventIndex() gd.Int {
+func (self class) GetEventIndex() gd.Int { //gd:InputEventAction.get_event_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventAction.Bind_get_event_index, self.AsObject(), frame.Array(0), r_ret.Addr())

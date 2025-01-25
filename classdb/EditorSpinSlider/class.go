@@ -100,7 +100,7 @@ func (self Instance) SetHideSlider(value bool) {
 }
 
 //go:nosplit
-func (self class) SetLabel(label gd.String) {
+func (self class) SetLabel(label gd.String) { //gd:EditorSpinSlider.set_label
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(label))
 	var r_ret = callframe.Nil
@@ -109,7 +109,7 @@ func (self class) SetLabel(label gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLabel() gd.String {
+func (self class) GetLabel() gd.String { //gd:EditorSpinSlider.get_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -119,7 +119,7 @@ func (self class) GetLabel() gd.String {
 }
 
 //go:nosplit
-func (self class) SetSuffix(suffix gd.String) {
+func (self class) SetSuffix(suffix gd.String) { //gd:EditorSpinSlider.set_suffix
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(suffix))
 	var r_ret = callframe.Nil
@@ -128,7 +128,7 @@ func (self class) SetSuffix(suffix gd.String) {
 }
 
 //go:nosplit
-func (self class) GetSuffix() gd.String {
+func (self class) GetSuffix() gd.String { //gd:EditorSpinSlider.get_suffix
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -138,7 +138,7 @@ func (self class) GetSuffix() gd.String {
 }
 
 //go:nosplit
-func (self class) SetReadOnly(read_only bool) {
+func (self class) SetReadOnly(read_only bool) { //gd:EditorSpinSlider.set_read_only
 	var frame = callframe.New()
 	callframe.Arg(frame, read_only)
 	var r_ret = callframe.Nil
@@ -147,7 +147,7 @@ func (self class) SetReadOnly(read_only bool) {
 }
 
 //go:nosplit
-func (self class) IsReadOnly() bool {
+func (self class) IsReadOnly() bool { //gd:EditorSpinSlider.is_read_only
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_is_read_only, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -157,7 +157,7 @@ func (self class) IsReadOnly() bool {
 }
 
 //go:nosplit
-func (self class) SetFlat(flat bool) {
+func (self class) SetFlat(flat bool) { //gd:EditorSpinSlider.set_flat
 	var frame = callframe.New()
 	callframe.Arg(frame, flat)
 	var r_ret = callframe.Nil
@@ -166,7 +166,7 @@ func (self class) SetFlat(flat bool) {
 }
 
 //go:nosplit
-func (self class) IsFlat() bool {
+func (self class) IsFlat() bool { //gd:EditorSpinSlider.is_flat
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_is_flat, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -176,7 +176,7 @@ func (self class) IsFlat() bool {
 }
 
 //go:nosplit
-func (self class) SetHideSlider(hide_slider bool) {
+func (self class) SetHideSlider(hide_slider bool) { //gd:EditorSpinSlider.set_hide_slider
 	var frame = callframe.New()
 	callframe.Arg(frame, hide_slider)
 	var r_ret = callframe.Nil
@@ -185,7 +185,7 @@ func (self class) SetHideSlider(hide_slider bool) {
 }
 
 //go:nosplit
-func (self class) IsHidingSlider() bool {
+func (self class) IsHidingSlider() bool { //gd:EditorSpinSlider.is_hiding_slider
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_is_hiding_slider, self.AsObject(), frame.Array(0), r_ret.Addr())

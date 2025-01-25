@@ -83,42 +83,42 @@ func (Instance) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (c
 /*
 Gets the edited property. If your editor is for a single property (added via [method EditorInspectorPlugin._parse_property]), then this will return the property.
 */
-func (self Instance) GetEditedProperty() string {
+func (self Instance) GetEditedProperty() string { //gd:EditorProperty.get_edited_property
 	return string(class(self).GetEditedProperty().String())
 }
 
 /*
 Gets the edited object.
 */
-func (self Instance) GetEditedObject() Object.Instance {
+func (self Instance) GetEditedObject() Object.Instance { //gd:EditorProperty.get_edited_object
 	return Object.Instance(class(self).GetEditedObject())
 }
 
 /*
 Forces refresh of the property display.
 */
-func (self Instance) UpdateProperty() {
+func (self Instance) UpdateProperty() { //gd:EditorProperty.update_property
 	class(self).UpdateProperty()
 }
 
 /*
 If any of the controls added can gain keyboard focus, add it here. This ensures that focus will be restored if the inspector is refreshed.
 */
-func (self Instance) AddFocusable(control [1]gdclass.Control) {
+func (self Instance) AddFocusable(control [1]gdclass.Control) { //gd:EditorProperty.add_focusable
 	class(self).AddFocusable(control)
 }
 
 /*
 Puts the [param editor] control below the property label. The control must be previously added using [method Node.add_child].
 */
-func (self Instance) SetBottomEditor(editor [1]gdclass.Control) {
+func (self Instance) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorProperty.set_bottom_editor
 	class(self).SetBottomEditor(editor)
 }
 
 /*
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
-func (self Instance) EmitChanged(property string, value any) {
+func (self Instance) EmitChanged(property string, value any) { //gd:EditorProperty.emit_changed
 	class(self).EmitChanged(gd.NewStringName(property), gd.NewVariant(value), gd.NewStringName(""), false)
 }
 
@@ -215,7 +215,7 @@ func (class) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (cb g
 }
 
 //go:nosplit
-func (self class) SetLabel(text gd.String) {
+func (self class) SetLabel(text gd.String) { //gd:EditorProperty.set_label
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Nil
@@ -224,7 +224,7 @@ func (self class) SetLabel(text gd.String) {
 }
 
 //go:nosplit
-func (self class) GetLabel() gd.String {
+func (self class) GetLabel() gd.String { //gd:EditorProperty.get_label
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -234,7 +234,7 @@ func (self class) GetLabel() gd.String {
 }
 
 //go:nosplit
-func (self class) SetReadOnly(read_only bool) {
+func (self class) SetReadOnly(read_only bool) { //gd:EditorProperty.set_read_only
 	var frame = callframe.New()
 	callframe.Arg(frame, read_only)
 	var r_ret = callframe.Nil
@@ -243,7 +243,7 @@ func (self class) SetReadOnly(read_only bool) {
 }
 
 //go:nosplit
-func (self class) IsReadOnly() bool {
+func (self class) IsReadOnly() bool { //gd:EditorProperty.is_read_only
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_read_only, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -253,7 +253,7 @@ func (self class) IsReadOnly() bool {
 }
 
 //go:nosplit
-func (self class) SetCheckable(checkable bool) {
+func (self class) SetCheckable(checkable bool) { //gd:EditorProperty.set_checkable
 	var frame = callframe.New()
 	callframe.Arg(frame, checkable)
 	var r_ret = callframe.Nil
@@ -262,7 +262,7 @@ func (self class) SetCheckable(checkable bool) {
 }
 
 //go:nosplit
-func (self class) IsCheckable() bool {
+func (self class) IsCheckable() bool { //gd:EditorProperty.is_checkable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_checkable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -272,7 +272,7 @@ func (self class) IsCheckable() bool {
 }
 
 //go:nosplit
-func (self class) SetChecked(checked bool) {
+func (self class) SetChecked(checked bool) { //gd:EditorProperty.set_checked
 	var frame = callframe.New()
 	callframe.Arg(frame, checked)
 	var r_ret = callframe.Nil
@@ -281,7 +281,7 @@ func (self class) SetChecked(checked bool) {
 }
 
 //go:nosplit
-func (self class) IsChecked() bool {
+func (self class) IsChecked() bool { //gd:EditorProperty.is_checked
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_checked, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -291,7 +291,7 @@ func (self class) IsChecked() bool {
 }
 
 //go:nosplit
-func (self class) SetDrawWarning(draw_warning bool) {
+func (self class) SetDrawWarning(draw_warning bool) { //gd:EditorProperty.set_draw_warning
 	var frame = callframe.New()
 	callframe.Arg(frame, draw_warning)
 	var r_ret = callframe.Nil
@@ -300,7 +300,7 @@ func (self class) SetDrawWarning(draw_warning bool) {
 }
 
 //go:nosplit
-func (self class) IsDrawWarning() bool {
+func (self class) IsDrawWarning() bool { //gd:EditorProperty.is_draw_warning
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_draw_warning, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -310,7 +310,7 @@ func (self class) IsDrawWarning() bool {
 }
 
 //go:nosplit
-func (self class) SetKeying(keying bool) {
+func (self class) SetKeying(keying bool) { //gd:EditorProperty.set_keying
 	var frame = callframe.New()
 	callframe.Arg(frame, keying)
 	var r_ret = callframe.Nil
@@ -319,7 +319,7 @@ func (self class) SetKeying(keying bool) {
 }
 
 //go:nosplit
-func (self class) IsKeying() bool {
+func (self class) IsKeying() bool { //gd:EditorProperty.is_keying
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_keying, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -329,7 +329,7 @@ func (self class) IsKeying() bool {
 }
 
 //go:nosplit
-func (self class) SetDeletable(deletable bool) {
+func (self class) SetDeletable(deletable bool) { //gd:EditorProperty.set_deletable
 	var frame = callframe.New()
 	callframe.Arg(frame, deletable)
 	var r_ret = callframe.Nil
@@ -338,7 +338,7 @@ func (self class) SetDeletable(deletable bool) {
 }
 
 //go:nosplit
-func (self class) IsDeletable() bool {
+func (self class) IsDeletable() bool { //gd:EditorProperty.is_deletable
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_deletable, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -351,7 +351,7 @@ func (self class) IsDeletable() bool {
 Gets the edited property. If your editor is for a single property (added via [method EditorInspectorPlugin._parse_property]), then this will return the property.
 */
 //go:nosplit
-func (self class) GetEditedProperty() gd.StringName {
+func (self class) GetEditedProperty() gd.StringName { //gd:EditorProperty.get_edited_property
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_get_edited_property, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -364,7 +364,7 @@ func (self class) GetEditedProperty() gd.StringName {
 Gets the edited object.
 */
 //go:nosplit
-func (self class) GetEditedObject() [1]gd.Object {
+func (self class) GetEditedObject() [1]gd.Object { //gd:EditorProperty.get_edited_object
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -377,7 +377,7 @@ func (self class) GetEditedObject() [1]gd.Object {
 Forces refresh of the property display.
 */
 //go:nosplit
-func (self class) UpdateProperty() {
+func (self class) UpdateProperty() { //gd:EditorProperty.update_property
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_update_property, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -388,7 +388,7 @@ func (self class) UpdateProperty() {
 If any of the controls added can gain keyboard focus, add it here. This ensures that focus will be restored if the inspector is refreshed.
 */
 //go:nosplit
-func (self class) AddFocusable(control [1]gdclass.Control) {
+func (self class) AddFocusable(control [1]gdclass.Control) { //gd:EditorProperty.add_focusable
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -400,7 +400,7 @@ func (self class) AddFocusable(control [1]gdclass.Control) {
 Puts the [param editor] control below the property label. The control must be previously added using [method Node.add_child].
 */
 //go:nosplit
-func (self class) SetBottomEditor(editor [1]gdclass.Control) {
+func (self class) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorProperty.set_bottom_editor
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
 	var r_ret = callframe.Nil
@@ -412,7 +412,7 @@ func (self class) SetBottomEditor(editor [1]gdclass.Control) {
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
 //go:nosplit
-func (self class) EmitChanged(property gd.StringName, value gd.Variant, field gd.StringName, changing bool) {
+func (self class) EmitChanged(property gd.StringName, value gd.Variant, field gd.StringName, changing bool) { //gd:EditorProperty.emit_changed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(property))
 	callframe.Arg(frame, pointers.Get(value))

@@ -49,14 +49,14 @@ Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryIn
 [b]Note:[/b] [method bake] works from the editor and in exported projects. This makes it suitable for procedurally generated or user-built levels. Baking a [VoxelGI] node generally takes from 5 to 20 seconds in most scenes. Reducing [member subdiv] can speed up baking.
 [b]Note:[/b] [GeometryInstance3D]s and [Light3D]s must be fully ready before [method bake] is called. If you are procedurally creating those and some meshes or lights are missing from your baked [VoxelGI], use [code]call_deferred("bake")[/code] instead of calling [method bake] directly.
 */
-func (self Instance) Bake() {
+func (self Instance) Bake() { //gd:VoxelGI.bake
 	class(self).Bake([1][1]gdclass.Node{}[0], false)
 }
 
 /*
 Calls [method bake] with [code]create_visual_debug[/code] enabled.
 */
-func (self Instance) DebugBake() {
+func (self Instance) DebugBake() { //gd:VoxelGI.debug_bake
 	class(self).DebugBake()
 }
 
@@ -111,7 +111,7 @@ func (self Instance) SetData(value [1]gdclass.VoxelGIData) {
 }
 
 //go:nosplit
-func (self class) SetProbeData(data [1]gdclass.VoxelGIData) {
+func (self class) SetProbeData(data [1]gdclass.VoxelGIData) { //gd:VoxelGI.set_probe_data
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data[0])[0])
 	var r_ret = callframe.Nil
@@ -120,7 +120,7 @@ func (self class) SetProbeData(data [1]gdclass.VoxelGIData) {
 }
 
 //go:nosplit
-func (self class) GetProbeData() [1]gdclass.VoxelGIData {
+func (self class) GetProbeData() [1]gdclass.VoxelGIData { //gd:VoxelGI.get_probe_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_probe_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -130,7 +130,7 @@ func (self class) GetProbeData() [1]gdclass.VoxelGIData {
 }
 
 //go:nosplit
-func (self class) SetSubdiv(subdiv gdclass.VoxelGISubdiv) {
+func (self class) SetSubdiv(subdiv gdclass.VoxelGISubdiv) { //gd:VoxelGI.set_subdiv
 	var frame = callframe.New()
 	callframe.Arg(frame, subdiv)
 	var r_ret = callframe.Nil
@@ -139,7 +139,7 @@ func (self class) SetSubdiv(subdiv gdclass.VoxelGISubdiv) {
 }
 
 //go:nosplit
-func (self class) GetSubdiv() gdclass.VoxelGISubdiv {
+func (self class) GetSubdiv() gdclass.VoxelGISubdiv { //gd:VoxelGI.get_subdiv
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VoxelGISubdiv](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_subdiv, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -149,7 +149,7 @@ func (self class) GetSubdiv() gdclass.VoxelGISubdiv {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) {
+func (self class) SetSize(size gd.Vector3) { //gd:VoxelGI.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -158,7 +158,7 @@ func (self class) SetSize(size gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 {
+func (self class) GetSize() gd.Vector3 { //gd:VoxelGI.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -168,7 +168,7 @@ func (self class) GetSize() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) {
+func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:VoxelGI.set_camera_attributes
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(camera_attributes[0])[0])
 	var r_ret = callframe.Nil
@@ -177,7 +177,7 @@ func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttribu
 }
 
 //go:nosplit
-func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes {
+func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:VoxelGI.get_camera_attributes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -192,7 +192,7 @@ Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryIn
 [b]Note:[/b] [GeometryInstance3D]s and [Light3D]s must be fully ready before [method bake] is called. If you are procedurally creating those and some meshes or lights are missing from your baked [VoxelGI], use [code]call_deferred("bake")[/code] instead of calling [method bake] directly.
 */
 //go:nosplit
-func (self class) Bake(from_node [1]gdclass.Node, create_visual_debug bool) {
+func (self class) Bake(from_node [1]gdclass.Node, create_visual_debug bool) { //gd:VoxelGI.bake
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(from_node[0])[0])
 	callframe.Arg(frame, create_visual_debug)
@@ -205,7 +205,7 @@ func (self class) Bake(from_node [1]gdclass.Node, create_visual_debug bool) {
 Calls [method bake] with [code]create_visual_debug[/code] enabled.
 */
 //go:nosplit
-func (self class) DebugBake() {
+func (self class) DebugBake() { //gd:VoxelGI.debug_bake
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_debug_bake, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -241,7 +241,7 @@ func init() {
 	gdclass.Register("VoxelGI", func(ptr gd.Object) any { return [1]gdclass.VoxelGI{*(*gdclass.VoxelGI)(unsafe.Pointer(&ptr))} })
 }
 
-type Subdiv = gdclass.VoxelGISubdiv
+type Subdiv = gdclass.VoxelGISubdiv //gd:VoxelGI.Subdiv
 
 const (
 	/*Use 64 subdivisions. This is the lowest quality setting, but the fastest. Use it if you can, but especially use it on lower-end hardware.*/

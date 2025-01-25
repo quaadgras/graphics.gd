@@ -102,7 +102,7 @@ func (self Instance) SetUseMipmaps(value bool) {
 }
 
 //go:nosplit
-func (self class) SetFitMargin(fit_margin gd.Float) {
+func (self class) SetFitMargin(fit_margin gd.Float) { //gd:CanvasGroup.set_fit_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, fit_margin)
 	var r_ret = callframe.Nil
@@ -111,7 +111,7 @@ func (self class) SetFitMargin(fit_margin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetFitMargin() gd.Float {
+func (self class) GetFitMargin() gd.Float { //gd:CanvasGroup.get_fit_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_fit_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -121,7 +121,7 @@ func (self class) GetFitMargin() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetClearMargin(clear_margin gd.Float) {
+func (self class) SetClearMargin(clear_margin gd.Float) { //gd:CanvasGroup.set_clear_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, clear_margin)
 	var r_ret = callframe.Nil
@@ -130,7 +130,7 @@ func (self class) SetClearMargin(clear_margin gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetClearMargin() gd.Float {
+func (self class) GetClearMargin() gd.Float { //gd:CanvasGroup.get_clear_margin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_clear_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -140,7 +140,7 @@ func (self class) GetClearMargin() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetUseMipmaps(use_mipmaps bool) {
+func (self class) SetUseMipmaps(use_mipmaps bool) { //gd:CanvasGroup.set_use_mipmaps
 	var frame = callframe.New()
 	callframe.Arg(frame, use_mipmaps)
 	var r_ret = callframe.Nil
@@ -149,7 +149,7 @@ func (self class) SetUseMipmaps(use_mipmaps bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingMipmaps() bool {
+func (self class) IsUsingMipmaps() bool { //gd:CanvasGroup.is_using_mipmaps
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_is_using_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())

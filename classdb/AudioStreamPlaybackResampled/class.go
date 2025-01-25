@@ -64,7 +64,7 @@ func (Instance) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) Float.X)
 		gd.UnsafeSet(p_back, gd.Float(ret))
 	}
 }
-func (self Instance) BeginResample() {
+func (self Instance) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_resample
 	class(self).BeginResample()
 }
 
@@ -108,7 +108,7 @@ func (class) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) gd.Float) (
 }
 
 //go:nosplit
-func (self class) BeginResample() {
+func (self class) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_resample
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackResampled.Bind_begin_resample, self.AsObject(), frame.Array(0), r_ret.Addr())

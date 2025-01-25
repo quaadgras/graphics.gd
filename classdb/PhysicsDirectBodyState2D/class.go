@@ -43,7 +43,7 @@ type Any interface {
 /*
 Returns the body's velocity at the given relative position, including both translation and rotation.
 */
-func (self Instance) GetVelocityAtLocalPosition(local_position Vector2.XY) Vector2.XY {
+func (self Instance) GetVelocityAtLocalPosition(local_position Vector2.XY) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_velocity_at_local_position
 	return Vector2.XY(class(self).GetVelocityAtLocalPosition(gd.Vector2(local_position)))
 }
 
@@ -52,7 +52,7 @@ Applies a directional impulse without affecting rotation.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
-func (self Instance) ApplyCentralImpulse(impulse Vector2.XY) {
+func (self Instance) ApplyCentralImpulse(impulse Vector2.XY) { //gd:PhysicsDirectBodyState2D.apply_central_impulse
 	class(self).ApplyCentralImpulse(gd.Vector2(impulse))
 }
 
@@ -61,7 +61,7 @@ Applies a rotational impulse to the body without affecting the position.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 [b]Note:[/b] [member inverse_inertia] is required for this to work. To have [member inverse_inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inverse_inertia].
 */
-func (self Instance) ApplyTorqueImpulse(impulse Float.X) {
+func (self Instance) ApplyTorqueImpulse(impulse Float.X) { //gd:PhysicsDirectBodyState2D.apply_torque_impulse
 	class(self).ApplyTorqueImpulse(gd.Float(impulse))
 }
 
@@ -70,7 +70,7 @@ Applies a positioned impulse to the body.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 [param position] is the offset from the body origin in global coordinates.
 */
-func (self Instance) ApplyImpulse(impulse Vector2.XY) {
+func (self Instance) ApplyImpulse(impulse Vector2.XY) { //gd:PhysicsDirectBodyState2D.apply_impulse
 	class(self).ApplyImpulse(gd.Vector2(impulse), gd.Vector2(gd.Vector2{0, 0}))
 }
 
@@ -78,7 +78,7 @@ func (self Instance) ApplyImpulse(impulse Vector2.XY) {
 Applies a directional force without affecting rotation. A force is time dependent and meant to be applied every physics update.
 This is equivalent to using [method apply_force] at the body's center of mass.
 */
-func (self Instance) ApplyCentralForce() {
+func (self Instance) ApplyCentralForce() { //gd:PhysicsDirectBodyState2D.apply_central_force
 	class(self).ApplyCentralForce(gd.Vector2(gd.Vector2{0, 0}))
 }
 
@@ -86,7 +86,7 @@ func (self Instance) ApplyCentralForce() {
 Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
 [param position] is the offset from the body origin in global coordinates.
 */
-func (self Instance) ApplyForce(force Vector2.XY) {
+func (self Instance) ApplyForce(force Vector2.XY) { //gd:PhysicsDirectBodyState2D.apply_force
 	class(self).ApplyForce(gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
 }
 
@@ -94,7 +94,7 @@ func (self Instance) ApplyForce(force Vector2.XY) {
 Applies a rotational force without affecting position. A force is time dependent and meant to be applied every physics update.
 [b]Note:[/b] [member inverse_inertia] is required for this to work. To have [member inverse_inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inverse_inertia].
 */
-func (self Instance) ApplyTorque(torque Float.X) {
+func (self Instance) ApplyTorque(torque Float.X) { //gd:PhysicsDirectBodyState2D.apply_torque
 	class(self).ApplyTorque(gd.Float(torque))
 }
 
@@ -102,7 +102,7 @@ func (self Instance) ApplyTorque(torque Float.X) {
 Adds a constant directional force without affecting rotation that keeps being applied over time until cleared with [code]constant_force = Vector2(0, 0)[/code].
 This is equivalent to using [method add_constant_force] at the body's center of mass.
 */
-func (self Instance) AddConstantCentralForce() {
+func (self Instance) AddConstantCentralForce() { //gd:PhysicsDirectBodyState2D.add_constant_central_force
 	class(self).AddConstantCentralForce(gd.Vector2(gd.Vector2{0, 0}))
 }
 
@@ -110,14 +110,14 @@ func (self Instance) AddConstantCentralForce() {
 Adds a constant positioned force to the body that keeps being applied over time until cleared with [code]constant_force = Vector2(0, 0)[/code].
 [param position] is the offset from the body origin in global coordinates.
 */
-func (self Instance) AddConstantForce(force Vector2.XY) {
+func (self Instance) AddConstantForce(force Vector2.XY) { //gd:PhysicsDirectBodyState2D.add_constant_force
 	class(self).AddConstantForce(gd.Vector2(force), gd.Vector2(gd.Vector2{0, 0}))
 }
 
 /*
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]constant_torque = 0[/code].
 */
-func (self Instance) AddConstantTorque(torque Float.X) {
+func (self Instance) AddConstantTorque(torque Float.X) { //gd:PhysicsDirectBodyState2D.add_constant_torque
 	class(self).AddConstantTorque(gd.Float(torque))
 }
 
@@ -125,7 +125,7 @@ func (self Instance) AddConstantTorque(torque Float.X) {
 Sets the body's total constant positional forces applied during each physics update.
 See [method add_constant_force] and [method add_constant_central_force].
 */
-func (self Instance) SetConstantForce(force Vector2.XY) {
+func (self Instance) SetConstantForce(force Vector2.XY) { //gd:PhysicsDirectBodyState2D.set_constant_force
 	class(self).SetConstantForce(gd.Vector2(force))
 }
 
@@ -133,7 +133,7 @@ func (self Instance) SetConstantForce(force Vector2.XY) {
 Returns the body's total constant positional forces applied during each physics update.
 See [method add_constant_force] and [method add_constant_central_force].
 */
-func (self Instance) GetConstantForce() Vector2.XY {
+func (self Instance) GetConstantForce() Vector2.XY { //gd:PhysicsDirectBodyState2D.get_constant_force
 	return Vector2.XY(class(self).GetConstantForce())
 }
 
@@ -141,7 +141,7 @@ func (self Instance) GetConstantForce() Vector2.XY {
 Sets the body's total constant rotational forces applied during each physics update.
 See [method add_constant_torque].
 */
-func (self Instance) SetConstantTorque(torque Float.X) {
+func (self Instance) SetConstantTorque(torque Float.X) { //gd:PhysicsDirectBodyState2D.set_constant_torque
 	class(self).SetConstantTorque(gd.Float(torque))
 }
 
@@ -149,7 +149,7 @@ func (self Instance) SetConstantTorque(torque Float.X) {
 Returns the body's total constant rotational forces applied during each physics update.
 See [method add_constant_torque].
 */
-func (self Instance) GetConstantTorque() Float.X {
+func (self Instance) GetConstantTorque() Float.X { //gd:PhysicsDirectBodyState2D.get_constant_torque
 	return Float.X(Float.X(class(self).GetConstantTorque()))
 }
 
@@ -157,98 +157,98 @@ func (self Instance) GetConstantTorque() Float.X {
 Returns the number of contacts this body has with other bodies.
 [b]Note:[/b] By default, this returns 0 unless bodies are configured to monitor contacts. See [member RigidBody2D.contact_monitor].
 */
-func (self Instance) GetContactCount() int {
+func (self Instance) GetContactCount() int { //gd:PhysicsDirectBodyState2D.get_contact_count
 	return int(int(class(self).GetContactCount()))
 }
 
 /*
 Returns the position of the contact point on the body in the global coordinate system.
 */
-func (self Instance) GetContactLocalPosition(contact_idx int) Vector2.XY {
+func (self Instance) GetContactLocalPosition(contact_idx int) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_local_position
 	return Vector2.XY(class(self).GetContactLocalPosition(gd.Int(contact_idx)))
 }
 
 /*
 Returns the local normal at the contact point.
 */
-func (self Instance) GetContactLocalNormal(contact_idx int) Vector2.XY {
+func (self Instance) GetContactLocalNormal(contact_idx int) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_local_normal
 	return Vector2.XY(class(self).GetContactLocalNormal(gd.Int(contact_idx)))
 }
 
 /*
 Returns the local shape index of the collision.
 */
-func (self Instance) GetContactLocalShape(contact_idx int) int {
+func (self Instance) GetContactLocalShape(contact_idx int) int { //gd:PhysicsDirectBodyState2D.get_contact_local_shape
 	return int(int(class(self).GetContactLocalShape(gd.Int(contact_idx))))
 }
 
 /*
 Returns the velocity vector at the body's contact point.
 */
-func (self Instance) GetContactLocalVelocityAtPosition(contact_idx int) Vector2.XY {
+func (self Instance) GetContactLocalVelocityAtPosition(contact_idx int) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_local_velocity_at_position
 	return Vector2.XY(class(self).GetContactLocalVelocityAtPosition(gd.Int(contact_idx)))
 }
 
 /*
 Returns the collider's [RID].
 */
-func (self Instance) GetContactCollider(contact_idx int) Resource.ID {
+func (self Instance) GetContactCollider(contact_idx int) Resource.ID { //gd:PhysicsDirectBodyState2D.get_contact_collider
 	return Resource.ID(class(self).GetContactCollider(gd.Int(contact_idx)))
 }
 
 /*
 Returns the position of the contact point on the collider in the global coordinate system.
 */
-func (self Instance) GetContactColliderPosition(contact_idx int) Vector2.XY {
+func (self Instance) GetContactColliderPosition(contact_idx int) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_collider_position
 	return Vector2.XY(class(self).GetContactColliderPosition(gd.Int(contact_idx)))
 }
 
 /*
 Returns the collider's object id.
 */
-func (self Instance) GetContactColliderId(contact_idx int) int {
+func (self Instance) GetContactColliderId(contact_idx int) int { //gd:PhysicsDirectBodyState2D.get_contact_collider_id
 	return int(int(class(self).GetContactColliderId(gd.Int(contact_idx))))
 }
 
 /*
 Returns the collider object. This depends on how it was created (will return a scene node if such was used to create it).
 */
-func (self Instance) GetContactColliderObject(contact_idx int) Object.Instance {
+func (self Instance) GetContactColliderObject(contact_idx int) Object.Instance { //gd:PhysicsDirectBodyState2D.get_contact_collider_object
 	return Object.Instance(class(self).GetContactColliderObject(gd.Int(contact_idx)))
 }
 
 /*
 Returns the collider's shape index.
 */
-func (self Instance) GetContactColliderShape(contact_idx int) int {
+func (self Instance) GetContactColliderShape(contact_idx int) int { //gd:PhysicsDirectBodyState2D.get_contact_collider_shape
 	return int(int(class(self).GetContactColliderShape(gd.Int(contact_idx))))
 }
 
 /*
 Returns the velocity vector at the collider's contact point.
 */
-func (self Instance) GetContactColliderVelocityAtPosition(contact_idx int) Vector2.XY {
+func (self Instance) GetContactColliderVelocityAtPosition(contact_idx int) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_collider_velocity_at_position
 	return Vector2.XY(class(self).GetContactColliderVelocityAtPosition(gd.Int(contact_idx)))
 }
 
 /*
 Returns the impulse created by the contact.
 */
-func (self Instance) GetContactImpulse(contact_idx int) Vector2.XY {
+func (self Instance) GetContactImpulse(contact_idx int) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_impulse
 	return Vector2.XY(class(self).GetContactImpulse(gd.Int(contact_idx)))
 }
 
 /*
 Updates the body's linear and angular velocity by applying gravity and damping for the equivalent of one physics tick.
 */
-func (self Instance) IntegrateForces() {
+func (self Instance) IntegrateForces() { //gd:PhysicsDirectBodyState2D.integrate_forces
 	class(self).IntegrateForces()
 }
 
 /*
 Returns the current state of the space, useful for queries.
 */
-func (self Instance) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D {
+func (self Instance) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsDirectBodyState2D.get_space_state
 	return [1]gdclass.PhysicsDirectSpaceState2D(class(self).GetSpaceState())
 }
 
@@ -335,7 +335,7 @@ func (self Instance) SetTransform(value Transform2D.OriginXY) {
 }
 
 //go:nosplit
-func (self class) GetTotalGravity() gd.Vector2 {
+func (self class) GetTotalGravity() gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_total_gravity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_total_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -345,7 +345,7 @@ func (self class) GetTotalGravity() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) GetTotalLinearDamp() gd.Float {
+func (self class) GetTotalLinearDamp() gd.Float { //gd:PhysicsDirectBodyState2D.get_total_linear_damp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_total_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -355,7 +355,7 @@ func (self class) GetTotalLinearDamp() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetTotalAngularDamp() gd.Float {
+func (self class) GetTotalAngularDamp() gd.Float { //gd:PhysicsDirectBodyState2D.get_total_angular_damp
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_total_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -365,7 +365,7 @@ func (self class) GetTotalAngularDamp() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetCenterOfMass() gd.Vector2 {
+func (self class) GetCenterOfMass() gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_center_of_mass
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -375,7 +375,7 @@ func (self class) GetCenterOfMass() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) GetCenterOfMassLocal() gd.Vector2 {
+func (self class) GetCenterOfMassLocal() gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_center_of_mass_local
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_center_of_mass_local, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -385,7 +385,7 @@ func (self class) GetCenterOfMassLocal() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) GetInverseMass() gd.Float {
+func (self class) GetInverseMass() gd.Float { //gd:PhysicsDirectBodyState2D.get_inverse_mass
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_inverse_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -395,7 +395,7 @@ func (self class) GetInverseMass() gd.Float {
 }
 
 //go:nosplit
-func (self class) GetInverseInertia() gd.Float {
+func (self class) GetInverseInertia() gd.Float { //gd:PhysicsDirectBodyState2D.get_inverse_inertia
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_inverse_inertia, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -405,7 +405,7 @@ func (self class) GetInverseInertia() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetLinearVelocity(velocity gd.Vector2) {
+func (self class) SetLinearVelocity(velocity gd.Vector2) { //gd:PhysicsDirectBodyState2D.set_linear_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -414,7 +414,7 @@ func (self class) SetLinearVelocity(velocity gd.Vector2) {
 }
 
 //go:nosplit
-func (self class) GetLinearVelocity() gd.Vector2 {
+func (self class) GetLinearVelocity() gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_linear_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -424,7 +424,7 @@ func (self class) GetLinearVelocity() gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) SetAngularVelocity(velocity gd.Float) {
+func (self class) SetAngularVelocity(velocity gd.Float) { //gd:PhysicsDirectBodyState2D.set_angular_velocity
 	var frame = callframe.New()
 	callframe.Arg(frame, velocity)
 	var r_ret = callframe.Nil
@@ -433,7 +433,7 @@ func (self class) SetAngularVelocity(velocity gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetAngularVelocity() gd.Float {
+func (self class) GetAngularVelocity() gd.Float { //gd:PhysicsDirectBodyState2D.get_angular_velocity
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -443,7 +443,7 @@ func (self class) GetAngularVelocity() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTransform(transform gd.Transform2D) {
+func (self class) SetTransform(transform gd.Transform2D) { //gd:PhysicsDirectBodyState2D.set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	var r_ret = callframe.Nil
@@ -452,7 +452,7 @@ func (self class) SetTransform(transform gd.Transform2D) {
 }
 
 //go:nosplit
-func (self class) GetTransform() gd.Transform2D {
+func (self class) GetTransform() gd.Transform2D { //gd:PhysicsDirectBodyState2D.get_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -465,7 +465,7 @@ func (self class) GetTransform() gd.Transform2D {
 Returns the body's velocity at the given relative position, including both translation and rotation.
 */
 //go:nosplit
-func (self class) GetVelocityAtLocalPosition(local_position gd.Vector2) gd.Vector2 {
+func (self class) GetVelocityAtLocalPosition(local_position gd.Vector2) gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_velocity_at_local_position
 	var frame = callframe.New()
 	callframe.Arg(frame, local_position)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -481,7 +481,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 //go:nosplit
-func (self class) ApplyCentralImpulse(impulse gd.Vector2) {
+func (self class) ApplyCentralImpulse(impulse gd.Vector2) { //gd:PhysicsDirectBodyState2D.apply_central_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	var r_ret = callframe.Nil
@@ -495,7 +495,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [b]Note:[/b] [member inverse_inertia] is required for this to work. To have [member inverse_inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inverse_inertia].
 */
 //go:nosplit
-func (self class) ApplyTorqueImpulse(impulse gd.Float) {
+func (self class) ApplyTorqueImpulse(impulse gd.Float) { //gd:PhysicsDirectBodyState2D.apply_torque_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	var r_ret = callframe.Nil
@@ -509,7 +509,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) ApplyImpulse(impulse gd.Vector2, position gd.Vector2) {
+func (self class) ApplyImpulse(impulse gd.Vector2, position gd.Vector2) { //gd:PhysicsDirectBodyState2D.apply_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, impulse)
 	callframe.Arg(frame, position)
@@ -523,7 +523,7 @@ Applies a directional force without affecting rotation. A force is time dependen
 This is equivalent to using [method apply_force] at the body's center of mass.
 */
 //go:nosplit
-func (self class) ApplyCentralForce(force gd.Vector2) {
+func (self class) ApplyCentralForce(force gd.Vector2) { //gd:PhysicsDirectBodyState2D.apply_central_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	var r_ret = callframe.Nil
@@ -536,7 +536,7 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) ApplyForce(force gd.Vector2, position gd.Vector2) {
+func (self class) ApplyForce(force gd.Vector2, position gd.Vector2) { //gd:PhysicsDirectBodyState2D.apply_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
@@ -550,7 +550,7 @@ Applies a rotational force without affecting position. A force is time dependent
 [b]Note:[/b] [member inverse_inertia] is required for this to work. To have [member inverse_inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inverse_inertia].
 */
 //go:nosplit
-func (self class) ApplyTorque(torque gd.Float) {
+func (self class) ApplyTorque(torque gd.Float) { //gd:PhysicsDirectBodyState2D.apply_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
 	var r_ret = callframe.Nil
@@ -563,7 +563,7 @@ Adds a constant directional force without affecting rotation that keeps being ap
 This is equivalent to using [method add_constant_force] at the body's center of mass.
 */
 //go:nosplit
-func (self class) AddConstantCentralForce(force gd.Vector2) {
+func (self class) AddConstantCentralForce(force gd.Vector2) { //gd:PhysicsDirectBodyState2D.add_constant_central_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	var r_ret = callframe.Nil
@@ -576,7 +576,7 @@ Adds a constant positioned force to the body that keeps being applied over time 
 [param position] is the offset from the body origin in global coordinates.
 */
 //go:nosplit
-func (self class) AddConstantForce(force gd.Vector2, position gd.Vector2) {
+func (self class) AddConstantForce(force gd.Vector2, position gd.Vector2) { //gd:PhysicsDirectBodyState2D.add_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	callframe.Arg(frame, position)
@@ -589,7 +589,7 @@ func (self class) AddConstantForce(force gd.Vector2, position gd.Vector2) {
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]constant_torque = 0[/code].
 */
 //go:nosplit
-func (self class) AddConstantTorque(torque gd.Float) {
+func (self class) AddConstantTorque(torque gd.Float) { //gd:PhysicsDirectBodyState2D.add_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
 	var r_ret = callframe.Nil
@@ -602,7 +602,7 @@ Sets the body's total constant positional forces applied during each physics upd
 See [method add_constant_force] and [method add_constant_central_force].
 */
 //go:nosplit
-func (self class) SetConstantForce(force gd.Vector2) {
+func (self class) SetConstantForce(force gd.Vector2) { //gd:PhysicsDirectBodyState2D.set_constant_force
 	var frame = callframe.New()
 	callframe.Arg(frame, force)
 	var r_ret = callframe.Nil
@@ -615,7 +615,7 @@ Returns the body's total constant positional forces applied during each physics 
 See [method add_constant_force] and [method add_constant_central_force].
 */
 //go:nosplit
-func (self class) GetConstantForce() gd.Vector2 {
+func (self class) GetConstantForce() gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_constant_force
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector2](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -629,7 +629,7 @@ Sets the body's total constant rotational forces applied during each physics upd
 See [method add_constant_torque].
 */
 //go:nosplit
-func (self class) SetConstantTorque(torque gd.Float) {
+func (self class) SetConstantTorque(torque gd.Float) { //gd:PhysicsDirectBodyState2D.set_constant_torque
 	var frame = callframe.New()
 	callframe.Arg(frame, torque)
 	var r_ret = callframe.Nil
@@ -642,7 +642,7 @@ Returns the body's total constant rotational forces applied during each physics 
 See [method add_constant_torque].
 */
 //go:nosplit
-func (self class) GetConstantTorque() gd.Float {
+func (self class) GetConstantTorque() gd.Float { //gd:PhysicsDirectBodyState2D.get_constant_torque
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -652,7 +652,7 @@ func (self class) GetConstantTorque() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetSleepState(enabled bool) {
+func (self class) SetSleepState(enabled bool) { //gd:PhysicsDirectBodyState2D.set_sleep_state
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -661,7 +661,7 @@ func (self class) SetSleepState(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsSleeping() bool {
+func (self class) IsSleeping() bool { //gd:PhysicsDirectBodyState2D.is_sleeping
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_is_sleeping, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -675,7 +675,7 @@ Returns the number of contacts this body has with other bodies.
 [b]Note:[/b] By default, this returns 0 unless bodies are configured to monitor contacts. See [member RigidBody2D.contact_monitor].
 */
 //go:nosplit
-func (self class) GetContactCount() gd.Int {
+func (self class) GetContactCount() gd.Int { //gd:PhysicsDirectBodyState2D.get_contact_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_contact_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -688,7 +688,7 @@ func (self class) GetContactCount() gd.Int {
 Returns the position of the contact point on the body in the global coordinate system.
 */
 //go:nosplit
-func (self class) GetContactLocalPosition(contact_idx gd.Int) gd.Vector2 {
+func (self class) GetContactLocalPosition(contact_idx gd.Int) gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_contact_local_position
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -702,7 +702,7 @@ func (self class) GetContactLocalPosition(contact_idx gd.Int) gd.Vector2 {
 Returns the local normal at the contact point.
 */
 //go:nosplit
-func (self class) GetContactLocalNormal(contact_idx gd.Int) gd.Vector2 {
+func (self class) GetContactLocalNormal(contact_idx gd.Int) gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_contact_local_normal
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -716,7 +716,7 @@ func (self class) GetContactLocalNormal(contact_idx gd.Int) gd.Vector2 {
 Returns the local shape index of the collision.
 */
 //go:nosplit
-func (self class) GetContactLocalShape(contact_idx gd.Int) gd.Int {
+func (self class) GetContactLocalShape(contact_idx gd.Int) gd.Int { //gd:PhysicsDirectBodyState2D.get_contact_local_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -730,7 +730,7 @@ func (self class) GetContactLocalShape(contact_idx gd.Int) gd.Int {
 Returns the velocity vector at the body's contact point.
 */
 //go:nosplit
-func (self class) GetContactLocalVelocityAtPosition(contact_idx gd.Int) gd.Vector2 {
+func (self class) GetContactLocalVelocityAtPosition(contact_idx gd.Int) gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_contact_local_velocity_at_position
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -744,7 +744,7 @@ func (self class) GetContactLocalVelocityAtPosition(contact_idx gd.Int) gd.Vecto
 Returns the collider's [RID].
 */
 //go:nosplit
-func (self class) GetContactCollider(contact_idx gd.Int) gd.RID {
+func (self class) GetContactCollider(contact_idx gd.Int) gd.RID { //gd:PhysicsDirectBodyState2D.get_contact_collider
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -758,7 +758,7 @@ func (self class) GetContactCollider(contact_idx gd.Int) gd.RID {
 Returns the position of the contact point on the collider in the global coordinate system.
 */
 //go:nosplit
-func (self class) GetContactColliderPosition(contact_idx gd.Int) gd.Vector2 {
+func (self class) GetContactColliderPosition(contact_idx gd.Int) gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_contact_collider_position
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -772,7 +772,7 @@ func (self class) GetContactColliderPosition(contact_idx gd.Int) gd.Vector2 {
 Returns the collider's object id.
 */
 //go:nosplit
-func (self class) GetContactColliderId(contact_idx gd.Int) gd.Int {
+func (self class) GetContactColliderId(contact_idx gd.Int) gd.Int { //gd:PhysicsDirectBodyState2D.get_contact_collider_id
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -786,7 +786,7 @@ func (self class) GetContactColliderId(contact_idx gd.Int) gd.Int {
 Returns the collider object. This depends on how it was created (will return a scene node if such was used to create it).
 */
 //go:nosplit
-func (self class) GetContactColliderObject(contact_idx gd.Int) [1]gd.Object {
+func (self class) GetContactColliderObject(contact_idx gd.Int) [1]gd.Object { //gd:PhysicsDirectBodyState2D.get_contact_collider_object
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -800,7 +800,7 @@ func (self class) GetContactColliderObject(contact_idx gd.Int) [1]gd.Object {
 Returns the collider's shape index.
 */
 //go:nosplit
-func (self class) GetContactColliderShape(contact_idx gd.Int) gd.Int {
+func (self class) GetContactColliderShape(contact_idx gd.Int) gd.Int { //gd:PhysicsDirectBodyState2D.get_contact_collider_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -814,7 +814,7 @@ func (self class) GetContactColliderShape(contact_idx gd.Int) gd.Int {
 Returns the velocity vector at the collider's contact point.
 */
 //go:nosplit
-func (self class) GetContactColliderVelocityAtPosition(contact_idx gd.Int) gd.Vector2 {
+func (self class) GetContactColliderVelocityAtPosition(contact_idx gd.Int) gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_contact_collider_velocity_at_position
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -828,7 +828,7 @@ func (self class) GetContactColliderVelocityAtPosition(contact_idx gd.Int) gd.Ve
 Returns the impulse created by the contact.
 */
 //go:nosplit
-func (self class) GetContactImpulse(contact_idx gd.Int) gd.Vector2 {
+func (self class) GetContactImpulse(contact_idx gd.Int) gd.Vector2 { //gd:PhysicsDirectBodyState2D.get_contact_impulse
 	var frame = callframe.New()
 	callframe.Arg(frame, contact_idx)
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -839,7 +839,7 @@ func (self class) GetContactImpulse(contact_idx gd.Int) gd.Vector2 {
 }
 
 //go:nosplit
-func (self class) GetStep() gd.Float {
+func (self class) GetStep() gd.Float { //gd:PhysicsDirectBodyState2D.get_step
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -852,7 +852,7 @@ func (self class) GetStep() gd.Float {
 Updates the body's linear and angular velocity by applying gravity and damping for the equivalent of one physics tick.
 */
 //go:nosplit
-func (self class) IntegrateForces() {
+func (self class) IntegrateForces() { //gd:PhysicsDirectBodyState2D.integrate_forces
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_integrate_forces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -863,7 +863,7 @@ func (self class) IntegrateForces() {
 Returns the current state of the space, useful for queries.
 */
 //go:nosplit
-func (self class) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D {
+func (self class) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsDirectBodyState2D.get_space_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState2D.Bind_get_space_state, self.AsObject(), frame.Array(0), r_ret.Addr())

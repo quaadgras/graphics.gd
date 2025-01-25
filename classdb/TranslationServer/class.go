@@ -39,7 +39,7 @@ func singleton() {
 Sets the locale of the project. The [param locale] string will be standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]).
 If translations have been loaded beforehand for the new locale, they will be applied.
 */
-func SetLocale(locale string) {
+func SetLocale(locale string) { //gd:TranslationServer.set_locale
 	once.Do(singleton)
 	class(self).SetLocale(gd.NewString(locale))
 }
@@ -48,7 +48,7 @@ func SetLocale(locale string) {
 Returns the current locale of the project.
 See also [method OS.get_locale] and [method OS.get_locale_language] to query the locale of the user system.
 */
-func GetLocale() string {
+func GetLocale() string { //gd:TranslationServer.get_locale
 	once.Do(singleton)
 	return string(class(self).GetLocale().String())
 }
@@ -57,7 +57,7 @@ func GetLocale() string {
 Returns the current locale of the editor.
 [b]Note:[/b] When called from an exported project returns the same value as [method get_locale].
 */
-func GetToolLocale() string {
+func GetToolLocale() string { //gd:TranslationServer.get_tool_locale
 	once.Do(singleton)
 	return string(class(self).GetToolLocale().String())
 }
@@ -65,7 +65,7 @@ func GetToolLocale() string {
 /*
 Compares two locales and returns a similarity score between [code]0[/code] (no match) and [code]10[/code] (full match).
 */
-func CompareLocales(locale_a string, locale_b string) int {
+func CompareLocales(locale_a string, locale_b string) int { //gd:TranslationServer.compare_locales
 	once.Do(singleton)
 	return int(int(class(self).CompareLocales(gd.NewString(locale_a), gd.NewString(locale_b))))
 }
@@ -73,7 +73,7 @@ func CompareLocales(locale_a string, locale_b string) int {
 /*
 Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]).
 */
-func StandardizeLocale(locale string) string {
+func StandardizeLocale(locale string) string { //gd:TranslationServer.standardize_locale
 	once.Do(singleton)
 	return string(class(self).StandardizeLocale(gd.NewString(locale)).String())
 }
@@ -81,7 +81,7 @@ func StandardizeLocale(locale string) string {
 /*
 Returns array of known language codes.
 */
-func GetAllLanguages() []string {
+func GetAllLanguages() []string { //gd:TranslationServer.get_all_languages
 	once.Do(singleton)
 	return []string(class(self).GetAllLanguages().Strings())
 }
@@ -89,7 +89,7 @@ func GetAllLanguages() []string {
 /*
 Returns a readable language name for the [param language] code.
 */
-func GetLanguageName(language string) string {
+func GetLanguageName(language string) string { //gd:TranslationServer.get_language_name
 	once.Do(singleton)
 	return string(class(self).GetLanguageName(gd.NewString(language)).String())
 }
@@ -97,7 +97,7 @@ func GetLanguageName(language string) string {
 /*
 Returns an array of known script codes.
 */
-func GetAllScripts() []string {
+func GetAllScripts() []string { //gd:TranslationServer.get_all_scripts
 	once.Do(singleton)
 	return []string(class(self).GetAllScripts().Strings())
 }
@@ -105,7 +105,7 @@ func GetAllScripts() []string {
 /*
 Returns a readable script name for the [param script] code.
 */
-func GetScriptName(script string) string {
+func GetScriptName(script string) string { //gd:TranslationServer.get_script_name
 	once.Do(singleton)
 	return string(class(self).GetScriptName(gd.NewString(script)).String())
 }
@@ -113,7 +113,7 @@ func GetScriptName(script string) string {
 /*
 Returns an array of known country codes.
 */
-func GetAllCountries() []string {
+func GetAllCountries() []string { //gd:TranslationServer.get_all_countries
 	once.Do(singleton)
 	return []string(class(self).GetAllCountries().Strings())
 }
@@ -121,7 +121,7 @@ func GetAllCountries() []string {
 /*
 Returns a readable country name for the [param country] code.
 */
-func GetCountryName(country string) string {
+func GetCountryName(country string) string { //gd:TranslationServer.get_country_name
 	once.Do(singleton)
 	return string(class(self).GetCountryName(gd.NewString(country)).String())
 }
@@ -129,7 +129,7 @@ func GetCountryName(country string) string {
 /*
 Returns a locale's language and its variant (e.g. [code]"en_US"[/code] would return [code]"English (United States)"[/code]).
 */
-func GetLocaleName(locale string) string {
+func GetLocaleName(locale string) string { //gd:TranslationServer.get_locale_name
 	once.Do(singleton)
 	return string(class(self).GetLocaleName(gd.NewString(locale)).String())
 }
@@ -137,7 +137,7 @@ func GetLocaleName(locale string) string {
 /*
 Returns the current locale's translation for the given message (key) and context.
 */
-func Translate(message string) string {
+func Translate(message string) string { //gd:TranslationServer.translate
 	once.Do(singleton)
 	return string(class(self).Translate(gd.NewStringName(message), gd.NewStringName("")).String())
 }
@@ -146,7 +146,7 @@ func Translate(message string) string {
 Returns the current locale's translation for the given message (key), plural message and context.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
-func TranslatePlural(message string, plural_message string, n int) string {
+func TranslatePlural(message string, plural_message string, n int) string { //gd:TranslationServer.translate_plural
 	once.Do(singleton)
 	return string(class(self).TranslatePlural(gd.NewStringName(message), gd.NewStringName(plural_message), gd.Int(n), gd.NewStringName("")).String())
 }
@@ -154,7 +154,7 @@ func TranslatePlural(message string, plural_message string, n int) string {
 /*
 Adds a [Translation] resource.
 */
-func AddTranslation(translation [1]gdclass.Translation) {
+func AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
 	once.Do(singleton)
 	class(self).AddTranslation(translation)
 }
@@ -162,7 +162,7 @@ func AddTranslation(translation [1]gdclass.Translation) {
 /*
 Removes the given translation from the server.
 */
-func RemoveTranslation(translation [1]gdclass.Translation) {
+func RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
 	once.Do(singleton)
 	class(self).RemoveTranslation(translation)
 }
@@ -171,7 +171,7 @@ func RemoveTranslation(translation [1]gdclass.Translation) {
 Returns the [Translation] instance based on the [param locale] passed in.
 It will return [code]null[/code] if there is no [Translation] instance that matches the [param locale].
 */
-func GetTranslationObject(locale string) [1]gdclass.Translation {
+func GetTranslationObject(locale string) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
 	once.Do(singleton)
 	return [1]gdclass.Translation(class(self).GetTranslationObject(gd.NewString(locale)))
 }
@@ -179,7 +179,7 @@ func GetTranslationObject(locale string) [1]gdclass.Translation {
 /*
 Clears the server from all translations.
 */
-func Clear() {
+func Clear() { //gd:TranslationServer.clear
 	once.Do(singleton)
 	class(self).Clear()
 }
@@ -187,7 +187,7 @@ func Clear() {
 /*
 Returns an array of all loaded locales of the project.
 */
-func GetLoadedLocales() []string {
+func GetLoadedLocales() []string { //gd:TranslationServer.get_loaded_locales
 	once.Do(singleton)
 	return []string(class(self).GetLoadedLocales().Strings())
 }
@@ -195,7 +195,7 @@ func GetLoadedLocales() []string {
 /*
 Reparses the pseudolocalization options and reloads the translation.
 */
-func ReloadPseudolocalization() {
+func ReloadPseudolocalization() { //gd:TranslationServer.reload_pseudolocalization
 	once.Do(singleton)
 	class(self).ReloadPseudolocalization()
 }
@@ -203,7 +203,7 @@ func ReloadPseudolocalization() {
 /*
 Returns the pseudolocalized string based on the [param message] passed in.
 */
-func Pseudolocalize(message string) string {
+func Pseudolocalize(message string) string { //gd:TranslationServer.pseudolocalize
 	once.Do(singleton)
 	return string(class(self).Pseudolocalize(gd.NewStringName(message)).String())
 }
@@ -231,7 +231,7 @@ Sets the locale of the project. The [param locale] string will be standardized t
 If translations have been loaded beforehand for the new locale, they will be applied.
 */
 //go:nosplit
-func (self class) SetLocale(locale gd.String) {
+func (self class) SetLocale(locale gd.String) { //gd:TranslationServer.set_locale
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
 	var r_ret = callframe.Nil
@@ -244,7 +244,7 @@ Returns the current locale of the project.
 See also [method OS.get_locale] and [method OS.get_locale_language] to query the locale of the user system.
 */
 //go:nosplit
-func (self class) GetLocale() gd.String {
+func (self class) GetLocale() gd.String { //gd:TranslationServer.get_locale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -258,7 +258,7 @@ Returns the current locale of the editor.
 [b]Note:[/b] When called from an exported project returns the same value as [method get_locale].
 */
 //go:nosplit
-func (self class) GetToolLocale() gd.String {
+func (self class) GetToolLocale() gd.String { //gd:TranslationServer.get_tool_locale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_tool_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -271,7 +271,7 @@ func (self class) GetToolLocale() gd.String {
 Compares two locales and returns a similarity score between [code]0[/code] (no match) and [code]10[/code] (full match).
 */
 //go:nosplit
-func (self class) CompareLocales(locale_a gd.String, locale_b gd.String) gd.Int {
+func (self class) CompareLocales(locale_a gd.String, locale_b gd.String) gd.Int { //gd:TranslationServer.compare_locales
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale_a))
 	callframe.Arg(frame, pointers.Get(locale_b))
@@ -286,7 +286,7 @@ func (self class) CompareLocales(locale_a gd.String, locale_b gd.String) gd.Int 
 Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]).
 */
 //go:nosplit
-func (self class) StandardizeLocale(locale gd.String) gd.String {
+func (self class) StandardizeLocale(locale gd.String) gd.String { //gd:TranslationServer.standardize_locale
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -300,7 +300,7 @@ func (self class) StandardizeLocale(locale gd.String) gd.String {
 Returns array of known language codes.
 */
 //go:nosplit
-func (self class) GetAllLanguages() gd.PackedStringArray {
+func (self class) GetAllLanguages() gd.PackedStringArray { //gd:TranslationServer.get_all_languages
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_all_languages, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -313,7 +313,7 @@ func (self class) GetAllLanguages() gd.PackedStringArray {
 Returns a readable language name for the [param language] code.
 */
 //go:nosplit
-func (self class) GetLanguageName(language gd.String) gd.String {
+func (self class) GetLanguageName(language gd.String) gd.String { //gd:TranslationServer.get_language_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(language))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -327,7 +327,7 @@ func (self class) GetLanguageName(language gd.String) gd.String {
 Returns an array of known script codes.
 */
 //go:nosplit
-func (self class) GetAllScripts() gd.PackedStringArray {
+func (self class) GetAllScripts() gd.PackedStringArray { //gd:TranslationServer.get_all_scripts
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_all_scripts, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -340,7 +340,7 @@ func (self class) GetAllScripts() gd.PackedStringArray {
 Returns a readable script name for the [param script] code.
 */
 //go:nosplit
-func (self class) GetScriptName(script gd.String) gd.String {
+func (self class) GetScriptName(script gd.String) gd.String { //gd:TranslationServer.get_script_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(script))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -354,7 +354,7 @@ func (self class) GetScriptName(script gd.String) gd.String {
 Returns an array of known country codes.
 */
 //go:nosplit
-func (self class) GetAllCountries() gd.PackedStringArray {
+func (self class) GetAllCountries() gd.PackedStringArray { //gd:TranslationServer.get_all_countries
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_all_countries, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -367,7 +367,7 @@ func (self class) GetAllCountries() gd.PackedStringArray {
 Returns a readable country name for the [param country] code.
 */
 //go:nosplit
-func (self class) GetCountryName(country gd.String) gd.String {
+func (self class) GetCountryName(country gd.String) gd.String { //gd:TranslationServer.get_country_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(country))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -381,7 +381,7 @@ func (self class) GetCountryName(country gd.String) gd.String {
 Returns a locale's language and its variant (e.g. [code]"en_US"[/code] would return [code]"English (United States)"[/code]).
 */
 //go:nosplit
-func (self class) GetLocaleName(locale gd.String) gd.String {
+func (self class) GetLocaleName(locale gd.String) gd.String { //gd:TranslationServer.get_locale_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -395,7 +395,7 @@ func (self class) GetLocaleName(locale gd.String) gd.String {
 Returns the current locale's translation for the given message (key) and context.
 */
 //go:nosplit
-func (self class) Translate(message gd.StringName, context gd.StringName) gd.StringName {
+func (self class) Translate(message gd.StringName, context gd.StringName) gd.StringName { //gd:TranslationServer.translate
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(context))
@@ -411,7 +411,7 @@ Returns the current locale's translation for the given message (key), plural mes
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 //go:nosplit
-func (self class) TranslatePlural(message gd.StringName, plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName {
+func (self class) TranslatePlural(message gd.StringName, plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName { //gd:TranslationServer.translate_plural
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(plural_message))
@@ -428,7 +428,7 @@ func (self class) TranslatePlural(message gd.StringName, plural_message gd.Strin
 Adds a [Translation] resource.
 */
 //go:nosplit
-func (self class) AddTranslation(translation [1]gdclass.Translation) {
+func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(translation[0])[0])
 	var r_ret = callframe.Nil
@@ -440,7 +440,7 @@ func (self class) AddTranslation(translation [1]gdclass.Translation) {
 Removes the given translation from the server.
 */
 //go:nosplit
-func (self class) RemoveTranslation(translation [1]gdclass.Translation) {
+func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(translation[0])[0])
 	var r_ret = callframe.Nil
@@ -453,7 +453,7 @@ Returns the [Translation] instance based on the [param locale] passed in.
 It will return [code]null[/code] if there is no [Translation] instance that matches the [param locale].
 */
 //go:nosplit
-func (self class) GetTranslationObject(locale gd.String) [1]gdclass.Translation {
+func (self class) GetTranslationObject(locale gd.String) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(locale))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -467,7 +467,7 @@ func (self class) GetTranslationObject(locale gd.String) [1]gdclass.Translation 
 Clears the server from all translations.
 */
 //go:nosplit
-func (self class) Clear() {
+func (self class) Clear() { //gd:TranslationServer.clear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -478,7 +478,7 @@ func (self class) Clear() {
 Returns an array of all loaded locales of the project.
 */
 //go:nosplit
-func (self class) GetLoadedLocales() gd.PackedStringArray {
+func (self class) GetLoadedLocales() gd.PackedStringArray { //gd:TranslationServer.get_loaded_locales
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_get_loaded_locales, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -488,7 +488,7 @@ func (self class) GetLoadedLocales() gd.PackedStringArray {
 }
 
 //go:nosplit
-func (self class) IsPseudolocalizationEnabled() bool {
+func (self class) IsPseudolocalizationEnabled() bool { //gd:TranslationServer.is_pseudolocalization_enabled
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_is_pseudolocalization_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -498,7 +498,7 @@ func (self class) IsPseudolocalizationEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetPseudolocalizationEnabled(enabled bool) {
+func (self class) SetPseudolocalizationEnabled(enabled bool) { //gd:TranslationServer.set_pseudolocalization_enabled
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -510,7 +510,7 @@ func (self class) SetPseudolocalizationEnabled(enabled bool) {
 Reparses the pseudolocalization options and reloads the translation.
 */
 //go:nosplit
-func (self class) ReloadPseudolocalization() {
+func (self class) ReloadPseudolocalization() { //gd:TranslationServer.reload_pseudolocalization
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_reload_pseudolocalization, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -521,7 +521,7 @@ func (self class) ReloadPseudolocalization() {
 Returns the pseudolocalized string based on the [param message] passed in.
 */
 //go:nosplit
-func (self class) Pseudolocalize(message gd.StringName) gd.StringName {
+func (self class) Pseudolocalize(message gd.StringName) gd.StringName { //gd:TranslationServer.pseudolocalize
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)

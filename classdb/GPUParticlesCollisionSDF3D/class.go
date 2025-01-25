@@ -50,14 +50,14 @@ type Any interface {
 /*
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
-func (self Instance) SetBakeMaskValue(layer_number int, value bool) {
+func (self Instance) SetBakeMaskValue(layer_number int, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
 	class(self).SetBakeMaskValue(gd.Int(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
-func (self Instance) GetBakeMaskValue(layer_number int) bool {
+func (self Instance) GetBakeMaskValue(layer_number int) bool { //gd:GPUParticlesCollisionSDF3D.get_bake_mask_value
 	return bool(class(self).GetBakeMaskValue(gd.Int(layer_number)))
 }
 
@@ -120,7 +120,7 @@ func (self Instance) SetTexture(value [1]gdclass.Texture3D) {
 }
 
 //go:nosplit
-func (self class) SetSize(size gd.Vector3) {
+func (self class) SetSize(size gd.Vector3) { //gd:GPUParticlesCollisionSDF3D.set_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -129,7 +129,7 @@ func (self class) SetSize(size gd.Vector3) {
 }
 
 //go:nosplit
-func (self class) GetSize() gd.Vector3 {
+func (self class) GetSize() gd.Vector3 { //gd:GPUParticlesCollisionSDF3D.get_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Vector3](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -139,7 +139,7 @@ func (self class) GetSize() gd.Vector3 {
 }
 
 //go:nosplit
-func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionSDF3DResolution) {
+func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionSDF3DResolution) { //gd:GPUParticlesCollisionSDF3D.set_resolution
 	var frame = callframe.New()
 	callframe.Arg(frame, resolution)
 	var r_ret = callframe.Nil
@@ -148,7 +148,7 @@ func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionSDF3DRes
 }
 
 //go:nosplit
-func (self class) GetResolution() gdclass.GPUParticlesCollisionSDF3DResolution {
+func (self class) GetResolution() gdclass.GPUParticlesCollisionSDF3DResolution { //gd:GPUParticlesCollisionSDF3D.get_resolution
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.GPUParticlesCollisionSDF3DResolution](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -158,7 +158,7 @@ func (self class) GetResolution() gdclass.GPUParticlesCollisionSDF3DResolution {
 }
 
 //go:nosplit
-func (self class) SetTexture(texture [1]gdclass.Texture3D) {
+func (self class) SetTexture(texture [1]gdclass.Texture3D) { //gd:GPUParticlesCollisionSDF3D.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -167,7 +167,7 @@ func (self class) SetTexture(texture [1]gdclass.Texture3D) {
 }
 
 //go:nosplit
-func (self class) GetTexture() [1]gdclass.Texture3D {
+func (self class) GetTexture() [1]gdclass.Texture3D { //gd:GPUParticlesCollisionSDF3D.get_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -177,7 +177,7 @@ func (self class) GetTexture() [1]gdclass.Texture3D {
 }
 
 //go:nosplit
-func (self class) SetThickness(thickness gd.Float) {
+func (self class) SetThickness(thickness gd.Float) { //gd:GPUParticlesCollisionSDF3D.set_thickness
 	var frame = callframe.New()
 	callframe.Arg(frame, thickness)
 	var r_ret = callframe.Nil
@@ -186,7 +186,7 @@ func (self class) SetThickness(thickness gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetThickness() gd.Float {
+func (self class) GetThickness() gd.Float { //gd:GPUParticlesCollisionSDF3D.get_thickness
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -196,7 +196,7 @@ func (self class) GetThickness() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetBakeMask(mask gd.Int) {
+func (self class) SetBakeMask(mask gd.Int) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -205,7 +205,7 @@ func (self class) SetBakeMask(mask gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBakeMask() gd.Int {
+func (self class) GetBakeMask() gd.Int { //gd:GPUParticlesCollisionSDF3D.get_bake_mask
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -218,7 +218,7 @@ func (self class) GetBakeMask() gd.Int {
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) {
+func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	callframe.Arg(frame, value)
@@ -231,7 +231,7 @@ func (self class) SetBakeMaskValue(layer_number gd.Int, value bool) {
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 //go:nosplit
-func (self class) GetBakeMaskValue(layer_number gd.Int) bool {
+func (self class) GetBakeMaskValue(layer_number gd.Int) bool { //gd:GPUParticlesCollisionSDF3D.get_bake_mask_value
 	var frame = callframe.New()
 	callframe.Arg(frame, layer_number)
 	var r_ret = callframe.Ret[bool](frame)
@@ -282,7 +282,7 @@ func init() {
 	})
 }
 
-type Resolution = gdclass.GPUParticlesCollisionSDF3DResolution
+type Resolution = gdclass.GPUParticlesCollisionSDF3DResolution //gd:GPUParticlesCollisionSDF3D.Resolution
 
 const (
 	/*Bake a 16×16×16 signed distance field. This is the fastest option, but also the least precise.*/

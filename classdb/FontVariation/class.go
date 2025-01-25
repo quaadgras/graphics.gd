@@ -152,7 +152,7 @@ func (self Instance) SetBaselineOffset(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetBaseFont(font [1]gdclass.Font) {
+func (self class) SetBaseFont(font [1]gdclass.Font) { //gd:FontVariation.set_base_font
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	var r_ret = callframe.Nil
@@ -161,7 +161,7 @@ func (self class) SetBaseFont(font [1]gdclass.Font) {
 }
 
 //go:nosplit
-func (self class) GetBaseFont() [1]gdclass.Font {
+func (self class) GetBaseFont() [1]gdclass.Font { //gd:FontVariation.get_base_font
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_base_font, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -171,7 +171,7 @@ func (self class) GetBaseFont() [1]gdclass.Font {
 }
 
 //go:nosplit
-func (self class) SetVariationOpentype(coords gd.Dictionary) {
+func (self class) SetVariationOpentype(coords gd.Dictionary) { //gd:FontVariation.set_variation_opentype
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(coords))
 	var r_ret = callframe.Nil
@@ -180,7 +180,7 @@ func (self class) SetVariationOpentype(coords gd.Dictionary) {
 }
 
 //go:nosplit
-func (self class) GetVariationOpentype() gd.Dictionary {
+func (self class) GetVariationOpentype() gd.Dictionary { //gd:FontVariation.get_variation_opentype
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -190,7 +190,7 @@ func (self class) GetVariationOpentype() gd.Dictionary {
 }
 
 //go:nosplit
-func (self class) SetVariationEmbolden(strength gd.Float) {
+func (self class) SetVariationEmbolden(strength gd.Float) { //gd:FontVariation.set_variation_embolden
 	var frame = callframe.New()
 	callframe.Arg(frame, strength)
 	var r_ret = callframe.Nil
@@ -199,7 +199,7 @@ func (self class) SetVariationEmbolden(strength gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetVariationEmbolden() gd.Float {
+func (self class) GetVariationEmbolden() gd.Float { //gd:FontVariation.get_variation_embolden
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_embolden, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -209,7 +209,7 @@ func (self class) GetVariationEmbolden() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetVariationFaceIndex(face_index gd.Int) {
+func (self class) SetVariationFaceIndex(face_index gd.Int) { //gd:FontVariation.set_variation_face_index
 	var frame = callframe.New()
 	callframe.Arg(frame, face_index)
 	var r_ret = callframe.Nil
@@ -218,7 +218,7 @@ func (self class) SetVariationFaceIndex(face_index gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetVariationFaceIndex() gd.Int {
+func (self class) GetVariationFaceIndex() gd.Int { //gd:FontVariation.get_variation_face_index
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_face_index, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -228,7 +228,7 @@ func (self class) GetVariationFaceIndex() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetVariationTransform(transform gd.Transform2D) {
+func (self class) SetVariationTransform(transform gd.Transform2D) { //gd:FontVariation.set_variation_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, transform)
 	var r_ret = callframe.Nil
@@ -237,7 +237,7 @@ func (self class) SetVariationTransform(transform gd.Transform2D) {
 }
 
 //go:nosplit
-func (self class) GetVariationTransform() gd.Transform2D {
+func (self class) GetVariationTransform() gd.Transform2D { //gd:FontVariation.get_variation_transform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -247,7 +247,7 @@ func (self class) GetVariationTransform() gd.Transform2D {
 }
 
 //go:nosplit
-func (self class) SetOpentypeFeatures(features gd.Dictionary) {
+func (self class) SetOpentypeFeatures(features gd.Dictionary) { //gd:FontVariation.set_opentype_features
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(features))
 	var r_ret = callframe.Nil
@@ -259,7 +259,7 @@ func (self class) SetOpentypeFeatures(features gd.Dictionary) {
 Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 */
 //go:nosplit
-func (self class) SetSpacing(spacing gdclass.TextServerSpacingType, value gd.Int) {
+func (self class) SetSpacing(spacing gdclass.TextServerSpacingType, value gd.Int) { //gd:FontVariation.set_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, spacing)
 	callframe.Arg(frame, value)
@@ -269,7 +269,7 @@ func (self class) SetSpacing(spacing gdclass.TextServerSpacingType, value gd.Int
 }
 
 //go:nosplit
-func (self class) SetBaselineOffset(baseline_offset gd.Float) {
+func (self class) SetBaselineOffset(baseline_offset gd.Float) { //gd:FontVariation.set_baseline_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, baseline_offset)
 	var r_ret = callframe.Nil
@@ -278,7 +278,7 @@ func (self class) SetBaselineOffset(baseline_offset gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetBaselineOffset() gd.Float {
+func (self class) GetBaselineOffset() gd.Float { //gd:FontVariation.get_baseline_offset
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_baseline_offset, self.AsObject(), frame.Array(0), r_ret.Addr())

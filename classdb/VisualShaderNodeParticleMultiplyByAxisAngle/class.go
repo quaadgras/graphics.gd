@@ -66,7 +66,7 @@ func (self Instance) SetDegreesMode(value bool) {
 }
 
 //go:nosplit
-func (self class) SetDegreesMode(enabled bool) {
+func (self class) SetDegreesMode(enabled bool) { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.set_degrees_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
@@ -75,7 +75,7 @@ func (self class) SetDegreesMode(enabled bool) {
 }
 
 //go:nosplit
-func (self class) IsDegreesMode() bool {
+func (self class) IsDegreesMode() bool { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.is_degrees_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeParticleMultiplyByAxisAngle.Bind_is_degrees_mode, self.AsObject(), frame.Array(0), r_ret.Addr())

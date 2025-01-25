@@ -45,14 +45,14 @@ type Any interface {
 /*
 Returns the internal [SkinReference] containing the skeleton's [RID] attached to this RID. See also [method Resource.get_rid], [method SkinReference.get_skeleton], and [method RenderingServer.instance_attach_skeleton].
 */
-func (self Instance) GetSkinReference() [1]gdclass.SkinReference {
+func (self Instance) GetSkinReference() [1]gdclass.SkinReference { //gd:MeshInstance3D.get_skin_reference
 	return [1]gdclass.SkinReference(class(self).GetSkinReference())
 }
 
 /*
 Returns the number of surface override materials. This is equivalent to [method Mesh.get_surface_count]. See also [method get_surface_override_material].
 */
-func (self Instance) GetSurfaceOverrideMaterialCount() int {
+func (self Instance) GetSurfaceOverrideMaterialCount() int { //gd:MeshInstance3D.get_surface_override_material_count
 	return int(int(class(self).GetSurfaceOverrideMaterialCount()))
 }
 
@@ -60,7 +60,7 @@ func (self Instance) GetSurfaceOverrideMaterialCount() int {
 Sets the override [param material] for the specified [param surface] of the [Mesh] resource. This material is associated with this [MeshInstance3D] rather than with [member mesh].
 [b]Note:[/b] This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
 */
-func (self Instance) SetSurfaceOverrideMaterial(surface int, material [1]gdclass.Material) {
+func (self Instance) SetSurfaceOverrideMaterial(surface int, material [1]gdclass.Material) { //gd:MeshInstance3D.set_surface_override_material
 	class(self).SetSurfaceOverrideMaterial(gd.Int(surface), material)
 }
 
@@ -68,7 +68,7 @@ func (self Instance) SetSurfaceOverrideMaterial(surface int, material [1]gdclass
 Returns the override [Material] for the specified [param surface] of the [Mesh] resource. See also [method get_surface_override_material_count].
 [b]Note:[/b] This returns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To get the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
 */
-func (self Instance) GetSurfaceOverrideMaterial(surface int) [1]gdclass.Material {
+func (self Instance) GetSurfaceOverrideMaterial(surface int) [1]gdclass.Material { //gd:MeshInstance3D.get_surface_override_material
 	return [1]gdclass.Material(class(self).GetSurfaceOverrideMaterial(gd.Int(surface)))
 }
 
@@ -76,14 +76,14 @@ func (self Instance) GetSurfaceOverrideMaterial(surface int) [1]gdclass.Material
 Returns the [Material] that will be used by the [Mesh] when drawing. This can return the [member GeometryInstance3D.material_override], the surface override [Material] defined in this [MeshInstance3D], or the surface [Material] defined in the [member mesh]. For example, if [member GeometryInstance3D.material_override] is used, all surfaces will return the override material.
 Returns [code]null[/code] if no material is active, including when [member mesh] is [code]null[/code].
 */
-func (self Instance) GetActiveMaterial(surface int) [1]gdclass.Material {
+func (self Instance) GetActiveMaterial(surface int) [1]gdclass.Material { //gd:MeshInstance3D.get_active_material
 	return [1]gdclass.Material(class(self).GetActiveMaterial(gd.Int(surface)))
 }
 
 /*
 This helper creates a [StaticBody3D] child node with a [ConcavePolygonShape3D] collision shape calculated from the mesh geometry. It's mainly used for testing.
 */
-func (self Instance) CreateTrimeshCollision() {
+func (self Instance) CreateTrimeshCollision() { //gd:MeshInstance3D.create_trimesh_collision
 	class(self).CreateTrimeshCollision()
 }
 
@@ -92,49 +92,49 @@ This helper creates a [StaticBody3D] child node with a [ConvexPolygonShape3D] co
 If [param clean] is [code]true[/code] (default), duplicate and interior vertices are removed automatically. You can set it to [code]false[/code] to make the process faster if not needed.
 If [param simplify] is [code]true[/code], the geometry can be further simplified to reduce the number of vertices. Disabled by default.
 */
-func (self Instance) CreateConvexCollision() {
+func (self Instance) CreateConvexCollision() { //gd:MeshInstance3D.create_convex_collision
 	class(self).CreateConvexCollision(true, false)
 }
 
 /*
 This helper creates a [StaticBody3D] child node with multiple [ConvexPolygonShape3D] collision shapes calculated from the mesh geometry via convex decomposition. The convex decomposition operation can be controlled with parameters from the optional [param settings].
 */
-func (self Instance) CreateMultipleConvexCollisions() {
+func (self Instance) CreateMultipleConvexCollisions() { //gd:MeshInstance3D.create_multiple_convex_collisions
 	class(self).CreateMultipleConvexCollisions([1][1]gdclass.MeshConvexDecompositionSettings{}[0])
 }
 
 /*
 Returns the number of blend shapes available. Produces an error if [member mesh] is [code]null[/code].
 */
-func (self Instance) GetBlendShapeCount() int {
+func (self Instance) GetBlendShapeCount() int { //gd:MeshInstance3D.get_blend_shape_count
 	return int(int(class(self).GetBlendShapeCount()))
 }
 
 /*
 Returns the index of the blend shape with the given [param name]. Returns [code]-1[/code] if no blend shape with this name exists, including when [member mesh] is [code]null[/code].
 */
-func (self Instance) FindBlendShapeByName(name string) int {
+func (self Instance) FindBlendShapeByName(name string) int { //gd:MeshInstance3D.find_blend_shape_by_name
 	return int(int(class(self).FindBlendShapeByName(gd.NewStringName(name))))
 }
 
 /*
 Returns the value of the blend shape at the given [param blend_shape_idx]. Returns [code]0.0[/code] and produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
-func (self Instance) GetBlendShapeValue(blend_shape_idx int) Float.X {
+func (self Instance) GetBlendShapeValue(blend_shape_idx int) Float.X { //gd:MeshInstance3D.get_blend_shape_value
 	return Float.X(Float.X(class(self).GetBlendShapeValue(gd.Int(blend_shape_idx))))
 }
 
 /*
 Sets the value of the blend shape at [param blend_shape_idx] to [param value]. Produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
-func (self Instance) SetBlendShapeValue(blend_shape_idx int, value Float.X) {
+func (self Instance) SetBlendShapeValue(blend_shape_idx int, value Float.X) { //gd:MeshInstance3D.set_blend_shape_value
 	class(self).SetBlendShapeValue(gd.Int(blend_shape_idx), gd.Float(value))
 }
 
 /*
 This helper creates a [MeshInstance3D] child node with gizmos at every vertex calculated from the mesh geometry. It's mainly used for testing.
 */
-func (self Instance) CreateDebugTangents() {
+func (self Instance) CreateDebugTangents() { //gd:MeshInstance3D.create_debug_tangents
 	class(self).CreateDebugTangents()
 }
 
@@ -142,7 +142,7 @@ func (self Instance) CreateDebugTangents() {
 Takes a snapshot from the current [ArrayMesh] with all blend shapes applied according to their current weights and bakes it to the provided [param existing] mesh. If no [param existing] mesh is provided a new [ArrayMesh] is created, baked and returned. Mesh surface materials are not copied.
 [b]Performance:[/b] [Mesh] data needs to be received from the GPU, stalling the [RenderingServer] in the process.
 */
-func (self Instance) BakeMeshFromCurrentBlendShapeMix() [1]gdclass.ArrayMesh {
+func (self Instance) BakeMeshFromCurrentBlendShapeMix() [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
 	return [1]gdclass.ArrayMesh(class(self).BakeMeshFromCurrentBlendShapeMix([1][1]gdclass.ArrayMesh{}[0]))
 }
 
@@ -189,7 +189,7 @@ func (self Instance) SetSkeleton(value NodePath.String) {
 }
 
 //go:nosplit
-func (self class) SetMesh(mesh [1]gdclass.Mesh) {
+func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshInstance3D.set_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -198,7 +198,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 }
 
 //go:nosplit
-func (self class) GetMesh() [1]gdclass.Mesh {
+func (self class) GetMesh() [1]gdclass.Mesh { //gd:MeshInstance3D.get_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -208,7 +208,7 @@ func (self class) GetMesh() [1]gdclass.Mesh {
 }
 
 //go:nosplit
-func (self class) SetSkeletonPath(skeleton_path gd.NodePath) {
+func (self class) SetSkeletonPath(skeleton_path gd.NodePath) { //gd:MeshInstance3D.set_skeleton_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(skeleton_path))
 	var r_ret = callframe.Nil
@@ -217,7 +217,7 @@ func (self class) SetSkeletonPath(skeleton_path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetSkeletonPath() gd.NodePath {
+func (self class) GetSkeletonPath() gd.NodePath { //gd:MeshInstance3D.get_skeleton_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_skeleton_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -227,7 +227,7 @@ func (self class) GetSkeletonPath() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetSkin(skin [1]gdclass.Skin) {
+func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:MeshInstance3D.set_skin
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(skin[0])[0])
 	var r_ret = callframe.Nil
@@ -236,7 +236,7 @@ func (self class) SetSkin(skin [1]gdclass.Skin) {
 }
 
 //go:nosplit
-func (self class) GetSkin() [1]gdclass.Skin {
+func (self class) GetSkin() [1]gdclass.Skin { //gd:MeshInstance3D.get_skin
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_skin, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -249,7 +249,7 @@ func (self class) GetSkin() [1]gdclass.Skin {
 Returns the internal [SkinReference] containing the skeleton's [RID] attached to this RID. See also [method Resource.get_rid], [method SkinReference.get_skeleton], and [method RenderingServer.instance_attach_skeleton].
 */
 //go:nosplit
-func (self class) GetSkinReference() [1]gdclass.SkinReference {
+func (self class) GetSkinReference() [1]gdclass.SkinReference { //gd:MeshInstance3D.get_skin_reference
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_skin_reference, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -262,7 +262,7 @@ func (self class) GetSkinReference() [1]gdclass.SkinReference {
 Returns the number of surface override materials. This is equivalent to [method Mesh.get_surface_count]. See also [method get_surface_override_material].
 */
 //go:nosplit
-func (self class) GetSurfaceOverrideMaterialCount() gd.Int {
+func (self class) GetSurfaceOverrideMaterialCount() gd.Int { //gd:MeshInstance3D.get_surface_override_material_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_surface_override_material_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -276,7 +276,7 @@ Sets the override [param material] for the specified [param surface] of the [Mes
 [b]Note:[/b] This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
 */
 //go:nosplit
-func (self class) SetSurfaceOverrideMaterial(surface gd.Int, material [1]gdclass.Material) {
+func (self class) SetSurfaceOverrideMaterial(surface gd.Int, material [1]gdclass.Material) { //gd:MeshInstance3D.set_surface_override_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surface)
 	callframe.Arg(frame, pointers.Get(material[0])[0])
@@ -290,7 +290,7 @@ Returns the override [Material] for the specified [param surface] of the [Mesh] 
 [b]Note:[/b] This returns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To get the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
 */
 //go:nosplit
-func (self class) GetSurfaceOverrideMaterial(surface gd.Int) [1]gdclass.Material {
+func (self class) GetSurfaceOverrideMaterial(surface gd.Int) [1]gdclass.Material { //gd:MeshInstance3D.get_surface_override_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -305,7 +305,7 @@ Returns the [Material] that will be used by the [Mesh] when drawing. This can re
 Returns [code]null[/code] if no material is active, including when [member mesh] is [code]null[/code].
 */
 //go:nosplit
-func (self class) GetActiveMaterial(surface gd.Int) [1]gdclass.Material {
+func (self class) GetActiveMaterial(surface gd.Int) [1]gdclass.Material { //gd:MeshInstance3D.get_active_material
 	var frame = callframe.New()
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -319,7 +319,7 @@ func (self class) GetActiveMaterial(surface gd.Int) [1]gdclass.Material {
 This helper creates a [StaticBody3D] child node with a [ConcavePolygonShape3D] collision shape calculated from the mesh geometry. It's mainly used for testing.
 */
 //go:nosplit
-func (self class) CreateTrimeshCollision() {
+func (self class) CreateTrimeshCollision() { //gd:MeshInstance3D.create_trimesh_collision
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_create_trimesh_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -332,7 +332,7 @@ If [param clean] is [code]true[/code] (default), duplicate and interior vertices
 If [param simplify] is [code]true[/code], the geometry can be further simplified to reduce the number of vertices. Disabled by default.
 */
 //go:nosplit
-func (self class) CreateConvexCollision(clean bool, simplify bool) {
+func (self class) CreateConvexCollision(clean bool, simplify bool) { //gd:MeshInstance3D.create_convex_collision
 	var frame = callframe.New()
 	callframe.Arg(frame, clean)
 	callframe.Arg(frame, simplify)
@@ -345,7 +345,7 @@ func (self class) CreateConvexCollision(clean bool, simplify bool) {
 This helper creates a [StaticBody3D] child node with multiple [ConvexPolygonShape3D] collision shapes calculated from the mesh geometry via convex decomposition. The convex decomposition operation can be controlled with parameters from the optional [param settings].
 */
 //go:nosplit
-func (self class) CreateMultipleConvexCollisions(settings [1]gdclass.MeshConvexDecompositionSettings) {
+func (self class) CreateMultipleConvexCollisions(settings [1]gdclass.MeshConvexDecompositionSettings) { //gd:MeshInstance3D.create_multiple_convex_collisions
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(settings[0])[0])
 	var r_ret = callframe.Nil
@@ -357,7 +357,7 @@ func (self class) CreateMultipleConvexCollisions(settings [1]gdclass.MeshConvexD
 Returns the number of blend shapes available. Produces an error if [member mesh] is [code]null[/code].
 */
 //go:nosplit
-func (self class) GetBlendShapeCount() gd.Int {
+func (self class) GetBlendShapeCount() gd.Int { //gd:MeshInstance3D.get_blend_shape_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_get_blend_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -370,7 +370,7 @@ func (self class) GetBlendShapeCount() gd.Int {
 Returns the index of the blend shape with the given [param name]. Returns [code]-1[/code] if no blend shape with this name exists, including when [member mesh] is [code]null[/code].
 */
 //go:nosplit
-func (self class) FindBlendShapeByName(name gd.StringName) gd.Int {
+func (self class) FindBlendShapeByName(name gd.StringName) gd.Int { //gd:MeshInstance3D.find_blend_shape_by_name
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -384,7 +384,7 @@ func (self class) FindBlendShapeByName(name gd.StringName) gd.Int {
 Returns the value of the blend shape at the given [param blend_shape_idx]. Returns [code]0.0[/code] and produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
 //go:nosplit
-func (self class) GetBlendShapeValue(blend_shape_idx gd.Int) gd.Float {
+func (self class) GetBlendShapeValue(blend_shape_idx gd.Int) gd.Float { //gd:MeshInstance3D.get_blend_shape_value
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape_idx)
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -398,7 +398,7 @@ func (self class) GetBlendShapeValue(blend_shape_idx gd.Int) gd.Float {
 Sets the value of the blend shape at [param blend_shape_idx] to [param value]. Produces an error if [member mesh] is [code]null[/code] or doesn't have a blend shape at that index.
 */
 //go:nosplit
-func (self class) SetBlendShapeValue(blend_shape_idx gd.Int, value gd.Float) {
+func (self class) SetBlendShapeValue(blend_shape_idx gd.Int, value gd.Float) { //gd:MeshInstance3D.set_blend_shape_value
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape_idx)
 	callframe.Arg(frame, value)
@@ -411,7 +411,7 @@ func (self class) SetBlendShapeValue(blend_shape_idx gd.Int, value gd.Float) {
 This helper creates a [MeshInstance3D] child node with gizmos at every vertex calculated from the mesh geometry. It's mainly used for testing.
 */
 //go:nosplit
-func (self class) CreateDebugTangents() {
+func (self class) CreateDebugTangents() { //gd:MeshInstance3D.create_debug_tangents
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshInstance3D.Bind_create_debug_tangents, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -423,7 +423,7 @@ Takes a snapshot from the current [ArrayMesh] with all blend shapes applied acco
 [b]Performance:[/b] [Mesh] data needs to be received from the GPU, stalling the [RenderingServer] in the process.
 */
 //go:nosplit
-func (self class) BakeMeshFromCurrentBlendShapeMix(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh {
+func (self class) BakeMeshFromCurrentBlendShapeMix(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

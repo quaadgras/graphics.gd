@@ -67,7 +67,7 @@ func (self Instance) SetPlane(value Plane.NormalD) {
 }
 
 //go:nosplit
-func (self class) SetPlane(plane gd.Plane) {
+func (self class) SetPlane(plane gd.Plane) { //gd:WorldBoundaryShape3D.set_plane
 	var frame = callframe.New()
 	callframe.Arg(frame, plane)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetPlane(plane gd.Plane) {
 }
 
 //go:nosplit
-func (self class) GetPlane() gd.Plane {
+func (self class) GetPlane() gd.Plane { //gd:WorldBoundaryShape3D.get_plane
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Plane](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldBoundaryShape3D.Bind_get_plane, self.AsObject(), frame.Array(0), r_ret.Addr())

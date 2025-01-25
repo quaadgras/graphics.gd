@@ -43,21 +43,21 @@ type Any interface {
 /*
 Waits for the [Semaphore], if its value is zero, blocks until non-zero.
 */
-func (self Instance) Wait() {
+func (self Instance) Wait() { //gd:Semaphore.wait
 	class(self).Wait()
 }
 
 /*
 Like [method wait], but won't block, so if the value is zero, fails immediately and returns [code]false[/code]. If non-zero, it returns [code]true[/code] to report success.
 */
-func (self Instance) TryWait() bool {
+func (self Instance) TryWait() bool { //gd:Semaphore.try_wait
 	return bool(class(self).TryWait())
 }
 
 /*
 Lowers the [Semaphore], allowing one more thread in.
 */
-func (self Instance) Post() {
+func (self Instance) Post() { //gd:Semaphore.post
 	class(self).Post()
 }
 
@@ -84,7 +84,7 @@ func New() Instance {
 Waits for the [Semaphore], if its value is zero, blocks until non-zero.
 */
 //go:nosplit
-func (self class) Wait() {
+func (self class) Wait() { //gd:Semaphore.wait
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Semaphore.Bind_wait, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -95,7 +95,7 @@ func (self class) Wait() {
 Like [method wait], but won't block, so if the value is zero, fails immediately and returns [code]false[/code]. If non-zero, it returns [code]true[/code] to report success.
 */
 //go:nosplit
-func (self class) TryWait() bool {
+func (self class) TryWait() bool { //gd:Semaphore.try_wait
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Semaphore.Bind_try_wait, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -108,7 +108,7 @@ func (self class) TryWait() bool {
 Lowers the [Semaphore], allowing one more thread in.
 */
 //go:nosplit
-func (self class) Post() {
+func (self class) Post() { //gd:Semaphore.post
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Semaphore.Bind_post, self.AsObject(), frame.Array(0), r_ret.Addr())

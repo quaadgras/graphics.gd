@@ -45,7 +45,7 @@ type Any interface {
 Initialize the multiplayer peer as a server (with unique ID of [code]1[/code]). This mode enables [method MultiplayerPeer.is_server_relay_supported], allowing the upper [MultiplayerAPI] layer to perform peer exchange and packet relaying.
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
-func (self Instance) CreateServer() error {
+func (self Instance) CreateServer() error { //gd:WebRTCMultiplayerPeer.create_server
 	return error(gd.ToError(class(self).CreateServer(Array.Nil)))
 }
 
@@ -53,14 +53,14 @@ func (self Instance) CreateServer() error {
 Initialize the multiplayer peer as a client with the given [param peer_id] (must be between 2 and 2147483647). In this mode, you should only call [method add_peer] once and with [param peer_id] of [code]1[/code]. This mode enables [method MultiplayerPeer.is_server_relay_supported], allowing the upper [MultiplayerAPI] layer to perform peer exchange and packet relaying.
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
-func (self Instance) CreateClient(peer_id int) error {
+func (self Instance) CreateClient(peer_id int) error { //gd:WebRTCMultiplayerPeer.create_client
 	return error(gd.ToError(class(self).CreateClient(gd.Int(peer_id), Array.Nil)))
 }
 
 /*
 Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given [param peer_id] (must be between 1 and 2147483647).
 */
-func (self Instance) CreateMesh(peer_id int) error {
+func (self Instance) CreateMesh(peer_id int) error { //gd:WebRTCMultiplayerPeer.create_mesh
 	return error(gd.ToError(class(self).CreateMesh(gd.Int(peer_id), Array.Nil)))
 }
 
@@ -68,35 +68,35 @@ func (self Instance) CreateMesh(peer_id int) error {
 Add a new peer to the mesh with the given [param peer_id]. The [WebRTCPeerConnection] must be in state [constant WebRTCPeerConnection.STATE_NEW].
 Three channels will be created for reliable, unreliable, and ordered transport. The value of [param unreliable_lifetime] will be passed to the [code]"maxPacketLifetime"[/code] option when creating unreliable and ordered channels (see [method WebRTCPeerConnection.create_data_channel]).
 */
-func (self Instance) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int) error {
+func (self Instance) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int) error { //gd:WebRTCMultiplayerPeer.add_peer
 	return error(gd.ToError(class(self).AddPeer(peer, gd.Int(peer_id), gd.Int(1))))
 }
 
 /*
 Remove the peer with given [param peer_id] from the mesh. If the peer was connected, and [signal MultiplayerPeer.peer_connected] was emitted for it, then [signal MultiplayerPeer.peer_disconnected] will be emitted.
 */
-func (self Instance) RemovePeer(peer_id int) {
+func (self Instance) RemovePeer(peer_id int) { //gd:WebRTCMultiplayerPeer.remove_peer
 	class(self).RemovePeer(gd.Int(peer_id))
 }
 
 /*
 Returns [code]true[/code] if the given [param peer_id] is in the peers map (it might not be connected though).
 */
-func (self Instance) HasPeer(peer_id int) bool {
+func (self Instance) HasPeer(peer_id int) bool { //gd:WebRTCMultiplayerPeer.has_peer
 	return bool(class(self).HasPeer(gd.Int(peer_id)))
 }
 
 /*
 Returns a dictionary representation of the peer with given [param peer_id] with three keys. [code]"connection"[/code] containing the [WebRTCPeerConnection] to this peer, [code]"channels"[/code] an array of three [WebRTCDataChannel], and [code]"connected"[/code] a boolean representing if the peer connection is currently connected (all three channels are open).
 */
-func (self Instance) GetPeer(peer_id int) map[any]any {
+func (self Instance) GetPeer(peer_id int) map[any]any { //gd:WebRTCMultiplayerPeer.get_peer
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetPeer(gd.Int(peer_id))))
 }
 
 /*
 Returns a dictionary which keys are the peer ids and values the peer representation as in [method get_peer].
 */
-func (self Instance) GetPeers() map[any]any {
+func (self Instance) GetPeers() map[any]any { //gd:WebRTCMultiplayerPeer.get_peers
 	return map[any]any(gd.DictionaryAs[any, any](class(self).GetPeers()))
 }
 
@@ -124,7 +124,7 @@ Initialize the multiplayer peer as a server (with unique ID of [code]1[/code]). 
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 //go:nosplit
-func (self class) CreateServer(channels_config Array.Any) gd.Error {
+func (self class) CreateServer(channels_config Array.Any) gd.Error { //gd:WebRTCMultiplayerPeer.create_server
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(channels_config)))
 	var r_ret = callframe.Ret[gd.Error](frame)
@@ -139,7 +139,7 @@ Initialize the multiplayer peer as a client with the given [param peer_id] (must
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 //go:nosplit
-func (self class) CreateClient(peer_id gd.Int, channels_config Array.Any) gd.Error {
+func (self class) CreateClient(peer_id gd.Int, channels_config Array.Any) gd.Error { //gd:WebRTCMultiplayerPeer.create_client
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(channels_config)))
@@ -154,7 +154,7 @@ func (self class) CreateClient(peer_id gd.Int, channels_config Array.Any) gd.Err
 Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given [param peer_id] (must be between 1 and 2147483647).
 */
 //go:nosplit
-func (self class) CreateMesh(peer_id gd.Int, channels_config Array.Any) gd.Error {
+func (self class) CreateMesh(peer_id gd.Int, channels_config Array.Any) gd.Error { //gd:WebRTCMultiplayerPeer.create_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(channels_config)))
@@ -170,7 +170,7 @@ Add a new peer to the mesh with the given [param peer_id]. The [WebRTCPeerConnec
 Three channels will be created for reliable, unreliable, and ordered transport. The value of [param unreliable_lifetime] will be passed to the [code]"maxPacketLifetime"[/code] option when creating unreliable and ordered channels (see [method WebRTCPeerConnection.create_data_channel]).
 */
 //go:nosplit
-func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id gd.Int, unreliable_lifetime gd.Int) gd.Error {
+func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id gd.Int, unreliable_lifetime gd.Int) gd.Error { //gd:WebRTCMultiplayerPeer.add_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(peer[0])[0])
 	callframe.Arg(frame, peer_id)
@@ -186,7 +186,7 @@ func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id gd.Int, 
 Remove the peer with given [param peer_id] from the mesh. If the peer was connected, and [signal MultiplayerPeer.peer_connected] was emitted for it, then [signal MultiplayerPeer.peer_disconnected] will be emitted.
 */
 //go:nosplit
-func (self class) RemovePeer(peer_id gd.Int) {
+func (self class) RemovePeer(peer_id gd.Int) { //gd:WebRTCMultiplayerPeer.remove_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	var r_ret = callframe.Nil
@@ -198,7 +198,7 @@ func (self class) RemovePeer(peer_id gd.Int) {
 Returns [code]true[/code] if the given [param peer_id] is in the peers map (it might not be connected though).
 */
 //go:nosplit
-func (self class) HasPeer(peer_id gd.Int) bool {
+func (self class) HasPeer(peer_id gd.Int) bool { //gd:WebRTCMultiplayerPeer.has_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	var r_ret = callframe.Ret[bool](frame)
@@ -212,7 +212,7 @@ func (self class) HasPeer(peer_id gd.Int) bool {
 Returns a dictionary representation of the peer with given [param peer_id] with three keys. [code]"connection"[/code] containing the [WebRTCPeerConnection] to this peer, [code]"channels"[/code] an array of three [WebRTCDataChannel], and [code]"connected"[/code] a boolean representing if the peer connection is currently connected (all three channels are open).
 */
 //go:nosplit
-func (self class) GetPeer(peer_id gd.Int) gd.Dictionary {
+func (self class) GetPeer(peer_id gd.Int) gd.Dictionary { //gd:WebRTCMultiplayerPeer.get_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -226,7 +226,7 @@ func (self class) GetPeer(peer_id gd.Int) gd.Dictionary {
 Returns a dictionary which keys are the peer ids and values the peer representation as in [method get_peer].
 */
 //go:nosplit
-func (self class) GetPeers() gd.Dictionary {
+func (self class) GetPeers() gd.Dictionary { //gd:WebRTCMultiplayerPeer.get_peers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -274,7 +274,7 @@ func init() {
 	})
 }
 
-type Error = gd.Error
+type Error = gd.Error //gd:Error
 
 const (
 	/*Methods that return [enum Error] return [constant OK] when no error occurred.

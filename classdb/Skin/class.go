@@ -35,37 +35,37 @@ type Any interface {
 	AsSkin() Instance
 }
 
-func (self Instance) SetBindCount(bind_count int) {
+func (self Instance) SetBindCount(bind_count int) { //gd:Skin.set_bind_count
 	class(self).SetBindCount(gd.Int(bind_count))
 }
-func (self Instance) GetBindCount() int {
+func (self Instance) GetBindCount() int { //gd:Skin.get_bind_count
 	return int(int(class(self).GetBindCount()))
 }
-func (self Instance) AddBind(bone int, pose Transform3D.BasisOrigin) {
+func (self Instance) AddBind(bone int, pose Transform3D.BasisOrigin) { //gd:Skin.add_bind
 	class(self).AddBind(gd.Int(bone), gd.Transform3D(pose))
 }
-func (self Instance) AddNamedBind(name string, pose Transform3D.BasisOrigin) {
+func (self Instance) AddNamedBind(name string, pose Transform3D.BasisOrigin) { //gd:Skin.add_named_bind
 	class(self).AddNamedBind(gd.NewString(name), gd.Transform3D(pose))
 }
-func (self Instance) SetBindPose(bind_index int, pose Transform3D.BasisOrigin) {
+func (self Instance) SetBindPose(bind_index int, pose Transform3D.BasisOrigin) { //gd:Skin.set_bind_pose
 	class(self).SetBindPose(gd.Int(bind_index), gd.Transform3D(pose))
 }
-func (self Instance) GetBindPose(bind_index int) Transform3D.BasisOrigin {
+func (self Instance) GetBindPose(bind_index int) Transform3D.BasisOrigin { //gd:Skin.get_bind_pose
 	return Transform3D.BasisOrigin(class(self).GetBindPose(gd.Int(bind_index)))
 }
-func (self Instance) SetBindName(bind_index int, name string) {
+func (self Instance) SetBindName(bind_index int, name string) { //gd:Skin.set_bind_name
 	class(self).SetBindName(gd.Int(bind_index), gd.NewStringName(name))
 }
-func (self Instance) GetBindName(bind_index int) string {
+func (self Instance) GetBindName(bind_index int) string { //gd:Skin.get_bind_name
 	return string(class(self).GetBindName(gd.Int(bind_index)).String())
 }
-func (self Instance) SetBindBone(bind_index int, bone int) {
+func (self Instance) SetBindBone(bind_index int, bone int) { //gd:Skin.set_bind_bone
 	class(self).SetBindBone(gd.Int(bind_index), gd.Int(bone))
 }
-func (self Instance) GetBindBone(bind_index int) int {
+func (self Instance) GetBindBone(bind_index int) int { //gd:Skin.get_bind_bone
 	return int(int(class(self).GetBindBone(gd.Int(bind_index))))
 }
-func (self Instance) ClearBinds() {
+func (self Instance) ClearBinds() { //gd:Skin.clear_binds
 	class(self).ClearBinds()
 }
 
@@ -89,7 +89,7 @@ func New() Instance {
 }
 
 //go:nosplit
-func (self class) SetBindCount(bind_count gd.Int) {
+func (self class) SetBindCount(bind_count gd.Int) { //gd:Skin.set_bind_count
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_count)
 	var r_ret = callframe.Nil
@@ -98,7 +98,7 @@ func (self class) SetBindCount(bind_count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBindCount() gd.Int {
+func (self class) GetBindCount() gd.Int { //gd:Skin.get_bind_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_get_bind_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -108,7 +108,7 @@ func (self class) GetBindCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) AddBind(bone gd.Int, pose gd.Transform3D) {
+func (self class) AddBind(bone gd.Int, pose gd.Transform3D) { //gd:Skin.add_bind
 	var frame = callframe.New()
 	callframe.Arg(frame, bone)
 	callframe.Arg(frame, pose)
@@ -118,7 +118,7 @@ func (self class) AddBind(bone gd.Int, pose gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) AddNamedBind(name gd.String, pose gd.Transform3D) {
+func (self class) AddNamedBind(name gd.String, pose gd.Transform3D) { //gd:Skin.add_named_bind
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, pose)
@@ -128,7 +128,7 @@ func (self class) AddNamedBind(name gd.String, pose gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) SetBindPose(bind_index gd.Int, pose gd.Transform3D) {
+func (self class) SetBindPose(bind_index gd.Int, pose gd.Transform3D) { //gd:Skin.set_bind_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
 	callframe.Arg(frame, pose)
@@ -138,7 +138,7 @@ func (self class) SetBindPose(bind_index gd.Int, pose gd.Transform3D) {
 }
 
 //go:nosplit
-func (self class) GetBindPose(bind_index gd.Int) gd.Transform3D {
+func (self class) GetBindPose(bind_index gd.Int) gd.Transform3D { //gd:Skin.get_bind_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
@@ -149,7 +149,7 @@ func (self class) GetBindPose(bind_index gd.Int) gd.Transform3D {
 }
 
 //go:nosplit
-func (self class) SetBindName(bind_index gd.Int, name gd.StringName) {
+func (self class) SetBindName(bind_index gd.Int, name gd.StringName) { //gd:Skin.set_bind_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
 	callframe.Arg(frame, pointers.Get(name))
@@ -159,7 +159,7 @@ func (self class) SetBindName(bind_index gd.Int, name gd.StringName) {
 }
 
 //go:nosplit
-func (self class) GetBindName(bind_index gd.Int) gd.StringName {
+func (self class) GetBindName(bind_index gd.Int) gd.StringName { //gd:Skin.get_bind_name
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -170,7 +170,7 @@ func (self class) GetBindName(bind_index gd.Int) gd.StringName {
 }
 
 //go:nosplit
-func (self class) SetBindBone(bind_index gd.Int, bone gd.Int) {
+func (self class) SetBindBone(bind_index gd.Int, bone gd.Int) { //gd:Skin.set_bind_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
 	callframe.Arg(frame, bone)
@@ -180,7 +180,7 @@ func (self class) SetBindBone(bind_index gd.Int, bone gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetBindBone(bind_index gd.Int) gd.Int {
+func (self class) GetBindBone(bind_index gd.Int) gd.Int { //gd:Skin.get_bind_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
 	var r_ret = callframe.Ret[gd.Int](frame)
@@ -191,7 +191,7 @@ func (self class) GetBindBone(bind_index gd.Int) gd.Int {
 }
 
 //go:nosplit
-func (self class) ClearBinds() {
+func (self class) ClearBinds() { //gd:Skin.clear_binds
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_clear_binds, self.AsObject(), frame.Array(0), r_ret.Addr())

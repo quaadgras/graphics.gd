@@ -69,7 +69,7 @@ func (self Instance) SetConstant(value Color.RGBA) {
 }
 
 //go:nosplit
-func (self class) SetConstant(constant gd.Color) {
+func (self class) SetConstant(constant gd.Color) { //gd:VisualShaderNodeColorConstant.set_constant
 	var frame = callframe.New()
 	callframe.Arg(frame, constant)
 	var r_ret = callframe.Nil
@@ -78,7 +78,7 @@ func (self class) SetConstant(constant gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetConstant() gd.Color {
+func (self class) GetConstant() gd.Color { //gd:VisualShaderNodeColorConstant.get_constant
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeColorConstant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())

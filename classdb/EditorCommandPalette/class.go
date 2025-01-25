@@ -64,7 +64,7 @@ Adds a custom command to EditorCommandPalette.
 - [param binded_callable]: [Callable] (Callable of the [b]Command[/b]. This will be executed when the [b]Command[/b] is selected.)
 - [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
 */
-func (self Instance) AddCommand(command_name string, key_name string, binded_callable func()) {
+func (self Instance) AddCommand(command_name string, key_name string, binded_callable func()) { //gd:EditorCommandPalette.add_command
 	class(self).AddCommand(gd.NewString(command_name), gd.NewString(key_name), Callable.New(binded_callable), gd.NewString("None"))
 }
 
@@ -72,7 +72,7 @@ func (self Instance) AddCommand(command_name string, key_name string, binded_cal
 Removes the custom command from EditorCommandPalette.
 - [param key_name]: [String] (Name of the key for a particular [b]Command[/b].)
 */
-func (self Instance) RemoveCommand(key_name string) {
+func (self Instance) RemoveCommand(key_name string) { //gd:EditorCommandPalette.remove_command
 	class(self).RemoveCommand(gd.NewString(key_name))
 }
 
@@ -102,7 +102,7 @@ Adds a custom command to EditorCommandPalette.
 - [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
 */
 //go:nosplit
-func (self class) AddCommand(command_name gd.String, key_name gd.String, binded_callable Callable.Function, shortcut_text gd.String) {
+func (self class) AddCommand(command_name gd.String, key_name gd.String, binded_callable Callable.Function, shortcut_text gd.String) { //gd:EditorCommandPalette.add_command
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(command_name))
 	callframe.Arg(frame, pointers.Get(key_name))
@@ -118,7 +118,7 @@ Removes the custom command from EditorCommandPalette.
 - [param key_name]: [String] (Name of the key for a particular [b]Command[/b].)
 */
 //go:nosplit
-func (self class) RemoveCommand(key_name gd.String) {
+func (self class) RemoveCommand(key_name gd.String) { //gd:EditorCommandPalette.remove_command
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(key_name))
 	var r_ret = callframe.Nil

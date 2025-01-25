@@ -67,7 +67,7 @@ func (self Instance) SetOpType(value gdclass.VisualShaderNodeStepOpType) {
 }
 
 //go:nosplit
-func (self class) SetOpType(op_type gdclass.VisualShaderNodeStepOpType) {
+func (self class) SetOpType(op_type gdclass.VisualShaderNodeStepOpType) { //gd:VisualShaderNodeStep.set_op_type
 	var frame = callframe.New()
 	callframe.Arg(frame, op_type)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetOpType(op_type gdclass.VisualShaderNodeStepOpType) {
 }
 
 //go:nosplit
-func (self class) GetOpType() gdclass.VisualShaderNodeStepOpType {
+func (self class) GetOpType() gdclass.VisualShaderNodeStepOpType { //gd:VisualShaderNodeStep.get_op_type
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.VisualShaderNodeStepOpType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeStep.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -124,7 +124,7 @@ func init() {
 	})
 }
 
-type OpType = gdclass.VisualShaderNodeStepOpType
+type OpType = gdclass.VisualShaderNodeStepOpType //gd:VisualShaderNodeStep.OpType
 
 const (
 	/*A floating-point scalar type.*/

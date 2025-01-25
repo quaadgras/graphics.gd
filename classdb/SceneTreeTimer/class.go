@@ -88,7 +88,7 @@ func (self Instance) SetTimeLeft(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetTimeLeft(time gd.Float) {
+func (self class) SetTimeLeft(time gd.Float) { //gd:SceneTreeTimer.set_time_left
 	var frame = callframe.New()
 	callframe.Arg(frame, time)
 	var r_ret = callframe.Nil
@@ -97,7 +97,7 @@ func (self class) SetTimeLeft(time gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetTimeLeft() gd.Float {
+func (self class) GetTimeLeft() gd.Float { //gd:SceneTreeTimer.get_time_left
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTreeTimer.Bind_get_time_left, self.AsObject(), frame.Array(0), r_ret.Addr())

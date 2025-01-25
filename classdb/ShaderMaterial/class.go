@@ -45,14 +45,14 @@ Changes the value set for this material of a uniform in the shader.
 [b]Note:[/b] [param param] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
 [b]Note:[/b] Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [method GeometryInstance3D.set_instance_shader_parameter] or duplicate the [ShaderMaterial] resource using [method Resource.duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
 */
-func (self Instance) SetShaderParameter(param string, value any) {
+func (self Instance) SetShaderParameter(param string, value any) { //gd:ShaderMaterial.set_shader_parameter
 	class(self).SetShaderParameter(gd.NewStringName(param), gd.NewVariant(value))
 }
 
 /*
 Returns the current value set for this material of a uniform in the shader.
 */
-func (self Instance) GetShaderParameter(param string) any {
+func (self Instance) GetShaderParameter(param string) any { //gd:ShaderMaterial.get_shader_parameter
 	return any(class(self).GetShaderParameter(gd.NewStringName(param)).Interface())
 }
 
@@ -84,7 +84,7 @@ func (self Instance) SetShader(value [1]gdclass.Shader) {
 }
 
 //go:nosplit
-func (self class) SetShader(shader [1]gdclass.Shader) {
+func (self class) SetShader(shader [1]gdclass.Shader) { //gd:ShaderMaterial.set_shader
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shader[0])[0])
 	var r_ret = callframe.Nil
@@ -93,7 +93,7 @@ func (self class) SetShader(shader [1]gdclass.Shader) {
 }
 
 //go:nosplit
-func (self class) GetShader() [1]gdclass.Shader {
+func (self class) GetShader() [1]gdclass.Shader { //gd:ShaderMaterial.get_shader
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderMaterial.Bind_get_shader, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -108,7 +108,7 @@ Changes the value set for this material of a uniform in the shader.
 [b]Note:[/b] Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [method GeometryInstance3D.set_instance_shader_parameter] or duplicate the [ShaderMaterial] resource using [method Resource.duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
 */
 //go:nosplit
-func (self class) SetShaderParameter(param gd.StringName, value gd.Variant) {
+func (self class) SetShaderParameter(param gd.StringName, value gd.Variant) { //gd:ShaderMaterial.set_shader_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(param))
 	callframe.Arg(frame, pointers.Get(value))
@@ -121,7 +121,7 @@ func (self class) SetShaderParameter(param gd.StringName, value gd.Variant) {
 Returns the current value set for this material of a uniform in the shader.
 */
 //go:nosplit
-func (self class) GetShaderParameter(param gd.StringName) gd.Variant {
+func (self class) GetShaderParameter(param gd.StringName) gd.Variant { //gd:ShaderMaterial.get_shader_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(param))
 	var r_ret = callframe.Ret[[3]uint64](frame)

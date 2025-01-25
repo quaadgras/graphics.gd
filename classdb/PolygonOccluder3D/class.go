@@ -68,7 +68,7 @@ func (self Instance) SetPolygon(value []Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetPolygon(polygon gd.PackedVector2Array) {
+func (self class) SetPolygon(polygon gd.PackedVector2Array) { //gd:PolygonOccluder3D.set_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Nil
@@ -77,7 +77,7 @@ func (self class) SetPolygon(polygon gd.PackedVector2Array) {
 }
 
 //go:nosplit
-func (self class) GetPolygon() gd.PackedVector2Array {
+func (self class) GetPolygon() gd.PackedVector2Array { //gd:PolygonOccluder3D.get_polygon
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonOccluder3D.Bind_get_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())

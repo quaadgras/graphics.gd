@@ -47,35 +47,35 @@ type Any interface {
 /*
 Returns [code]true[/code] if the button with the given [param name] is pressed.
 */
-func (self Instance) IsButtonPressed(name string) bool {
+func (self Instance) IsButtonPressed(name string) bool { //gd:XRController3D.is_button_pressed
 	return bool(class(self).IsButtonPressed(gd.NewStringName(name)))
 }
 
 /*
 Returns a [Variant] for the input with the given [param name]. This works for any input type, the variant will be typed according to the actions configuration.
 */
-func (self Instance) GetInput(name string) any {
+func (self Instance) GetInput(name string) any { //gd:XRController3D.get_input
 	return any(class(self).GetInput(gd.NewStringName(name)).Interface())
 }
 
 /*
 Returns a numeric value for the input with the given [param name]. This is used for triggers and grip sensors.
 */
-func (self Instance) GetFloat(name string) Float.X {
+func (self Instance) GetFloat(name string) Float.X { //gd:XRController3D.get_float
 	return Float.X(Float.X(class(self).GetFloat(gd.NewStringName(name))))
 }
 
 /*
 Returns a [Vector2] for the input with the given [param name]. This is used for thumbsticks and thumbpads found on many controllers.
 */
-func (self Instance) GetVector2(name string) Vector2.XY {
+func (self Instance) GetVector2(name string) Vector2.XY { //gd:XRController3D.get_vector2
 	return Vector2.XY(class(self).GetVector2(gd.NewStringName(name)))
 }
 
 /*
 Returns the hand holding this controller, if known. See [enum XRPositionalTracker.TrackerHand].
 */
-func (self Instance) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand {
+func (self Instance) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand { //gd:XRController3D.get_tracker_hand
 	return gdclass.XRPositionalTrackerTrackerHand(class(self).GetTrackerHand())
 }
 
@@ -101,7 +101,7 @@ func New() Instance {
 Returns [code]true[/code] if the button with the given [param name] is pressed.
 */
 //go:nosplit
-func (self class) IsButtonPressed(name gd.StringName) bool {
+func (self class) IsButtonPressed(name gd.StringName) bool { //gd:XRController3D.is_button_pressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[bool](frame)
@@ -115,7 +115,7 @@ func (self class) IsButtonPressed(name gd.StringName) bool {
 Returns a [Variant] for the input with the given [param name]. This works for any input type, the variant will be typed according to the actions configuration.
 */
 //go:nosplit
-func (self class) GetInput(name gd.StringName) gd.Variant {
+func (self class) GetInput(name gd.StringName) gd.Variant { //gd:XRController3D.get_input
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[[3]uint64](frame)
@@ -129,7 +129,7 @@ func (self class) GetInput(name gd.StringName) gd.Variant {
 Returns a numeric value for the input with the given [param name]. This is used for triggers and grip sensors.
 */
 //go:nosplit
-func (self class) GetFloat(name gd.StringName) gd.Float {
+func (self class) GetFloat(name gd.StringName) gd.Float { //gd:XRController3D.get_float
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Float](frame)
@@ -143,7 +143,7 @@ func (self class) GetFloat(name gd.StringName) gd.Float {
 Returns a [Vector2] for the input with the given [param name]. This is used for thumbsticks and thumbpads found on many controllers.
 */
 //go:nosplit
-func (self class) GetVector2(name gd.StringName) gd.Vector2 {
+func (self class) GetVector2(name gd.StringName) gd.Vector2 { //gd:XRController3D.get_vector2
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	var r_ret = callframe.Ret[gd.Vector2](frame)
@@ -157,7 +157,7 @@ func (self class) GetVector2(name gd.StringName) gd.Vector2 {
 Returns the hand holding this controller, if known. See [enum XRPositionalTracker.TrackerHand].
 */
 //go:nosplit
-func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand {
+func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand { //gd:XRController3D.get_tracker_hand
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.XRPositionalTrackerTrackerHand](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_get_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Addr())

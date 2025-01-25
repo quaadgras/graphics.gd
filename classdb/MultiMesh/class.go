@@ -49,28 +49,28 @@ type Any interface {
 /*
 Sets the [Transform3D] for a specific instance.
 */
-func (self Instance) SetInstanceTransform(instance int, transform Transform3D.BasisOrigin) {
+func (self Instance) SetInstanceTransform(instance int, transform Transform3D.BasisOrigin) { //gd:MultiMesh.set_instance_transform
 	class(self).SetInstanceTransform(gd.Int(instance), gd.Transform3D(transform))
 }
 
 /*
 Sets the [Transform2D] for a specific instance.
 */
-func (self Instance) SetInstanceTransform2d(instance int, transform Transform2D.OriginXY) {
+func (self Instance) SetInstanceTransform2d(instance int, transform Transform2D.OriginXY) { //gd:MultiMesh.set_instance_transform_2d
 	class(self).SetInstanceTransform2d(gd.Int(instance), gd.Transform2D(transform))
 }
 
 /*
 Returns the [Transform3D] of a specific instance.
 */
-func (self Instance) GetInstanceTransform(instance int) Transform3D.BasisOrigin {
+func (self Instance) GetInstanceTransform(instance int) Transform3D.BasisOrigin { //gd:MultiMesh.get_instance_transform
 	return Transform3D.BasisOrigin(class(self).GetInstanceTransform(gd.Int(instance)))
 }
 
 /*
 Returns the [Transform2D] of a specific instance.
 */
-func (self Instance) GetInstanceTransform2d(instance int) Transform2D.OriginXY {
+func (self Instance) GetInstanceTransform2d(instance int) Transform2D.OriginXY { //gd:MultiMesh.get_instance_transform_2d
 	return Transform2D.OriginXY(class(self).GetInstanceTransform2d(gd.Int(instance)))
 }
 
@@ -79,14 +79,14 @@ Sets the color of a specific instance by [i]multiplying[/i] the mesh's existing 
 [b]Note:[/b] Each component is stored in 32 bits in the Forward+ and Mobile rendering methods, but is packed into 16 bits in the Compatibility rendering method.
 For the color to take effect, ensure that [member use_colors] is [code]true[/code] on the [MultiMesh] and [member BaseMaterial3D.vertex_color_use_as_albedo] is [code]true[/code] on the material. If you intend to set an absolute color instead of tinting, make sure the material's albedo color is set to pure white ([code]Color(1, 1, 1)[/code]).
 */
-func (self Instance) SetInstanceColor(instance int, color Color.RGBA) {
+func (self Instance) SetInstanceColor(instance int, color Color.RGBA) { //gd:MultiMesh.set_instance_color
 	class(self).SetInstanceColor(gd.Int(instance), gd.Color(color))
 }
 
 /*
 Gets a specific instance's color multiplier.
 */
-func (self Instance) GetInstanceColor(instance int) Color.RGBA {
+func (self Instance) GetInstanceColor(instance int) Color.RGBA { //gd:MultiMesh.get_instance_color
 	return Color.RGBA(class(self).GetInstanceColor(gd.Int(instance)))
 }
 
@@ -96,21 +96,21 @@ Sets custom data for a specific instance. [param custom_data] is a [Color] type 
 For the custom data to be used, ensure that [member use_custom_data] is [code]true[/code].
 This custom instance data has to be manually accessed in your custom shader using [code]INSTANCE_CUSTOM[/code].
 */
-func (self Instance) SetInstanceCustomData(instance int, custom_data Color.RGBA) {
+func (self Instance) SetInstanceCustomData(instance int, custom_data Color.RGBA) { //gd:MultiMesh.set_instance_custom_data
 	class(self).SetInstanceCustomData(gd.Int(instance), gd.Color(custom_data))
 }
 
 /*
 Returns the custom data that has been set for a specific instance.
 */
-func (self Instance) GetInstanceCustomData(instance int) Color.RGBA {
+func (self Instance) GetInstanceCustomData(instance int) Color.RGBA { //gd:MultiMesh.get_instance_custom_data
 	return Color.RGBA(class(self).GetInstanceCustomData(gd.Int(instance)))
 }
 
 /*
 Returns the visibility axis-aligned bounding box in local space.
 */
-func (self Instance) GetAabb() AABB.PositionSize {
+func (self Instance) GetAabb() AABB.PositionSize { //gd:MultiMesh.get_aabb
 	return AABB.PositionSize(class(self).GetAabb())
 }
 
@@ -198,7 +198,7 @@ func (self Instance) SetBuffer(value []float32) {
 }
 
 //go:nosplit
-func (self class) SetMesh(mesh [1]gdclass.Mesh) {
+func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MultiMesh.set_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
 	var r_ret = callframe.Nil
@@ -207,7 +207,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) {
 }
 
 //go:nosplit
-func (self class) GetMesh() [1]gdclass.Mesh {
+func (self class) GetMesh() [1]gdclass.Mesh { //gd:MultiMesh.get_mesh
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -217,7 +217,7 @@ func (self class) GetMesh() [1]gdclass.Mesh {
 }
 
 //go:nosplit
-func (self class) SetUseColors(enable bool) {
+func (self class) SetUseColors(enable bool) { //gd:MultiMesh.set_use_colors
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -226,7 +226,7 @@ func (self class) SetUseColors(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingColors() bool {
+func (self class) IsUsingColors() bool { //gd:MultiMesh.is_using_colors
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_is_using_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -236,7 +236,7 @@ func (self class) IsUsingColors() bool {
 }
 
 //go:nosplit
-func (self class) SetUseCustomData(enable bool) {
+func (self class) SetUseCustomData(enable bool) { //gd:MultiMesh.set_use_custom_data
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -245,7 +245,7 @@ func (self class) SetUseCustomData(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingCustomData() bool {
+func (self class) IsUsingCustomData() bool { //gd:MultiMesh.is_using_custom_data
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_is_using_custom_data, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -255,7 +255,7 @@ func (self class) IsUsingCustomData() bool {
 }
 
 //go:nosplit
-func (self class) SetTransformFormat(format gdclass.MultiMeshTransformFormat) {
+func (self class) SetTransformFormat(format gdclass.MultiMeshTransformFormat) { //gd:MultiMesh.set_transform_format
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Nil
@@ -264,7 +264,7 @@ func (self class) SetTransformFormat(format gdclass.MultiMeshTransformFormat) {
 }
 
 //go:nosplit
-func (self class) GetTransformFormat() gdclass.MultiMeshTransformFormat {
+func (self class) GetTransformFormat() gdclass.MultiMeshTransformFormat { //gd:MultiMesh.get_transform_format
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.MultiMeshTransformFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_transform_format, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -274,7 +274,7 @@ func (self class) GetTransformFormat() gdclass.MultiMeshTransformFormat {
 }
 
 //go:nosplit
-func (self class) SetInstanceCount(count gd.Int) {
+func (self class) SetInstanceCount(count gd.Int) { //gd:MultiMesh.set_instance_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -283,7 +283,7 @@ func (self class) SetInstanceCount(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetInstanceCount() gd.Int {
+func (self class) GetInstanceCount() gd.Int { //gd:MultiMesh.get_instance_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_instance_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -293,7 +293,7 @@ func (self class) GetInstanceCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetVisibleInstanceCount(count gd.Int) {
+func (self class) SetVisibleInstanceCount(count gd.Int) { //gd:MultiMesh.set_visible_instance_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -302,7 +302,7 @@ func (self class) SetVisibleInstanceCount(count gd.Int) {
 }
 
 //go:nosplit
-func (self class) GetVisibleInstanceCount() gd.Int {
+func (self class) GetVisibleInstanceCount() gd.Int { //gd:MultiMesh.get_visible_instance_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_visible_instance_count, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -315,7 +315,7 @@ func (self class) GetVisibleInstanceCount() gd.Int {
 Sets the [Transform3D] for a specific instance.
 */
 //go:nosplit
-func (self class) SetInstanceTransform(instance gd.Int, transform gd.Transform3D) {
+func (self class) SetInstanceTransform(instance gd.Int, transform gd.Transform3D) { //gd:MultiMesh.set_instance_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, transform)
@@ -328,7 +328,7 @@ func (self class) SetInstanceTransform(instance gd.Int, transform gd.Transform3D
 Sets the [Transform2D] for a specific instance.
 */
 //go:nosplit
-func (self class) SetInstanceTransform2d(instance gd.Int, transform gd.Transform2D) {
+func (self class) SetInstanceTransform2d(instance gd.Int, transform gd.Transform2D) { //gd:MultiMesh.set_instance_transform_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, transform)
@@ -341,7 +341,7 @@ func (self class) SetInstanceTransform2d(instance gd.Int, transform gd.Transform
 Returns the [Transform3D] of a specific instance.
 */
 //go:nosplit
-func (self class) GetInstanceTransform(instance gd.Int) gd.Transform3D {
+func (self class) GetInstanceTransform(instance gd.Int) gd.Transform3D { //gd:MultiMesh.get_instance_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	var r_ret = callframe.Ret[gd.Transform3D](frame)
@@ -355,7 +355,7 @@ func (self class) GetInstanceTransform(instance gd.Int) gd.Transform3D {
 Returns the [Transform2D] of a specific instance.
 */
 //go:nosplit
-func (self class) GetInstanceTransform2d(instance gd.Int) gd.Transform2D {
+func (self class) GetInstanceTransform2d(instance gd.Int) gd.Transform2D { //gd:MultiMesh.get_instance_transform_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	var r_ret = callframe.Ret[gd.Transform2D](frame)
@@ -371,7 +371,7 @@ Sets the color of a specific instance by [i]multiplying[/i] the mesh's existing 
 For the color to take effect, ensure that [member use_colors] is [code]true[/code] on the [MultiMesh] and [member BaseMaterial3D.vertex_color_use_as_albedo] is [code]true[/code] on the material. If you intend to set an absolute color instead of tinting, make sure the material's albedo color is set to pure white ([code]Color(1, 1, 1)[/code]).
 */
 //go:nosplit
-func (self class) SetInstanceColor(instance gd.Int, color gd.Color) {
+func (self class) SetInstanceColor(instance gd.Int, color gd.Color) { //gd:MultiMesh.set_instance_color
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, color)
@@ -384,7 +384,7 @@ func (self class) SetInstanceColor(instance gd.Int, color gd.Color) {
 Gets a specific instance's color multiplier.
 */
 //go:nosplit
-func (self class) GetInstanceColor(instance gd.Int) gd.Color {
+func (self class) GetInstanceColor(instance gd.Int) gd.Color { //gd:MultiMesh.get_instance_color
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	var r_ret = callframe.Ret[gd.Color](frame)
@@ -401,7 +401,7 @@ For the custom data to be used, ensure that [member use_custom_data] is [code]tr
 This custom instance data has to be manually accessed in your custom shader using [code]INSTANCE_CUSTOM[/code].
 */
 //go:nosplit
-func (self class) SetInstanceCustomData(instance gd.Int, custom_data gd.Color) {
+func (self class) SetInstanceCustomData(instance gd.Int, custom_data gd.Color) { //gd:MultiMesh.set_instance_custom_data
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, custom_data)
@@ -414,7 +414,7 @@ func (self class) SetInstanceCustomData(instance gd.Int, custom_data gd.Color) {
 Returns the custom data that has been set for a specific instance.
 */
 //go:nosplit
-func (self class) GetInstanceCustomData(instance gd.Int) gd.Color {
+func (self class) GetInstanceCustomData(instance gd.Int) gd.Color { //gd:MultiMesh.get_instance_custom_data
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	var r_ret = callframe.Ret[gd.Color](frame)
@@ -425,7 +425,7 @@ func (self class) GetInstanceCustomData(instance gd.Int) gd.Color {
 }
 
 //go:nosplit
-func (self class) SetCustomAabb(aabb gd.AABB) {
+func (self class) SetCustomAabb(aabb gd.AABB) { //gd:MultiMesh.set_custom_aabb
 	var frame = callframe.New()
 	callframe.Arg(frame, aabb)
 	var r_ret = callframe.Nil
@@ -434,7 +434,7 @@ func (self class) SetCustomAabb(aabb gd.AABB) {
 }
 
 //go:nosplit
-func (self class) GetCustomAabb() gd.AABB {
+func (self class) GetCustomAabb() gd.AABB { //gd:MultiMesh.get_custom_aabb
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_custom_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -447,7 +447,7 @@ func (self class) GetCustomAabb() gd.AABB {
 Returns the visibility axis-aligned bounding box in local space.
 */
 //go:nosplit
-func (self class) GetAabb() gd.AABB {
+func (self class) GetAabb() gd.AABB { //gd:MultiMesh.get_aabb
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.AABB](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -457,7 +457,7 @@ func (self class) GetAabb() gd.AABB {
 }
 
 //go:nosplit
-func (self class) GetBuffer() gd.PackedFloat32Array {
+func (self class) GetBuffer() gd.PackedFloat32Array { //gd:MultiMesh.get_buffer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -467,7 +467,7 @@ func (self class) GetBuffer() gd.PackedFloat32Array {
 }
 
 //go:nosplit
-func (self class) SetBuffer(buffer gd.PackedFloat32Array) {
+func (self class) SetBuffer(buffer gd.PackedFloat32Array) { //gd:MultiMesh.set_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(buffer))
 	var r_ret = callframe.Nil
@@ -506,7 +506,7 @@ func init() {
 	gdclass.Register("MultiMesh", func(ptr gd.Object) any { return [1]gdclass.MultiMesh{*(*gdclass.MultiMesh)(unsafe.Pointer(&ptr))} })
 }
 
-type TransformFormat = gdclass.MultiMeshTransformFormat
+type TransformFormat = gdclass.MultiMeshTransformFormat //gd:MultiMesh.TransformFormat
 
 const (
 	/*Use this when using 2D transforms.*/

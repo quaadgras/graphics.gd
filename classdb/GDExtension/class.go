@@ -41,14 +41,14 @@ type Any interface {
 /*
 Returns [code]true[/code] if this extension's library has been opened.
 */
-func (self Instance) IsLibraryOpen() bool {
+func (self Instance) IsLibraryOpen() bool { //gd:GDExtension.is_library_open
 	return bool(class(self).IsLibraryOpen())
 }
 
 /*
 Returns the lowest level required for this extension to be properly initialized (see the [enum InitializationLevel] enum).
 */
-func (self Instance) GetMinimumLibraryInitializationLevel() gd.GDExtensionInitializationLevel {
+func (self Instance) GetMinimumLibraryInitializationLevel() gd.GDExtensionInitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
 	return gd.GDExtensionInitializationLevel(class(self).GetMinimumLibraryInitializationLevel())
 }
 
@@ -75,7 +75,7 @@ func New() Instance {
 Returns [code]true[/code] if this extension's library has been opened.
 */
 //go:nosplit
-func (self class) IsLibraryOpen() bool {
+func (self class) IsLibraryOpen() bool { //gd:GDExtension.is_library_open
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtension.Bind_is_library_open, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -88,7 +88,7 @@ func (self class) IsLibraryOpen() bool {
 Returns the lowest level required for this extension to be properly initialized (see the [enum InitializationLevel] enum).
 */
 //go:nosplit
-func (self class) GetMinimumLibraryInitializationLevel() gd.GDExtensionInitializationLevel {
+func (self class) GetMinimumLibraryInitializationLevel() gd.GDExtensionInitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.GDExtensionInitializationLevel](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtension.Bind_get_minimum_library_initialization_level, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -128,7 +128,7 @@ func init() {
 	gdclass.Register("GDExtension", func(ptr gd.Object) any { return [1]gdclass.GDExtension{*(*gdclass.GDExtension)(unsafe.Pointer(&ptr))} })
 }
 
-type InitializationLevel = gdclass.GDExtensionInitializationLevel
+type InitializationLevel = gdclass.GDExtensionInitializationLevel //gd:GDExtension.InitializationLevel
 
 const (
 	/*The library is initialized at the same time as the core features of the engine.*/

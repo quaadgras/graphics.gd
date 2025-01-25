@@ -97,7 +97,7 @@ func (self Instance) DirectSpaceState() [1]gdclass.PhysicsDirectSpaceState3D {
 }
 
 //go:nosplit
-func (self class) GetSpace() gd.RID {
+func (self class) GetSpace() gd.RID { //gd:World3D.get_space
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World3D.Bind_get_space, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -107,7 +107,7 @@ func (self class) GetSpace() gd.RID {
 }
 
 //go:nosplit
-func (self class) GetNavigationMap() gd.RID {
+func (self class) GetNavigationMap() gd.RID { //gd:World3D.get_navigation_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World3D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -117,7 +117,7 @@ func (self class) GetNavigationMap() gd.RID {
 }
 
 //go:nosplit
-func (self class) GetScenario() gd.RID {
+func (self class) GetScenario() gd.RID { //gd:World3D.get_scenario
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World3D.Bind_get_scenario, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -127,7 +127,7 @@ func (self class) GetScenario() gd.RID {
 }
 
 //go:nosplit
-func (self class) SetEnvironment(env [1]gdclass.Environment) {
+func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:World3D.set_environment
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(env[0])[0])
 	var r_ret = callframe.Nil
@@ -136,7 +136,7 @@ func (self class) SetEnvironment(env [1]gdclass.Environment) {
 }
 
 //go:nosplit
-func (self class) GetEnvironment() [1]gdclass.Environment {
+func (self class) GetEnvironment() [1]gdclass.Environment { //gd:World3D.get_environment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World3D.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -146,7 +146,7 @@ func (self class) GetEnvironment() [1]gdclass.Environment {
 }
 
 //go:nosplit
-func (self class) SetFallbackEnvironment(env [1]gdclass.Environment) {
+func (self class) SetFallbackEnvironment(env [1]gdclass.Environment) { //gd:World3D.set_fallback_environment
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(env[0])[0])
 	var r_ret = callframe.Nil
@@ -155,7 +155,7 @@ func (self class) SetFallbackEnvironment(env [1]gdclass.Environment) {
 }
 
 //go:nosplit
-func (self class) GetFallbackEnvironment() [1]gdclass.Environment {
+func (self class) GetFallbackEnvironment() [1]gdclass.Environment { //gd:World3D.get_fallback_environment
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World3D.Bind_get_fallback_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -165,7 +165,7 @@ func (self class) GetFallbackEnvironment() [1]gdclass.Environment {
 }
 
 //go:nosplit
-func (self class) SetCameraAttributes(attributes [1]gdclass.CameraAttributes) {
+func (self class) SetCameraAttributes(attributes [1]gdclass.CameraAttributes) { //gd:World3D.set_camera_attributes
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(attributes[0])[0])
 	var r_ret = callframe.Nil
@@ -174,7 +174,7 @@ func (self class) SetCameraAttributes(attributes [1]gdclass.CameraAttributes) {
 }
 
 //go:nosplit
-func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes {
+func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:World3D.get_camera_attributes
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World3D.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -184,7 +184,7 @@ func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes {
 }
 
 //go:nosplit
-func (self class) GetDirectSpaceState() [1]gdclass.PhysicsDirectSpaceState3D {
+func (self class) GetDirectSpaceState() [1]gdclass.PhysicsDirectSpaceState3D { //gd:World3D.get_direct_space_state
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.World3D.Bind_get_direct_space_state, self.AsObject(), frame.Array(0), r_ret.Addr())

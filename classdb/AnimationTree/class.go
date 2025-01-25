@@ -43,14 +43,14 @@ type Any interface {
 /*
 Sets the process notification in which to update animations.
 */
-func (self Instance) SetProcessCallback(mode gdclass.AnimationTreeAnimationProcessCallback) {
+func (self Instance) SetProcessCallback(mode gdclass.AnimationTreeAnimationProcessCallback) { //gd:AnimationTree.set_process_callback
 	class(self).SetProcessCallback(mode)
 }
 
 /*
 Returns the process notification in which to update animations.
 */
-func (self Instance) GetProcessCallback() gdclass.AnimationTreeAnimationProcessCallback {
+func (self Instance) GetProcessCallback() gdclass.AnimationTreeAnimationProcessCallback { //gd:AnimationTree.get_process_callback
 	return gdclass.AnimationTreeAnimationProcessCallback(class(self).GetProcessCallback())
 }
 
@@ -97,7 +97,7 @@ func (self Instance) SetAnimPlayer(value NodePath.String) {
 }
 
 //go:nosplit
-func (self class) SetTreeRoot(animation_node [1]gdclass.AnimationRootNode) {
+func (self class) SetTreeRoot(animation_node [1]gdclass.AnimationRootNode) { //gd:AnimationTree.set_tree_root
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(animation_node[0])[0])
 	var r_ret = callframe.Nil
@@ -106,7 +106,7 @@ func (self class) SetTreeRoot(animation_node [1]gdclass.AnimationRootNode) {
 }
 
 //go:nosplit
-func (self class) GetTreeRoot() [1]gdclass.AnimationRootNode {
+func (self class) GetTreeRoot() [1]gdclass.AnimationRootNode { //gd:AnimationTree.get_tree_root
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_tree_root, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -116,7 +116,7 @@ func (self class) GetTreeRoot() [1]gdclass.AnimationRootNode {
 }
 
 //go:nosplit
-func (self class) SetAdvanceExpressionBaseNode(path gd.NodePath) {
+func (self class) SetAdvanceExpressionBaseNode(path gd.NodePath) { //gd:AnimationTree.set_advance_expression_base_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -125,7 +125,7 @@ func (self class) SetAdvanceExpressionBaseNode(path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetAdvanceExpressionBaseNode() gd.NodePath {
+func (self class) GetAdvanceExpressionBaseNode() gd.NodePath { //gd:AnimationTree.get_advance_expression_base_node
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_advance_expression_base_node, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -135,7 +135,7 @@ func (self class) GetAdvanceExpressionBaseNode() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetAnimationPlayer(path gd.NodePath) {
+func (self class) SetAnimationPlayer(path gd.NodePath) { //gd:AnimationTree.set_animation_player
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -144,7 +144,7 @@ func (self class) SetAnimationPlayer(path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetAnimationPlayer() gd.NodePath {
+func (self class) GetAnimationPlayer() gd.NodePath { //gd:AnimationTree.get_animation_player
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_animation_player, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -157,7 +157,7 @@ func (self class) GetAnimationPlayer() gd.NodePath {
 Sets the process notification in which to update animations.
 */
 //go:nosplit
-func (self class) SetProcessCallback(mode gdclass.AnimationTreeAnimationProcessCallback) {
+func (self class) SetProcessCallback(mode gdclass.AnimationTreeAnimationProcessCallback) { //gd:AnimationTree.set_process_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -169,7 +169,7 @@ func (self class) SetProcessCallback(mode gdclass.AnimationTreeAnimationProcessC
 Returns the process notification in which to update animations.
 */
 //go:nosplit
-func (self class) GetProcessCallback() gdclass.AnimationTreeAnimationProcessCallback {
+func (self class) GetProcessCallback() gdclass.AnimationTreeAnimationProcessCallback { //gd:AnimationTree.get_process_callback
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.AnimationTreeAnimationProcessCallback](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_process_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -211,7 +211,7 @@ func init() {
 	})
 }
 
-type AnimationProcessCallback = gdclass.AnimationTreeAnimationProcessCallback
+type AnimationProcessCallback = gdclass.AnimationTreeAnimationProcessCallback //gd:AnimationTree.AnimationProcessCallback
 
 const (
 	AnimationProcessPhysics AnimationProcessCallback = 0

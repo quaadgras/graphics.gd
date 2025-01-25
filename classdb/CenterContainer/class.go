@@ -67,7 +67,7 @@ func (self Instance) SetUseTopLeft(value bool) {
 }
 
 //go:nosplit
-func (self class) SetUseTopLeft(enable bool) {
+func (self class) SetUseTopLeft(enable bool) { //gd:CenterContainer.set_use_top_left
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -76,7 +76,7 @@ func (self class) SetUseTopLeft(enable bool) {
 }
 
 //go:nosplit
-func (self class) IsUsingTopLeft() bool {
+func (self class) IsUsingTopLeft() bool { //gd:CenterContainer.is_using_top_left
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CenterContainer.Bind_is_using_top_left, self.AsObject(), frame.Array(0), r_ret.Addr())

@@ -118,7 +118,7 @@ func (self Instance) SetTextureRepeat(value gdclass.CanvasItemTextureRepeat) {
 }
 
 //go:nosplit
-func (self class) SetDiffuseTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetDiffuseTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTexture.set_diffuse_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -127,7 +127,7 @@ func (self class) SetDiffuseTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetDiffuseTexture() [1]gdclass.Texture2D {
+func (self class) GetDiffuseTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.get_diffuse_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasTexture.Bind_get_diffuse_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -137,7 +137,7 @@ func (self class) GetDiffuseTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetNormalTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetNormalTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTexture.set_normal_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -146,7 +146,7 @@ func (self class) SetNormalTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetNormalTexture() [1]gdclass.Texture2D {
+func (self class) GetNormalTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.get_normal_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasTexture.Bind_get_normal_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -156,7 +156,7 @@ func (self class) GetNormalTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetSpecularTexture(texture [1]gdclass.Texture2D) {
+func (self class) SetSpecularTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTexture.set_specular_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	var r_ret = callframe.Nil
@@ -165,7 +165,7 @@ func (self class) SetSpecularTexture(texture [1]gdclass.Texture2D) {
 }
 
 //go:nosplit
-func (self class) GetSpecularTexture() [1]gdclass.Texture2D {
+func (self class) GetSpecularTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.get_specular_texture
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasTexture.Bind_get_specular_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -175,7 +175,7 @@ func (self class) GetSpecularTexture() [1]gdclass.Texture2D {
 }
 
 //go:nosplit
-func (self class) SetSpecularColor(color gd.Color) {
+func (self class) SetSpecularColor(color gd.Color) { //gd:CanvasTexture.set_specular_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -184,7 +184,7 @@ func (self class) SetSpecularColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetSpecularColor() gd.Color {
+func (self class) GetSpecularColor() gd.Color { //gd:CanvasTexture.get_specular_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasTexture.Bind_get_specular_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -194,7 +194,7 @@ func (self class) GetSpecularColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetSpecularShininess(shininess gd.Float) {
+func (self class) SetSpecularShininess(shininess gd.Float) { //gd:CanvasTexture.set_specular_shininess
 	var frame = callframe.New()
 	callframe.Arg(frame, shininess)
 	var r_ret = callframe.Nil
@@ -203,7 +203,7 @@ func (self class) SetSpecularShininess(shininess gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetSpecularShininess() gd.Float {
+func (self class) GetSpecularShininess() gd.Float { //gd:CanvasTexture.get_specular_shininess
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasTexture.Bind_get_specular_shininess, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -213,7 +213,7 @@ func (self class) GetSpecularShininess() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetTextureFilter(filter gdclass.CanvasItemTextureFilter) {
+func (self class) SetTextureFilter(filter gdclass.CanvasItemTextureFilter) { //gd:CanvasTexture.set_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
 	var r_ret = callframe.Nil
@@ -222,7 +222,7 @@ func (self class) SetTextureFilter(filter gdclass.CanvasItemTextureFilter) {
 }
 
 //go:nosplit
-func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter {
+func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter { //gd:CanvasTexture.get_texture_filter
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemTextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasTexture.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -232,7 +232,7 @@ func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter {
 }
 
 //go:nosplit
-func (self class) SetTextureRepeat(repeat gdclass.CanvasItemTextureRepeat) {
+func (self class) SetTextureRepeat(repeat gdclass.CanvasItemTextureRepeat) { //gd:CanvasTexture.set_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, repeat)
 	var r_ret = callframe.Nil
@@ -241,7 +241,7 @@ func (self class) SetTextureRepeat(repeat gdclass.CanvasItemTextureRepeat) {
 }
 
 //go:nosplit
-func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat {
+func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat { //gd:CanvasTexture.get_texture_repeat
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gdclass.CanvasItemTextureRepeat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasTexture.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())

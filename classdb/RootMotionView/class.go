@@ -102,7 +102,7 @@ func (self Instance) SetZeroY(value bool) {
 }
 
 //go:nosplit
-func (self class) SetAnimationPath(path gd.NodePath) {
+func (self class) SetAnimationPath(path gd.NodePath) { //gd:RootMotionView.set_animation_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Nil
@@ -111,7 +111,7 @@ func (self class) SetAnimationPath(path gd.NodePath) {
 }
 
 //go:nosplit
-func (self class) GetAnimationPath() gd.NodePath {
+func (self class) GetAnimationPath() gd.NodePath { //gd:RootMotionView.get_animation_path
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_get_animation_path, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -121,7 +121,7 @@ func (self class) GetAnimationPath() gd.NodePath {
 }
 
 //go:nosplit
-func (self class) SetColor(color gd.Color) {
+func (self class) SetColor(color gd.Color) { //gd:RootMotionView.set_color
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -130,7 +130,7 @@ func (self class) SetColor(color gd.Color) {
 }
 
 //go:nosplit
-func (self class) GetColor() gd.Color {
+func (self class) GetColor() gd.Color { //gd:RootMotionView.get_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Color](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -140,7 +140,7 @@ func (self class) GetColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetCellSize(size gd.Float) {
+func (self class) SetCellSize(size gd.Float) { //gd:RootMotionView.set_cell_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -149,7 +149,7 @@ func (self class) SetCellSize(size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetCellSize() gd.Float {
+func (self class) GetCellSize() gd.Float { //gd:RootMotionView.get_cell_size
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_get_cell_size, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -159,7 +159,7 @@ func (self class) GetCellSize() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetRadius(size gd.Float) {
+func (self class) SetRadius(size gd.Float) { //gd:RootMotionView.set_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -168,7 +168,7 @@ func (self class) SetRadius(size gd.Float) {
 }
 
 //go:nosplit
-func (self class) GetRadius() gd.Float {
+func (self class) GetRadius() gd.Float { //gd:RootMotionView.get_radius
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.Float](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -178,7 +178,7 @@ func (self class) GetRadius() gd.Float {
 }
 
 //go:nosplit
-func (self class) SetZeroY(enable bool) {
+func (self class) SetZeroY(enable bool) { //gd:RootMotionView.set_zero_y
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -187,7 +187,7 @@ func (self class) SetZeroY(enable bool) {
 }
 
 //go:nosplit
-func (self class) GetZeroY() bool {
+func (self class) GetZeroY() bool { //gd:RootMotionView.get_zero_y
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RootMotionView.Bind_get_zero_y, self.AsObject(), frame.Array(0), r_ret.Addr())

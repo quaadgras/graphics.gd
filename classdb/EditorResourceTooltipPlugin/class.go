@@ -120,7 +120,7 @@ func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string
 /*
 Requests a thumbnail for the given [TextureRect]. The thumbnail is created asynchronously by [EditorResourcePreview] and automatically set when available.
 */
-func (self Instance) RequestThumbnail(path string, control [1]gdclass.TextureRect) {
+func (self Instance) RequestThumbnail(path string, control [1]gdclass.TextureRect) { //gd:EditorResourceTooltipPlugin.request_thumbnail
 	class(self).RequestThumbnail(gd.NewString(path), control)
 }
 
@@ -196,7 +196,7 @@ func (class) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path gd.String
 Requests a thumbnail for the given [TextureRect]. The thumbnail is created asynchronously by [EditorResourcePreview] and automatically set when available.
 */
 //go:nosplit
-func (self class) RequestThumbnail(path gd.String, control [1]gdclass.TextureRect) {
+func (self class) RequestThumbnail(path gd.String, control [1]gdclass.TextureRect) { //gd:EditorResourceTooltipPlugin.request_thumbnail
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(control[0])[0])
