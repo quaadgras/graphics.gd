@@ -138,7 +138,7 @@ To run the go tests for this module `cd internal && gd test`.
 * No support for Go 'scripts'.
 * 64bit only.
 * Web build needs work [read the discussion](https://github.com/grow-graphics/gd/discussions/69).
-* No planned support for proprietary consoles.
+* Console support will likely be via wasm.
 
 ## Contributing
 
