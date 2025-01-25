@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/PrimitiveMesh"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Class representing a planar [PrimitiveMesh]. This flat mesh does not have a thickness. By default, this mesh is aligned on the X and Z axes; this default rotation isn't suited for use with billboarded materials. For billboarded materials, change [member orientation] to [constant FACE_Z].

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The compositor resource stores attributes used to customize how a [Viewport] is rendered.
@@ -51,28 +55,28 @@ func New() Instance {
 }
 
 func (self Instance) CompositorEffects() [][1]gdclass.CompositorEffect {
-	return [][1]gdclass.CompositorEffect(gd.ArrayAs[[][1]gdclass.CompositorEffect](class(self).GetCompositorEffects()))
+	return [][1]gdclass.CompositorEffect(gd.ArrayAs[[][1]gdclass.CompositorEffect](gd.InternalArray(class(self).GetCompositorEffects())))
 }
 
 func (self Instance) SetCompositorEffects(value [][1]gdclass.CompositorEffect) {
-	class(self).SetCompositorEffects(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetCompositorEffects(gd.ArrayFromSlice[Array.Contains[[1]gdclass.CompositorEffect]](value))
 }
 
 //go:nosplit
-func (self class) SetCompositorEffects(compositor_effects gd.Array) {
+func (self class) SetCompositorEffects(compositor_effects Array.Contains[[1]gdclass.CompositorEffect]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(compositor_effects))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(compositor_effects)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Compositor.Bind_set_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetCompositorEffects() gd.Array {
+func (self class) GetCompositorEffects() Array.Contains[[1]gdclass.CompositorEffect] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Compositor.Bind_get_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.CompositorEffect]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

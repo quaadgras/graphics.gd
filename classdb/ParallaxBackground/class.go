@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/CanvasLayer"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A ParallaxBackground uses one or more [ParallaxLayer] child nodes to create a parallax effect. Each [ParallaxLayer] can move at a different speed using [member ParallaxLayer.motion_offset]. This creates an illusion of depth in a 2D game. If not used with a [Camera2D], you must manually calculate the [member scroll_offset].

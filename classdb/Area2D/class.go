@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
@@ -23,6 +25,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [Area2D] is a region of 2D space defined by one or multiple [CollisionShape2D] or [CollisionPolygon2D] child nodes. It detects when other [CollisionObject2D]s enter or exit it, and it also keeps track of which collision objects haven't exited it yet (i.e. which one are overlapping it).
@@ -44,7 +48,7 @@ Returns a list of intersecting [PhysicsBody2D]s and [TileMap]s. The overlapping 
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 func (self Instance) GetOverlappingBodies() [][1]gdclass.Node2D {
-	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](class(self).GetOverlappingBodies()))
+	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](gd.InternalArray(class(self).GetOverlappingBodies())))
 }
 
 /*
@@ -52,7 +56,7 @@ Returns a list of intersecting [Area2D]s. The overlapping area's [member Collisi
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 func (self Instance) GetOverlappingAreas() [][1]gdclass.Area2D {
-	return [][1]gdclass.Area2D(gd.ArrayAs[[][1]gdclass.Area2D](class(self).GetOverlappingAreas()))
+	return [][1]gdclass.Area2D(gd.ArrayAs[[][1]gdclass.Area2D](gd.InternalArray(class(self).GetOverlappingAreas())))
 }
 
 /*
@@ -478,11 +482,11 @@ Returns a list of intersecting [PhysicsBody2D]s and [TileMap]s. The overlapping 
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 //go:nosplit
-func (self class) GetOverlappingBodies() gd.Array {
+func (self class) GetOverlappingBodies() Array.Contains[[1]gdclass.Node2D] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_overlapping_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -492,11 +496,11 @@ Returns a list of intersecting [Area2D]s. The overlapping area's [member Collisi
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 //go:nosplit
-func (self class) GetOverlappingAreas() gd.Array {
+func (self class) GetOverlappingAreas() Array.Contains[[1]gdclass.Area2D] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_overlapping_areas, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Area2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This object is used by [RenderingDevice].
@@ -49,7 +53,7 @@ func (self Instance) ClearIds() {
 Returns an array of all ids currently bound to the uniform.
 */
 func (self Instance) GetIds() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetIds()))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetIds())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -152,11 +156,11 @@ func (self class) ClearIds() {
 Returns an array of all ids currently bound to the uniform.
 */
 //go:nosplit
-func (self class) GetIds() gd.Array {
+func (self class) GetIds() Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

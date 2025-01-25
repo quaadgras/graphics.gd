@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Stores variables that can be accessed from everywhere. Use [method get_setting], [method set_setting] or [method has_setting] to access them. Variables stored in [code]project.godot[/code] are also loaded into [ProjectSettings], making this object very useful for reading custom game configuration options.
@@ -108,7 +112,7 @@ Returns an [Array] of registered global classes. Each global class is represente
 */
 func GetGlobalClassList() []map[any]any {
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetGlobalClassList()))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetGlobalClassList())))
 }
 
 /*
@@ -378,11 +382,11 @@ Returns an [Array] of registered global classes. Each global class is represente
 [b]Note:[/b] Both the script and the icon paths are local to the project filesystem, i.e. they start with [code]res://[/code].
 */
 //go:nosplit
-func (self class) GetGlobalClassList() gd.Array {
+func (self class) GetGlobalClassList() Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_global_class_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

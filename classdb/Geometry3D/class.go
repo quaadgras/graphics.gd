@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Plane"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Provides a set of helper functions to create geometric shapes, compute intersections between shapes, and process various other geometric operations in 3D.
@@ -37,7 +41,7 @@ Calculates and returns all the vertex points of a convex shape defined by an arr
 */
 func ComputeConvexMeshPoints(planes []Plane.NormalD) []Vector3.XYZ {
 	once.Do(singleton)
-	return []Vector3.XYZ(class(self).ComputeConvexMeshPoints(gd.NewVariant(planes).Interface().(gd.Array)).AsSlice())
+	return []Vector3.XYZ(class(self).ComputeConvexMeshPoints(gd.ArrayFromSlice[Array.Contains[gd.Plane]](planes)).AsSlice())
 }
 
 /*
@@ -45,7 +49,7 @@ Returns an array with 6 [Plane]s that describe the sides of a box centered at th
 */
 func BuildBoxPlanes(extents Vector3.XYZ) []Plane.NormalD {
 	once.Do(singleton)
-	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](class(self).BuildBoxPlanes(gd.Vector3(extents))))
+	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(class(self).BuildBoxPlanes(gd.Vector3(extents)))))
 }
 
 /*
@@ -53,7 +57,7 @@ Returns an array of [Plane]s closely bounding a faceted cylinder centered at the
 */
 func BuildCylinderPlanes(radius Float.X, height Float.X, sides int) []Plane.NormalD {
 	once.Do(singleton)
-	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](class(self).BuildCylinderPlanes(gd.Float(radius), gd.Float(height), gd.Int(sides), 2)))
+	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(class(self).BuildCylinderPlanes(gd.Float(radius), gd.Float(height), gd.Int(sides), 2))))
 }
 
 /*
@@ -61,7 +65,7 @@ Returns an array of [Plane]s closely bounding a faceted capsule centered at the 
 */
 func BuildCapsulePlanes(radius Float.X, height Float.X, sides int, lats int) []Plane.NormalD {
 	once.Do(singleton)
-	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](class(self).BuildCapsulePlanes(gd.Float(radius), gd.Float(height), gd.Int(sides), gd.Int(lats), 2)))
+	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(class(self).BuildCapsulePlanes(gd.Float(radius), gd.Float(height), gd.Int(sides), gd.Int(lats), 2))))
 }
 
 /*
@@ -134,7 +138,7 @@ Given a convex hull defined though the [Plane]s in the array [param planes], tes
 */
 func SegmentIntersectsConvex(from Vector3.XYZ, to Vector3.XYZ, planes []Plane.NormalD) []Vector3.XYZ {
 	once.Do(singleton)
-	return []Vector3.XYZ(class(self).SegmentIntersectsConvex(gd.Vector3(from), gd.Vector3(to), gd.NewVariant(planes).Interface().(gd.Array)).AsSlice())
+	return []Vector3.XYZ(class(self).SegmentIntersectsConvex(gd.Vector3(from), gd.Vector3(to), gd.ArrayFromSlice[Array.Contains[gd.Plane]](planes)).AsSlice())
 }
 
 /*
@@ -167,9 +171,9 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Calculates and returns all the vertex points of a convex shape defined by an array of [param planes].
 */
 //go:nosplit
-func (self class) ComputeConvexMeshPoints(planes gd.Array) gd.PackedVector3Array {
+func (self class) ComputeConvexMeshPoints(planes Array.Contains[gd.Plane]) gd.PackedVector3Array {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(planes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(planes)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_compute_convex_mesh_points, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())
@@ -181,12 +185,12 @@ func (self class) ComputeConvexMeshPoints(planes gd.Array) gd.PackedVector3Array
 Returns an array with 6 [Plane]s that describe the sides of a box centered at the origin. The box size is defined by [param extents], which represents one (positive) corner of the box (i.e. half its actual size).
 */
 //go:nosplit
-func (self class) BuildBoxPlanes(extents gd.Vector3) gd.Array {
+func (self class) BuildBoxPlanes(extents gd.Vector3) Array.Contains[gd.Plane] {
 	var frame = callframe.New()
 	callframe.Arg(frame, extents)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_build_box_planes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Plane]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -195,7 +199,7 @@ func (self class) BuildBoxPlanes(extents gd.Vector3) gd.Array {
 Returns an array of [Plane]s closely bounding a faceted cylinder centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the round part of the cylinder. The parameter [param axis] describes the axis along which the cylinder is oriented (0 for X, 1 for Y, 2 for Z).
 */
 //go:nosplit
-func (self class) BuildCylinderPlanes(radius gd.Float, height gd.Float, sides gd.Int, axis gd.Vector3Axis) gd.Array {
+func (self class) BuildCylinderPlanes(radius gd.Float, height gd.Float, sides gd.Int, axis gd.Vector3Axis) Array.Contains[gd.Plane] {
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	callframe.Arg(frame, height)
@@ -203,7 +207,7 @@ func (self class) BuildCylinderPlanes(radius gd.Float, height gd.Float, sides gd
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_build_cylinder_planes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Plane]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -212,7 +216,7 @@ func (self class) BuildCylinderPlanes(radius gd.Float, height gd.Float, sides gd
 Returns an array of [Plane]s closely bounding a faceted capsule centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the side part of the capsule, whereas [param lats] gives the number of latitudinal steps at the bottom and top of the capsule. The parameter [param axis] describes the axis along which the capsule is oriented (0 for X, 1 for Y, 2 for Z).
 */
 //go:nosplit
-func (self class) BuildCapsulePlanes(radius gd.Float, height gd.Float, sides gd.Int, lats gd.Int, axis gd.Vector3Axis) gd.Array {
+func (self class) BuildCapsulePlanes(radius gd.Float, height gd.Float, sides gd.Int, lats gd.Int, axis gd.Vector3Axis) Array.Contains[gd.Plane] {
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	callframe.Arg(frame, height)
@@ -221,7 +225,7 @@ func (self class) BuildCapsulePlanes(radius gd.Float, height gd.Float, sides gd.
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_build_capsule_planes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Plane]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -367,11 +371,11 @@ func (self class) SegmentIntersectsCylinder(from gd.Vector3, to gd.Vector3, heig
 Given a convex hull defined though the [Plane]s in the array [param planes], tests if the segment ([param from], [param to]) intersects with that hull. If an intersection is found, returns a [PackedVector3Array] containing the point the intersection and the hull's normal. Otherwise, returns an empty array.
 */
 //go:nosplit
-func (self class) SegmentIntersectsConvex(from gd.Vector3, to gd.Vector3, planes gd.Array) gd.PackedVector3Array {
+func (self class) SegmentIntersectsConvex(from gd.Vector3, to gd.Vector3, planes Array.Contains[gd.Plane]) gd.PackedVector3Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
-	callframe.Arg(frame, pointers.Get(planes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(planes)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_segment_intersects_convex, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedVector3Array](r_ret.Get())

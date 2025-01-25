@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Float"
@@ -22,6 +24,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This resource holds data that can be used to animate anything in the engine. Animations are divided into tracks and each track must be linked to a node. The state of that node can be changed through time, by adding timed keys (events) to the track.
@@ -370,7 +374,7 @@ func (self Instance) MethodTrackGetName(track_idx int, key_idx int) string {
 Returns the arguments values to be called on a method track for a given key in a given track.
 */
 func (self Instance) MethodTrackGetParams(track_idx int, key_idx int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).MethodTrackGetParams(gd.Int(track_idx), gd.Int(key_idx))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).MethodTrackGetParams(gd.Int(track_idx), gd.Int(key_idx)))))
 }
 
 /*
@@ -1211,13 +1215,13 @@ func (self class) MethodTrackGetName(track_idx gd.Int, key_idx gd.Int) gd.String
 Returns the arguments values to be called on a method track for a given key in a given track.
 */
 //go:nosplit
-func (self class) MethodTrackGetParams(track_idx gd.Int, key_idx gd.Int) gd.Array {
+func (self class) MethodTrackGetParams(track_idx gd.Int, key_idx gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, key_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_method_track_get_params, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

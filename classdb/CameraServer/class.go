@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The [CameraServer] keeps track of different cameras accessible in Godot. These are external cameras such as webcams or the cameras on your phone.
@@ -52,7 +56,7 @@ Returns an array of [CameraFeed]s.
 */
 func Feeds() [][1]gdclass.CameraFeed {
 	once.Do(singleton)
-	return [][1]gdclass.CameraFeed(gd.ArrayAs[[][1]gdclass.CameraFeed](class(self).Feeds()))
+	return [][1]gdclass.CameraFeed(gd.ArrayAs[[][1]gdclass.CameraFeed](gd.InternalArray(class(self).Feeds())))
 }
 
 /*
@@ -112,11 +116,11 @@ func (self class) GetFeedCount() gd.Int {
 Returns an array of [CameraFeed]s.
 */
 //go:nosplit
-func (self class) Feeds() gd.Array {
+func (self class) Feeds() Array.Contains[[1]gdclass.CameraFeed] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraServer.Bind_feeds, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.CameraFeed]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

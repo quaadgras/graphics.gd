@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Quaternion"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The OpenXR interface allows Godot to interact with OpenXR runtimes and make it possible to create XR experiences and games.
@@ -61,14 +65,14 @@ func (self Instance) SetActionSetActive(name string, active bool) {
 Returns a list of action sets registered with Godot (loaded from the action map at runtime).
 */
 func (self Instance) GetActionSets() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetActionSets()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetActionSets())))
 }
 
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the OpenXR runtime and after the interface has been initialized.
 */
 func (self Instance) GetAvailableDisplayRefreshRates() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetAvailableDisplayRefreshRates()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetAvailableDisplayRefreshRates())))
 }
 
 /*
@@ -346,11 +350,11 @@ func (self class) SetActionSetActive(name gd.String, active bool) {
 Returns a list of action sets registered with Godot (loaded from the action map at runtime).
 */
 //go:nosplit
-func (self class) GetActionSets() gd.Array {
+func (self class) GetActionSets() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_action_sets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -359,11 +363,11 @@ func (self class) GetActionSets() gd.Array {
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the OpenXR runtime and after the interface has been initialized.
 */
 //go:nosplit
-func (self class) GetAvailableDisplayRefreshRates() gd.Array {
+func (self class) GetAvailableDisplayRefreshRates() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInterface.Bind_get_available_display_refresh_rates, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

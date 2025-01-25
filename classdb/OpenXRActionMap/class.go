@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 OpenXR uses an action system similar to Godots Input map system to bind inputs and outputs on various types of XR controllers to named actions. OpenXR specifies more detail on these inputs and outputs than Godot supports.
@@ -130,36 +134,36 @@ func New() Instance {
 }
 
 func (self Instance) ActionSets() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetActionSets()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetActionSets())))
 }
 
 func (self Instance) SetActionSets(value []any) {
-	class(self).SetActionSets(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetActionSets(gd.EngineArrayFromSlice(value))
 }
 
 func (self Instance) InteractionProfiles() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetInteractionProfiles()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetInteractionProfiles())))
 }
 
 func (self Instance) SetInteractionProfiles(value []any) {
-	class(self).SetInteractionProfiles(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetInteractionProfiles(gd.EngineArrayFromSlice(value))
 }
 
 //go:nosplit
-func (self class) SetActionSets(action_sets gd.Array) {
+func (self class) SetActionSets(action_sets Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action_sets))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(action_sets)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_set_action_sets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetActionSets() gd.Array {
+func (self class) GetActionSets() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_action_sets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -230,20 +234,20 @@ func (self class) RemoveActionSet(action_set [1]gdclass.OpenXRActionSet) {
 }
 
 //go:nosplit
-func (self class) SetInteractionProfiles(interaction_profiles gd.Array) {
+func (self class) SetInteractionProfiles(interaction_profiles Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(interaction_profiles))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(interaction_profiles)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_set_interaction_profiles, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetInteractionProfiles() gd.Array {
+func (self class) GetInteractionProfiles() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profiles, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

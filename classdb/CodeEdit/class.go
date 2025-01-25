@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/TextEdit"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 CodeEdit is a specialized [TextEdit] designed for editing plain text code files. It has many features commonly found in code editors such as line numbers, line folding, code completion, indent management, and string/comment management.
@@ -66,6 +70,7 @@ Override this method to define how the selected entry should be inserted. If [pa
 func (Instance) _confirm_code_completion(impl func(ptr unsafe.Pointer, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, replace)
 	}
@@ -77,6 +82,7 @@ Override this method to define what happens when the user requests code completi
 func (Instance) _request_code_completion(impl func(ptr unsafe.Pointer, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}
@@ -88,11 +94,12 @@ Both [param candidates] and the return is a [Array] of [Dictionary], see [method
 */
 func (Instance) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates []map[any]any) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var candidates = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(candidates)
+		var candidates = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(candidates))
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, gd.ArrayAs[[]map[any]any](candidates))
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ret := impl(self, gd.ArrayAs[[]map[any]any](gd.InternalArray(candidates)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+
 		if !ok {
 			return
 		}
@@ -302,7 +309,7 @@ func (self Instance) IsLineFolded(line int) bool {
 Returns all lines that are current folded.
 */
 func (self Instance) GetFoldedLines() []int {
-	return []int(gd.ArrayAs[[]int](class(self).GetFoldedLines()))
+	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetFoldedLines())))
 }
 
 /*
@@ -499,7 +506,7 @@ func (self Instance) UpdateCodeCompletionOptions(force bool) {
 Gets all completion options, see [method get_code_completion_option] for return content.
 */
 func (self Instance) GetCodeCompletionOptions() []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetCodeCompletionOptions()))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetCodeCompletionOptions())))
 }
 
 /*
@@ -634,11 +641,11 @@ func (self Instance) SetLineFolding(value bool) {
 }
 
 func (self Instance) LineLengthGuidelines() []int {
-	return []int(gd.ArrayAs[[]int](class(self).GetLineLengthGuidelines()))
+	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetLineLengthGuidelines())))
 }
 
 func (self Instance) SetLineLengthGuidelines(value []int) {
-	class(self).SetLineLengthGuidelines(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetLineLengthGuidelines(gd.ArrayFromSlice[Array.Contains[gd.Int]](value))
 }
 
 func (self Instance) GuttersDrawBreakpointsGutter() bool {
@@ -690,19 +697,19 @@ func (self Instance) SetGuttersDrawFoldGutter(value bool) {
 }
 
 func (self Instance) DelimiterStrings() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetStringDelimiters()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetStringDelimiters())))
 }
 
 func (self Instance) SetDelimiterStrings(value []string) {
-	class(self).SetStringDelimiters(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetStringDelimiters(gd.ArrayFromSlice[Array.Contains[gd.String]](value))
 }
 
 func (self Instance) DelimiterComments() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetCommentDelimiters()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCommentDelimiters())))
 }
 
 func (self Instance) SetDelimiterComments(value []string) {
-	class(self).SetCommentDelimiters(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetCommentDelimiters(gd.ArrayFromSlice[Array.Contains[gd.String]](value))
 }
 
 func (self Instance) CodeCompletionEnabled() bool {
@@ -714,11 +721,11 @@ func (self Instance) SetCodeCompletionEnabled(value bool) {
 }
 
 func (self Instance) CodeCompletionPrefixes() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetCodeCompletionPrefixes()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCodeCompletionPrefixes())))
 }
 
 func (self Instance) SetCodeCompletionPrefixes(value []string) {
-	class(self).SetCodeCompletionPrefixes(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetCodeCompletionPrefixes(gd.ArrayFromSlice[Array.Contains[gd.String]](value))
 }
 
 func (self Instance) IndentSize() int {
@@ -746,11 +753,11 @@ func (self Instance) SetIndentAutomatic(value bool) {
 }
 
 func (self Instance) IndentAutomaticPrefixes() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetAutoIndentPrefixes()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAutoIndentPrefixes())))
 }
 
 func (self Instance) SetIndentAutomaticPrefixes(value []string) {
-	class(self).SetAutoIndentPrefixes(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetAutoIndentPrefixes(gd.ArrayFromSlice[Array.Contains[gd.String]](value))
 }
 
 func (self Instance) AutoBraceCompletionEnabled() bool {
@@ -783,6 +790,7 @@ Override this method to define how the selected entry should be inserted. If [pa
 func (class) _confirm_code_completion(impl func(ptr unsafe.Pointer, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, replace)
 	}
@@ -794,6 +802,7 @@ Override this method to define what happens when the user requests code completi
 func (class) _request_code_completion(impl func(ptr unsafe.Pointer, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}
@@ -803,12 +812,14 @@ func (class) _request_code_completion(impl func(ptr unsafe.Pointer, force bool))
 Override this method to define what items in [param candidates] should be displayed.
 Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
 */
-func (class) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates gd.Array) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, candidates Array.Contains[gd.Dictionary]) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var candidates = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var candidates = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(candidates))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, candidates)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -874,20 +885,20 @@ func (self class) IsAutoIndentEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetAutoIndentPrefixes(prefixes gd.Array) {
+func (self class) SetAutoIndentPrefixes(prefixes Array.Contains[gd.String]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(prefixes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(prefixes)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_indent_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAutoIndentPrefixes() gd.Array {
+func (self class) GetAutoIndentPrefixes() Array.Contains[gd.String] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_indent_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1439,11 +1450,11 @@ func (self class) IsLineFolded(line gd.Int) bool {
 Returns all lines that are current folded.
 */
 //go:nosplit
-func (self class) GetFoldedLines() gd.Array {
+func (self class) GetFoldedLines() Array.Contains[gd.Int] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_folded_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Int]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1571,9 +1582,9 @@ func (self class) HasStringDelimiter(start_key gd.String) bool {
 }
 
 //go:nosplit
-func (self class) SetStringDelimiters(string_delimiters gd.Array) {
+func (self class) SetStringDelimiters(string_delimiters Array.Contains[gd.String]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(string_delimiters))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(string_delimiters)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1591,11 +1602,11 @@ func (self class) ClearStringDelimiters() {
 }
 
 //go:nosplit
-func (self class) GetStringDelimiters() gd.Array {
+func (self class) GetStringDelimiters() Array.Contains[gd.String] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_string_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1657,9 +1668,9 @@ func (self class) HasCommentDelimiter(start_key gd.String) bool {
 }
 
 //go:nosplit
-func (self class) SetCommentDelimiters(comment_delimiters gd.Array) {
+func (self class) SetCommentDelimiters(comment_delimiters Array.Contains[gd.String]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(comment_delimiters))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(comment_delimiters)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1677,11 +1688,11 @@ func (self class) ClearCommentDelimiters() {
 }
 
 //go:nosplit
-func (self class) GetCommentDelimiters() gd.Array {
+func (self class) GetCommentDelimiters() Array.Contains[gd.String] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_comment_delimiters, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1845,11 +1856,11 @@ func (self class) UpdateCodeCompletionOptions(force bool) {
 Gets all completion options, see [method get_code_completion_option] for return content.
 */
 //go:nosplit
-func (self class) GetCodeCompletionOptions() gd.Array {
+func (self class) GetCodeCompletionOptions() Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1942,39 +1953,39 @@ func (self class) IsCodeCompletionEnabled() bool {
 }
 
 //go:nosplit
-func (self class) SetCodeCompletionPrefixes(prefixes gd.Array) {
+func (self class) SetCodeCompletionPrefixes(prefixes Array.Contains[gd.String]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(prefixes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(prefixes)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_code_completion_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetCodeCompletionPrefixes() gd.Array {
+func (self class) GetCodeCompletionPrefixes() Array.Contains[gd.String] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_prefixes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetLineLengthGuidelines(guideline_columns gd.Array) {
+func (self class) SetLineLengthGuidelines(guideline_columns Array.Contains[gd.Int]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(guideline_columns))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(guideline_columns)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_line_length_guidelines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLineLengthGuidelines() gd.Array {
+func (self class) GetLineLengthGuidelines() Array.Contains[gd.Int] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_line_length_guidelines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Int]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

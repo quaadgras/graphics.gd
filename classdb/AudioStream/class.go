@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Base class for audio streams. Audio streams are used for sound effects and music playback, and support WAV (via [AudioStreamWAV]) and Ogg (via [AudioStreamOggVorbis]) file formats.
@@ -75,6 +79,7 @@ func (Instance) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.A
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -90,6 +95,7 @@ func (Instance) _get_stream_name(impl func(ptr unsafe.Pointer) string) (cb gd.Ex
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -150,7 +156,8 @@ func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) []map[any]any)
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+
 		if !ok {
 			return
 		}
@@ -227,6 +234,7 @@ func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.Audi
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -242,6 +250,7 @@ func (class) _get_stream_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Ex
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -298,11 +307,12 @@ func (class) _get_beat_count(impl func(ptr unsafe.Pointer) gd.Int) (cb gd.Extens
 /*
 Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 */
-func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}

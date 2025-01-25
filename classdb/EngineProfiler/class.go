@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class can be used to implement custom profilers that are able to interact with the engine and editor debugger.
@@ -61,10 +65,11 @@ Called when the profiler is enabled/disabled, along with a set of [param options
 func (Instance) _toggle(impl func(ptr unsafe.Pointer, enable bool, options []any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
-		var options = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(options)
+
+		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(options))
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, enable, gd.ArrayAs[[]any](options))
+		impl(self, enable, gd.ArrayAs[[]any](gd.InternalArray(options)))
 	}
 }
 
@@ -73,10 +78,10 @@ Called when data is added to profiler using [method EngineDebugger.profiler_add_
 */
 func (Instance) _add_frame(impl func(ptr unsafe.Pointer, data []any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var data = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(data)
+		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(data))
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, gd.ArrayAs[[]any](data))
+		impl(self, gd.ArrayAs[[]any](gd.InternalArray(data)))
 	}
 }
 
@@ -86,9 +91,13 @@ Called once every engine iteration when the profiler is active with information 
 func (Instance) _tick(impl func(ptr unsafe.Pointer, frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var frame_time = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		var process_time = gd.UnsafeGet[gd.Float](p_args, 1)
+
 		var physics_time = gd.UnsafeGet[gd.Float](p_args, 2)
+
 		var physics_frame_time = gd.UnsafeGet[gd.Float](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(frame_time), Float.X(process_time), Float.X(physics_time), Float.X(physics_frame_time))
 	}
@@ -116,10 +125,12 @@ func New() Instance {
 /*
 Called when the profiler is enabled/disabled, along with a set of [param options].
 */
-func (class) _toggle(impl func(ptr unsafe.Pointer, enable bool, options gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _toggle(impl func(ptr unsafe.Pointer, enable bool, options Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
-		var options = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+
+		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(options))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, enable, options)
 	}
@@ -128,9 +139,10 @@ func (class) _toggle(impl func(ptr unsafe.Pointer, enable bool, options gd.Array
 /*
 Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
 */
-func (class) _add_frame(impl func(ptr unsafe.Pointer, data gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _add_frame(impl func(ptr unsafe.Pointer, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var data = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(data))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, data)
 	}
@@ -142,9 +154,13 @@ Called once every engine iteration when the profiler is active with information 
 func (class) _tick(impl func(ptr unsafe.Pointer, frame_time gd.Float, process_time gd.Float, physics_time gd.Float, physics_frame_time gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var frame_time = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		var process_time = gd.UnsafeGet[gd.Float](p_args, 1)
+
 		var physics_time = gd.UnsafeGet[gd.Float](p_args, 2)
+
 		var physics_frame_time = gd.UnsafeGet[gd.Float](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, frame_time, process_time, physics_time, physics_frame_time)
 	}

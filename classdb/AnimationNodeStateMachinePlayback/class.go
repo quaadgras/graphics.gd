@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Allows control of [AnimationTree] state machines created with [AnimationNodeStateMachine]. Retrieve with [code]$AnimationTree.get("parameters/playback")[/code].
@@ -115,7 +119,7 @@ func (self Instance) GetFadingFromNode() string {
 Returns the current travel path as computed internally by the A* algorithm.
 */
 func (self Instance) GetTravelPath() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetTravelPath()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetTravelPath())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -259,11 +263,11 @@ func (self class) GetFadingFromNode() gd.StringName {
 Returns the current travel path as computed internally by the A* algorithm.
 */
 //go:nosplit
-func (self class) GetTravelPath() gd.Array {
+func (self class) GetTravelPath() Array.Contains[gd.StringName] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_travel_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

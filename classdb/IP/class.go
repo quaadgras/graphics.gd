@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 IP contains support functions for the Internet Protocol (IP). TCP/IP support is in different classes (see [StreamPeerTCP] and [TCPServer]). IP provides DNS hostname resolution support, both blocking and threaded.
@@ -74,7 +78,7 @@ Returns resolved addresses, or an empty array if an error happened or resolution
 */
 func GetResolveItemAddresses(id int) []any {
 	once.Do(singleton)
-	return []any(gd.ArrayAs[[]any](class(self).GetResolveItemAddresses(gd.Int(id))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetResolveItemAddresses(gd.Int(id)))))
 }
 
 /*
@@ -109,7 +113,7 @@ Each adapter is a dictionary of the form:
 */
 func GetLocalInterfaces() []map[any]any {
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetLocalInterfaces()))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetLocalInterfaces())))
 }
 
 /*
@@ -207,12 +211,12 @@ func (self class) GetResolveItemAddress(id gd.Int) gd.String {
 Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [method get_resolve_item_status]).
 */
 //go:nosplit
-func (self class) GetResolveItemAddresses(id gd.Int) gd.Array {
+func (self class) GetResolveItemAddresses(id gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -255,11 +259,11 @@ Each adapter is a dictionary of the form:
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetLocalInterfaces() gd.Array {
+func (self class) GetLocalInterfaces() Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

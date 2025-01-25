@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -22,6 +24,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Abstract base class for 2D physics objects. [CollisionObject2D] can hold any number of [Shape2D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
@@ -73,11 +77,14 @@ Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the cli
 */
 func (Instance) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(viewport[0])
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(event[0])
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport, event, int(shape_idx))
 	}
@@ -109,6 +116,7 @@ Called when the mouse pointer enters any of this object's shapes or moves from o
 func (Instance) _mouse_shape_enter(impl func(ptr unsafe.Pointer, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(shape_idx))
 	}
@@ -120,6 +128,7 @@ Called when the mouse pointer exits any of this object's shapes. [param shape_id
 func (Instance) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(shape_idx))
 	}
@@ -358,10 +367,13 @@ Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the cli
 func (class) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(viewport[0])
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(event[0])
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport, event, shape_idx)
 	}
@@ -393,6 +405,7 @@ Called when the mouse pointer enters any of this object's shapes or moves from o
 func (class) _mouse_shape_enter(impl func(ptr unsafe.Pointer, shape_idx gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape_idx)
 	}
@@ -404,6 +417,7 @@ Called when the mouse pointer exits any of this object's shapes. [param shape_id
 func (class) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape_idx)
 	}

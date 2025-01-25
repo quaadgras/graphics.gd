@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/HBoxContainer"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/Container"
@@ -22,6 +24,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This [Control] node is used in the editor's Inspector dock to allow editing of [Resource] type properties. It provides options for creating, loading, saving and converting resources. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
@@ -75,6 +79,7 @@ This virtual method can be implemented to handle context menu items not handled 
 func (Instance) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id))
 		gd.UnsafeSet(p_back, ret)
@@ -164,6 +169,7 @@ This virtual method can be implemented to handle context menu items not handled 
 func (class) _handle_menu_selected(impl func(ptr unsafe.Pointer, id gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id)
 		gd.UnsafeSet(p_back, ret)

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
@@ -175,14 +179,14 @@ func (self Instance) GetStructuredTextBidiOverride(column int) gdclass.TextServe
 Set additional options for BiDi override. Has effect for cells that display text.
 */
 func (self Instance) SetStructuredTextBidiOverrideOptions(column int, args []any) {
-	class(self).SetStructuredTextBidiOverrideOptions(gd.Int(column), gd.NewVariant(args).Interface().(gd.Array))
+	class(self).SetStructuredTextBidiOverrideOptions(gd.Int(column), gd.EngineArrayFromSlice(args))
 }
 
 /*
 Returns the additional BiDi options set for this cell.
 */
 func (self Instance) GetStructuredTextBidiOverrideOptions(column int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetStructuredTextBidiOverrideOptions(gd.Int(column))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions(gd.Int(column)))))
 }
 
 /*
@@ -739,7 +743,7 @@ func (self Instance) GetChildCount() int {
 Returns an array of references to the item's children.
 */
 func (self Instance) GetChildren() [][1]gdclass.TreeItem {
-	return [][1]gdclass.TreeItem(gd.ArrayAs[[][1]gdclass.TreeItem](class(self).GetChildren()))
+	return [][1]gdclass.TreeItem(gd.ArrayAs[[][1]gdclass.TreeItem](gd.InternalArray(class(self).GetChildren())))
 }
 
 /*
@@ -1077,10 +1081,10 @@ func (self class) GetStructuredTextBidiOverride(column gd.Int) gdclass.TextServe
 Set additional options for BiDi override. Has effect for cells that display text.
 */
 //go:nosplit
-func (self class) SetStructuredTextBidiOverrideOptions(column gd.Int, args gd.Array) {
+func (self class) SetStructuredTextBidiOverrideOptions(column gd.Int, args Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(args))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1090,12 +1094,12 @@ func (self class) SetStructuredTextBidiOverrideOptions(column gd.Int, args gd.Ar
 Returns the additional BiDi options set for this cell.
 */
 //go:nosplit
-func (self class) GetStructuredTextBidiOverrideOptions(column gd.Int) gd.Array {
+func (self class) GetStructuredTextBidiOverrideOptions(column gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2236,11 +2240,11 @@ func (self class) GetChildCount() gd.Int {
 Returns an array of references to the item's children.
 */
 //go:nosplit
-func (self class) GetChildren() gd.Array {
+func (self class) GetChildren() Array.Contains[[1]gdclass.TreeItem] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TreeItem]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

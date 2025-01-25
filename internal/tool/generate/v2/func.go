@@ -90,29 +90,34 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		}
 		val := fixReserved(arg.Name)
 		if arg.DefaultValue != nil {
-			val = *arg.DefaultValue
-			val = strings.TrimPrefix(val, "&")
-			if val == "null" || val == "[]" || val == "{}" || strings.HasSuffix(val, "()") || strings.HasSuffix(val, "[])") {
-				if arg.Type == "Callable" {
-					val = "nil"
+			switch arg.Type {
+			case "Array":
+				val = "Array.Nil"
+			default:
+				val = *arg.DefaultValue
+				val = strings.TrimPrefix(val, "&")
+				if val == "null" || val == "[]" || val == "{}" || strings.HasSuffix(val, "()") || strings.HasSuffix(val, "[])") {
+					if arg.Type == "Callable" {
+						val = "nil"
+					} else {
+						val = "([1]" + classDB.convertTypeSimple(class, "", arg.Meta, arg.Type) + "{}[0])"
+					}
 				} else {
-					val = "([1]" + classDB.convertTypeSimple(class, "", arg.Meta, arg.Type) + "{}[0])"
-				}
-			} else {
-				if strings.Contains(val, "(") {
-					switch {
-					case strings.HasPrefix(val, "Rect2("), strings.HasPrefix(val, "Rect2i("), strings.HasPrefix(val, "Transform2D("),
-						strings.HasPrefix(val, "Transform3D("):
-						val = "gd.New" + val
-					case strings.HasPrefix(val, "StringName(\""):
-						val = strings.TrimSuffix(strings.TrimPrefix(val, "StringName(\""), "\")")
-					case strings.HasPrefix(val, "NodePath(\""):
-						val = strings.TrimSuffix(strings.TrimPrefix(val, "NodePath(\""), "\")")
-						if val == "" {
-							val = `""`
+					if strings.Contains(val, "(") {
+						switch {
+						case strings.HasPrefix(val, "Rect2("), strings.HasPrefix(val, "Rect2i("), strings.HasPrefix(val, "Transform2D("),
+							strings.HasPrefix(val, "Transform3D("):
+							val = "gd.New" + val
+						case strings.HasPrefix(val, "StringName(\""):
+							val = strings.TrimSuffix(strings.TrimPrefix(val, "StringName(\""), "\")")
+						case strings.HasPrefix(val, "NodePath(\""):
+							val = strings.TrimSuffix(strings.TrimPrefix(val, "NodePath(\""), "\")")
+							if val == "" {
+								val = `""`
+							}
+						default:
+							val = "gd." + strings.ReplaceAll(strings.ReplaceAll(val, "(", "{"), ")", "}")
 						}
-					default:
-						val = "gd." + strings.ReplaceAll(strings.ReplaceAll(val, "(", "{"), ")", "}")
 					}
 				}
 			}
@@ -146,25 +151,15 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	fmt.Fprintf(w, "\treturn func(class any, p_args gd.Address, p_back gd.Address) {\n")
 	for i, arg := range method.Arguments {
 		var expert = classDB.convertType(class.Name, arg.Meta, arg.Type)
-
-		if arg.Type == "Object" {
-			fmt.Fprintf(w, "\t\tvar %v = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args,%d))})}\n", fixReserved(arg.Name), i)
-			fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
-			continue
+		pointerKind, argIsPtr := gdtype.Name(expert).IsPointer()
+		if !argIsPtr {
+			pointerKind = expert
 		}
-
-		_, ok := classDB[arg.Type]
-		if ok {
-			fmt.Fprintf(w, "\t\tvar %v = %s{pointers.New[gdclass.%v]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args,%d))})}\n", fixReserved(arg.Name), expert, arg.Type, i)
-			fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
-			continue
-		}
-		pointerKind, argIsPtr := classDB.isPointer(expert)
+		fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name), gdtype.Name(expert).LoadFromRawPointerValue(
+			fmt.Sprintf("gd.UnsafeGet[%v](p_args,%d)", pointerKind, i),
+		))
 		if argIsPtr {
-			fmt.Fprintf(w, "\t\tvar %v = pointers.New[%v](gd.UnsafeGet[%v](p_args,%d))\n", fixReserved(arg.Name), expert, pointerKind, i)
-			fmt.Fprintf(w, "\t\tdefer pointers.End(%v)\n", fixReserved(arg.Name))
-		} else {
-			fmt.Fprintf(w, "\t\tvar %v = gd.UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), expert, i)
+			fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(expert).EndPointer(fixReserved(arg.Name)))
 		}
 	}
 	fmt.Fprintf(w, "\t\tself := reflect.ValueOf(class).UnsafePointer()\n")
@@ -181,15 +176,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	if resultSimple != "" {
 		ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret"))
 		if needsLifetime {
-			name := strings.TrimPrefix(resultExpert, "classdb.")
-			name = strings.TrimPrefix(name, "[1]gdclass.")
-			_, ok := classDB[name]
-			if ok || resultExpert == "[1]gd.Object" {
-				ret = fmt.Sprintf("pointers.End(%s[0])", ret)
-			} else {
-				ret = fmt.Sprintf("pointers.End(%s)", ret)
-			}
-			fmt.Fprint(w, "ptr, ok := "+ret)
+			fmt.Fprintf(w, "ptr, ok := %s\n", gdtype.Name(resultExpert).EndPointer(ret))
 			fmt.Fprintf(w, "\n\t\tif !ok {\n")
 			fmt.Fprintf(w, "\t\t\treturn\n")
 			fmt.Fprintf(w, "\t\t}\n")
@@ -240,27 +227,15 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		fmt.Fprintf(w, "\treturn func(class any, p_args "+prefix+"Address, p_back "+prefix+"Address) {\n")
 		for i, arg := range method.Arguments {
 			var argType = classDB.convertType(class.Name, arg.Meta, arg.Type)
-
-			if arg.Type == "Object" {
-				fmt.Fprintf(w, "\t\tvar %v = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args,%d))})}\n", fixReserved(arg.Name), i)
-				fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
-				continue
+			pointerKind, argIsPtr := gdtype.Name(argType).IsPointer()
+			if !argIsPtr {
+				pointerKind = argType
 			}
-
-			_, ok := classDB[arg.Type]
-			if ok {
-				fmt.Fprintf(w, "\t\tvar %v = [1]gdclass.%v{pointers.New[gdclass.%[2]v]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args,%d))})}\n",
-					fixReserved(arg.Name), arg.Type, i)
-				fmt.Fprintf(w, "\t\tdefer pointers.End(%v[0])\n", fixReserved(arg.Name))
-				continue
-			}
-
-			argPtrKind, argIsPtr := classDB.isPointer(argType)
+			fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name), gdtype.Name(argType).LoadFromRawPointerValue(
+				fmt.Sprintf("gd.UnsafeGet[%v](p_args,%d)", pointerKind, i),
+			))
 			if argIsPtr {
-				fmt.Fprintf(w, "\t\tvar %v = pointers.New[%s](%v)\n", fixReserved(arg.Name), argType,
-					fmt.Sprintf(prefix+"UnsafeGet[%v](p_args,%d)", argPtrKind, i))
-			} else {
-				fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), argType, i)
+				fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(argType).EndPointer(fixReserved(arg.Name)))
 			}
 		}
 		fmt.Fprintf(w, "\t\tself := reflect.ValueOf(class).UnsafePointer()\n")
@@ -276,13 +251,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if result != "" {
 			ret := gdtype.Name(result).ToUnderlying("ret")
 			if isPtr {
-				_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]
-				if ok || result == "[1]gd.Object" {
-					ret = fmt.Sprintf("pointers.End(%s[0])", ret)
-				} else {
-					ret = fmt.Sprintf("pointers.End(%s)", ret)
-				}
-				fmt.Fprintf(w, "ptr, ok := "+ret)
+				fmt.Fprintf(w, "ptr, ok := %s\n", gdtype.Name(result).EndPointer(ret))
 				fmt.Fprintf(w, "\n\t\tif !ok {\n")
 				fmt.Fprintf(w, "\t\t\treturn\n")
 				fmt.Fprintf(w, "\t\t}\n")
@@ -335,14 +304,8 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			}
 			continue
 		}
-
 		argType := classDB.convertType(class.Name, arg.Meta, arg.Type)
-		_, argIsPtr := classDB.isPointer(argType)
-		if argIsPtr {
-			fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v))\n", fixReserved(arg.Name))
-		} else {
-			fmt.Fprintf(w, "\tcallframe.Arg(frame, %v)\n", fixReserved(arg.Name))
-		}
+		fmt.Fprint(w, gdtype.Name(argType).LoadOntoCallFrame(fixReserved(arg.Name)))
 	}
 	if method.IsVararg {
 		fmt.Fprintf(w, "\tfor _, arg := range args {\n")
@@ -391,17 +354,8 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 					panic("unknown ownership: " + fmt.Sprint(semantics))
 				}
 			}
-
 		} else {
-			if strings.HasPrefix(result, "ArrayOf") {
-				fmt.Fprint(w, "\tvar ret = pointers.New[Array](r_ret.Get())\n")
-			} else if strings.HasPrefix(result, "gd.ArrayOf") {
-				fmt.Fprint(w, "\tvar ret = pointers.New[gd.Array](r_ret.Get())\n")
-			} else if result == "[1]gd.Object" {
-				fmt.Fprintf(w, "\tvar ret = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(r_ret.Get())})}\n")
-			} else {
-				fmt.Fprintf(w, "\tvar ret = pointers.New[%v](r_ret.Get())\n", result)
-			}
+			fmt.Fprintf(w, "\tvar ret = %s\n", gdtype.Name(result).LoadFromRawPointerValue("r_ret.Get()"))
 		}
 	} else if result != "" {
 		fmt.Fprintf(w, "\tvar ret = r_ret.Get()\n")

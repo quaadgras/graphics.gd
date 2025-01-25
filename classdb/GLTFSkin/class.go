@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 type Instance [1]gdclass.GLTFSkin
 
@@ -65,11 +69,11 @@ func (self Instance) SetJointsOriginal(value []int32) {
 }
 
 func (self Instance) InverseBinds() []Transform3D.BasisOrigin {
-	return []Transform3D.BasisOrigin(gd.ArrayAs[[]Transform3D.BasisOrigin](class(self).GetInverseBinds()))
+	return []Transform3D.BasisOrigin(gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(class(self).GetInverseBinds())))
 }
 
 func (self Instance) SetInverseBinds(value []Transform3D.BasisOrigin) {
-	class(self).SetInverseBinds(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetInverseBinds(gd.ArrayFromSlice[Array.Contains[gd.Transform3D]](value))
 }
 
 func (self Instance) Joints() []int32 {
@@ -167,19 +171,19 @@ func (self class) SetJointsOriginal(joints_original gd.PackedInt32Array) {
 }
 
 //go:nosplit
-func (self class) GetInverseBinds() gd.Array {
+func (self class) GetInverseBinds() Array.Contains[gd.Transform3D] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_get_inverse_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Transform3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetInverseBinds(inverse_binds gd.Array) {
+func (self class) SetInverseBinds(inverse_binds Array.Contains[gd.Transform3D]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(inverse_binds))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(inverse_binds)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkin.Bind_set_inverse_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

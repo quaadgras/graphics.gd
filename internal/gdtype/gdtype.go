@@ -3,7 +3,11 @@ package gdtype
 import (
 	"fmt"
 	"strings"
+
+	"graphics.gd/internal/gdjson"
 )
+
+var ClassDB map[string]gdjson.Class
 
 type Name string
 
@@ -51,7 +55,15 @@ func (name Name) ConvertToSimple(val string) string {
 		val = strings.TrimPrefix(val, "(")
 		val = strings.TrimSuffix(val, ")")
 	}
+	if strings.HasPrefix(string(name), "Array.Contains[") {
+		return fmt.Sprintf("gd.ArrayFromSlice[%v](%v)", name, val)
+	}
 	switch name {
+	case "Array.Any":
+		if val == "Array.Nil" {
+			return "Array.Nil"
+		}
+		return fmt.Sprintf("gd.EngineArrayFromSlice(%v)", val)
 	case "gd.String":
 		return fmt.Sprintf("gd.NewString(%v)", val)
 	case "gd.StringName":
@@ -63,8 +75,6 @@ func (name Name) ConvertToSimple(val string) string {
 		"gd.AABB", "gd.Color", "gd.Plane", "gd.Basis", "gd.Transform3D",
 		"gd.Vector4", "gd.Vector4i":
 		return fmt.Sprintf("%s(%v)", name, val)
-	case "gd.Array":
-		return fmt.Sprintf("gd.NewVariant(%v).Interface().(gd.Array)", val)
 	case "gd.Dictionary":
 		return fmt.Sprintf("gd.NewVariant(%v).Interface().(gd.Dictionary)", val)
 	case "gd.PackedByteArray":
@@ -109,6 +119,9 @@ func (name Name) ConvertToSimple(val string) string {
 }
 
 func (name Name) ConvertToGo(val string, simple string) string {
+	if strings.HasPrefix(string(name), "Array.Contains[") {
+		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
+	}
 	switch name {
 	case "gd.String", "gd.StringName", "gd.NodePath":
 		return fmt.Sprintf("%v.String()", val)
@@ -127,11 +140,110 @@ func (name Name) ConvertToGo(val string, simple string) string {
 		return fmt.Sprintf("%v.AsSlice()", val)
 	case "gd.Variant":
 		return fmt.Sprintf("%v.Interface()", val)
-	case "gd.Array":
-		return fmt.Sprintf("gd.ArrayAs[%s](%s)", simple, val)
+	case "Array.Any":
+		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
 	case "gd.Dictionary":
 		return fmt.Sprintf("gd.DictionaryAs[any, any](%s)", val)
 	default:
 		return val
+	}
+}
+
+func (name Name) LoadFromRawPointerValue(val string) string {
+	if strings.HasPrefix(string(name), "Array.Contains[") {
+		_, elem, _ := strings.Cut(string(name), "Array.Contains[")
+		elem = strings.TrimSuffix(elem, "]")
+		return fmt.Sprintf("Array.Through(gd.ArrayProxy[%s]{}, pointers.Pack(pointers.New[gd.Array](%s)))", elem, val)
+	}
+	switch name {
+	case "Array.Any":
+		return fmt.Sprintf("Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](%s)))", val)
+	case "[1]gd.Object":
+		return fmt.Sprintf("[1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(%s)})}", val)
+	default:
+		_, argIsPtr := name.IsPointer()
+		if name == "Object" {
+			return fmt.Sprintf("[1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(%v)})}\n", val)
+		}
+		class_name := strings.TrimPrefix(string(name), "[1]gdclass.")
+		_, ok := ClassDB[class_name]
+		if ok && argIsPtr {
+			return fmt.Sprintf("%s{pointers.New[gdclass.%v]([3]uint64{uint64(%v)})}\n", name, class_name, val)
+		}
+		if argIsPtr {
+			return fmt.Sprintf("pointers.New[%v](%v)", name, val)
+		} else {
+			return fmt.Sprintf("%v\n", val)
+		}
+	}
+}
+
+func (name Name) EndPointer(val string) string {
+	if strings.HasPrefix(string(name), "Array.Contains[") {
+		return fmt.Sprintf("pointers.End(gd.InternalArray(%v))", val)
+	}
+	switch name {
+	case "Array.Any":
+		return fmt.Sprintf("pointers.End(gd.InternalArray(%v))", val)
+	default:
+		name := strings.TrimPrefix(string(name), "classdb.")
+		name = strings.TrimPrefix(name, "[1]gdclass.")
+		_, ok := ClassDB[strings.TrimPrefix(name, "[1]gdclass.")]
+		if ok || name == "[1]gd.Object" {
+			return fmt.Sprintf("pointers.End(%v[0])", val)
+		}
+		return fmt.Sprintf("pointers.End(%v)", val)
+	}
+}
+
+func (name Name) LoadOntoCallFrame(val string) string {
+	if strings.HasPrefix(string(name), "Array.Contains[") {
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalArray(%v)))\n", val)
+	}
+	switch name {
+	case "Array.Any":
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalArray(%v)))\n", val)
+	}
+	_, argIsPtr := name.IsPointer()
+	if argIsPtr {
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(%v))\n", val)
+	} else {
+		return fmt.Sprintf("\tcallframe.Arg(frame, %v)\n", val)
+	}
+}
+
+func (name Name) IsPointer() (string, bool) {
+	t := string(name)
+	t = strings.TrimPrefix(t, "[1]")
+	t = strings.TrimPrefix(t, "gd.")
+	t = strings.TrimPrefix(t, "gdclass.")
+	t = strings.TrimPrefix(t, "[1]gdclass.")
+	if strings.HasPrefix(t, "Array.Contains[") {
+		return "[1]gd.EnginePointer", true
+	}
+	switch t {
+	case "String", "StringName", "NodePath",
+		"Dictionary", "Array.Any":
+		return "[1]gd.EnginePointer", true
+	case "Signal":
+		return "[2]uint64", true
+	case "Callable":
+		return "[2]uint64", true
+	case "PackedByteArray", "PackedInt32Array",
+		"PackedInt64Array", "PackedFloat32Array",
+		"PackedFloat64Array", "PackedStringArray",
+		"PackedVector2Array", "PackedVector3Array",
+		"PackedVector4Array",
+		"PackedColorArray":
+		return "gd.PackedPointers", true
+	case "Variant":
+		return "[3]uint64", true
+	case "Object":
+		return "gd.EnginePointer", true
+	default:
+		if entry, ok := ClassDB[t]; ok && !entry.IsEnum {
+			return "gd.EnginePointer", true
+		}
+		return "", false
 	}
 }

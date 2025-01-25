@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/classdb/Resource"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class stores the result of a 3D navigation path query from the [NavigationServer3D].
@@ -75,11 +79,11 @@ func (self Instance) SetPathTypes(value []int32) {
 }
 
 func (self Instance) PathRids() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetPathRids()))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetPathRids())))
 }
 
 func (self Instance) SetPathRids(value []Resource.ID) {
-	class(self).SetPathRids(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetPathRids(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
 }
 
 func (self Instance) PathOwnerIds() []int64 {
@@ -129,20 +133,20 @@ func (self class) GetPathTypes() gd.PackedInt32Array {
 }
 
 //go:nosplit
-func (self class) SetPathRids(path_rids gd.Array) {
+func (self class) SetPathRids(path_rids Array.Contains[gd.RID]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(path_rids))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(path_rids)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult3D.Bind_set_path_rids, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPathRids() gd.Array {
+func (self class) GetPathRids() Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryResult3D.Bind_get_path_rids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

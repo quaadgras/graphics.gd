@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [BaseButton] is an abstract base class for GUI buttons. It doesn't display anything by itself.
@@ -67,6 +71,7 @@ Called when the button is toggled (only if [member toggle_mode] is active).
 func (Instance) _toggled(impl func(ptr unsafe.Pointer, toggled_on bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var toggled_on = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, toggled_on)
 	}
@@ -208,6 +213,7 @@ Called when the button is toggled (only if [member toggle_mode] is active).
 func (class) _toggled(impl func(ptr unsafe.Pointer, toggled_on bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var toggled_on = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, toggled_on)
 	}

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/WebRTCPeerConnection"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 type Instance [1]gdclass.WebRTCPeerConnectionExtension
 
@@ -102,6 +106,7 @@ func (Instance) _create_data_channel(impl func(ptr unsafe.Pointer, p_label strin
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_label.String(), gd.DictionaryAs[any, any](p_config))
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -142,6 +147,7 @@ func (Instance) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name 
 		var p_sdp_mid_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(p_sdp_mid_name)
 		var p_sdp_mline_index = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var p_sdp_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(p_sdp_name)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -209,6 +215,7 @@ func (class) _get_signaling_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPe
 func (class) _initialize(impl func(ptr unsafe.Pointer, p_config gd.Dictionary) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_config = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(p_config)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_config)
 		gd.UnsafeSet(p_back, ret)
@@ -218,10 +225,13 @@ func (class) _initialize(impl func(ptr unsafe.Pointer, p_config gd.Dictionary) g
 func (class) _create_data_channel(impl func(ptr unsafe.Pointer, p_label gd.String, p_config gd.Dictionary) [1]gdclass.WebRTCDataChannel) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_label = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(p_label)
 		var p_config = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(p_config)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_label, p_config)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -240,7 +250,9 @@ func (class) _create_offer(impl func(ptr unsafe.Pointer) gd.Error) (cb gd.Extens
 func (class) _set_remote_description(impl func(ptr unsafe.Pointer, p_type gd.String, p_sdp gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_type = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(p_type)
 		var p_sdp = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(p_sdp)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_type, p_sdp)
 		gd.UnsafeSet(p_back, ret)
@@ -250,7 +262,9 @@ func (class) _set_remote_description(impl func(ptr unsafe.Pointer, p_type gd.Str
 func (class) _set_local_description(impl func(ptr unsafe.Pointer, p_type gd.String, p_sdp gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_type = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(p_type)
 		var p_sdp = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(p_sdp)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_type, p_sdp)
 		gd.UnsafeSet(p_back, ret)
@@ -260,8 +274,11 @@ func (class) _set_local_description(impl func(ptr unsafe.Pointer, p_type gd.Stri
 func (class) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name gd.String, p_sdp_mline_index gd.Int, p_sdp_name gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_sdp_mid_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(p_sdp_mid_name)
 		var p_sdp_mline_index = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var p_sdp_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(p_sdp_name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_sdp_mid_name, p_sdp_mline_index, p_sdp_name)
 		gd.UnsafeSet(p_back, ret)

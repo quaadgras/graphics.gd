@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [TextServerManager] is the API backend for loading, enumerating, and switching [TextServer]s.
@@ -67,7 +71,7 @@ Returns a list of available interfaces, with the index and name of each interfac
 */
 func GetInterfaces() []map[any]any {
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetInterfaces()))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetInterfaces())))
 }
 
 /*
@@ -159,11 +163,11 @@ func (self class) GetInterface(idx gd.Int) [1]gdclass.TextServer {
 Returns a list of available interfaces, with the index and name of each interface.
 */
 //go:nosplit
-func (self class) GetInterfaces() gd.Array {
+func (self class) GetInterfaces() Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

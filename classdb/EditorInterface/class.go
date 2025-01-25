@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [EditorInterface] gives you control over Godot editor's window. It allows customizing the window, saving and (re-)loading scenes, rendering mesh previews, inspecting and editing resources and objects, and provides access to [EditorSettings], [EditorFileSystem], [EditorResourcePreview], [ScriptEditor], the editor viewport, and information about scenes.
@@ -103,7 +107,7 @@ Returns mesh previews rendered at the given size as an [Array] of [Texture2D]s.
 */
 func MakeMeshPreviews(meshes [][1]gdclass.Mesh, preview_size int) [][1]gdclass.Texture2D {
 	once.Do(singleton)
-	return [][1]gdclass.Texture2D(gd.ArrayAs[[][1]gdclass.Texture2D](class(self).MakeMeshPreviews(gd.NewVariant(meshes).Interface().(gd.Array), gd.Int(preview_size))))
+	return [][1]gdclass.Texture2D(gd.ArrayAs[[][1]gdclass.Texture2D](gd.InternalArray(class(self).MakeMeshPreviews(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Mesh]](meshes), gd.Int(preview_size)))))
 }
 
 /*
@@ -279,7 +283,7 @@ func _on_node_selected(node_path):
 */
 func PopupNodeSelector(callback func(selected NodePath.String)) {
 	once.Do(singleton)
-	class(self).PopupNodeSelector(gd.NewCallable(callback), gd.NewVariant([1][]string{}[0]).Interface().(gd.Array))
+	class(self).PopupNodeSelector(gd.NewCallable(callback), gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
 }
 
 /*
@@ -620,13 +624,13 @@ func (self class) GetEditorSettings() [1]gdclass.EditorSettings {
 Returns mesh previews rendered at the given size as an [Array] of [Texture2D]s.
 */
 //go:nosplit
-func (self class) MakeMeshPreviews(meshes gd.Array, preview_size gd.Int) gd.Array {
+func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], preview_size gd.Int) Array.Contains[[1]gdclass.Texture2D] {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(meshes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(meshes)))
 	callframe.Arg(frame, preview_size)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_make_mesh_previews, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Texture2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -905,10 +909,10 @@ func _on_node_selected(node_path):
 [/codeblock]
 */
 //go:nosplit
-func (self class) PopupNodeSelector(callback gd.Callable, valid_types gd.Array) {
+func (self class) PopupNodeSelector(callback gd.Callable, valid_types Array.Contains[gd.StringName]) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(callback))
-	callframe.Arg(frame, pointers.Get(valid_types))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(valid_types)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_node_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

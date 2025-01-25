@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A group of [BaseButton]-derived buttons. The buttons in a [ButtonGroup] are treated like radio buttons: No more than one button can be pressed at a time. Some types of buttons (such as [CheckBox]) may have a special appearance in this state.
@@ -43,7 +47,7 @@ func (self Instance) GetPressedButton() [1]gdclass.BaseButton {
 Returns an [Array] of [Button]s who have this as their [ButtonGroup] (see [member BaseButton.button_group]).
 */
 func (self Instance) GetButtons() [][1]gdclass.BaseButton {
-	return [][1]gdclass.BaseButton(gd.ArrayAs[[][1]gdclass.BaseButton](class(self).GetButtons()))
+	return [][1]gdclass.BaseButton(gd.ArrayAs[[][1]gdclass.BaseButton](gd.InternalArray(class(self).GetButtons())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -90,11 +94,11 @@ func (self class) GetPressedButton() [1]gdclass.BaseButton {
 Returns an [Array] of [Button]s who have this as their [ButtonGroup] (see [member BaseButton.button_group]).
 */
 //go:nosplit
-func (self class) GetButtons() gd.Array {
+func (self class) GetButtons() Array.Contains[[1]gdclass.BaseButton] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ButtonGroup.Bind_get_buttons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.BaseButton]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

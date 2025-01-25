@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Provides access to metadata stored for every available class.
@@ -106,7 +110,7 @@ Returns an array with all the signals of [param class] or its ancestry if [param
 */
 func ClassGetSignalList(class_ string) []map[any]any {
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ClassGetSignalList(gd.NewStringName(class_), false)))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ClassGetSignalList(gd.NewStringName(class_), false))))
 }
 
 /*
@@ -114,7 +118,7 @@ Returns an array with all the properties of [param class] or its ancestry if [pa
 */
 func ClassGetPropertyList(class_ string) []map[any]any {
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ClassGetPropertyList(gd.NewStringName(class_), false)))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ClassGetPropertyList(gd.NewStringName(class_), false))))
 }
 
 /*
@@ -163,7 +167,7 @@ Returns an array with all the methods of [param class] or its ancestry if [param
 */
 func ClassGetMethodList(class_ string) []map[any]any {
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ClassGetMethodList(gd.NewStringName(class_), false)))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ClassGetMethodList(gd.NewStringName(class_), false))))
 }
 
 /*
@@ -380,13 +384,13 @@ func (self class) ClassGetSignal(class_ gd.StringName, signal gd.StringName) gd.
 Returns an array with all the signals of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] as described in [method class_get_signal].
 */
 //go:nosplit
-func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) gd.Array {
+func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_signal_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -395,13 +399,13 @@ func (self class) ClassGetSignalList(class_ gd.StringName, no_inheritance bool) 
 Returns an array with all the properties of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
 //go:nosplit
-func (self class) ClassGetPropertyList(class_ gd.StringName, no_inheritance bool) gd.Array {
+func (self class) ClassGetPropertyList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_property_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -489,13 +493,13 @@ Returns an array with all the methods of [param class] or its ancestry if [param
 [b]Note:[/b] In exported release builds the debug info is not available, so the returned dictionaries will contain only method names.
 */
 //go:nosplit
-func (self class) ClassGetMethodList(class_ gd.StringName, no_inheritance bool) gd.Array {
+func (self class) ClassGetMethodList(class_ gd.StringName, no_inheritance bool) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, no_inheritance)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_method_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

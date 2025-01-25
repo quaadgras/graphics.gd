@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class cannot be directly instantiated and must be retrieved via a [EditorDebuggerPlugin].
@@ -35,14 +39,14 @@ type Any interface {
 Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
 */
 func (self Instance) SendMessage(message string) {
-	class(self).SendMessage(gd.NewString(message), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))
+	class(self).SendMessage(gd.NewString(message), Array.Nil)
 }
 
 /*
 Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
 */
 func (self Instance) ToggleProfiler(profiler string, enable bool) {
-	class(self).ToggleProfiler(gd.NewString(profiler), enable, gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))
+	class(self).ToggleProfiler(gd.NewString(profiler), enable, Array.Nil)
 }
 
 /*
@@ -110,10 +114,10 @@ func New() Instance {
 Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
 */
 //go:nosplit
-func (self class) SendMessage(message gd.String, data gd.Array) {
+func (self class) SendMessage(message gd.String, data Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_send_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -123,11 +127,11 @@ func (self class) SendMessage(message gd.String, data gd.Array) {
 Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
 */
 //go:nosplit
-func (self class) ToggleProfiler(profiler gd.String, enable bool, data gd.Array) {
+func (self class) ToggleProfiler(profiler gd.String, enable bool, data Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(profiler))
 	callframe.Arg(frame, enable)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_toggle_profiler, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

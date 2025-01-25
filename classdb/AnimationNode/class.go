@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Base resource for [AnimationTree] nodes. In general, it's not used directly, but you can create custom ones with custom blending formulas.
@@ -89,6 +93,7 @@ func (Instance) _get_child_nodes(impl func(ptr unsafe.Pointer) map[any]any) (cb 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
+
 		if !ok {
 			return
 		}
@@ -103,7 +108,8 @@ func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) []any) (cb gd.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.EngineArrayFromSlice(ret)))
+
 		if !ok {
 			return
 		}
@@ -121,6 +127,7 @@ func (Instance) _get_child_by_name(impl func(ptr unsafe.Pointer, name string) [1
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name.String())
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -138,6 +145,7 @@ func (Instance) _get_parameter_default_value(impl func(ptr unsafe.Pointer, param
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
 		ptr, ok := pointers.End(gd.NewVariant(ret))
+
 		if !ok {
 			return
 		}
@@ -166,9 +174,13 @@ This function should return the delta.
 func (Instance) _process(impl func(ptr unsafe.Pointer, time Float.X, seek bool, is_external_seeking bool, test_only bool) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var time = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		var seek = gd.UnsafeGet[bool](p_args, 1)
+
 		var is_external_seeking = gd.UnsafeGet[bool](p_args, 2)
+
 		var test_only = gd.UnsafeGet[bool](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, Float.X(time), seek, is_external_seeking, test_only)
 		gd.UnsafeSet(p_back, gd.Float(ret))
@@ -183,6 +195,7 @@ func (Instance) _get_caption(impl func(ptr unsafe.Pointer) string) (cb gd.Extens
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -328,6 +341,7 @@ func (class) _get_child_nodes(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb g
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -338,11 +352,12 @@ func (class) _get_child_nodes(impl func(ptr unsafe.Pointer) gd.Dictionary) (cb g
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
 */
-func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -356,9 +371,11 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 func (class) _get_child_by_name(impl func(ptr unsafe.Pointer, name gd.StringName) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -372,9 +389,11 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 func (class) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter gd.StringName) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(parameter)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -388,6 +407,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 func (class) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter gd.StringName) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var parameter = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(parameter)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
 		gd.UnsafeSet(p_back, ret)
@@ -402,9 +422,13 @@ This function should return the delta.
 func (class) _process(impl func(ptr unsafe.Pointer, time gd.Float, seek bool, is_external_seeking bool, test_only bool) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var time = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		var seek = gd.UnsafeGet[bool](p_args, 1)
+
 		var is_external_seeking = gd.UnsafeGet[bool](p_args, 2)
+
 		var test_only = gd.UnsafeGet[bool](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, time, seek, is_external_seeking, test_only)
 		gd.UnsafeSet(p_back, ret)
@@ -419,6 +443,7 @@ func (class) _get_caption(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Extens
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}

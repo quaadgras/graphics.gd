@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [Translation]s are resources that can be loaded and unloaded on demand. They map a collection of strings to their individual translations, and they also provide convenience methods for pluralization.
@@ -61,11 +65,13 @@ func (Instance) _get_plural_message(impl func(ptr unsafe.Pointer, src_message st
 		var src_plural_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(src_plural_message)
 		var n = gd.UnsafeGet[gd.Int](p_args, 2)
+
 		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
 		defer pointers.End(context)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message.String(), src_plural_message.String(), int(n), context.String())
 		ptr, ok := pointers.End(gd.NewStringName(ret))
+
 		if !ok {
 			return
 		}
@@ -85,6 +91,7 @@ func (Instance) _get_message(impl func(ptr unsafe.Pointer, src_message string, c
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message.String(), context.String())
 		ptr, ok := pointers.End(gd.NewStringName(ret))
+
 		if !ok {
 			return
 		}
@@ -184,12 +191,17 @@ Virtual method to override [method get_plural_message].
 func (class) _get_plural_message(impl func(ptr unsafe.Pointer, src_message gd.StringName, src_plural_message gd.StringName, n gd.Int, context gd.StringName) gd.StringName) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(src_message)
 		var src_plural_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(src_plural_message)
 		var n = gd.UnsafeGet[gd.Int](p_args, 2)
+
 		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
+		defer pointers.End(context)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message, src_plural_message, n, context)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -203,10 +215,13 @@ Virtual method to override [method get_message].
 func (class) _get_message(impl func(ptr unsafe.Pointer, src_message gd.StringName, context gd.StringName) gd.StringName) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_message = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(src_message)
 		var context = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(context)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, src_message, context)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}

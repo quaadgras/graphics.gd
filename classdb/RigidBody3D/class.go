@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/PhysicsBody3D"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node3D"
@@ -24,6 +26,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [RigidBody3D] implements full 3D physics. It cannot be controlled directly, instead, you must apply forces to it (gravity, impulses, etc.), and the physics simulation will calculate the resulting movement, rotation, react to collisions, and affect other physics bodies in its path.
@@ -62,7 +66,8 @@ Called during physics processing, allowing you to read and safely modify the sim
 */
 func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.PhysicsDirectBodyState3D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var state = [1]gdclass.PhysicsDirectBodyState3D{pointers.New[gdclass.PhysicsDirectBodyState3D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var state = [1]gdclass.PhysicsDirectBodyState3D{pointers.New[gdclass.PhysicsDirectBodyState3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, state)
@@ -170,7 +175,7 @@ Returns a list of the bodies colliding with this one. Requires [member contact_m
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, list of collisions is updated once per frame and before the physics step. Consider using signals instead.
 */
 func (self Instance) GetCollidingBodies() [][1]gdclass.Node3D {
-	return [][1]gdclass.Node3D(gd.ArrayAs[[][1]gdclass.Node3D](class(self).GetCollidingBodies()))
+	return [][1]gdclass.Node3D(gd.ArrayAs[[][1]gdclass.Node3D](gd.InternalArray(class(self).GetCollidingBodies())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -381,6 +386,7 @@ Called during physics processing, allowing you to read and safely modify the sim
 func (class) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.PhysicsDirectBodyState3D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.PhysicsDirectBodyState3D{pointers.New[gdclass.PhysicsDirectBodyState3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, state)
@@ -990,11 +996,11 @@ Returns a list of the bodies colliding with this one. Requires [member contact_m
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, list of collisions is updated once per frame and before the physics step. Consider using signals instead.
 */
 //go:nosplit
-func (self class) GetCollidingBodies() gd.Array {
+func (self class) GetCollidingBodies() Array.Contains[[1]gdclass.Node3D] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_colliding_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

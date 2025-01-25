@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A class stored as a resource. A script extends the functionality of all objects that instantiate it.
@@ -109,21 +113,21 @@ func (self Instance) HasScriptSignal(signal_name string) bool {
 Returns the list of properties in this [Script].
 */
 func (self Instance) GetScriptPropertyList() []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetScriptPropertyList()))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetScriptPropertyList())))
 }
 
 /*
 Returns the list of methods in this [Script].
 */
 func (self Instance) GetScriptMethodList() []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetScriptMethodList()))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetScriptMethodList())))
 }
 
 /*
 Returns the list of user signals defined in this [Script].
 */
 func (self Instance) GetScriptSignalList() []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetScriptSignalList()))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetScriptSignalList())))
 }
 
 /*
@@ -327,11 +331,11 @@ func (self class) HasScriptSignal(signal_name gd.StringName) bool {
 Returns the list of properties in this [Script].
 */
 //go:nosplit
-func (self class) GetScriptPropertyList() gd.Array {
+func (self class) GetScriptPropertyList() Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_property_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -340,11 +344,11 @@ func (self class) GetScriptPropertyList() gd.Array {
 Returns the list of methods in this [Script].
 */
 //go:nosplit
-func (self class) GetScriptMethodList() gd.Array {
+func (self class) GetScriptMethodList() Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_method_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -353,11 +357,11 @@ func (self class) GetScriptMethodList() gd.Array {
 Returns the list of user signals defined in this [Script].
 */
 //go:nosplit
-func (self class) GetScriptSignalList() gd.Array {
+func (self class) GetScriptSignalList() Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_signal_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

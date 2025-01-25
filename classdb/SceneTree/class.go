@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/MainLoop"
 import "graphics.gd/variant/Float"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene, as well as scenes themselves. Nodes can be added, fetched and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
@@ -85,7 +89,7 @@ func (self Instance) CreateTween() [1]gdclass.Tween {
 Returns an [Array] of currently existing [Tween]s in the tree, including paused tweens.
 */
 func (self Instance) GetProcessedTweens() [][1]gdclass.Tween {
-	return [][1]gdclass.Tween(gd.ArrayAs[[][1]gdclass.Tween](class(self).GetProcessedTweens()))
+	return [][1]gdclass.Tween(gd.ArrayAs[[][1]gdclass.Tween](gd.InternalArray(class(self).GetProcessedTweens())))
 }
 
 /*
@@ -154,7 +158,7 @@ func (self Instance) SetGroup(group string, property string, value any) {
 Returns an [Array] containing all nodes inside this tree, that have been added to the given [param group], in scene hierarchy order.
 */
 func (self Instance) GetNodesInGroup(group string) [][1]gdclass.Node {
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).GetNodesInGroup(gd.NewStringName(group))))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetNodesInGroup(gd.NewStringName(group)))))
 }
 
 /*
@@ -537,11 +541,11 @@ func (self class) CreateTween() [1]gdclass.Tween {
 Returns an [Array] of currently existing [Tween]s in the tree, including paused tweens.
 */
 //go:nosplit
-func (self class) GetProcessedTweens() gd.Array {
+func (self class) GetProcessedTweens() Array.Contains[[1]gdclass.Tween] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_processed_tweens, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Tween]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -681,12 +685,12 @@ func (self class) SetGroup(group gd.StringName, property gd.String, value gd.Var
 Returns an [Array] containing all nodes inside this tree, that have been added to the given [param group], in scene hierarchy order.
 */
 //go:nosplit
-func (self class) GetNodesInGroup(group gd.StringName) gd.Array {
+func (self class) GetNodesInGroup(group gd.StringName) Array.Contains[[1]gdclass.Node] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(group))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_get_nodes_in_group, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

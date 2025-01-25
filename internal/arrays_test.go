@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"graphics.gd/classdb/Engine"
+	"graphics.gd/variant"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Packed"
 	"graphics.gd/variant/Vector3"
@@ -36,6 +37,15 @@ func TestArrayConversions(t *testing.T) {
 	info := Engine.GetCopyrightInfo()
 	if len(info) == 0 {
 		t.Error("expected non-empty string")
+	}
+	advanced := Engine.Advanced().GetCopyrightInfo()
+	if advanced.Len() != len(info) {
+		t.Error("expected same length")
+	}
+	var array Array.Any
+	array.Append(variant.New(1))
+	if array.Index(0).Int() != 1 {
+		t.Error("expected 1")
 	}
 }
 

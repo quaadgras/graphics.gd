@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -24,6 +26,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Node for 2D tile-based maps. Tilemaps use a [TileSet] which contain a list of tiles which are used to create grid-based maps. A TileMap may have several layers, layouting tiles on top of each other.
@@ -73,7 +77,9 @@ Should return [code]true[/code] if the tile at coordinates [param coords] on lay
 func (Instance) _use_tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords Vector2i.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(layer), coords)
 		gd.UnsafeSet(p_back, ret)
@@ -89,8 +95,11 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords Vector2i.XY, tile_data [1]gdclass.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 1)
-		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 2))})}
+
+		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
+
 		defer pointers.End(tile_data[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(layer), coords, tile_data)
@@ -364,7 +373,7 @@ Creates a new [TileMapPattern] from the given layer and set of cells.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 func (self Instance) GetPattern(layer int, coords_array []Vector2i.XY) [1]gdclass.TileMapPattern {
-	return [1]gdclass.TileMapPattern(class(self).GetPattern(gd.Int(layer), gd.NewVariant(coords_array).Interface().(gd.Array)))
+	return [1]gdclass.TileMapPattern(class(self).GetPattern(gd.Int(layer), gd.ArrayFromSlice[Array.Contains[gd.Vector2i]](coords_array)))
 }
 
 /*
@@ -389,7 +398,7 @@ If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 func (self Instance) SetCellsTerrainConnect(layer int, cells []Vector2i.XY, terrain_set int, terrain int) {
-	class(self).SetCellsTerrainConnect(gd.Int(layer), gd.NewVariant(cells).Interface().(gd.Array), gd.Int(terrain_set), gd.Int(terrain), true)
+	class(self).SetCellsTerrainConnect(gd.Int(layer), gd.ArrayFromSlice[Array.Contains[gd.Vector2i]](cells), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
 /*
@@ -399,7 +408,7 @@ If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 func (self Instance) SetCellsTerrainPath(layer int, path []Vector2i.XY, terrain_set int, terrain int) {
-	class(self).SetCellsTerrainPath(gd.Int(layer), gd.NewVariant(path).Interface().(gd.Array), gd.Int(terrain_set), gd.Int(terrain), true)
+	class(self).SetCellsTerrainPath(gd.Int(layer), gd.ArrayFromSlice[Array.Contains[gd.Vector2i]](path), gd.Int(terrain_set), gd.Int(terrain), true)
 }
 
 /*
@@ -447,7 +456,7 @@ func (self Instance) NotifyRuntimeTileDataUpdate() {
 Returns the list of all neighbourings cells to the one at [param coords].
 */
 func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetSurroundingCells(gd.Vector2i(coords))))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetSurroundingCells(gd.Vector2i(coords)))))
 }
 
 /*
@@ -455,7 +464,7 @@ Returns a [Vector2i] array with the positions of all cells containing a tile in 
 If [param layer] is negative, the layers are accessed from the last one.
 */
 func (self Instance) GetUsedCells(layer int) []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetUsedCells(gd.Int(layer))))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetUsedCells(gd.Int(layer)))))
 }
 
 /*
@@ -465,7 +474,7 @@ A cell is considered empty if its source identifier equals -1, its atlas coordin
 If [param layer] is negative, the layers are accessed from the last one.
 */
 func (self Instance) GetUsedCellsById(layer int) []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetUsedCellsById(gd.Int(layer), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1))))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetUsedCellsById(gd.Int(layer), gd.Int(-1), gd.Vector2i(gd.Vector2i{-1, -1}), gd.Int(-1)))))
 }
 
 /*
@@ -563,7 +572,9 @@ Should return [code]true[/code] if the tile at coordinates [param coords] on lay
 func (class) _use_tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer gd.Int, coords gd.Vector2i) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, layer, coords)
 		gd.UnsafeSet(p_back, ret)
@@ -579,8 +590,11 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 func (class) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer gd.Int, coords gd.Vector2i, tile_data [1]gdclass.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var coords = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
+
 		defer pointers.End(tile_data[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, layer, coords, tile_data)
@@ -1156,10 +1170,10 @@ Creates a new [TileMapPattern] from the given layer and set of cells.
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetPattern(layer gd.Int, coords_array gd.Array) [1]gdclass.TileMapPattern {
+func (self class) GetPattern(layer gd.Int, coords_array Array.Contains[gd.Vector2i]) [1]gdclass.TileMapPattern {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(coords_array))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(coords_array)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret.Get())}
@@ -1205,10 +1219,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 //go:nosplit
-func (self class) SetCellsTerrainConnect(layer gd.Int, cells gd.Array, terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) {
+func (self class) SetCellsTerrainConnect(layer gd.Int, cells Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(cells))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(cells)))
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain)
 	callframe.Arg(frame, ignore_empty_terrains)
@@ -1224,10 +1238,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 [b]Note:[/b] To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 */
 //go:nosplit
-func (self class) SetCellsTerrainPath(layer gd.Int, path gd.Array, terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) {
+func (self class) SetCellsTerrainPath(layer gd.Int, path Array.Contains[gd.Vector2i], terrain_set gd.Int, terrain gd.Int, ignore_empty_terrains bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(path))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(path)))
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, terrain)
 	callframe.Arg(frame, ignore_empty_terrains)
@@ -1303,12 +1317,12 @@ func (self class) NotifyRuntimeTileDataUpdate(layer gd.Int) {
 Returns the list of all neighbourings cells to the one at [param coords].
 */
 //go:nosplit
-func (self class) GetSurroundingCells(coords gd.Vector2i) gd.Array {
+func (self class) GetSurroundingCells(coords gd.Vector2i) Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_surrounding_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1318,12 +1332,12 @@ Returns a [Vector2i] array with the positions of all cells containing a tile in 
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetUsedCells(layer gd.Int) gd.Array {
+func (self class) GetUsedCells(layer gd.Int) Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1335,7 +1349,7 @@ A cell is considered empty if its source identifier equals -1, its atlas coordin
 If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
-func (self class) GetUsedCellsById(layer gd.Int, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) gd.Array {
+func (self class) GetUsedCellsById(layer gd.Int, source_id gd.Int, atlas_coords gd.Vector2i, alternative_tile gd.Int) Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, layer)
 	callframe.Arg(frame, source_id)
@@ -1343,7 +1357,7 @@ func (self class) GetUsedCellsById(layer gd.Int, source_id gd.Int, atlas_coords 
 	callframe.Arg(frame, alternative_tile)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells_by_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

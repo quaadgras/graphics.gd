@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -23,6 +25,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A Polygon2D is defined by a set of points. Each point is connected to the next, with the final point being connected to the first, resulting in a closed polygon. Polygon2Ds can be filled with color (solid or gradient) or filled with a given texture.
@@ -216,11 +220,11 @@ func (self Instance) SetVertexColors(value []Color.RGBA) {
 }
 
 func (self Instance) Polygons() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetPolygons()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetPolygons())))
 }
 
 func (self Instance) SetPolygons(value []any) {
-	class(self).SetPolygons(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetPolygons(gd.EngineArrayFromSlice(value))
 }
 
 func (self Instance) InternalVertexCount() int {
@@ -289,20 +293,20 @@ func (self class) GetColor() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetPolygons(polygons gd.Array) {
+func (self class) SetPolygons(polygons Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(polygons))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(polygons)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_set_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPolygons() gd.Array {
+func (self class) GetPolygons() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Polygon2D.Bind_get_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

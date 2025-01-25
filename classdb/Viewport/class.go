@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Rect2"
@@ -22,6 +24,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A [Viewport] creates a different view into the screen, or a sub-view inside another viewport. Child 2D nodes will display on it, and child Camera3D 3D nodes will render on it too.
@@ -224,7 +228,7 @@ Returns a list of the visible embedded [Window]s inside the viewport.
 [b]Note:[/b] [Window]s inside other viewports will not be listed.
 */
 func (self Instance) GetEmbeddedSubwindows() [][1]gdclass.Window {
-	return [][1]gdclass.Window(gd.ArrayAs[[][1]gdclass.Window](class(self).GetEmbeddedSubwindows()))
+	return [][1]gdclass.Window(gd.ArrayAs[[][1]gdclass.Window](gd.InternalArray(class(self).GetEmbeddedSubwindows())))
 }
 
 /*
@@ -1433,11 +1437,11 @@ Returns a list of the visible embedded [Window]s inside the viewport.
 [b]Note:[/b] [Window]s inside other viewports will not be listed.
 */
 //go:nosplit
-func (self class) GetEmbeddedSubwindows() gd.Array {
+func (self class) GetEmbeddedSubwindows() Array.Contains[[1]gdclass.Window] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_embedded_subwindows, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Window]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

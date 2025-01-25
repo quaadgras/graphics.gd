@@ -5,11 +5,17 @@ package gd
 import (
 	"fmt"
 	"reflect"
+
+	VariantPkg "graphics.gd/variant"
+	ArrayType "graphics.gd/variant/Array"
 )
 
 func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
-	if rtype == reflect.TypeFor[any]() {
+	switch rtype {
+	case reflect.TypeFor[any]():
 		return reflect.ValueOf(value.Interface()), nil
+	case reflect.TypeFor[VariantPkg.Any]():
+		return reflect.ValueOf(VariantPkg.New(value.Interface())), nil
 	}
 	switch rtype.Kind() {
 	case reflect.Bool:
@@ -37,14 +43,6 @@ func VariantAs[T any](value Variant) T {
 		panic(fmt.Sprintf("cannot convert %T to %s: %v", value, reflect.TypeFor[T](), err))
 	}
 	return result.Interface().(T)
-}
-
-func ArrayAs[S []T, T any](array Array) []T {
-	var result = make([]T, array.Size())
-	for i := 0; i < int(array.Size()); i++ {
-		result[i] = VariantAs[T](array.Index(Int(i)))
-	}
-	return result
 }
 
 func DictionaryAs[K comparable, V any](dictionary Dictionary) map[K]V {
@@ -245,10 +243,11 @@ func convertToGoFunc(rtype reflect.Type, value any) (reflect.Value, error) {
 }
 
 func convertToGoArrayOf(rtype reflect.Type, value any) (reflect.Value, error) {
-	if value, ok := value.(Array); ok {
+	if value, ok := value.(ArrayType.Any); ok {
+		var internalArray = InternalArray(value)
 		var array = reflect.New(rtype).Elem()
 		for i := 0; i < rtype.Len(); i++ {
-			elem, err := convertVariantToDesiredGoType(value.Index(Int(i)), rtype.Elem())
+			elem, err := convertVariantToDesiredGoType(internalArray.Index(Int(i)), rtype.Elem())
 			if err != nil {
 				return reflect.Value{}, err
 			}
@@ -287,10 +286,11 @@ func convertToGoArrayOf(rtype reflect.Type, value any) (reflect.Value, error) {
 }
 
 func convertToGoSliceOf(rtype reflect.Type, value any) (reflect.Value, error) {
-	if value, ok := value.(Array); ok {
-		var slice = reflect.MakeSlice(reflect.SliceOf(rtype), int(value.Size()), int(value.Size()))
-		for i := 0; i < int(value.Size()); i++ {
-			elem, err := convertVariantToDesiredGoType(value.Index(Int(i)), rtype)
+	if value, ok := value.(ArrayType.Any); ok {
+		var array = InternalArray(value)
+		var slice = reflect.MakeSlice(reflect.SliceOf(rtype), int(array.Size()), int(array.Size()))
+		for i := 0; i < int(array.Size()); i++ {
+			elem, err := convertVariantToDesiredGoType(array.Index(Int(i)), rtype)
 			if err != nil {
 				return reflect.Value{}, err
 			}

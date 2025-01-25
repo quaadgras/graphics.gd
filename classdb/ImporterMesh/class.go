@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2i"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains vertex array-based geometry, divided in [i]surfaces[/i]. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
@@ -79,7 +83,7 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any) {
-	class(self).AddSurface(primitive, gd.NewVariant(arrays).Interface().(gd.Array), gd.NewVariant([1][][]any{}[0]).Interface().(gd.Array), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), [1][1]gdclass.Material{}[0], gd.NewString(""), gd.Int(0))
+	class(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), [1][1]gdclass.Material{}[0], gd.NewString(""), gd.Int(0))
 }
 
 /*
@@ -107,14 +111,14 @@ func (self Instance) GetSurfaceName(surface_idx int) string {
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [method add_surface].
 */
 func (self Instance) GetSurfaceArrays(surface_idx int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetSurfaceArrays(gd.Int(surface_idx))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSurfaceArrays(gd.Int(surface_idx)))))
 }
 
 /*
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
 func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetSurfaceBlendShapeArrays(gd.Int(surface_idx), gd.Int(blend_shape_idx))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSurfaceBlendShapeArrays(gd.Int(surface_idx), gd.Int(blend_shape_idx)))))
 }
 
 /*
@@ -173,7 +177,7 @@ The number of generated lods can be accessed using [method get_surface_lod_count
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
 func (self Instance) GenerateLods(normal_merge_angle Float.X, normal_split_angle Float.X, bone_transform_array []any) {
-	class(self).GenerateLods(gd.Float(normal_merge_angle), gd.Float(normal_split_angle), gd.NewVariant(bone_transform_array).Interface().(gd.Array))
+	class(self).GenerateLods(gd.Float(normal_merge_angle), gd.Float(normal_split_angle), gd.EngineArrayFromSlice(bone_transform_array))
 }
 
 /*
@@ -299,11 +303,11 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 //go:nosplit
-func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays gd.Array, blend_shapes gd.Array, lods gd.Dictionary, material [1]gdclass.Material, name gd.String, flags gd.Int) {
+func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods gd.Dictionary, material [1]gdclass.Material, name gd.String, flags gd.Int) {
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
-	callframe.Arg(frame, pointers.Get(arrays))
-	callframe.Arg(frame, pointers.Get(blend_shapes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(blend_shapes)))
 	callframe.Arg(frame, pointers.Get(lods))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	callframe.Arg(frame, pointers.Get(name))
@@ -358,12 +362,12 @@ func (self class) GetSurfaceName(surface_idx gd.Int) gd.String {
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [method add_surface].
 */
 //go:nosplit
-func (self class) GetSurfaceArrays(surface_idx gd.Int) gd.Array {
+func (self class) GetSurfaceArrays(surface_idx gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -372,13 +376,13 @@ func (self class) GetSurfaceArrays(surface_idx gd.Int) gd.Array {
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
 //go:nosplit
-func (self class) GetSurfaceBlendShapeArrays(surface_idx gd.Int, blend_shape_idx gd.Int) gd.Array {
+func (self class) GetSurfaceBlendShapeArrays(surface_idx gd.Int, blend_shape_idx gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
 	callframe.Arg(frame, blend_shape_idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_blend_shape_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -488,11 +492,11 @@ The number of generated lods can be accessed using [method get_surface_lod_count
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
 //go:nosplit
-func (self class) GenerateLods(normal_merge_angle gd.Float, normal_split_angle gd.Float, bone_transform_array gd.Array) {
+func (self class) GenerateLods(normal_merge_angle gd.Float, normal_split_angle gd.Float, bone_transform_array Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, normal_merge_angle)
 	callframe.Arg(frame, normal_split_angle)
-	callframe.Arg(frame, pointers.Get(bone_transform_array))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(bone_transform_array)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_generate_lods, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

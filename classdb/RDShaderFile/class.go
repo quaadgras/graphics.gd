@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Compiled shader file in SPIR-V form.
@@ -50,7 +54,7 @@ func (self Instance) GetSpirv() [1]gdclass.RDShaderSPIRV {
 Returns the list of compiled versions for this shader.
 */
 func (self Instance) GetVersionList() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetVersionList()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetVersionList())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -111,11 +115,11 @@ func (self class) GetSpirv(version gd.StringName) [1]gdclass.RDShaderSPIRV {
 Returns the list of compiled versions for this shader.
 */
 //go:nosplit
-func (self class) GetVersionList() gd.Array {
+func (self class) GetVersionList() Array.Contains[gd.StringName] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderFile.Bind_get_version_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 An implementation of the A* algorithm, used to find the shortest path between two vertices on a connected graph in 2D space.
@@ -60,7 +64,9 @@ Note that this function is hidden in the default [AStar2D] class.
 func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(from_id), int(to_id))
 		gd.UnsafeSet(p_back, gd.Float(ret))
@@ -74,7 +80,9 @@ Note that this function is hidden in the default [AStar2D] class.
 func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(from_id), int(to_id))
 		gd.UnsafeSet(p_back, gd.Float(ret))
@@ -371,7 +379,9 @@ Note that this function is hidden in the default [AStar2D] class.
 func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id gd.Int, to_id gd.Int) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)
@@ -385,7 +395,9 @@ Note that this function is hidden in the default [AStar2D] class.
 func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id gd.Int, to_id gd.Int) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)

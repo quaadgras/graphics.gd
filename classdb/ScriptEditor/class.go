@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/PanelContainer"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Godot editor's script editor.
@@ -47,7 +51,7 @@ func (self Instance) GetCurrentEditor() [1]gdclass.ScriptEditorBase {
 Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
 */
 func (self Instance) GetOpenScriptEditors() [][1]gdclass.ScriptEditorBase {
-	return [][1]gdclass.ScriptEditorBase(gd.ArrayAs[[][1]gdclass.ScriptEditorBase](class(self).GetOpenScriptEditors()))
+	return [][1]gdclass.ScriptEditorBase(gd.ArrayAs[[][1]gdclass.ScriptEditorBase](gd.InternalArray(class(self).GetOpenScriptEditors())))
 }
 
 /*
@@ -84,7 +88,7 @@ func (self Instance) GetCurrentScript() [1]gdclass.Script {
 Returns an array with all [Script] objects which are currently open in editor.
 */
 func (self Instance) GetOpenScripts() [][1]gdclass.Script {
-	return [][1]gdclass.Script(gd.ArrayAs[[][1]gdclass.Script](class(self).GetOpenScripts()))
+	return [][1]gdclass.Script(gd.ArrayAs[[][1]gdclass.Script](gd.InternalArray(class(self).GetOpenScripts())))
 }
 
 /*
@@ -158,11 +162,11 @@ func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase {
 Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
 */
 //go:nosplit
-func (self class) GetOpenScriptEditors() gd.Array {
+func (self class) GetOpenScriptEditors() Array.Contains[[1]gdclass.ScriptEditorBase] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_open_script_editors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptEditorBase]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -222,11 +226,11 @@ func (self class) GetCurrentScript() [1]gdclass.Script {
 Returns an array with all [Script] objects which are currently open in editor.
 */
 //go:nosplit
-func (self class) GetOpenScripts() gd.Array {
+func (self class) GetOpenScripts() Array.Contains[[1]gdclass.Script] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_get_open_scripts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Script]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

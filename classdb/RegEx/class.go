@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A regular expression (or regex) is a compact language that can be used to recognize strings that follow a specific pattern, such as URLs, email addresses, complete sentences, etc. For example, a regex of [code]ab[0-9][/code] would find any string that is [code]ab[/code] followed by any number from [code]0[/code] to [code]9[/code]. For a more in-depth look, you can easily find various tutorials and detailed explanations on the Internet.
@@ -113,7 +117,7 @@ Searches the text for the compiled pattern. Returns an array of [RegExMatch] con
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 func (self Instance) SearchAll(subject string) [][1]gdclass.RegExMatch {
-	return [][1]gdclass.RegExMatch(gd.ArrayAs[[][1]gdclass.RegExMatch](class(self).SearchAll(gd.NewString(subject), gd.Int(0), gd.Int(-1))))
+	return [][1]gdclass.RegExMatch(gd.ArrayAs[[][1]gdclass.RegExMatch](gd.InternalArray(class(self).SearchAll(gd.NewString(subject), gd.Int(0), gd.Int(-1)))))
 }
 
 /*
@@ -232,14 +236,14 @@ Searches the text for the compiled pattern. Returns an array of [RegExMatch] con
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 //go:nosplit
-func (self class) SearchAll(subject gd.String, offset gd.Int, end gd.Int) gd.Array {
+func (self class) SearchAll(subject gd.String, offset gd.Int, end gd.Int) Array.Contains[[1]gdclass.RegExMatch] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(subject))
 	callframe.Arg(frame, offset)
 	callframe.Arg(frame, end)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_search_all, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.RegExMatch]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

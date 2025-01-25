@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 type Instance [1]gdclass.GLTFSkeleton
 
@@ -74,11 +78,11 @@ func (self Instance) SetRoots(value []int32) {
 }
 
 func (self Instance) UniqueNames() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetUniqueNames()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetUniqueNames())))
 }
 
 func (self Instance) SetUniqueNames(value []string) {
-	class(self).SetUniqueNames(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[gd.String]](value))
 }
 
 func (self Instance) GodotBoneNode() map[any]any {
@@ -138,19 +142,19 @@ func (self class) GetGodotSkeleton() [1]gdclass.Skeleton3D {
 }
 
 //go:nosplit
-func (self class) GetUniqueNames() gd.Array {
+func (self class) GetUniqueNames() Array.Contains[gd.String] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_unique_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetUniqueNames(unique_names gd.Array) {
+func (self class) SetUniqueNames(unique_names Array.Contains[gd.String]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(unique_names))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(unique_names)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_unique_names, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This resource defines a custom rendering effect that can be applied to [Viewport]s through the viewports' [Environment]. You can implement a callback that is called during rendering at a given stage of the rendering pipeline and allows you to insert additional passes. Note that this callback happens on the rendering thread. CompositorEffect is an abstract base class and must be extended to implement specific rendering logic.
@@ -54,7 +58,9 @@ Implement this function with your custom rendering code. [param effect_callback_
 func (Instance) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type int, render_data [1]gdclass.RenderData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var effect_callback_type = gd.UnsafeGet[gd.Int](p_args, 0)
-		var render_data = [1]gdclass.RenderData{pointers.New[gdclass.RenderData]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
+
+		var render_data = [1]gdclass.RenderData{pointers.New[gdclass.RenderData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(render_data[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(effect_callback_type), render_data)
@@ -142,7 +148,9 @@ Implement this function with your custom rendering code. [param effect_callback_
 func (class) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type gd.Int, render_data [1]gdclass.RenderData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var effect_callback_type = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var render_data = [1]gdclass.RenderData{pointers.New[gdclass.RenderData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(render_data[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, effect_callback_type, render_data)

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/CanvasItem"
@@ -22,6 +24,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [PhysicsBody2D] is an abstract base class for 2D game objects affected by physics. All 2D physics bodies inherit from it.
@@ -69,7 +73,7 @@ func (self Instance) GetGravity() Vector2.XY {
 Returns an array of nodes that were added as collision exceptions for this body.
 */
 func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody2D {
-	return [][1]gdclass.PhysicsBody2D(gd.ArrayAs[[][1]gdclass.PhysicsBody2D](class(self).GetCollisionExceptions()))
+	return [][1]gdclass.PhysicsBody2D(gd.ArrayAs[[][1]gdclass.PhysicsBody2D](gd.InternalArray(class(self).GetCollisionExceptions())))
 }
 
 /*
@@ -164,11 +168,11 @@ func (self class) GetGravity() gd.Vector2 {
 Returns an array of nodes that were added as collision exceptions for this body.
 */
 //go:nosplit
-func (self class) GetCollisionExceptions() gd.Array {
+func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody2D] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsBody2D.Bind_get_collision_exceptions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.PhysicsBody2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

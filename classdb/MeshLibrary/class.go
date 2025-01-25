@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A library of meshes. Contains a list of [Mesh] resources, each with a name and ID. Each item can also include collision and navigation shapes. This resource is used in [GridMap].
@@ -88,7 +92,7 @@ Sets an item's collision shapes.
 The array should consist of [Shape3D] objects, each followed by a [Transform3D] that will be applied to it. For shapes that should not have a transform, use [constant Transform3D.IDENTITY].
 */
 func (self Instance) SetItemShapes(id int, shapes []any) {
-	class(self).SetItemShapes(gd.Int(id), gd.NewVariant(shapes).Interface().(gd.Array))
+	class(self).SetItemShapes(gd.Int(id), gd.EngineArrayFromSlice(shapes))
 }
 
 /*
@@ -145,7 +149,7 @@ Returns an item's collision shapes.
 The array consists of each [Shape3D] followed by its [Transform3D].
 */
 func (self Instance) GetItemShapes(id int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetItemShapes(gd.Int(id))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetItemShapes(gd.Int(id)))))
 }
 
 /*
@@ -306,10 +310,10 @@ Sets an item's collision shapes.
 The array should consist of [Shape3D] objects, each followed by a [Transform3D] that will be applied to it. For shapes that should not have a transform, use [constant Transform3D.IDENTITY].
 */
 //go:nosplit
-func (self class) SetItemShapes(id gd.Int, shapes gd.Array) {
+func (self class) SetItemShapes(id gd.Int, shapes Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(shapes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(shapes)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -417,12 +421,12 @@ Returns an item's collision shapes.
 The array consists of each [Shape3D] followed by its [Transform3D].
 */
 //go:nosplit
-func (self class) GetItemShapes(id gd.Int) gd.Array {
+func (self class) GetItemShapes(id gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

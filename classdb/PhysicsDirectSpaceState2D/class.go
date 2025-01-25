@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Provides direct access to a physics space in the [PhysicsServer2D]. It's used mainly to do queries against objects and areas residing in a given space.
@@ -41,7 +45,7 @@ The number of intersections can be limited with the [param max_results] paramete
 [b]Note:[/b] [ConcavePolygonShape2D]s and [CollisionPolygon2D]s in [code]Segments[/code] build mode are not solid shapes. Therefore, they will not be detected.
 */
 func (self Instance) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters2D) []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).IntersectPoint(parameters, gd.Int(32))))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).IntersectPoint(parameters, gd.Int(32)))))
 }
 
 /*
@@ -67,7 +71,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
 func (self Instance) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D) []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).IntersectShape(parameters, gd.Int(32))))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).IntersectShape(parameters, gd.Int(32)))))
 }
 
 /*
@@ -84,7 +88,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 Returned points are a list of pairs of contact points. For each pair the first one is in the shape passed in [PhysicsShapeQueryParameters2D] object, second one is in the collided shape from the physics space.
 */
 func (self Instance) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D) []Vector2.XY {
-	return []Vector2.XY(gd.ArrayAs[[]Vector2.XY](class(self).CollideShape(parameters, gd.Int(32))))
+	return []Vector2.XY(gd.ArrayAs[[]Vector2.XY](gd.InternalArray(class(self).CollideShape(parameters, gd.Int(32)))))
 }
 
 /*
@@ -129,13 +133,13 @@ The number of intersections can be limited with the [param max_results] paramete
 [b]Note:[/b] [ConcavePolygonShape2D]s and [CollisionPolygon2D]s in [code]Segments[/code] build mode are not solid shapes. Therefore, they will not be detected.
 */
 //go:nosplit
-func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters2D, max_results gd.Int) gd.Array {
+func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters2D, max_results gd.Int) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState2D.Bind_intersect_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -170,13 +174,13 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
 //go:nosplit
-func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results gd.Int) gd.Array {
+func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results gd.Int) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState2D.Bind_intersect_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -202,13 +206,13 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 Returned points are a list of pairs of contact points. For each pair the first one is in the shape passed in [PhysicsShapeQueryParameters2D] object, second one is in the collided shape from the physics space.
 */
 //go:nosplit
-func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results gd.Int) gd.Array {
+func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results gd.Int) Array.Contains[gd.Vector2] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, max_results)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState2D.Bind_collide_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

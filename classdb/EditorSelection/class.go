@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This object manages the SceneTree selection in the editor.
@@ -57,14 +61,14 @@ func (self Instance) RemoveNode(node [1]gdclass.Node) {
 Returns the list of selected nodes.
 */
 func (self Instance) GetSelectedNodes() [][1]gdclass.Node {
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).GetSelectedNodes()))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetSelectedNodes())))
 }
 
 /*
 Returns the list of selected nodes, optimized for transform operations (i.e. moving them, rotating, etc.). This list can be used to avoid situations where a node is selected and is also a child/grandchild.
 */
 func (self Instance) GetTransformableSelectedNodes() [][1]gdclass.Node {
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).GetTransformableSelectedNodes()))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetTransformableSelectedNodes())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -125,11 +129,11 @@ func (self class) RemoveNode(node [1]gdclass.Node) {
 Returns the list of selected nodes.
 */
 //go:nosplit
-func (self class) GetSelectedNodes() gd.Array {
+func (self class) GetSelectedNodes() Array.Contains[[1]gdclass.Node] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSelection.Bind_get_selected_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -138,11 +142,11 @@ func (self class) GetSelectedNodes() gd.Array {
 Returns the list of selected nodes, optimized for transform operations (i.e. moving them, rotating, etc.). This list can be used to avoid situations where a node is selected and is also a child/grandchild.
 */
 //go:nosplit
-func (self class) GetTransformableSelectedNodes() gd.Array {
+func (self class) GetTransformableSelectedNodes() Array.Contains[[1]gdclass.Node] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSelection.Bind_get_transformable_selected_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

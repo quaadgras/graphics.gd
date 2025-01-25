@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The [Input] singleton handles key presses, mouse buttons and movement, gamepads, and input actions. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
@@ -233,7 +237,7 @@ Returns an [Array] containing the device IDs of all currently connected joypads.
 */
 func GetConnectedJoypads() []int {
 	once.Do(singleton)
-	return []int(gd.ArrayAs[[]int](class(self).GetConnectedJoypads()))
+	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetConnectedJoypads())))
 }
 
 /*
@@ -849,11 +853,11 @@ func (self class) ShouldIgnoreDevice(vendor_id gd.Int, product_id gd.Int) bool {
 Returns an [Array] containing the device IDs of all currently connected joypads.
 */
 //go:nosplit
-func (self class) GetConnectedJoypads() gd.Array {
+func (self class) GetConnectedJoypads() Array.Contains[gd.Int] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_connected_joypads, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Int]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

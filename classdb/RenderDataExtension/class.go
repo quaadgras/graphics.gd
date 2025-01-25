@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/RenderData"
 import "graphics.gd/classdb/Resource"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class allows for a RenderData implementation to be made in GDExtension.
@@ -64,6 +68,7 @@ func (Instance) _get_render_scene_buffers(impl func(ptr unsafe.Pointer) [1]gdcla
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -79,6 +84,7 @@ func (Instance) _get_render_scene_data(impl func(ptr unsafe.Pointer) [1]gdclass.
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -134,6 +140,7 @@ func (class) _get_render_scene_buffers(impl func(ptr unsafe.Pointer) [1]gdclass.
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -149,6 +156,7 @@ func (class) _get_render_scene_data(impl func(ptr unsafe.Pointer) [1]gdclass.Ren
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}

@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [EngineDebugger] handles the communication between the editor and the running game. It is active in the running game. Messages can be sent/received through it. It also manages the profilers.
@@ -74,7 +78,7 @@ Calls the [code]add[/code] callable of the profiler with given [param name] and 
 */
 func ProfilerAddFrameData(name string, data []any) {
 	once.Do(singleton)
-	class(self).ProfilerAddFrameData(gd.NewStringName(name), gd.NewVariant(data).Interface().(gd.Array))
+	class(self).ProfilerAddFrameData(gd.NewStringName(name), gd.EngineArrayFromSlice(data))
 }
 
 /*
@@ -82,7 +86,7 @@ Calls the [code]toggle[/code] callable of the profiler with given [param name] a
 */
 func ProfilerEnable(name string, enable bool) {
 	once.Do(singleton)
-	class(self).ProfilerEnable(gd.NewStringName(name), enable, gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))
+	class(self).ProfilerEnable(gd.NewStringName(name), enable, Array.Nil)
 }
 
 /*
@@ -123,7 +127,7 @@ Sends a message with given [param message] and [param data] array.
 */
 func SendMessage(message string, data []any) {
 	once.Do(singleton)
-	class(self).SendMessage(gd.NewString(message), gd.NewVariant(data).Interface().(gd.Array))
+	class(self).SendMessage(gd.NewString(message), gd.EngineArrayFromSlice(data))
 }
 
 /*
@@ -294,10 +298,10 @@ func (self class) HasProfiler(name gd.StringName) bool {
 Calls the [code]add[/code] callable of the profiler with given [param name] and [param data].
 */
 //go:nosplit
-func (self class) ProfilerAddFrameData(name gd.StringName, data gd.Array) {
+func (self class) ProfilerAddFrameData(name gd.StringName, data Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_profiler_add_frame_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -307,11 +311,11 @@ func (self class) ProfilerAddFrameData(name gd.StringName, data gd.Array) {
 Calls the [code]toggle[/code] callable of the profiler with given [param name] and [param arguments]. Enables/Disables the same profiler depending on [param enable] argument.
 */
 //go:nosplit
-func (self class) ProfilerEnable(name gd.StringName, enable bool, arguments gd.Array) {
+func (self class) ProfilerEnable(name gd.StringName, enable bool, arguments Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, enable)
-	callframe.Arg(frame, pointers.Get(arguments))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(arguments)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_profiler_enable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -372,10 +376,10 @@ func (self class) LinePoll() {
 Sends a message with given [param message] and [param data] array.
 */
 //go:nosplit
-func (self class) SendMessage(message gd.String, data gd.Array) {
+func (self class) SendMessage(message gd.String, data Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(message))
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EngineDebugger.Bind_send_message, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

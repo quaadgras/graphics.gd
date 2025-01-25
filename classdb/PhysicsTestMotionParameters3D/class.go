@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 By changing various properties of this object, such as the motion, you can configure the parameters for [method PhysicsServer3D.body_test_motion].
@@ -94,19 +98,19 @@ func (self Instance) SetCollideSeparationRay(value bool) {
 }
 
 func (self Instance) ExcludeBodies() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetExcludeBodies()))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetExcludeBodies())))
 }
 
 func (self Instance) SetExcludeBodies(value []Resource.ID) {
-	class(self).SetExcludeBodies(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetExcludeBodies(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
 }
 
 func (self Instance) ExcludeObjects() []int {
-	return []int(gd.ArrayAs[[]int](class(self).GetExcludeObjects()))
+	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetExcludeObjects())))
 }
 
 func (self Instance) SetExcludeObjects(value []int) {
-	class(self).SetExcludeObjects(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetExcludeObjects(gd.ArrayFromSlice[Array.Contains[gd.Int]](value))
 }
 
 func (self Instance) RecoveryAsCollision() bool {
@@ -213,38 +217,38 @@ func (self class) SetCollideSeparationRayEnabled(enabled bool) {
 }
 
 //go:nosplit
-func (self class) GetExcludeBodies() gd.Array {
+func (self class) GetExcludeBodies() Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_get_exclude_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetExcludeBodies(exclude_list gd.Array) {
+func (self class) SetExcludeBodies(exclude_list Array.Contains[gd.RID]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(exclude_list))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude_list)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_set_exclude_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetExcludeObjects() gd.Array {
+func (self class) GetExcludeObjects() Array.Contains[gd.Int] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_get_exclude_objects, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Int]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetExcludeObjects(exclude_list gd.Array) {
+func (self class) SetExcludeObjects(exclude_list Array.Contains[gd.Int]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(exclude_list))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude_list)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_set_exclude_objects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

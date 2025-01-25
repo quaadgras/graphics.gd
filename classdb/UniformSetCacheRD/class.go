@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Uniform set cache manager for Rendering Device based renderers. Provides a way to create a uniform set and reuse it in subsequent calls for as long as the uniform set exists. Uniform set will automatically be cleaned up when dependent objects are freed.
@@ -36,7 +40,7 @@ Creates/returns a cached uniform set based on the provided uniforms for a given 
 */
 func GetCache(shader Resource.ID, set int, uniforms [][1]gdclass.RDUniform) Resource.ID {
 	self := Instance{}
-	return Resource.ID(class(self).GetCache(shader, gd.Int(set), gd.NewVariant(uniforms).Interface().(gd.Array)))
+	return Resource.ID(class(self).GetCache(shader, gd.Int(set), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -61,11 +65,11 @@ func New() Instance {
 Creates/returns a cached uniform set based on the provided uniforms for a given shader.
 */
 //go:nosplit
-func (self class) GetCache(shader gd.RID, set gd.Int, uniforms gd.Array) gd.RID {
+func (self class) GetCache(shader gd.RID, set gd.Int, uniforms Array.Contains[[1]gdclass.RDUniform]) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	callframe.Arg(frame, set)
-	callframe.Arg(frame, pointers.Get(uniforms))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(uniforms)))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UniformSetCacheRD.Bind_get_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

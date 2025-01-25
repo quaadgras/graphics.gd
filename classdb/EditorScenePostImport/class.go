@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Imported scenes can be automatically modified right after import by setting their [b]Custom Script[/b] Import property to a [code]tool[/code] script that inherits from this class.
@@ -103,11 +107,13 @@ Called after the scene was imported. This method must return the modified versio
 */
 func (Instance) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -147,10 +153,12 @@ Called after the scene was imported. This method must return the modified versio
 func (class) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}

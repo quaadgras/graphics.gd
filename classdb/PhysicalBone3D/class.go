@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/PhysicsBody3D"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node3D"
@@ -23,6 +25,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The [PhysicalBone3D] node is a physics body that can be used to make bones in a [Skeleton3D] react to physics.
@@ -58,7 +62,8 @@ Called during physics processing, allowing you to read and safely modify the sim
 */
 func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.PhysicsDirectBodyState3D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var state = [1]gdclass.PhysicsDirectBodyState3D{pointers.New[gdclass.PhysicsDirectBodyState3D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var state = [1]gdclass.PhysicsDirectBodyState3D{pointers.New[gdclass.PhysicsDirectBodyState3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, state)
@@ -232,6 +237,7 @@ Called during physics processing, allowing you to read and safely modify the sim
 func (class) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.PhysicsDirectBodyState3D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.PhysicsDirectBodyState3D{pointers.New[gdclass.PhysicsDirectBodyState3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(state[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, state)

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Shader"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class provides a graph-like visual editor for creating a [Shader]. Although [VisualShader]s do not require coding, they share the same logic with script shaders. They use [VisualShaderNode]s that can be connected to each other to control the flow of the shader. The visual shader graph is converted to a script shader behind the scenes.
@@ -135,7 +139,7 @@ func (self Instance) ConnectNodesForced(atype gdclass.VisualShaderType, from_nod
 Returns the list of connected nodes with the specified type.
 */
 func (self Instance) GetNodeConnections(atype gdclass.VisualShaderType) []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetNodeConnections(atype)))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetNodeConnections(atype))))
 }
 
 /*
@@ -416,12 +420,12 @@ func (self class) ConnectNodesForced(atype gdclass.VisualShaderType, from_node g
 Returns the list of connected nodes with the specified type.
 */
 //go:nosplit
-func (self class) GetNodeConnections(atype gdclass.VisualShaderType) gd.Array {
+func (self class) GetNodeConnections(atype gdclass.VisualShaderType) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShader.Bind_get_node_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

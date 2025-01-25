@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [RenderingDevice] is an abstraction for working with modern low-level graphics APIs such as Vulkan. Compared to [RenderingServer] (which works with Godot's own rendering subsystems), [RenderingDevice] is much lower-level and allows working more directly with the underlying graphics APIs. [RenderingDevice] is used in Godot to provide support for several modern low-level graphics APIs while reducing the amount of code duplication required. [RenderingDevice] can also be used in your own projects to perform things that are not exposed by [RenderingServer] or high-level nodes, such as using compute shaders.
@@ -44,7 +48,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [b]Note:[/b] Not to be confused with [method RenderingServer.texture_2d_create], which creates the Godot-specific [Texture2D] resource as opposed to the graphics API's own texture type.
 */
 func (self Instance) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView) Resource.ID {
-	return Resource.ID(class(self).TextureCreate(format, view, gd.NewVariant([1][][]byte{}[0]).Interface().(gd.Array)))
+	return Resource.ID(class(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[gd.PackedByteArray]]([1][][]byte{}[0])))
 }
 
 /*
@@ -164,14 +168,14 @@ Creates a new framebuffer format with the specified [param attachments] and [par
 If [param view_count] is greater than or equal to [code]2[/code], enables multiview which is used for VR rendering. This requires support for the Vulkan multiview extension.
 */
 func (self Instance) FramebufferFormatCreate(attachments [][1]gdclass.RDAttachmentFormat) int {
-	return int(int(class(self).FramebufferFormatCreate(gd.NewVariant(attachments).Interface().(gd.Array), gd.Int(1))))
+	return int(int(class(self).FramebufferFormatCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDAttachmentFormat]](attachments), gd.Int(1))))
 }
 
 /*
 Creates a multipass framebuffer format with the specified [param attachments], [param passes] and [param view_count] and returns its ID. If [param view_count] is greater than or equal to [code]2[/code], enables multiview which is used for VR rendering. This requires support for the Vulkan multiview extension.
 */
 func (self Instance) FramebufferFormatCreateMultipass(attachments [][1]gdclass.RDAttachmentFormat, passes [][1]gdclass.RDFramebufferPass) int {
-	return int(int(class(self).FramebufferFormatCreateMultipass(gd.NewVariant(attachments).Interface().(gd.Array), gd.NewVariant(passes).Interface().(gd.Array), gd.Int(1))))
+	return int(int(class(self).FramebufferFormatCreateMultipass(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDAttachmentFormat]](attachments), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), gd.Int(1))))
 }
 
 /*
@@ -193,7 +197,7 @@ Creates a new framebuffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) FramebufferCreate(textures []Resource.ID) Resource.ID {
-	return Resource.ID(class(self).FramebufferCreate(gd.NewVariant(textures).Interface().(gd.Array), gd.Int(-1), gd.Int(1)))
+	return Resource.ID(class(self).FramebufferCreate(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.Int(-1), gd.Int(1)))
 }
 
 /*
@@ -201,7 +205,7 @@ Creates a new multipass framebuffer. It can be accessed with the RID that is ret
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) FramebufferCreateMultipass(textures []Resource.ID, passes [][1]gdclass.RDFramebufferPass) Resource.ID {
-	return Resource.ID(class(self).FramebufferCreateMultipass(gd.NewVariant(textures).Interface().(gd.Array), gd.NewVariant(passes).Interface().(gd.Array), gd.Int(-1), gd.Int(1)))
+	return Resource.ID(class(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), gd.Int(-1), gd.Int(1)))
 }
 
 /*
@@ -253,14 +257,14 @@ func (self Instance) VertexBufferCreate(size_bytes int) Resource.ID {
 Creates a new vertex format with the specified [param vertex_descriptions]. Returns a unique vertex format ID corresponding to the newly created vertex format.
 */
 func (self Instance) VertexFormatCreate(vertex_descriptions [][1]gdclass.RDVertexAttribute) int {
-	return int(int(class(self).VertexFormatCreate(gd.NewVariant(vertex_descriptions).Interface().(gd.Array))))
+	return int(int(class(self).VertexFormatCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDVertexAttribute]](vertex_descriptions))))
 }
 
 /*
 Creates a vertex array based on the specified buffers. Optionally, [param offsets] (in bytes) may be defined for each buffer.
 */
 func (self Instance) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers []Resource.ID) Resource.ID {
-	return Resource.ID(class(self).VertexArrayCreate(gd.Int(vertex_count), gd.Int(vertex_format), gd.NewVariant(src_buffers).Interface().(gd.Array), gd.NewPackedInt64Slice([1][]int64{}[0])))
+	return Resource.ID(class(self).VertexArrayCreate(gd.Int(vertex_count), gd.Int(vertex_format), gd.ArrayFromSlice[Array.Contains[gd.RID]](src_buffers), gd.NewPackedInt64Slice([1][]int64{}[0])))
 }
 
 /*
@@ -354,7 +358,7 @@ Creates a new uniform set. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) UniformSetCreate(uniforms [][1]gdclass.RDUniform, shader Resource.ID, shader_set int) Resource.ID {
-	return Resource.ID(class(self).UniformSetCreate(gd.NewVariant(uniforms).Interface().(gd.Array), shader, gd.Int(shader_set)))
+	return Resource.ID(class(self).UniformSetCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms), shader, gd.Int(shader_set)))
 }
 
 /*
@@ -410,7 +414,7 @@ Creates a new render pipeline. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) RenderPipelineCreate(shader Resource.ID, framebuffer_format int, vertex_format int, primitive gdclass.RenderingDeviceRenderPrimitive, rasterization_state [1]gdclass.RDPipelineRasterizationState, multisample_state [1]gdclass.RDPipelineMultisampleState, stencil_state [1]gdclass.RDPipelineDepthStencilState, color_blend_state [1]gdclass.RDPipelineColorBlendState) Resource.ID {
-	return Resource.ID(class(self).RenderPipelineCreate(shader, gd.Int(framebuffer_format), gd.Int(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, 0, gd.Int(0), gd.NewVariant([1][][1]gdclass.RDPipelineSpecializationConstant{}[0]).Interface().(gd.Array)))
+	return Resource.ID(class(self).RenderPipelineCreate(shader, gd.Int(framebuffer_format), gd.Int(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, 0, gd.Int(0), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][][1]gdclass.RDPipelineSpecializationConstant{}[0])))
 }
 
 /*
@@ -425,7 +429,7 @@ Creates a new compute pipeline. It can be accessed with the RID that is returned
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) ComputePipelineCreate(shader Resource.ID) Resource.ID {
-	return Resource.ID(class(self).ComputePipelineCreate(shader, gd.NewVariant([1][][1]gdclass.RDPipelineSpecializationConstant{}[0]).Interface().(gd.Array)))
+	return Resource.ID(class(self).ComputePipelineCreate(shader, gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][][1]gdclass.RDPipelineSpecializationConstant{}[0])))
 }
 
 /*
@@ -498,7 +502,7 @@ func (self Instance) DrawListBegin(framebuffer Resource.ID, initial_color_action
 This method does nothing and always returns an empty [PackedInt64Array].
 */
 func (self Instance) DrawListBeginSplit(framebuffer Resource.ID, splits int, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction) []int64 {
-	return []int64(class(self).DrawListBeginSplit(framebuffer, gd.Int(splits), initial_color_action, final_color_action, initial_depth_action, final_depth_action, gd.NewPackedColorSlice(nil), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.NewVariant([1][]Resource.ID{}[0]).Interface().(gd.Array)).AsSlice())
+	return []int64(class(self).DrawListBeginSplit(framebuffer, gd.Int(splits), initial_color_action, final_color_action, initial_depth_action, final_depth_action, gd.NewPackedColorSlice(nil), gd.Float(1.0), gd.Int(0), gd.Rect2(gd.NewRect2(0, 0, 0, 0)), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]Resource.ID{}[0])).AsSlice())
 }
 
 /*
@@ -852,11 +856,11 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [b]Note:[/b] Not to be confused with [method RenderingServer.texture_2d_create], which creates the Godot-specific [Texture2D] resource as opposed to the graphics API's own texture type.
 */
 //go:nosplit
-func (self class) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, data gd.Array) gd.RID {
+func (self class) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, data Array.Contains[gd.PackedByteArray]) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(format[0])[0])
 	callframe.Arg(frame, pointers.Get(view[0])[0])
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1104,9 +1108,9 @@ Creates a new framebuffer format with the specified [param attachments] and [par
 If [param view_count] is greater than or equal to [code]2[/code], enables multiview which is used for VR rendering. This requires support for the Vulkan multiview extension.
 */
 //go:nosplit
-func (self class) FramebufferFormatCreate(attachments gd.Array, view_count gd.Int) gd.Int {
+func (self class) FramebufferFormatCreate(attachments Array.Contains[[1]gdclass.RDAttachmentFormat], view_count gd.Int) gd.Int {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(attachments))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(attachments)))
 	callframe.Arg(frame, view_count)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_framebuffer_format_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1119,10 +1123,10 @@ func (self class) FramebufferFormatCreate(attachments gd.Array, view_count gd.In
 Creates a multipass framebuffer format with the specified [param attachments], [param passes] and [param view_count] and returns its ID. If [param view_count] is greater than or equal to [code]2[/code], enables multiview which is used for VR rendering. This requires support for the Vulkan multiview extension.
 */
 //go:nosplit
-func (self class) FramebufferFormatCreateMultipass(attachments gd.Array, passes gd.Array, view_count gd.Int) gd.Int {
+func (self class) FramebufferFormatCreateMultipass(attachments Array.Contains[[1]gdclass.RDAttachmentFormat], passes Array.Contains[[1]gdclass.RDFramebufferPass], view_count gd.Int) gd.Int {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(attachments))
-	callframe.Arg(frame, pointers.Get(passes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(attachments)))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(passes)))
 	callframe.Arg(frame, view_count)
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_framebuffer_format_create_multipass, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1165,9 +1169,9 @@ Creates a new framebuffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) FramebufferCreate(textures gd.Array, validate_with_format gd.Int, view_count gd.Int) gd.RID {
+func (self class) FramebufferCreate(textures Array.Contains[gd.RID], validate_with_format gd.Int, view_count gd.Int) gd.RID {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(textures))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(textures)))
 	callframe.Arg(frame, validate_with_format)
 	callframe.Arg(frame, view_count)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -1182,10 +1186,10 @@ Creates a new multipass framebuffer. It can be accessed with the RID that is ret
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) FramebufferCreateMultipass(textures gd.Array, passes gd.Array, validate_with_format gd.Int, view_count gd.Int) gd.RID {
+func (self class) FramebufferCreateMultipass(textures Array.Contains[gd.RID], passes Array.Contains[[1]gdclass.RDFramebufferPass], validate_with_format gd.Int, view_count gd.Int) gd.RID {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(textures))
-	callframe.Arg(frame, pointers.Get(passes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(textures)))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(passes)))
 	callframe.Arg(frame, validate_with_format)
 	callframe.Arg(frame, view_count)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -1291,9 +1295,9 @@ func (self class) VertexBufferCreate(size_bytes gd.Int, data gd.PackedByteArray,
 Creates a new vertex format with the specified [param vertex_descriptions]. Returns a unique vertex format ID corresponding to the newly created vertex format.
 */
 //go:nosplit
-func (self class) VertexFormatCreate(vertex_descriptions gd.Array) gd.Int {
+func (self class) VertexFormatCreate(vertex_descriptions Array.Contains[[1]gdclass.RDVertexAttribute]) gd.Int {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(vertex_descriptions))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(vertex_descriptions)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_vertex_format_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1305,11 +1309,11 @@ func (self class) VertexFormatCreate(vertex_descriptions gd.Array) gd.Int {
 Creates a vertex array based on the specified buffers. Optionally, [param offsets] (in bytes) may be defined for each buffer.
 */
 //go:nosplit
-func (self class) VertexArrayCreate(vertex_count gd.Int, vertex_format gd.Int, src_buffers gd.Array, offsets gd.PackedInt64Array) gd.RID {
+func (self class) VertexArrayCreate(vertex_count gd.Int, vertex_format gd.Int, src_buffers Array.Contains[gd.RID], offsets gd.PackedInt64Array) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, vertex_count)
 	callframe.Arg(frame, vertex_format)
-	callframe.Arg(frame, pointers.Get(src_buffers))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(src_buffers)))
 	callframe.Arg(frame, pointers.Get(offsets))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_vertex_array_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1499,9 +1503,9 @@ Creates a new uniform set. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) UniformSetCreate(uniforms gd.Array, shader gd.RID, shader_set gd.Int) gd.RID {
+func (self class) UniformSetCreate(uniforms Array.Contains[[1]gdclass.RDUniform], shader gd.RID, shader_set gd.Int) gd.RID {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(uniforms))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(uniforms)))
 	callframe.Arg(frame, shader)
 	callframe.Arg(frame, shader_set)
 	var r_ret = callframe.Ret[gd.RID](frame)
@@ -1610,7 +1614,7 @@ Creates a new render pipeline. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) RenderPipelineCreate(shader gd.RID, framebuffer_format gd.Int, vertex_format gd.Int, primitive gdclass.RenderingDeviceRenderPrimitive, rasterization_state [1]gdclass.RDPipelineRasterizationState, multisample_state [1]gdclass.RDPipelineMultisampleState, stencil_state [1]gdclass.RDPipelineDepthStencilState, color_blend_state [1]gdclass.RDPipelineColorBlendState, dynamic_state_flags gdclass.RenderingDevicePipelineDynamicStateFlags, for_render_pass gd.Int, specialization_constants gd.Array) gd.RID {
+func (self class) RenderPipelineCreate(shader gd.RID, framebuffer_format gd.Int, vertex_format gd.Int, primitive gdclass.RenderingDeviceRenderPrimitive, rasterization_state [1]gdclass.RDPipelineRasterizationState, multisample_state [1]gdclass.RDPipelineMultisampleState, stencil_state [1]gdclass.RDPipelineDepthStencilState, color_blend_state [1]gdclass.RDPipelineColorBlendState, dynamic_state_flags gdclass.RenderingDevicePipelineDynamicStateFlags, for_render_pass gd.Int, specialization_constants Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	callframe.Arg(frame, framebuffer_format)
@@ -1622,7 +1626,7 @@ func (self class) RenderPipelineCreate(shader gd.RID, framebuffer_format gd.Int,
 	callframe.Arg(frame, pointers.Get(color_blend_state[0])[0])
 	callframe.Arg(frame, dynamic_state_flags)
 	callframe.Arg(frame, for_render_pass)
-	callframe.Arg(frame, pointers.Get(specialization_constants))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(specialization_constants)))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_render_pipeline_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1649,10 +1653,10 @@ Creates a new compute pipeline. It can be accessed with the RID that is returned
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) ComputePipelineCreate(shader gd.RID, specialization_constants gd.Array) gd.RID {
+func (self class) ComputePipelineCreate(shader gd.RID, specialization_constants Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
-	callframe.Arg(frame, pointers.Get(specialization_constants))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(specialization_constants)))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_compute_pipeline_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1781,7 +1785,7 @@ func (self class) DrawListBegin(framebuffer gd.RID, initial_color_action gdclass
 This method does nothing and always returns an empty [PackedInt64Array].
 */
 //go:nosplit
-func (self class) DrawListBeginSplit(framebuffer gd.RID, splits gd.Int, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction, clear_color_values gd.PackedColorArray, clear_depth gd.Float, clear_stencil gd.Int, region gd.Rect2, storage_textures gd.Array) gd.PackedInt64Array {
+func (self class) DrawListBeginSplit(framebuffer gd.RID, splits gd.Int, initial_color_action gdclass.RenderingDeviceInitialAction, final_color_action gdclass.RenderingDeviceFinalAction, initial_depth_action gdclass.RenderingDeviceInitialAction, final_depth_action gdclass.RenderingDeviceFinalAction, clear_color_values gd.PackedColorArray, clear_depth gd.Float, clear_stencil gd.Int, region gd.Rect2, storage_textures Array.Contains[gd.RID]) gd.PackedInt64Array {
 	var frame = callframe.New()
 	callframe.Arg(frame, framebuffer)
 	callframe.Arg(frame, splits)
@@ -1793,7 +1797,7 @@ func (self class) DrawListBeginSplit(framebuffer gd.RID, splits gd.Int, initial_
 	callframe.Arg(frame, clear_depth)
 	callframe.Arg(frame, clear_stencil)
 	callframe.Arg(frame, region)
-	callframe.Arg(frame, pointers.Get(storage_textures))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(storage_textures)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_draw_list_begin_split, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.PackedInt64Array](r_ret.Get())

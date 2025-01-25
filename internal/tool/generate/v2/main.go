@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"graphics.gd/internal/gdjson"
+	"graphics.gd/internal/gdtype"
 	"runtime.link/api/xray"
 )
 
@@ -64,6 +65,7 @@ func generate() error {
 		mod.IsSingleton = true
 		classDB[class.Name] = mod
 	}
+	gdtype.ClassDB = classDB
 	file, err := os.Create("./classdb/objects.go")
 	if err != nil {
 		return xray.New(err)
@@ -138,8 +140,10 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "graphics.gd/internal/callframe"`)
 	fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/Object"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/RefCounted"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant/Array"`)
 	var imported = make(map[string]bool)
 	if class.Name == "TextEdit" {
 		imported["graphics.gd/variant/Rect2"] = true
@@ -168,21 +172,27 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 					continue
 				}
 			}
-			if need := importsVariant(class, class.Name+"."+method.Name+"."+arg.Name, arg.Type); need != "" && !imported[need] {
-				imported[need] = true
-				fmt.Fprintf(file, "import %q\n", need)
+			for pkg := range importsVariant(class, class.Name+"."+method.Name+"."+arg.Name, arg.Type) {
+				if !imported[pkg] {
+					imported[pkg] = true
+					fmt.Fprintf(file, "import %q\n", pkg)
+				}
 			}
 		}
-		if need := importsVariant(class, "", method.ReturnValue.Type); need != "" && !imported[need] {
-			imported[need] = true
-			fmt.Fprintf(file, "import %q\n", need)
+		for pkg := range importsVariant(class, "", method.ReturnValue.Type) {
+			if !imported[pkg] {
+				imported[pkg] = true
+				fmt.Fprintf(file, "import %q\n", pkg)
+			}
 		}
 	}
 	for _, signal := range class.Signals {
 		for _, arg := range signal.Arguments {
-			if need := importsVariant(class, "", arg.Type); need != "" && !imported[need] {
-				imported[need] = true
-				fmt.Fprintf(file, "import %q\n", need)
+			for pkg := range importsVariant(class, class.Name+"."+signal.Name+"."+arg.Name, arg.Type) {
+				if !imported[pkg] {
+					imported[pkg] = true
+					fmt.Fprintf(file, "import %q\n", pkg)
+				}
 			}
 		}
 	}
@@ -193,6 +203,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ reflect.Type")
 	fmt.Fprintln(file, "var _ callframe.Frame")
 	fmt.Fprintln(file, "var _ = pointers.Cycle")
+	fmt.Fprintln(file, "var _ = Array.Nil")
+	fmt.Fprintln(file, "var _ variant.Any")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
 	var hasVirtual bool

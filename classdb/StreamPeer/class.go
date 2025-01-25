@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 StreamPeer is an abstract base class mostly used for stream-based protocols (such as TCP). It provides an API for sending and receiving data through streams as raw data or strings.
@@ -43,21 +47,21 @@ func (self Instance) PutData(data []byte) error {
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [enum Error] code and an integer, describing how much data was actually sent.
 */
 func (self Instance) PutPartialData(data []byte) []any {
-	return []any(gd.ArrayAs[[]any](class(self).PutPartialData(gd.NewPackedByteSlice(data))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).PutPartialData(gd.NewPackedByteSlice(data)))))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the [param bytes] argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [enum Error] code and a data array.
 */
 func (self Instance) GetData(bytes int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetData(gd.Int(bytes))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetData(gd.Int(bytes)))))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [enum Error] code, and a data array.
 */
 func (self Instance) GetPartialData(bytes int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetPartialData(gd.Int(bytes))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetPartialData(gd.Int(bytes)))))
 }
 
 /*
@@ -315,12 +319,12 @@ func (self class) PutData(data gd.PackedByteArray) gd.Error {
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [enum Error] code and an integer, describing how much data was actually sent.
 */
 //go:nosplit
-func (self class) PutPartialData(data gd.PackedByteArray) gd.Array {
+func (self class) PutPartialData(data gd.PackedByteArray) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(data))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_put_partial_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -329,12 +333,12 @@ func (self class) PutPartialData(data gd.PackedByteArray) gd.Array {
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the [param bytes] argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [enum Error] code and a data array.
 */
 //go:nosplit
-func (self class) GetData(bytes gd.Int) gd.Array {
+func (self class) GetData(bytes gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -343,12 +347,12 @@ func (self class) GetData(bytes gd.Int) gd.Array {
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [enum Error] code, and a data array.
 */
 //go:nosplit
-func (self class) GetPartialData(bytes gd.Int) gd.Array {
+func (self class) GetPartialData(bytes gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, bytes)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeer.Bind_get_partial_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

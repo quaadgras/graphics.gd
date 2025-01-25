@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -25,6 +27,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [CodeEdit].
@@ -78,7 +82,9 @@ Override this method to define what happens when the user types in the provided 
 func (Instance) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char int, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var unicode_char = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(unicode_char), int(caret_index))
 	}
@@ -90,6 +96,7 @@ Override this method to define what happens when the user presses the backspace 
 func (Instance) _backspace(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
 	}
@@ -101,6 +108,7 @@ Override this method to define what happens when the user performs a cut operati
 func (Instance) _cut(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
 	}
@@ -112,6 +120,7 @@ Override this method to define what happens when the user performs a copy operat
 func (Instance) _copy(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
 	}
@@ -123,6 +132,7 @@ Override this method to define what happens when the user performs a paste opera
 func (Instance) _paste(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
 	}
@@ -135,6 +145,7 @@ Override this method to define what happens when the user performs a paste opera
 func (Instance) _paste_primary_clipboard(impl func(ptr unsafe.Pointer, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(caret_index))
 	}
@@ -788,7 +799,7 @@ Returns an [Array] of line ranges where [code]x[/code] is the first line and [co
 If a selection's end column ([method get_selection_to_column]) is at column [code]0[/code], that line will not be included. If a selection begins on the line after another selection ends and [param merge_adjacent] is [code]true[/code], or they begin and end on the same line, one line range will include both selections.
 */
 func (self Instance) GetLineRangesFromCarets() []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetLineRangesFromCarets(false, true)))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetLineRangesFromCarets(false, true))))
 }
 
 /*
@@ -1647,11 +1658,11 @@ func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStruc
 }
 
 func (self Instance) StructuredTextBidiOverrideOptions() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetStructuredTextBidiOverrideOptions()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
 func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
-	class(self).SetStructuredTextBidiOverrideOptions(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }
 
 /*
@@ -1660,7 +1671,9 @@ Override this method to define what happens when the user types in the provided 
 func (class) _handle_unicode_input(impl func(ptr unsafe.Pointer, unicode_char gd.Int, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var unicode_char = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, unicode_char, caret_index)
 	}
@@ -1672,6 +1685,7 @@ Override this method to define what happens when the user presses the backspace 
 func (class) _backspace(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
 	}
@@ -1683,6 +1697,7 @@ Override this method to define what happens when the user performs a cut operati
 func (class) _cut(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
 	}
@@ -1694,6 +1709,7 @@ Override this method to define what happens when the user performs a copy operat
 func (class) _copy(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
 	}
@@ -1705,6 +1721,7 @@ Override this method to define what happens when the user performs a paste opera
 func (class) _paste(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
 	}
@@ -1717,6 +1734,7 @@ Override this method to define what happens when the user performs a paste opera
 func (class) _paste_primary_clipboard(impl func(ptr unsafe.Pointer, caret_index gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var caret_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, caret_index)
 	}
@@ -1834,20 +1852,20 @@ func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTe
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverrideOptions(args gd.Array) {
+func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(args))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverrideOptions() gd.Array {
+func (self class) GetStructuredTextBidiOverrideOptions() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3343,13 +3361,13 @@ Returns an [Array] of line ranges where [code]x[/code] is the first line and [co
 If a selection's end column ([method get_selection_to_column]) is at column [code]0[/code], that line will not be included. If a selection begins on the line after another selection ends and [param merge_adjacent] is [code]true[/code], or they begin and end on the same line, one line range will include both selections.
 */
 //go:nosplit
-func (self class) GetLineRangesFromCarets(only_selections bool, merge_adjacent bool) gd.Array {
+func (self class) GetLineRangesFromCarets(only_selections bool, merge_adjacent bool) Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, only_selections)
 	callframe.Arg(frame, merge_adjacent)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_ranges_from_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

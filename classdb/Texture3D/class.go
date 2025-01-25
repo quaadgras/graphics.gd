@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Base class for [ImageTexture3D] and [CompressedTexture3D]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. [Texture3D] is the base class for all 3-dimensional texture types. See also [TextureLayered].
@@ -126,7 +130,8 @@ func (Instance) _get_data(impl func(ptr unsafe.Pointer) [][1]gdclass.Image) (cb 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](ret)))
+
 		if !ok {
 			return
 		}
@@ -173,7 +178,7 @@ func (self Instance) HasMipmaps() bool {
 Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a [i]slice[/i] of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
 */
 func (self Instance) GetData() [][1]gdclass.Image {
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).GetData()))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).GetData())))
 }
 
 /*
@@ -260,11 +265,12 @@ func (class) _has_mipmaps(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionCl
 /*
 Called when the [Texture3D]'s data is queried.
 */
-func (class) _get_data(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_data(impl func(ptr unsafe.Pointer) Array.Contains[[1]gdclass.Image]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -341,11 +347,11 @@ func (self class) HasMipmaps() bool {
 Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a [i]slice[/i] of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
 */
 //go:nosplit
-func (self class) GetData() gd.Array {
+func (self class) GetData() Array.Contains[[1]gdclass.Image] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

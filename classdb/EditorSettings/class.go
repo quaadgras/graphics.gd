@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Object that holds the project-independent editor settings. These settings are generally visible in the [b]Editor > Editor Settings[/b] menu.
@@ -174,7 +178,7 @@ func (self Instance) GetRecentDirs() []string {
 Overrides the built-in editor action [param name] with the input actions defined in [param actions_list].
 */
 func (self Instance) SetBuiltinActionOverride(name string, actions_list [][1]gdclass.InputEvent) {
-	class(self).SetBuiltinActionOverride(gd.NewString(name), gd.NewVariant(actions_list).Interface().(gd.Array))
+	class(self).SetBuiltinActionOverride(gd.NewString(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
 }
 
 /*
@@ -413,10 +417,10 @@ func (self class) GetRecentDirs() gd.PackedStringArray {
 Overrides the built-in editor action [param name] with the input actions defined in [param actions_list].
 */
 //go:nosplit
-func (self class) SetBuiltinActionOverride(name gd.String, actions_list gd.Array) {
+func (self class) SetBuiltinActionOverride(name gd.String, actions_list Array.Contains[[1]gdclass.InputEvent]) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(name))
-	callframe.Arg(frame, pointers.Get(actions_list))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(actions_list)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_set_builtin_action_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

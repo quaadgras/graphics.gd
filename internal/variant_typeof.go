@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"unsafe"
 
+	ArrayType "graphics.gd/variant/Array"
 	NodePathType "graphics.gd/variant/NodePath"
 )
 
@@ -65,6 +66,8 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 		return TypeDictionary, true
 	case reflect.Struct:
 		switch rtype {
+		case reflect.TypeFor[ArrayType.Any]():
+			return TypeArray, true
 		case reflect.TypeOf([0]Variant{}).Elem():
 			vtype = TypeNil
 		case reflect.TypeOf([0]Bool{}).Elem():

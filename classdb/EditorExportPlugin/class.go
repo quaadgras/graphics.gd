@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [EditorExportPlugin]s are automatically invoked whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, [method _export_begin] is called at the beginning of the export process and then [method _export_file] is called for each exported file.
@@ -211,9 +215,11 @@ func (Instance) _export_begin(impl func(ptr unsafe.Pointer, features []string, i
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
 		defer pointers.End(features)
 		var is_debug = gd.UnsafeGet[bool](p_args, 1)
+
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(path)
 		var flags = gd.UnsafeGet[gd.Int](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, features.Strings(), is_debug, path.String(), int(flags))
 	}
@@ -235,7 +241,8 @@ When enabled, [method _get_customization_configuration_hash] and [method _custom
 */
 func (Instance) _begin_customize_resources(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, features []string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
 		defer pointers.End(features)
@@ -252,13 +259,15 @@ Implementing this method is required if [method _begin_customize_resources] retu
 */
 func (Instance) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path string) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(resource[0])
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path.String())
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -272,7 +281,8 @@ When enabled, [method _get_customization_configuration_hash] and [method _custom
 */
 func (Instance) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, features []string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
 		defer pointers.End(features)
@@ -288,13 +298,15 @@ Implementing this method is required if [method _begin_customize_scenes] returns
 */
 func (Instance) _customize_scene(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node, path string) [1]gdclass.Node) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(scene[0])
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene, path.String())
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -343,11 +355,13 @@ Each element in the return value is a [Dictionary] with the following keys:
 */
 func (Instance) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+
 		if !ok {
 			return
 		}
@@ -379,11 +393,13 @@ class MyExportPlugin extends EditorExportPlugin:
 */
 func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
 		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Dictionary))
+
 		if !ok {
 			return
 		}
@@ -396,7 +412,8 @@ Return [code]true[/code], if the result of [method _get_export_options] has chan
 */
 func (Instance) _should_update_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
@@ -410,13 +427,15 @@ Check the requirements for the given [param option] and return a non-empty warni
 */
 func (Instance) _get_export_option_warning(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, option string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, option.String())
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -429,12 +448,15 @@ Return a [PackedStringArray] of additional features this preset, for the given [
 */
 func (Instance) _get_export_features(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+
 		if !ok {
 			return
 		}
@@ -451,6 +473,7 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -463,7 +486,8 @@ Return [code]true[/code] if the plugin supports the given [param platform].
 */
 func (Instance) _supports_platform(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
@@ -478,12 +502,15 @@ For more information see [url=https://developer.android.com/build/dependencies?a
 */
 func (Instance) _get_android_dependencies(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+
 		if !ok {
 			return
 		}
@@ -499,12 +526,15 @@ For more information see [url=https://docs.gradle.org/current/userguide/dependen
 */
 func (Instance) _get_android_dependencies_maven_repos(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+
 		if !ok {
 			return
 		}
@@ -519,12 +549,15 @@ Virtual method to be overridden by the user. This is called to retrieve the loca
 */
 func (Instance) _get_android_libraries(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+
 		if !ok {
 			return
 		}
@@ -538,12 +571,15 @@ Virtual method to be overridden by the user. This is used at export time to upda
 */
 func (Instance) _get_android_manifest_activity_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -557,12 +593,15 @@ Virtual method to be overridden by the user. This is used at export time to upda
 */
 func (Instance) _get_android_manifest_application_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -576,12 +615,15 @@ Virtual method to be overridden by the user. This is used at export time to upda
 */
 func (Instance) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -706,8 +748,11 @@ Calling [method skip] inside this callback will make the file not included in th
 func (class) _export_file(impl func(ptr unsafe.Pointer, path gd.String, atype gd.String, features gd.PackedStringArray)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(path)
 		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(atype)
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2))
+		defer pointers.End(features)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, path, atype, features)
 	}
@@ -719,9 +764,13 @@ Virtual method to be overridden by the user. It is called when the export starts
 func (class) _export_begin(impl func(ptr unsafe.Pointer, features gd.PackedStringArray, is_debug bool, path gd.String, flags gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
+		defer pointers.End(features)
 		var is_debug = gd.UnsafeGet[bool](p_args, 1)
+
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(path)
 		var flags = gd.UnsafeGet[gd.Int](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, features, is_debug, path, flags)
 	}
@@ -744,8 +793,10 @@ When enabled, [method _get_customization_configuration_hash] and [method _custom
 func (class) _begin_customize_resources(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, features gd.PackedStringArray) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
+		defer pointers.End(features)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, features)
 		gd.UnsafeSet(p_back, ret)
@@ -760,11 +811,14 @@ Implementing this method is required if [method _begin_customize_resources] retu
 func (class) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path gd.String) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(resource[0])
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -779,8 +833,10 @@ When enabled, [method _get_customization_configuration_hash] and [method _custom
 func (class) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, features gd.PackedStringArray) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var features = pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1))
+		defer pointers.End(features)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, features)
 		gd.UnsafeSet(p_back, ret)
@@ -794,11 +850,14 @@ Implementing this method is required if [method _begin_customize_scenes] returns
 func (class) _customize_scene(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node, path gd.String) [1]gdclass.Node) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(scene[0])
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, scene, path)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -845,13 +904,15 @@ Each element in the return value is a [Dictionary] with the following keys:
 - [code]default_value[/code]: The default value for this option.
 - [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
 */
-func (class) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -884,10 +945,12 @@ class MyExportPlugin extends EditorExportPlugin:
 func (class) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) gd.Dictionary) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -901,6 +964,7 @@ Return [code]true[/code], if the result of [method _get_export_options] has chan
 func (class) _should_update_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
@@ -915,11 +979,14 @@ Check the requirements for the given [param option] and return a non-empty warni
 func (class) _get_export_option_warning(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, option gd.String) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, option)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -933,11 +1000,14 @@ Return a [PackedStringArray] of additional features this preset, for the given [
 func (class) _get_export_features(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -954,6 +1024,7 @@ func (class) _get_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Extension
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -967,6 +1038,7 @@ Return [code]true[/code] if the plugin supports the given [param platform].
 func (class) _supports_platform(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
@@ -982,11 +1054,14 @@ For more information see [url=https://developer.android.com/build/dependencies?a
 func (class) _get_android_dependencies(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -1003,11 +1078,14 @@ For more information see [url=https://docs.gradle.org/current/userguide/dependen
 func (class) _get_android_dependencies_maven_repos(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -1023,11 +1101,14 @@ Virtual method to be overridden by the user. This is called to retrieve the loca
 func (class) _get_android_libraries(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.PackedStringArray) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -1042,11 +1123,14 @@ Virtual method to be overridden by the user. This is used at export time to upda
 func (class) _get_android_manifest_activity_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -1061,11 +1145,14 @@ Virtual method to be overridden by the user. This is used at export time to upda
 func (class) _get_android_manifest_application_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -1080,11 +1167,14 @@ Virtual method to be overridden by the user. This is used at export time to upda
 func (class) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}

@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A singleton used to load resource files from the filesystem.
@@ -47,7 +51,7 @@ An array variable can optionally be passed via [param progress], and will return
 */
 func LoadThreadedGetStatus(path string) gdclass.ResourceLoaderThreadLoadStatus {
 	once.Do(singleton)
-	return gdclass.ResourceLoaderThreadLoadStatus(class(self).LoadThreadedGetStatus(gd.NewString(path), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array)))
+	return gdclass.ResourceLoaderThreadLoadStatus(class(self).LoadThreadedGetStatus(gd.NewString(path), Array.Nil))
 }
 
 /*
@@ -184,10 +188,10 @@ An array variable can optionally be passed via [param progress], and will return
 [b]Note:[/b] The recommended way of using this method is to call it during different frames (e.g., in [method Node._process], instead of a loop).
 */
 //go:nosplit
-func (self class) LoadThreadedGetStatus(path gd.String, progress gd.Array) gdclass.ResourceLoaderThreadLoadStatus {
+func (self class) LoadThreadedGetStatus(path gd.String, progress Array.Any) gdclass.ResourceLoaderThreadLoadStatus {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	callframe.Arg(frame, pointers.Get(progress))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(progress)))
 	var r_ret = callframe.Ret[gdclass.ResourceLoaderThreadLoadStatus](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

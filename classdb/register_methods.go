@@ -86,6 +86,7 @@ func variantCall(method reflect.Method) func(instance any, v ...gd.Variant) (gd.
 }
 
 func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd.Address) {
+
 	var (
 		args = make([]reflect.Value, method.Type().NumIn())
 	)

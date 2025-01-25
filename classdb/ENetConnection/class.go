@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
@@ -69,7 +73,7 @@ Call this function regularly to handle connections, disconnections, and to recei
 [b]Note:[/b] This method must be called on both ends involved in the event (sending and receiving hosts).
 */
 func (self Instance) Service() []any {
-	return []any(gd.ArrayAs[[]any](class(self).Service(gd.Int(0))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).Service(gd.Int(0)))))
 }
 
 /*
@@ -157,7 +161,7 @@ Returns the list of peers associated with this host.
 [b]Note:[/b] This list might include some peers that are not fully connected or are still being disconnected.
 */
 func (self Instance) GetPeers() [][1]gdclass.ENetPacketPeer {
-	return [][1]gdclass.ENetPacketPeer(gd.ArrayAs[[][1]gdclass.ENetPacketPeer](class(self).GetPeers()))
+	return [][1]gdclass.ENetPacketPeer(gd.ArrayAs[[][1]gdclass.ENetPacketPeer](gd.InternalArray(class(self).GetPeers())))
 }
 
 /*
@@ -262,12 +266,12 @@ Call this function regularly to handle connections, disconnections, and to recei
 [b]Note:[/b] This method must be called on both ends involved in the event (sending and receiving hosts).
 */
 //go:nosplit
-func (self class) Service(timeout gd.Int) gd.Array {
+func (self class) Service(timeout gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, timeout)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_service, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -423,11 +427,11 @@ Returns the list of peers associated with this host.
 [b]Note:[/b] This list might include some peers that are not fully connected or are still being disconnected.
 */
 //go:nosplit
-func (self class) GetPeers() gd.Array {
+func (self class) GetPeers() Array.Contains[[1]gdclass.ENetPacketPeer] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ENetPacketPeer]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

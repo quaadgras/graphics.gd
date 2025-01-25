@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Vector2"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [StyleBox] is an abstract base class for drawing stylized boxes for UI elements. It is used for panels, buttons, [LineEdit] backgrounds, [Tree] backgrounds, etc. and also for testing a transparency mask for pointer signals. If mask test fails on a [StyleBox] assigned as mask to a control, clicks and motion signals will go through it to the one below.
@@ -58,7 +62,9 @@ func (self implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (
 func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
+
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, to_canvas_item, rect)
 	}
@@ -66,6 +72,7 @@ func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, 
 func (Instance) _get_draw_rect(impl func(ptr unsafe.Pointer, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, rect)
 		gd.UnsafeSet(p_back, gd.Rect2(ret))
@@ -85,7 +92,9 @@ func (Instance) _get_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb 
 func (Instance) _test_mask(impl func(ptr unsafe.Pointer, point Vector2.XY, rect Rect2.PositionSize) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, point, rect)
 		gd.UnsafeSet(p_back, ret)
@@ -197,7 +206,9 @@ func (self Instance) SetContentMarginBottom(value Float.X) {
 func (class) _draw(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
+
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, to_canvas_item, rect)
 	}
@@ -206,6 +217,7 @@ func (class) _draw(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.
 func (class) _get_draw_rect(impl func(ptr unsafe.Pointer, rect gd.Rect2) gd.Rect2) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, rect)
 		gd.UnsafeSet(p_back, ret)
@@ -226,7 +238,9 @@ func (class) _get_minimum_size(impl func(ptr unsafe.Pointer) gd.Vector2) (cb gd.
 func (class) _test_mask(impl func(ptr unsafe.Pointer, point gd.Vector2, rect gd.Rect2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, point, rect)
 		gd.UnsafeSet(p_back, ret)

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStreamOggVorbis] for usage.
@@ -80,6 +84,7 @@ Override this method to customize what happens when the playback starts at the g
 func (Instance) _start(impl func(ptr unsafe.Pointer, from_pos Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_pos = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(from_pos))
 	}
@@ -134,6 +139,7 @@ Override this method to customize what happens when seeking this audio stream at
 func (Instance) _seek(impl func(ptr unsafe.Pointer, position Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var position = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(position))
 	}
@@ -146,8 +152,11 @@ Override this method to customize how the audio stream is mixed. This method is 
 func (Instance) _mix(impl func(ptr unsafe.Pointer, buffer *AudioFrame, rate_scale Float.X, frames int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
+
 		var rate_scale = gd.UnsafeGet[gd.Float](p_args, 1)
+
 		var frames = gd.UnsafeGet[gd.Int](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, buffer, Float.X(rate_scale), int(frames))
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -188,6 +197,7 @@ func (Instance) _get_parameter(impl func(ptr unsafe.Pointer, name string) any) (
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name.String())
 		ptr, ok := pointers.End(gd.NewVariant(ret))
+
 		if !ok {
 			return
 		}
@@ -234,6 +244,7 @@ Override this method to customize what happens when the playback starts at the g
 func (class) _start(impl func(ptr unsafe.Pointer, from_pos gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_pos = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, from_pos)
 	}
@@ -288,6 +299,7 @@ Override this method to customize what happens when seeking this audio stream at
 func (class) _seek(impl func(ptr unsafe.Pointer, position gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var position = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, position)
 	}
@@ -300,8 +312,11 @@ Override this method to customize how the audio stream is mixed. This method is 
 func (class) _mix(impl func(ptr unsafe.Pointer, buffer *AudioFrame, rate_scale gd.Float, frames gd.Int) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
+
 		var rate_scale = gd.UnsafeGet[gd.Float](p_args, 1)
+
 		var frames = gd.UnsafeGet[gd.Int](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, buffer, rate_scale, frames)
 		gd.UnsafeSet(p_back, ret)
@@ -324,7 +339,9 @@ Set the current value of a playback parameter by name (see [method AudioStream._
 func (class) _set_parameter(impl func(ptr unsafe.Pointer, name gd.StringName, value gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(name)
 		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
+		defer pointers.End(value)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, name, value)
 	}
@@ -336,9 +353,11 @@ Return the current value of a playback parameter by name (see [method AudioStrea
 func (class) _get_parameter(impl func(ptr unsafe.Pointer, name gd.StringName) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}

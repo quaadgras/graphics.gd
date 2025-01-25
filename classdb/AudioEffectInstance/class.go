@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 An audio effect instance manipulates the audio it receives for a given effect. This instance is automatically created by an [AudioEffect] when it is added to a bus, and should usually not be created directly. If necessary, it can be fetched at run-time with [method AudioServer.get_bus_effect_instance].
@@ -59,8 +63,11 @@ Called by the [AudioServer] to process this effect. When [method _process_silenc
 func (Instance) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
+
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, src_buffer, dst_buffer, int(frame_count))
 	}
@@ -104,8 +111,11 @@ Called by the [AudioServer] to process this effect. When [method _process_silenc
 func (class) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
+
 		var frame_count = gd.UnsafeGet[gd.Int](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, src_buffer, dst_buffer, frame_count)
 	}

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A button that represents a link. This type of button is primarily used for interactions that cause a context change (like linking to a web page).
@@ -102,11 +106,11 @@ func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStruc
 }
 
 func (self Instance) StructuredTextBidiOverrideOptions() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetStructuredTextBidiOverrideOptions()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
 func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
-	class(self).SetStructuredTextBidiOverrideOptions(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }
 
 //go:nosplit
@@ -224,20 +228,20 @@ func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTe
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverrideOptions(args gd.Array) {
+func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(args))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverrideOptions() gd.Array {
+func (self class) GetStructuredTextBidiOverrideOptions() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

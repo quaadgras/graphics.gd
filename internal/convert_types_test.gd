@@ -103,6 +103,13 @@ func _init():
     if arr[2] != 3:                                  fail("Array()")
     if !ValidArray(arr):                                fail("ValidArray()")
 
+    var arrany = self.ArrayAny()
+    if arrany.size() != 3:                           fail("ArrayAny()")
+    if arrany[0] != 1:                               fail("ArrayAny()")
+    if arrany[1] != 2:                               fail("ArrayAny()")
+    if arrany[2] != 3:                               fail("ArrayAny()")
+    if !ValidArrayAny(arrany):                       fail("ValidArrayAny()")
+
     if self.PackedByteArray() != PackedByteArray([1, 2, 3]): fail("PackedByteArray()")
     if !ValidPackedByteArray(PackedByteArray([1, 2, 3])): fail("ValidPackedByteArray()")
     if self.PackedInt32Array() != PackedInt32Array([1, 2, 3]): fail("PackedInt32Array()")

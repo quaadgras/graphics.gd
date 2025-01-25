@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Rect2"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [LightmapGIData] contains baked lightmap and dynamic object probe data for [LightmapGI]. It is replaced every time lightmaps are baked in [LightmapGI].
@@ -81,11 +85,11 @@ func New() Instance {
 }
 
 func (self Instance) LightmapTextures() [][1]gdclass.TextureLayered {
-	return [][1]gdclass.TextureLayered(gd.ArrayAs[[][1]gdclass.TextureLayered](class(self).GetLightmapTextures()))
+	return [][1]gdclass.TextureLayered(gd.ArrayAs[[][1]gdclass.TextureLayered](gd.InternalArray(class(self).GetLightmapTextures())))
 }
 
 func (self Instance) SetLightmapTextures(value [][1]gdclass.TextureLayered) {
-	class(self).SetLightmapTextures(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetLightmapTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.TextureLayered]](value))
 }
 
 func (self Instance) UsesSphericalHarmonics() bool {
@@ -105,20 +109,20 @@ func (self Instance) SetLightTexture(value [1]gdclass.TextureLayered) {
 }
 
 //go:nosplit
-func (self class) SetLightmapTextures(light_textures gd.Array) {
+func (self class) SetLightmapTextures(light_textures Array.Contains[[1]gdclass.TextureLayered]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(light_textures))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(light_textures)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_set_lightmap_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetLightmapTextures() gd.Array {
+func (self class) GetLightmapTextures() Array.Contains[[1]gdclass.TextureLayered] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_get_lightmap_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TextureLayered]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

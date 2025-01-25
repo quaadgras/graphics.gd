@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/classdb/Node3D"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This is the CSG base class that provides CSG operation support to the various CSG nodes in Godot.
@@ -75,7 +79,7 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool {
 Returns an [Array] with two elements, the first is the [Transform3D] of this node and the second is the root [Mesh] of this node. Only works when this node is the root shape.
 */
 func (self Instance) GetMeshes() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetMeshes()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetMeshes())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -356,11 +360,11 @@ func (self class) IsCalculatingTangents() bool {
 Returns an [Array] with two elements, the first is the [Transform3D] of this node and the second is the root [Mesh] of this node. Only works when this node is the root shape.
 */
 //go:nosplit
-func (self class) GetMeshes() gd.Array {
+func (self class) GetMeshes() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

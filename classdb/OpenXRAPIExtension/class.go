@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [OpenXRAPIExtension] makes OpenXR available for GDExtension. It provides the OpenXR API to GDExtension through the [method get_instance_proc_addr] method, and the OpenXR instance through [method get_instance].
@@ -64,7 +68,7 @@ func (self Instance) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOri
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
 func (self Instance) XrResult(result int, format string, args []any) bool {
-	return bool(class(self).XrResult(gd.Int(result), gd.NewString(format), gd.NewVariant(args).Interface().(gd.Array)))
+	return bool(class(self).XrResult(gd.Int(result), gd.NewString(format), gd.EngineArrayFromSlice(args)))
 }
 
 /*
@@ -250,11 +254,11 @@ func (self class) TransformFromPose(pose unsafe.Pointer) gd.Transform3D {
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
 //go:nosplit
-func (self class) XrResult(result gd.Int, format gd.String, args gd.Array) bool {
+func (self class) XrResult(result gd.Int, format gd.String, args Array.Any) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, result)
 	callframe.Arg(frame, pointers.Get(format))
-	callframe.Arg(frame, pointers.Get(args))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_xr_result, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

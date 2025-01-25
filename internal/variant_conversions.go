@@ -8,6 +8,8 @@ import (
 
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
+	VariantPkg "graphics.gd/variant"
+	ArrayType "graphics.gd/variant/Array"
 	FloatType "graphics.gd/variant/Float"
 	NodePathType "graphics.gd/variant/NodePath"
 )
@@ -131,8 +133,13 @@ func NewVariant(v any) Variant {
 		}
 	case reflect.Struct:
 		switch val := v.(type) {
+		case ArrayType.Any:
+			var arg = callframe.Arg(frame, pointers.Get(InternalArray(val)))
+			Global.variant.FromType[TypeArray](ret, arg.Addr())
 		case Variant:
 			return val
+		case VariantPkg.Any:
+			return NewVariant(val.Interface())
 		case Vector2:
 			var arg = callframe.Arg(frame, val)
 			Global.variant.FromType[TypeVector2](ret, arg.Addr())
@@ -390,7 +397,8 @@ func (variant Variant) Interface() any {
 	case TypeDictionary:
 		return variantAsPointerType[Dictionary](variant, vtype)
 	case TypeArray:
-		return variantAsPointerType[Array](variant, vtype)
+		array := variantAsPointerType[Array](variant, vtype)
+		return ArrayType.Through(ArrayProxy[VariantPkg.Any]{}, pointers.Pack(array))
 	case TypePackedByteArray:
 		return variantAsPointerType[PackedByteArray](variant, vtype)
 	case TypePackedInt32Array:

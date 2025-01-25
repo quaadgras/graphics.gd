@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Abstraction over [TextServer] for handling a single line of text.
@@ -46,7 +50,7 @@ Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
 func (self Instance) SetBidiOverride(override []any) {
-	class(self).SetBidiOverride(gd.NewVariant(override).Interface().(gd.Array))
+	class(self).SetBidiOverride(gd.EngineArrayFromSlice(override))
 }
 
 /*
@@ -81,7 +85,7 @@ func (self Instance) TabAlign(tab_stops []float32) {
 Returns array of inline objects.
 */
 func (self Instance) GetObjects() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetObjects()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetObjects())))
 }
 
 /*
@@ -344,9 +348,9 @@ Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
 //go:nosplit
-func (self class) SetBidiOverride(override gd.Array) {
+func (self class) SetBidiOverride(override Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(override))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(override)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_set_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -516,11 +520,11 @@ func (self class) GetEllipsisChar() gd.String {
 Returns array of inline objects.
 */
 //go:nosplit
-func (self class) GetObjects() gd.Array {
+func (self class) GetObjects() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_objects, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node3DGizmo"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Plane"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Gizmo that is used for providing custom visualization and editing (handles and subgizmos) for [Node3D] objects. Can be overridden to create custom gizmos, but for simple gizmos creating a [EditorNode3DGizmoPlugin] is usually recommended.
@@ -114,10 +118,13 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 func (Instance) _get_handle_name(impl func(ptr unsafe.Pointer, id int, secondary bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id), secondary)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -132,7 +139,9 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 func (Instance) _is_handle_highlighted(impl func(ptr unsafe.Pointer, id int, secondary bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id), secondary)
 		gd.UnsafeSet(p_back, ret)
@@ -146,10 +155,13 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 func (Instance) _get_handle_value(impl func(ptr unsafe.Pointer, id int, secondary bool) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id), secondary)
 		ptr, ok := pointers.End(gd.NewVariant(ret))
+
 		if !ok {
 			return
 		}
@@ -159,7 +171,9 @@ func (Instance) _get_handle_value(impl func(ptr unsafe.Pointer, id int, secondar
 func (Instance) _begin_handle_action(impl func(ptr unsafe.Pointer, id int, secondary bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(id), secondary)
 	}
@@ -172,10 +186,14 @@ The [param secondary] argument is [code]true[/code] when the edited handle is se
 func (Instance) _set_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, camera [1]gdclass.Camera3D, point Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 2))})}
+
+		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
+
 		defer pointers.End(camera[0])
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(id), secondary, camera, point)
 	}
@@ -189,10 +207,13 @@ The [param secondary] argument is [code]true[/code] when the committed handle is
 func (Instance) _commit_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, restore any, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		var restore = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		defer pointers.End(restore)
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(id), secondary, restore.Interface(), cancel)
 	}
@@ -203,9 +224,11 @@ Override this method to allow selecting subgizmos using mouse clicks. Given a [p
 */
 func (Instance) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, point Vector2.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(camera[0])
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, camera, point)
 		gd.UnsafeSet(p_back, gd.Int(ret))
@@ -217,13 +240,15 @@ Override this method to allow selecting subgizmos using mouse drag box selection
 */
 func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, frustum []Plane.NormalD) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(camera[0])
-		var frustum = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(frustum)
+		var frustum = Array.Through(gd.ArrayProxy[gd.Plane]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(frustum))
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, camera, gd.ArrayAs[[]Plane.NormalD](frustum))
+		ret := impl(self, camera, gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(frustum)))
 		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+
 		if !ok {
 			return
 		}
@@ -237,7 +262,9 @@ Override this method to update the node properties during subgizmo editing (see 
 func (Instance) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, id int, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var transform = gd.UnsafeGet[gd.Transform3D](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(id), transform)
 	}
@@ -249,6 +276,7 @@ Override this method to return the current transform of a subgizmo. This transfo
 func (Instance) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id int) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id))
 		gd.UnsafeSet(p_back, gd.Transform3D(ret))
@@ -263,11 +291,12 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, res
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var ids = pointers.New[gd.PackedInt32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
 		defer pointers.End(ids)
-		var restores = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(restores)
+		var restores = Array.Through(gd.ArrayProxy[gd.Transform3D]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, ids.AsSlice(), gd.ArrayAs[[]Transform3D.BasisOrigin](restores), cancel)
+		impl(self, ids.AsSlice(), gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(restores)), cancel)
 	}
 }
 
@@ -400,10 +429,13 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 func (class) _get_handle_name(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id, secondary)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -418,7 +450,9 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 func (class) _is_handle_highlighted(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id, secondary)
 		gd.UnsafeSet(p_back, ret)
@@ -432,10 +466,13 @@ The [param secondary] argument is [code]true[/code] when the requested handle is
 func (class) _get_handle_value(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id, secondary)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -446,7 +483,9 @@ func (class) _get_handle_value(impl func(ptr unsafe.Pointer, id gd.Int, secondar
 func (class) _begin_handle_action(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, id, secondary)
 	}
@@ -459,10 +498,14 @@ The [param secondary] argument is [code]true[/code] when the edited handle is se
 func (class) _set_handle(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool, camera [1]gdclass.Camera3D, point gd.Vector2)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
+
 		defer pointers.End(camera[0])
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, id, secondary, camera, point)
 	}
@@ -476,9 +519,13 @@ The [param secondary] argument is [code]true[/code] when the committed handle is
 func (class) _commit_handle(impl func(ptr unsafe.Pointer, id gd.Int, secondary bool, restore gd.Variant, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
+
 		var restore = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
+		defer pointers.End(restore)
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, id, secondary, restore, cancel)
 	}
@@ -490,8 +537,10 @@ Override this method to allow selecting subgizmos using mouse clicks. Given a [p
 func (class) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, point gd.Vector2) gd.Int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(camera[0])
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, camera, point)
 		gd.UnsafeSet(p_back, ret)
@@ -501,14 +550,17 @@ func (class) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera [1]gd
 /*
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
-func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, frustum gd.Array) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, frustum Array.Contains[gd.Plane]) gd.PackedInt32Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(camera[0])
-		var frustum = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		var frustum = Array.Through(gd.ArrayProxy[gd.Plane]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(frustum))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, camera, frustum)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -522,7 +574,9 @@ Override this method to update the node properties during subgizmo editing (see 
 func (class) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, id gd.Int, transform gd.Transform3D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var transform = gd.UnsafeGet[gd.Transform3D](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, id, transform)
 	}
@@ -534,6 +588,7 @@ Override this method to return the current transform of a subgizmo. This transfo
 func (class) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id gd.Int) gd.Transform3D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id)
 		gd.UnsafeSet(p_back, ret)
@@ -544,11 +599,14 @@ func (class) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, id gd.Int) gd
 Override this method to commit a group of subgizmos being edited (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). This usually means creating an [UndoRedo] action for the change, using the current transforms as "do" and the [param restores] transforms as "undo".
 If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
 */
-func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids gd.PackedInt32Array, restores gd.Array, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids gd.PackedInt32Array, restores Array.Contains[gd.Transform3D], cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var ids = pointers.New[gd.PackedInt32Array](gd.UnsafeGet[gd.PackedPointers](p_args, 0))
-		var restores = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(ids)
+		var restores = Array.Through(gd.ArrayProxy[gd.Transform3D]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, ids, restores, cancel)
 	}

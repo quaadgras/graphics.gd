@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Custom code to generate previews. Please check [code]file_dialog/thumbnail_size[/code] in [EditorSettings] to find out the right size to do previews at.
@@ -91,14 +95,17 @@ Care must be taken because this function is always called from a thread (not the
 */
 func (Instance) _generate(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, size Vector2i.XY, metadata map[any]any) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(resource[0])
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(metadata)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, size, gd.DictionaryAs[any, any](metadata))
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -117,11 +124,13 @@ func (Instance) _generate_from_path(impl func(ptr unsafe.Pointer, path string, s
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(metadata)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), size, gd.DictionaryAs[any, any](metadata))
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -178,6 +187,7 @@ Returns [code]true[/code] if your generator supports the resource of type [param
 func (class) _handles(impl func(ptr unsafe.Pointer, atype gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(atype)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
@@ -193,12 +203,16 @@ Care must be taken because this function is always called from a thread (not the
 func (class) _generate(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, size gd.Vector2i, metadata gd.Dictionary) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(resource[0])
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(metadata)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, size, metadata)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -215,11 +229,15 @@ Care must be taken because this function is always called from a thread (not the
 func (class) _generate_from_path(impl func(ptr unsafe.Pointer, path gd.String, size gd.Vector2i, metadata gd.Dictionary) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(path)
 		var size = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(metadata)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, size, metadata)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}

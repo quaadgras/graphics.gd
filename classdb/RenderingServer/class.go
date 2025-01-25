@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Transform3D"
@@ -30,6 +32,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The rendering server is the API backend for everything visible. The whole scene system mounts on it to display. The rendering server is completely opaque: the internals are entirely implementation-specific and cannot be accessed.
@@ -68,7 +72,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 func Texture2dLayeredCreate(layers [][1]gdclass.Image, layered_type gdclass.RenderingServerTextureLayeredType) Resource.ID {
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture2dLayeredCreate(gd.NewVariant(layers).Interface().(gd.Array), layered_type))
+	return Resource.ID(class(self).Texture2dLayeredCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](layers), layered_type))
 }
 
 /*
@@ -76,7 +80,7 @@ func Texture2dLayeredCreate(layers [][1]gdclass.Image, layered_type gdclass.Rend
 */
 func Texture3dCreate(format gdclass.ImageFormat, width int, height int, depth int, mipmaps bool, data [][1]gdclass.Image) Resource.ID {
 	once.Do(singleton)
-	return Resource.ID(class(self).Texture3dCreate(format, gd.Int(width), gd.Int(height), gd.Int(depth), mipmaps, gd.NewVariant(data).Interface().(gd.Array)))
+	return Resource.ID(class(self).Texture3dCreate(format, gd.Int(width), gd.Int(height), gd.Int(depth), mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data)))
 }
 
 /*
@@ -102,7 +106,7 @@ Updates the texture specified by the [param texture] [RID]'s data with the data 
 */
 func Texture3dUpdate(texture Resource.ID, data [][1]gdclass.Image) {
 	once.Do(singleton)
-	class(self).Texture3dUpdate(texture, gd.NewVariant(data).Interface().(gd.Array))
+	class(self).Texture3dUpdate(texture, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))
 }
 
 /*
@@ -169,7 +173,7 @@ Returns 3D texture data as an array of [Image]s for the specified texture [RID].
 */
 func Texture3dGet(texture Resource.ID) [][1]gdclass.Image {
 	once.Do(singleton)
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).Texture3dGet(texture)))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).Texture3dGet(texture))))
 }
 
 /*
@@ -268,7 +272,7 @@ Returns the parameters of a shader.
 */
 func GetShaderParameterList(shader Resource.ID) []map[any]any {
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetShaderParameterList(shader)))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetShaderParameterList(shader))))
 }
 
 /*
@@ -348,7 +352,7 @@ func MaterialSetNextPass(material Resource.ID, next_material Resource.ID) {
 }
 func MeshCreateFromSurfaces(surfaces []map[any]any) Resource.ID {
 	once.Do(singleton)
-	return Resource.ID(class(self).MeshCreateFromSurfaces(gd.NewVariant(surfaces).Interface().(gd.Array), gd.Int(0)))
+	return Resource.ID(class(self).MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](surfaces), gd.Int(0)))
 }
 
 /*
@@ -407,7 +411,7 @@ func MeshAddSurface(mesh Resource.ID, surface map[any]any) {
 }
 func MeshAddSurfaceFromArrays(mesh Resource.ID, primitive gdclass.RenderingServerPrimitiveType, arrays []any) {
 	once.Do(singleton)
-	class(self).MeshAddSurfaceFromArrays(mesh, primitive, gd.NewVariant(arrays).Interface().(gd.Array), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
+	class(self).MeshAddSurfaceFromArrays(mesh, primitive, gd.EngineArrayFromSlice(arrays), Array.Nil, gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
 }
 
 /*
@@ -459,7 +463,7 @@ Returns a mesh's surface's buffer arrays.
 */
 func MeshSurfaceGetArrays(mesh Resource.ID, surface int) []any {
 	once.Do(singleton)
-	return []any(gd.ArrayAs[[]any](class(self).MeshSurfaceGetArrays(mesh, gd.Int(surface))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).MeshSurfaceGetArrays(mesh, gd.Int(surface)))))
 }
 
 /*
@@ -467,7 +471,7 @@ Returns a mesh's surface's arrays for blend shapes.
 */
 func MeshSurfaceGetBlendShapeArrays(mesh Resource.ID, surface int) [][]any {
 	once.Do(singleton)
-	return [][]any(gd.ArrayAs[[][]any](class(self).MeshSurfaceGetBlendShapeArrays(mesh, gd.Int(surface))))
+	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(class(self).MeshSurfaceGetBlendShapeArrays(mesh, gd.Int(surface)))))
 }
 
 /*
@@ -1502,7 +1506,7 @@ func ParticlesSetTrails(particles Resource.ID, enable bool, length_sec Float.X) 
 }
 func ParticlesSetTrailBindPoses(particles Resource.ID, bind_poses []Transform3D.BasisOrigin) {
 	once.Do(singleton)
-	class(self).ParticlesSetTrailBindPoses(particles, gd.NewVariant(bind_poses).Interface().(gd.Array))
+	class(self).ParticlesSetTrailBindPoses(particles, gd.ArrayFromSlice[Array.Contains[gd.Transform3D]](bind_poses))
 }
 
 /*
@@ -2368,7 +2372,7 @@ Sets the compositor effects for the specified compositor RID. [param effects] sh
 */
 func CompositorSetCompositorEffects(compositor Resource.ID, effects []Resource.ID) {
 	once.Do(singleton)
-	class(self).CompositorSetCompositorEffects(compositor, gd.NewVariant(effects).Interface().(gd.Array))
+	class(self).CompositorSetCompositorEffects(compositor, gd.ArrayFromSlice[Array.Contains[gd.RID]](effects))
 }
 
 /*
@@ -2946,7 +2950,7 @@ Returns a dictionary of per-instance shader uniform names of the per-instance sh
 */
 func InstanceGeometryGetShaderParameterList(instance Resource.ID) []map[any]any {
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).InstanceGeometryGetShaderParameterList(instance)))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).InstanceGeometryGetShaderParameterList(instance))))
 }
 
 /*
@@ -2973,7 +2977,7 @@ Returns an array of object IDs intersecting with the provided convex shape. Only
 */
 func InstancesCullConvex(convex []Plane.NormalD) []int64 {
 	once.Do(singleton)
-	return []int64(class(self).InstancesCullConvex(gd.NewVariant(convex).Interface().(gd.Array), [1]Resource.ID{}[0]).AsSlice())
+	return []int64(class(self).InstancesCullConvex(gd.ArrayFromSlice[Array.Contains[gd.Plane]](convex), [1]Resource.ID{}[0]).AsSlice())
 }
 
 /*
@@ -2981,7 +2985,7 @@ Bakes the material data of the Mesh passed in the [param base] parameter with op
 */
 func BakeRenderUv2(base Resource.ID, material_overrides []Resource.ID, image_size Vector2i.XY) [][1]gdclass.Image {
 	once.Do(singleton)
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).BakeRenderUv2(base, gd.NewVariant(material_overrides).Interface().(gd.Array), gd.Vector2i(image_size))))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).BakeRenderUv2(base, gd.ArrayFromSlice[Array.Contains[gd.RID]](material_overrides), gd.Vector2i(image_size)))))
 }
 
 /*
@@ -3774,7 +3778,7 @@ Returns the list of global shader uniform names.
 */
 func GlobalShaderParameterGetList() []string {
 	once.Do(singleton)
-	return []string(gd.ArrayAs[[]string](class(self).GlobalShaderParameterGetList()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GlobalShaderParameterGetList())))
 }
 
 /*
@@ -4082,9 +4086,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 [b]Note:[/b] The equivalent resource is [TextureLayered].
 */
 //go:nosplit
-func (self class) Texture2dLayeredCreate(layers gd.Array, layered_type gdclass.RenderingServerTextureLayeredType) gd.RID {
+func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image], layered_type gdclass.RenderingServerTextureLayeredType) gd.RID {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(layers))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(layers)))
 	callframe.Arg(frame, layered_type)
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_create, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4097,14 +4101,14 @@ func (self class) Texture2dLayeredCreate(layers gd.Array, layered_type gdclass.R
 [b]Note:[/b] The equivalent resource is [Texture3D].
 */
 //go:nosplit
-func (self class) Texture3dCreate(format gdclass.ImageFormat, width gd.Int, height gd.Int, depth gd.Int, mipmaps bool, data gd.Array) gd.RID {
+func (self class) Texture3dCreate(format gdclass.ImageFormat, width gd.Int, height gd.Int, depth gd.Int, mipmaps bool, data Array.Contains[[1]gdclass.Image]) gd.RID {
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, depth)
 	callframe.Arg(frame, mipmaps)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -4146,10 +4150,10 @@ Updates the texture specified by the [param texture] [RID]'s data with the data 
 [b]Note:[/b] The [param texture] must have the same width, height, depth and format as the current texture data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height, depth or format, use [method texture_replace] instead.
 */
 //go:nosplit
-func (self class) Texture3dUpdate(texture gd.RID, data gd.Array) {
+func (self class) Texture3dUpdate(texture gd.RID, data Array.Contains[[1]gdclass.Image]) {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4252,12 +4256,12 @@ func (self class) Texture2dLayerGet(texture gd.RID, layer gd.Int) [1]gdclass.Ima
 Returns 3D texture data as an array of [Image]s for the specified texture [RID].
 */
 //go:nosplit
-func (self class) Texture3dGet(texture gd.RID) gd.Array {
+func (self class) Texture3dGet(texture gd.RID) Array.Contains[[1]gdclass.Image] {
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_3d_get, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4436,12 +4440,12 @@ func (self class) ShaderGetCode(shader gd.RID) gd.String {
 Returns the parameters of a shader.
 */
 //go:nosplit
-func (self class) GetShaderParameterList(shader gd.RID) gd.Array {
+func (self class) GetShaderParameterList(shader gd.RID) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, shader)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4578,9 +4582,9 @@ func (self class) MaterialSetNextPass(material gd.RID, next_material gd.RID) {
 }
 
 //go:nosplit
-func (self class) MeshCreateFromSurfaces(surfaces gd.Array, blend_shape_count gd.Int) gd.RID {
+func (self class) MeshCreateFromSurfaces(surfaces Array.Contains[gd.Dictionary], blend_shape_count gd.Int) gd.RID {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(surfaces))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(surfaces)))
 	callframe.Arg(frame, blend_shape_count)
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_create_from_surfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4692,12 +4696,12 @@ func (self class) MeshAddSurface(mesh gd.RID, surface gd.Dictionary) {
 }
 
 //go:nosplit
-func (self class) MeshAddSurfaceFromArrays(mesh gd.RID, primitive gdclass.RenderingServerPrimitiveType, arrays gd.Array, blend_shapes gd.Array, lods gd.Dictionary, compress_format gdclass.RenderingServerArrayFormat) {
+func (self class) MeshAddSurfaceFromArrays(mesh gd.RID, primitive gdclass.RenderingServerPrimitiveType, arrays Array.Any, blend_shapes Array.Any, lods gd.Dictionary, compress_format gdclass.RenderingServerArrayFormat) {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, primitive)
-	callframe.Arg(frame, pointers.Get(arrays))
-	callframe.Arg(frame, pointers.Get(blend_shapes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(blend_shapes)))
 	callframe.Arg(frame, pointers.Get(lods))
 	callframe.Arg(frame, compress_format)
 	var r_ret = callframe.Nil
@@ -4791,13 +4795,13 @@ func (self class) MeshGetSurface(mesh gd.RID, surface gd.Int) gd.Dictionary {
 Returns a mesh's surface's buffer arrays.
 */
 //go:nosplit
-func (self class) MeshSurfaceGetArrays(mesh gd.RID, surface gd.Int) gd.Array {
+func (self class) MeshSurfaceGetArrays(mesh gd.RID, surface gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4806,13 +4810,13 @@ func (self class) MeshSurfaceGetArrays(mesh gd.RID, surface gd.Int) gd.Array {
 Returns a mesh's surface's arrays for blend shapes.
 */
 //go:nosplit
-func (self class) MeshSurfaceGetBlendShapeArrays(mesh gd.RID, surface gd.Int) gd.Array {
+func (self class) MeshSurfaceGetBlendShapeArrays(mesh gd.RID, surface gd.Int) Array.Contains[Array.Any] {
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_blend_shape_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -6611,10 +6615,10 @@ func (self class) ParticlesSetTrails(particles gd.RID, enable bool, length_sec g
 }
 
 //go:nosplit
-func (self class) ParticlesSetTrailBindPoses(particles gd.RID, bind_poses gd.Array) {
+func (self class) ParticlesSetTrailBindPoses(particles gd.RID, bind_poses Array.Contains[gd.Transform3D]) {
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
-	callframe.Arg(frame, pointers.Get(bind_poses))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(bind_poses)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_trail_bind_poses, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -8024,10 +8028,10 @@ func (self class) CompositorCreate() gd.RID {
 Sets the compositor effects for the specified compositor RID. [param effects] should be an array containing RIDs created with [method compositor_effect_create].
 */
 //go:nosplit
-func (self class) CompositorSetCompositorEffects(compositor gd.RID, effects gd.Array) {
+func (self class) CompositorSetCompositorEffects(compositor gd.RID, effects Array.Contains[gd.RID]) {
 	var frame = callframe.New()
 	callframe.Arg(frame, compositor)
-	callframe.Arg(frame, pointers.Get(effects))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(effects)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_compositor_set_compositor_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -9041,12 +9045,12 @@ func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance gd.RID
 Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys [code]name[/code], [code]class_name[/code], [code]type[/code], [code]hint[/code], [code]hint_string[/code] and [code]usage[/code]. Equivalent to [method GeometryInstance3D.get_instance_shader_parameter].
 */
 //go:nosplit
-func (self class) InstanceGeometryGetShaderParameterList(instance gd.RID) gd.Array {
+func (self class) InstanceGeometryGetShaderParameterList(instance gd.RID) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -9089,9 +9093,9 @@ Returns an array of object IDs intersecting with the provided convex shape. Only
 [b]Warning:[/b] This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
 */
 //go:nosplit
-func (self class) InstancesCullConvex(convex gd.Array, scenario gd.RID) gd.PackedInt64Array {
+func (self class) InstancesCullConvex(convex Array.Contains[gd.Plane], scenario gd.RID) gd.PackedInt64Array {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(convex))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(convex)))
 	callframe.Arg(frame, scenario)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instances_cull_convex, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -9104,14 +9108,14 @@ func (self class) InstancesCullConvex(convex gd.Array, scenario gd.RID) gd.Packe
 Bakes the material data of the Mesh passed in the [param base] parameter with optional [param material_overrides] to a set of [Image]s of size [param image_size]. Returns an array of [Image]s containing material properties as specified in [enum BakeChannels].
 */
 //go:nosplit
-func (self class) BakeRenderUv2(base gd.RID, material_overrides gd.Array, image_size gd.Vector2i) gd.Array {
+func (self class) BakeRenderUv2(base gd.RID, material_overrides Array.Contains[gd.RID], image_size gd.Vector2i) Array.Contains[[1]gdclass.Image] {
 	var frame = callframe.New()
 	callframe.Arg(frame, base)
-	callframe.Arg(frame, pointers.Get(material_overrides))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(material_overrides)))
 	callframe.Arg(frame, image_size)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_bake_render_uv2, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -10460,11 +10464,11 @@ Returns the list of global shader uniform names.
 [b]Note:[/b] [method global_shader_parameter_get] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
 */
 //go:nosplit
-func (self class) GlobalShaderParameterGetList() gd.Array {
+func (self class) GlobalShaderParameterGetList() Array.Contains[gd.StringName] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

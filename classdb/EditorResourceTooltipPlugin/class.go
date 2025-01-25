@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Resource tooltip plugins are used by [FileSystemDock] to generate customized tooltips for specific resources. E.g. tooltip for a [Texture2D] displays a bigger preview and the texture's dimensions.
@@ -97,11 +101,13 @@ func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string
 		defer pointers.End(path)
 		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(metadata)
-		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 2))})}
+		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
+
 		defer pointers.End(base[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), gd.DictionaryAs[any, any](metadata), base)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -141,6 +147,7 @@ Return [code]true[/code] if the plugin is going to handle the given [Resource] [
 func (class) _handles(impl func(ptr unsafe.Pointer, atype gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var atype = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(atype)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
@@ -166,12 +173,16 @@ func _make_tooltip_for_path(path, metadata, base):
 func (class) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path gd.String, metadata gd.Dictionary, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(path)
 		var metadata = pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(metadata)
 		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
+
 		defer pointers.End(base[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, metadata, base)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/MeshInstance3D"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/VisualInstance3D"
@@ -25,6 +27,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A deformable 3D physics mesh. Used to create elastic or deformable objects such as cloth, rubber, or other flexible materials.
@@ -80,7 +84,7 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool {
 Returns an array of nodes that were added as collision exceptions for this body.
 */
 func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody3D {
-	return [][1]gdclass.PhysicsBody3D(gd.ArrayAs[[][1]gdclass.PhysicsBody3D](class(self).GetCollisionExceptions()))
+	return [][1]gdclass.PhysicsBody3D(gd.ArrayAs[[][1]gdclass.PhysicsBody3D](gd.InternalArray(class(self).GetCollisionExceptions())))
 }
 
 /*
@@ -371,11 +375,11 @@ func (self class) GetDisableMode() gdclass.SoftBody3DDisableMode {
 Returns an array of nodes that were added as collision exceptions for this body.
 */
 //go:nosplit
-func (self class) GetCollisionExceptions() gd.Array {
+func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody3D] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SoftBody3D.Bind_get_collision_exceptions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.PhysicsBody3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

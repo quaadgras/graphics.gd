@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/NodePath"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 type Instance [1]gdclass.SceneReplicationConfig
 
@@ -33,7 +37,7 @@ type Any interface {
 Returns a list of synchronized property [NodePath]s.
 */
 func (self Instance) GetProperties() []NodePath.String {
-	return []NodePath.String(gd.ArrayAs[[]NodePath.String](class(self).GetProperties()))
+	return []NodePath.String(gd.ArrayAs[[]NodePath.String](gd.InternalArray(class(self).GetProperties())))
 }
 
 /*
@@ -144,11 +148,11 @@ func New() Instance {
 Returns a list of synchronized property [NodePath]s.
 */
 //go:nosplit
-func (self class) GetProperties() gd.Array {
+func (self class) GetProperties() Array.Contains[gd.NodePath] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_get_properties, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.NodePath]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

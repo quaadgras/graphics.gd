@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 NavigationServer2D is the server that handles navigation maps, regions and agents. It does not handle A* navigation from [AStar2D] or [AStarGrid2D].
@@ -45,7 +49,7 @@ Returns all created navigation map [RID]s on the NavigationServer. This returns 
 */
 func GetMaps() []Resource.ID {
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetMaps()))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetMaps())))
 }
 
 /*
@@ -165,7 +169,7 @@ Returns all navigation link [RID]s that are currently assigned to the requested 
 */
 func MapGetLinks(mapping Resource.ID) []Resource.ID {
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).MapGetLinks(mapping)))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).MapGetLinks(mapping))))
 }
 
 /*
@@ -173,7 +177,7 @@ Returns all navigation regions [RID]s that are currently assigned to the request
 */
 func MapGetRegions(mapping Resource.ID) []Resource.ID {
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).MapGetRegions(mapping)))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).MapGetRegions(mapping))))
 }
 
 /*
@@ -181,7 +185,7 @@ Returns all navigation agents [RID]s that are currently assigned to the requeste
 */
 func MapGetAgents(mapping Resource.ID) []Resource.ID {
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).MapGetAgents(mapping)))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).MapGetAgents(mapping))))
 }
 
 /*
@@ -189,7 +193,7 @@ Returns all navigation obstacle [RID]s that are currently assigned to the reques
 */
 func MapGetObstacles(mapping Resource.ID) []Resource.ID {
 	once.Do(singleton)
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).MapGetObstacles(mapping)))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).MapGetObstacles(mapping))))
 }
 
 /*
@@ -1072,11 +1076,11 @@ func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) 
 Returns all created navigation map [RID]s on the NavigationServer. This returns both 2D and 3D created navigation maps as there is technically no distinction between them.
 */
 //go:nosplit
-func (self class) GetMaps() gd.Array {
+func (self class) GetMaps() Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_get_maps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1281,12 +1285,12 @@ func (self class) MapGetClosestPointOwner(mapping gd.RID, to_point gd.Vector2) g
 Returns all navigation link [RID]s that are currently assigned to the requested navigation [param map].
 */
 //go:nosplit
-func (self class) MapGetLinks(mapping gd.RID) gd.Array {
+func (self class) MapGetLinks(mapping gd.RID) Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_map_get_links, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1295,12 +1299,12 @@ func (self class) MapGetLinks(mapping gd.RID) gd.Array {
 Returns all navigation regions [RID]s that are currently assigned to the requested navigation [param map].
 */
 //go:nosplit
-func (self class) MapGetRegions(mapping gd.RID) gd.Array {
+func (self class) MapGetRegions(mapping gd.RID) Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_map_get_regions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1309,12 +1313,12 @@ func (self class) MapGetRegions(mapping gd.RID) gd.Array {
 Returns all navigation agents [RID]s that are currently assigned to the requested navigation [param map].
 */
 //go:nosplit
-func (self class) MapGetAgents(mapping gd.RID) gd.Array {
+func (self class) MapGetAgents(mapping gd.RID) Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_map_get_agents, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1323,12 +1327,12 @@ func (self class) MapGetAgents(mapping gd.RID) gd.Array {
 Returns all navigation obstacle [RID]s that are currently assigned to the requested navigation [param map].
 */
 //go:nosplit
-func (self class) MapGetObstacles(mapping gd.RID) gd.Array {
+func (self class) MapGetObstacles(mapping gd.RID) Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	callframe.Arg(frame, mapping)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_map_get_obstacles, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

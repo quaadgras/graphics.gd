@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2i"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A two-dimensional array of boolean values, can be used to efficiently store a binary matrix (every matrix element takes only one bit) and query the values using natural cartesian coordinates.
@@ -127,7 +131,7 @@ Rect2(Vector2(), get_size())
 [param epsilon] is passed to RDP to control how accurately the polygons cover the bitmap: a lower [param epsilon] corresponds to more points in the polygons.
 */
 func (self Instance) OpaqueToPolygons(rect Rect2i.PositionSize) [][]Vector2.XY {
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).OpaqueToPolygons(gd.Rect2i(rect), gd.Float(2.0))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OpaqueToPolygons(gd.Rect2i(rect), gd.Float(2.0)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -316,13 +320,13 @@ Rect2(Vector2(), get_size())
 [param epsilon] is passed to RDP to control how accurately the polygons cover the bitmap: a lower [param epsilon] corresponds to more points in the polygons.
 */
 //go:nosplit
-func (self class) OpaqueToPolygons(rect gd.Rect2i, epsilon gd.Float) gd.Array {
+func (self class) OpaqueToPolygons(rect gd.Rect2i, epsilon gd.Float) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	callframe.Arg(frame, epsilon)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_opaque_to_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

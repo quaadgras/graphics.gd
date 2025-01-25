@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/RenderSceneData"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Projection"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class allows for a RenderSceneData implementation to be made in GDExtension.
@@ -104,6 +108,7 @@ Implement this in GDExtension to return the eye offset for the given [param view
 func (Instance) _get_view_eye_offset(impl func(ptr unsafe.Pointer, view int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view))
 		gd.UnsafeSet(p_back, gd.Vector3(ret))
@@ -116,6 +121,7 @@ Implement this in GDExtension to return the view [Projection] for the given [par
 func (Instance) _get_view_projection(impl func(ptr unsafe.Pointer, view int) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view))
 		gd.UnsafeSet(p_back, ret)
@@ -190,6 +196,7 @@ Implement this in GDExtension to return the eye offset for the given [param view
 func (class) _get_view_eye_offset(impl func(ptr unsafe.Pointer, view gd.Int) gd.Vector3) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view)
 		gd.UnsafeSet(p_back, ret)
@@ -202,6 +209,7 @@ Implement this in GDExtension to return the view [Projection] for the given [par
 func (class) _get_view_projection(impl func(ptr unsafe.Pointer, view gd.Int) gd.Projection) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view)
 		gd.UnsafeSet(p_back, ret)

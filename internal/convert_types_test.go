@@ -11,7 +11,9 @@ import (
 	"graphics.gd/classdb/Resource"
 	"graphics.gd/classdb/SceneTree"
 	gd "graphics.gd/internal"
+	"graphics.gd/variant"
 	"graphics.gd/variant/AABB"
+	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Color"
@@ -128,6 +130,14 @@ func (c Converter) PackedVector4Array() []Vector4.XYZW {
 	return []Vector4.XYZW{{1, 2, 3, 4}, {5, 6, 7, 8}}
 }
 
+func (c Converter) ArrayAny() Array.Any {
+	var array Array.Any
+	array.Append(variant.New(1))
+	array.Append(variant.New(2))
+	array.Append(variant.New(3))
+	return array
+}
+
 func (c Converter) ValidInt(i int) bool               { return i == c.Int() }
 func (c Converter) ValidBool(b bool) bool             { return b == c.Bool() }
 func (c Converter) ValidInt8(i int8) bool             { return i == c.Int8() }
@@ -211,6 +221,9 @@ func (c Converter) ValidPackedColorArray(a []Color.RGBA) bool {
 }
 func (c Converter) ValidPackedVector4Array(a []Vector4.XYZW) bool {
 	return len(a) == 2 && a[0] == Vector4.New(1, 2, 3, 4) && a[1] == Vector4.New(5, 6, 7, 8)
+}
+func (c Converter) ValidArrayAny(a Array.Any) bool {
+	return a.Index(0).Int() == 1 && a.Index(1).Int() == 2 && a.Index(2).Int() == 3
 }
 
 func TestConversions(t *testing.T) {

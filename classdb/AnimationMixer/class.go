@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/NodePath"
 import "graphics.gd/variant/Vector3"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Base class for [AnimationPlayer] and [AnimationTree] to manage animation lists. It also has general properties and methods for playback and blending.
@@ -58,16 +62,21 @@ A virtual function for processing after getting a key during playback.
 */
 func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(animation[0])
 		var track = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
 		defer pointers.End(value)
 		var object_id = gd.UnsafeGet[gd.Int](p_args, 3)
+
 		var object_sub_idx = gd.UnsafeGet[gd.Int](p_args, 4)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, animation, int(track), value.Interface(), int(object_id), int(object_sub_idx))
 		ptr, ok := pointers.End(gd.NewVariant(ret))
+
 		if !ok {
 			return
 		}
@@ -122,7 +131,7 @@ func (self Instance) GetAnimationLibrary(name string) [1]gdclass.AnimationLibrar
 Returns the list of stored library keys.
 */
 func (self Instance) GetAnimationLibraryList() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetAnimationLibraryList()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAnimationLibraryList())))
 }
 
 /*
@@ -439,14 +448,20 @@ A virtual function for processing after getting a key during playback.
 func (class) _post_process_key_value(impl func(ptr unsafe.Pointer, animation [1]gdclass.Animation, track gd.Int, value gd.Variant, object_id gd.Int, object_sub_idx gd.Int) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(animation[0])
 		var track = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var value = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))
+		defer pointers.End(value)
 		var object_id = gd.UnsafeGet[gd.Int](p_args, 3)
+
 		var object_sub_idx = gd.UnsafeGet[gd.Int](p_args, 4)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, animation, track, value, object_id, object_sub_idx)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -534,11 +549,11 @@ func (self class) GetAnimationLibrary(name gd.StringName) [1]gdclass.AnimationLi
 Returns the list of stored library keys.
 */
 //go:nosplit
-func (self class) GetAnimationLibraryList() gd.Array {
+func (self class) GetAnimationLibraryList() Array.Contains[gd.StringName] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation_library_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

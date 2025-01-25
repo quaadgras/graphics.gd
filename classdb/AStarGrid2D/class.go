@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Rect2i"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [AStarGrid2D] is a variant of [AStar2D] that is specialized for partial 2D grids. It is simpler to use because it doesn't require you to manually create points and connect them together. This class also supports multiple types of heuristics, modes for diagonal movement, and a jumping mode to speed up calculations.
@@ -81,7 +85,9 @@ Note that this function is hidden in the default [AStarGrid2D] class.
 func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, to_id Vector2i.XY) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Vector2i](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, gd.Float(ret))
@@ -95,7 +101,9 @@ Note that this function is hidden in the default [AStarGrid2D] class.
 func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, to_id Vector2i.XY) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Vector2i](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, gd.Float(ret))
@@ -205,7 +213,7 @@ Returns an array with the IDs of the points that form the path found by AStar2D 
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 */
 func (self Instance) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetIdPath(gd.Vector2i(from_id), gd.Vector2i(to_id), false)))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetIdPath(gd.Vector2i(from_id), gd.Vector2i(to_id), false))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -306,7 +314,9 @@ Note that this function is hidden in the default [AStarGrid2D] class.
 func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id gd.Vector2i, to_id gd.Vector2i) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Vector2i](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)
@@ -320,7 +330,9 @@ Note that this function is hidden in the default [AStarGrid2D] class.
 func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id gd.Vector2i, to_id gd.Vector2i) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Vector2i](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)
@@ -684,14 +696,14 @@ Returns an array with the IDs of the points that form the path found by AStar2D 
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 */
 //go:nosplit
-func (self class) GetIdPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_partial_path bool) gd.Array {
+func (self class) GetIdPath(from_id gd.Vector2i, to_id gd.Vector2i, allow_partial_path bool) Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, from_id)
 	callframe.Arg(frame, to_id)
 	callframe.Arg(frame, allow_partial_path)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_id_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

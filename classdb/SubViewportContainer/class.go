@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A container that displays the contents of underlying [SubViewport] child nodes. It uses the combined size of the [SubViewport]s as minimum size, unless [member stretch] is enabled.
@@ -56,7 +60,8 @@ Virtual method to be implemented by the user. If it returns [code]true[/code], t
 */
 func (Instance) _propagate_input_event(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)
@@ -104,6 +109,7 @@ Virtual method to be implemented by the user. If it returns [code]true[/code], t
 func (class) _propagate_input_event(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)

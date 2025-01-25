@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A custom effect for a [RichTextLabel], which can be loaded in the [RichTextLabel] inspector or using [method RichTextLabel.install_effect].
@@ -63,7 +67,8 @@ Override this method to modify properties in [param char_fx]. The method must re
 */
 func (Instance) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx [1]gdclass.CharFXTransform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(char_fx[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, char_fx)
@@ -96,6 +101,7 @@ Override this method to modify properties in [param char_fx]. The method must re
 func (class) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx [1]gdclass.CharFXTransform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(char_fx[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, char_fx)

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This plugin type exists to modify the process of importing scenes, allowing to change the content as well as add importer options at every stage of the process.
@@ -80,6 +84,7 @@ Override to add internal import options. These will appear in the 3D scene impor
 func (Instance) _get_internal_import_options(impl func(ptr unsafe.Pointer, category int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(category))
 	}
@@ -91,12 +96,15 @@ Return true or false whether a given option should be visible. Return null to ig
 func (Instance) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, category int, for_animation bool, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
+
 		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(category), for_animation, option.String())
 		ptr, ok := pointers.End(gd.NewVariant(ret))
+
 		if !ok {
 			return
 		}
@@ -110,11 +118,13 @@ Return true whether updating the 3D view of the import dialog needs to be update
 func (Instance) _get_internal_option_update_view_required(impl func(ptr unsafe.Pointer, category int, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(category), option.String())
 		ptr, ok := pointers.End(gd.NewVariant(ret))
+
 		if !ok {
 			return
 		}
@@ -128,11 +138,15 @@ Process a specific node or resource for a given category.
 func (Instance) _internal_process(impl func(ptr unsafe.Pointer, category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var category = gd.UnsafeGet[gd.Int](p_args, 0)
-		var base_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
+
+		var base_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(base_node[0])
-		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 2))})}
+		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
+
 		defer pointers.End(node[0])
-		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 3))})}
+		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
+
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(category), base_node, node, resource)
@@ -159,11 +173,13 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
+
 		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), for_animation, option.String())
 		ptr, ok := pointers.End(gd.NewVariant(ret))
+
 		if !ok {
 			return
 		}
@@ -176,7 +192,8 @@ Pre Process the scene. This function is called right after the scene format load
 */
 func (Instance) _pre_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, scene)
@@ -188,7 +205,8 @@ Post process the scene. This function is called after the final scene has been c
 */
 func (Instance) _post_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, scene)
@@ -241,6 +259,7 @@ Override to add internal import options. These will appear in the 3D scene impor
 func (class) _get_internal_import_options(impl func(ptr unsafe.Pointer, category gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, category)
 	}
@@ -252,11 +271,15 @@ Return true or false whether a given option should be visible. Return null to ig
 func (class) _get_internal_option_visibility(impl func(ptr unsafe.Pointer, category gd.Int, for_animation bool, option gd.String) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
+
 		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, category, for_animation, option)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -270,10 +293,13 @@ Return true whether updating the 3D view of the import dialog needs to be update
 func (class) _get_internal_option_update_view_required(impl func(ptr unsafe.Pointer, category gd.Int, option gd.String) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, category, option)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -287,11 +313,15 @@ Process a specific node or resource for a given category.
 func (class) _internal_process(impl func(ptr unsafe.Pointer, category gd.Int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var category = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var base_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(base_node[0])
 		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
+
 		defer pointers.End(node[0])
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
+
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, category, base_node, node, resource)
@@ -304,6 +334,7 @@ Override to add general import options. These will appear in the main import doc
 func (class) _get_import_options(impl func(ptr unsafe.Pointer, path gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, path)
 	}
@@ -315,11 +346,15 @@ Return true or false whether a given option should be visible. Return null to ig
 func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path gd.String, for_animation bool, option gd.String) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(path)
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
+
 		var option = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(option)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, for_animation, option)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -333,6 +368,7 @@ Pre Process the scene. This function is called right after the scene format load
 func (class) _pre_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, scene)
@@ -345,6 +381,7 @@ Post process the scene. This function is called after the final scene has been c
 func (class) _post_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(scene[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, scene)

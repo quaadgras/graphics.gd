@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Texture3D"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [ImageTexture3D] is a 3-dimensional [ImageTexture] that has a width, height, and depth. See also [ImageTextureLayered].
@@ -38,14 +42,14 @@ type Any interface {
 Creates the [ImageTexture3D] with specified [param width], [param height], and [param depth]. See [enum Image.Format] for [param format] options. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for the [ImageTexture3D].
 */
 func (self Instance) Create(format gdclass.ImageFormat, width int, height int, depth int, use_mipmaps bool, data [][1]gdclass.Image) error {
-	return error(gd.ToError(class(self).Create(format, gd.Int(width), gd.Int(height), gd.Int(depth), use_mipmaps, gd.NewVariant(data).Interface().(gd.Array))))
+	return error(gd.ToError(class(self).Create(format, gd.Int(width), gd.Int(height), gd.Int(depth), use_mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))))
 }
 
 /*
 Replaces the texture's existing data with the layers specified in [param data]. The size of [param data] must match the parameters that were used for [method create]. In other words, the texture cannot be resized or have its format changed by calling [method update].
 */
 func (self Instance) Update(data [][1]gdclass.Image) {
-	class(self).Update(gd.NewVariant(data).Interface().(gd.Array))
+	class(self).Update(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -71,14 +75,14 @@ func New() Instance {
 Creates the [ImageTexture3D] with specified [param width], [param height], and [param depth]. See [enum Image.Format] for [param format] options. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for the [ImageTexture3D].
 */
 //go:nosplit
-func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int, depth gd.Int, use_mipmaps bool, data gd.Array) gd.Error {
+func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int, depth gd.Int, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
 	callframe.Arg(frame, depth)
 	callframe.Arg(frame, use_mipmaps)
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture3D.Bind_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -90,9 +94,9 @@ func (self class) Create(format gdclass.ImageFormat, width gd.Int, height gd.Int
 Replaces the texture's existing data with the layers specified in [param data]. The size of [param data] must match the parameters that were used for [method create]. In other words, the texture cannot be resized or have its format changed by calling [method update].
 */
 //go:nosplit
-func (self class) Update(data gd.Array) {
+func (self class) Update(data Array.Contains[[1]gdclass.Image]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture3D.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

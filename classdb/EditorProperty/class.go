@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A custom control for editing properties that can be added to the [EditorInspector]. It is added via [EditorInspectorPlugin].
@@ -68,6 +72,7 @@ Called when the read-only status of the property is changed. It may be used to c
 func (Instance) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var read_only = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, read_only)
 	}
@@ -201,6 +206,7 @@ Called when the read-only status of the property is changed. It may be used to c
 func (class) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var read_only = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, read_only)
 	}

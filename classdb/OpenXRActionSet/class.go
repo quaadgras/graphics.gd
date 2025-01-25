@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Action sets in OpenXR define a collection of actions that can be activated in unison. This allows games to easily change between different states that require different inputs or need to reinterpret inputs. For instance we could have an action set that is active when a menu is open, an action set that is active when the player is freely walking around and an action set that is active when the player is controlling a vehicle.
@@ -89,11 +93,11 @@ func (self Instance) SetPriority(value int) {
 }
 
 func (self Instance) Actions() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetActions()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetActions())))
 }
 
 func (self Instance) SetActions(value []any) {
-	class(self).SetActions(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetActions(gd.EngineArrayFromSlice(value))
 }
 
 //go:nosplit
@@ -148,20 +152,20 @@ func (self class) GetActionCount() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetActions(actions gd.Array) {
+func (self class) SetActions(actions Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(actions))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(actions)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_set_actions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetActions() gd.Array {
+func (self class) GetActions() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionSet.Bind_get_actions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

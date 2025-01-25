@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 By changing various properties of this object, such as the shape, you can configure the parameters for [method PhysicsDirectSpaceState2D.intersect_shape].
@@ -62,11 +66,11 @@ func (self Instance) SetCollisionMask(value int) {
 }
 
 func (self Instance) Exclude() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetExclude()))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetExclude())))
 }
 
 func (self Instance) SetExclude(value []Resource.ID) {
-	class(self).SetExclude(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
 }
 
 func (self Instance) Margin() Float.X {
@@ -240,20 +244,20 @@ func (self class) GetCollisionMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetExclude(exclude gd.Array) {
+func (self class) SetExclude(exclude Array.Contains[gd.RID]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(exclude))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters2D.Bind_set_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetExclude() gd.Array {
+func (self class) GetExclude() Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters2D.Bind_get_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

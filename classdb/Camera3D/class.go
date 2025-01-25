@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -25,6 +27,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [Camera3D] is a special node that displays what is visible from its current location. Cameras register themselves in the nearest [Viewport] node (when ascending the tree). Only one camera can be active per viewport. If no viewport is available ascending the tree, the camera will register in the global viewport. In other words, a camera just provides 3D display capabilities to a [Viewport], and, without one, a scene registered in that [Viewport] (or higher viewports) can't be displayed.
@@ -142,7 +146,7 @@ func (self Instance) GetCameraProjection() Projection.XYZW {
 Returns the camera's frustum planes in world space units as an array of [Plane]s in the following order: near, far, left, top, right, bottom. Not to be confused with [member frustum_offset].
 */
 func (self Instance) GetFrustum() []Plane.NormalD {
-	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](class(self).GetFrustum()))
+	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(class(self).GetFrustum())))
 }
 
 /*
@@ -792,11 +796,11 @@ func (self class) GetDopplerTracking() gdclass.Camera3DDopplerTracking {
 Returns the camera's frustum planes in world space units as an array of [Plane]s in the following order: near, far, left, top, right, bottom. Not to be confused with [member frustum_offset].
 */
 //go:nosplit
-func (self class) GetFrustum() gd.Array {
+func (self class) GetFrustum() Array.Contains[gd.Plane] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_frustum, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Plane]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Container for parsed source geometry data used in navigation mesh baking.
@@ -50,14 +54,14 @@ func (self Instance) HasData() bool {
 Appends another array of [param traversable_outlines] at the end of the existing traversable outlines array.
 */
 func (self Instance) AppendTraversableOutlines(traversable_outlines [][]Vector2.XY) {
-	class(self).AppendTraversableOutlines(gd.NewVariant(traversable_outlines).Interface().(gd.Array))
+	class(self).AppendTraversableOutlines(gd.ArrayFromSlice[Array.Contains[gd.PackedVector2Array]](traversable_outlines))
 }
 
 /*
 Appends another array of [param obstruction_outlines] at the end of the existing obstruction outlines array.
 */
 func (self Instance) AppendObstructionOutlines(obstruction_outlines [][]Vector2.XY) {
-	class(self).AppendObstructionOutlines(gd.NewVariant(obstruction_outlines).Interface().(gd.Array))
+	class(self).AppendObstructionOutlines(gd.ArrayFromSlice[Array.Contains[gd.PackedVector2Array]](obstruction_outlines))
 }
 
 /*
@@ -115,27 +119,27 @@ func New() Instance {
 }
 
 func (self Instance) TraversableOutlines() [][]Vector2.XY {
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).GetTraversableOutlines()))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).GetTraversableOutlines())))
 }
 
 func (self Instance) SetTraversableOutlines(value [][]Vector2.XY) {
-	class(self).SetTraversableOutlines(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetTraversableOutlines(gd.ArrayFromSlice[Array.Contains[gd.PackedVector2Array]](value))
 }
 
 func (self Instance) ObstructionOutlines() [][]Vector2.XY {
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).GetObstructionOutlines()))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).GetObstructionOutlines())))
 }
 
 func (self Instance) SetObstructionOutlines(value [][]Vector2.XY) {
-	class(self).SetObstructionOutlines(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetObstructionOutlines(gd.ArrayFromSlice[Array.Contains[gd.PackedVector2Array]](value))
 }
 
 func (self Instance) ProjectedObstructions() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetProjectedObstructions()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetProjectedObstructions())))
 }
 
 func (self Instance) SetProjectedObstructions(value []any) {
-	class(self).SetProjectedObstructions(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetProjectedObstructions(gd.EngineArrayFromSlice(value))
 }
 
 /*
@@ -166,9 +170,9 @@ func (self class) HasData() bool {
 Sets all the traversable area outlines arrays.
 */
 //go:nosplit
-func (self class) SetTraversableOutlines(traversable_outlines gd.Array) {
+func (self class) SetTraversableOutlines(traversable_outlines Array.Contains[gd.PackedVector2Array]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(traversable_outlines))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(traversable_outlines)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_set_traversable_outlines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -178,11 +182,11 @@ func (self class) SetTraversableOutlines(traversable_outlines gd.Array) {
 Returns all the traversable area outlines arrays.
 */
 //go:nosplit
-func (self class) GetTraversableOutlines() gd.Array {
+func (self class) GetTraversableOutlines() Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_get_traversable_outlines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -191,9 +195,9 @@ func (self class) GetTraversableOutlines() gd.Array {
 Sets all the obstructed area outlines arrays.
 */
 //go:nosplit
-func (self class) SetObstructionOutlines(obstruction_outlines gd.Array) {
+func (self class) SetObstructionOutlines(obstruction_outlines Array.Contains[gd.PackedVector2Array]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(obstruction_outlines))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(obstruction_outlines)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_set_obstruction_outlines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -203,11 +207,11 @@ func (self class) SetObstructionOutlines(obstruction_outlines gd.Array) {
 Returns all the obstructed area outlines arrays.
 */
 //go:nosplit
-func (self class) GetObstructionOutlines() gd.Array {
+func (self class) GetObstructionOutlines() Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_get_obstruction_outlines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -216,9 +220,9 @@ func (self class) GetObstructionOutlines() gd.Array {
 Appends another array of [param traversable_outlines] at the end of the existing traversable outlines array.
 */
 //go:nosplit
-func (self class) AppendTraversableOutlines(traversable_outlines gd.Array) {
+func (self class) AppendTraversableOutlines(traversable_outlines Array.Contains[gd.PackedVector2Array]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(traversable_outlines))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(traversable_outlines)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_append_traversable_outlines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -228,9 +232,9 @@ func (self class) AppendTraversableOutlines(traversable_outlines gd.Array) {
 Appends another array of [param obstruction_outlines] at the end of the existing obstruction outlines array.
 */
 //go:nosplit
-func (self class) AppendObstructionOutlines(obstruction_outlines gd.Array) {
+func (self class) AppendObstructionOutlines(obstruction_outlines Array.Contains[gd.PackedVector2Array]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(obstruction_outlines))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(obstruction_outlines)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_append_obstruction_outlines, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -306,9 +310,9 @@ Sets the projected obstructions with an Array of Dictionaries with the following
 [/codeblocks]
 */
 //go:nosplit
-func (self class) SetProjectedObstructions(projected_obstructions gd.Array) {
+func (self class) SetProjectedObstructions(projected_obstructions Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(projected_obstructions))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(projected_obstructions)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_set_projected_obstructions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -320,11 +324,11 @@ Returns the projected obstructions as an [Array] of dictionaries. Each [Dictiona
 - [code]carve[/code] - A [bool] that defines how the projected shape affects the navigation mesh baking. If [code]true[/code] the projected shape will not be affected by addition offsets, e.g. agent radius.
 */
 //go:nosplit
-func (self class) GetProjectedObstructions() gd.Array {
+func (self class) GetProjectedObstructions() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData2D.Bind_get_projected_obstructions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

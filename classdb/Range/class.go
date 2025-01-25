@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Range is an abstract base class for controls that represent a number within a range, using a configured [member step] and [member page] size. See e.g. [ScrollBar] and [Slider] for examples of higher-level nodes using Range.
@@ -55,6 +59,7 @@ Called when the [Range]'s value is changed (following the same conditions as [si
 func (Instance) _value_changed(impl func(ptr unsafe.Pointer, new_value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var new_value = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(new_value))
 	}
@@ -185,6 +190,7 @@ Called when the [Range]'s value is changed (following the same conditions as [si
 func (class) _value_changed(impl func(ptr unsafe.Pointer, new_value gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var new_value = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, new_value)
 	}

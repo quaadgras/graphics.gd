@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Framebuffer cache manager for Rendering Device based renderers. Provides a way to create a framebuffer and reuse it in subsequent calls for as long as the used textures exists. Framebuffers will automatically be cleaned up when dependent objects are freed.
@@ -36,7 +40,7 @@ Creates, or obtains a cached, framebuffer. [param textures] lists textures acces
 */
 func GetCacheMultipass(textures []Resource.ID, passes [][1]gdclass.RDFramebufferPass, views int) Resource.ID {
 	self := Instance{}
-	return Resource.ID(class(self).GetCacheMultipass(gd.NewVariant(textures).Interface().(gd.Array), gd.NewVariant(passes).Interface().(gd.Array), gd.Int(views)))
+	return Resource.ID(class(self).GetCacheMultipass(gd.ArrayFromSlice[Array.Contains[gd.RID]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), gd.Int(views)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -61,10 +65,10 @@ func New() Instance {
 Creates, or obtains a cached, framebuffer. [param textures] lists textures accessed. [param passes] defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. [param views] defines the number of views used when rendering.
 */
 //go:nosplit
-func (self class) GetCacheMultipass(textures gd.Array, passes gd.Array, views gd.Int) gd.RID {
+func (self class) GetCacheMultipass(textures Array.Contains[gd.RID], passes Array.Contains[[1]gdclass.RDFramebufferPass], views gd.Int) gd.RID {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(textures))
-	callframe.Arg(frame, pointers.Get(passes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(textures)))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(passes)))
 	callframe.Arg(frame, views)
 	var r_ret = callframe.Ret[gd.RID](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FramebufferCacheRD.Bind_get_cache_multipass, self.AsObject(), frame.Array(0), r_ret.Addr())

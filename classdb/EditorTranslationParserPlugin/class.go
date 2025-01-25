@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [EditorTranslationParserPlugin] is invoked when a file is being parsed to extract strings that require translation. To define the parsing and string extraction logic, override the [method _parse_file] method in script.
@@ -159,12 +163,12 @@ func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids []
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var msgids = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		defer pointers.End(msgids)
-		var msgids_context_plural = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		defer pointers.End(msgids_context_plural)
+		var msgids = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(msgids))
+		var msgids_context_plural = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalArray(msgids_context_plural))
 		self := reflect.ValueOf(class).UnsafePointer()
-		impl(self, path.String(), gd.ArrayAs[[]string](msgids), gd.ArrayAs[[][]any](msgids_context_plural))
+		impl(self, path.String(), gd.ArrayAs[[]string](gd.InternalArray(msgids)), gd.ArrayAs[[][]any](gd.InternalArray(msgids_context_plural)))
 	}
 }
 
@@ -176,6 +180,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []strin
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+
 		if !ok {
 			return
 		}
@@ -205,11 +210,14 @@ func New() Instance {
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
-func (class) _parse_file(impl func(ptr unsafe.Pointer, path gd.String, msgids gd.Array, msgids_context_plural gd.Array)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_file(impl func(ptr unsafe.Pointer, path gd.String, msgids Array.Contains[gd.String], msgids_context_plural Array.Contains[Array.Any])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		var msgids = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
-		var msgids_context_plural = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(path)
+		var msgids = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(msgids))
+		var msgids_context_plural = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalArray(msgids_context_plural))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, path, msgids, msgids_context_plural)
 	}
@@ -223,6 +231,7 @@ func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedS
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}

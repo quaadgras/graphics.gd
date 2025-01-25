@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector3"
@@ -22,6 +24,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Abstract base class for 3D physics objects. [CollisionObject3D] can hold any number of [Shape3D]s for collision. Each shape must be assigned to a [i]shape owner[/i]. Shape owners are not nodes and do not appear in the editor, but are accessible through code using the [code]shape_owner_*[/code] methods.
@@ -67,13 +71,18 @@ Receives unhandled [InputEvent]s. [param event_position] is the location in worl
 */
 func (Instance) _input_event(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(camera[0])
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(event[0])
 		var event_position = gd.UnsafeGet[gd.Vector3](p_args, 2)
+
 		var normal = gd.UnsafeGet[gd.Vector3](p_args, 3)
+
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 4)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, camera, event, event_position, normal, int(shape_idx))
 	}
@@ -312,12 +321,17 @@ Receives unhandled [InputEvent]s. [param event_position] is the location in worl
 func (class) _input_event(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position gd.Vector3, normal gd.Vector3, shape_idx gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(camera[0])
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(event[0])
 		var event_position = gd.UnsafeGet[gd.Vector3](p_args, 2)
+
 		var normal = gd.UnsafeGet[gd.Vector3](p_args, 3)
+
 		var shape_idx = gd.UnsafeGet[gd.Int](p_args, 4)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, camera, event, event_position, normal, shape_idx)
 	}

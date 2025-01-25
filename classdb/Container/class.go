@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Base class for all GUI containers. A [Container] automatically arranges its child controls in a certain way. This class can be inherited to make custom container types.
@@ -63,6 +67,7 @@ func (Instance) _get_allowed_size_flags_horizontal(impl func(ptr unsafe.Pointer)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+
 		if !ok {
 			return
 		}
@@ -79,6 +84,7 @@ func (Instance) _get_allowed_size_flags_vertical(impl func(ptr unsafe.Pointer) [
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+
 		if !ok {
 			return
 		}
@@ -127,6 +133,7 @@ func (class) _get_allowed_size_flags_horizontal(impl func(ptr unsafe.Pointer) gd
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -143,6 +150,7 @@ func (class) _get_allowed_size_flags_vertical(impl func(ptr unsafe.Pointer) gd.P
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}

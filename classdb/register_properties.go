@@ -21,7 +21,7 @@ func propertyOf(field reflect.StructField) (gd.PropertyInfo, bool) {
 	if !ok {
 		return gd.PropertyInfo{}, false
 	}
-	if vtype == gd.TypeArray {
+	if vtype == gd.TypeArray && (field.Type.Kind() == reflect.Array || field.Type.Kind() == reflect.Slice) {
 		elem := field.Type.Elem()
 		etype, ok := gd.VariantTypeOf(elem)
 		if !ok {

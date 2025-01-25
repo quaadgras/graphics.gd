@@ -1,6 +1,7 @@
 package main
 
 import (
+	"iter"
 	"strings"
 
 	"graphics.gd/internal/gdjson"
@@ -84,48 +85,57 @@ func isBuiltin(s string) bool {
 	}
 }
 
-func importsVariant(class gdjson.Class, identifier, s string) string {
-	if strings.HasPrefix(s, "typedarray::") {
-		s = strings.TrimPrefix(s, "typedarray::")
-		return importsVariant(class, identifier, s)
-	}
-	switch s {
-	case "Float", "float":
-		return "graphics.gd/variant/Float"
-	case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
-		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath":
-		return "graphics.gd/variant/" + s
-	case "RID":
-		if class.Name == "Resource" {
-			return ""
-		}
-		return "graphics.gd/classdb/Resource"
-	case "Array", "Dictionary", "Signal":
-		//return "graphics.gd/variant/" + s
-		return ""
-	case "PackedVector2Array":
-		return "graphics.gd/variant/Vector2"
-	case "PackedVector3Array":
-		return "graphics.gd/variant/Vector3"
-	case "PackedVector4Array":
-		return "graphics.gd/variant/Vector4"
-	case "PackedColorArray":
-		return "graphics.gd/variant/Color"
-	case "Callable":
-		details := gdjson.Callables[identifier]
-		if len(details) == 0 {
-			return "graphics.gd/variant/Callable"
-		}
-		for _, detail := range details {
-			if detail == "void" {
-				continue
+func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
+	return func(yield func(string) bool) {
+		if strings.HasPrefix(s, "typedarray::") {
+			s = strings.TrimPrefix(s, "typedarray::")
+			for pkg := range importsVariant(class, identifier, s) {
+				if !yield(pkg) {
+					return
+				}
 			}
-			detail, _, _ = strings.Cut(detail, " ")
-			return importsVariant(class, "", detail)
+			return
 		}
-		return ""
-	default:
-		return ""
+		switch s {
+		case "Float", "float":
+			yield("graphics.gd/variant/Float")
+		case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
+			"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath":
+			yield("graphics.gd/variant/" + s)
+		case "RID":
+			if class.Name == "Resource" {
+				return
+			}
+			yield("graphics.gd/classdb/Resource")
+		case "Dictionary", "Signal":
+			//return "graphics.gd/variant/" + s
+			return
+		case "PackedVector2Array":
+			yield("graphics.gd/variant/Vector2")
+		case "PackedVector3Array":
+			yield("graphics.gd/variant/Vector3")
+		case "PackedVector4Array":
+			yield("graphics.gd/variant/Vector4")
+		case "PackedColorArray":
+			yield("graphics.gd/variant/Color")
+		case "Callable":
+			details := gdjson.Callables[identifier]
+			if len(details) == 0 {
+				yield("graphics.gd/variant/Callable")
+				return
+			}
+			for _, detail := range details {
+				if detail == "void" {
+					continue
+				}
+				detail, _, _ = strings.Cut(detail, " ")
+				for pkg := range importsVariant(class, "", detail) {
+					if !yield(pkg) {
+						return
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -135,11 +145,11 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	}
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
-		/*meta, rest, ok := strings.Cut(gdType, ":")
+		meta, rest, ok := strings.Cut(gdType, ":")
 		if ok {
 			gdType = rest
-		}*/
-		return maybeInternal("Array") // Of[" + classDB.convertType(pkg, meta, gdType) + "]
+		}
+		return "Array.Contains[" + classDB.convertType(pkg, meta, gdType) + "]"
 	}
 	switch gdType {
 	case "int", "Int":
@@ -160,8 +170,10 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
 		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
 		"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath", "RID",
-		"Callable", "Signal", "Dictionary", "Array":
+		"Callable", "Signal", "Dictionary":
 		return maybeInternal(gdType)
+	case "Array":
+		return "Array.Any"
 	case "Variant":
 		return maybeInternal("Variant")
 	case "enum::Variant.Type":
@@ -233,6 +245,10 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string, gdType string) string {
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
+		meta, rest, ok := strings.Cut(gdType, ":")
+		if ok {
+			gdType = rest
+		}
 		return "[]" + classDB.convertTypeSimple(class, lookup, meta, gdType)
 	}
 	switch gdType {
@@ -434,12 +450,12 @@ func (db ClassDB) isPointer(t string) (string, bool) {
 	t = strings.TrimPrefix(t, "gd.")
 	t = strings.TrimPrefix(t, "gdclass.")
 	t = strings.TrimPrefix(t, "[1]gdclass.")
-	if strings.HasPrefix(t, "ArrayOf") {
+	if strings.HasPrefix(t, "Array.Contains[") {
 		return "[1]gd.EnginePointer", true
 	}
 	switch t {
 	case "String", "StringName", "NodePath",
-		"Dictionary", "Array":
+		"Dictionary", "Array.Any":
 		return "[1]gd.EnginePointer", true
 	case "Signal":
 		return "[2]uint64", true

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [MainLoop] is the abstract base class for a Godot project's game loop. It is inherited by [SceneTree], which is the default game loop implementation used in Godot projects, though it is also possible to write and use one's own [MainLoop] subclass instead of the scene tree.
@@ -131,6 +135,7 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, Float.X(delta))
 		gd.UnsafeSet(p_back, ret)
@@ -144,6 +149,7 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, Float.X(delta))
 		gd.UnsafeSet(p_back, ret)
@@ -195,6 +201,7 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 func (class) _physics_process(impl func(ptr unsafe.Pointer, delta gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, delta)
 		gd.UnsafeSet(p_back, ret)
@@ -208,6 +215,7 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 func (class) _process(impl func(ptr unsafe.Pointer, delta gd.Float) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, delta)
 		gd.UnsafeSet(p_back, ret)

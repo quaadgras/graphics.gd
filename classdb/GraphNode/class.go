@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/GraphElement"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -24,6 +26,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [GraphNode] allows to create nodes for a [GraphEdit] graph with customizable content based on its child controls. [GraphNode] is derived from [Container] and it is responsible for placing its children on screen. This works similar to [VBoxContainer]. Children, in turn, provide [GraphNode] with so-called slots, each of which can have a connection port on either side.
@@ -59,9 +63,13 @@ func (self implementation) DrawPort(slot_index int, position Vector2i.XY, left b
 func (Instance) _draw_port(impl func(ptr unsafe.Pointer, slot_index int, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var slot_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var position = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		var left = gd.UnsafeGet[bool](p_args, 2)
+
 		var color = gd.UnsafeGet[gd.Color](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(slot_index), position, left, color)
 	}
@@ -334,9 +342,13 @@ func (self Instance) SetIgnoreInvalidConnectionType(value bool) {
 func (class) _draw_port(impl func(ptr unsafe.Pointer, slot_index gd.Int, position gd.Vector2i, left bool, color gd.Color)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var slot_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var position = gd.UnsafeGet[gd.Vector2i](p_args, 1)
+
 		var left = gd.UnsafeGet[bool](p_args, 2)
+
 		var color = gd.UnsafeGet[gd.Color](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, slot_index, position, left, color)
 	}

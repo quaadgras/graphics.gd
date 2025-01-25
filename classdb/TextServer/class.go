@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
@@ -24,6 +26,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [TextServer] is the API backend for managing fonts and rendering text.
@@ -514,7 +518,7 @@ func (self Instance) FontGetOversampling(font_rid Resource.ID) Float.X {
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
 func (self Instance) FontGetSizeCacheList(font_rid Resource.ID) []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).FontGetSizeCacheList(font_rid)))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).FontGetSizeCacheList(font_rid))))
 }
 
 /*
@@ -777,7 +781,7 @@ func (self Instance) FontGetGlyphContours(font Resource.ID, size int, index int)
 Returns list of the kerning overrides.
 */
 func (self Instance) FontGetKerningList(font_rid Resource.ID, size int) []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).FontGetKerningList(font_rid, gd.Int(size))))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).FontGetKerningList(font_rid, gd.Int(size)))))
 }
 
 /*
@@ -1038,7 +1042,7 @@ Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
 func (self Instance) ShapedTextSetBidiOverride(shaped Resource.ID, override []any) {
-	class(self).ShapedTextSetBidiOverride(shaped, gd.NewVariant(override).Interface().(gd.Array))
+	class(self).ShapedTextSetBidiOverride(shaped, gd.EngineArrayFromSlice(override))
 }
 
 /*
@@ -1131,7 +1135,7 @@ func (self Instance) ShapedTextGetSpacing(shaped Resource.ID, spacing gdclass.Te
 Adds text span and font to draw it to the text buffer.
 */
 func (self Instance) ShapedTextAddString(shaped Resource.ID, text string, fonts []Resource.ID, size int) bool {
-	return bool(class(self).ShapedTextAddString(shaped, gd.NewString(text), gd.NewVariant(fonts).Interface().(gd.Array), gd.Int(size), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
+	return bool(class(self).ShapedTextAddString(shaped, gd.NewString(text), gd.ArrayFromSlice[Array.Contains[gd.RID]](fonts), gd.Int(size), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), gd.NewString(""), gd.NewVariant(gd.NewVariant(([1]any{}[0])))))
 }
 
 /*
@@ -1166,7 +1170,7 @@ func (self Instance) ShapedGetSpanMeta(shaped Resource.ID, index int) any {
 Changes text span font, font size, and OpenType features, without changing the text.
 */
 func (self Instance) ShapedSetSpanUpdateFont(shaped Resource.ID, index int, fonts []Resource.ID, size int) {
-	class(self).ShapedSetSpanUpdateFont(shaped, gd.Int(index), gd.NewVariant(fonts).Interface().(gd.Array), gd.Int(size), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary))
+	class(self).ShapedSetSpanUpdateFont(shaped, gd.Int(index), gd.ArrayFromSlice[Array.Contains[gd.RID]](fonts), gd.Int(size), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary))
 }
 
 /*
@@ -1223,14 +1227,14 @@ func (self Instance) ShapedTextHasVisibleChars(shaped Resource.ID) bool {
 Returns an array of glyphs in the visual order.
 */
 func (self Instance) ShapedTextGetGlyphs(shaped Resource.ID) []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ShapedTextGetGlyphs(shaped)))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ShapedTextGetGlyphs(shaped))))
 }
 
 /*
 Returns text glyphs in the logical order.
 */
 func (self Instance) ShapedTextSortLogical(shaped Resource.ID) []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ShapedTextSortLogical(shaped)))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ShapedTextSortLogical(shaped))))
 }
 
 /*
@@ -1286,7 +1290,7 @@ func (self Instance) ShapedTextGetEllipsisPos(shaped Resource.ID) int {
 Returns array of the glyphs in the ellipsis.
 */
 func (self Instance) ShapedTextGetEllipsisGlyphs(shaped Resource.ID) []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).ShapedTextGetEllipsisGlyphs(shaped)))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ShapedTextGetEllipsisGlyphs(shaped))))
 }
 
 /*
@@ -1307,7 +1311,7 @@ func (self Instance) ShapedTextOverrunTrimToWidth(shaped Resource.ID) {
 Returns array of inline objects.
 */
 func (self Instance) ShapedTextGetObjects(shaped Resource.ID) []any {
-	return []any(gd.ArrayAs[[]any](class(self).ShapedTextGetObjects(shaped)))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).ShapedTextGetObjects(shaped))))
 }
 
 /*
@@ -1598,7 +1602,7 @@ func (self Instance) StringToTitle(s string) string {
 Default implementation of the BiDi algorithm override function. See [enum StructuredTextParser] for more info.
 */
 func (self Instance) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args []any, text string) []Vector3i.XYZ {
-	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](class(self).ParseStructuredText(parser_type, gd.NewVariant(args).Interface().(gd.Array), gd.NewString(text))))
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(class(self).ParseStructuredText(parser_type, gd.EngineArrayFromSlice(args), gd.NewString(text)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -2511,12 +2515,12 @@ func (self class) FontGetOversampling(font_rid gd.RID) gd.Float {
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
 //go:nosplit
-func (self class) FontGetSizeCacheList(font_rid gd.RID) gd.Array {
+func (self class) FontGetSizeCacheList(font_rid gd.RID) Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_size_cache_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3055,13 +3059,13 @@ func (self class) FontGetGlyphContours(font gd.RID, size gd.Int, index gd.Int) g
 Returns list of the kerning overrides.
 */
 //go:nosplit
-func (self class) FontGetKerningList(font_rid gd.RID, size gd.Int) gd.Array {
+func (self class) FontGetKerningList(font_rid gd.RID, size gd.Int) Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_kerning_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3584,10 +3588,10 @@ Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
 //go:nosplit
-func (self class) ShapedTextSetBidiOverride(shaped gd.RID, override gd.Array) {
+func (self class) ShapedTextSetBidiOverride(shaped gd.RID, override Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	callframe.Arg(frame, pointers.Get(override))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(override)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_set_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3763,11 +3767,11 @@ func (self class) ShapedTextGetSpacing(shaped gd.RID, spacing gdclass.TextServer
 Adds text span and font to draw it to the text buffer.
 */
 //go:nosplit
-func (self class) ShapedTextAddString(shaped gd.RID, text gd.String, fonts gd.Array, size gd.Int, opentype_features gd.Dictionary, language gd.String, meta gd.Variant) bool {
+func (self class) ShapedTextAddString(shaped gd.RID, text gd.String, fonts Array.Contains[gd.RID], size gd.Int, opentype_features gd.Dictionary, language gd.String, meta gd.Variant) bool {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, pointers.Get(text))
-	callframe.Arg(frame, pointers.Get(fonts))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(fonts)))
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, pointers.Get(opentype_features))
 	callframe.Arg(frame, pointers.Get(language))
@@ -3849,11 +3853,11 @@ func (self class) ShapedGetSpanMeta(shaped gd.RID, index gd.Int) gd.Variant {
 Changes text span font, font size, and OpenType features, without changing the text.
 */
 //go:nosplit
-func (self class) ShapedSetSpanUpdateFont(shaped gd.RID, index gd.Int, fonts gd.Array, size gd.Int, opentype_features gd.Dictionary) {
+func (self class) ShapedSetSpanUpdateFont(shaped gd.RID, index gd.Int, fonts Array.Contains[gd.RID], size gd.Int, opentype_features gd.Dictionary) {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(fonts))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(fonts)))
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, pointers.Get(opentype_features))
 	var r_ret = callframe.Nil
@@ -3969,12 +3973,12 @@ func (self class) ShapedTextHasVisibleChars(shaped gd.RID) bool {
 Returns an array of glyphs in the visual order.
 */
 //go:nosplit
-func (self class) ShapedTextGetGlyphs(shaped gd.RID) gd.Array {
+func (self class) ShapedTextGetGlyphs(shaped gd.RID) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_glyphs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3983,12 +3987,12 @@ func (self class) ShapedTextGetGlyphs(shaped gd.RID) gd.Array {
 Returns text glyphs in the logical order.
 */
 //go:nosplit
-func (self class) ShapedTextSortLogical(shaped gd.RID) gd.Array {
+func (self class) ShapedTextSortLogical(shaped gd.RID) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_sort_logical, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4104,12 +4108,12 @@ func (self class) ShapedTextGetEllipsisPos(shaped gd.RID) gd.Int {
 Returns array of the glyphs in the ellipsis.
 */
 //go:nosplit
-func (self class) ShapedTextGetEllipsisGlyphs(shaped gd.RID) gd.Array {
+func (self class) ShapedTextGetEllipsisGlyphs(shaped gd.RID) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_ellipsis_glyphs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4146,12 +4150,12 @@ func (self class) ShapedTextOverrunTrimToWidth(shaped gd.RID, width gd.Float, ov
 Returns array of inline objects.
 */
 //go:nosplit
-func (self class) ShapedTextGetObjects(shaped gd.RID) gd.Array {
+func (self class) ShapedTextGetObjects(shaped gd.RID) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_objects, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -4728,14 +4732,14 @@ func (self class) StringToTitle(s gd.String, language gd.String) gd.String {
 Default implementation of the BiDi algorithm override function. See [enum StructuredTextParser] for more info.
 */
 //go:nosplit
-func (self class) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args gd.Array, text gd.String) gd.Array {
+func (self class) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text gd.String) Array.Contains[gd.Vector3i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, parser_type)
-	callframe.Arg(frame, pointers.Get(args))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	callframe.Arg(frame, pointers.Get(text))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_parse_structured_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector3i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [RDPipelineMultisampleState] is used to control how multisample or supersample antialiasing is being performed when rendering using [RenderingDevice].
@@ -91,11 +95,11 @@ func (self Instance) SetEnableAlphaToOne(value bool) {
 }
 
 func (self Instance) SampleMasks() []int {
-	return []int(gd.ArrayAs[[]int](class(self).GetSampleMasks()))
+	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetSampleMasks())))
 }
 
 func (self Instance) SetSampleMasks(value []int) {
-	class(self).SetSampleMasks(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetSampleMasks(gd.ArrayFromSlice[Array.Contains[gd.Int]](value))
 }
 
 //go:nosplit
@@ -194,20 +198,20 @@ func (self class) GetEnableAlphaToOne() bool {
 }
 
 //go:nosplit
-func (self class) SetSampleMasks(masks gd.Array) {
+func (self class) SetSampleMasks(masks Array.Contains[gd.Int]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(masks))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(masks)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_sample_masks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetSampleMasks() gd.Array {
+func (self class) GetSampleMasks() Array.Contains[gd.Int] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_sample_masks, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Int]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

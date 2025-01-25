@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/NodePath"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Maintains a list of resources, nodes, exported and overridden properties, and built-in scripts associated with a scene. They cannot be modified from a [SceneState], only accessed. Useful for peeking into what a [PackedScene] contains without instantiating it.
@@ -173,7 +177,7 @@ func (self Instance) GetConnectionFlags(idx int) int {
 Returns the list of bound parameters for the signal at [param idx].
 */
 func (self Instance) GetConnectionBinds(idx int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetConnectionBinds(gd.Int(idx))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetConnectionBinds(gd.Int(idx)))))
 }
 
 /*
@@ -477,12 +481,12 @@ func (self class) GetConnectionFlags(idx gd.Int) gd.Int {
 Returns the list of bound parameters for the signal at [param idx].
 */
 //go:nosplit
-func (self class) GetConnectionBinds(idx gd.Int) gd.Array {
+func (self class) GetConnectionBinds(idx gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneState.Bind_get_connection_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

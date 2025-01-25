@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
@@ -187,7 +191,7 @@ func (self Instance) GetProjectionForView(view int, aspect Float.X, near Float.X
 Returns the an array of supported environment blend modes, see [enum XRInterface.EnvironmentBlendMode].
 */
 func (self Instance) GetSupportedEnvironmentBlendModes() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetSupportedEnvironmentBlendModes()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSupportedEnvironmentBlendModes())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -576,11 +580,11 @@ func (self class) GetProjectionForView(view gd.Int, aspect gd.Float, near gd.Flo
 Returns the an array of supported environment blend modes, see [enum XRInterface.EnvironmentBlendMode].
 */
 //go:nosplit
-func (self class) GetSupportedEnvironmentBlendModes() gd.Array {
+func (self class) GetSupportedEnvironmentBlendModes() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_supported_environment_blend_modes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

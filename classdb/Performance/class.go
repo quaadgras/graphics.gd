@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Callable"
 
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class provides access to a number of different monitors related to performance, such as memory usage, draw calls, and FPS. These are the same as the values displayed in the [b]Monitor[/b] tab in the editor's [b]Debugger[/b] panel. By using the [method get_monitor] method of this class, you can access this data from your code.
@@ -112,7 +116,7 @@ Callables are called with arguments supplied in argument array.
 */
 func AddCustomMonitor(id string, callable Callable.Any) {
 	once.Do(singleton)
-	class(self).AddCustomMonitor(gd.NewStringName(id), gd.NewCallable(callable), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))
+	class(self).AddCustomMonitor(gd.NewStringName(id), gd.NewCallable(callable), Array.Nil)
 }
 
 /*
@@ -152,7 +156,7 @@ Returns the names of active custom monitors in an [Array].
 */
 func GetCustomMonitorNames() []string {
 	once.Do(singleton)
-	return []string(gd.ArrayAs[[]string](class(self).GetCustomMonitorNames()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCustomMonitorNames())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -241,11 +245,11 @@ The debugger calls the callable to get the value of custom monitor. The callable
 Callables are called with arguments supplied in argument array.
 */
 //go:nosplit
-func (self class) AddCustomMonitor(id gd.StringName, callable gd.Callable, arguments gd.Array) {
+func (self class) AddCustomMonitor(id gd.StringName, callable gd.Callable, arguments Array.Any) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(id))
 	callframe.Arg(frame, pointers.Get(callable))
-	callframe.Arg(frame, pointers.Get(arguments))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(arguments)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_add_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -308,11 +312,11 @@ func (self class) GetMonitorModificationTime() gd.Int {
 Returns the names of active custom monitors in an [Array].
 */
 //go:nosplit
-func (self class) GetCustomMonitorNames() gd.Array {
+func (self class) GetCustomMonitorNames() Array.Contains[gd.StringName] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

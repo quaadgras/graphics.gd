@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Manages all [InputEventAction] which can be created/modified from the project settings menu [b]Project > Project Settings > Input Map[/b] or in code with [method add_action] and [method action_add_event]. See [method Node._input].
@@ -43,7 +47,7 @@ Returns an array of all actions in the [InputMap].
 */
 func GetActions() []string {
 	once.Do(singleton)
-	return []string(gd.ArrayAs[[]string](class(self).GetActions()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetActions())))
 }
 
 /*
@@ -117,7 +121,7 @@ Returns an array of [InputEvent]s associated with a given action.
 */
 func ActionGetEvents(action string) [][1]gdclass.InputEvent {
 	once.Do(singleton)
-	return [][1]gdclass.InputEvent(gd.ArrayAs[[][1]gdclass.InputEvent](class(self).ActionGetEvents(gd.NewStringName(action))))
+	return [][1]gdclass.InputEvent(gd.ArrayAs[[][1]gdclass.InputEvent](gd.InternalArray(class(self).ActionGetEvents(gd.NewStringName(action)))))
 }
 
 /*
@@ -165,11 +169,11 @@ func (self class) HasAction(action gd.StringName) bool {
 Returns an array of all actions in the [InputMap].
 */
 //go:nosplit
-func (self class) GetActions() gd.Array {
+func (self class) GetActions() Array.Contains[gd.StringName] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_get_actions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -285,12 +289,12 @@ Returns an array of [InputEvent]s associated with a given action.
 [b]Note:[/b] When used in the editor (e.g. a tool script or [EditorPlugin]), this method will return events for the editor action. If you want to access your project's input binds from the editor, read the [code]input/*[/code] settings from [ProjectSettings].
 */
 //go:nosplit
-func (self class) ActionGetEvents(action gd.StringName) gd.Array {
+func (self class) ActionGetEvents(action gd.StringName) Array.Contains[[1]gdclass.InputEvent] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(action))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_events, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.InputEvent]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

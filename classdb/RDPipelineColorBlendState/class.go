@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Color"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This object is used by [RenderingDevice].
@@ -75,11 +79,11 @@ func (self Instance) SetBlendConstant(value Color.RGBA) {
 }
 
 func (self Instance) Attachments() [][1]gdclass.RDPipelineColorBlendStateAttachment {
-	return [][1]gdclass.RDPipelineColorBlendStateAttachment(gd.ArrayAs[[][1]gdclass.RDPipelineColorBlendStateAttachment](class(self).GetAttachments()))
+	return [][1]gdclass.RDPipelineColorBlendStateAttachment(gd.ArrayAs[[][1]gdclass.RDPipelineColorBlendStateAttachment](gd.InternalArray(class(self).GetAttachments())))
 }
 
 func (self Instance) SetAttachments(value [][1]gdclass.RDPipelineColorBlendStateAttachment) {
-	class(self).SetAttachments(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetAttachments(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment]](value))
 }
 
 //go:nosplit
@@ -140,20 +144,20 @@ func (self class) GetBlendConstant() gd.Color {
 }
 
 //go:nosplit
-func (self class) SetAttachments(attachments gd.Array) {
+func (self class) SetAttachments(attachments Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(attachments))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(attachments)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendState.Bind_set_attachments, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetAttachments() gd.Array {
+func (self class) GetAttachments() Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendState.Bind_get_attachments, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.RDPipelineColorBlendStateAttachment]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

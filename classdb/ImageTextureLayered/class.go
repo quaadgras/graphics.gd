@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/TextureLayered"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Base class for [Texture2DArray], [Cubemap] and [CubemapArray]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [Texture3D].
@@ -38,7 +42,7 @@ Creates an [ImageTextureLayered] from an array of [Image]s. See [method Image.cr
 Each [Image] represents one [code]layer[/code].
 */
 func (self Instance) CreateFromImages(images [][1]gdclass.Image) error {
-	return error(gd.ToError(class(self).CreateFromImages(gd.NewVariant(images).Interface().(gd.Array))))
+	return error(gd.ToError(class(self).CreateFromImages(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](images))))
 }
 
 /*
@@ -75,9 +79,9 @@ Creates an [ImageTextureLayered] from an array of [Image]s. See [method Image.cr
 Each [Image] represents one [code]layer[/code].
 */
 //go:nosplit
-func (self class) CreateFromImages(images gd.Array) gd.Error {
+func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) gd.Error {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(images))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(images)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

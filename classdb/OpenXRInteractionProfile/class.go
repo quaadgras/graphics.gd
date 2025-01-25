@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This object stores suggested bindings for an interaction profile. Interaction profiles define the metadata for a tracked XR device such as an XR controller.
@@ -74,11 +78,11 @@ func (self Instance) SetInteractionProfilePath(value string) {
 }
 
 func (self Instance) Bindings() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetBindings()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetBindings())))
 }
 
 func (self Instance) SetBindings(value []any) {
-	class(self).SetBindings(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetBindings(gd.EngineArrayFromSlice(value))
 }
 
 //go:nosplit
@@ -128,20 +132,20 @@ func (self class) GetBinding(index gd.Int) [1]gdclass.OpenXRIPBinding {
 }
 
 //go:nosplit
-func (self class) SetBindings(bindings gd.Array) {
+func (self class) SetBindings(bindings Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bindings))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(bindings)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_set_bindings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetBindings() gd.Array {
+func (self class) GetBindings() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_bindings, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

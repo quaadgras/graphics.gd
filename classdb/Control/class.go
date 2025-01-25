@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Vector2"
@@ -24,6 +26,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Base class for all UI-related nodes. [Control] features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and offsets relative to the anchor. The offsets update automatically when the node, any of its parents, or the screen size change.
@@ -220,6 +224,7 @@ If not overridden, default behavior is checking if the point is within control's
 func (Instance) _has_point(impl func(ptr unsafe.Pointer, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, point)
 		gd.UnsafeSet(p_back, ret)
@@ -232,13 +237,14 @@ Returns an [Array] of [Vector3i] text ranges and text base directions, in the le
 */
 func (Instance) _structured_text_parser(impl func(ptr unsafe.Pointer, args []any, text string) []Vector3i.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
-		defer pointers.End(args)
+		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(args))
 		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(text)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, gd.ArrayAs[[]any](args), text.String())
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ret := impl(self, gd.ArrayAs[[]any](gd.InternalArray(args)), text.String())
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Vector3i]](ret)))
+
 		if !ok {
 			return
 		}
@@ -266,9 +272,11 @@ Virtual method to be implemented by the user. Returns the tooltip text for the p
 func (Instance) _get_tooltip(impl func(ptr unsafe.Pointer, at_position Vector2.XY) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -303,9 +311,11 @@ public override Variant _GetDragData(Vector2 atPosition)
 func (Instance) _get_drag_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.NewVariant(ret))
+
 		if !ok {
 			return
 		}
@@ -340,6 +350,7 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 func (Instance) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -380,6 +391,7 @@ public override void _DropData(Vector2 atPosition, Variant data)
 func (Instance) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
 		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -443,6 +455,7 @@ func (Instance) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text stri
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_text.String())
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -487,7 +500,8 @@ The event won't trigger if:
 */
 func (Instance) _gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1477,6 +1491,7 @@ If not overridden, default behavior is checking if the point is within control's
 func (class) _has_point(impl func(ptr unsafe.Pointer, point gd.Vector2) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, point)
 		gd.UnsafeSet(p_back, ret)
@@ -1487,13 +1502,16 @@ func (class) _has_point(impl func(ptr unsafe.Pointer, point gd.Vector2) bool) (c
 User defined BiDi algorithm override function.
 Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
 */
-func (class) _structured_text_parser(impl func(ptr unsafe.Pointer, args gd.Array, text gd.String) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _structured_text_parser(impl func(ptr unsafe.Pointer, args Array.Any, text gd.String) Array.Contains[gd.Vector3i]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(args))
 		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(text)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, args, text)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -1521,9 +1539,11 @@ Virtual method to be implemented by the user. Returns the tooltip text for the p
 func (class) _get_tooltip(impl func(ptr unsafe.Pointer, at_position gd.Vector2) gd.String) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -1558,9 +1578,11 @@ public override Variant _GetDragData(Vector2 atPosition)
 func (class) _get_drag_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2) gd.Variant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -1595,7 +1617,9 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 func (class) _can_drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
+		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position, data)
 		gd.UnsafeSet(p_back, ret)
@@ -1634,7 +1658,9 @@ public override void _DropData(Vector2 atPosition, Variant data)
 func (class) _drop_data(impl func(ptr unsafe.Pointer, at_position gd.Vector2, data gd.Variant)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		var data = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
+		defer pointers.End(data)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, at_position, data)
 	}
@@ -1692,9 +1718,11 @@ public override Control _MakeCustomTooltip(string forText)
 func (class) _make_custom_tooltip(impl func(ptr unsafe.Pointer, for_text gd.String) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var for_text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(for_text)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, for_text)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -1740,6 +1768,7 @@ The event won't trigger if:
 func (class) _gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)

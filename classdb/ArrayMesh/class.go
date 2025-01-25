@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The [ArrayMesh] is used to construct a [Mesh] by specifying the attributes as arrays.
@@ -123,7 +127,7 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 func (self Instance) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays []any) {
-	class(self).AddSurfaceFromArrays(primitive, gd.NewVariant(arrays).Interface().(gd.Array), gd.NewVariant([1][][]any{}[0]).Interface().(gd.Array), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
+	class(self).AddSurfaceFromArrays(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), gd.NewVariant([1]map[any]any{}[0]).Interface().(gd.Dictionary), 0)
 }
 
 /*
@@ -340,11 +344,11 @@ The [param flags] argument is the bitwise or of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 //go:nosplit
-func (self class) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays gd.Array, blend_shapes gd.Array, lods gd.Dictionary, flags gdclass.MeshArrayFormat) {
+func (self class) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods gd.Dictionary, flags gdclass.MeshArrayFormat) {
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
-	callframe.Arg(frame, pointers.Get(arrays))
-	callframe.Arg(frame, pointers.Get(blend_shapes))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(blend_shapes)))
 	callframe.Arg(frame, pointers.Get(lods))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil

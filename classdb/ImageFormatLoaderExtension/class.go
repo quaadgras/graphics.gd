@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/ImageFormatLoader"
 import "graphics.gd/variant/Float"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The engine supports multiple image formats out of the box (PNG, SVG, JPEG, WebP to name a few), but you can choose to implement support for additional image formats by extending this class.
@@ -61,6 +65,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []strin
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+
 		if !ok {
 			return
 		}
@@ -73,12 +78,16 @@ Loads the content of [param fileaccess] into the provided [param image].
 */
 func (Instance) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(image[0])
-		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 1))})}
+		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[gdclass.ImageFormatLoaderLoaderFlags](p_args, 2)
+
 		var scale = gd.UnsafeGet[gd.Float](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, image, fileaccess, flags, Float.X(scale))
 		gd.UnsafeSet(p_back, ret)
@@ -126,6 +135,7 @@ func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) gd.PackedS
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -139,11 +149,15 @@ Loads the content of [param fileaccess] into the provided [param image].
 func (class) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale gd.Float) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(image[0])
 		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[gdclass.ImageFormatLoaderLoaderFlags](p_args, 2)
+
 		var scale = gd.UnsafeGet[gd.Float](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, image, fileaccess, flags, scale)
 		gd.UnsafeSet(p_back, ret)

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [EditorInspectorPlugin] allows adding custom property editors to [EditorInspector].
@@ -129,13 +133,17 @@ func (Instance) _parse_property(impl func(ptr unsafe.Pointer, obj Object.Instanc
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var atype = gd.UnsafeGet[gd.VariantType](p_args, 1)
+
 		var name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(name)
 		var hint_type = gd.UnsafeGet[PropertyHint](p_args, 3)
+
 		var hint_string = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))
 		defer pointers.End(hint_string)
 		var usage_flags = gd.UnsafeGet[PropertyUsageFlags](p_args, 5)
+
 		var wide = gd.UnsafeGet[bool](p_args, 6)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, atype, name.String(), hint_type, hint_string.String(), usage_flags, wide)
 		gd.UnsafeSet(p_back, ret)
@@ -229,6 +237,7 @@ func (class) _parse_category(impl func(ptr unsafe.Pointer, obj [1]gd.Object, cat
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var category = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(category)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj, category)
 	}
@@ -242,6 +251,7 @@ func (class) _parse_group(impl func(ptr unsafe.Pointer, obj [1]gd.Object, group 
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var group = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(group)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, obj, group)
 	}
@@ -255,11 +265,17 @@ func (class) _parse_property(impl func(ptr unsafe.Pointer, obj [1]gd.Object, aty
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var atype = gd.UnsafeGet[gd.VariantType](p_args, 1)
+
 		var name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(name)
 		var hint_type = gd.UnsafeGet[PropertyHint](p_args, 3)
+
 		var hint_string = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))
+		defer pointers.End(hint_string)
 		var usage_flags = gd.UnsafeGet[PropertyUsageFlags](p_args, 5)
+
 		var wide = gd.UnsafeGet[bool](p_args, 6)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, atype, name, hint_type, hint_string, usage_flags, wide)
 		gd.UnsafeSet(p_back, ret)

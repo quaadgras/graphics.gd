@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Container for parsed source geometry data used in navigation mesh baking.
@@ -66,7 +70,7 @@ func (self Instance) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin
 Adds an [Array] the size of [constant Mesh.ARRAY_MAX] and with vertices at index [constant Mesh.ARRAY_VERTEX] and indices at index [constant Mesh.ARRAY_INDEX] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 func (self Instance) AddMeshArray(mesh_array []any, xform Transform3D.BasisOrigin) {
-	class(self).AddMeshArray(gd.NewVariant(mesh_array).Interface().(gd.Array), gd.Transform3D(xform))
+	class(self).AddMeshArray(gd.EngineArrayFromSlice(mesh_array), gd.Transform3D(xform))
 }
 
 /*
@@ -133,11 +137,11 @@ func (self Instance) SetIndices(value []int32) {
 }
 
 func (self Instance) ProjectedObstructions() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetProjectedObstructions()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetProjectedObstructions())))
 }
 
 func (self Instance) SetProjectedObstructions(value []any) {
-	class(self).SetProjectedObstructions(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetProjectedObstructions(gd.EngineArrayFromSlice(value))
 }
 
 /*
@@ -246,9 +250,9 @@ func (self class) AddMesh(mesh [1]gdclass.Mesh, xform gd.Transform3D) {
 Adds an [Array] the size of [constant Mesh.ARRAY_MAX] and with vertices at index [constant Mesh.ARRAY_VERTEX] and indices at index [constant Mesh.ARRAY_INDEX] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 //go:nosplit
-func (self class) AddMeshArray(mesh_array gd.Array, xform gd.Transform3D) {
+func (self class) AddMeshArray(mesh_array Array.Any, xform gd.Transform3D) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(mesh_array))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(mesh_array)))
 	callframe.Arg(frame, xform)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_add_mesh_array, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -318,9 +322,9 @@ Sets the projected obstructions with an Array of Dictionaries with the following
 [/codeblocks]
 */
 //go:nosplit
-func (self class) SetProjectedObstructions(projected_obstructions gd.Array) {
+func (self class) SetProjectedObstructions(projected_obstructions Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(projected_obstructions))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(projected_obstructions)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_set_projected_obstructions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -334,11 +338,11 @@ Returns the projected obstructions as an [Array] of dictionaries. Each [Dictiona
 - [code]carve[/code] - A [bool] that defines how the obstacle affects the navigation mesh baking. If [code]true[/code] the projected shape will not be affected by addition offsets, e.g. agent radius.
 */
 //go:nosplit
-func (self class) GetProjectedObstructions() gd.Array {
+func (self class) GetProjectedObstructions() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_get_projected_obstructions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

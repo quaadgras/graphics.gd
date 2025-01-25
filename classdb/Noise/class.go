@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class defines the interface for noise generation libraries to inherit from.
@@ -92,7 +96,7 @@ Returns an [Array] of [Image]s containing 3D noise values for use with [method I
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
 func (self Instance) GetImage3d(width int, height int, depth int) [][1]gdclass.Image {
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).GetImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, true)))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).GetImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, true))))
 }
 
 /*
@@ -100,7 +104,7 @@ Returns an [Array] of [Image]s containing seamless 3D noise values for use with 
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
 func (self Instance) GetSeamlessImage3d(width int, height int, depth int) [][1]gdclass.Image {
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](class(self).GetSeamlessImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, gd.Float(0.1), true)))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).GetSeamlessImage3d(gd.Int(width), gd.Int(height), gd.Int(depth), false, gd.Float(0.1), true))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -239,7 +243,7 @@ Returns an [Array] of [Image]s containing 3D noise values for use with [method I
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
 //go:nosplit
-func (self class) GetImage3d(width gd.Int, height gd.Int, depth gd.Int, invert bool, normalize bool) gd.Array {
+func (self class) GetImage3d(width gd.Int, height gd.Int, depth gd.Int, invert bool, normalize bool) Array.Contains[[1]gdclass.Image] {
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -248,7 +252,7 @@ func (self class) GetImage3d(width gd.Int, height gd.Int, depth gd.Int, invert b
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_image_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -258,7 +262,7 @@ Returns an [Array] of [Image]s containing seamless 3D noise values for use with 
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
 //go:nosplit
-func (self class) GetSeamlessImage3d(width gd.Int, height gd.Int, depth gd.Int, invert bool, skirt gd.Float, normalize bool) gd.Array {
+func (self class) GetSeamlessImage3d(width gd.Int, height gd.Int, depth gd.Int, invert bool, skirt gd.Float, normalize bool) Array.Contains[[1]gdclass.Image] {
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -268,7 +272,7 @@ func (self class) GetSeamlessImage3d(width gd.Int, height gd.Int, depth gd.Int, 
 	callframe.Arg(frame, normalize)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Noise.Bind_get_seamless_image_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

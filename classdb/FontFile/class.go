@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -23,6 +25,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [FontFile] contains a set of glyphs to represent Unicode characters imported from a font file, as well as a cache of rasterized glyphs, and a set of fallback [Font]s to use.
@@ -99,7 +103,7 @@ func (self Instance) RemoveCache(cache_index int) {
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
 func (self Instance) GetSizeCacheList(cache_index int) []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetSizeCacheList(gd.Int(cache_index))))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetSizeCacheList(gd.Int(cache_index)))))
 }
 
 /*
@@ -420,7 +424,7 @@ func (self Instance) GetGlyphTextureIdx(cache_index int, size Vector2i.XY, glyph
 Returns list of the kerning overrides.
 */
 func (self Instance) GetKerningList(cache_index int, size int) []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetKerningList(gd.Int(cache_index), gd.Int(size))))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetKerningList(gd.Int(cache_index), gd.Int(size)))))
 }
 
 /*
@@ -1075,12 +1079,12 @@ func (self class) RemoveCache(cache_index gd.Int) {
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
 //go:nosplit
-func (self class) GetSizeCacheList(cache_index gd.Int) gd.Array {
+func (self class) GetSizeCacheList(cache_index gd.Int) Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_index)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_size_cache_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1730,13 +1734,13 @@ func (self class) GetGlyphTextureIdx(cache_index gd.Int, size gd.Vector2i, glyph
 Returns list of the kerning overrides.
 */
 //go:nosplit
-func (self class) GetKerningList(cache_index gd.Int, size gd.Int) gd.Array {
+func (self class) GetKerningList(cache_index gd.Int, size gd.Int) Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_index)
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_kerning_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

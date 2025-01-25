@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/NodePath"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
@@ -136,6 +140,7 @@ Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Objec
 func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
 	}
@@ -150,6 +155,7 @@ Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [meth
 func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
 	}
@@ -215,6 +221,7 @@ func (Instance) _get_configuration_warnings(impl func(ptr unsafe.Pointer) []stri
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewPackedStringSlice(ret))
+
 		if !ok {
 			return
 		}
@@ -231,7 +238,8 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 */
 func (Instance) _input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -247,7 +255,8 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 */
 func (Instance) _shortcut_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -263,7 +272,8 @@ For gameplay input, this method is usually a better fit than [method _input], as
 */
 func (Instance) _unhandled_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -280,7 +290,8 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 */
 func (Instance) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -367,7 +378,7 @@ Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
 func (self Instance) GetChildren() [][1]gdclass.Node {
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).GetChildren(false)))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetChildren(false))))
 }
 
 /*
@@ -467,7 +478,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
 func (self Instance) FindChildren(pattern string) [][1]gdclass.Node {
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](class(self).FindChildren(gd.NewString(pattern), gd.NewString(""), true, true)))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).FindChildren(gd.NewString(pattern), gd.NewString(""), true, true))))
 }
 
 /*
@@ -527,7 +538,7 @@ GD.Print(c[2]);             // Prints ^":region"
 [/codeblocks]
 */
 func (self Instance) GetNodeAndResource(path NodePath.String) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetNodeAndResource(gd.NewString(string(path)).NodePath())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetNodeAndResource(gd.NewString(string(path)).NodePath()))))
 }
 
 /*
@@ -634,7 +645,7 @@ foreach (string group in GetGroups())
 [/codeblocks]
 */
 func (self Instance) GetGroups() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetGroups()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetGroups())))
 }
 
 /*
@@ -725,7 +736,7 @@ Calls the given [param method] name, passing [param args] as arguments, on this 
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
 func (self Instance) PropagateCall(method string) {
-	class(self).PropagateCall(gd.NewStringName(method), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array), false)
+	class(self).PropagateCall(gd.NewStringName(method), Array.Nil, false)
 }
 
 /*
@@ -1260,6 +1271,7 @@ Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Objec
 func (class) _process(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
 	}
@@ -1274,6 +1286,7 @@ Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [meth
 func (class) _physics_process(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
 	}
@@ -1339,6 +1352,7 @@ func (class) _get_configuration_warnings(impl func(ptr unsafe.Pointer) gd.Packed
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -1356,6 +1370,7 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 func (class) _input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1372,6 +1387,7 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 func (class) _shortcut_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1388,6 +1404,7 @@ For gameplay input, this method is usually a better fit than [method _input], as
 func (class) _unhandled_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1405,6 +1422,7 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 func (class) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, event)
@@ -1540,12 +1558,12 @@ Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
 //go:nosplit
-func (self class) GetChildren(include_internal bool) gd.Array {
+func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.Node] {
 	var frame = callframe.New()
 	callframe.Arg(frame, include_internal)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_children, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1689,7 +1707,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
 //go:nosplit
-func (self class) FindChildren(pattern gd.String, atype gd.String, recursive bool, owned bool) gd.Array {
+func (self class) FindChildren(pattern gd.String, atype gd.String, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(pattern))
 	callframe.Arg(frame, pointers.Get(atype))
@@ -1697,7 +1715,7 @@ func (self class) FindChildren(pattern gd.String, atype gd.String, recursive boo
 	callframe.Arg(frame, owned)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_find_children, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1773,12 +1791,12 @@ GD.Print(c[2]);             // Prints ^":region"
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetNodeAndResource(path gd.NodePath) gd.Array {
+func (self class) GetNodeAndResource(path gd.NodePath) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_node_and_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1947,11 +1965,11 @@ foreach (string group in GetGroups())
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetGroups() gd.Array {
+func (self class) GetGroups() Array.Contains[gd.StringName] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_groups, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2110,10 +2128,10 @@ Calls the given [param method] name, passing [param args] as arguments, on this 
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
 //go:nosplit
-func (self class) PropagateCall(method gd.StringName, args gd.Array, parent_first bool) {
+func (self class) PropagateCall(method gd.StringName, args Array.Any, parent_first bool) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
-	callframe.Arg(frame, pointers.Get(args))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
 	callframe.Arg(frame, parent_first)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_propagate_call, self.AsObject(), frame.Array(0), r_ret.Addr())

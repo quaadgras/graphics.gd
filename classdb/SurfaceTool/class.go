@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Plane"
@@ -23,6 +25,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The [SurfaceTool] is used to construct a [Mesh] by specifying vertex attributes individually. It can be used to construct a [Mesh] from a script. All properties except indices need to be added before calling [method add_vertex]. For example, to add vertex colors and UVs:
@@ -176,7 +180,7 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Instance) AddTriangleFan(vertices []Vector3.XYZ) {
-	class(self).AddTriangleFan(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedVector2Slice(nil), gd.NewPackedColorSlice(nil), gd.NewPackedVector2Slice(nil), gd.NewPackedVector3Slice(nil), gd.NewVariant([1][]Plane.NormalD{}[0]).Interface().(gd.Array))
+	class(self).AddTriangleFan(gd.NewPackedVector3Slice(*(*[]gd.Vector3)(unsafe.Pointer(&vertices))), gd.NewPackedVector2Slice(nil), gd.NewPackedColorSlice(nil), gd.NewPackedVector2Slice(nil), gd.NewPackedVector3Slice(nil), gd.ArrayFromSlice[Array.Contains[gd.Plane]]([1][]Plane.NormalD{}[0]))
 }
 
 /*
@@ -269,7 +273,7 @@ func (self Instance) CreateFrom(existing [1]gdclass.Mesh, surface int) {
 Creates this SurfaceTool from existing vertex arrays such as returned by [method commit_to_arrays], [method Mesh.surface_get_arrays], [method Mesh.surface_get_blend_shape_arrays], [method ImporterMesh.get_surface_arrays], and [method ImporterMesh.get_surface_blend_shape_arrays]. [param primitive_type] controls the type of mesh data, defaulting to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 func (self Instance) CreateFromArrays(arrays []any) {
-	class(self).CreateFromArrays(gd.NewVariant(arrays).Interface().(gd.Array), 3)
+	class(self).CreateFromArrays(gd.EngineArrayFromSlice(arrays), 3)
 }
 
 /*
@@ -298,7 +302,7 @@ func (self Instance) Commit() [1]gdclass.ArrayMesh {
 Commits the data to the same format used by [method ArrayMesh.add_surface_from_arrays], [method ImporterMesh.add_surface], and [method create_from_arrays]. This way you can further process the mesh data using the [ArrayMesh] or [ImporterMesh] APIs.
 */
 func (self Instance) CommitToArrays() []any {
-	return []any(gd.ArrayAs[[]any](class(self).CommitToArrays()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).CommitToArrays())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -518,14 +522,14 @@ Inserts a triangle fan made of array data into [Mesh] being constructed.
 Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) AddTriangleFan(vertices gd.PackedVector3Array, uvs gd.PackedVector2Array, colors gd.PackedColorArray, uv2s gd.PackedVector2Array, normals gd.PackedVector3Array, tangents gd.Array) {
+func (self class) AddTriangleFan(vertices gd.PackedVector3Array, uvs gd.PackedVector2Array, colors gd.PackedColorArray, uv2s gd.PackedVector2Array, normals gd.PackedVector3Array, tangents Array.Contains[gd.Plane]) {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(vertices))
 	callframe.Arg(frame, pointers.Get(uvs))
 	callframe.Arg(frame, pointers.Get(colors))
 	callframe.Arg(frame, pointers.Get(uv2s))
 	callframe.Arg(frame, pointers.Get(normals))
-	callframe.Arg(frame, pointers.Get(tangents))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(tangents)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_triangle_fan, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -682,9 +686,9 @@ func (self class) CreateFrom(existing [1]gdclass.Mesh, surface gd.Int) {
 Creates this SurfaceTool from existing vertex arrays such as returned by [method commit_to_arrays], [method Mesh.surface_get_arrays], [method Mesh.surface_get_blend_shape_arrays], [method ImporterMesh.get_surface_arrays], and [method ImporterMesh.get_surface_blend_shape_arrays]. [param primitive_type] controls the type of mesh data, defaulting to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) CreateFromArrays(arrays gd.Array, primitive_type gdclass.MeshPrimitiveType) {
+func (self class) CreateFromArrays(arrays Array.Any, primitive_type gdclass.MeshPrimitiveType) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(arrays))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
 	callframe.Arg(frame, primitive_type)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -739,11 +743,11 @@ func (self class) Commit(existing [1]gdclass.ArrayMesh, flags gd.Int) [1]gdclass
 Commits the data to the same format used by [method ArrayMesh.add_surface_from_arrays], [method ImporterMesh.add_surface], and [method create_from_arrays]. This way you can further process the mesh data using the [ArrayMesh] or [ImporterMesh] APIs.
 */
 //go:nosplit
-func (self class) CommitToArrays() gd.Array {
+func (self class) CommitToArrays() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit_to_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

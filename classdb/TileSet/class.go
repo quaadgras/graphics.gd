@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Color"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A TileSet is a library of tiles for a [TileMap]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
@@ -488,7 +492,7 @@ Returns the coordinate-level proxy for the given identifiers. The returned array
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
 func (self Instance) GetCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetCoordsLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from)))))
 }
 
 /*
@@ -519,7 +523,7 @@ Returns the alternative-level proxy for the given identifiers. The returned arra
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
 func (self Instance) GetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetAlternativeLevelTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))))
 }
 
 /*
@@ -542,7 +546,7 @@ This function first look for matching alternative-level proxies, then coordinate
 If no proxy corresponding to provided identifiers are found, returns the same values the ones used as arguments.
 */
 func (self Instance) MapTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any {
-	return []any(gd.ArrayAs[[]any](class(self).MapTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).MapTileProxy(gd.Int(source_from), gd.Vector2i(coords_from), gd.Int(alternative_from)))))
 }
 
 /*
@@ -1581,13 +1585,13 @@ Returns the coordinate-level proxy for the given identifiers. The returned array
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
 //go:nosplit
-func (self class) GetCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i) gd.Array {
+func (self class) GetCoordsLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_coords_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1644,14 +1648,14 @@ Returns the alternative-level proxy for the given identifiers. The returned arra
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
 //go:nosplit
-func (self class) GetAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) gd.Array {
+func (self class) GetAlternativeLevelTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
 	callframe.Arg(frame, alternative_from)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_alternative_level_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1692,14 +1696,14 @@ This function first look for matching alternative-level proxies, then coordinate
 If no proxy corresponding to provided identifiers are found, returns the same values the ones used as arguments.
 */
 //go:nosplit
-func (self class) MapTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) gd.Array {
+func (self class) MapTileProxy(source_from gd.Int, coords_from gd.Vector2i, alternative_from gd.Int) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, source_from)
 	callframe.Arg(frame, coords_from)
 	callframe.Arg(frame, alternative_from)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_map_tile_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

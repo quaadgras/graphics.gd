@@ -493,6 +493,29 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 	return ptr
 }
 
+func Pack[T Generic[T, P], P Size](ptr T) [16]byte {
+	p := (struct {
+		_ [0]*T
+
+		sentinal uint64
+		revision revision
+		checksum P
+	})(ptr)
+	return *(*[16]byte)(unsafe.Pointer(&p.sentinal))
+}
+
+func Load[T Generic[T, P], P Size](data [16]byte) T {
+	var result struct {
+		_ [0]*T
+
+		sentinal uint64
+		revision revision
+		checksum P
+	}
+	*(*[16]byte)(unsafe.Pointer(&result.sentinal)) = data
+	return T(result)
+}
+
 // Size of a pointer up to [3]uintptr's, suitable for supporting fat pointers.
 type Size interface {
 	[1]uint32 | [1]uint64 | [2]uint64 | [3]uint64

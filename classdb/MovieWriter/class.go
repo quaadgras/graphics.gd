@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Godot can record videos with non-real-time simulation. Like the [code]--fixed-fps[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url], this forces the reported [code]delta[/code] in [method Node._process] functions to be identical across frames, regardless of how long it actually took to render the frame. This can be used to record high-quality videos with perfect frame pacing regardless of your hardware's capabilities.
@@ -127,7 +131,9 @@ Called once before the engine starts writing video and audio data. [param movie_
 func (Instance) _write_begin(impl func(ptr unsafe.Pointer, movie_size Vector2i.XY, fps int, base_path string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var movie_size = gd.UnsafeGet[gd.Vector2i](p_args, 0)
+
 		var fps = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var base_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(base_path)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -141,9 +147,11 @@ Called at the end of every rendered frame. The [param frame_image] and [param au
 */
 func (Instance) _write_frame(impl func(ptr unsafe.Pointer, frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var frame_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var frame_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(frame_image[0])
 		var audio_frame_block = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, frame_image, audio_frame_block)
 		gd.UnsafeSet(p_back, ret)
@@ -224,6 +232,7 @@ func _handles_file(path):
 func (class) _handles_file(impl func(ptr unsafe.Pointer, path gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path)
 		gd.UnsafeSet(p_back, ret)
@@ -236,8 +245,11 @@ Called once before the engine starts writing video and audio data. [param movie_
 func (class) _write_begin(impl func(ptr unsafe.Pointer, movie_size gd.Vector2i, fps gd.Int, base_path gd.String) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var movie_size = gd.UnsafeGet[gd.Vector2i](p_args, 0)
+
 		var fps = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var base_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(base_path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, movie_size, fps, base_path)
 		gd.UnsafeSet(p_back, ret)
@@ -250,8 +262,10 @@ Called at the end of every rendered frame. The [param frame_image] and [param au
 func (class) _write_frame(impl func(ptr unsafe.Pointer, frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var frame_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(frame_image[0])
 		var audio_frame_block = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, frame_image, audio_frame_block)
 		gd.UnsafeSet(p_back, ret)

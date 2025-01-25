@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 An expression can be made of any arithmetic operation, built-in math function call, method call of a passed instance, or built-in type construction call.
@@ -91,7 +95,7 @@ Executes the expression that was previously parsed by [method parse] and returns
 If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
 */
 func (self Instance) Execute() any {
-	return any(class(self).Execute(gd.NewVariant([1][]any{}[0]).Interface().(gd.Array), [1]Object.Instance{}[0], true, false).Interface())
+	return any(class(self).Execute(Array.Nil, [1]Object.Instance{}[0], true, false).Interface())
 }
 
 /*
@@ -148,9 +152,9 @@ Executes the expression that was previously parsed by [method parse] and returns
 If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
 */
 //go:nosplit
-func (self class) Execute(inputs gd.Array, base_instance [1]gd.Object, show_error bool, const_calls_only bool) gd.Variant {
+func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_error bool, const_calls_only bool) gd.Variant {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(inputs))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(inputs)))
 	callframe.Arg(frame, pointers.Get(base_instance[0])[0])
 	callframe.Arg(frame, show_error)
 	callframe.Arg(frame, const_calls_only)

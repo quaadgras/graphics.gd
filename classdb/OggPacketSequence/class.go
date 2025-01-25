@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A sequence of Ogg packets.
@@ -59,11 +63,11 @@ func New() Instance {
 }
 
 func (self Instance) PacketData() [][]any {
-	return [][]any(gd.ArrayAs[[][]any](class(self).GetPacketData()))
+	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(class(self).GetPacketData())))
 }
 
 func (self Instance) SetPacketData(value [][]any) {
-	class(self).SetPacketData(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetPacketData(gd.ArrayFromSlice[Array.Contains[Array.Any]](value))
 }
 
 func (self Instance) GranulePositions() []int64 {
@@ -83,20 +87,20 @@ func (self Instance) SetSamplingRate(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetPacketData(packet_data gd.Array) {
+func (self class) SetPacketData(packet_data Array.Contains[Array.Any]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(packet_data))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(packet_data)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_set_packet_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetPacketData() gd.Array {
+func (self class) GetPacketData() Array.Contains[Array.Any] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OggPacketSequence.Bind_get_packet_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

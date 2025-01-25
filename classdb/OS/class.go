@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 The [OS] class wraps the most common functionalities for communicating with the host operating system, such as the video driver, delays, environment variables, execution of binaries, command line, etc.
@@ -196,7 +200,7 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 */
 func Execute(path string, arguments []string) int {
 	once.Do(singleton)
-	return int(int(class(self).Execute(gd.NewString(path), gd.NewPackedStringSlice(arguments), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array), false, false)))
+	return int(int(class(self).Execute(gd.NewString(path), gd.NewPackedStringSlice(arguments), Array.Nil, false, false)))
 }
 
 /*
@@ -1222,11 +1226,11 @@ OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 [b]Note:[/b] On Android, system commands such as [code]dumpsys[/code] can only be run on a rooted device.
 */
 //go:nosplit
-func (self class) Execute(path gd.String, arguments gd.PackedStringArray, output gd.Array, read_stderr bool, open_console bool) gd.Int {
+func (self class) Execute(path gd.String, arguments gd.PackedStringArray, output Array.Any, read_stderr bool, open_console bool) gd.Int {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(arguments))
-	callframe.Arg(frame, pointers.Get(output))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(output)))
 	callframe.Arg(frame, read_stderr)
 	callframe.Arg(frame, open_console)
 	var r_ret = callframe.Ret[gd.Int](frame)

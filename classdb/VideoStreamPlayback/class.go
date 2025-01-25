@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class is intended to be overridden by video decoder extensions with custom implementations of [VideoStream].
@@ -120,6 +124,7 @@ Set the paused status of video playback. [method _is_paused] must return [param 
 func (Instance) _set_paused(impl func(ptr unsafe.Pointer, paused bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var paused = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, paused)
 	}
@@ -164,6 +169,7 @@ Seeks to [param time] seconds. Called in response to the [member VideoStreamPlay
 func (Instance) _seek(impl func(ptr unsafe.Pointer, time Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var time = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(time))
 	}
@@ -175,6 +181,7 @@ Select the audio track [param idx]. Called when playback starts, and in response
 func (Instance) _set_audio_track(impl func(ptr unsafe.Pointer, idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var idx = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(idx))
 	}
@@ -188,6 +195,7 @@ func (Instance) _get_texture(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -201,6 +209,7 @@ Ticks video playback for [param delta] seconds. Called every frame as long as [m
 func (Instance) _update(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
 	}
@@ -291,6 +300,7 @@ Set the paused status of video playback. [method _is_paused] must return [param 
 func (class) _set_paused(impl func(ptr unsafe.Pointer, paused bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var paused = gd.UnsafeGet[bool](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, paused)
 	}
@@ -335,6 +345,7 @@ Seeks to [param time] seconds. Called in response to the [member VideoStreamPlay
 func (class) _seek(impl func(ptr unsafe.Pointer, time gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var time = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, time)
 	}
@@ -346,6 +357,7 @@ Select the audio track [param idx]. Called when playback starts, and in response
 func (class) _set_audio_track(impl func(ptr unsafe.Pointer, idx gd.Int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var idx = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, idx)
 	}
@@ -359,6 +371,7 @@ func (class) _get_texture(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D) (c
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -372,6 +385,7 @@ Ticks video playback for [param delta] seconds. Called every frame as long as [m
 func (class) _update(impl func(ptr unsafe.Pointer, delta gd.Float)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[gd.Float](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
 	}

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This resource holds a set of cells to help bulk manipulations of [TileMap].
@@ -79,7 +83,7 @@ func (self Instance) GetCellAlternativeTile(coords Vector2i.XY) int {
 Returns the list of used cell coordinates in the pattern.
 */
 func (self Instance) GetUsedCells() []Vector2i.XY {
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](class(self).GetUsedCells()))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetUsedCells())))
 }
 
 /*
@@ -210,11 +214,11 @@ func (self class) GetCellAlternativeTile(coords gd.Vector2i) gd.Int {
 Returns the list of used cell coordinates in the pattern.
 */
 //go:nosplit
-func (self class) GetUsedCells() gd.Array {
+func (self class) GetUsedCells() Array.Contains[gd.Vector2i] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapPattern.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector2i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

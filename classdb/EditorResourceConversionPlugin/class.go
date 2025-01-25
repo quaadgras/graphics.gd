@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [EditorResourceConversionPlugin] is invoked when the context menu is brought up for a resource in the editor inspector. Relevant conversion plugins will appear as menu options to convert the given resource to a target type.
@@ -81,6 +85,7 @@ func (Instance) _converts_to(impl func(ptr unsafe.Pointer) string) (cb gd.Extens
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -93,7 +98,8 @@ Called to determine whether a particular [Resource] can be converted to the targ
 */
 func (Instance) _handles(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
@@ -106,11 +112,13 @@ Takes an input [Resource] and converts it to the type given in [method _converts
 */
 func (Instance) _convert(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -145,6 +153,7 @@ func (class) _converts_to(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Extens
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -158,6 +167,7 @@ Called to determine whether a particular [Resource] can be converted to the targ
 func (class) _handles(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
@@ -171,10 +181,12 @@ Takes an input [Resource] and converts it to the type given in [method _converts
 func (class) _convert(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(resource[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}

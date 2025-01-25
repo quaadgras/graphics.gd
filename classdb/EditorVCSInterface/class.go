@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Defines the API that the editor uses to extract information from the underlying VCS. The implementation of this API is included in VCS plugins, which are GDExtension plugins that inherit [EditorVCSInterface] and are attached (on demand) to the singleton instance of [EditorVCSInterface]. Instead of performing the task themselves, all the virtual functions listed below are calling the internally overridden functions in the VCS plugins to provide a plug-n-play experience. A custom VCS plugin is supposed to inherit from [EditorVCSInterface] and override each of these virtual functions.
@@ -153,7 +157,8 @@ func (Instance) _get_modified_files_data(impl func(ptr unsafe.Pointer) []map[any
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+
 		if !ok {
 			return
 		}
@@ -217,9 +222,11 @@ func (Instance) _get_diff(impl func(ptr unsafe.Pointer, identifier string, area 
 		var identifier = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(identifier)
 		var area = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, identifier.String(), int(area))
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+
 		if !ok {
 			return
 		}
@@ -246,6 +253,7 @@ func (Instance) _get_vcs_name(impl func(ptr unsafe.Pointer) string) (cb gd.Exten
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -259,9 +267,11 @@ Returns an [Array] of [Dictionary] items (see [method create_commit]), each cont
 func (Instance) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits int) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_commits = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(max_commits))
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+
 		if !ok {
 			return
 		}
@@ -276,7 +286,8 @@ func (Instance) _get_branch_list(impl func(ptr unsafe.Pointer) []string) (cb gd.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.String]](ret)))
+
 		if !ok {
 			return
 		}
@@ -291,7 +302,8 @@ func (Instance) _get_remotes(impl func(ptr unsafe.Pointer) []string) (cb gd.Exte
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.String]](ret)))
+
 		if !ok {
 			return
 		}
@@ -357,6 +369,7 @@ func (Instance) _get_current_branch_name(impl func(ptr unsafe.Pointer) string) (
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewString(ret))
+
 		if !ok {
 			return
 		}
@@ -397,6 +410,7 @@ func (Instance) _push(impl func(ptr unsafe.Pointer, remote string, force bool)) 
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(remote)
 		var force = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote.String(), force)
 	}
@@ -425,7 +439,8 @@ func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, t
 		defer pointers.End(text)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, file_path.String(), text.String())
-		ptr, ok := pointers.End(gd.NewVariant(ret).Interface().(gd.Array))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](ret)))
+
 		if !ok {
 			return
 		}
@@ -472,14 +487,14 @@ func (self Instance) CreateStatusFile(file_path string, change_type gdclass.Edit
 Helper function to add an array of [param diff_hunks] into a [param diff_file].
 */
 func (self Instance) AddDiffHunksIntoDiffFile(diff_file map[any]any, diff_hunks []map[any]any) map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).AddDiffHunksIntoDiffFile(gd.NewVariant(diff_file).Interface().(gd.Dictionary), gd.NewVariant(diff_hunks).Interface().(gd.Array))))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).AddDiffHunksIntoDiffFile(gd.NewVariant(diff_file).Interface().(gd.Dictionary), gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](diff_hunks))))
 }
 
 /*
 Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 */
 func (self Instance) AddLineDiffsIntoDiffHunk(diff_hunk map[any]any, line_diffs []map[any]any) map[any]any {
-	return map[any]any(gd.DictionaryAs[any, any](class(self).AddLineDiffsIntoDiffHunk(gd.NewVariant(diff_hunk).Interface().(gd.Dictionary), gd.NewVariant(line_diffs).Interface().(gd.Array))))
+	return map[any]any(gd.DictionaryAs[any, any](class(self).AddLineDiffsIntoDiffHunk(gd.NewVariant(diff_hunk).Interface().(gd.Dictionary), gd.ArrayFromSlice[Array.Contains[gd.Dictionary]](line_diffs))))
 }
 
 /*
@@ -513,6 +528,7 @@ Initializes the VCS plugin when called from the editor. Returns whether or not t
 func (class) _initialize(impl func(ptr unsafe.Pointer, project_path gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var project_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(project_path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, project_path)
 		gd.UnsafeSet(p_back, ret)
@@ -525,10 +541,15 @@ Set user credentials in the underlying VCS. [param username] and [param password
 func (class) _set_credentials(impl func(ptr unsafe.Pointer, username gd.String, password gd.String, ssh_public_key_path gd.String, ssh_private_key_path gd.String, ssh_passphrase gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var username = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(username)
 		var password = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(password)
 		var ssh_public_key_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(ssh_public_key_path)
 		var ssh_private_key_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
+		defer pointers.End(ssh_private_key_path)
 		var ssh_passphrase = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))
+		defer pointers.End(ssh_passphrase)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, username, password, ssh_public_key_path, ssh_private_key_path, ssh_passphrase)
 	}
@@ -537,11 +558,12 @@ func (class) _set_credentials(impl func(ptr unsafe.Pointer, username gd.String, 
 /*
 Returns an [Array] of [Dictionary] items (see [method create_status_file]), each containing the status data of every modified file in the project folder.
 */
-func (class) _get_modified_files_data(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_modified_files_data(impl func(ptr unsafe.Pointer) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -555,6 +577,7 @@ Stages the file present at [param file_path] to the staged area.
 func (class) _stage_file(impl func(ptr unsafe.Pointer, file_path gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(file_path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, file_path)
 	}
@@ -566,6 +589,7 @@ Unstages the file present at [param file_path] from the staged area to the unsta
 func (class) _unstage_file(impl func(ptr unsafe.Pointer, file_path gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(file_path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, file_path)
 	}
@@ -577,6 +601,7 @@ Discards the changes made in a file present at [param file_path].
 func (class) _discard_file(impl func(ptr unsafe.Pointer, file_path gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(file_path)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, file_path)
 	}
@@ -588,6 +613,7 @@ Commits the currently staged changes and applies the commit [param msg] to the r
 func (class) _commit(impl func(ptr unsafe.Pointer, msg gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var msg = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(msg)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, msg)
 	}
@@ -596,13 +622,16 @@ func (class) _commit(impl func(ptr unsafe.Pointer, msg gd.String)) (cb gd.Extens
 /*
 Returns an array of [Dictionary] items (see [method create_diff_file], [method create_diff_hunk], [method create_diff_line], [method add_line_diffs_into_diff_hunk] and [method add_diff_hunks_into_diff_file]), each containing information about a diff. If [param identifier] is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
 */
-func (class) _get_diff(impl func(ptr unsafe.Pointer, identifier gd.String, area gd.Int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_diff(impl func(ptr unsafe.Pointer, identifier gd.String, area gd.Int) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var identifier = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(identifier)
 		var area = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, identifier, area)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -629,6 +658,7 @@ func (class) _get_vcs_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Exten
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -639,12 +669,14 @@ func (class) _get_vcs_name(impl func(ptr unsafe.Pointer) gd.String) (cb gd.Exten
 /*
 Returns an [Array] of [Dictionary] items (see [method create_commit]), each containing the data for a past commit.
 */
-func (class) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits gd.Int) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits gd.Int) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_commits = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, max_commits)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -655,11 +687,12 @@ func (class) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits gd.
 /*
 Gets an instance of an [Array] of [String]s containing available branch names in the VCS.
 */
-func (class) _get_branch_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_branch_list(impl func(ptr unsafe.Pointer) Array.Contains[gd.String]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -670,11 +703,12 @@ func (class) _get_branch_list(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.Ext
 /*
 Returns an [Array] of [String]s, each containing the name of a remote configured in the VCS.
 */
-func (class) _get_remotes(impl func(ptr unsafe.Pointer) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_remotes(impl func(ptr unsafe.Pointer) Array.Contains[gd.String]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -688,6 +722,7 @@ Creates a new branch named [param branch_name] in the VCS.
 func (class) _create_branch(impl func(ptr unsafe.Pointer, branch_name gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var branch_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(branch_name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, branch_name)
 	}
@@ -699,6 +734,7 @@ Remove a branch from the local VCS.
 func (class) _remove_branch(impl func(ptr unsafe.Pointer, branch_name gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var branch_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(branch_name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, branch_name)
 	}
@@ -710,7 +746,9 @@ Creates a new remote destination with name [param remote_name] and points it to 
 func (class) _create_remote(impl func(ptr unsafe.Pointer, remote_name gd.String, remote_url gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(remote_name)
 		var remote_url = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(remote_url)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote_name, remote_url)
 	}
@@ -722,6 +760,7 @@ Remove a remote from the local VCS.
 func (class) _remove_remote(impl func(ptr unsafe.Pointer, remote_name gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(remote_name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote_name)
 	}
@@ -735,6 +774,7 @@ func (class) _get_current_branch_name(impl func(ptr unsafe.Pointer) gd.String) (
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -748,6 +788,7 @@ Checks out a [param branch_name] in the VCS.
 func (class) _checkout_branch(impl func(ptr unsafe.Pointer, branch_name gd.String) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var branch_name = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(branch_name)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, branch_name)
 		gd.UnsafeSet(p_back, ret)
@@ -760,6 +801,7 @@ Pulls changes from the remote. This can give rise to merge conflicts.
 func (class) _pull(impl func(ptr unsafe.Pointer, remote gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(remote)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote)
 	}
@@ -771,7 +813,9 @@ Pushes changes to the [param remote]. If [param force] is [code]true[/code], a f
 func (class) _push(impl func(ptr unsafe.Pointer, remote gd.String, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(remote)
 		var force = gd.UnsafeGet[bool](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote, force)
 	}
@@ -783,6 +827,7 @@ Fetches new changes from the [param remote], but doesn't write changes to the cu
 func (class) _fetch(impl func(ptr unsafe.Pointer, remote gd.String)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var remote = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(remote)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote)
 	}
@@ -791,13 +836,16 @@ func (class) _fetch(impl func(ptr unsafe.Pointer, remote gd.String)) (cb gd.Exte
 /*
 Returns an [Array] of [Dictionary] items (see [method create_diff_hunk]), each containing a line diff between a file at [param file_path] and the [param text] which is passed in.
 */
-func (class) _get_line_diff(impl func(ptr unsafe.Pointer, file_path gd.String, text gd.String) gd.Array) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_line_diff(impl func(ptr unsafe.Pointer, file_path gd.String, text gd.String) Array.Contains[gd.Dictionary]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var file_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(file_path)
 		var text = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
+		defer pointers.End(text)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, file_path, text)
-		ptr, ok := pointers.End(ret)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
 		if !ok {
 			return
 		}
@@ -892,10 +940,10 @@ func (self class) CreateStatusFile(file_path gd.String, change_type gdclass.Edit
 Helper function to add an array of [param diff_hunks] into a [param diff_file].
 */
 //go:nosplit
-func (self class) AddDiffHunksIntoDiffFile(diff_file gd.Dictionary, diff_hunks gd.Array) gd.Dictionary {
+func (self class) AddDiffHunksIntoDiffFile(diff_file gd.Dictionary, diff_hunks Array.Contains[gd.Dictionary]) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(diff_file))
-	callframe.Arg(frame, pointers.Get(diff_hunks))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(diff_hunks)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_diff_hunks_into_diff_file, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())
@@ -907,10 +955,10 @@ func (self class) AddDiffHunksIntoDiffFile(diff_file gd.Dictionary, diff_hunks g
 Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 */
 //go:nosplit
-func (self class) AddLineDiffsIntoDiffHunk(diff_hunk gd.Dictionary, line_diffs gd.Array) gd.Dictionary {
+func (self class) AddLineDiffsIntoDiffHunk(diff_hunk gd.Dictionary, line_diffs Array.Contains[gd.Dictionary]) gd.Dictionary {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(diff_hunk))
-	callframe.Arg(frame, pointers.Get(line_diffs))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(line_diffs)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_line_diffs_into_diff_hunk, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.Dictionary](r_ret.Get())

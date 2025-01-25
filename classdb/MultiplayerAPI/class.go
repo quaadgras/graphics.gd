@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -16,6 +18,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Base class for high-level multiplayer API implementations. See also [MultiplayerPeer].
@@ -75,7 +79,7 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 func (self Instance) Rpc(peer int, obj Object.Instance, method string) error {
-	return error(gd.ToError(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), gd.NewVariant([1][]any{}[0]).Interface().(gd.Array))))
+	return error(gd.ToError(class(self).Rpc(gd.Int(peer), obj, gd.NewStringName(method), Array.Nil)))
 }
 
 /*
@@ -243,12 +247,12 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when augmenting or replacing the multiplayer capabilities.
 */
 //go:nosplit
-func (self class) Rpc(peer gd.Int, obj [1]gd.Object, method gd.StringName, arguments gd.Array) gd.Error {
+func (self class) Rpc(peer gd.Int, obj [1]gd.Object, method gd.StringName, arguments Array.Any) gd.Error {
 	var frame = callframe.New()
 	callframe.Arg(frame, peer)
 	callframe.Arg(frame, pointers.Get(obj[0])[0])
 	callframe.Arg(frame, pointers.Get(method))
-	callframe.Arg(frame, pointers.Get(arguments))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(arguments)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_rpc, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

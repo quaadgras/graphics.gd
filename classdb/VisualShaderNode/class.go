@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Visual shader graphs consist of various nodes. Each node in the graph is a separate object and they are represented as a rectangular boxes with title and a set of properties. Each node also has connection ports that allow to connect it to another nodes and control the flow of the shader.
@@ -94,11 +98,11 @@ func (self Instance) SetOutputPortForPreview(value int) {
 }
 
 func (self Instance) DefaultInputValues() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetDefaultInputValues()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetDefaultInputValues())))
 }
 
 func (self Instance) SetDefaultInputValues(value []any) {
-	class(self).SetDefaultInputValues(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetDefaultInputValues(gd.EngineArrayFromSlice(value))
 }
 
 func (self Instance) LinkedParentGraphFrame() int {
@@ -197,9 +201,9 @@ func (self class) ClearDefaultInputValues() {
 Sets the default input ports values using an [Array] of the form [code][index0, value0, index1, value1, ...][/code]. For example: [code][0, Vector3(0, 0, 0), 1, Vector3(0, 0, 0)][/code].
 */
 //go:nosplit
-func (self class) SetDefaultInputValues(values gd.Array) {
+func (self class) SetDefaultInputValues(values Array.Any) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(values))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(values)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_set_default_input_values, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -209,11 +213,11 @@ func (self class) SetDefaultInputValues(values gd.Array) {
 Returns an [Array] containing default values for all of the input ports of the node in the form [code][index0, value0, index1, value1, ...][/code].
 */
 //go:nosplit
-func (self class) GetDefaultInputValues() gd.Array {
+func (self class) GetDefaultInputValues() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_get_default_input_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

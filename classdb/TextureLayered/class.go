@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Base class for [ImageTextureLayered] and [CompressedTextureLayered]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [Texture3D].
@@ -141,9 +145,11 @@ Called when the data for a layer in the [TextureLayered] is queried.
 func (Instance) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index int) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(layer_index))
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -291,9 +297,11 @@ Called when the data for a layer in the [TextureLayered] is queried.
 func (class) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index gd.Int) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer_index = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, layer_index)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -22,6 +24,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 [GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
@@ -124,7 +128,9 @@ func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node Objec
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, int(in_port), mouse_position)
 		gd.UnsafeSet(p_back, ret)
@@ -150,7 +156,9 @@ func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node Obje
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, int(in_port), mouse_position)
 		gd.UnsafeSet(p_back, ret)
@@ -163,10 +171,13 @@ Virtual method which can be overridden to customize how connections are drawn.
 func (Instance) _get_connection_line(impl func(ptr unsafe.Pointer, from_position Vector2.XY, to_position Vector2.XY) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		var to_position = gd.UnsafeGet[gd.Vector2](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_position, to_position)
 		ptr, ok := pointers.End(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&ret))))
+
 		if !ok {
 			return
 		}
@@ -200,9 +211,11 @@ func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node str
 		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(from_node)
 		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var to_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(to_node)
 		var to_port = gd.UnsafeGet[gd.Int](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_node.String(), int(from_port), to_node.String(), int(to_port))
 		gd.UnsafeSet(p_back, ret)
@@ -241,7 +254,7 @@ func (self Instance) SetConnectionActivity(from_node string, from_port int, to_n
 Returns an [Array] containing the list of connections. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 func (self Instance) GetConnectionList() []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetConnectionList()))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetConnectionList())))
 }
 
 /*
@@ -262,7 +275,7 @@ func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) map[any]any {
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](class(self).GetConnectionsIntersectingWithRect(gd.Rect2(rect))))
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetConnectionsIntersectingWithRect(gd.Rect2(rect)))))
 }
 
 /*
@@ -365,7 +378,7 @@ func (self Instance) GetElementFrame(element string) [1]gdclass.GraphFrame {
 Returns an array of node names that are attached to the [GraphFrame] with the given name.
 */
 func (self Instance) GetAttachedNodesOfFrame(frame_ string) []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetAttachedNodesOfFrame(gd.NewStringName(frame_))))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAttachedNodesOfFrame(gd.NewStringName(frame_)))))
 }
 
 /*
@@ -612,7 +625,9 @@ func (class) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Ob
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, in_port, mouse_position)
 		gd.UnsafeSet(p_back, ret)
@@ -638,7 +653,9 @@ func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.O
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var mouse_position = gd.UnsafeGet[gd.Vector2](p_args, 2)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, in_port, mouse_position)
 		gd.UnsafeSet(p_back, ret)
@@ -651,10 +668,13 @@ Virtual method which can be overridden to customize how connections are drawn.
 func (class) _get_connection_line(impl func(ptr unsafe.Pointer, from_position gd.Vector2, to_position gd.Vector2) gd.PackedVector2Array) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_position = gd.UnsafeGet[gd.Vector2](p_args, 0)
+
 		var to_position = gd.UnsafeGet[gd.Vector2](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_position, to_position)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -686,9 +706,13 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node gd.StringName, from_port gd.Int, to_node gd.StringName, to_port gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
+		defer pointers.End(from_node)
 		var from_port = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		var to_node = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
+		defer pointers.End(to_node)
 		var to_port = gd.UnsafeGet[gd.Int](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_node, from_port, to_node, to_port)
 		gd.UnsafeSet(p_back, ret)
@@ -764,11 +788,11 @@ func (self class) SetConnectionActivity(from_node gd.StringName, from_port gd.In
 Returns an [Array] containing the list of connections. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 //go:nosplit
-func (self class) GetConnectionList() gd.Array {
+func (self class) GetConnectionList() Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -799,12 +823,12 @@ func (self class) GetClosestConnectionAtPoint(point gd.Vector2, max_distance gd.
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
 //go:nosplit
-func (self class) GetConnectionsIntersectingWithRect(rect gd.Rect2) gd.Array {
+func (self class) GetConnectionsIntersectingWithRect(rect gd.Rect2) Array.Contains[gd.Dictionary] {
 	var frame = callframe.New()
 	callframe.Arg(frame, rect)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connections_intersecting_with_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Dictionary]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1002,12 +1026,12 @@ func (self class) GetElementFrame(element gd.StringName) [1]gdclass.GraphFrame {
 Returns an array of node names that are attached to the [GraphFrame] with the given name.
 */
 //go:nosplit
-func (self class) GetAttachedNodesOfFrame(frame_ gd.StringName) gd.Array {
+func (self class) GetAttachedNodesOfFrame(frame_ gd.StringName) Array.Contains[gd.StringName] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(frame_))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_attached_nodes_of_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

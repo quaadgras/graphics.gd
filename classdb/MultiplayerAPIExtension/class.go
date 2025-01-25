@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/MultiplayerAPI"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This class can be used to augment or replace the default [MultiplayerAPI] implementation via script or extensions.
@@ -172,7 +176,8 @@ Called when the [member MultiplayerAPI.multiplayer_peer] is set.
 */
 func (Instance) _set_multiplayer_peer(impl func(ptr unsafe.Pointer, multiplayer_peer [1]gdclass.MultiplayerPeer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var multiplayer_peer = [1]gdclass.MultiplayerPeer{pointers.New[gdclass.MultiplayerPeer]([3]uint64{uint64(gd.UnsafeGet[uintptr](p_args, 0))})}
+		var multiplayer_peer = [1]gdclass.MultiplayerPeer{pointers.New[gdclass.MultiplayerPeer]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(multiplayer_peer[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, multiplayer_peer)
@@ -187,6 +192,7 @@ func (Instance) _get_multiplayer_peer(impl func(ptr unsafe.Pointer) [1]gdclass.M
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -213,6 +219,7 @@ func (Instance) _get_peer_ids(impl func(ptr unsafe.Pointer) []int32) (cb gd.Exte
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.NewPackedInt32Slice(ret))
+
 		if !ok {
 			return
 		}
@@ -226,14 +233,15 @@ Callback for [method MultiplayerAPI.rpc].
 func (Instance) _rpc(impl func(ptr unsafe.Pointer, peer int, obj Object.Instance, method string, args []any) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var peer = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(obj[0])
 		var method = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
 		defer pointers.End(method)
-		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
-		defer pointers.End(args)
+		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
+		defer pointers.End(gd.InternalArray(args))
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, int(peer), obj, method.String(), gd.ArrayAs[[]any](args))
+		ret := impl(self, int(peer), obj, method.String(), gd.ArrayAs[[]any](gd.InternalArray(args)))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -315,6 +323,7 @@ Called when the [member MultiplayerAPI.multiplayer_peer] is set.
 func (class) _set_multiplayer_peer(impl func(ptr unsafe.Pointer, multiplayer_peer [1]gdclass.MultiplayerPeer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var multiplayer_peer = [1]gdclass.MultiplayerPeer{pointers.New[gdclass.MultiplayerPeer]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+
 		defer pointers.End(multiplayer_peer[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, multiplayer_peer)
@@ -329,6 +338,7 @@ func (class) _get_multiplayer_peer(impl func(ptr unsafe.Pointer) [1]gdclass.Mult
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
+
 		if !ok {
 			return
 		}
@@ -355,6 +365,7 @@ func (class) _get_peer_ids(impl func(ptr unsafe.Pointer) gd.PackedInt32Array) (c
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		ptr, ok := pointers.End(ret)
+
 		if !ok {
 			return
 		}
@@ -365,13 +376,16 @@ func (class) _get_peer_ids(impl func(ptr unsafe.Pointer) gd.PackedInt32Array) (c
 /*
 Callback for [method MultiplayerAPI.rpc].
 */
-func (class) _rpc(impl func(ptr unsafe.Pointer, peer gd.Int, obj [1]gd.Object, method gd.StringName, args gd.Array) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _rpc(impl func(ptr unsafe.Pointer, peer gd.Int, obj [1]gd.Object, method gd.StringName, args Array.Any) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var peer = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 		defer pointers.End(obj[0])
 		var method = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))
-		var args = pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
+		defer pointers.End(method)
+		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
+		defer pointers.End(gd.InternalArray(args))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, peer, obj, method, args)
 		gd.UnsafeSet(p_back, ret)
@@ -397,6 +411,7 @@ func (class) _object_configuration_add(impl func(ptr unsafe.Pointer, obj [1]gd.O
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
+		defer pointers.End(configuration)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration)
 		gd.UnsafeSet(p_back, ret)
@@ -411,6 +426,7 @@ func (class) _object_configuration_remove(impl func(ptr unsafe.Pointer, obj [1]g
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var configuration = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))
+		defer pointers.End(configuration)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, configuration)
 		gd.UnsafeSet(p_back, ret)

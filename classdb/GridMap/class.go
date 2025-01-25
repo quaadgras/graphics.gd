@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Float"
@@ -23,6 +25,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 GridMap lets you place meshes on a grid interactively. It works both from the editor and from scripts, which can help you create in-game level editors.
@@ -160,28 +164,28 @@ func (self Instance) Clear() {
 Returns an array of [Vector3] with the non-empty cell coordinates in the grid map.
 */
 func (self Instance) GetUsedCells() []Vector3i.XYZ {
-	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](class(self).GetUsedCells()))
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(class(self).GetUsedCells())))
 }
 
 /*
 Returns an array of all cells with the given item index specified in [param item].
 */
 func (self Instance) GetUsedCellsByItem(item int) []Vector3i.XYZ {
-	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](class(self).GetUsedCellsByItem(gd.Int(item))))
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(class(self).GetUsedCellsByItem(gd.Int(item)))))
 }
 
 /*
 Returns an array of [Transform3D] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
 */
 func (self Instance) GetMeshes() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetMeshes()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetMeshes())))
 }
 
 /*
 Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshes that exist within the current GridMap.
 */
 func (self Instance) GetBakeMeshes() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetBakeMeshes()))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetBakeMeshes())))
 }
 
 /*
@@ -768,11 +772,11 @@ func (self class) Clear() {
 Returns an array of [Vector3] with the non-empty cell coordinates in the grid map.
 */
 //go:nosplit
-func (self class) GetUsedCells() gd.Array {
+func (self class) GetUsedCells() Array.Contains[gd.Vector3i] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector3i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -781,12 +785,12 @@ func (self class) GetUsedCells() gd.Array {
 Returns an array of all cells with the given item index specified in [param item].
 */
 //go:nosplit
-func (self class) GetUsedCellsByItem(item gd.Int) gd.Array {
+func (self class) GetUsedCellsByItem(item gd.Int) Array.Contains[gd.Vector3i] {
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_used_cells_by_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.Vector3i]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -795,11 +799,11 @@ func (self class) GetUsedCellsByItem(item gd.Int) gd.Array {
 Returns an array of [Transform3D] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
 */
 //go:nosplit
-func (self class) GetMeshes() gd.Array {
+func (self class) GetMeshes() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -808,11 +812,11 @@ func (self class) GetMeshes() gd.Array {
 Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshes that exist within the current GridMap.
 */
 //go:nosplit
-func (self class) GetBakeMeshes() gd.Array {
+func (self class) GetBakeMeshes() Array.Any {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_bake_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

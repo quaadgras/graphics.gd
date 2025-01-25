@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 An animation library stores a set of animations accessible through [StringName] keys, for use with [AnimationPlayer] nodes.
@@ -70,7 +74,7 @@ func (self Instance) GetAnimation(name string) [1]gdclass.Animation {
 Returns the keys for the [Animation]s stored in the library.
 */
 func (self Instance) GetAnimationList() []string {
-	return []string(gd.ArrayAs[[]string](class(self).GetAnimationList()))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAnimationList())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -164,11 +168,11 @@ func (self class) GetAnimation(name gd.StringName) [1]gdclass.Animation {
 Returns the keys for the [Animation]s stored in the library.
 */
 //go:nosplit
-func (self class) GetAnimationList() gd.Array {
+func (self class) GetAnimationList() Array.Contains[gd.StringName] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationLibrary.Bind_get_animation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.StringName]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

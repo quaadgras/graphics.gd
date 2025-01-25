@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/classdb/Resource"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 By changing various properties of this object, such as the ray position, you can configure the parameters for [method PhysicsDirectSpaceState3D.intersect_ray].
@@ -41,7 +45,7 @@ var collision = get_world_3d().direct_space_state.intersect_ray(query)
 */
 func Create(from Vector3.XYZ, to Vector3.XYZ) [1]gdclass.PhysicsRayQueryParameters3D {
 	self := Instance{}
-	return [1]gdclass.PhysicsRayQueryParameters3D(class(self).Create(gd.Vector3(from), gd.Vector3(to), gd.Int(4294967295), gd.NewVariant([1][]Resource.ID{}[0]).Interface().(gd.Array)))
+	return [1]gdclass.PhysicsRayQueryParameters3D(class(self).Create(gd.Vector3(from), gd.Vector3(to), gd.Int(4294967295), gd.ArrayFromSlice[Array.Contains[gd.RID]]([1][]Resource.ID{}[0])))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -88,11 +92,11 @@ func (self Instance) SetCollisionMask(value int) {
 }
 
 func (self Instance) Exclude() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetExclude()))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetExclude())))
 }
 
 func (self Instance) SetExclude(value []Resource.ID) {
-	class(self).SetExclude(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[gd.RID]](value))
 }
 
 func (self Instance) CollideWithBodies() bool {
@@ -135,12 +139,12 @@ var collision = get_world_3d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
 //go:nosplit
-func (self class) Create(from gd.Vector3, to gd.Vector3, collision_mask gd.Int, exclude gd.Array) [1]gdclass.PhysicsRayQueryParameters3D {
+func (self class) Create(from gd.Vector3, to gd.Vector3, collision_mask gd.Int, exclude Array.Contains[gd.RID]) [1]gdclass.PhysicsRayQueryParameters3D {
 	var frame = callframe.New()
 	callframe.Arg(frame, from)
 	callframe.Arg(frame, to)
 	callframe.Arg(frame, collision_mask)
-	callframe.Arg(frame, pointers.Get(exclude))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PhysicsRayQueryParameters3D{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsRayQueryParameters3D](r_ret.Get())}
@@ -206,20 +210,20 @@ func (self class) GetCollisionMask() gd.Int {
 }
 
 //go:nosplit
-func (self class) SetExclude(exclude gd.Array) {
+func (self class) SetExclude(exclude Array.Contains[gd.RID]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(exclude))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetExclude() gd.Array {
+func (self class) GetExclude() Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Abstract base class for different font types. It has methods for drawing text and font character introspection.
@@ -44,7 +48,7 @@ func (self Instance) FindVariation(variation_coordinates map[any]any) Resource.I
 Returns [Array] of valid [Font] [RID]s, which can be passed to the [TextServer] methods.
 */
 func (self Instance) GetRids() []Resource.ID {
-	return []Resource.ID(gd.ArrayAs[[]Resource.ID](class(self).GetRids()))
+	return []Resource.ID(gd.ArrayAs[[]Resource.ID](gd.InternalArray(class(self).GetRids())))
 }
 
 /*
@@ -317,28 +321,28 @@ func New() Instance {
 }
 
 func (self Instance) Fallbacks() [][1]gdclass.Font {
-	return [][1]gdclass.Font(gd.ArrayAs[[][1]gdclass.Font](class(self).GetFallbacks()))
+	return [][1]gdclass.Font(gd.ArrayAs[[][1]gdclass.Font](gd.InternalArray(class(self).GetFallbacks())))
 }
 
 func (self Instance) SetFallbacks(value [][1]gdclass.Font) {
-	class(self).SetFallbacks(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetFallbacks(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Font]](value))
 }
 
 //go:nosplit
-func (self class) SetFallbacks(fallbacks gd.Array) {
+func (self class) SetFallbacks(fallbacks Array.Contains[[1]gdclass.Font]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(fallbacks))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(fallbacks)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_set_fallbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) GetFallbacks() gd.Array {
+func (self class) GetFallbacks() Array.Contains[[1]gdclass.Font] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_fallbacks, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Font]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -369,11 +373,11 @@ func (self class) FindVariation(variation_coordinates gd.Dictionary, face_index 
 Returns [Array] of valid [Font] [RID]s, which can be passed to the [TextServer] methods.
 */
 //go:nosplit
-func (self class) GetRids() gd.Array {
+func (self class) GetRids() Array.Contains[gd.RID] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_rids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.RID]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

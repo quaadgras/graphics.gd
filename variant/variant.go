@@ -30,10 +30,10 @@ func New(val any) Any {
 	rvalue := reflect.ValueOf(val)
 	rtype := rvalue.Type()
 	switch rtype.Kind() {
-	case reflect.Int16, reflect.Int32, reflect.Int64:
+	case reflect.Int16, reflect.Int32, reflect.Int64, reflect.Int:
 		*(*int64)(unsafe.Pointer(&local[0])) = rvalue.Int()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
-	case reflect.Uint16, reflect.Uint32, reflect.Uint64:
+	case reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uint:
 		*(*uint64)(unsafe.Pointer(&local[0])) = rvalue.Uint()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 	case reflect.Float32, reflect.Float64:
@@ -179,8 +179,27 @@ func loadPacked[T packable](a Any) []T {
 	return unsafe.Slice(ptr, lencap.cap)[:lencap.len:lencap.cap]
 }
 
-func (a Any) Bool() bool             { return load[bool](a) }
-func (a Any) Int() int               { return int(load[int](a)) }
+func (a Any) Bool() bool { return load[bool](a) }
+func (a Any) Int() int {
+	rtype := reflect.TypeOf(a.value)
+	if rtype.Kind() != reflect.Ptr {
+		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[int]().String())
+	}
+	switch rtype.Elem().Kind() {
+	case reflect.Int8:
+		return int(*(*int8)(unsafe.Pointer(&a.local[0])))
+	case reflect.Int16:
+		return int(*(*int16)(unsafe.Pointer(&a.local[0])))
+	case reflect.Int32:
+		return int(*(*int32)(unsafe.Pointer(&a.local[0])))
+	case reflect.Int64:
+		return int(*(*int64)(unsafe.Pointer(&a.local[0])))
+	case reflect.Int:
+		return int(*(*int)(unsafe.Pointer(&a.local[0])))
+	default:
+		panic("variant conversion: variant is " + a.Type().String() + ", not " + reflect.TypeFor[int]().String())
+	}
+}
 func (a Any) Int8() int8             { return load[int8](a) }
 func (a Any) Int16() int16           { return load[int16](a) }
 func (a Any) Int32() int32           { return load[int32](a) }

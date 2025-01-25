@@ -24,7 +24,7 @@ type Contains[T any] struct {
 }
 
 // Any is an array that can contain any type of element, equivalent to [[]any].
-type Any Contains[variant.Any]
+type Any = Contains[variant.Any]
 
 // Nil reference array.
 var Nil Any
@@ -43,7 +43,7 @@ func (a *Contains[T]) Any() Any {
 	if a.proxy == nil {
 		a.proxy = new(localFirst[T])
 	}
-	return a.proxy.Any()
+	return a.proxy.Any(a.state)
 }
 
 // Len returns the number of elements in the array.
@@ -51,7 +51,7 @@ func (a Contains[T]) Len() int { //gd:Array.size
 	if a.proxy == nil {
 		return 0
 	}
-	return a.proxy.Len()
+	return a.proxy.Len(a.state)
 }
 
 // Index returns the value at the given index. If the index is negative,
@@ -60,7 +60,7 @@ func (a Contains[T]) Index(i int) T { //gd:Array[]
 	if a.proxy == nil {
 		panic("index out of range")
 	}
-	return a.proxy.Index(i)
+	return a.proxy.Index(a.state, i)
 }
 
 // SetIndex sets the value at the given index. If the index is negative,
@@ -69,7 +69,7 @@ func (a *Contains[T]) SetIndex(i int, value T) { //gd:Array[]=
 	if a.proxy == nil {
 		panic("index out of range")
 	}
-	a.proxy.SetIndex(i, value)
+	a.proxy.SetIndex(a.state, i, value)
 }
 
 // All calls the given function on each element in the array and returns true if the fn returns
@@ -101,9 +101,9 @@ func (a *Contains[T]) Append(value T) { //gd:Array.append
 	if a.proxy == nil {
 		a.proxy = new(localFirst[T])
 	}
-	l := a.proxy.Len()
-	a.proxy.Resize(l + 1)
-	a.proxy.SetIndex(l, value)
+	l := a.Len()
+	a.Resize(l + 1)
+	a.SetIndex(l, value)
 }
 
 // AppendTo appends another array at the end of this array.
@@ -286,7 +286,7 @@ func IsReadOnly[T any](array Contains[T]) bool { //gd:Array.is_read_only
 	if array.proxy == nil {
 		return false
 	}
-	return array.proxy.IsReadOnly()
+	return array.proxy.IsReadOnly(array.state)
 }
 
 // IsTyped returns true if the array is typed. Typed arrays can only
@@ -300,7 +300,7 @@ func (a *Contains[T]) MakeReadOnly() { //gd:Array.make_read_only
 	if a.proxy == nil {
 		a.proxy = new(localFirst[T])
 	}
-	a.proxy.MakeReadOnly()
+	a.proxy.MakeReadOnly(a.state)
 }
 
 // Map calls the given function for each element in the array and returns a new array
@@ -437,7 +437,7 @@ func (array *Contains[T]) Resize(size int) { //gd:Array.resize
 	if array.proxy == nil && size != 0 {
 		array.proxy = new(localFirst[T])
 	}
-	array.proxy.Resize(size)
+	array.proxy.Resize(array.state, size)
 }
 
 // Reverse reverses the order of elements in the array.

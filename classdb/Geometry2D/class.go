@@ -8,8 +8,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Provides a set of helper functions to create geometric shapes, compute intersections between shapes, and process various other geometric operations in 2D.
@@ -142,7 +146,7 @@ Decomposes the [param polygon] into multiple convex hulls and returns an array o
 */
 func DecomposePolygonInConvex(polygon []Vector2.XY) [][]Vector2.XY {
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).DecomposePolygonInConvex(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon))))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).DecomposePolygonInConvex(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon)))))))
 }
 
 /*
@@ -151,7 +155,7 @@ The operation may result in an outer polygon (boundary) and multiple inner polyg
 */
 func MergePolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY {
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).MergePolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b))))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).MergePolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b)))))))
 }
 
 /*
@@ -160,7 +164,7 @@ If [param polygon_b] is enclosed by [param polygon_a], returns an outer polygon 
 */
 func ClipPolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY {
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).ClipPolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b))))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).ClipPolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b)))))))
 }
 
 /*
@@ -169,7 +173,7 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 */
 func IntersectPolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY {
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).IntersectPolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b))))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).IntersectPolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b)))))))
 }
 
 /*
@@ -178,7 +182,7 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 */
 func ExcludePolygons(polygon_a []Vector2.XY, polygon_b []Vector2.XY) [][]Vector2.XY {
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).ExcludePolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b))))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).ExcludePolygons(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_a))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon_b)))))))
 }
 
 /*
@@ -186,7 +190,7 @@ Clips [param polyline] against [param polygon] and returns an array of clipped p
 */
 func ClipPolylineWithPolygon(polyline []Vector2.XY, polygon []Vector2.XY) [][]Vector2.XY {
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).ClipPolylineWithPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polyline))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon))))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).ClipPolylineWithPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polyline))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon)))))))
 }
 
 /*
@@ -194,7 +198,7 @@ Intersects [param polyline] with [param polygon] and returns an array of interse
 */
 func IntersectPolylineWithPolygon(polyline []Vector2.XY, polygon []Vector2.XY) [][]Vector2.XY {
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).IntersectPolylineWithPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polyline))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon))))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).IntersectPolylineWithPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polyline))), gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon)))))))
 }
 
 /*
@@ -219,7 +223,7 @@ GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, 150
 */
 func OffsetPolygon(polygon []Vector2.XY, delta Float.X) [][]Vector2.XY {
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).OffsetPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon))), gd.Float(delta), 0)))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OffsetPolygon(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polygon))), gd.Float(delta), 0))))
 }
 
 /*
@@ -230,7 +234,7 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 */
 func OffsetPolyline(polyline []Vector2.XY, delta Float.X) [][]Vector2.XY {
 	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](class(self).OffsetPolyline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polyline))), gd.Float(delta), 0, 3)))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OffsetPolyline(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&polyline))), gd.Float(delta), 0, 3))))
 }
 
 /*
@@ -461,12 +465,12 @@ func (self class) ConvexHull(points gd.PackedVector2Array) gd.PackedVector2Array
 Decomposes the [param polygon] into multiple convex hulls and returns an array of [PackedVector2Array].
 */
 //go:nosplit
-func (self class) DecomposePolygonInConvex(polygon gd.PackedVector2Array) gd.Array {
+func (self class) DecomposePolygonInConvex(polygon gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_decompose_polygon_in_convex, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -476,13 +480,13 @@ Merges (combines) [param polygon_a] and [param polygon_b] and returns an array o
 The operation may result in an outer polygon (boundary) and multiple inner polygons (holes) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) MergePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) gd.Array {
+func (self class) MergePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_merge_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -492,13 +496,13 @@ Clips [param polygon_a] against [param polygon_b] and returns an array of clippe
 If [param polygon_b] is enclosed by [param polygon_a], returns an outer polygon (boundary) and inner polygon (hole) which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) ClipPolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) gd.Array {
+func (self class) ClipPolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_clip_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -508,13 +512,13 @@ Intersects [param polygon_a] with [param polygon_b] and returns an array of inte
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) IntersectPolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) gd.Array {
+func (self class) IntersectPolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_intersect_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -524,13 +528,13 @@ Mutually excludes common area defined by intersection of [param polygon_a] and [
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) ExcludePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) gd.Array {
+func (self class) ExcludePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon_a))
 	callframe.Arg(frame, pointers.Get(polygon_b))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_exclude_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -539,13 +543,13 @@ func (self class) ExcludePolygons(polygon_a gd.PackedVector2Array, polygon_b gd.
 Clips [param polyline] against [param polygon] and returns an array of clipped polylines. This performs [constant OPERATION_DIFFERENCE] between the polyline and the polygon. This operation can be thought of as cutting a line with a closed shape.
 */
 //go:nosplit
-func (self class) ClipPolylineWithPolygon(polyline gd.PackedVector2Array, polygon gd.PackedVector2Array) gd.Array {
+func (self class) ClipPolylineWithPolygon(polyline gd.PackedVector2Array, polygon gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polyline))
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_clip_polyline_with_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -554,13 +558,13 @@ func (self class) ClipPolylineWithPolygon(polyline gd.PackedVector2Array, polygo
 Intersects [param polyline] with [param polygon] and returns an array of intersected polylines. This performs [constant OPERATION_INTERSECTION] between the polyline and the polygon. This operation can be thought of as chopping a line with a closed shape.
 */
 //go:nosplit
-func (self class) IntersectPolylineWithPolygon(polyline gd.PackedVector2Array, polygon gd.PackedVector2Array) gd.Array {
+func (self class) IntersectPolylineWithPolygon(polyline gd.PackedVector2Array, polygon gd.PackedVector2Array) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polyline))
 	callframe.Arg(frame, pointers.Get(polygon))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_intersect_polyline_with_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -586,14 +590,14 @@ GD.Print((Variant)polygon); // prints [(50, 50), (150, 50), (150, 150), (50, 150
 [/codeblocks]
 */
 //go:nosplit
-func (self class) OffsetPolygon(polygon gd.PackedVector2Array, delta gd.Float, join_type gdclass.Geometry2DPolyJoinType) gd.Array {
+func (self class) OffsetPolygon(polygon gd.PackedVector2Array, delta gd.Float, join_type gdclass.Geometry2DPolyJoinType) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polygon))
 	callframe.Arg(frame, delta)
 	callframe.Arg(frame, join_type)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_offset_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -605,7 +609,7 @@ Each polygon's endpoints will be rounded as determined by [param end_type], see 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) OffsetPolyline(polyline gd.PackedVector2Array, delta gd.Float, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) gd.Array {
+func (self class) OffsetPolyline(polyline gd.PackedVector2Array, delta gd.Float, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) Array.Contains[gd.PackedVector2Array] {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(polyline))
 	callframe.Arg(frame, delta)
@@ -613,7 +617,7 @@ func (self class) OffsetPolyline(polyline gd.PackedVector2Array, delta gd.Float,
 	callframe.Arg(frame, end_type)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_offset_polyline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[gd.PackedVector2Array]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

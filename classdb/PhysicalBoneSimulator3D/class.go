@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/SkeletonModifier3D"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node"
@@ -20,6 +22,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Node that can be the parent of [PhysicalBone3D] and can apply the simulation results to [Skeleton3D].
@@ -53,7 +57,7 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reactin
 Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
 */
 func (self Instance) PhysicalBonesStartSimulation() {
-	class(self).PhysicalBonesStartSimulation(gd.NewVariant([1][]string{}[0]).Interface().(gd.Array))
+	class(self).PhysicalBonesStartSimulation(gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
 }
 
 /*
@@ -119,9 +123,9 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reactin
 Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
 */
 //go:nosplit
-func (self class) PhysicalBonesStartSimulation(bones gd.Array) {
+func (self class) PhysicalBonesStartSimulation(bones Array.Contains[gd.StringName]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bones))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(bones)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBoneSimulator3D.Bind_physical_bones_start_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

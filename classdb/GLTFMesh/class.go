@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 GLTFMesh handles 3D mesh data imported from GLTF files. It includes properties for blend channels, blend weights, instance materials, and the mesh itself.
@@ -91,11 +95,11 @@ func (self Instance) SetBlendWeights(value []float32) {
 }
 
 func (self Instance) InstanceMaterials() [][1]gdclass.Material {
-	return [][1]gdclass.Material(gd.ArrayAs[[][1]gdclass.Material](class(self).GetInstanceMaterials()))
+	return [][1]gdclass.Material(gd.ArrayAs[[][1]gdclass.Material](gd.InternalArray(class(self).GetInstanceMaterials())))
 }
 
 func (self Instance) SetInstanceMaterials(value [][1]gdclass.Material) {
-	class(self).SetInstanceMaterials(gd.NewVariant(value).Interface().(gd.Array))
+	class(self).SetInstanceMaterials(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Material]](value))
 }
 
 //go:nosplit
@@ -156,19 +160,19 @@ func (self class) SetBlendWeights(blend_weights gd.PackedFloat32Array) {
 }
 
 //go:nosplit
-func (self class) GetInstanceMaterials() gd.Array {
+func (self class) GetInstanceMaterials() Array.Contains[[1]gdclass.Material] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_instance_materials, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Material]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 //go:nosplit
-func (self class) SetInstanceMaterials(instance_materials gd.Array) {
+func (self class) SetInstanceMaterials(instance_materials Array.Contains[[1]gdclass.Material]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(instance_materials))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(instance_materials)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_instance_materials, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

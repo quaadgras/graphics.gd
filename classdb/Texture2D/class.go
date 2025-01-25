@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
@@ -21,6 +23,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A texture works by registering an image in the video hardware, which then can be used in 3D models or 2D [Sprite2D] or GUI [Control].
@@ -108,7 +112,9 @@ Called when a pixel's opaque state in the [Texture2D] is queried at the specifie
 func (Instance) _is_pixel_opaque(impl func(ptr unsafe.Pointer, x int, y int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var x = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var y = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(x), int(y))
 		gd.UnsafeSet(p_back, ret)
@@ -133,9 +139,13 @@ Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem],
 func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
+
 		var pos = gd.UnsafeGet[gd.Vector2](p_args, 1)
+
 		var modulate = gd.UnsafeGet[gd.Color](p_args, 2)
+
 		var transpose = gd.UnsafeGet[bool](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, to_canvas_item, pos, modulate, transpose)
 	}
@@ -148,10 +158,15 @@ Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specifi
 func (Instance) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
+
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+
 		var tile = gd.UnsafeGet[bool](p_args, 2)
+
 		var modulate = gd.UnsafeGet[gd.Color](p_args, 3)
+
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, to_canvas_item, rect, tile, modulate, transpose)
 	}
@@ -164,11 +179,17 @@ Called when a part of the [Texture2D] specified by [param src_rect]'s coordinate
 func (Instance) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item Resource.ID, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
+
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+
 		var src_rect = gd.UnsafeGet[gd.Rect2](p_args, 2)
+
 		var modulate = gd.UnsafeGet[gd.Color](p_args, 3)
+
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
+
 		var clip_uv = gd.UnsafeGet[bool](p_args, 5)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
 	}
@@ -286,7 +307,9 @@ Called when a pixel's opaque state in the [Texture2D] is queried at the specifie
 func (class) _is_pixel_opaque(impl func(ptr unsafe.Pointer, x gd.Int, y gd.Int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var x = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var y = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, x, y)
 		gd.UnsafeSet(p_back, ret)
@@ -311,9 +334,13 @@ Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem],
 func (class) _draw(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, pos gd.Vector2, modulate gd.Color, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
+
 		var pos = gd.UnsafeGet[gd.Vector2](p_args, 1)
+
 		var modulate = gd.UnsafeGet[gd.Color](p_args, 2)
+
 		var transpose = gd.UnsafeGet[bool](p_args, 3)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, to_canvas_item, pos, modulate, transpose)
 	}
@@ -326,10 +353,15 @@ Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specifi
 func (class) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2, tile bool, modulate gd.Color, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
+
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+
 		var tile = gd.UnsafeGet[bool](p_args, 2)
+
 		var modulate = gd.UnsafeGet[gd.Color](p_args, 3)
+
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, to_canvas_item, rect, tile, modulate, transpose)
 	}
@@ -342,11 +374,17 @@ Called when a part of the [Texture2D] specified by [param src_rect]'s coordinate
 func (class) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item gd.RID, rect gd.Rect2, src_rect gd.Rect2, modulate gd.Color, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[gd.RID](p_args, 0)
+
 		var rect = gd.UnsafeGet[gd.Rect2](p_args, 1)
+
 		var src_rect = gd.UnsafeGet[gd.Rect2](p_args, 2)
+
 		var modulate = gd.UnsafeGet[gd.Color](p_args, 3)
+
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
+
 		var clip_uv = gd.UnsafeGet[bool](p_args, 5)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
 	}

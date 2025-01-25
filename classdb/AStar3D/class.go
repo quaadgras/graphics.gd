@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
 
@@ -18,6 +20,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A* (A star) is a computer algorithm used in pathfinding and graph traversal, the process of plotting short paths among vertices (points), passing through a given set of edges (segments). It enjoys widespread use due to its performance and accuracy. Godot's A* implementation uses points in 3D space and Euclidean distances by default.
@@ -93,7 +97,9 @@ Note that this function is hidden in the default [AStar3D] class.
 func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(from_id), int(to_id))
 		gd.UnsafeSet(p_back, gd.Float(ret))
@@ -107,7 +113,9 @@ Note that this function is hidden in the default [AStar3D] class.
 func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(from_id), int(to_id))
 		gd.UnsafeSet(p_back, gd.Float(ret))
@@ -402,7 +410,9 @@ Note that this function is hidden in the default [AStar3D] class.
 func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id gd.Int, to_id gd.Int) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)
@@ -416,7 +426,9 @@ Note that this function is hidden in the default [AStar3D] class.
 func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id gd.Int, to_id gd.Int) gd.Float) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[gd.Int](p_args, 0)
+
 		var to_id = gd.UnsafeGet[gd.Int](p_args, 1)
+
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)

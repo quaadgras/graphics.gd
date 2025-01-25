@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -17,6 +19,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 A custom shader program implemented in the Godot shading language, saved with the [code].gdshader[/code] extension.
@@ -62,7 +66,7 @@ Get the list of shader uniforms that can be assigned to a [ShaderMaterial], for 
 If argument [param get_groups] is true, parameter grouping hints will be provided.
 */
 func (self Instance) GetShaderUniformList() []any {
-	return []any(gd.ArrayAs[[]any](class(self).GetShaderUniformList(false)))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetShaderUniformList(false))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -162,12 +166,12 @@ Get the list of shader uniforms that can be assigned to a [ShaderMaterial], for 
 If argument [param get_groups] is true, parameter grouping hints will be provided.
 */
 //go:nosplit
-func (self class) GetShaderUniformList(get_groups bool) gd.Array {
+func (self class) GetShaderUniformList(get_groups bool) Array.Any {
 	var frame = callframe.New()
 	callframe.Arg(frame, get_groups)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_shader_uniform_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

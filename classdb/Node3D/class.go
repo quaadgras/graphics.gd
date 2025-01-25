@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
@@ -23,6 +25,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 Most basic 3D game object, with a [Transform3D] and visibility settings. All other 3D game objects inherit from [Node3D]. Use [Node3D] as a parent node to move, scale, rotate and show/hide children in a 3D project.
@@ -102,7 +106,7 @@ func (self Instance) AddGizmo(gizmo [1]gdclass.Node3DGizmo) {
 Returns all the gizmos attached to this [Node3D].
 */
 func (self Instance) GetGizmos() [][1]gdclass.Node3DGizmo {
-	return [][1]gdclass.Node3DGizmo(gd.ArrayAs[[][1]gdclass.Node3DGizmo](class(self).GetGizmos()))
+	return [][1]gdclass.Node3DGizmo(gd.ArrayAs[[][1]gdclass.Node3DGizmo](gd.InternalArray(class(self).GetGizmos())))
 }
 
 /*
@@ -861,11 +865,11 @@ func (self class) AddGizmo(gizmo [1]gdclass.Node3DGizmo) {
 Returns all the gizmos attached to this [Node3D].
 */
 //go:nosplit
-func (self class) GetGizmos() gd.Array {
+func (self class) GetGizmos() Array.Contains[[1]gdclass.Node3DGizmo] {
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_gizmos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = pointers.New[gd.Array](r_ret.Get())
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node3DGizmo]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

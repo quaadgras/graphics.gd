@@ -7,8 +7,10 @@ import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/Array"
 import "graphics.gd/classdb/SkeletonModification2D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/NodePath"
@@ -19,6 +21,8 @@ var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
+var _ = Array.Nil
+var _ variant.Any
 
 /*
 This modification takes the transforms of [PhysicalBone2D] nodes and applies them to [Bone2D] nodes. This allows the [Bone2D] nodes to react to physics thanks to the linked [PhysicalBone2D] nodes.
@@ -60,7 +64,7 @@ Tell the [PhysicalBone2D] nodes to start simulating and interacting with the phy
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to start simulating.
 */
 func (self Instance) StartSimulation() {
-	class(self).StartSimulation(gd.NewVariant([1][]string{}[0]).Interface().(gd.Array))
+	class(self).StartSimulation(gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
 }
 
 /*
@@ -68,7 +72,7 @@ Tell the [PhysicalBone2D] nodes to stop simulating and interacting with the phys
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to stop simulating.
 */
 func (self Instance) StopSimulation() {
-	class(self).StopSimulation(gd.NewVariant([1][]string{}[0]).Interface().(gd.Array))
+	class(self).StopSimulation(gd.ArrayFromSlice[Array.Contains[gd.StringName]]([1][]string{}[0]))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -161,9 +165,9 @@ Tell the [PhysicalBone2D] nodes to start simulating and interacting with the phy
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to start simulating.
 */
 //go:nosplit
-func (self class) StartSimulation(bones gd.Array) {
+func (self class) StartSimulation(bones Array.Contains[gd.StringName]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bones))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(bones)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_start_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -174,9 +178,9 @@ Tell the [PhysicalBone2D] nodes to stop simulating and interacting with the phys
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to stop simulating.
 */
 //go:nosplit
-func (self class) StopSimulation(bones gd.Array) {
+func (self class) StopSimulation(bones Array.Contains[gd.StringName]) {
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(bones))
+	callframe.Arg(frame, pointers.Get(gd.InternalArray(bones)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_stop_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
