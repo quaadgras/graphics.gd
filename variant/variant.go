@@ -246,6 +246,9 @@ func (a Any) toString() string {
 
 // Interface returns the value of the variant as an interface{}.
 func (a Any) Interface() interface{} {
+	if a == Nil {
+		return nil
+	}
 	rtype := reflect.TypeOf(a.value)
 	rvalue := reflect.ValueOf(a.value)
 	switch rtype.Kind() {

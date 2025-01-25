@@ -76,6 +76,7 @@ func (l *local) Call(_ complex128, args ...variant.Any) variant.Any {
 		panic("invalid number of arguments")
 	}
 	if reflect.TypeOf(l.value).Kind() == reflect.Func {
+		ftype := reflect.TypeOf(l.value)
 		values, ok := l.cache.Get().(Array.Contains[reflect.Value])
 		if !ok {
 			values = Array.New[reflect.Value]()
@@ -87,6 +88,12 @@ func (l *local) Call(_ complex128, args ...variant.Any) variant.Any {
 		}
 		for i, v := range binds.Iter() {
 			values.SetIndex(i+len(args), reflect.ValueOf(v.Interface()))
+		}
+		for i := range ftype.NumIn() {
+			value := values.Index(i)
+			if value.Type() != ftype.In(i) && value.Type().ConvertibleTo(ftype.In(i)) {
+				values.SetIndex(i, value.Convert(ftype.In(i)))
+			}
 		}
 		result := reflect.ValueOf(l.value).Call(values.Slice())
 		if len(result) == 0 {
