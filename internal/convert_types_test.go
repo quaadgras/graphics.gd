@@ -137,6 +137,9 @@ func (c Converter) ArrayAny() Array.Any {
 	array.Append(variant.New(3))
 	return array
 }
+func (c Converter) ArrayInt() Array.Contains[int] {
+	return Array.New(1, 2, 3)
+}
 
 func (c Converter) ValidInt(i int) bool               { return i == c.Int() }
 func (c Converter) ValidBool(b bool) bool             { return b == c.Bool() }
@@ -224,6 +227,9 @@ func (c Converter) ValidPackedVector4Array(a []Vector4.XYZW) bool {
 }
 func (c Converter) ValidArrayAny(a Array.Any) bool {
 	return a.Index(0).Int() == 1 && a.Index(1).Int() == 2 && a.Index(2).Int() == 3
+}
+func (c Converter) ValidArrayInt(a Array.Contains[int]) bool {
+	return a.Index(0) == 1 && a.Index(1) == 2 && a.Index(2) == 3
 }
 
 func TestConversions(t *testing.T) {

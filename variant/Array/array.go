@@ -23,6 +23,18 @@ type Contains[T any] struct {
 	proxy Proxy[T]
 }
 
+// Interface that is implemented by all [Contains[T]] types.
+type Interface interface {
+	Any() Any
+}
+
+// Pointer interface that is implemented by all [Contains[T]] types.
+type Pointer interface {
+	Interface
+
+	SetAny(Any)
+}
+
 // Any is an array that can contain any type of element, equivalent to [[]any].
 type Any = Contains[variant.Any]
 
@@ -39,9 +51,9 @@ func New[T any](elements ...T) Contains[T] {
 }
 
 // Any returns an [Any] array with a shared view on the elements in the array.
-func (a *Contains[T]) Any() Any {
+func (a Contains[T]) Any() Any {
 	if a.proxy == nil {
-		a.proxy = new(localFirst[T])
+		return Any{}
 	}
 	return a.proxy.Any(a.state)
 }

@@ -201,6 +201,13 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 			structure.Field(i).Set(fieldValue)
 		}
 		return structure, nil
+	case ArrayType.Any:
+		if reflect.PointerTo(rtype).Implements(reflect.TypeFor[ArrayType.Pointer]()) {
+			var obj = reflect.New(rtype)
+			obj.Interface().(ArrayType.Pointer).SetAny(value)
+			return obj.Elem(), nil
+		}
+		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	default:
 		return reflect.Value{}, fmt.Errorf("cannot convert %T to %s", value, rtype)
 	}

@@ -136,6 +136,9 @@ func NewVariant(v any) Variant {
 		case ArrayType.Any:
 			var arg = callframe.Arg(frame, pointers.Get(InternalArray(val)))
 			Global.variant.FromType[TypeArray](ret, arg.Addr())
+		case ArrayType.Interface:
+			var arg = callframe.Arg(frame, pointers.Get(InternalArray(val.Any())))
+			Global.variant.FromType[TypeArray](ret, arg.Addr())
 		case Variant:
 			return val
 		case VariantPkg.Any:

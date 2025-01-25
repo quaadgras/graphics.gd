@@ -41,6 +41,16 @@ func As[P Proxy[T], T any](array Contains[T], alloc func() (P, State)) (P, State
 	}
 	local, ok := array.proxy.(*localFirst[T])
 	if !ok {
+		view, ok := any(array.proxy).(anyView)
+		if ok {
+			proxy, state := alloc()
+			proxy.Resize(state, view.Len(array.state))
+			for i := 0; i < view.Len(array.state); i++ {
+				proxy.SetIndex(state, i, any(view.Index(array.state, i)).(T))
+			}
+			view.pass(any(proxy).(Proxy[variant.Any]), state)
+			return proxy, state
+		}
 		panic("array is already proxied")
 	}
 	proxy, state := alloc()
@@ -48,6 +58,9 @@ func As[P Proxy[T], T any](array Contains[T], alloc func() (P, State)) (P, State
 	for i := 0; i < local.Len(array.state); i++ {
 		proxy.SetIndex(state, i, local.Index(array.state, i))
 	}
+	local.slice = nil
+	local.proxy = proxy
+	local.state = state
 	return proxy, state
 }
 
@@ -113,6 +126,28 @@ func (p *localFirst[T]) MakeReadOnly(State) {
 	}
 	p.state[0] = 1
 }
+func (p *localFirst[T]) pass(proxy Proxy[variant.Any], state State) {
+	if p.proxy != nil {
+		panic("array is already proxied")
+	}
+	p.proxy = typedView[T]{proxy}
+	p.state = state
+	p.slice = nil
+}
+
+type typedView[T any] struct {
+	Proxy[variant.Any]
+}
+
+func (t typedView[T]) Index(state State, i int) T { return variant.As[T](t.Proxy.Index(state, i)) }
+func (t typedView[T]) SetIndex(state State, i int, v T) {
+	t.Proxy.SetIndex(state, i, variant.New(v))
+}
+
+func (array *Contains[T]) SetAny(a Any) {
+	array.proxy = typedView[T]{a.proxy}
+	array.state = a.state
+}
 
 type anyView struct {
 	localFirst interface {
@@ -122,13 +157,15 @@ type anyView struct {
 		Resize(State, int)
 		IsReadOnly(State) bool
 		MakeReadOnly(State)
+		pass(Proxy[variant.Any], State)
 	}
 }
 
-func (a anyView) Any(State) Any                          { return Any{proxy: a} }
-func (a anyView) Index(_ State, i int) variant.Any       { return a.localFirst.IndexAny(i) }
-func (a anyView) SetIndex(_ State, i int, v variant.Any) { a.localFirst.SetIndexAny(i, v) }
-func (a anyView) Len(state State) int                    { return a.localFirst.Len(state) }
-func (a anyView) Resize(state State, size int)           { a.localFirst.Resize(state, size) }
-func (a anyView) IsReadOnly(state State) bool            { return a.localFirst.IsReadOnly(state) }
-func (a anyView) MakeReadOnly(state State)               { a.localFirst.MakeReadOnly(state) }
+func (a anyView) Any(State) Any                              { return Any{proxy: a} }
+func (a anyView) Index(_ State, i int) variant.Any           { return a.localFirst.IndexAny(i) }
+func (a anyView) SetIndex(_ State, i int, v variant.Any)     { a.localFirst.SetIndexAny(i, v) }
+func (a anyView) Len(state State) int                        { return a.localFirst.Len(state) }
+func (a anyView) Resize(state State, size int)               { a.localFirst.Resize(state, size) }
+func (a anyView) IsReadOnly(state State) bool                { return a.localFirst.IsReadOnly(state) }
+func (a anyView) MakeReadOnly(state State)                   { a.localFirst.MakeReadOnly(state) }
+func (a anyView) pass(proxy Proxy[variant.Any], state State) { a.localFirst.pass(proxy, state) }
