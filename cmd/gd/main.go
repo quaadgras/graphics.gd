@@ -347,10 +347,11 @@ func wrap() error {
 	}
 	for i, commandArgs := range builds {
 		golang := exec.Command("go", commandArgs...)
+		golang.Env = os.Environ()
 		if GOOS != "js" {
 			golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 		}
-		golang.Env = append(os.Environ(), "GOARCH="+arches[i])
+		golang.Env = append(golang.Env, "GOARCH="+arches[i])
 		golang.Stderr = os.Stderr
 		golang.Stdout = os.Stdout
 		golang.Stdin = os.Stdin
