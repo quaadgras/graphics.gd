@@ -8,6 +8,7 @@ _Why use graphics.gd?_
 * Write shaders in Go!
 * Unlike with other languages, RIDs, callables and dictionary arguments are all distinctly typed.
 * A good balance of performance and convenience.
+* Pure Go variant types, import them into an existing project without using an engine.
 
 You can support the project and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
 
@@ -107,13 +108,13 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 
 ## Performance
 It's feasible to write high performance code using this module, keep to Engine types where possible and avoid
-allocating memory on the heap in frequently called functions. `Advanced` instances are available for each class 
+allocating memory on the heap in frequently called functions. `Advanced` instances are available for each class
 which allow more fine-grained control over memory allocations.
 
 Benchmarking shows `Advanced` method calls from Go -> Engine do not allocate in practice.
 
 Allocations are currently unavoidable for any Script -> Go calls (but not
-for `Advanced` class virtual method overrides such as `Ready` or `Process`, 
+for `Advanced` class virtual method overrides such as `Ready` or `Process`,
 which do not allocate in practice).
 
 We've got some ideas to reduce allocations for Script -> Go calls, when
