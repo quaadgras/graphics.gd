@@ -314,7 +314,7 @@ func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.A
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(blend_shapes)))
-	callframe.Arg(frame, lods)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(lods)))
 	callframe.Arg(frame, pointers.Get(material[0])[0])
 	callframe.Arg(frame, pointers.Get(name))
 	callframe.Arg(frame, flags)

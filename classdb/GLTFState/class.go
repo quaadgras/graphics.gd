@@ -393,9 +393,9 @@ func (self class) AppendDataToBuffers(data gd.PackedByteArray, deduplication boo
 //go:nosplit
 func (self class) GetJson() Dictionary.Any { //gd:GLTFState.get_json
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_json, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -403,7 +403,7 @@ func (self class) GetJson() Dictionary.Any { //gd:GLTFState.get_json
 //go:nosplit
 func (self class) SetJson(json Dictionary.Any) { //gd:GLTFState.set_json
 	var frame = callframe.New()
-	callframe.Arg(frame, json)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(json)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_json, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -128,9 +128,9 @@ func (self class) GetGroupCount() gd.Int { //gd:RegExMatch.get_group_count
 //go:nosplit
 func (self class) GetNames() Dictionary.Any { //gd:RegExMatch.get_names
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegExMatch.Bind_get_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

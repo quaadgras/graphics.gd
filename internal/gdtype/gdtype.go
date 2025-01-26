@@ -165,6 +165,8 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 	switch name {
 	case "Array.Any":
 		return fmt.Sprintf("Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](%s)))", val)
+	case "Dictionary.Any":
+		return fmt.Sprintf("Dictionary.Through(gd.DictionaryProxy[variant.Any,variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](%s)))", val)
 	case "[1]gd.Object":
 		return fmt.Sprintf("[1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(%s)})}", val)
 	case "Callable.Function":
@@ -194,6 +196,8 @@ func (name Name) EndPointer(val string) string {
 	switch name {
 	case "Array.Any":
 		return fmt.Sprintf("pointers.End(gd.InternalArray(%v))", val)
+	case "Dictionary.Any":
+		return fmt.Sprintf("pointers.End(gd.InternalDictionary(%v))", val)
 	case "Callable.Function":
 		return fmt.Sprintf("pointers.End(gd.InternalCallable(%v))", val)
 	default:
@@ -214,6 +218,8 @@ func (name Name) LoadOntoCallFrame(val string) string {
 	switch name {
 	case "Array.Any":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalArray(%v)))\n", val)
+	case "Dictionary.Any":
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalDictionary(%v)))\n", val)
 	case "Callable.Function":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalCallable(%v)))\n", val)
 	}
@@ -236,7 +242,7 @@ func (name Name) IsPointer() (string, bool) {
 	}
 	switch t {
 	case "String", "StringName", "NodePath",
-		"Dictionary", "Array.Any":
+		"Dictionary.Any", "Array.Any":
 		return "[1]gd.EnginePointer", true
 	case "Signal":
 		return "[2]uint64", true

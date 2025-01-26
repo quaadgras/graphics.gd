@@ -1324,7 +1324,7 @@ Adds a custom effect tag to the tag stack. The effect does not need to be in [me
 func (self class) PushCustomfx(effect [1]gdclass.RichTextEffect, env Dictionary.Any) { //gd:RichTextLabel.push_customfx
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(effect[0])[0])
-	callframe.Arg(frame, env)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(env)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_customfx, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2126,9 +2126,9 @@ Parses BBCode parameter [param expressions] into a dictionary.
 func (self class) ParseExpressionsForValues(expressions gd.PackedStringArray) Dictionary.Any { //gd:RichTextLabel.parse_expressions_for_values
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(expressions))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_parse_expressions_for_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -4694,7 +4694,7 @@ func (self class) MeshSurfaceGetFormatSkinStride(format gdclass.RenderingServerA
 func (self class) MeshAddSurface(mesh gd.RID, surface Dictionary.Any) { //gd:RenderingServer.mesh_add_surface
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
-	callframe.Arg(frame, surface)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(surface)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4707,7 +4707,7 @@ func (self class) MeshAddSurfaceFromArrays(mesh gd.RID, primitive gdclass.Render
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(blend_shapes)))
-	callframe.Arg(frame, lods)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(lods)))
 	callframe.Arg(frame, compress_format)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface_from_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -4789,9 +4789,9 @@ func (self class) MeshGetSurface(mesh gd.RID, surface gd.Int) Dictionary.Any { /
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, surface)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -832,9 +832,9 @@ On Linux:
 func (self class) GetJoyInfo(device gd.Int) Dictionary.Any { //gd:Input.get_joy_info
 	var frame = callframe.New()
 	callframe.Arg(frame, device)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_joy_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

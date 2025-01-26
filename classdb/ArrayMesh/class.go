@@ -355,7 +355,7 @@ func (self class) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arra
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(blend_shapes)))
-	callframe.Arg(frame, lods)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(lods)))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_add_surface_from_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())

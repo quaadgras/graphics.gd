@@ -74,7 +74,12 @@ func (Instance) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(line))
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -172,7 +177,12 @@ func (class) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line gd
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, line)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -216,9 +226,9 @@ This will color columns 0-4 red, and columns 5-eol in green.
 func (self class) GetLineSyntaxHighlighting(line gd.Int) Dictionary.Any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
 	var frame = callframe.New()
 	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SyntaxHighlighter.Bind_get_line_syntax_highlighting, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

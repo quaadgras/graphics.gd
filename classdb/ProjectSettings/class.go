@@ -500,7 +500,7 @@ ProjectSettings.AddPropertyInfo(propertyInfo);
 //go:nosplit
 func (self class) AddPropertyInfo(hint Dictionary.Any) { //gd:ProjectSettings.add_property_info
 	var frame = callframe.New()
-	callframe.Arg(frame, hint)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(hint)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_add_property_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -751,6 +751,13 @@ const (
 	ErrPrinterOnFire Error = 48
 )
 
+type GlobalClass struct {
+	Base     string `gd:"base"`
+	Class    string `gd:"class"`
+	Icon     string `gd:"icon"`
+	Language string `gd:"language"`
+	Path     string `gd:"path"`
+}
 type PropertyInfo struct {
 	ClassName  string       `gd:"class_name"`
 	Name       string       `gd:"name"`
@@ -758,11 +765,4 @@ type PropertyInfo struct {
 	HintString string       `gd:"hint_string"`
 	Type       reflect.Type `gd:"type"`
 	Usage      int          `gd:"usage"`
-}
-type GlobalClass struct {
-	Base     string `gd:"base"`
-	Class    string `gd:"class"`
-	Icon     string `gd:"icon"`
-	Language string `gd:"language"`
-	Path     string `gd:"path"`
 }

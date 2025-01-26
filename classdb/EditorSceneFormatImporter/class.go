@@ -91,8 +91,8 @@ func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags i
 		defer pointers.End(path)
 		var flags = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var options = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(options))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), int(flags), gd.DictionaryAs[map[any]any](options))
 		ptr, ok := pointers.End(ret[0])
@@ -176,8 +176,8 @@ func (class) _import_scene(impl func(ptr unsafe.Pointer, path gd.String, flags g
 		defer pointers.End(path)
 		var flags = gd.UnsafeGet[gd.Int](p_args, 1)
 
-		var options = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(options))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, flags, options)
 		ptr, ok := pointers.End(ret[0])

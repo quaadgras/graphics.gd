@@ -1127,7 +1127,7 @@ Sets variation coordinates for the specified font cache entry. See [method Font.
 func (self class) SetVariationCoordinates(cache_index gd.Int, variation_coordinates Dictionary.Any) { //gd:FontFile.set_variation_coordinates
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, variation_coordinates)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(variation_coordinates)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_variation_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1140,9 +1140,9 @@ Returns variation coordinates for the specified font cache entry. See [method Fo
 func (self class) GetVariationCoordinates(cache_index gd.Int) Dictionary.Any { //gd:FontFile.get_variation_coordinates
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_index)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_variation_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1945,7 +1945,7 @@ func (self class) GetScriptSupportOverrides() gd.PackedStringArray { //gd:FontFi
 //go:nosplit
 func (self class) SetOpentypeFeatureOverrides(overrides Dictionary.Any) { //gd:FontFile.set_opentype_feature_overrides
 	var frame = callframe.New()
-	callframe.Arg(frame, overrides)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(overrides)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1954,9 +1954,9 @@ func (self class) SetOpentypeFeatureOverrides(overrides Dictionary.Any) { //gd:F
 //go:nosplit
 func (self class) GetOpentypeFeatureOverrides() Dictionary.Any { //gd:FontFile.get_opentype_feature_overrides
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

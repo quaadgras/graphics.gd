@@ -1263,9 +1263,9 @@ func (self class) ExecuteWithPipe(path gd.String, arguments gd.PackedStringArray
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
 	callframe.Arg(frame, pointers.Get(arguments))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute_with_pipe, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1855,9 +1855,9 @@ Returns a [Dictionary] containing information about the current memory with the 
 //go:nosplit
 func (self class) GetMemoryInfo() Dictionary.Any { //gd:OS.get_memory_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_memory_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

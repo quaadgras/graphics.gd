@@ -404,7 +404,12 @@ func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, plat
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -950,7 +955,12 @@ func (class) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platfor
 		defer pointers.End(platform[0])
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 

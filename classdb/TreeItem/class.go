@@ -1322,9 +1322,9 @@ Returns a dictionary containing the range parameters for a given column. The key
 func (self class) GetRangeConfig(column gd.Int) Dictionary.Any { //gd:TreeItem.get_range_config
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_range_config, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -213,8 +213,8 @@ func (Instance) _rename_dependencies(impl func(ptr unsafe.Pointer, path string, 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var renames = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var renames = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(renames))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), gd.DictionaryAs[map[any]any](renames))
 		gd.UnsafeSet(p_back, ret)
@@ -410,8 +410,8 @@ func (class) _rename_dependencies(impl func(ptr unsafe.Pointer, path gd.String, 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var renames = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var renames = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(renames))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, renames)
 		gd.UnsafeSet(p_back, ret)

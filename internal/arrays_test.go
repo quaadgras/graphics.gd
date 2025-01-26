@@ -2,8 +2,10 @@ package gd_test
 
 import (
 	"testing"
+	"time"
 
 	"graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/Time"
 	"graphics.gd/variant"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Packed"
@@ -37,6 +39,10 @@ func TestArrayConversions(t *testing.T) {
 	info := Engine.GetCopyrightInfo()
 	if len(info) == 0 {
 		t.Error("expected non-empty string")
+	}
+	date := Time.GetDateDictFromSystem()
+	if date.Year != time.Now().Year() {
+		t.Error("expected current year")
 	}
 	advanced := Engine.Advanced().GetCopyrightInfo()
 	if advanced.Len() != len(info) {

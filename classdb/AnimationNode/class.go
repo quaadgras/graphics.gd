@@ -98,7 +98,12 @@ func (Instance) _get_child_nodes(impl func(ptr unsafe.Pointer) map[any]any) (cb 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -341,7 +346,12 @@ func (class) _get_child_nodes(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 

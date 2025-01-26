@@ -723,9 +723,9 @@ else
 //go:nosplit
 func (self class) GetVersionInfo() Dictionary.Any { //gd:Engine.get_version_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_version_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -736,9 +736,9 @@ Returns the engine author information as a [Dictionary], where each entry is an 
 //go:nosplit
 func (self class) GetAuthorInfo() Dictionary.Any { //gd:Engine.get_author_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_author_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -767,9 +767,9 @@ Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of s
 //go:nosplit
 func (self class) GetDonorInfo() Dictionary.Any { //gd:Engine.get_donor_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_donor_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -780,9 +780,9 @@ Returns a [Dictionary] of licenses used by Godot and included third party compon
 //go:nosplit
 func (self class) GetLicenseInfo() Dictionary.Any { //gd:Engine.get_license_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_license_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1184,6 +1184,17 @@ const (
 	ErrPrinterOnFire Error = 48
 )
 
+type VersionInfo struct {
+	Major     int    `gd:"major"`
+	Minor     int    `gd:"minor"`
+	Patch     int    `gd:"patch"`
+	Hex       int    `gd:"hex"`
+	Status    string `gd:"status"`
+	Build     string `gd:"build"`
+	Hash      string `gd:"hash"`
+	Timestamp int    `gd:"timestamp"`
+	String    string `gd:"string"`
+}
 type AuthorInfo struct {
 	LeadDevelopers  []string `gd:"lead_developers"`
 	Founders        []string `gd:"founders"`
@@ -1208,15 +1219,4 @@ type DonorInfo struct {
 	GoldDonors       []string `gd:"gold_donors"`
 	SilverDonors     []string `gd:"silver_donors"`
 	BronzeDonors     []string `gd:"bronze_donors"`
-}
-type VersionInfo struct {
-	Major     int    `gd:"major"`
-	Minor     int    `gd:"minor"`
-	Patch     int    `gd:"patch"`
-	Hex       int    `gd:"hex"`
-	Status    string `gd:"status"`
-	Build     string `gd:"build"`
-	Hash      string `gd:"hash"`
-	Timestamp int    `gd:"timestamp"`
-	String    string `gd:"string"`
 }

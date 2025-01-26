@@ -635,9 +635,9 @@ Given an array of [Vector2]s representing tiles, builds an atlas. The returned d
 func (self class) MakeAtlas(sizes gd.PackedVector2Array) Dictionary.Any { //gd:Geometry2D.make_atlas
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(sizes))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry2D.Bind_make_atlas, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

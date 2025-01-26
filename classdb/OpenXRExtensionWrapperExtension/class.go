@@ -180,7 +180,12 @@ func (Instance) _get_requested_extensions(impl func(ptr unsafe.Pointer) map[any]
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -504,8 +509,8 @@ func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(p
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 
-		var property_values = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -537,7 +542,12 @@ func (Instance) _get_viewport_composition_layer_extension_property_defaults(impl
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -595,7 +605,12 @@ func (class) _get_requested_extensions(impl func(ptr unsafe.Pointer) Dictionary.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -919,8 +934,8 @@ func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
 
-		var property_values = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 2)
 
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -952,7 +967,12 @@ func (class) _get_viewport_composition_layer_extension_property_defaults(impl fu
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 

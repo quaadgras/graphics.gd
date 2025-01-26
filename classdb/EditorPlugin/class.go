@@ -758,7 +758,12 @@ func (Instance) _get_state(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.Ext
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -775,8 +780,8 @@ func _set_state(data):
 */
 func (Instance) _set_state(impl func(ptr unsafe.Pointer, state map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var state = gd.UnsafeGet[Dictionary.Any](p_args, 0)
-
+		var state = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalDictionary(state))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gd.DictionaryAs[map[any]any](state))
 	}
@@ -1715,7 +1720,12 @@ func (class) _get_state(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.Ext
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -1732,8 +1742,8 @@ func _set_state(data):
 */
 func (class) _set_state(impl func(ptr unsafe.Pointer, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var state = gd.UnsafeGet[Dictionary.Any](p_args, 0)
-
+		var state = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalDictionary(state))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, state)
 	}

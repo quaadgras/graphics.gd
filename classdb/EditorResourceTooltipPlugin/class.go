@@ -105,8 +105,8 @@ func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var metadata = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(metadata))
 		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 
 		defer pointers.End(base[0])
@@ -180,8 +180,8 @@ func (class) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path gd.String
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(path)
-		var metadata = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(metadata))
 		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 
 		defer pointers.End(base[0])

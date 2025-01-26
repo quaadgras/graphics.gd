@@ -359,7 +359,7 @@ Returns [TextServer] RID of the font cache for specific variation.
 //go:nosplit
 func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index gd.Int, strength gd.Float, transform gd.Transform2D, spacing_top gd.Int, spacing_bottom gd.Int, spacing_space gd.Int, spacing_glyph gd.Int, baseline_offset gd.Float) gd.RID { //gd:Font.find_variation
 	var frame = callframe.New()
-	callframe.Arg(frame, variation_coordinates)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(variation_coordinates)))
 	callframe.Arg(frame, face_index)
 	callframe.Arg(frame, strength)
 	callframe.Arg(frame, transform)
@@ -495,9 +495,9 @@ Returns [Dictionary] with OpenType font name strings (localized font names, vers
 //go:nosplit
 func (self class) GetOtNameStrings() Dictionary.Any { //gd:Font.get_ot_name_strings
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_ot_name_strings, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -561,9 +561,9 @@ Returns a set of OpenType feature tags. More info: [url=https://docs.microsoft.c
 //go:nosplit
 func (self class) GetOpentypeFeatures() Dictionary.Any { //gd:Font.get_opentype_features
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_opentype_features, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -847,9 +847,9 @@ Returns list of OpenType features supported by font.
 //go:nosplit
 func (self class) GetSupportedFeatureList() Dictionary.Any { //gd:Font.get_supported_feature_list
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_supported_feature_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -872,9 +872,9 @@ for tag in variation_list:
 //go:nosplit
 func (self class) GetSupportedVariationList() Dictionary.Any { //gd:Font.get_supported_variation_list
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_supported_variation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

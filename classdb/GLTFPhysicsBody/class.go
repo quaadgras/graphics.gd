@@ -191,7 +191,7 @@ Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the 
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_dictionary
 	var frame = callframe.New()
-	callframe.Arg(frame, dictionary)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(dictionary)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret.Get())}
@@ -205,9 +205,9 @@ Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the 
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsBody.to_dictionary
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_to_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

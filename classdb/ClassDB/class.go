@@ -379,9 +379,9 @@ func (self class) ClassGetSignal(class_ gd.StringName, signal gd.StringName) Dic
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(class_))
 	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_get_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -96,8 +96,8 @@ func (Instance) _get_signaling_state(impl func(ptr unsafe.Pointer) gdclass.WebRT
 }
 func (Instance) _initialize(impl func(ptr unsafe.Pointer, p_config map[any]any) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_config = gd.UnsafeGet[Dictionary.Any](p_args, 0)
-
+		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalDictionary(p_config))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gd.DictionaryAs[map[any]any](p_config))
 		gd.UnsafeSet(p_back, ret)
@@ -107,8 +107,8 @@ func (Instance) _create_data_channel(impl func(ptr unsafe.Pointer, p_label strin
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_label = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(p_label)
-		var p_config = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(p_config))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_label.String(), gd.DictionaryAs[map[any]any](p_config))
 		ptr, ok := pointers.End(ret[0])
@@ -220,8 +220,8 @@ func (class) _get_signaling_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPe
 
 func (class) _initialize(impl func(ptr unsafe.Pointer, p_config Dictionary.Any) gd.Error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_config = gd.UnsafeGet[Dictionary.Any](p_args, 0)
-
+		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalDictionary(p_config))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_config)
 		gd.UnsafeSet(p_back, ret)
@@ -232,8 +232,8 @@ func (class) _create_data_channel(impl func(ptr unsafe.Pointer, p_label gd.Strin
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_label = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))
 		defer pointers.End(p_label)
-		var p_config = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(p_config))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_label, p_config)
 		ptr, ok := pointers.End(ret[0])

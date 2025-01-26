@@ -1963,9 +1963,9 @@ Returns [Dictionary] with OpenType font name strings (localized font names, vers
 func (self class) FontGetOtNameStrings(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_get_ot_name_strings
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_ot_name_strings, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -2496,7 +2496,7 @@ Sets variation coordinates for the specified font cache entry. See [method font_
 func (self class) FontSetVariationCoordinates(font_rid gd.RID, variation_coordinates Dictionary.Any) { //gd:TextServer.font_set_variation_coordinates
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, variation_coordinates)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(variation_coordinates)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_variation_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2509,9 +2509,9 @@ Returns variation coordinates for the specified font cache entry. See [method fo
 func (self class) FontGetVariationCoordinates(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_get_variation_coordinates
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_variation_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3080,9 +3080,9 @@ func (self class) FontGetGlyphContours(font gd.RID, size gd.Int, index gd.Int) D
 	callframe.Arg(frame, font)
 	callframe.Arg(frame, size)
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_glyph_contours, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3439,7 +3439,7 @@ Sets font OpenType feature set override.
 func (self class) FontSetOpentypeFeatureOverrides(font_rid gd.RID, overrides Dictionary.Any) { //gd:TextServer.font_set_opentype_feature_overrides
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	callframe.Arg(frame, overrides)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(overrides)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3452,9 +3452,9 @@ Returns font OpenType feature set override.
 func (self class) FontGetOpentypeFeatureOverrides(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_get_opentype_feature_overrides
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3466,9 +3466,9 @@ Returns the dictionary of the supported OpenType features.
 func (self class) FontSupportedFeatureList(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_supported_feature_list
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_supported_feature_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3480,9 +3480,9 @@ Returns the dictionary of the supported OpenType variation coordinates.
 func (self class) FontSupportedVariationList(font_rid gd.RID) Dictionary.Any { //gd:TextServer.font_supported_variation_list
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_supported_variation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -3805,7 +3805,7 @@ func (self class) ShapedTextAddString(shaped gd.RID, text gd.String, fonts Array
 	callframe.Arg(frame, pointers.Get(text))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(fonts)))
 	callframe.Arg(frame, size)
-	callframe.Arg(frame, opentype_features)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(opentype_features)))
 	callframe.Arg(frame, pointers.Get(language))
 	callframe.Arg(frame, pointers.Get(meta))
 	var r_ret = callframe.Ret[bool](frame)
@@ -3891,7 +3891,7 @@ func (self class) ShapedSetSpanUpdateFont(shaped gd.RID, index gd.Int, fonts Arr
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(fonts)))
 	callframe.Arg(frame, size)
-	callframe.Arg(frame, opentype_features)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(opentype_features)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_set_span_update_font, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -4331,9 +4331,9 @@ func (self class) ShapedTextGetCarets(shaped gd.RID, position gd.Int) Dictionary
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

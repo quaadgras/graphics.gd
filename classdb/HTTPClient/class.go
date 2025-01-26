@@ -438,9 +438,9 @@ Returns all response headers as a Dictionary of structure [code]{ "key": "value1
 //go:nosplit
 func (self class) GetResponseHeadersAsDictionary() Dictionary.Any { //gd:HTTPClient.get_response_headers_as_dictionary
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_response_headers_as_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -601,7 +601,7 @@ string queryString = httpClient.QueryStringFromDict(fields);
 //go:nosplit
 func (self class) QueryStringFromDict(fields Dictionary.Any) gd.String { //gd:HTTPClient.query_string_from_dict
 	var frame = callframe.New()
-	callframe.Arg(frame, fields)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(fields)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_query_string_from_dict, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = pointers.New[gd.String](r_ret.Get())

@@ -304,9 +304,9 @@ func (self class) SetColor(color gd.Color) { //gd:CharFXTransform.set_color
 //go:nosplit
 func (self class) GetEnvironment() Dictionary.Any { //gd:CharFXTransform.get_environment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -314,7 +314,7 @@ func (self class) GetEnvironment() Dictionary.Any { //gd:CharFXTransform.get_env
 //go:nosplit
 func (self class) SetEnvironment(environment Dictionary.Any) { //gd:CharFXTransform.set_environment
 	var frame = callframe.New()
-	callframe.Arg(frame, environment)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(environment)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharFXTransform.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -169,9 +169,9 @@ If the ray did not intersect anything, then an empty dictionary is returned inst
 func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) Dictionary.Any { //gd:PhysicsDirectSpaceState3D.intersect_ray
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_ray, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -245,9 +245,9 @@ If the shape did not intersect anything, then an empty dictionary is returned in
 func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) Dictionary.Any { //gd:PhysicsDirectSpaceState3D.get_rest_info
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_get_rest_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

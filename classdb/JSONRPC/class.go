@@ -162,9 +162,9 @@ func (self class) MakeRequest(method gd.String, params gd.Variant, id gd.Variant
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(params))
 	callframe.Arg(frame, pointers.Get(id))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_request, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -179,9 +179,9 @@ func (self class) MakeResponse(result gd.Variant, id gd.Variant) Dictionary.Any 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(result))
 	callframe.Arg(frame, pointers.Get(id))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -196,9 +196,9 @@ func (self class) MakeNotification(method gd.String, params gd.Variant) Dictiona
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(method))
 	callframe.Arg(frame, pointers.Get(params))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_notification, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -215,9 +215,9 @@ func (self class) MakeResponseError(code gd.Int, message gd.String, id gd.Varian
 	callframe.Arg(frame, code)
 	callframe.Arg(frame, pointers.Get(message))
 	callframe.Arg(frame, pointers.Get(id))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response_error, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

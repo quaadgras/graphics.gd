@@ -184,9 +184,10 @@ type Entry struct {
 }
 
 type DateOnly struct {
-	Year  int `gd:"year"`
-	Month int `gd:"month"`
-	Day   int `gd:"day"`
+	Year    int `gd:"year"`
+	Month   int `gd:"month"`
+	Day     int `gd:"day"`
+	Weekday int `gd:"weekday"`
 }
 
 type Date struct {

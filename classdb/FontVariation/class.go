@@ -177,7 +177,7 @@ func (self class) GetBaseFont() [1]gdclass.Font { //gd:FontVariation.get_base_fo
 //go:nosplit
 func (self class) SetVariationOpentype(coords Dictionary.Any) { //gd:FontVariation.set_variation_opentype
 	var frame = callframe.New()
-	callframe.Arg(frame, coords)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(coords)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -186,9 +186,9 @@ func (self class) SetVariationOpentype(coords Dictionary.Any) { //gd:FontVariati
 //go:nosplit
 func (self class) GetVariationOpentype() Dictionary.Any { //gd:FontVariation.get_variation_opentype
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_get_variation_opentype, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -253,7 +253,7 @@ func (self class) GetVariationTransform() gd.Transform2D { //gd:FontVariation.ge
 //go:nosplit
 func (self class) SetOpentypeFeatures(features Dictionary.Any) { //gd:FontVariation.set_opentype_features
 	var frame = callframe.New()
-	callframe.Arg(frame, features)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(features)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontVariation.Bind_set_opentype_features, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

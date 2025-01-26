@@ -172,9 +172,9 @@ Returns a [Dictionary] that maps skeleton bone indices to the indices of GLTF no
 //go:nosplit
 func (self class) GetGodotBoneNode() Dictionary.Any { //gd:GLTFSkeleton.get_godot_bone_node
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_get_godot_bone_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -185,7 +185,7 @@ Sets a [Dictionary] that maps skeleton bone indices to the indices of GLTF nodes
 //go:nosplit
 func (self class) SetGodotBoneNode(godot_bone_node Dictionary.Any) { //gd:GLTFSkeleton.set_godot_bone_node
 	var frame = callframe.New()
-	callframe.Arg(frame, godot_bone_node)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(godot_bone_node)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFSkeleton.Bind_set_godot_bone_node, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

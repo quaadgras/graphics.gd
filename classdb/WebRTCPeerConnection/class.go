@@ -222,7 +222,7 @@ Valid [param configuration] options are:
 //go:nosplit
 func (self class) Initialize(configuration Dictionary.Any) gd.Error { //gd:WebRTCPeerConnection.initialize
 	var frame = callframe.New()
-	callframe.Arg(frame, configuration)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(configuration)))
 	var r_ret = callframe.Ret[gd.Error](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_initialize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -253,7 +253,7 @@ Valid [param options] are:
 func (self class) CreateDataChannel(label gd.String, options Dictionary.Any) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(label))
-	callframe.Arg(frame, options)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(options)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_create_data_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.WebRTCDataChannel{gd.PointerWithOwnershipTransferredToGo[gdclass.WebRTCDataChannel](r_ret.Get())}

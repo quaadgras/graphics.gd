@@ -219,9 +219,9 @@ Returns a dictionary representation of the peer with given [param peer_id] with 
 func (self class) GetPeer(peer_id gd.Int) Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peer
 	var frame = callframe.New()
 	callframe.Arg(frame, peer_id)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_get_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -232,9 +232,9 @@ Returns a dictionary which keys are the peer ids and values the peer representat
 //go:nosplit
 func (self class) GetPeers() Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peers
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

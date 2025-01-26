@@ -431,8 +431,8 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 		defer pointers.End(path)
 		var option_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(option_name)
-		var options = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(options))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), option_name.String(), gd.DictionaryAs[map[any]any](options))
 		gd.UnsafeSet(p_back, ret)
@@ -449,8 +449,8 @@ func (Instance) _import(impl func(ptr unsafe.Pointer, source_file string, save_p
 		defer pointers.End(source_file)
 		var save_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(save_path)
-		var options = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(options))
 		var platform_variants = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalArray(platform_variants))
 		var gen_files = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
@@ -686,8 +686,8 @@ func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path gd.String
 		defer pointers.End(path)
 		var option_name = pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(option_name)
-		var options = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(options))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, option_name, options)
 		gd.UnsafeSet(p_back, ret)
@@ -704,8 +704,8 @@ func (class) _import(impl func(ptr unsafe.Pointer, source_file gd.String, save_p
 		defer pointers.End(source_file)
 		var save_path = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))
 		defer pointers.End(save_path)
-		var options = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(options))
 		var platform_variants = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalArray(platform_variants))
 		var gen_files = Array.Through(gd.ArrayProxy[gd.String]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
@@ -735,7 +735,7 @@ This function can only be called during the [method _import] callback and it all
 func (self class) AppendImportExternalResource(path gd.String, custom_options Dictionary.Any, custom_importer gd.String, generator_parameters gd.Variant) gd.Error { //gd:EditorImportPlugin.append_import_external_resource
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(path))
-	callframe.Arg(frame, custom_options)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(custom_options)))
 	callframe.Arg(frame, pointers.Get(custom_importer))
 	callframe.Arg(frame, pointers.Get(generator_parameters))
 	var r_ret = callframe.Ret[gd.Error](frame)

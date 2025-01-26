@@ -869,9 +869,9 @@ func (self class) CreateDiffLine(new_line_no gd.Int, old_line_no gd.Int, content
 	callframe.Arg(frame, old_line_no)
 	callframe.Arg(frame, pointers.Get(content))
 	callframe.Arg(frame, pointers.Get(status))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -886,9 +886,9 @@ func (self class) CreateDiffHunk(old_start gd.Int, new_start gd.Int, old_lines g
 	callframe.Arg(frame, new_start)
 	callframe.Arg(frame, old_lines)
 	callframe.Arg(frame, new_lines)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_hunk, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -901,9 +901,9 @@ func (self class) CreateDiffFile(new_file gd.String, old_file gd.String) Diction
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(new_file))
 	callframe.Arg(frame, pointers.Get(old_file))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -919,9 +919,9 @@ func (self class) CreateCommit(msg gd.String, author gd.String, id gd.String, un
 	callframe.Arg(frame, pointers.Get(id))
 	callframe.Arg(frame, unix_timestamp)
 	callframe.Arg(frame, offset_minutes)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_commit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -935,9 +935,9 @@ func (self class) CreateStatusFile(file_path gd.String, change_type gdclass.Edit
 	callframe.Arg(frame, pointers.Get(file_path))
 	callframe.Arg(frame, change_type)
 	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_status_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -948,11 +948,11 @@ Helper function to add an array of [param diff_hunks] into a [param diff_file].
 //go:nosplit
 func (self class) AddDiffHunksIntoDiffFile(diff_file Dictionary.Any, diff_hunks Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_diff_hunks_into_diff_file
 	var frame = callframe.New()
-	callframe.Arg(frame, diff_file)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(diff_file)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(diff_hunks)))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_diff_hunks_into_diff_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -963,11 +963,11 @@ Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 //go:nosplit
 func (self class) AddLineDiffsIntoDiffHunk(diff_hunk Dictionary.Any, line_diffs Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_line_diffs_into_diff_hunk
 	var frame = callframe.New()
-	callframe.Arg(frame, diff_hunk)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(diff_hunk)))
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(line_diffs)))
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_line_diffs_into_diff_hunk, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1125,8 +1125,8 @@ const (
 	TreeAreaUnstaged TreeArea = 2
 )
 
+type StatusFile map[interface{}]interface{}
 type DiffLine map[interface{}]interface{}
 type DiffHunk map[interface{}]interface{}
 type DiffFile map[interface{}]interface{}
 type Commit map[interface{}]interface{}
-type StatusFile map[interface{}]interface{}

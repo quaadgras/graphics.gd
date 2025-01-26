@@ -333,7 +333,7 @@ settings.AddPropertyInfo(propertyInfo);
 //go:nosplit
 func (self class) AddPropertyInfo(info Dictionary.Any) { //gd:EditorSettings.add_property_info
 	var frame = callframe.New()
-	callframe.Arg(frame, info)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(info)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSettings.Bind_add_property_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

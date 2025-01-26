@@ -254,9 +254,9 @@ The returned Dictionary's values will be the same as the [method get_datetime_di
 func (self class) GetDatetimeDictFromUnixTime(unix_time_val gd.Int) Dictionary.Any { //gd:Time.get_datetime_dict_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -268,9 +268,9 @@ Converts the given Unix timestamp to a dictionary of keys: [code]year[/code], [c
 func (self class) GetDateDictFromUnixTime(unix_time_val gd.Int) Dictionary.Any { //gd:Time.get_date_dict_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_dict_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -282,9 +282,9 @@ Converts the given time to a dictionary of keys: [code]hour[/code], [code]minute
 func (self class) GetTimeDictFromUnixTime(unix_time_val gd.Int) Dictionary.Any { //gd:Time.get_time_dict_from_unix_time
 	var frame = callframe.New()
 	callframe.Arg(frame, unix_time_val)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_dict_from_unix_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -343,9 +343,9 @@ func (self class) GetDatetimeDictFromDatetimeString(datetime gd.String, weekday 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(datetime))
 	callframe.Arg(frame, weekday)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_datetime_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -359,7 +359,7 @@ If [param use_space] is [code]true[/code], the date and time bits are separated 
 //go:nosplit
 func (self class) GetDatetimeStringFromDatetimeDict(datetime Dictionary.Any, use_space bool) gd.String { //gd:Time.get_datetime_string_from_datetime_dict
 	var frame = callframe.New()
-	callframe.Arg(frame, datetime)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(datetime)))
 	callframe.Arg(frame, use_space)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_string_from_datetime_dict, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -378,7 +378,7 @@ You can pass the output from [method get_datetime_dict_from_unix_time] directly 
 //go:nosplit
 func (self class) GetUnixTimeFromDatetimeDict(datetime Dictionary.Any) gd.Int { //gd:Time.get_unix_time_from_datetime_dict
 	var frame = callframe.New()
-	callframe.Arg(frame, datetime)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(datetime)))
 	var r_ret = callframe.Ret[gd.Int](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_unix_time_from_datetime_dict, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -423,9 +423,9 @@ Returns the current date as a dictionary of keys: [code]year[/code], [code]month
 func (self class) GetDatetimeDictFromSystem(utc bool) Dictionary.Any { //gd:Time.get_datetime_dict_from_system
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_datetime_dict_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -438,9 +438,9 @@ The returned values are in the system's local time when [param utc] is [code]fal
 func (self class) GetDateDictFromSystem(utc bool) Dictionary.Any { //gd:Time.get_date_dict_from_system
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_date_dict_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -453,9 +453,9 @@ The returned values are in the system's local time when [param utc] is [code]fal
 func (self class) GetTimeDictFromSystem(utc bool) Dictionary.Any { //gd:Time.get_time_dict_from_system
 	var frame = callframe.New()
 	callframe.Arg(frame, utc)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_dict_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -515,9 +515,9 @@ Returns the current time zone as a dictionary of keys: [code]bias[/code] and [co
 //go:nosplit
 func (self class) GetTimeZoneFromSystem() Dictionary.Any { //gd:Time.get_time_zone_from_system
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Time.Bind_get_time_zone_from_system, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -621,6 +621,11 @@ const (
 	WeekdaySaturday Weekday = 6
 )
 
+type OnTheClock struct {
+	Hour   int `gd:"hour"`
+	Minute int `gd:"minute"`
+	Second int `gd:"second"`
+}
 type Date struct {
 	Year    int `gd:"year"`
 	Month   int `gd:"month"`
@@ -631,12 +636,8 @@ type Date struct {
 	Second  int `gd:"second"`
 }
 type DateOnly struct {
-	Year  int `gd:"year"`
-	Month int `gd:"month"`
-	Day   int `gd:"day"`
-}
-type OnTheClock struct {
-	Hour   int `gd:"hour"`
-	Minute int `gd:"minute"`
-	Second int `gd:"second"`
+	Year    int `gd:"year"`
+	Month   int `gd:"month"`
+	Day     int `gd:"day"`
+	Weekday int `gd:"weekday"`
 }

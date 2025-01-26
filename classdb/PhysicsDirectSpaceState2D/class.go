@@ -164,9 +164,9 @@ If the ray did not intersect anything, then an empty dictionary is returned inst
 func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.intersect_ray
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState2D.Bind_intersect_ray, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -237,9 +237,9 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.get_rest_info
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectSpaceState2D.Bind_get_rest_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -269,20 +269,6 @@ func init() {
 	})
 }
 
-type PhysicsDirectSpaceState2D_Intersection struct {
-	Collider   Object.Instance `gd:"collider"`
-	ColliderID Object.ID       `gd:"collider_id"`
-	Normal     struct {
-		X float32
-		Y float32
-	} `gd:"normal"`
-	Position struct {
-		X float32
-		Y float32
-	} `gd:"position"`
-	RID   RID.Any `gd:"rid"`
-	Shape int     `gd:"shape"`
-}
 type PhysicsDirectSpaceState2D_RestInfo struct {
 	ColliderID     Object.ID `gd:"collider_id"`
 	LinearVelocity struct {
@@ -297,6 +283,20 @@ type PhysicsDirectSpaceState2D_RestInfo struct {
 		X float32
 		Y float32
 	} `gd:"point"`
+	RID   RID.Any `gd:"rid"`
+	Shape int     `gd:"shape"`
+}
+type PhysicsDirectSpaceState2D_Intersection struct {
+	Collider   Object.Instance `gd:"collider"`
+	ColliderID Object.ID       `gd:"collider_id"`
+	Normal     struct {
+		X float32
+		Y float32
+	} `gd:"normal"`
+	Position struct {
+		X float32
+		Y float32
+	} `gd:"position"`
 	RID   RID.Any `gd:"rid"`
 	Shape int     `gd:"shape"`
 }

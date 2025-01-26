@@ -205,8 +205,8 @@ func (Instance) _parse_node_extensions(impl func(ptr unsafe.Pointer, state [1]gd
 		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(gltf_node[0])
-		var extensions = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var extensions = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(extensions))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gltf_node, gd.DictionaryAs[map[any]any](extensions))
 		gd.UnsafeSet(p_back, ret)
@@ -260,8 +260,8 @@ func (Instance) _parse_texture_json(impl func(ptr unsafe.Pointer, state [1]gdcla
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var texture_json = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var texture_json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(texture_json))
 		var ret_gltf_texture = [1]gdclass.GLTFTexture{pointers.New[gdclass.GLTFTexture]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 
 		defer pointers.End(ret_gltf_texture[0])
@@ -325,8 +325,8 @@ func (Instance) _import_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTF
 		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(gltf_node[0])
-		var json = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(json))
 		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
 
 		defer pointers.End(node[0])
@@ -437,8 +437,8 @@ func (Instance) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(image[0])
-		var image_dict = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var image_dict = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(image_dict))
 		var image_format = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
 		defer pointers.End(image_format)
 		var lossy_quality = gd.UnsafeGet[gd.Float](p_args, 4)
@@ -487,8 +487,8 @@ func (Instance) _serialize_texture_json(impl func(ptr unsafe.Pointer, state [1]g
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var texture_json = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var texture_json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(texture_json))
 		var gltf_texture = [1]gdclass.GLTFTexture{pointers.New[gdclass.GLTFTexture]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 
 		defer pointers.End(gltf_texture[0])
@@ -512,8 +512,8 @@ func (Instance) _export_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTF
 		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(gltf_node[0])
-		var json = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(json))
 		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
 
 		defer pointers.End(node[0])
@@ -603,8 +603,8 @@ func (class) _parse_node_extensions(impl func(ptr unsafe.Pointer, state [1]gdcla
 		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(gltf_node[0])
-		var extensions = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var extensions = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(extensions))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, gltf_node, extensions)
 		gd.UnsafeSet(p_back, ret)
@@ -658,8 +658,8 @@ func (class) _parse_texture_json(impl func(ptr unsafe.Pointer, state [1]gdclass.
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var texture_json = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var texture_json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(texture_json))
 		var ret_gltf_texture = [1]gdclass.GLTFTexture{pointers.New[gdclass.GLTFTexture]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 
 		defer pointers.End(ret_gltf_texture[0])
@@ -723,8 +723,8 @@ func (class) _import_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFSta
 		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(gltf_node[0])
-		var json = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(json))
 		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
 
 		defer pointers.End(node[0])
@@ -835,8 +835,8 @@ func (class) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]gd
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(image[0])
-		var image_dict = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var image_dict = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(image_dict))
 		var image_format = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))
 		defer pointers.End(image_format)
 		var lossy_quality = gd.UnsafeGet[gd.Float](p_args, 4)
@@ -885,8 +885,8 @@ func (class) _serialize_texture_json(impl func(ptr unsafe.Pointer, state [1]gdcl
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var texture_json = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var texture_json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(texture_json))
 		var gltf_texture = [1]gdclass.GLTFTexture{pointers.New[gdclass.GLTFTexture]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 2))})}
 
 		defer pointers.End(gltf_texture[0])
@@ -910,8 +910,8 @@ func (class) _export_node(impl func(ptr unsafe.Pointer, state [1]gdclass.GLTFSta
 		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(gltf_node[0])
-		var json = gd.UnsafeGet[Dictionary.Any](p_args, 2)
-
+		var json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalDictionary(json))
 		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
 
 		defer pointers.End(node[0])

@@ -1430,7 +1430,12 @@ func (Instance) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -2001,8 +2006,8 @@ func (Instance) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, fo
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var variation_coordinates = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var variation_coordinates = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(variation_coordinates))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, gd.DictionaryAs[map[any]any](variation_coordinates))
 	}
@@ -2018,7 +2023,12 @@ func (Instance) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, fo
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -2684,7 +2694,12 @@ func (Instance) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid 
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, int(size), int(index))
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -3109,8 +3124,8 @@ func (Instance) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointe
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var overrides = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var overrides = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(overrides))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, gd.DictionaryAs[map[any]any](overrides))
 	}
@@ -3126,7 +3141,12 @@ func (Instance) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointe
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -3140,7 +3160,12 @@ func (Instance) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -3154,7 +3179,12 @@ func (Instance) _font_supported_variation_list(impl func(ptr unsafe.Pointer, fon
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -3504,8 +3534,8 @@ func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID
 		defer pointers.End(gd.InternalArray(fonts))
 		var size = gd.UnsafeGet[gd.Int](p_args, 3)
 
-		var opentype_features = gd.UnsafeGet[Dictionary.Any](p_args, 4)
-
+		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
+		defer pointers.End(gd.InternalDictionary(opentype_features))
 		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 5))
 		defer pointers.End(language)
 		var meta = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 6))
@@ -3611,8 +3641,8 @@ func (Instance) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shape
 		defer pointers.End(gd.InternalArray(fonts))
 		var size = gd.UnsafeGet[gd.Int](p_args, 3)
 
-		var opentype_features = gd.UnsafeGet[Dictionary.Any](p_args, 4)
-
+		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
+		defer pointers.End(gd.InternalDictionary(opentype_features))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shaped, int(index), gd.ArrayAs[[]RID.Any](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[any]any](opentype_features))
 	}
@@ -4994,7 +5024,12 @@ func (class) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid gd
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -5565,8 +5600,8 @@ func (class) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, font_
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var variation_coordinates = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var variation_coordinates = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(variation_coordinates))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, variation_coordinates)
 	}
@@ -5582,7 +5617,12 @@ func (class) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, font_
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -6248,7 +6288,12 @@ func (class) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid gd.
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid, size, index)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -6673,8 +6718,8 @@ func (class) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointer, 
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[gd.RID](p_args, 0)
 
-		var overrides = gd.UnsafeGet[Dictionary.Any](p_args, 1)
-
+		var overrides = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalDictionary(overrides))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, font_rid, overrides)
 	}
@@ -6690,7 +6735,12 @@ func (class) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointer, 
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -6704,7 +6754,12 @@ func (class) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_rid
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -6718,7 +6773,12 @@ func (class) _font_supported_variation_list(impl func(ptr unsafe.Pointer, font_r
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, font_rid)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -7068,8 +7128,8 @@ func (class) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped gd.RID
 		defer pointers.End(gd.InternalArray(fonts))
 		var size = gd.UnsafeGet[gd.Int](p_args, 3)
 
-		var opentype_features = gd.UnsafeGet[Dictionary.Any](p_args, 4)
-
+		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
+		defer pointers.End(gd.InternalDictionary(opentype_features))
 		var language = pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 5))
 		defer pointers.End(language)
 		var meta = pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 6))
@@ -7175,8 +7235,8 @@ func (class) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shaped g
 		defer pointers.End(gd.InternalArray(fonts))
 		var size = gd.UnsafeGet[gd.Int](p_args, 3)
 
-		var opentype_features = gd.UnsafeGet[Dictionary.Any](p_args, 4)
-
+		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
+		defer pointers.End(gd.InternalDictionary(opentype_features))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shaped, index, fonts, size, opentype_features)
 	}

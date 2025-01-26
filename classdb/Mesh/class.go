@@ -181,7 +181,12 @@ func (Instance) _surface_get_lods(impl func(ptr unsafe.Pointer, index int) map[a
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -497,7 +502,12 @@ func (class) _surface_get_lods(impl func(ptr unsafe.Pointer, index gd.Int) Dicti
 
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 

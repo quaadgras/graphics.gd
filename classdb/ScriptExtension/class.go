@@ -319,7 +319,12 @@ func (Instance) _get_method_info(impl func(ptr unsafe.Pointer, method string) ma
 		defer pointers.End(method)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, method.String())
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (Instance) _is_tool(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -446,7 +451,12 @@ func (Instance) _get_constants(impl func(ptr unsafe.Pointer) map[any]any) (cb gd
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, gd.DictionaryFromMap(ret))
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 func (Instance) _get_members(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -715,7 +725,12 @@ func (class) _get_method_info(impl func(ptr unsafe.Pointer, method gd.StringName
 		defer pointers.End(method)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, method)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -854,7 +869,12 @@ func (class) _get_constants(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 

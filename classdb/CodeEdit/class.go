@@ -1012,7 +1012,7 @@ func (self class) AddAutoBraceCompletionPair(start_key gd.String, end_key gd.Str
 //go:nosplit
 func (self class) SetAutoBraceCompletionPairs(pairs Dictionary.Any) { //gd:CodeEdit.set_auto_brace_completion_pairs
 	var frame = callframe.New()
-	callframe.Arg(frame, pairs)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(pairs)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_set_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1021,9 +1021,9 @@ func (self class) SetAutoBraceCompletionPairs(pairs Dictionary.Any) { //gd:CodeE
 //go:nosplit
 func (self class) GetAutoBraceCompletionPairs() Dictionary.Any { //gd:CodeEdit.get_auto_brace_completion_pairs
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_pairs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1885,9 +1885,9 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 func (self class) GetCodeCompletionOption(index gd.Int) Dictionary.Any { //gd:CodeEdit.get_code_completion_option
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CodeEdit.Bind_get_code_completion_option, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

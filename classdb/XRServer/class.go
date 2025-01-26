@@ -394,9 +394,9 @@ Returns a dictionary of trackers for [param tracker_types].
 func (self class) GetTrackers(tracker_types gd.Int) Dictionary.Any { //gd:XRServer.get_trackers
 	var frame = callframe.New()
 	callframe.Arg(frame, tracker_types)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_trackers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

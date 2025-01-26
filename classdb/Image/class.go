@@ -1294,9 +1294,9 @@ func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(compared_image[0])[0])
 	callframe.Arg(frame, use_luma)
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compute_image_metrics, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

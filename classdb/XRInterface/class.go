@@ -344,9 +344,9 @@ Returns a [Dictionary] with extra system info. Interfaces are expected to return
 //go:nosplit
 func (self class) GetSystemInfo() Dictionary.Any { //gd:XRInterface.get_system_info
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_system_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -179,7 +179,7 @@ Creates a new GLTFLight instance by parsing the given [Dictionary].
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
 	var frame = callframe.New()
-	callframe.Arg(frame, dictionary)
+	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(dictionary)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFLight{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFLight](r_ret.Get())}
@@ -193,9 +193,9 @@ Serializes this GLTFLight instance into a [Dictionary].
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFLight.to_dictionary
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[Dictionary.Any](frame)
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_to_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
 	frame.Free()
 	return ret
 }
