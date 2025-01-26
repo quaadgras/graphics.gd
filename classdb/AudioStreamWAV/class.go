@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 
@@ -26,6 +27,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 AudioStreamWAV stores sound samples loaded from WAV files. To play the stored sound, use an [AudioStreamPlayer] (for non-positional audio) or [AudioStreamPlayer2D]/[AudioStreamPlayer3D] (for positional audio). The sound can be looped.

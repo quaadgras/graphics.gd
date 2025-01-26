@@ -29,6 +29,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 NavigationServer3D is the server that handles navigation maps, regions and agents. It does not handle A* navigation from [AStar3D].

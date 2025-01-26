@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -25,6 +26,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Stores variables that can be accessed from everywhere. Use [method get_setting], [method set_setting] or [method has_setting] to access them. Variables stored in [code]project.godot[/code] are also loaded into [ProjectSettings], making this object very useful for reading custom game configuration options.
@@ -114,9 +116,9 @@ Returns an [Array] of registered global classes. Each global class is represente
 - [code]path[/code] is a path to a file containing the global class.
 [b]Note:[/b] Both the script and the icon paths are local to the project filesystem, i.e. they start with [code]res://[/code].
 */
-func GetGlobalClassList() []map[any]any { //gd:ProjectSettings.get_global_class_list
+func GetGlobalClassList() []GlobalClass { //gd:ProjectSettings.get_global_class_list
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetGlobalClassList())))
+	return []GlobalClass(gd.ArrayAs[[]GlobalClass](gd.InternalArray(class(self).GetGlobalClassList())))
 }
 
 /*
@@ -194,7 +196,7 @@ ProjectSettings.AddPropertyInfo(propertyInfo);
 [/csharp]
 [/codeblocks]
 */
-func AddPropertyInfo(hint map[any]any) { //gd:ProjectSettings.add_property_info
+func AddPropertyInfo(hint PropertyInfo) { //gd:ProjectSettings.add_property_info
 	once.Do(singleton)
 	class(self).AddPropertyInfo(gd.DictionaryFromMap(hint))
 }
@@ -748,3 +750,19 @@ const (
 	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
 	ErrPrinterOnFire Error = 48
 )
+
+type PropertyInfo struct {
+	ClassName  string       `gd:"class_name"`
+	Name       string       `gd:"name"`
+	Hint       int          `gd:"hint"`
+	HintString string       `gd:"hint_string"`
+	Type       reflect.Type `gd:"type"`
+	Usage      int          `gd:"usage"`
+}
+type GlobalClass struct {
+	Base     string `gd:"base"`
+	Class    string `gd:"class"`
+	Icon     string `gd:"icon"`
+	Language string `gd:"language"`
+	Path     string `gd:"path"`
+}

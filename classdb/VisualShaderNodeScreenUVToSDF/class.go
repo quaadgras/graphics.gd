@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/Resource"
 
@@ -26,6 +27,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Translates to [code]screen_uv_to_sdf(uv)[/code] in the shader language. If the UV port isn't connected, [code]SCREEN_UV[/code] is used instead.

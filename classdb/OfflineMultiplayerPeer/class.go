@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
 
@@ -26,6 +27,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 This is the default [member MultiplayerAPI.multiplayer_peer] for the [member Node.multiplayer]. It mimics the behavior of a server with no peers connected.

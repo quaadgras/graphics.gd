@@ -41,12 +41,8 @@ func InternalDictionary[K comparable, V any](dict DictionaryType.Map[K, V]) Dict
 	return pointers.Load[Dictionary](state)
 }
 
-func DictionaryFromMap[K comparable, V any](m map[K]V) DictionaryType.Any {
-	var dict = DictionaryType.Through(NewDictionaryProxy[VariantPkg.Any, VariantPkg.Any]())
-	for k, value := range m {
-		dict.SetIndex(VariantPkg.New(k), VariantPkg.New(value))
-	}
-	return dict
+func DictionaryFromMap[T any](val T) DictionaryType.Any {
+	return NewVariant(val).Interface().(DictionaryType.Any)
 }
 
 func NewDictionaryProxy[K comparable, V any]() (DictionaryProxy[K, V], complex128) {
@@ -55,14 +51,14 @@ func NewDictionaryProxy[K comparable, V any]() (DictionaryProxy[K, V], complex12
 	return DictionaryProxy[K, V]{}, pack
 }
 
-func DictionaryAs[M map[K]V, K comparable, V any](dictionary DictionaryType.Any) M {
+func DictionaryAs[T any](dictionary DictionaryType.Any) T {
 	_, state := DictionaryType.As(dictionary, NewDictionaryProxy[VariantPkg.Any, VariantPkg.Any])
 	dict := pointers.Load[Dictionary](state)
-	var result = make(map[K]V)
-	for _, key := range dict.Keys().Iter() {
-		result[VariantAs[K](key)] = VariantAs[V](dict.Index(key))
+	result, err := ConvertToDesiredGoType(dict, reflect.TypeFor[T]())
+	if err != nil {
+		panic(fmt.Sprintf("could not convert dictionary to desired go type: %v", err))
 	}
-	return result
+	return result.Interface().(T)
 }
 
 type DictionaryProxy[K comparable, V any] struct{}

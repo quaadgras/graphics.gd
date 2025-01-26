@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -24,6 +25,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 [url=https://www.jsonrpc.org/]JSON-RPC[/url] is a standard which wraps a method call in a [JSON] object. The object has a particular structure and identifies which method is called, the parameters to that function, and carries an ID to keep track of responses. This class implements that standard on top of [Dictionary]; you will have to convert between a [Dictionary] and [JSON] with other functions.
@@ -60,8 +62,8 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - [param params]: An array or dictionary of parameters being passed to the method.
 - [param id]: Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
-func (self Instance) MakeRequest(method string, params any, id any) map[any]any { //gd:JSONRPC.make_request
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeRequest(gd.NewString(method), gd.NewVariant(params), gd.NewVariant(id))))
+func (self Instance) MakeRequest(method string, params any, id any) Request { //gd:JSONRPC.make_request
+	return Request(gd.DictionaryAs[Request](class(self).MakeRequest(gd.NewString(method), gd.NewVariant(params), gd.NewVariant(id))))
 }
 
 /*
@@ -69,8 +71,8 @@ When a server has received and processed a request, it is expected to send a res
 - [param result]: The return value of the function which was called.
 - [param id]: The ID of the request this response is targeted to.
 */
-func (self Instance) MakeResponse(result any, id any) map[any]any { //gd:JSONRPC.make_response
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeResponse(gd.NewVariant(result), gd.NewVariant(id))))
+func (self Instance) MakeResponse(result any, id any) Response { //gd:JSONRPC.make_response
+	return Response(gd.DictionaryAs[Response](class(self).MakeResponse(gd.NewVariant(result), gd.NewVariant(id))))
 }
 
 /*
@@ -78,8 +80,8 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - [param method]: Name of the method being called.
 - [param params]: An array or dictionary of parameters being passed to the method.
 */
-func (self Instance) MakeNotification(method string, params any) map[any]any { //gd:JSONRPC.make_notification
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeNotification(gd.NewString(method), gd.NewVariant(params))))
+func (self Instance) MakeNotification(method string, params any) Notification { //gd:JSONRPC.make_notification
+	return Notification(gd.DictionaryAs[Notification](class(self).MakeNotification(gd.NewString(method), gd.NewVariant(params))))
 }
 
 /*
@@ -88,8 +90,8 @@ Creates a response which indicates a previous reply has failed in some way.
 - [param message]: A custom message about this error.
 - [param id]: The request this error is a response to.
 */
-func (self Instance) MakeResponseError(code int, message string) map[any]any { //gd:JSONRPC.make_response_error
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeResponseError(gd.Int(code), gd.NewString(message), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))))
+func (self Instance) MakeResponseError(code int, message string) ResponseError { //gd:JSONRPC.make_response_error
+	return ResponseError(gd.DictionaryAs[ResponseError](class(self).MakeResponseError(gd.Int(code), gd.NewString(message), gd.NewVariant(gd.NewVariant(([1]any{}[0]))))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -253,3 +255,22 @@ const (
 	/*An internal error occurred while processing the request. Not used by the built-in JSONRPC.*/
 	InternalError ErrorCode = -32603
 )
+
+type Request struct {
+	Method string      `gd:"method"`
+	Params interface{} `gd:"params"`
+	ID     string      `gd:"id"`
+}
+type Response struct {
+	Result interface{} `gd:"result"`
+	ID     string      `gd:"id"`
+}
+type Notification struct {
+	Method string      `gd:"method"`
+	Params interface{} `gd:"params"`
+}
+type ResponseError struct {
+	Code    int    `gd:"code"`
+	Message string `gd:"message"`
+	ID      int    `gd:"id"`
+}

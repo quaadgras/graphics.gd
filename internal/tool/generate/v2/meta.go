@@ -104,11 +104,6 @@ func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
 		case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
 			"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "NodePath":
 			yield("graphics.gd/variant/" + s)
-		case "RID":
-			if class.Name == "Resource" {
-				return
-			}
-			yield("graphics.gd/variant/RID")
 		case "Signal":
 			//return "graphics.gd/variant/" + s
 			return
@@ -247,6 +242,8 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 	}
 }
 
+var StructablesInThisPackageGlobalHack = make(map[reflect.Type]bool)
+
 func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string, gdType string) string {
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
@@ -337,7 +334,15 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 	case "Signal":
 		return "chan []any"
 	case "Dictionary":
-		return "map[any]any"
+		rtype, ok := gdjson.Structables[lookup]
+		if !ok {
+			return "map[any]any"
+		}
+		registerStructables(rtype)
+		if rtype.Name() == "" {
+			return strings.Replace(rtype.String(), "gdjson.", "", -1)
+		}
+		return strings.Replace(rtype.Name(), "gdjson.", "", -1)
 	case "Array":
 		return "[]any"
 	case "Variant":

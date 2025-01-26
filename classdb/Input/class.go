@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
@@ -28,6 +29,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 The [Input] singleton handles key presses, mouse buttons and movement, gamepads, and input actions. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
@@ -222,9 +224,9 @@ On Linux:
 [code]product_id[/code]: The USB product ID of the device.
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 */
-func GetJoyInfo(device int) map[any]any { //gd:Input.get_joy_info
+func GetJoyInfo(device int) JoyInfo { //gd:Input.get_joy_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetJoyInfo(gd.Int(device))))
+	return JoyInfo(gd.DictionaryAs[JoyInfo](class(self).GetJoyInfo(gd.Int(device))))
 }
 
 /*
@@ -1871,3 +1873,11 @@ const (
 	/*Extra mouse button 2 mask.*/
 	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )
+
+type JoyInfo struct {
+	XinputIndex       int    `gd:"xinput_index"`
+	RawName           string `gd:"raw_name"`
+	VendorID          string `gd:"vendor_id"`
+	ProductID         string `gd:"product_id"`
+	SteamInputPresent int    `gd:"steam_input_present"`
+}

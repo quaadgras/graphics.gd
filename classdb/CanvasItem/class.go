@@ -13,8 +13,8 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/RID"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
@@ -31,6 +31,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Abstract base class for everything in 2D space. Canvas items are laid out in a tree; children inherit and extend their parent's transform. [CanvasItem] is extended by [Control] for GUI-related nodes, and by [Node2D] for 2D game objects.

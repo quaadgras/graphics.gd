@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -27,6 +28,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
@@ -301,8 +303,8 @@ func (self Instance) SetRangeConfig(column int, min Float.X, max Float.X, step F
 /*
 Returns a dictionary containing the range parameters for a given column. The keys are "min", "max", "step", and "expr".
 */
-func (self Instance) GetRangeConfig(column int) map[any]any { //gd:TreeItem.get_range_config
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetRangeConfig(gd.Int(column))))
+func (self Instance) GetRangeConfig(column int) RangeConfig { //gd:TreeItem.get_range_config
+	return RangeConfig(gd.DictionaryAs[RangeConfig](class(self).GetRangeConfig(gd.Int(column))))
 }
 
 /*
@@ -2339,3 +2341,10 @@ const (
 	/*Expand row to fit width, usually for text-derived classes.*/
 	HorizontalAlignmentFill HorizontalAlignment = 3
 )
+
+type RangeConfig struct {
+	Min  float32 `gd:"min"`
+	Max  float32 `gd:"max"`
+	Step float32 `gd:"step"`
+	Expr string  `gd:"expr"`
+}

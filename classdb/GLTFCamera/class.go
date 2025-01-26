@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
 
@@ -26,6 +27,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Represents a camera as defined by the base GLTF spec.
@@ -58,7 +60,7 @@ func (self Instance) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node
 /*
 Creates a new GLTFCamera instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_dictionary
+func FromDictionary(dictionary Structure) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_dictionary
 	self := Instance{}
 	return [1]gdclass.GLTFCamera(class(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
@@ -66,8 +68,8 @@ func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFCamera { //gd:GLTFCam
 /*
 Serializes this GLTFCamera instance into a [Dictionary].
 */
-func (self Instance) ToDictionary() map[any]any { //gd:GLTFCamera.to_dictionary
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ToDictionary()))
+func (self Instance) ToDictionary() Structure { //gd:GLTFCamera.to_dictionary
+	return Structure(gd.DictionaryAs[Structure](class(self).ToDictionary()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -308,3 +310,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("GLTFCamera", func(ptr gd.Object) any { return [1]gdclass.GLTFCamera{*(*gdclass.GLTFCamera)(unsafe.Pointer(&ptr))} })
 }
+
+type Structure map[interface{}]interface{}

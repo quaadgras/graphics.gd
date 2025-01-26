@@ -27,6 +27,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 By changing various properties of this object, such as the start and target position, you can configure path queries to the [NavigationServer3D].

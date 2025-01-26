@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -25,6 +26,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 A class stored as a resource. A script extends the functionality of all objects that instantiate it.
@@ -116,29 +118,29 @@ func (self Instance) HasScriptSignal(signal_name string) bool { //gd:Script.has_
 /*
 Returns the list of properties in this [Script].
 */
-func (self Instance) GetScriptPropertyList() []map[any]any { //gd:Script.get_script_property_list
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetScriptPropertyList())))
+func (self Instance) GetScriptPropertyList() []PropertyInfo { //gd:Script.get_script_property_list
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).GetScriptPropertyList())))
 }
 
 /*
 Returns the list of methods in this [Script].
 */
-func (self Instance) GetScriptMethodList() []map[any]any { //gd:Script.get_script_method_list
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetScriptMethodList())))
+func (self Instance) GetScriptMethodList() []PropertyInfo { //gd:Script.get_script_method_list
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).GetScriptMethodList())))
 }
 
 /*
 Returns the list of user signals defined in this [Script].
 */
-func (self Instance) GetScriptSignalList() []map[any]any { //gd:Script.get_script_signal_list
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetScriptSignalList())))
+func (self Instance) GetScriptSignalList() []SignalInfo { //gd:Script.get_script_signal_list
+	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(class(self).GetScriptSignalList())))
 }
 
 /*
 Returns a dictionary containing constant names and their values.
 */
-func (self Instance) GetScriptConstantMap() map[any]any { //gd:Script.get_script_constant_map
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetScriptConstantMap()))
+func (self Instance) GetScriptConstantMap() map[string]interface{} { //gd:Script.get_script_constant_map
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetScriptConstantMap()))
 }
 
 /*
@@ -569,3 +571,19 @@ const (
 	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
 	ErrPrinterOnFire Error = 48
 )
+
+type PropertyInfo struct {
+	ClassName  string       `gd:"class_name"`
+	Name       string       `gd:"name"`
+	Hint       int          `gd:"hint"`
+	HintString string       `gd:"hint_string"`
+	Type       reflect.Type `gd:"type"`
+	Usage      int          `gd:"usage"`
+}
+type SignalInfo struct {
+	Name        string         `gd:"name"`
+	Flags       int            `gd:"flags"`
+	ID          int            `gd:"id"`
+	DefaultArgs []interface{}  `gd:"default_args"`
+	Args        []PropertyInfo `gd:"args"`
+}

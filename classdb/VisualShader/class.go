@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Shader"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
@@ -27,6 +28,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 This class provides a graph-like visual editor for creating a [Shader]. Although [VisualShader]s do not require coding, they share the same logic with script shaders. They use [VisualShaderNode]s that can be connected to each other to control the flow of the shader. The visual shader graph is converted to a script shader behind the scenes.
@@ -142,8 +144,8 @@ func (self Instance) ConnectNodesForced(atype gdclass.VisualShaderType, from_nod
 /*
 Returns the list of connected nodes with the specified type.
 */
-func (self Instance) GetNodeConnections(atype gdclass.VisualShaderType) []map[any]any { //gd:VisualShader.get_node_connections
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetNodeConnections(atype))))
+func (self Instance) GetNodeConnections(atype gdclass.VisualShaderType) []map[string]interface{} { //gd:VisualShader.get_node_connections
+	return []map[string]interface{}(gd.ArrayAs[[]map[string]interface{}](gd.InternalArray(class(self).GetNodeConnections(atype))))
 }
 
 /*

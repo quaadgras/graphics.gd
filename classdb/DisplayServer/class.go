@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2"
@@ -21,7 +22,6 @@ import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3i"
-import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -33,6 +33,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
@@ -625,9 +626,9 @@ func GlobalMenuClear(menu_root string) { //gd:DisplayServer.global_menu_clear
 Returns Dictionary of supported system menu IDs and names.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetSystemMenuRoots() map[any]any { //gd:DisplayServer.global_menu_get_system_menu_roots
+func GlobalMenuGetSystemMenuRoots() map[string]string { //gd:DisplayServer.global_menu_get_system_menu_roots
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GlobalMenuGetSystemMenuRoots()))
+	return map[string]string(gd.DictionaryAs[map[string]string](class(self).GlobalMenuGetSystemMenuRoots()))
 }
 
 /*
@@ -660,9 +661,9 @@ Note that Godot depends on system libraries for text-to-speech functionality. Th
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsGetVoices() []map[any]any { //gd:DisplayServer.tts_get_voices
+func TtsGetVoices() []TextToSpeechVoice { //gd:DisplayServer.tts_get_voices
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).TtsGetVoices())))
+	return []TextToSpeechVoice(gd.ArrayAs[[]TextToSpeechVoice](gd.InternalArray(class(self).TtsGetVoices())))
 }
 
 /*
@@ -1666,7 +1667,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
-func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []map[any]any, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
+func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
 	return error(gd.ToError(class(self).FileDialogWithOptionsShow(gd.NewString(title), gd.NewString(current_directory), gd.NewString(root), gd.NewString(filename), show_hidden, mode, gd.NewPackedStringSlice(filters), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback))))
 }
@@ -5707,3 +5708,14 @@ const (
 	/*Extra mouse button 2 mask.*/
 	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )
+
+type TextToSpeechVoice struct {
+	Name     string `gd:"name"`
+	ID       string `gd:"id"`
+	Language string `gd:"language"`
+}
+type FileDialogOption struct {
+	Name    string   `gd:"name"`
+	Values  []string `gd:"values"`
+	Default int      `gd:"default"`
+}

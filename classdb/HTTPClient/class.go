@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -24,6 +25,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases.
@@ -137,8 +139,8 @@ Returns all response headers as a Dictionary of structure [code]{ "key": "value1
 
 [/codeblock]
 */
-func (self Instance) GetResponseHeadersAsDictionary() map[any]any { //gd:HTTPClient.get_response_headers_as_dictionary
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetResponseHeadersAsDictionary()))
+func (self Instance) GetResponseHeadersAsDictionary() map[string]string { //gd:HTTPClient.get_response_headers_as_dictionary
+	return map[string]string(gd.DictionaryAs[map[string]string](class(self).GetResponseHeadersAsDictionary()))
 }
 
 /*
@@ -222,7 +224,7 @@ string queryString = httpClient.QueryStringFromDict(fields);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) QueryStringFromDict(fields map[any]any) string { //gd:HTTPClient.query_string_from_dict
+func (self Instance) QueryStringFromDict(fields map[string]string) string { //gd:HTTPClient.query_string_from_dict
 	return string(class(self).QueryStringFromDict(gd.DictionaryFromMap(fields)).String())
 }
 

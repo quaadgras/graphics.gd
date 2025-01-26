@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/Window"
@@ -29,6 +30,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 [FileDialog] is a preset dialog used to choose files and directories in the filesystem. It supports filter masks. [FileDialog] automatically sets its window title according to the [member file_mode]. If you want to use a custom title, disable this by setting [member mode_overrides_title] to [code]false[/code].
@@ -112,8 +114,8 @@ func (self Instance) AddOption(name string, values []string, default_value_index
 /*
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
-func (self Instance) GetSelectedOptions() map[any]any { //gd:FileDialog.get_selected_options
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetSelectedOptions()))
+func (self Instance) GetSelectedOptions() map[string]int { //gd:FileDialog.get_selected_options
+	return map[string]int(gd.DictionaryAs[map[string]int](class(self).GetSelectedOptions()))
 }
 
 /*

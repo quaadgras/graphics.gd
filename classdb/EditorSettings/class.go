@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -25,6 +26,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Object that holds the project-independent editor settings. These settings are generally visible in the [b]Editor > Editor Settings[/b] menu.
@@ -132,7 +134,7 @@ settings.AddPropertyInfo(propertyInfo);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) AddPropertyInfo(info map[any]any) { //gd:EditorSettings.add_property_info
+func (self Instance) AddPropertyInfo(info PropertyInfo) { //gd:EditorSettings.add_property_info
 	class(self).AddPropertyInfo(gd.DictionaryFromMap(info))
 }
 
@@ -504,4 +506,13 @@ func init() {
 	gdclass.Register("EditorSettings", func(ptr gd.Object) any {
 		return [1]gdclass.EditorSettings{*(*gdclass.EditorSettings)(unsafe.Pointer(&ptr))}
 	})
+}
+
+type PropertyInfo struct {
+	ClassName  string       `gd:"class_name"`
+	Name       string       `gd:"name"`
+	Hint       int          `gd:"hint"`
+	HintString string       `gd:"hint_string"`
+	Type       reflect.Type `gd:"type"`
+	Usage      int          `gd:"usage"`
 }

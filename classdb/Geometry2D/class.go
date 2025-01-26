@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 
@@ -27,6 +28,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Provides a set of helper functions to create geometric shapes, compute intersections between shapes, and process various other geometric operations in 2D.
@@ -244,9 +246,9 @@ func OffsetPolyline(polyline []Vector2.XY, delta Float.X) [][]Vector2.XY { //gd:
 /*
 Given an array of [Vector2]s representing tiles, builds an atlas. The returned dictionary has two keys: [code]points[/code] is a [PackedVector2Array] that specifies the positions of each tile, [code]size[/code] contains the overall size of the whole atlas as [Vector2i].
 */
-func MakeAtlas(sizes []Vector2.XY) map[any]any { //gd:Geometry2D.make_atlas
+func MakeAtlas(sizes []Vector2.XY) Atlas { //gd:Geometry2D.make_atlas
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MakeAtlas(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&sizes))))))
+	return Atlas(gd.DictionaryAs[Atlas](class(self).MakeAtlas(gd.NewPackedVector2Slice(*(*[]gd.Vector2)(unsafe.Pointer(&sizes))))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -687,3 +689,14 @@ const (
 	/*Endpoints are rounded off and extended by [code]delta[/code] units.*/
 	EndRound PolyEndType = 4
 )
+
+type Atlas struct {
+	Points []struct {
+		X float32
+		Y float32
+	} `gd:"points"`
+	Size struct {
+		X int32
+		Y int32
+	} `gd:"size"`
+}

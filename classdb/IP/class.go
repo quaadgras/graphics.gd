@@ -14,6 +14,8 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
+import "net/netip"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -25,6 +27,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 IP contains support functions for the Internet Protocol (IP). TCP/IP support is in different classes (see [StreamPeerTCP] and [TCPServer]). IP provides DNS hostname resolution support, both blocking and threaded.
@@ -115,9 +118,9 @@ Each adapter is a dictionary of the form:
 
 [/codeblock]
 */
-func GetLocalInterfaces() []map[any]any { //gd:IP.get_local_interfaces
+func GetLocalInterfaces() []LocalInterface { //gd:IP.get_local_interfaces
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetLocalInterfaces())))
+	return []LocalInterface(gd.ArrayAs[[]LocalInterface](gd.InternalArray(class(self).GetLocalInterfaces())))
 }
 
 /*
@@ -318,3 +321,10 @@ const (
 	/*Address type: Any.*/
 	TypeAny Type = 3
 )
+
+type LocalInterface struct {
+	Index     string       `gd:"index"`
+	Name      string       `gd:"name"`
+	Friendly  string       `gd:"friendly"`
+	Addresses []netip.Addr `gd:"addresses"`
+}

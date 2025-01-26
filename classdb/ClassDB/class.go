@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -25,6 +26,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Provides access to metadata stored for every available class.
@@ -104,25 +106,25 @@ func ClassHasSignal(class_ string, signal string) bool { //gd:ClassDB.class_has_
 /*
 Returns the [param signal] data of [param class] or its ancestry. The returned value is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 */
-func ClassGetSignal(class_ string, signal string) map[any]any { //gd:ClassDB.class_get_signal
+func ClassGetSignal(class_ string, signal string) SignalInfo { //gd:ClassDB.class_get_signal
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ClassGetSignal(gd.NewStringName(class_), gd.NewStringName(signal))))
+	return SignalInfo(gd.DictionaryAs[SignalInfo](class(self).ClassGetSignal(gd.NewStringName(class_), gd.NewStringName(signal))))
 }
 
 /*
 Returns an array with all the signals of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] as described in [method class_get_signal].
 */
-func ClassGetSignalList(class_ string) []map[any]any { //gd:ClassDB.class_get_signal_list
+func ClassGetSignalList(class_ string) []SignalInfo { //gd:ClassDB.class_get_signal_list
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ClassGetSignalList(gd.NewStringName(class_), false))))
+	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(class(self).ClassGetSignalList(gd.NewStringName(class_), false))))
 }
 
 /*
 Returns an array with all the properties of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
-func ClassGetPropertyList(class_ string) []map[any]any { //gd:ClassDB.class_get_property_list
+func ClassGetPropertyList(class_ string) []PropertyInfo { //gd:ClassDB.class_get_property_list
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ClassGetPropertyList(gd.NewStringName(class_), false))))
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).ClassGetPropertyList(gd.NewStringName(class_), false))))
 }
 
 /*
@@ -169,9 +171,9 @@ func ClassGetMethodArgumentCount(class_ string, method string) int { //gd:ClassD
 Returns an array with all the methods of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 [b]Note:[/b] In exported release builds the debug info is not available, so the returned dictionaries will contain only method names.
 */
-func ClassGetMethodList(class_ string) []map[any]any { //gd:ClassDB.class_get_method_list
+func ClassGetMethodList(class_ string) []PropertyInfo { //gd:ClassDB.class_get_method_list
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ClassGetMethodList(gd.NewStringName(class_), false))))
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).ClassGetMethodList(gd.NewStringName(class_), false))))
 }
 
 /*
@@ -770,3 +772,19 @@ const (
 	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
 	ErrPrinterOnFire Error = 48
 )
+
+type SignalInfo struct {
+	Name        string         `gd:"name"`
+	Flags       int            `gd:"flags"`
+	ID          int            `gd:"id"`
+	DefaultArgs []interface{}  `gd:"default_args"`
+	Args        []PropertyInfo `gd:"args"`
+}
+type PropertyInfo struct {
+	ClassName  string       `gd:"class_name"`
+	Name       string       `gd:"name"`
+	Hint       int          `gd:"hint"`
+	HintString string       `gd:"hint_string"`
+	Type       reflect.Type `gd:"type"`
+	Usage      int          `gd:"usage"`
+}

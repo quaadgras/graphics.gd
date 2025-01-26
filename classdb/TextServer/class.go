@@ -32,6 +32,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 [TextServer] is the API backend for managing fonts and rendering text.
@@ -216,8 +217,8 @@ func (self Instance) FontGetName(font_rid RID.Font) string { //gd:TextServer.fon
 /*
 Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 */
-func (self Instance) FontGetOtNameStrings(font_rid RID.Font) map[any]any { //gd:TextServer.font_get_ot_name_strings
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontGetOtNameStrings(gd.RID(font_rid))))
+func (self Instance) FontGetOtNameStrings(font_rid RID.Font) map[string]string { //gd:TextServer.font_get_ot_name_strings
+	return map[string]string(gd.DictionaryAs[map[string]string](class(self).FontGetOtNameStrings(gd.RID(font_rid))))
 }
 
 /*
@@ -493,15 +494,15 @@ func (self Instance) FontGetTransform(font_rid RID.Font) Transform2D.OriginXY { 
 /*
 Sets variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
-func (self Instance) FontSetVariationCoordinates(font_rid RID.Font, variation_coordinates map[any]any) { //gd:TextServer.font_set_variation_coordinates
+func (self Instance) FontSetVariationCoordinates(font_rid RID.Font, variation_coordinates map[string]float32) { //gd:TextServer.font_set_variation_coordinates
 	class(self).FontSetVariationCoordinates(gd.RID(font_rid), gd.DictionaryFromMap(variation_coordinates))
 }
 
 /*
 Returns variation coordinates for the specified font cache entry. See [method font_supported_variation_list] for more info.
 */
-func (self Instance) FontGetVariationCoordinates(font_rid RID.Font) map[any]any { //gd:TextServer.font_get_variation_coordinates
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontGetVariationCoordinates(gd.RID(font_rid))))
+func (self Instance) FontGetVariationCoordinates(font_rid RID.Font) map[string]float32 { //gd:TextServer.font_get_variation_coordinates
+	return map[string]float32(gd.DictionaryAs[map[string]float32](class(self).FontGetVariationCoordinates(gd.RID(font_rid))))
 }
 
 /*
@@ -777,8 +778,8 @@ Returns outline contours of the glyph as a [Dictionary] with the following conte
 [code]contours[/code]       - [PackedInt32Array], containing indices the end points of each contour.
 [code]orientation[/code]    - [bool], contour orientation. If [code]true[/code], clockwise contours must be filled.
 */
-func (self Instance) FontGetGlyphContours(font RID.Font, size int, index int) map[any]any { //gd:TextServer.font_get_glyph_contours
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontGetGlyphContours(gd.RID(font), gd.Int(size), gd.Int(index))))
+func (self Instance) FontGetGlyphContours(font RID.Font, size int, index int) map[string]interface{} { //gd:TextServer.font_get_glyph_contours
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).FontGetGlyphContours(gd.RID(font), gd.Int(size), gd.Int(index))))
 }
 
 /*
@@ -949,29 +950,29 @@ func (self Instance) FontGetScriptSupportOverrides(font_rid RID.Font) []string {
 /*
 Sets font OpenType feature set override.
 */
-func (self Instance) FontSetOpentypeFeatureOverrides(font_rid RID.Font, overrides map[any]any) { //gd:TextServer.font_set_opentype_feature_overrides
+func (self Instance) FontSetOpentypeFeatureOverrides(font_rid RID.Font, overrides map[string]string) { //gd:TextServer.font_set_opentype_feature_overrides
 	class(self).FontSetOpentypeFeatureOverrides(gd.RID(font_rid), gd.DictionaryFromMap(overrides))
 }
 
 /*
 Returns font OpenType feature set override.
 */
-func (self Instance) FontGetOpentypeFeatureOverrides(font_rid RID.Font) map[any]any { //gd:TextServer.font_get_opentype_feature_overrides
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontGetOpentypeFeatureOverrides(gd.RID(font_rid))))
+func (self Instance) FontGetOpentypeFeatureOverrides(font_rid RID.Font) map[string]string { //gd:TextServer.font_get_opentype_feature_overrides
+	return map[string]string(gd.DictionaryAs[map[string]string](class(self).FontGetOpentypeFeatureOverrides(gd.RID(font_rid))))
 }
 
 /*
 Returns the dictionary of the supported OpenType features.
 */
-func (self Instance) FontSupportedFeatureList(font_rid RID.Font) map[any]any { //gd:TextServer.font_supported_feature_list
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontSupportedFeatureList(gd.RID(font_rid))))
+func (self Instance) FontSupportedFeatureList(font_rid RID.Font) map[string]string { //gd:TextServer.font_supported_feature_list
+	return map[string]string(gd.DictionaryAs[map[string]string](class(self).FontSupportedFeatureList(gd.RID(font_rid))))
 }
 
 /*
 Returns the dictionary of the supported OpenType variation coordinates.
 */
-func (self Instance) FontSupportedVariationList(font_rid RID.Font) map[any]any { //gd:TextServer.font_supported_variation_list
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).FontSupportedVariationList(gd.RID(font_rid))))
+func (self Instance) FontSupportedVariationList(font_rid RID.Font) map[string]string { //gd:TextServer.font_supported_variation_list
+	return map[string]string(gd.DictionaryAs[map[string]string](class(self).FontSupportedVariationList(gd.RID(font_rid))))
 }
 
 /*
@@ -1230,15 +1231,24 @@ func (self Instance) ShapedTextHasVisibleChars(shaped RID.TextBuffer) bool { //g
 /*
 Returns an array of glyphs in the visual order.
 */
-func (self Instance) ShapedTextGetGlyphs(shaped RID.TextBuffer) []map[any]any { //gd:TextServer.shaped_text_get_glyphs
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ShapedTextGetGlyphs(gd.RID(shaped)))))
+func (self Instance) ShapedTextGetGlyphs(shaped RID.TextBuffer) []map[int]struct {
+	X float32
+	Y float32
+} { //gd:TextServer.shaped_text_get_glyphs
+	return []map[int]struct {
+		X float32
+		Y float32
+	}(gd.ArrayAs[[]map[int]struct {
+		X float32
+		Y float32
+	}](gd.InternalArray(class(self).ShapedTextGetGlyphs(gd.RID(shaped)))))
 }
 
 /*
 Returns text glyphs in the logical order.
 */
-func (self Instance) ShapedTextSortLogical(shaped RID.TextBuffer) []map[any]any { //gd:TextServer.shaped_text_sort_logical
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ShapedTextSortLogical(gd.RID(shaped)))))
+func (self Instance) ShapedTextSortLogical(shaped RID.TextBuffer) []map[int]int { //gd:TextServer.shaped_text_sort_logical
+	return []map[int]int(gd.ArrayAs[[]map[int]int](gd.InternalArray(class(self).ShapedTextSortLogical(gd.RID(shaped)))))
 }
 
 /*
@@ -1293,8 +1303,17 @@ func (self Instance) ShapedTextGetEllipsisPos(shaped RID.TextBuffer) int { //gd:
 /*
 Returns array of the glyphs in the ellipsis.
 */
-func (self Instance) ShapedTextGetEllipsisGlyphs(shaped RID.TextBuffer) []map[any]any { //gd:TextServer.shaped_text_get_ellipsis_glyphs
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).ShapedTextGetEllipsisGlyphs(gd.RID(shaped)))))
+func (self Instance) ShapedTextGetEllipsisGlyphs(shaped RID.TextBuffer) []map[int]struct {
+	X float32
+	Y float32
+} { //gd:TextServer.shaped_text_get_ellipsis_glyphs
+	return []map[int]struct {
+		X float32
+		Y float32
+	}(gd.ArrayAs[[]map[int]struct {
+		X float32
+		Y float32
+	}](gd.InternalArray(class(self).ShapedTextGetEllipsisGlyphs(gd.RID(shaped)))))
 }
 
 /*
@@ -1386,8 +1405,17 @@ func (self Instance) ShapedTextGetUnderlineThickness(shaped RID.TextBuffer) Floa
 /*
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (self Instance) ShapedTextGetCarets(shaped RID.TextBuffer, position int) map[any]any { //gd:TextServer.shaped_text_get_carets
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ShapedTextGetCarets(gd.RID(shaped), gd.Int(position))))
+func (self Instance) ShapedTextGetCarets(shaped RID.TextBuffer, position int) map[int]struct {
+	X float32
+	Y float32
+} { //gd:TextServer.shaped_text_get_carets
+	return map[int]struct {
+		X float32
+		Y float32
+	}(gd.DictionaryAs[map[int]struct {
+		X float32
+		Y float32
+	}](class(self).ShapedTextGetCarets(gd.RID(shaped), gd.Int(position))))
 }
 
 /*

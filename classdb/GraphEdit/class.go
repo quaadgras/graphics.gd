@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -30,6 +31,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 [GraphEdit] provides tools for creation, manipulation, and display of various graphs. Its main purpose in the engine is to power the visual programming systems, such as visual shaders, but it is also available for use in user projects.
@@ -257,8 +259,8 @@ func (self Instance) SetConnectionActivity(from_node string, from_port int, to_n
 /*
 Returns an [Array] containing the list of connections. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
-func (self Instance) GetConnectionList() []map[any]any { //gd:GraphEdit.get_connection_list
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetConnectionList())))
+func (self Instance) GetConnectionList() []Connection { //gd:GraphEdit.get_connection_list
+	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionList())))
 }
 
 /*
@@ -271,15 +273,15 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) map[any]any { //gd:GraphEdit.get_closest_connection_at_point
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetClosestConnectionAtPoint(gd.Vector2(point), gd.Float(4.0))))
+func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) Connection { //gd:GraphEdit.get_closest_connection_at_point
+	return Connection(gd.DictionaryAs[Connection](class(self).GetClosestConnectionAtPoint(gd.Vector2(point), gd.Float(4.0))))
 }
 
 /*
 Returns an [Array] containing the list of connections that intersect with the given [Rect2]. A connection consists in a structure of the form [code]{ from_port: 0, from_node: "GraphNode name 0", to_port: 1, to_node: "GraphNode name 1" }[/code].
 */
-func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []map[any]any { //gd:GraphEdit.get_connections_intersecting_with_rect
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetConnectionsIntersectingWithRect(gd.Rect2(rect)))))
+func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []Connection { //gd:GraphEdit.get_connections_intersecting_with_rect
+	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionsIntersectingWithRect(gd.Rect2(rect)))))
 }
 
 /*
@@ -1747,3 +1749,10 @@ const (
 	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
 	ErrPrinterOnFire Error = 48
 )
+
+type Connection struct {
+	FromPort int    `gd:"from_port"`
+	FromNode string `gd:"from_node"`
+	ToPort   int    `gd:"to_port"`
+	ToNode   string `gd:"to_node"`
+}

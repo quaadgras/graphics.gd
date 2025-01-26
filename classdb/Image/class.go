@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Rect2i"
@@ -29,6 +30,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Native image datatype. Contains image data which can be converted to an [ImageTexture] and provides commonly used [i]image processing[/i] methods. The maximum width and height for an [Image] are [constant MAX_WIDTH] and [constant MAX_HEIGHT].
@@ -403,8 +405,8 @@ func (self Instance) BumpMapToNormalMap() { //gd:Image.bump_map_to_normal_map
 Compute image metrics on the current image and the compared image.
 The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[/code], [code]root_mean_squared[/code] and [code]peak_snr[/code].
 */
-func (self Instance) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) map[any]any { //gd:Image.compute_image_metrics
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ComputeImageMetrics(compared_image, use_luma)))
+func (self Instance) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) Metrics { //gd:Image.compute_image_metrics
+	return Metrics(gd.DictionaryAs[Metrics](class(self).ComputeImageMetrics(compared_image, use_luma)))
 }
 
 /*
@@ -1984,3 +1986,11 @@ const (
 	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
 	ErrPrinterOnFire Error = 48
 )
+
+type Metrics struct {
+	Max             float32 `gd:"max"`
+	Mean            float32 `gd:"mean"`
+	MeanSquared     float32 `gd:"mean_squared"`
+	RootMeanSquared float32 `gd:"root_mean_squared"`
+	PeakSNR         float32 `gd:"peak_snr"`
+}

@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Vector3"
@@ -29,6 +30,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
@@ -87,8 +89,8 @@ func (self Instance) Uninitialize() { //gd:XRInterface.uninitialize
 Returns a [Dictionary] with extra system info. Interfaces are expected to return [code]XRRuntimeName[/code] and [code]XRRuntimeVersion[/code] providing info about the used XR runtime. Additional entries may be provided specific to an interface.
 [b]Note:[/b]This information may only be available after [method initialize] was successfully called.
 */
-func (self Instance) GetSystemInfo() map[any]any { //gd:XRInterface.get_system_info
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetSystemInfo()))
+func (self Instance) GetSystemInfo() map[string]interface{} { //gd:XRInterface.get_system_info
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetSystemInfo()))
 }
 
 /*

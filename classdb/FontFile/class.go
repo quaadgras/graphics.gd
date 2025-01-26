@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Float"
@@ -31,6 +32,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 [FontFile] contains a set of glyphs to represent Unicode characters imported from a font file, as well as a cache of rasterized glyphs, and a set of fallback [Font]s to use.
@@ -127,15 +129,15 @@ func (self Instance) RemoveSizeCache(cache_index int, size Vector2i.XY) { //gd:F
 /*
 Sets variation coordinates for the specified font cache entry. See [method Font.get_supported_variation_list] for more info.
 */
-func (self Instance) SetVariationCoordinates(cache_index int, variation_coordinates map[any]any) { //gd:FontFile.set_variation_coordinates
+func (self Instance) SetVariationCoordinates(cache_index int, variation_coordinates map[string]float32) { //gd:FontFile.set_variation_coordinates
 	class(self).SetVariationCoordinates(gd.Int(cache_index), gd.DictionaryFromMap(variation_coordinates))
 }
 
 /*
 Returns variation coordinates for the specified font cache entry. See [method Font.get_supported_variation_list] for more info.
 */
-func (self Instance) GetVariationCoordinates(cache_index int) map[any]any { //gd:FontFile.get_variation_coordinates
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetVariationCoordinates(gd.Int(cache_index))))
+func (self Instance) GetVariationCoordinates(cache_index int) map[string]float32 { //gd:FontFile.get_variation_coordinates
+	return map[string]float32(gd.DictionaryAs[map[string]float32](class(self).GetVariationCoordinates(gd.Int(cache_index))))
 }
 
 /*

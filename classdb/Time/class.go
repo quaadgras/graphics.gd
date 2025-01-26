@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -26,6 +27,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 The Time singleton allows converting time between various formats and also getting time information from the system.
@@ -46,25 +48,25 @@ func singleton() {
 Converts the given Unix timestamp to a dictionary of keys: [code]year[/code], [code]month[/code], [code]day[/code], [code]weekday[/code], [code]hour[/code], [code]minute[/code], and [code]second[/code].
 The returned Dictionary's values will be the same as the [method get_datetime_dict_from_system] if the Unix timestamp is the current time, with the exception of Daylight Savings Time as it cannot be determined from the epoch.
 */
-func GetDatetimeDictFromUnixTime(unix_time_val int) map[any]any { //gd:Time.get_datetime_dict_from_unix_time
+func GetDatetimeDictFromUnixTime(unix_time_val int) Date { //gd:Time.get_datetime_dict_from_unix_time
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetDatetimeDictFromUnixTime(gd.Int(unix_time_val))))
+	return Date(gd.DictionaryAs[Date](class(self).GetDatetimeDictFromUnixTime(gd.Int(unix_time_val))))
 }
 
 /*
 Converts the given Unix timestamp to a dictionary of keys: [code]year[/code], [code]month[/code], [code]day[/code], and [code]weekday[/code].
 */
-func GetDateDictFromUnixTime(unix_time_val int) map[any]any { //gd:Time.get_date_dict_from_unix_time
+func GetDateDictFromUnixTime(unix_time_val int) DateOnly { //gd:Time.get_date_dict_from_unix_time
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetDateDictFromUnixTime(gd.Int(unix_time_val))))
+	return DateOnly(gd.DictionaryAs[DateOnly](class(self).GetDateDictFromUnixTime(gd.Int(unix_time_val))))
 }
 
 /*
 Converts the given time to a dictionary of keys: [code]hour[/code], [code]minute[/code], and [code]second[/code].
 */
-func GetTimeDictFromUnixTime(unix_time_val int) map[any]any { //gd:Time.get_time_dict_from_unix_time
+func GetTimeDictFromUnixTime(unix_time_val int) OnTheClock { //gd:Time.get_time_dict_from_unix_time
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTimeDictFromUnixTime(gd.Int(unix_time_val))))
+	return OnTheClock(gd.DictionaryAs[OnTheClock](class(self).GetTimeDictFromUnixTime(gd.Int(unix_time_val))))
 }
 
 /*
@@ -97,9 +99,9 @@ Converts the given ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS) to a dict
 If [param weekday] is [code]false[/code], then the [code skip-lint]weekday[/code] entry is excluded (the calculation is relatively expensive).
 [b]Note:[/b] Any decimal fraction in the time string will be ignored silently.
 */
-func GetDatetimeDictFromDatetimeString(datetime string, weekday bool) map[any]any { //gd:Time.get_datetime_dict_from_datetime_string
+func GetDatetimeDictFromDatetimeString(datetime string, weekday bool) Date { //gd:Time.get_datetime_dict_from_datetime_string
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetDatetimeDictFromDatetimeString(gd.NewString(datetime), weekday)))
+	return Date(gd.DictionaryAs[Date](class(self).GetDatetimeDictFromDatetimeString(gd.NewString(datetime), weekday)))
 }
 
 /*
@@ -108,7 +110,7 @@ The given dictionary can be populated with the following keys: [code]year[/code]
 If the dictionary is empty, [code]0[/code] is returned. If some keys are omitted, they default to the equivalent values for the Unix epoch timestamp 0 (1970-01-01 at 00:00:00).
 If [param use_space] is [code]true[/code], the date and time bits are separated by an empty space character instead of the letter T.
 */
-func GetDatetimeStringFromDatetimeDict(datetime map[any]any, use_space bool) string { //gd:Time.get_datetime_string_from_datetime_dict
+func GetDatetimeStringFromDatetimeDict(datetime Date, use_space bool) string { //gd:Time.get_datetime_string_from_datetime_dict
 	once.Do(singleton)
 	return string(class(self).GetDatetimeStringFromDatetimeDict(gd.DictionaryFromMap(datetime), use_space).String())
 }
@@ -120,7 +122,7 @@ If the dictionary is empty, [code]0[/code] is returned. If some keys are omitted
 You can pass the output from [method get_datetime_dict_from_unix_time] directly into this function and get the same as what was put in.
 [b]Note:[/b] Unix timestamps are often in UTC. This method does not do any timezone conversion, so the timestamp will be in the same timezone as the given datetime dictionary.
 */
-func GetUnixTimeFromDatetimeDict(datetime map[any]any) int { //gd:Time.get_unix_time_from_datetime_dict
+func GetUnixTimeFromDatetimeDict(datetime Date) int { //gd:Time.get_unix_time_from_datetime_dict
 	once.Do(singleton)
 	return int(int(class(self).GetUnixTimeFromDatetimeDict(gd.DictionaryFromMap(datetime))))
 }
@@ -146,27 +148,27 @@ func GetOffsetStringFromOffsetMinutes(offset_minutes int) string { //gd:Time.get
 /*
 Returns the current date as a dictionary of keys: [code]year[/code], [code]month[/code], [code]day[/code], [code]weekday[/code], [code]hour[/code], [code]minute[/code], [code]second[/code], and [code]dst[/code] (Daylight Savings Time).
 */
-func GetDatetimeDictFromSystem() map[any]any { //gd:Time.get_datetime_dict_from_system
+func GetDatetimeDictFromSystem() Date { //gd:Time.get_datetime_dict_from_system
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetDatetimeDictFromSystem(false)))
+	return Date(gd.DictionaryAs[Date](class(self).GetDatetimeDictFromSystem(false)))
 }
 
 /*
 Returns the current date as a dictionary of keys: [code]year[/code], [code]month[/code], [code]day[/code], and [code]weekday[/code].
 The returned values are in the system's local time when [param utc] is [code]false[/code], otherwise they are in UTC.
 */
-func GetDateDictFromSystem() map[any]any { //gd:Time.get_date_dict_from_system
+func GetDateDictFromSystem() DateOnly { //gd:Time.get_date_dict_from_system
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetDateDictFromSystem(false)))
+	return DateOnly(gd.DictionaryAs[DateOnly](class(self).GetDateDictFromSystem(false)))
 }
 
 /*
 Returns the current time as a dictionary of keys: [code]hour[/code], [code]minute[/code], and [code]second[/code].
 The returned values are in the system's local time when [param utc] is [code]false[/code], otherwise they are in UTC.
 */
-func GetTimeDictFromSystem() map[any]any { //gd:Time.get_time_dict_from_system
+func GetTimeDictFromSystem() OnTheClock { //gd:Time.get_time_dict_from_system
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTimeDictFromSystem(false)))
+	return OnTheClock(gd.DictionaryAs[OnTheClock](class(self).GetTimeDictFromSystem(false)))
 }
 
 /*
@@ -202,9 +204,9 @@ Returns the current time zone as a dictionary of keys: [code]bias[/code] and [co
 - [code]bias[/code] is the offset from UTC in minutes, since not all time zones are multiples of an hour from UTC.
 - [code]name[/code] is the localized name of the time zone, according to the OS locale settings of the current user.
 */
-func GetTimeZoneFromSystem() map[any]any { //gd:Time.get_time_zone_from_system
+func GetTimeZoneFromSystem() map[string]string { //gd:Time.get_time_zone_from_system
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTimeZoneFromSystem()))
+	return map[string]string(gd.DictionaryAs[map[string]string](class(self).GetTimeZoneFromSystem()))
 }
 
 /*
@@ -618,3 +620,23 @@ const (
 	/*The day of the week Saturday, represented numerically as [code]6[/code].*/
 	WeekdaySaturday Weekday = 6
 )
+
+type Date struct {
+	Year    int `gd:"year"`
+	Month   int `gd:"month"`
+	Day     int `gd:"day"`
+	Weekday int `gd:"weekday"`
+	Hour    int `gd:"hour"`
+	Minute  int `gd:"minute"`
+	Second  int `gd:"second"`
+}
+type DateOnly struct {
+	Year  int `gd:"year"`
+	Month int `gd:"month"`
+	Day   int `gd:"day"`
+}
+type OnTheClock struct {
+	Hour   int `gd:"hour"`
+	Minute int `gd:"minute"`
+	Second int `gd:"second"`
+}

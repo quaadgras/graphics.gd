@@ -38,6 +38,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 The rendering server is the API backend for everything visible. The whole scene system mounts on it to display. The rendering server is completely opaque: the internals are entirely implementation-specific and cannot be accessed.
@@ -274,9 +275,9 @@ func ShaderGetCode(shader RID.Shader) string { //gd:RenderingServer.shader_get_c
 /*
 Returns the parameters of a shader.
 */
-func GetShaderParameterList(shader RID.Shader) []map[any]any { //gd:RenderingServer.get_shader_parameter_list
+func GetShaderParameterList(shader RID.Shader) []map[string]interface{} { //gd:RenderingServer.get_shader_parameter_list
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetShaderParameterList(gd.RID(shader)))))
+	return []map[string]interface{}(gd.ArrayAs[[]map[string]interface{}](gd.InternalArray(class(self).GetShaderParameterList(gd.RID(shader)))))
 }
 
 /*
@@ -354,7 +355,7 @@ func MaterialSetNextPass(material RID.Material, next_material RID.Material) { //
 	once.Do(singleton)
 	class(self).MaterialSetNextPass(gd.RID(material), gd.RID(next_material))
 }
-func MeshCreateFromSurfaces(surfaces []map[any]any) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
+func MeshCreateFromSurfaces(surfaces []Surface) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
 	once.Do(singleton)
 	return RID.Mesh(class(self).MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), gd.Int(0)))
 }
@@ -409,7 +410,7 @@ func MeshSurfaceGetFormatSkinStride(format gdclass.RenderingServerArrayFormat, v
 	once.Do(singleton)
 	return int(int(class(self).MeshSurfaceGetFormatSkinStride(format, gd.Int(vertex_count))))
 }
-func MeshAddSurface(mesh RID.Mesh, surface map[any]any) { //gd:RenderingServer.mesh_add_surface
+func MeshAddSurface(mesh RID.Mesh, surface Surface) { //gd:RenderingServer.mesh_add_surface
 	once.Do(singleton)
 	class(self).MeshAddSurface(gd.RID(mesh), gd.DictionaryFromMap(surface))
 }
@@ -457,9 +458,9 @@ func MeshSurfaceGetMaterial(mesh RID.Mesh, surface int) RID.Material { //gd:Rend
 	once.Do(singleton)
 	return RID.Material(class(self).MeshSurfaceGetMaterial(gd.RID(mesh), gd.Int(surface)))
 }
-func MeshGetSurface(mesh RID.Mesh, surface int) map[any]any { //gd:RenderingServer.mesh_get_surface
+func MeshGetSurface(mesh RID.Mesh, surface int) Surface { //gd:RenderingServer.mesh_get_surface
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).MeshGetSurface(gd.RID(mesh), gd.Int(surface))))
+	return Surface(gd.DictionaryAs[Surface](class(self).MeshGetSurface(gd.RID(mesh), gd.Int(surface))))
 }
 
 /*
@@ -2952,9 +2953,9 @@ func InstanceGeometryGetShaderParameterDefaultValue(instance RID.VisualInstance,
 /*
 Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys [code]name[/code], [code]class_name[/code], [code]type[/code], [code]hint[/code], [code]hint_string[/code] and [code]usage[/code]. Equivalent to [method GeometryInstance3D.get_instance_shader_parameter].
 */
-func InstanceGeometryGetShaderParameterList(instance RID.VisualInstance) []map[any]any { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
+func InstanceGeometryGetShaderParameterList(instance RID.VisualInstance) []map[string]interface{} { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).InstanceGeometryGetShaderParameterList(gd.RID(instance)))))
+	return []map[string]interface{}(gd.ArrayAs[[]map[string]interface{}](gd.InternalArray(class(self).InstanceGeometryGetShaderParameterList(gd.RID(instance)))))
 }
 
 /*
@@ -12190,3 +12191,5 @@ const (
 	FeatureShaders       Features = 0
 	FeatureMultithreaded Features = 1
 )
+
+type Surface map[interface{}]interface{}

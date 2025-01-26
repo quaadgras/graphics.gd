@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -25,6 +26,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 The [OS] class wraps the most common functionalities for communicating with the host operating system, such as the video driver, delays, environment variables, execution of binaries, command line, etc.
@@ -219,9 +221,9 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] To execute a Unix shell built-in command, specify shell executable name in [param path], [code]-c[/code] as the first argument, and the desired command as the second argument.
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
-func ExecuteWithPipe(path string, arguments []string) map[any]any { //gd:OS.execute_with_pipe
+func ExecuteWithPipe(path string, arguments []string) Pipe { //gd:OS.execute_with_pipe
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments))))
+	return Pipe(gd.DictionaryAs[Pipe](class(self).ExecuteWithPipe(gd.NewString(path), gd.NewPackedStringSlice(arguments))))
 }
 
 /*
@@ -650,9 +652,9 @@ Returns a [Dictionary] containing information about the current memory with the 
 - [code]"stack"[/code] - size of the current thread stack in bytes.
 [b]Note:[/b] Each entry's value may be [code]-1[/code] if it is unknown.
 */
-func GetMemoryInfo() map[any]any { //gd:OS.get_memory_info
+func GetMemoryInfo() MemoryInfo { //gd:OS.get_memory_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetMemoryInfo()))
+	return MemoryInfo(gd.DictionaryAs[MemoryInfo](class(self).GetMemoryInfo()))
 }
 
 /*
@@ -2755,3 +2757,15 @@ const (
 	/*§ key.*/
 	KeySection Key = 167
 )
+
+type Pipe struct {
+	Stdio  [1]gdclass.FileAccess `gd:"stdio"`
+	Stderr [1]gdclass.FileAccess `gd:"stderr"`
+	PID    int                   `gd:"pid"`
+}
+type MemoryInfo struct {
+	Physical  int `gd:"physical"`
+	Free      int `gd:"free"`
+	Available int `gd:"available"`
+	Stack     int `gd:"stack"`
+}

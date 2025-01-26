@@ -6,6 +6,7 @@ import (
 	"log"
 	"maps"
 	"os"
+	"reflect"
 	"slices"
 	"strings"
 
@@ -132,6 +133,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	if err != nil {
 		return xray.New(err)
 	}
+
 	defer file.Close()
 	fmt.Fprintf(file, `// Package %s provides methods for working with %[1]s object instances.`, class.Name)
 	fmt.Fprintf(file, "\npackage %s\n\n", class.Name)
@@ -150,6 +152,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "graphics.gd/variant/Array"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/Callable"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/Dictionary"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant/RID"`)
 	var imported = make(map[string]bool)
 	if class.Name == "TextEdit" {
 		imported["graphics.gd/variant/Rect2"] = true
@@ -165,6 +168,14 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			}
 			super = classDB[super.Inherits]
 		}
+	}
+	if class.Name == "CodeEdit" {
+		imported["graphics.gd/classdb/Resource"] = true
+		fmt.Fprintf(file, "import %q\n", "graphics.gd/classdb/Resource")
+	}
+	if class.Name == "IP" {
+		imported["net/netip"] = true
+		fmt.Fprintf(file, "import %q\n", "net/netip")
 	}
 	for _, method := range class.Methods {
 		if method.IsVararg {
@@ -213,6 +224,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ variant.Any")
 	fmt.Fprintln(file, "var _ Callable.Function")
 	fmt.Fprintln(file, "var _ Dictionary.Any")
+	fmt.Fprintln(file, "var _ RID.Any")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
 	var hasVirtual bool
@@ -407,5 +419,49 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		enum := global_enums[key]
 		generateEnum(file, "", enum, "")
 	}
+	generateStructables(file)
 	return nil
+}
+
+func registerStructables(rtype reflect.Type) {
+	if rtype.PkgPath() == "graphics.gd/internal/gdjson" {
+		StructablesInThisPackageGlobalHack[rtype] = true
+	}
+	switch rtype.Kind() {
+	case reflect.Array, reflect.Slice:
+		registerStructables(rtype.Elem())
+	case reflect.Map:
+		registerStructables(rtype.Key())
+		registerStructables(rtype.Elem())
+	case reflect.Struct:
+		for i := 0; i < rtype.NumField(); i++ {
+			registerStructables(rtype.Field(i).Type)
+		}
+	}
+}
+
+func generateStructables(file io.Writer) {
+	for rtype := range StructablesInThisPackageGlobalHack {
+		switch rtype.Kind() {
+		case reflect.Map:
+			fmt.Fprintf(file, "type %v map[%v]%v\n", rtype.Name(), rtype.Key().String(), rtype.Elem().String())
+		case reflect.Struct:
+			fmt.Fprintf(file, "type %v struct {\n", rtype.Name())
+			for i := 0; i < rtype.NumField(); i++ {
+				field := rtype.Field(i)
+				if field.PkgPath != "" {
+					continue
+				}
+				ftype := field.Type.String()
+				if override, ok := field.Tag.Lookup("type"); ok {
+					ftype = override
+				}
+				ftype = strings.Replace(ftype, "gdjson.", "", -1)
+				gdTag := field.Tag.Get("gd")
+				fmt.Fprintf(file, "%v %v `gd:\"%s\"`\n", field.Name, ftype, gdTag)
+			}
+			fmt.Fprintf(file, "}\n")
+		}
+	}
+	clear(StructablesInThisPackageGlobalHack)
 }

@@ -13,9 +13,9 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Rect2"
@@ -30,6 +30,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 A texture works by registering an image in the video hardware, which then can be used in 3D models or 2D [Sprite2D] or GUI [Control].

@@ -13,10 +13,12 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/TextEdit"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
@@ -29,6 +31,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 CodeEdit is a specialized [TextEdit] designed for editing plain text code files. It has many features commonly found in code editors such as line numbers, line folding, code completion, indent management, and string/comment management.
@@ -509,8 +512,8 @@ func (self Instance) UpdateCodeCompletionOptions(force bool) { //gd:CodeEdit.upd
 /*
 Gets all completion options, see [method get_code_completion_option] for return content.
 */
-func (self Instance) GetCodeCompletionOptions() []map[any]any { //gd:CodeEdit.get_code_completion_options
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetCodeCompletionOptions())))
+func (self Instance) GetCodeCompletionOptions() []CompletionInfo { //gd:CodeEdit.get_code_completion_options
+	return []CompletionInfo(gd.ArrayAs[[]CompletionInfo](gd.InternalArray(class(self).GetCodeCompletionOptions())))
 }
 
 /*
@@ -522,8 +525,8 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 [code]icon[/code]: Icon to draw on the autocomplete menu.
 [code]default_value[/code]: Value of the symbol.
 */
-func (self Instance) GetCodeCompletionOption(index int) map[any]any { //gd:CodeEdit.get_code_completion_option
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetCodeCompletionOption(gd.Int(index))))
+func (self Instance) GetCodeCompletionOption(index int) CompletionInfo { //gd:CodeEdit.get_code_completion_option
+	return CompletionInfo(gd.DictionaryAs[CompletionInfo](class(self).GetCodeCompletionOption(gd.Int(index))))
 }
 
 /*
@@ -2210,3 +2213,17 @@ const (
 	/*The option is from other engine code, not covered by the other enum constants - e.g. built-in classes.*/
 	LocationOther CodeCompletionLocation = 1024
 )
+
+type CompletionInfo struct {
+	Kind        [1]gdclass.CodeEditCodeCompletionKind `gd:"kind"`
+	DisplayText string                                `gd:"display_text"`
+	InsertText  string                                `gd:"insert_text"`
+	FontColor   struct {
+		R float32
+		G float32
+		B float32
+		A float32
+	} `gd:"font_color"`
+	Icon         Resource.Path `gd:"icon"`
+	DefaultValue string        `gd:"default_value"`
+}

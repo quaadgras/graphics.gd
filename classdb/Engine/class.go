@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 
 var _ Object.ID
@@ -26,6 +27,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 The [Engine] singleton allows you to query and modify the project's run-time parameters, such as frames per second, time scale, and others. It also stores information about the current build of Godot, such as the current version.
@@ -174,17 +176,17 @@ else
 [/csharp]
 [/codeblocks]
 */
-func GetVersionInfo() map[any]any { //gd:Engine.get_version_info
+func GetVersionInfo() VersionInfo { //gd:Engine.get_version_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetVersionInfo()))
+	return VersionInfo(gd.DictionaryAs[VersionInfo](class(self).GetVersionInfo()))
 }
 
 /*
 Returns the engine author information as a [Dictionary], where each entry is an [Array] of strings with the names of notable contributors to the Godot Engine: [code]lead_developers[/code], [code]founders[/code], [code]project_managers[/code], and [code]developers[/code].
 */
-func GetAuthorInfo() map[any]any { //gd:Engine.get_author_info
+func GetAuthorInfo() AuthorInfo { //gd:Engine.get_author_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetAuthorInfo()))
+	return AuthorInfo(gd.DictionaryAs[AuthorInfo](class(self).GetAuthorInfo()))
 }
 
 /*
@@ -194,26 +196,26 @@ Every [Dictionary] contains a [code]name[/code] identifier, and a [code]parts[/c
 - [code]copyright[/code] - [Array] of owners of this component;
 - [code]license[/code] - The license applied to this component (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]" or "[url=https://creativecommons.org/licenses/by/4.0/]CC-BY-4.0[/url]").
 */
-func GetCopyrightInfo() []map[any]any { //gd:Engine.get_copyright_info
+func GetCopyrightInfo() []Copyright { //gd:Engine.get_copyright_info
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetCopyrightInfo())))
+	return []Copyright(gd.ArrayAs[[]Copyright](gd.InternalArray(class(self).GetCopyrightInfo())))
 }
 
 /*
 Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of strings:
 {[code]platinum_sponsors[/code], [code]gold_sponsors[/code], [code]silver_sponsors[/code], [code]bronze_sponsors[/code], [code]mini_sponsors[/code], [code]gold_donors[/code], [code]silver_donors[/code], [code]bronze_donors[/code]}
 */
-func GetDonorInfo() map[any]any { //gd:Engine.get_donor_info
+func GetDonorInfo() DonorInfo { //gd:Engine.get_donor_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetDonorInfo()))
+	return DonorInfo(gd.DictionaryAs[DonorInfo](class(self).GetDonorInfo()))
 }
 
 /*
 Returns a [Dictionary] of licenses used by Godot and included third party components. Each entry is a license name (such as "[url=https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants]Expat[/url]") and its associated text.
 */
-func GetLicenseInfo() map[any]any { //gd:Engine.get_license_info
+func GetLicenseInfo() map[string]string { //gd:Engine.get_license_info
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetLicenseInfo()))
+	return map[string]string(gd.DictionaryAs[map[string]string](class(self).GetLicenseInfo()))
 }
 
 /*
@@ -1181,3 +1183,40 @@ const (
 	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
 	ErrPrinterOnFire Error = 48
 )
+
+type AuthorInfo struct {
+	LeadDevelopers  []string `gd:"lead_developers"`
+	Founders        []string `gd:"founders"`
+	ProjectManagers []string `gd:"project_managers"`
+	Developers      []string `gd:"developers"`
+}
+type Copyright struct {
+	Name  string `gd:"name"`
+	Parts []Part `gd:"parts"`
+}
+type Part struct {
+	Files     []string `gd:"files"`
+	Copyright []string `gd:"copyright"`
+	License   string   `gd:"license"`
+}
+type DonorInfo struct {
+	PlatinumSponsors []string `gd:"platinum_sponsors"`
+	GoldSponsors     []string `gd:"gold_sponsors"`
+	SilverSponsors   []string `gd:"silver_sponsors"`
+	BronzeSponsors   []string `gd:"bronze_sponsors"`
+	MiniSponsors     []string `gd:"mini_sponsors"`
+	GoldDonors       []string `gd:"gold_donors"`
+	SilverDonors     []string `gd:"silver_donors"`
+	BronzeDonors     []string `gd:"bronze_donors"`
+}
+type VersionInfo struct {
+	Major     int    `gd:"major"`
+	Minor     int    `gd:"minor"`
+	Patch     int    `gd:"patch"`
+	Hex       int    `gd:"hex"`
+	Status    string `gd:"status"`
+	Build     string `gd:"build"`
+	Hash      string `gd:"hash"`
+	Timestamp int    `gd:"timestamp"`
+	String    string `gd:"string"`
+}

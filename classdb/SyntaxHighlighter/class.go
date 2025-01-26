@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Resource"
 
 var _ Object.ID
@@ -25,6 +26,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Base class for syntax highlighters. Provides syntax highlighting data to a [TextEdit]. The associated [TextEdit] will call into the [SyntaxHighlighter] on an as-needed basis.
@@ -114,8 +116,8 @@ The return [Dictionary] is column number to [Dictionary]. The column number note
 [/codeblock]
 This will color columns 0-4 red, and columns 5-eol in green.
 */
-func (self Instance) GetLineSyntaxHighlighting(line int) map[any]any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetLineSyntaxHighlighting(gd.Int(line))))
+func (self Instance) GetLineSyntaxHighlighting(line int) map[int]Entry { //gd:SyntaxHighlighter.get_line_syntax_highlighting
+	return map[int]Entry(gd.DictionaryAs[map[int]Entry](class(self).GetLineSyntaxHighlighting(gd.Int(line))))
 }
 
 /*
@@ -301,4 +303,13 @@ func init() {
 	gdclass.Register("SyntaxHighlighter", func(ptr gd.Object) any {
 		return [1]gdclass.SyntaxHighlighter{*(*gdclass.SyntaxHighlighter)(unsafe.Pointer(&ptr))}
 	})
+}
+
+type Entry struct {
+	Color struct {
+		R float32
+		G float32
+		B float32
+		A float32
+	} `gd:"color"`
 }

@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform3D"
 
@@ -27,6 +28,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 The AR/VR server is the heart of our Advanced and Virtual Reality solution and handles all the processing.
@@ -111,9 +113,9 @@ func GetInterface(idx int) [1]gdclass.XRInterface { //gd:XRServer.get_interface
 /*
 Returns a list of available interfaces the ID and name of each interface.
 */
-func GetInterfaces() []map[any]any { //gd:XRServer.get_interfaces
+func GetInterfaces() []map[int]string { //gd:XRServer.get_interfaces
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetInterfaces())))
+	return []map[int]string(gd.ArrayAs[[]map[int]string](gd.InternalArray(class(self).GetInterfaces())))
 }
 
 /*
@@ -143,9 +145,9 @@ func RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.remove_tracker
 /*
 Returns a dictionary of trackers for [param tracker_types].
 */
-func GetTrackers(tracker_types int) map[any]any { //gd:XRServer.get_trackers
+func GetTrackers(tracker_types int) map[interface{}]interface{} { //gd:XRServer.get_trackers
 	once.Do(singleton)
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTrackers(gd.Int(tracker_types))))
+	return map[interface{}]interface{}(gd.DictionaryAs[map[interface{}]interface{}](class(self).GetTrackers(gd.Int(tracker_types))))
 }
 
 /*

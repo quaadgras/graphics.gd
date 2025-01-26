@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Float"
@@ -27,6 +28,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Represents a physics shape as defined by the [code]OMI_physics_shape[/code] or [code]OMI_collider[/code] GLTF extensions. This class is an intermediary between the GLTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different GLTF physics extensions in the future.
@@ -74,7 +76,7 @@ func (self Instance) ToResource() [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_
 /*
 Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
+func FromDictionary(dictionary Structure) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
 	self := Instance{}
 	return [1]gdclass.GLTFPhysicsShape(class(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
@@ -82,8 +84,8 @@ func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFPhysicsShape { //gd:G
 /*
 Serializes this GLTFPhysicsShape instance into a [Dictionary] in the format defined by [code]OMI_physics_shape[/code].
 */
-func (self Instance) ToDictionary() map[any]any { //gd:GLTFPhysicsShape.to_dictionary
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ToDictionary()))
+func (self Instance) ToDictionary() Structure { //gd:GLTFPhysicsShape.to_dictionary
+	return Structure(gd.DictionaryAs[Structure](class(self).ToDictionary()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -409,3 +411,5 @@ func init() {
 		return [1]gdclass.GLTFPhysicsShape{*(*gdclass.GLTFPhysicsShape)(unsafe.Pointer(&ptr))}
 	})
 }
+
+type Structure map[interface{}]interface{}

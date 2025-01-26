@@ -14,6 +14,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 
 var _ Object.ID
 var _ RefCounted.Instance
@@ -25,6 +26,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 [TextServerManager] is the API backend for loading, enumerating, and switching [TextServer]s.
@@ -73,9 +75,9 @@ func GetInterface(idx int) [1]gdclass.TextServer { //gd:TextServerManager.get_in
 /*
 Returns a list of available interfaces, with the index and name of each interface.
 */
-func GetInterfaces() []map[any]any { //gd:TextServerManager.get_interfaces
+func GetInterfaces() []map[int]string { //gd:TextServerManager.get_interfaces
 	once.Do(singleton)
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetInterfaces())))
+	return []map[int]string(gd.ArrayAs[[]map[int]string](gd.InternalArray(class(self).GetInterfaces())))
 }
 
 /*

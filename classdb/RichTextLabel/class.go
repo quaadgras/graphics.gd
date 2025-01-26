@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -31,6 +32,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 A control for displaying text that can contain custom fonts, images, and basic formatting. [RichTextLabel] manages these as an internal tag stack. It also adapts itself to given width/heights.
@@ -309,7 +311,7 @@ func (self Instance) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_b
 /*
 Adds a custom effect tag to the tag stack. The effect does not need to be in [member custom_effects]. The environment is directly passed to the effect.
 */
-func (self Instance) PushCustomfx(effect [1]gdclass.RichTextEffect, env map[any]any) { //gd:RichTextLabel.push_customfx
+func (self Instance) PushCustomfx(effect [1]gdclass.RichTextEffect, env map[string]interface{}) { //gd:RichTextLabel.push_customfx
 	class(self).PushCustomfx(effect, gd.DictionaryFromMap(env))
 }
 
@@ -525,8 +527,8 @@ func (self Instance) GetParagraphOffset(paragraph int) Float.X { //gd:RichTextLa
 /*
 Parses BBCode parameter [param expressions] into a dictionary.
 */
-func (self Instance) ParseExpressionsForValues(expressions []string) map[any]any { //gd:RichTextLabel.parse_expressions_for_values
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ParseExpressionsForValues(gd.NewPackedStringSlice(expressions))))
+func (self Instance) ParseExpressionsForValues(expressions []string) map[string]interface{} { //gd:RichTextLabel.parse_expressions_for_values
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).ParseExpressionsForValues(gd.NewPackedStringSlice(expressions))))
 }
 
 /*

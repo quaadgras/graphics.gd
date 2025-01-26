@@ -13,8 +13,8 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
-import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/RID"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2i"
@@ -33,6 +33,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 External [TextServer] implementations should inherit from this class.

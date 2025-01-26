@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
 
@@ -26,6 +27,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 This class constructs a full mesh of [WebRTCPeerConnection] (one connection for each peer) that can be used as a [member MultiplayerAPI.multiplayer_peer].
@@ -91,15 +93,15 @@ func (self Instance) HasPeer(peer_id int) bool { //gd:WebRTCMultiplayerPeer.has_
 /*
 Returns a dictionary representation of the peer with given [param peer_id] with three keys. [code]"connection"[/code] containing the [WebRTCPeerConnection] to this peer, [code]"channels"[/code] an array of three [WebRTCDataChannel], and [code]"connected"[/code] a boolean representing if the peer connection is currently connected (all three channels are open).
 */
-func (self Instance) GetPeer(peer_id int) map[any]any { //gd:WebRTCMultiplayerPeer.get_peer
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetPeer(gd.Int(peer_id))))
+func (self Instance) GetPeer(peer_id int) Conn { //gd:WebRTCMultiplayerPeer.get_peer
+	return Conn(gd.DictionaryAs[Conn](class(self).GetPeer(gd.Int(peer_id))))
 }
 
 /*
 Returns a dictionary which keys are the peer ids and values the peer representation as in [method get_peer].
 */
-func (self Instance) GetPeers() map[any]any { //gd:WebRTCMultiplayerPeer.get_peers
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetPeers()))
+func (self Instance) GetPeers() map[int]Conn { //gd:WebRTCMultiplayerPeer.get_peers
+	return map[int]Conn(gd.DictionaryAs[map[int]Conn](class(self).GetPeers()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -391,3 +393,9 @@ const (
 	/*Printer on fire error (This is an easter egg, no built-in methods return this error code).*/
 	ErrPrinterOnFire Error = 48
 )
+
+type Conn struct {
+	Connection [1]gdclass.WebRTCPeerConnection `gd:"connection"`
+	Channels   [][1]gdclass.WebRTCDataChannel  `gd:"channels"`
+	Connected  bool                            `gd:"connected"`
+}

@@ -13,6 +13,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/RID"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Float"
@@ -27,6 +28,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 Represents a light as defined by the [code]KHR_lights_punctual[/code] GLTF extension.
@@ -59,7 +61,7 @@ func (self Instance) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node
 /*
 Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
+func FromDictionary(dictionary Structure) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
 	self := Instance{}
 	return [1]gdclass.GLTFLight(class(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
@@ -67,8 +69,8 @@ func FromDictionary(dictionary map[any]any) [1]gdclass.GLTFLight { //gd:GLTFLigh
 /*
 Serializes this GLTFLight instance into a [Dictionary].
 */
-func (self Instance) ToDictionary() map[any]any { //gd:GLTFLight.to_dictionary
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).ToDictionary()))
+func (self Instance) ToDictionary() Structure { //gd:GLTFLight.to_dictionary
+	return Structure(gd.DictionaryAs[Structure](class(self).ToDictionary()))
 }
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFLight.get_additional_data
 	return any(class(self).GetAdditionalData(gd.NewStringName(extension_name)).Interface())
@@ -363,3 +365,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("GLTFLight", func(ptr gd.Object) any { return [1]gdclass.GLTFLight{*(*gdclass.GLTFLight)(unsafe.Pointer(&ptr))} })
 }
+
+type Structure map[interface{}]interface{}

@@ -29,6 +29,7 @@ var _ = Array.Nil
 var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
+var _ RID.Any
 
 /*
 [NativeMenu] handles low-level access to the OS native global menu bar and popup menus.
