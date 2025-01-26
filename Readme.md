@@ -9,6 +9,7 @@ _Why use graphics.gd?_
 * Unlike with other languages, RIDs, callables and dictionary arguments are all distinctly typed.
 * A good balance of performance and convenience.
 * Pure Go variant types, import them into an existing project without using an engine.
+* Recompile your code quickly, it's almost like using a scripting language to write your graphics code. 
 
 You can support the project and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
 
