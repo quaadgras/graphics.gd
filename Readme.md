@@ -1,7 +1,13 @@
 # Graphics GD [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
 This module provides a safe performant way to work with graphics and game development in Go via the GDExtension
-interface of a supported graphics/game engine. So far, Godot 4.3 is the only officially supported engine.
+interface of any supported graphics/game engine (ie. Godot 4.3).
+
+_Why use graphics.gd?_
+
+* Write shaders in Go!
+* Unlike with other languages, RIDs, callables and dictionary arguments are all distinctly typed.
+* A good balance of performance and convenience.
 
 You can support the project and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
 
@@ -101,15 +107,14 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 
 ## Performance
 It's feasible to write high performance code using this module, keep to Engine types where possible and avoid
-memory to the heap in frequently called functions. `Advanced` instances are available for each class which allow
-more fine-grained control over memory allocation.
+allocating memory on the heap in frequently called functions. `Advanced` instances are available for each class 
+which allow more fine-grained control over memory allocations.
 
-### Zero Allocations
-Benchmarking shows method calls from Go -> Engine do not allocate in practice.
+Benchmarking shows `Advanced` method calls from Go -> Engine do not allocate in practice.
 
-Allocations are currently unavoidable for Script -> Go calls (but not
-for class virtual method overrides such as `Ready` or `Process`, which
-should be allocation free).
+Allocations are currently unavoidable for any Script -> Go calls (but not
+for `Advanced` class virtual method overrides such as `Ready` or `Process`, 
+which do not allocate in practice).
 
 We've got some ideas to reduce allocations for Script -> Go calls, when
 arguments fit entirely within registers. TBA.
@@ -134,9 +139,8 @@ To run the go tests for this module `cd internal && gd test`.
 
 * No support for calling classdb methods that accept a variable number of arguments.
 * No support for Go 'scripts'.
-* 64bit only.
-* Web build needs work [read the discussion](https://github.com/grow-graphics/gd/discussions/69).
-* Console support will likely be via wasm.
+* 64bit only (arm64 && amd64).
+* No console support, will likely be achieved in the future with WASM.
 
 ## Contributing
 
