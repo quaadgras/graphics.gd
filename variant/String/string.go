@@ -8,6 +8,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"iter"
 	"net/netip"
 	"net/url"
 	"path"
@@ -19,68 +20,142 @@ import (
 	"unicode"
 	"unicode/utf16"
 	"unicode/utf8"
+	"unique"
 	"unsafe"
 
 	"golang.org/x/text/encoding/unicode/utf32"
-	gd "graphics.gd/internal"
-	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Int"
 )
 
-type Any interface {
-	~string | ~[]byte
+// Unicode string that may only contain valid unicode characters. Not
+// comparable.
+type Unicode = struct {
+	_   [0]func()
+	buf complex128
+	api API
 }
 
-var static = make(map[string]gd.String)
+// Comparable string optimized for use as a key, such that comparisons
+// are efficient.
+type Comparable = struct {
+	ptr *Unicode
+}
 
-func init() {
-	gd.StartupFunctions = append(gd.StartupFunctions, func() {
-		for s, v := range static {
-			str := gd.Global.Strings.New(s)
-			raw, ok := pointers.End(str)
-			if ok {
-				pointers.Set(v, raw)
+// New returns a new [Unicode] string out of the given value.
+func New(val any) Unicode { //gd:String() str
+	return fromGoString(fmt.Sprint(val))
+}
+
+type API interface {
+	Len(buf complex128) int
+	Slice(buf complex128, i, j int) (complex128, API)
+	String(buf complex128) string
+	Index(buf complex128, i int) byte
+}
+
+type goString struct {
+	ptr *byte
+}
+
+func fromGoString(s string) Unicode {
+	header := lencap{
+		len: uint64(len(s)),
+	}
+	buf := *(*complex128)(unsafe.Pointer(&header))
+	return Unicode{
+		buf: buf,
+		api: goString{ptr: unsafe.StringData(s)},
+	}
+}
+
+type lencap = struct {
+	len, cap uint64
+}
+
+func (s goString) Len(buf complex128) int {
+	header := (*lencap)(unsafe.Pointer(&buf))
+	return int(header.len)
+}
+func (s goString) Slice(buf complex128, i, j int) (complex128, API) {
+	header := (*lencap)(unsafe.Pointer(&buf))
+	if i < 0 || j < 0 || i > int(header.len) || j > int(header.len) {
+		panic("slice bounds out of range")
+	}
+	s.ptr = (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), uintptr(i)))
+	header.len = uint64(j - i)
+	return *(*complex128)(unsafe.Pointer(&header)), s
+}
+func (s goString) String(buf complex128) string {
+	header := (*lencap)(unsafe.Pointer(&buf))
+	return unsafe.String(s.ptr, int(header.len))
+}
+func (s goString) Bytes(buf complex128) []byte {
+	header := (*lencap)(unsafe.Pointer(&buf))
+	result := make([]byte, int(header.len))
+	copy(result, unsafe.String(s.ptr, int(header.len)))
+	return result
+}
+func (s goString) Index(buf complex128, i int) byte {
+	header := (*lencap)(unsafe.Pointer(&buf))
+	if i < 0 || i >= int(header.len) {
+		panic("index out of range")
+	}
+	return *(*byte)(unsafe.Pointer(uintptr(unsafe.Pointer(s.ptr)) + uintptr(i)))
+}
+
+type Any interface {
+	~string | ~[]byte | ~Unicode | ~Comparable | unique.Handle[string]
+}
+
+func As[T, S Any](s S) T {
+	uni := New(s)
+	rtype := reflect.TypeFor[T]()
+	switch {
+	case rtype == reflect.TypeFor[string]():
+		c := uni.api.String(uni.buf)
+		return *(*T)(unsafe.Pointer(&c))
+	case rtype.Kind() == reflect.Slice && rtype.Elem().Kind() == reflect.Uint8:
+		b := []byte(uni.api.String(uni.buf))
+		return *(*T)(unsafe.Pointer(&b))
+	case rtype.ConvertibleTo(reflect.TypeOf(Unicode{})):
+		u := uni
+		return *(*T)(unsafe.Pointer(&u))
+	case rtype.ConvertibleTo(reflect.TypeOf(Comparable{})):
+		return New(s).Comparable()
+	default:
+		panic("unreachable")
+	}
+}
+
+// HasPrefix returns true if the string begins with the given text. See also [HasSuffix].
+func HasPrefix[S, P Any](s S, prefix P) bool { //gd:String.begins_with
+	return Length(prefix) <= Length(s) && Comparison(Slice(s, 0, Length(prefix)), prefix) == 0
+}
+
+// HasSuffix returns true if the string ends with the given text. See also [HasSuffix].
+func HasSuffix[S Any](s S, suffix S) bool { //gd:String.ends_with
+	return Length(suffix) <= Length(s) && Comparison(Slice(s, Length(s)-Length(suffix), Length(s)), suffix) == 0
+}
+
+// Bigrams returns a sequence of bigrams (pairs of consecutive characters) in this string.
+func Bigrams[S Any](s S) iter.Seq[S] { //gd:String.bigrams
+	return func(yield func(S) bool) {
+		if Length(s) < 2 {
+			return
+		}
+		for i := 0; i < Length(s)-1; i++ {
+			if !yield(Slice(s, i, i+2)) {
+				return
 			}
 		}
-	})
-}
-
-// Advanced String for those who know what they are doing.
-type Advanced = gd.String
-
-// New returns an engine-optimised String for use with Advanced functions.
-// Can be initialised ahead of time as a global variable.
-func New(vals ...any) Advanced { //gd:String() str
-	if !gd.Linked {
-		str := pointers.Add[gd.String]([1]gd.EnginePointer{})
-		static[fmt.Sprint(vals...)] = str
-		return str
 	}
-	return gd.Global.Strings.New(fmt.Sprint(vals...))
-}
-
-// BeginsWith returns true if the string begins with the given text. See also [EndsWith].
-func BeginsWith[S Any](prefix S, s S) bool { //gd:String.begins_with
-	return strings.HasPrefix(string(s), string(prefix))
-}
-
-// Bigrams returns a slice containing the bigrams (pairs of consecutive characters) of this string.
-func Bigrams[S Any](s S) []S { //gd:String.bigrams
-	if len(s) < 2 {
-		return nil
-	}
-	var r = make([]S, len(s)-1)
-	for i := 0; i < len(s)-1; i++ {
-		r[i] = s[i : i+2]
-	}
-	return r
 }
 
 // BinaryToInteger converts the string representing a binary number into an int. The string may
 // optionally be prefixed with "0b", and an additional - prefix for negative numbers.
 func BinaryToInteger[S Any](s S) int { //gd:String.bin_to_int
-	s = S(strings.TrimPrefix(string(s), "0b"))
+	s = TrimPrefix(s, "0b")
 	var r int
 	for i := 0; i < len(s); i++ {
 		if s[i] == '0' || s[i] == '1' {
@@ -121,7 +196,7 @@ func Capitalize[S Any](s S) S { //gd:String.capitalize
 	return S(strings.Join(pieces, " "))
 }
 
-// Comparison performs a case-insensitive comparison to another string. Returns -1
+// ComparisonIgnoreCasing performs a case-insensitive comparison to another string. Returns -1
 // if less than, 1 if greater than, or 0 if equal. "Less than" or "greater than"
 // are determined by the Unicode code points of each string, which roughly matches
 // the alphabetical order. Internally, lowercase characters are converted to
@@ -133,11 +208,11 @@ func Capitalize[S Any](s S) S { //gd:String.capitalize
 // To get a bool result from a string comparison, use the == operator instead. See
 // also [ComparisonStrict], [ComparisonStrictNaturalPrioritizePeriodsAndUnderscores],
 // and [ComparisonNatural].
-func Comparison[S Any](a, b S) int { //gd:String.nocasecmp_to
+func ComparisonIgnoreCasing[A, B Any](a A, b B) int { //gd:String.nocasecmp_to
 	return strings.Compare(strings.ToUpper(string(a)), strings.ToUpper(string(b)))
 }
 
-// ComparisonStrict performs a case-sensitive comparison to another string. Returns -1 if less than,
+// Comparison performs a case-sensitive comparison to another string. Returns -1 if less than,
 // 1 if greater than, or 0 if equal. "Less than" and "greater than" are determined by the Unicode code
 // points of each string, which roughly matches the alphabetical order.
 //
@@ -146,8 +221,30 @@ func Comparison[S Any](a, b S) int { //gd:String.nocasecmp_to
 //
 // To get a bool result from a string comparison, use the == operator instead. See also [Comparison],
 // [ComparisonStrictNaturalPrioritizePeriodsAndUnderscores], and [ComparisonStrictNatural].
-func ComparisonStrict[S Any](a, b S) int { //gd:String.casecmp_to
-	return strings.Compare(string(a), string(b))
+func Comparison[A, B Any](a A, b B) int { //gd:String.casecmp_to
+	if IsEmpty(a) && IsEmpty(b) {
+		return 0
+	}
+	if IsEmpty(a) {
+		return -1
+	}
+	if IsEmpty(b) {
+		return 1
+	}
+	for i := 0; i < Length(a) && i < Length(b); i++ {
+		if i >= Length(a) {
+			return -1
+		} else if i >= Length(b) {
+			return 1
+		}
+		ac, bc := a.Index(i), b.Index(i)
+		if ac < bc {
+			return -1
+		} else if ac > bc {
+			return 1
+		}
+	}
+	return 0
 }
 
 // ComparisonStrictNatural performs a case-sensitive, natural order comparison to another string. Returns -1
@@ -330,11 +427,6 @@ func Count[D ~string | ~[]byte | rune, S Any](what D, s S) int { //gd:String.cou
 // removed. See also [Indent] to add indentation.
 func Dedent[S Any](s S) S { //gd:String.dedent
 	return S(strings.TrimLeftFunc(string(s), unicode.IsSpace))
-}
-
-// EndsWith returns true if the string ends with the given text. See also [BeginsWith].
-func EndsWith[S Any](suffix S, s S) bool { //gd:String.ends_with
-	return strings.HasSuffix(string(s), string(suffix))
 }
 
 // Erase returns a string with the character erased at position.
@@ -1145,8 +1237,11 @@ func UTF32[S Any](s S) string { //gd:PackedByteArray.get_string_from_utf32
 }
 
 // TrimPrefix removes the given prefix from the start of the string, or returns the string unchanged.
-func TrimPrefix[S Any](s S, prefix S) S { //gd:String.trim_prefix
-	return S(strings.TrimPrefix(string(s), string(prefix)))
+func TrimPrefix[S, P Any](s S, prefix P) S { //gd:String.trim_prefix
+	if HasPrefix(s, prefix) {
+		return Slice(s, Length(prefix), Length(s))
+	}
+	return s
 }
 
 // TrimSuffix removes the given suffix from the end of the string, or returns the string unchanged.
@@ -1191,6 +1286,13 @@ func StripNodeName[S Any](s S) S { //gd:String.validate_node_name
 // StartingFrom returns a slice of the string from the given start index to the end index.
 func StartingFrom[S Any](s S, start int) S { //gd:String.substr
 	return S(string(s)[start:])
+}
+
+// Slice returns a slice of the string from the start index to the end index.
+func Slice[S Any](s S, start, end int) S { //gd:String.substrn
+	uni := New(s)
+	buf, api := uni.api.Slice(uni.buf, start, end)
+	return As[S](Unicode{buf, api})
 }
 
 // EncodeURI encodes the string to URL-friendly format. This method is meant to properly
