@@ -222,8 +222,15 @@ func wrap() error {
 			if _, err := os.Stat(path); os.IsNotExist(err) {
 				GOROOT := golang.CMD.Env.GOROOT()
 				wasm_exec, err := os.Open(filepath.Join(GOROOT, "lib", "wasm", "wasm_exec.js"))
-				if err != nil {
+				if err != nil && !os.IsNotExist(err) {
 					return xray.New(err)
+				}
+				err1 := err
+				if err != nil {
+					wasm_exec, err = os.Open(filepath.Join(GOROOT, "misc", "wasm", "wasm_exec.js"))
+					if err != nil {
+						return xray.New(errors.Join(err1, err))
+					}
 				}
 				defer wasm_exec.Close()
 				out, err := os.Create(path)
@@ -343,7 +350,7 @@ func wrap() error {
 		if GOOS != "js" {
 			golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 		}
-		golang.Env = append(golang.Env, "GOARCH="+arches[i])
+		golang.Env = append(os.Environ(), "GOARCH="+arches[i])
 		golang.Stderr = os.Stderr
 		golang.Stdout = os.Stdout
 		golang.Stdin = os.Stdin
